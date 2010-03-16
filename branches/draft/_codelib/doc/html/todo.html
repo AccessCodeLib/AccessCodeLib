@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>Access Code Library: Ausstehende Aufgaben</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="codelib.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- Erzeugt von Doxygen 1.6.2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Hauptseite</span></a></li>
+      <li class="current"><a href="pages.html"><span>Zusätzliche&nbsp;Informationen</span></a></li>
+      <li><a href="modules.html"><span>Module</span></a></li>
+      <li><a href="namespaces.html"><span>Pakete</span></a></li>
+      <li><a href="annotated.html"><span>Klassen</span></a></li>
+      <li><a href="files.html"><span>Dateien</span></a></li>
+    </ul>
+  </div>
+</div>
+<div class="contents">
+
+
+<h1><a class="anchor" id="todo">Ausstehende Aufgaben </a></h1><p><a class="anchor" id="_todo000003"></a> </p>
+<dl>
+<dt>Datei <a class="el" href="__info_8txt.html">_info.txt</a>  </dt>
+<dd>Doxygen-Startseite erstellen </dd>
+</dl>
+<p><a class="anchor" id="_todo000005"></a> </p>
+<dl>
+<dt>Namensbereich <a class="el" href="namespace__init_application.html">_initApplication</a>  </dt>
+<dd>StartApplication-Prozedur für allgemeine Verwendung umschreiben =&gt; in Klasse verlagern </dd>
+</dl>
+<p><a class="anchor" id="_todo000001"></a> </p>
+<dl>
+<dt>Klasse <a class="el" href="class_a_c_lib_file_manager.html">ACLibFileManager</a>  </dt>
+<dd><p class="startdd">Abhängigkeit zu Verweisen berücksichtigen und fehlende Verweise einstellen </p>
+<p>getCodeLibInfoFromFile: Auslesen der CodeLib-Informationen aus Ac07-Formluaren/Berichten, die mit SaveAsText erstellt wurden (unicode-Text)</p>
+<p class="enddd"></p>
+</dd>
+</dl>
+<p><a class="anchor" id="_todo000007"></a> </p>
+<dl>
+<dt>Element <a class="el" href="class_application_handler.html#a517a29992ce7ae9aca445b03385d9422">ApplicationHandler.GetExtensionInstance</a> (ByVal ExtensionKey As String, Optional ByVal InstanceKey As String=vbNullString) As Object </dt>
+<dd>sollte man eine Schnittstelle statt Late binding verwenden? </dd>
+</dl>
+<p><a class="anchor" id="_todo000006"></a> </p>
+<dl>
+<dt>Element <a class="el" href="class_application_handler.html#a56965ac0bd5aec9d25b6837016f2207d">ApplicationHandler.Version</a> (ByVal appVersion As String) </dt>
+<dd>Versionskennung aus DB-Eigenschaften bzw. aus den Dateieigenschaften lesen </dd>
+</dl>
+<p><a class="anchor" id="_todo000011"></a> </p>
+<dl>
+<dt>Klasse <a class="el" href="class_application_handler___dir_textbox.html">ApplicationHandler_DirTextbox</a>  </dt>
+<dd>Filtermöglichkeit ergänzen, dass nur Verzeichnisse ausgewählt werden können. </dd>
+</dl>
+<p><a class="anchor" id="_todo000008"></a> </p>
+<dl>
+<dt>Element <a class="el" href="group__base.html#ga6e9e8b1bd91ebaf4b2ed4df3094f6106">modErrorHandler.HandleError</a> (ByVal lErrorNumber As Long, ByVal sSource As String, Optional ByVal sErrDescription As String, Optional ByVal lErrHandlerMode As ACLibErrorHandlerMode=m_conDefaultErrorHandlerMode) As ACLibErrorResumeMode </dt>
+<dd>Prüfung auf Existenz der Datei oder zumindest des Verzeichnisses </dd>
+</dl>
+<p><a class="anchor" id="_todo000009"></a> </p>
+<dl>
+<dt>Namensbereich <a class="el" href="namespacemod_files.html">modFiles</a>  </dt>
+<dd>Code säubern, Fehlerbehandlung ergänzen </dd>
+</dl>
+<p><a class="anchor" id="_todo000010"></a> </p>
+<dl>
+<dt>Klasse <a class="el" href="class_qpc_stoppuhr.html">QpcStoppuhr</a>  </dt>
+<dd>Fehlerbehandlung ergänzen </dd>
+</dl>
+<p><a class="anchor" id="_todo000004"></a> </p>
+<dl>
+<dt>Klasse <a class="el" href="class_win_api_shortcut_menu.html">WinApiShortcutMenu</a>  </dt>
+<dd><p class="startdd">Code aufräumen und Doxygen-Doku erstellen</p>
+<p class="enddd"></p>
+</dd>
+</dl>
+</div>
+<hr size="1"/><address style="text-align: right;"><small>Erzeugt von&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.2 </small></address>
+</body>
+</html>

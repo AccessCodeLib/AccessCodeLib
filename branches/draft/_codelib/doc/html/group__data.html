@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>Access Code Library: Datenzugriff (data)</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="codelib.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- Erzeugt von Doxygen 1.6.2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Hauptseite</span></a></li>
+      <li><a href="pages.html"><span>Zusätzliche&nbsp;Informationen</span></a></li>
+      <li><a href="modules.html"><span>Module</span></a></li>
+      <li><a href="namespaces.html"><span>Pakete</span></a></li>
+      <li><a href="annotated.html"><span>Klassen</span></a></li>
+      <li><a href="files.html"><span>Dateien</span></a></li>
+    </ul>
+  </div>
+</div>
+<div class="contents">
+<h1>Datenzugriff (data)</h1><table border="0" cellpadding="0" cellspacing="0">
+<tr><td colspan="2"><h2>Pakete</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">package &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemod_s_q_l___tools.html">modSQL_Tools</a></td></tr>
+
+<p><tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><p>SQL-Hilfsfunktionen. </p>
+<br/></td></tr>
+</p>
+<tr><td colspan="2"><h2>Module</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data__dao.html">Datenzugriff mit DAO (data_dao)</a></td></tr>
+<tr><td colspan="2"><h2>Funktionen</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga63626fb594b57398c6c01d8496584c03">modSQL_Tools.GetSQLString_Text</a> (ByVal vValue As Variant, Optional ByVal sDelimiter As String=SQL_DEFAULT_TEXTDELIMITER, Optional ByVal bWithoutLeftRightDelim As Boolean=False) As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Text für SQL-Anweisung aufbereiten.  <a href="#ga63626fb594b57398c6c01d8496584c03"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga2aeb1261780e4aa5bf7900e62ac83d5a">modSQL_Tools.GetSQLString_Date</a> (ByVal vValue As Variant, Optional sFormatString As String=SQL_DEFAULT_DATEFORMAT) As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Datumswert in String für SQL-Anweisung umwandeln, die per VBA zusammengesetzt wird.  <a href="#ga2aeb1261780e4aa5bf7900e62ac83d5a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga2a27b336a5d3efd2ba28228ac5a6732e">modSQL_Tools.GetSQLString_Number</a> (ByVal vValue As Variant) As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Zahl für SQL-Text aufbereiten.  <a href="#ga2a27b336a5d3efd2ba28228ac5a6732e"></a><br/></td></tr>
+</table>
+<hr/><h2>Dokumentation der Funktionen</h2>
+<a class="anchor" id="ga2aeb1261780e4aa5bf7900e62ac83d5a"></a><!-- doxytag: member="modSQL_Tools::GetSQLString_Date" ref="ga2aeb1261780e4aa5bf7900e62ac83d5a" args="(ByVal vValue As Variant, Optional sFormatString As String=SQL_DEFAULT_DATEFORMAT) As String" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Function modSQL_Tools.GetSQLString_Date </td>
+          <td>(</td>
+          <td class="paramtype">ByVal vValue As&nbsp;</td>
+          <td class="paramname"> <em>Variant</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Optional sFormatString As&nbsp;</td>
+          <td class="paramname"> <em>String</em> = <code>SQL_DEFAULT_DATEFORMAT</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Datumswert in String für SQL-Anweisung umwandeln, die per VBA zusammengesetzt wird. </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>vValue</em>&nbsp;</td><td>Übergabewert</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>sFormatString</em>&nbsp;</td><td>Datumsformat (von DBMS abhängig!)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd>String</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ga2a27b336a5d3efd2ba28228ac5a6732e"></a><!-- doxytag: member="modSQL_Tools::GetSQLString_Number" ref="ga2a27b336a5d3efd2ba28228ac5a6732e" args="(ByVal vValue As Variant) As String" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Function modSQL_Tools.GetSQLString_Number </td>
+          <td>(</td>
+          <td class="paramtype">ByVal vValue As&nbsp;</td>
+          <td class="paramname"> <em>Variant</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Zahl für SQL-Text aufbereiten. </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>vValue</em>&nbsp;</td><td>Übergabewert</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd>String</dd></dl>
+<p>Durch Str-Funktion wird . statt , verwendet. </p>
+
+</div>
+</div>
+<a class="anchor" id="ga63626fb594b57398c6c01d8496584c03"></a><!-- doxytag: member="modSQL_Tools::GetSQLString_Text" ref="ga63626fb594b57398c6c01d8496584c03" args="(ByVal vValue As Variant, Optional ByVal sDelimiter As String=SQL_DEFAULT_TEXTDELIMITER, Optional ByVal bWithoutLeftRightDelim As Boolean=False) As String" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Function modSQL_Tools.GetSQLString_Text </td>
+          <td>(</td>
+          <td class="paramtype">ByVal vValue As&nbsp;</td>
+          <td class="paramname"> <em>Variant</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Optional ByVal sDelimiter As&nbsp;</td>
+          <td class="paramname"> <em>String</em> = <code>SQL_DEFAULT_TEXTDELIMITER</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Optional ByVal bWithoutLeftRightDelim As&nbsp;</td>
+          <td class="paramname"> <em>Boolean</em> = <code>False</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Text für SQL-Anweisung aufbereiten. </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>vValue</em>&nbsp;</td><td>Übergabewert</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>sDelimiter</em>&nbsp;</td><td>Begrenzungszeichen für Text-Werte. (In den meinsten DBMS wird ' als Begrenzungszeichen verwendet.)</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>bWithoutLeftRightDelim</em>&nbsp;</td><td>Nur Begrenzungszeichnen innerhalb des Werte verdoppeln, Eingrenzung jedoch nicht setzen.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd>String</dd></dl>
+<p>Beispiel: strSQL = "select ... from tabelle where Feld = " &amp; GetSQLString_Text("ab'cd") =&gt; strSQL = "select ... from tabelle where Feld = 'ab''cd'" </p>
+
+</div>
+</div>
+</div>
+<hr size="1"/><address style="text-align: right;"><small>Erzeugt von&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.2 </small></address>
+</body>
+</html>

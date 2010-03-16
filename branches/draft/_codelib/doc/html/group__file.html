@@ -1,0 +1,610 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>Access Code Library: Code-Sammlung fuer den Umgang mit Dateien (file)</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="codelib.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- Erzeugt von Doxygen 1.6.2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Hauptseite</span></a></li>
+      <li><a href="pages.html"><span>Zusätzliche&nbsp;Informationen</span></a></li>
+      <li><a href="modules.html"><span>Module</span></a></li>
+      <li><a href="namespaces.html"><span>Pakete</span></a></li>
+      <li><a href="annotated.html"><span>Klassen</span></a></li>
+      <li><a href="files.html"><span>Dateien</span></a></li>
+    </ul>
+  </div>
+</div>
+<div class="contents">
+<h1>Code-Sammlung fuer den Umgang mit Dateien (file)</h1><table border="0" cellpadding="0" cellspacing="0">
+<tr><td colspan="2"><h2>Pakete</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">package &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemod_files.html">modFiles</a></td></tr>
+
+<p><tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><p>Funktionen für Dateioperationen. </p>
+<br/></td></tr>
+</p>
+<tr><td colspan="2"><h2>Funktionen</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#ga61b632f3950956796613eaa4463314a5">modFiles.SelectFile</a> (Optional ByVal InitialDir As String=vbNullString, Optional ByVal DlgTitle As String=m_SELECTBOX_File_DlgTitle, Optional ByVal FilterString As String=&quot;Alle Dateien (*.*)&quot;, Optional ByVal MultiSelect As Boolean=False, Optional ByVal ViewMode As Long=-1) As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Datei mittels Dialog auswählen.  <a href="#ga61b632f3950956796613eaa4463314a5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#gad0eac58d535256b7173bb925406798df">modFiles.SelectFolder</a> (Optional ByVal InitialDir As String=vbNullString, Optional ByVal DlgTitle As String=m_SELECTBOX_Folder_DlgTitle, Optional ByVal FilterString As String=&quot;*&quot;, Optional ByVal MultiSelect As Boolean=False, Optional ByVal ViewMode As Long=-1) As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Auswahldialog zur Verzeichnisauswahl.  <a href="#gad0eac58d535256b7173bb925406798df"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Property Get&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#gae454d63d2cf7fbf03b3343ef9725c309">modFiles.TempPath</a> () As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Temp-Verzeichnis ermitteln.  <a href="#gae454d63d2cf7fbf03b3343ef9725c309"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#gad6f7e09b438679f8f41484a630a1897c">modFiles.ShortFileName</a> (ByVal vFile As Variant, Optional ByVal lMaxLen As Long=40) As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Dateipfad auf n Zeichen kürzen.  <a href="#gad6f7e09b438679f8f41484a630a1897c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#gaed759baf261e0ec8163a55af1e491aca">modFiles.FileNameWithoutPath</a> (ByVal vFile As Variant) As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Dateinamen ohne Verzeichnis.  <a href="#gaed759baf261e0ec8163a55af1e491aca"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#ga8b53b22713bdee7d314c7ada4d673cc2">modFiles.CreateDirectory</a> (ByVal sPath As String) As Boolean</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Erstelle ein Verzeichnis inkl. aller fehlenden übergeordneten Verzeichnisse.  <a href="#ga8b53b22713bdee7d314c7ada4d673cc2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#ga80b507c02e81846bc911b28201389068">modFiles.FileExists</a> (ByVal PathName As String) As Boolean</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Prüft Existens einer Datei.  <a href="#ga80b507c02e81846bc911b28201389068"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#gaf2b61856b6ddd89aa21d3b8caf768b9d">modFiles.DirExists</a> (ByVal PathName As String) As Boolean</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Prüft Existenz eines Verzeichnisses.  <a href="#gaf2b61856b6ddd89aa21d3b8caf768b9d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#gaaf609c08e689961899d2f135de6caa07">modFiles.GetFileUpdateDate</a> (ByVal FullFileName As String) As Variant</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Letztes Änderungsdatum einer Datei.  <a href="#gaaf609c08e689961899d2f135de6caa07"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#gac61760130ee0f45413fd8873dae15eac">modFiles.GetClearedStringForFileName</a> (ByVal strName As String, Optional ByVal ReplacementSign As String=&quot;_&quot;) As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Erzeugt aus einer Zeichenkette einen Dateinamen (ersetzt Sonderzeichen).  <a href="#gac61760130ee0f45413fd8873dae15eac"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#gae758c7b504d34f14335d5b132f7b5f0e">modFiles.GetFullPathFromRelativPath</a> (ByVal sRelativPath As String, ByVal sBaseFolder As String) As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Erezugt aus relativer Pfadangabe und "Basisverzeichnis" eine vollständige Pfadangabe.  <a href="#gae758c7b504d34f14335d5b132f7b5f0e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#ga8a7176e13b32f8322f14adaa1e0504d1">modFiles.GetRelativPathFromFullPath</a> (ByVal sFullPath As String, ByVal sBaseFolder As String, Optional ByVal EnableRelativePrefix As Boolean=False) As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Erzeugt einen relativen Pfad aus vollständiger Pfadangabe und Ausgangsverzeichnis.  <a href="#ga8a7176e13b32f8322f14adaa1e0504d1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#ga1af0b512bb14ef7cab2d72656e8ec688">modFiles.GetDirFromFilePath</a> (ByVal sFileName As String) As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Ermittels aus vollständer Pfadangabe einer Datei das Verzeichnis.  <a href="#ga1af0b512bb14ef7cab2d72656e8ec688"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Sub&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#ga889b6ea28adbe18c048178f7c5fa46c0">modFiles.AddToZipFile</a> (ByVal zipFile As String, ByVal sFile As String)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Datei an Zip-Datei anhängen.  <a href="#ga889b6ea28adbe18c048178f7c5fa46c0"></a><br/></td></tr>
+</table>
+<hr/><h2>Dokumentation der Funktionen</h2>
+<a class="anchor" id="ga889b6ea28adbe18c048178f7c5fa46c0"></a><!-- doxytag: member="modFiles::AddToZipFile" ref="ga889b6ea28adbe18c048178f7c5fa46c0" args="(ByVal zipFile As String, ByVal sFile As String)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Sub modFiles.AddToZipFile </td>
+          <td>(</td>
+          <td class="paramtype">ByVal zipFile As&nbsp;</td>
+          <td class="paramname"> <em>String</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ByVal sFile As&nbsp;</td>
+          <td class="paramname"> <em>String</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Datei an Zip-Datei anhängen. </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>Param</em>&nbsp;</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd></dd></dl>
+<p>CreateObject("Shell.Application").Namespace(zipFile &amp; "").CopyHere sFile &amp; "" </p>
+
+</div>
+</div>
+<a class="anchor" id="ga8b53b22713bdee7d314c7ada4d673cc2"></a><!-- doxytag: member="modFiles::CreateDirectory" ref="ga8b53b22713bdee7d314c7ada4d673cc2" args="(ByVal sPath As String) As Boolean" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Function modFiles.CreateDirectory </td>
+          <td>(</td>
+          <td class="paramtype">ByVal sPath As&nbsp;</td>
+          <td class="paramname"> <em>String</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Erstelle ein Verzeichnis inkl. aller fehlenden übergeordneten Verzeichnisse. </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>spath</em>&nbsp;</td><td>Zu erstellendes Verzeichnis</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd>Boolean: True = Verzeichnis wurde erstellt</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="gaf2b61856b6ddd89aa21d3b8caf768b9d"></a><!-- doxytag: member="modFiles::DirExists" ref="gaf2b61856b6ddd89aa21d3b8caf768b9d" args="(ByVal PathName As String) As Boolean" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Function modFiles.DirExists </td>
+          <td>(</td>
+          <td class="paramtype">ByVal PathName As&nbsp;</td>
+          <td class="paramname"> <em>String</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Prüft Existenz eines Verzeichnisses. </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>PathName</em>&nbsp;</td><td>Vollständige Pfadangabe</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd>Boolean</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ga80b507c02e81846bc911b28201389068"></a><!-- doxytag: member="modFiles::FileExists" ref="ga80b507c02e81846bc911b28201389068" args="(ByVal PathName As String) As Boolean" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Function modFiles.FileExists </td>
+          <td>(</td>
+          <td class="paramtype">ByVal PathName As&nbsp;</td>
+          <td class="paramname"> <em>String</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Prüft Existens einer Datei. </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>PathName</em>&nbsp;</td><td>Vollständige Pfadangabe</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd>Boolean</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="gaed759baf261e0ec8163a55af1e491aca"></a><!-- doxytag: member="modFiles::FileNameWithoutPath" ref="gaed759baf261e0ec8163a55af1e491aca" args="(ByVal vFile As Variant) As String" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Function modFiles.FileNameWithoutPath </td>
+          <td>(</td>
+          <td class="paramtype">ByVal vFile As&nbsp;</td>
+          <td class="paramname"> <em>Variant</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Dateinamen ohne Verzeichnis. </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>vFile</em>&nbsp;</td><td>Dateiname inkl. Verzeichnis</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd>String</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="gac61760130ee0f45413fd8873dae15eac"></a><!-- doxytag: member="modFiles::GetClearedStringForFileName" ref="gac61760130ee0f45413fd8873dae15eac" args="(ByVal strName As String, Optional ByVal ReplacementSign As String=&quot;_&quot;) As String" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Function modFiles.GetClearedStringForFileName </td>
+          <td>(</td>
+          <td class="paramtype">ByVal strName As&nbsp;</td>
+          <td class="paramname"> <em>String</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Optional ByVal ReplacementSign As&nbsp;</td>
+          <td class="paramname"> <em>String</em> = <code>&quot;_&quot;</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Erzeugt aus einer Zeichenkette einen Dateinamen (ersetzt Sonderzeichen). </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>strName</em>&nbsp;</td><td>Ausgangsstring für Dateinamen</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>ReplacementSign</em>&nbsp;</td><td>Zeichen als Ersatz für Sonderzeichen</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd>String</dd></dl>
+<p>Sonderzeichen: ? * " / ' : ( ) </p>
+
+</div>
+</div>
+<a class="anchor" id="ga1af0b512bb14ef7cab2d72656e8ec688"></a><!-- doxytag: member="modFiles::GetDirFromFilePath" ref="ga1af0b512bb14ef7cab2d72656e8ec688" args="(ByVal sFileName As String) As String" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Function modFiles.GetDirFromFilePath </td>
+          <td>(</td>
+          <td class="paramtype">ByVal sFileName As&nbsp;</td>
+          <td class="paramname"> <em>String</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Ermittels aus vollständer Pfadangabe einer Datei das Verzeichnis. </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>sFileName</em>&nbsp;</td><td>vollständer Pfadangabe</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd>String</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="gaaf609c08e689961899d2f135de6caa07"></a><!-- doxytag: member="modFiles::GetFileUpdateDate" ref="gaaf609c08e689961899d2f135de6caa07" args="(ByVal FullFileName As String) As Variant" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Function modFiles.GetFileUpdateDate </td>
+          <td>(</td>
+          <td class="paramtype">ByVal FullFileName As&nbsp;</td>
+          <td class="paramname"> <em>String</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Letztes Änderungsdatum einer Datei. </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>FullFileName</em>&nbsp;</td><td>Vollständige Pfadangabe</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd>Variant</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="gae758c7b504d34f14335d5b132f7b5f0e"></a><!-- doxytag: member="modFiles::GetFullPathFromRelativPath" ref="gae758c7b504d34f14335d5b132f7b5f0e" args="(ByVal sRelativPath As String, ByVal sBaseFolder As String) As String" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Function modFiles.GetFullPathFromRelativPath </td>
+          <td>(</td>
+          <td class="paramtype">ByVal sRelativPath As&nbsp;</td>
+          <td class="paramname"> <em>String</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ByVal sBaseFolder As&nbsp;</td>
+          <td class="paramname"> <em>String</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Erezugt aus relativer Pfadangabe und "Basisverzeichnis" eine vollständige Pfadangabe. </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>sRelativPath</em>&nbsp;</td><td>relativer Pfad</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>sBaseFolder</em>&nbsp;</td><td>Ausgangsverzeichnis</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd>String</dd></dl>
+<p>Beispiel: GetFullPathFromRelativPath("..\..\Test.txt", "C:\Programme\xxx\") =&gt; "C:\test.txt" </p>
+
+</div>
+</div>
+<a class="anchor" id="ga8a7176e13b32f8322f14adaa1e0504d1"></a><!-- doxytag: member="modFiles::GetRelativPathFromFullPath" ref="ga8a7176e13b32f8322f14adaa1e0504d1" args="(ByVal sFullPath As String, ByVal sBaseFolder As String, Optional ByVal EnableRelativePrefix As Boolean=False) As String" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Function modFiles.GetRelativPathFromFullPath </td>
+          <td>(</td>
+          <td class="paramtype">ByVal sFullPath As&nbsp;</td>
+          <td class="paramname"> <em>String</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ByVal sBaseFolder As&nbsp;</td>
+          <td class="paramname"> <em>String</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Optional ByVal EnableRelativePrefix As&nbsp;</td>
+          <td class="paramname"> <em>Boolean</em> = <code>False</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Erzeugt einen relativen Pfad aus vollständiger Pfadangabe und Ausgangsverzeichnis. </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>sFullPath</em>&nbsp;</td><td>vollständiger Pfadangabe</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>sBaseFolder</em>&nbsp;</td><td>Ausgangsverzeichnis</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>RelativePrefix</em>&nbsp;</td><td>".\" als Kennung für relativen Pfad ergänzen</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd>String</dd></dl>
+<p>Beispiel: <code> GetRelativPathFromFullPath("C:\test.txt", "C:\Programme\xxx\", True) =&gt; ".\..\..\test.txt" </code> </p>
+
+</div>
+</div>
+<a class="anchor" id="ga61b632f3950956796613eaa4463314a5"></a><!-- doxytag: member="modFiles::SelectFile" ref="ga61b632f3950956796613eaa4463314a5" args="(Optional ByVal InitialDir As String=vbNullString, Optional ByVal DlgTitle As String=m_SELECTBOX_File_DlgTitle, Optional ByVal FilterString As String=&quot;Alle Dateien (*.*)&quot;, Optional ByVal MultiSelect As Boolean=False, Optional ByVal ViewMode As Long=&#45;1) As String" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Function modFiles.SelectFile </td>
+          <td>(</td>
+          <td class="paramtype">Optional ByVal InitialDir As&nbsp;</td>
+          <td class="paramname"> <em>String</em> = <code>vbNullString</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Optional ByVal DlgTitle As&nbsp;</td>
+          <td class="paramname"> <em>String</em> = <code>m_SELECTBOX_File_DlgTitle</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Optional ByVal FilterString As&nbsp;</td>
+          <td class="paramname"> <em>String</em> = <code>&quot;Alle&nbsp;Dateien&nbsp;(*.*)&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Optional ByVal MultiSelect As&nbsp;</td>
+          <td class="paramname"> <em>Boolean</em> = <code>False</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Optional ByVal ViewMode As&nbsp;</td>
+          <td class="paramname"> <em>Long</em> = <code>-1</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Datei mittels Dialog auswählen. </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>InitDir</em>&nbsp;</td><td>Startverzeichnis</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>DlgTitle</em>&nbsp;</td><td>Dialogtitel</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>FilterString</em>&nbsp;</td><td>Filterwerten - Beispiel: "(*.*)" oder "Alle (*.*)|Textdateien (*.txt)|Bilder (*.png;*.jpg;*.gif)&lt;/param&gt;
+ &lt;param name="MultiSelect"&gt;Mehrfachauswahl&lt;/param&gt;
+ &lt;param name="viewMode"&gt;Anzeigeart (0: Detailansicht, 1: Vorschauansicht, 2: Eigenschaften, 3: Liste, 4: Miniaturansicht, 5: Große Symbole, 6: Kleine Symbole)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd>String (bei Mehfachauswahl sind die Dateien durch chr(9) getrennt)</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="gad0eac58d535256b7173bb925406798df"></a><!-- doxytag: member="modFiles::SelectFolder" ref="gad0eac58d535256b7173bb925406798df" args="(Optional ByVal InitialDir As String=vbNullString, Optional ByVal DlgTitle As String=m_SELECTBOX_Folder_DlgTitle, Optional ByVal FilterString As String=&quot;*&quot;, Optional ByVal MultiSelect As Boolean=False, Optional ByVal ViewMode As Long=&#45;1) As String" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Function modFiles.SelectFolder </td>
+          <td>(</td>
+          <td class="paramtype">Optional ByVal InitialDir As&nbsp;</td>
+          <td class="paramname"> <em>String</em> = <code>vbNullString</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Optional ByVal DlgTitle As&nbsp;</td>
+          <td class="paramname"> <em>String</em> = <code>m_SELECTBOX_Folder_DlgTitle</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Optional ByVal FilterString As&nbsp;</td>
+          <td class="paramname"> <em>String</em> = <code>&quot;*&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Optional ByVal MultiSelect As&nbsp;</td>
+          <td class="paramname"> <em>Boolean</em> = <code>False</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Optional ByVal ViewMode As&nbsp;</td>
+          <td class="paramname"> <em>Long</em> = <code>-1</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Auswahldialog zur Verzeichnisauswahl. </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>InitDir</em>&nbsp;</td><td>Startverzeichnis</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>DlgTitle</em>&nbsp;</td><td>Dialogtitel</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>FilterString</em>&nbsp;</td><td>Filterwerten - Beispiel: "(*.*)" oder "Alle (*.*)|Textdateien (*.txt)|Bilder (*.png;*.jpg;*.gif)&lt;/param&gt;
+ &lt;param name="MultiSelect"&gt;Mehrfachauswahl&lt;/param&gt;
+ &lt;param name="viewMode"&gt;Anzeigeart (0: Detailansicht, 1: Vorschauansicht, 2: Eigenschaften, 3: Liste, 4: Miniaturansicht, 5: Große Symbole, 6: Kleine Symbole)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd>String (bei Mehfachauswahl sind die Dateien durch chr(9) getrennt)</dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="gad6f7e09b438679f8f41484a630a1897c"></a><!-- doxytag: member="modFiles::ShortFileName" ref="gad6f7e09b438679f8f41484a630a1897c" args="(ByVal vFile As Variant, Optional ByVal lMaxLen As Long=40) As String" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Function modFiles.ShortFileName </td>
+          <td>(</td>
+          <td class="paramtype">ByVal vFile As&nbsp;</td>
+          <td class="paramname"> <em>Variant</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Optional ByVal lMaxLen As&nbsp;</td>
+          <td class="paramname"> <em>Long</em> = <code>40</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Dateipfad auf n Zeichen kürzen. </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>vFile</em>&nbsp;</td><td>Vollständiger Pfad</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>lMaxLen</em>&nbsp;</td><td>die gewünschte Länge</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd>String</dd></dl>
+<p>Hilfreich für die Anzeigen in schmalen Textfeldern <br/>
+ Beispiel: &lt;source&gt;C:\....txt&lt;/source&gt; </p>
+
+</div>
+</div>
+<a class="anchor" id="gae454d63d2cf7fbf03b3343ef9725c309"></a><!-- doxytag: member="modFiles::TempPath" ref="gae454d63d2cf7fbf03b3343ef9725c309" args="() As String" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Property Get modFiles.TempPath </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Temp-Verzeichnis ermitteln. </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>Param</em>&nbsp;</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd>String</dd></dl>
+<p>Verwendet API GetTempPathA </p>
+
+</div>
+</div>
+</div>
+<hr size="1"/><address style="text-align: right;"><small>Erzeugt von&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.2 </small></address>
+</body>
+</html>

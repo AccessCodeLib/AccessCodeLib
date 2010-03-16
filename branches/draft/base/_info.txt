@@ -1,0 +1,9 @@
+ 
+  Allgemeine Module und Klassen, die in den meisten Fällen benötigt werden
+ -------------------------------------------------------------------------
+
+Doxygen-Gruppe: BASE
+				Basis-Elemente
+'/** 
+' @defgroup base &raquo;Basis-Elemente (base)
+'**/

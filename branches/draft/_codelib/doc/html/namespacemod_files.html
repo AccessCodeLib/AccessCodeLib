@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>Access Code Library: Paket modFiles</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="codelib.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- Erzeugt von Doxygen 1.6.2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Hauptseite</span></a></li>
+      <li><a href="pages.html"><span>Zusätzliche&nbsp;Informationen</span></a></li>
+      <li><a href="modules.html"><span>Module</span></a></li>
+      <li class="current"><a href="namespaces.html"><span>Pakete</span></a></li>
+      <li><a href="annotated.html"><span>Klassen</span></a></li>
+      <li><a href="files.html"><span>Dateien</span></a></li>
+    </ul>
+  </div>
+  <div class="tabs">
+    <ul>
+      <li><a href="namespaces.html"><span>Pakete</span></a></li>
+      <li><a href="namespacemembers.html"><span>Paketfunktionen</span></a></li>
+    </ul>
+  </div>
+</div>
+<div class="contents">
+<h1>Paket modFiles<br/>
+<small>
+[<a class="el" href="group__file.html">Code-Sammlung fuer den Umgang mit Dateien (file)</a>]</small>
+</h1>
+<p>Funktionen für Dateioperationen.  
+<a href="#_details">Mehr ...</a></p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td colspan="2"><h2>Funktionen</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#ga61b632f3950956796613eaa4463314a5">SelectFile</a> (Optional ByVal InitialDir As String=vbNullString, Optional ByVal DlgTitle As String=m_SELECTBOX_File_DlgTitle, Optional ByVal FilterString As String=&quot;Alle Dateien (*.*)&quot;, Optional ByVal MultiSelect As Boolean=False, Optional ByVal ViewMode As Long=-1) As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Datei mittels Dialog auswählen.  <a href="group__file.html#ga61b632f3950956796613eaa4463314a5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#gad0eac58d535256b7173bb925406798df">SelectFolder</a> (Optional ByVal InitialDir As String=vbNullString, Optional ByVal DlgTitle As String=m_SELECTBOX_Folder_DlgTitle, Optional ByVal FilterString As String=&quot;*&quot;, Optional ByVal MultiSelect As Boolean=False, Optional ByVal ViewMode As Long=-1) As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Auswahldialog zur Verzeichnisauswahl.  <a href="group__file.html#gad0eac58d535256b7173bb925406798df"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Property Get&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#gae454d63d2cf7fbf03b3343ef9725c309">TempPath</a> () As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Temp-Verzeichnis ermitteln.  <a href="group__file.html#gae454d63d2cf7fbf03b3343ef9725c309"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#gad6f7e09b438679f8f41484a630a1897c">ShortFileName</a> (ByVal vFile As Variant, Optional ByVal lMaxLen As Long=40) As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Dateipfad auf n Zeichen kürzen.  <a href="group__file.html#gad6f7e09b438679f8f41484a630a1897c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#gaed759baf261e0ec8163a55af1e491aca">FileNameWithoutPath</a> (ByVal vFile As Variant) As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Dateinamen ohne Verzeichnis.  <a href="group__file.html#gaed759baf261e0ec8163a55af1e491aca"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#ga8b53b22713bdee7d314c7ada4d673cc2">CreateDirectory</a> (ByVal sPath As String) As Boolean</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Erstelle ein Verzeichnis inkl. aller fehlenden übergeordneten Verzeichnisse.  <a href="group__file.html#ga8b53b22713bdee7d314c7ada4d673cc2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#ga80b507c02e81846bc911b28201389068">FileExists</a> (ByVal PathName As String) As Boolean</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Prüft Existens einer Datei.  <a href="group__file.html#ga80b507c02e81846bc911b28201389068"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#gaf2b61856b6ddd89aa21d3b8caf768b9d">DirExists</a> (ByVal PathName As String) As Boolean</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Prüft Existenz eines Verzeichnisses.  <a href="group__file.html#gaf2b61856b6ddd89aa21d3b8caf768b9d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#gaaf609c08e689961899d2f135de6caa07">GetFileUpdateDate</a> (ByVal FullFileName As String) As Variant</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Letztes Änderungsdatum einer Datei.  <a href="group__file.html#gaaf609c08e689961899d2f135de6caa07"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#gac61760130ee0f45413fd8873dae15eac">GetClearedStringForFileName</a> (ByVal strName As String, Optional ByVal ReplacementSign As String=&quot;_&quot;) As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Erzeugt aus einer Zeichenkette einen Dateinamen (ersetzt Sonderzeichen).  <a href="group__file.html#gac61760130ee0f45413fd8873dae15eac"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#gae758c7b504d34f14335d5b132f7b5f0e">GetFullPathFromRelativPath</a> (ByVal sRelativPath As String, ByVal sBaseFolder As String) As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Erezugt aus relativer Pfadangabe und "Basisverzeichnis" eine vollständige Pfadangabe.  <a href="group__file.html#gae758c7b504d34f14335d5b132f7b5f0e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#ga8a7176e13b32f8322f14adaa1e0504d1">GetRelativPathFromFullPath</a> (ByVal sFullPath As String, ByVal sBaseFolder As String, Optional ByVal EnableRelativePrefix As Boolean=False) As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Erzeugt einen relativen Pfad aus vollständiger Pfadangabe und Ausgangsverzeichnis.  <a href="group__file.html#ga8a7176e13b32f8322f14adaa1e0504d1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#ga1af0b512bb14ef7cab2d72656e8ec688">GetDirFromFilePath</a> (ByVal sFileName As String) As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Ermittels aus vollständer Pfadangabe einer Datei das Verzeichnis.  <a href="group__file.html#ga1af0b512bb14ef7cab2d72656e8ec688"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Sub&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__file.html#ga889b6ea28adbe18c048178f7c5fa46c0">AddToZipFile</a> (ByVal zipFile As String, ByVal sFile As String)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Datei an Zip-Datei anhängen.  <a href="group__file.html#ga889b6ea28adbe18c048178f7c5fa46c0"></a><br/></td></tr>
+</table>
+<hr/><a name="_details"></a><h2>Ausführliche Beschreibung</h2>
+<p>Funktionen für Dateioperationen. </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Noch zu erledigen:</a></b></dt><dd>Code säubern, Fehlerbehandlung ergänzen </dd></dl>
+</div>
+<hr size="1"/><address style="text-align: right;"><small>Erzeugt von&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.2 </small></address>
+</body>
+</html>

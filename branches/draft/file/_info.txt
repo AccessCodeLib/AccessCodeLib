@@ -1,0 +1,6 @@
+
+ Dateizugriff (Module zum Lesen und Erstellen von Dateien)
+
+'/** 
+' @defgroup file Code-Sammlung fuer den Umgang mit Dateien (file)
+'**/

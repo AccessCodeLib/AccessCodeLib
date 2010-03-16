@@ -1,0 +1,9 @@
+﻿ 
+  Allgemeine Module und Klassen, von Add-Ins für die Code-Bibliothek
+ --------------------------------------------------------------------
+
+Doxygen-Gruppe: addins
+				Add-Ins für die Access Code Library
+'/** 
+' @defgroup addins Add-Ins fuer die Access Code Library (addins)
+'**/

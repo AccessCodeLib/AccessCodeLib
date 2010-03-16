@@ -1,0 +1,9 @@
+
+ Alles, was in keine andere Gruppe passt. ;-)
+ --------------------------------------------
+ 
+ Doxygen-Gruppe: MISC
+				 MISC - Diverses
+'/** 
+' @defgroup MISC Diverses (misc)
+'**/

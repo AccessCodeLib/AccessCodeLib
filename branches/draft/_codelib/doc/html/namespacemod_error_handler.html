@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>Access Code Library: Paket modErrorHandler</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="codelib.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- Erzeugt von Doxygen 1.6.2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Hauptseite</span></a></li>
+      <li><a href="pages.html"><span>Zusätzliche&nbsp;Informationen</span></a></li>
+      <li><a href="modules.html"><span>Module</span></a></li>
+      <li class="current"><a href="namespaces.html"><span>Pakete</span></a></li>
+      <li><a href="annotated.html"><span>Klassen</span></a></li>
+      <li><a href="files.html"><span>Dateien</span></a></li>
+    </ul>
+  </div>
+  <div class="tabs">
+    <ul>
+      <li><a href="namespaces.html"><span>Pakete</span></a></li>
+      <li><a href="namespacemembers.html"><span>Paketfunktionen</span></a></li>
+    </ul>
+  </div>
+</div>
+<div class="contents">
+<h1>Paket modErrorHandler<br/>
+<small>
+[<a class="el" href="group__base.html">&amp;raquo;Basis-Elemente (base)</a>]</small>
+</h1>
+<p>Prozeduren für die Fehlerbehandlung.  
+<a href="#_details">Mehr ...</a></p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td colspan="2"><h2>Aufzählungen</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__base.html#ga4f6e5e6f86c99e51528dd965da5d334c">ACLibErrorHandlerMode</a> </td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><p>ErrorHandler Modes (Fehlerbehandlungsvarianten). </p>
+ <a href="group__base.html#ga4f6e5e6f86c99e51528dd965da5d334c">Mehr ...</a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__base.html#ga7545b154fe799ffce8d887c41f7b2edc">ACLibErrorResumeMode</a> </td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><p>Verarbeitungsparamter bei aufgetretene Fehler. </p>
+ <a href="group__base.html#ga7545b154fe799ffce8d887c41f7b2edc">Mehr ...</a><br/></td></tr>
+<tr><td colspan="2"><h2>Funktionen</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga1a95b3f19bf5124947eb5070e9d3b8b8"></a><!-- doxytag: member="modErrorHandler::DefaultErrorHandlerMode" ref="ga1a95b3f19bf5124947eb5070e9d3b8b8" args="() As ACLibErrorHandlerMode" -->
+Property Get&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__base.html#ga1a95b3f19bf5124947eb5070e9d3b8b8">DefaultErrorHandlerMode</a> () As <a class="el" href="group__base.html#ga4f6e5e6f86c99e51528dd965da5d334c">ACLibErrorHandlerMode</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Standardverhalten der Fehlerbehandlung. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Property Let&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__base.html#ga1ba85773db79d205949771835f6fb926">DefaultErrorHandlerMode</a> (ByVal errMode As <a class="el" href="group__base.html#ga4f6e5e6f86c99e51528dd965da5d334c">ACLibErrorHandlerMode</a>)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Standardverhalten der Fehlerbehandlung.  <a href="group__base.html#ga1ba85773db79d205949771835f6fb926"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gacf4835df21f1dee71ec4d440fd3d4520"></a><!-- doxytag: member="modErrorHandler::ErrorHandlerLogFile" ref="gacf4835df21f1dee71ec4d440fd3d4520" args="() As String" -->
+Property Get&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__base.html#gacf4835df21f1dee71ec4d440fd3d4520">ErrorHandlerLogFile</a> () As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Log file für Fehlermeldungen. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Property Let&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__base.html#ga4b14901d955ec4d064de27115403a07c">ErrorHandlerLogFile</a> (ByVal Path As String)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Log file für Fehlermeldungen.  <a href="group__base.html#ga4b14901d955ec4d064de27115403a07c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__base.html#ga6e9e8b1bd91ebaf4b2ed4df3094f6106">HandleError</a> (ByVal lErrorNumber As Long, ByVal sSource As String, Optional ByVal sErrDescription As String, Optional ByVal lErrHandlerMode As <a class="el" href="group__base.html#ga4f6e5e6f86c99e51528dd965da5d334c">ACLibErrorHandlerMode</a>=m_conDefaultErrorHandlerMode) As <a class="el" href="group__base.html#ga7545b154fe799ffce8d887c41f7b2edc">ACLibErrorResumeMode</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Standard-Prozedur für Fehlerbehandlung.  <a href="group__base.html#ga6e9e8b1bd91ebaf4b2ed4df3094f6106"></a><br/></td></tr>
+</table>
+<hr/><a name="_details"></a><h2>Ausführliche Beschreibung</h2>
+<p>Prozeduren für die Fehlerbehandlung. </p>
+</div>
+<hr size="1"/><address style="text-align: right;"><small>Erzeugt von&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.2 </small></address>
+</body>
+</html>

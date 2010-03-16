@@ -1,0 +1,107 @@
+[OPTIONS]
+Compiled file=AccessCodeLibrary.chm
+Compatibility=1.1
+Full-text search=Yes
+Contents file=index.hhc
+Default Window=main
+Default topic=index.html
+Index file=index.hhk
+Language=0x407 German
+Title=Access Code Library
+
+[WINDOWS]
+main="Access Code Library","index.hhc","index.hhk","index.html","index.html",,,,,0x23520,,0x10387e,,,,,,,,0
+
+[FILES]
+index.html
+pages.html
+__codelib_2addins_2__info_8txt.html
+__codelib_2addins_2_import_wizard_2__info_8txt.html
+__codelib_2addins_2shared_2__info_8txt.html
+__codelib_2templates_2__info_8txt.html
+__info_8txt.html
+api_2__info_8txt.html
+api_2winapi_2__info_8txt.html
+base_2__info_8txt.html
+com_2__info_8txt.html
+data_2__info_8txt.html
+data_2dao_2__info_8txt.html
+file_2__info_8txt.html
+misc_2__info_8txt.html
+usability_2__info_8txt.html
+_a_c_lib_import_wizard_form_8frm.html
+frm_app_watcher_8frm.html
+frm_login_8frm.html
+_t_e_s_t___dir_textbox_8frm.html
+todo.html
+bug.html
+group__addins.html
+group___a_c_lib_add_in_import_wizard.html
+group__addins__shared.html
+group__templates.html
+group___a_p_i.html
+group___win_a_p_i.html
+group__base.html
+group___c_o_m.html
+group__data.html
+group__data__dao.html
+group__file.html
+group___m_i_s_c.html
+group__usability.html
+modules.html
+annotated.html
+classes.html
+functions.html
+functions_func.html
+functions_rela.html
+class_a_c_lib_configuration.html
+class_a_c_lib_configuration-members.html
+class_a_c_lib_file_manager.html
+class_a_c_lib_file_manager-members.html
+class_application_handler.html
+class_application_handler-members.html
+class_application_handler___app_file.html
+class_application_handler___app_file-members.html
+class_application_handler___app_login___win.html
+class_application_handler___app_login___win-members.html
+class_application_handler___dir_textbox.html
+class_application_handler___dir_textbox-members.html
+class_application_handler___n_e_w_c_l_a_s_s.html
+class_application_handler___n_e_w_c_l_a_s_s-members.html
+class_code_module_header_item.html
+class_code_module_header_item-members.html
+class_code_module_procedure.html
+class_code_module_procedure-members.html
+class_code_module_reader.html
+class_code_module_reader-members.html
+class_qpc_stoppuhr.html
+class_qpc_stoppuhr-members.html
+class_temp_db_handler.html
+class_temp_db_handler-members.html
+class_win_api_shortcut_menu.html
+class_win_api_shortcut_menu-members.html
+namespaces.html
+namespace__config___application.html
+namespace__init_application.html
+namespacedef_global.html
+namespacemod_application.html
+namespacemod_d_a_o___tools.html
+namespacemod_error_handler.html
+namespacemod_files.html
+namespacemod_s_q_l___tools.html
+namespacemod_win_a_p_i.html
+namespacemod_win_a_p_i___file_info.html
+namespacemod_win_a_p_i___handles.html
+namespacemod_win_a_p_i___layout.html
+namespacemod_win_api___mouse.html
+namespacemod_win_a_p_i___spec_folder.html
+namespacemembers.html
+namespacemembers_func.html
+namespacemembers_enum.html
+files.html
+tabs.css
+tab_b.gif
+tab_l.gif
+tab_r.gif
+open.gif
+closed.gif
