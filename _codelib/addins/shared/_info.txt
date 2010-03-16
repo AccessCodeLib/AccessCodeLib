@@ -1,0 +1,10 @@
+﻿ 
+   Module und Klassen, von Add-Ins für die Code-Bibliothek (gemeinsame Nutzung)
+ ------------------------------------------------------------------------------
+
+Doxygen-Gruppe: addins_shared
+				Add-Ins für die Access Code Library
+'/** 
+' @defgroup addins_shared Gemeinsame genutzer Code der Add-Ins (addins_shared)
+' \ingroup addins
+'**/

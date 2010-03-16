@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>Access Code Library: Windows Application Programming Interface (WinAPI)</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="codelib.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- Erzeugt von Doxygen 1.6.2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Hauptseite</span></a></li>
+      <li><a href="pages.html"><span>Zusätzliche&nbsp;Informationen</span></a></li>
+      <li><a href="modules.html"><span>Module</span></a></li>
+      <li><a href="namespaces.html"><span>Pakete</span></a></li>
+      <li><a href="annotated.html"><span>Klassen</span></a></li>
+      <li><a href="files.html"><span>Dateien</span></a></li>
+    </ul>
+  </div>
+</div>
+<div class="contents">
+<h1>Windows Application Programming Interface (WinAPI)<br/>
+<small>
+[<a class="el" href="group___a_p_i.html">Application Programming Interface (API)</a>]</small>
+</h1><table border="0" cellpadding="0" cellspacing="0">
+<tr><td colspan="2"><h2>Klassen</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_win_api_shortcut_menu.html">WinApiShortcutMenu</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">ShortcutMenu über Win-API.  <a href="class_win_api_shortcut_menu.html#_details">Mehr ...</a><br/></td></tr>
+<tr><td colspan="2"><h2>Pakete</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">package &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemod_win_a_p_i.html">modWinAPI</a></td></tr>
+
+<p><tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><p>Gebräuchliche WinAPI-Funktionen. </p>
+<br/></td></tr>
+</p>
+<tr><td class="memItemLeft" align="right" valign="top">package &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemod_win_a_p_i___file_info.html">modWinAPI_FileInfo</a></td></tr>
+
+<p><tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><p>Dateiinformationen mit Win-API auslesen. </p>
+<br/></td></tr>
+</p>
+<tr><td class="memItemLeft" align="right" valign="top">package &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemod_win_a_p_i___handles.html">modWinAPI_Handles</a></td></tr>
+
+<p><tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><p>Win-API-Funktionen: Handles. </p>
+<br/></td></tr>
+</p>
+<tr><td class="memItemLeft" align="right" valign="top">package &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemod_win_a_p_i___layout.html">modWinAPI_Layout</a></td></tr>
+
+<p><tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><p>WinAPI-Funktionen zur Layoutgestaltung. </p>
+<br/></td></tr>
+</p>
+<tr><td colspan="2"><h2>Funktionen</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Sub&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___win_a_p_i.html#gaa3f5accf3692eaeb63ea7431029a46d2">modWinAPI.SetFormIconFromFile</a> (ByRef FormRef As Access.Form, ByVal IconFilePath As String)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Spezielles Icon für ein Formular einstellen.  <a href="#gaa3f5accf3692eaeb63ea7431029a46d2"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___win_a_p_i.html#ga89ce9af27cdf1d65ff9347cc797da2e8">modWinAPI_FileInfo.GetFileVersion</a> (ByVal sFile As String) As String</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Ermittelt die Version aus einer Datei.  <a href="#ga89ce9af27cdf1d65ff9347cc797da2e8"></a><br/></td></tr>
+</table>
+<hr/><h2>Dokumentation der Funktionen</h2>
+<a class="anchor" id="ga89ce9af27cdf1d65ff9347cc797da2e8"></a><!-- doxytag: member="modWinAPI_FileInfo::GetFileVersion" ref="ga89ce9af27cdf1d65ff9347cc797da2e8" args="(ByVal sFile As String) As String" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Function modWinAPI_FileInfo.GetFileVersion </td>
+          <td>(</td>
+          <td class="paramtype">ByVal sFile As&nbsp;</td>
+          <td class="paramname"> <em>String</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Ermittelt die Version aus einer Datei. </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>sFile</em>&nbsp;</td><td>vollständiger Pfad zur Datei</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd>Versionskennung</dd></dl>
+<p>Nützlich zum Auslesen von Versionen aus dll-Dateien </p>
+
+</div>
+</div>
+<a class="anchor" id="gaa3f5accf3692eaeb63ea7431029a46d2"></a><!-- doxytag: member="modWinAPI::SetFormIconFromFile" ref="gaa3f5accf3692eaeb63ea7431029a46d2" args="(ByRef FormRef As Access.Form, ByVal IconFilePath As String)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Sub modWinAPI.SetFormIconFromFile </td>
+          <td>(</td>
+          <td class="paramtype">ByRef FormRef As Access.&nbsp;</td>
+          <td class="paramname"> <em>Form</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ByVal IconFilePath As&nbsp;</td>
+          <td class="paramname"> <em>String</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Spezielles Icon für ein Formular einstellen. </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>FormRef</em>&nbsp;</td><td>Referenz zum Access.Form</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>IconFilePath</em>&nbsp;</td><td>Icon-Datei (vollständige Pfadangabe)</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+</div>
+<hr size="1"/><address style="text-align: right;"><small>Erzeugt von&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.2 </small></address>
+</body>
+</html>

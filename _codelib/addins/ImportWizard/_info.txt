@@ -1,0 +1,10 @@
+﻿ 
+  Access-Add-In für den Import von Dateien aus der Code-Bibliothek
+ ------------------------------------------------------------------
+
+Doxygen-Gruppe: ACLibAddInImportWizard
+				Access-Add-In für den Import von Dateien aus der Code-Bibliothek
+'/** 
+' @defgroup ACLibAddInImportWizard Import Wizard: Access-Add-In fuer den Import aus der Code-Bibliothek (ACLibAddInImportWizard)
+' \ingroup addins
+'**/

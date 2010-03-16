@@ -1,0 +1,9 @@
+﻿ 
+  Vorlagen für Module und Klassen
+ ---------------------------------
+
+Doxygen-Gruppe: templates
+				Vorlagensammmlung
+'/** 
+' @defgroup templates Vorlagensammmlung (templates)
+'**/

@@ -1,0 +1,10 @@
+
+ Schnittstellen-Elemente
+ -----------------------
+
+Doxygen-Gruppe: WinAPI
+				WinAPI - Component Object Model 
+'/** 
+' @defgroup WinAPI Windows Application Programming Interface (WinAPI)
+' \ingroup API
+'**/

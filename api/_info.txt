@@ -1,0 +1,9 @@
+
+ Schnittstellen-Elemente
+ -----------------------
+
+Doxygen-Gruppe: API
+				API - Component Object Model 
+'/** 
+' @defgroup API Application Programming Interface (API)
+'**/

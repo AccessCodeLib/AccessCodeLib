@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>Access Code Library: ACLibFileManager Klassenreferenz</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link href="codelib.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- Erzeugt von Doxygen 1.6.2 -->
+<script type="text/javascript">
+<!--
+function changeDisplayState (e){
+  var num=this.id.replace(/[^[0-9]/g,'');
+  var button=this.firstChild;
+  var sectionDiv=document.getElementById('dynsection'+num);
+  if (sectionDiv.style.display=='none'||sectionDiv.style.display==''){
+    sectionDiv.style.display='block';
+    button.src='open.gif';
+  }else{
+    sectionDiv.style.display='none';
+    button.src='closed.gif';
+  }
+}
+function initDynSections(){
+  var divs=document.getElementsByTagName('div');
+  var sectionCounter=1;
+  for(var i=0;i<divs.length-1;i++){
+    if(divs[i].className=='dynheader'&&divs[i+1].className=='dynsection'){
+      var header=divs[i];
+      var section=divs[i+1];
+      var button=header.firstChild;
+      if (button!='IMG'){
+        divs[i].insertBefore(document.createTextNode(' '),divs[i].firstChild);
+        button=document.createElement('img');
+        divs[i].insertBefore(button,divs[i].firstChild);
+      }
+      header.style.cursor='pointer';
+      header.onclick=changeDisplayState;
+      header.id='dynheader'+sectionCounter;
+      button.src='closed.gif';
+      section.id='dynsection'+sectionCounter;
+      section.style.display='none';
+      section.style.marginLeft='14px';
+      sectionCounter++;
+    }
+  }
+}
+window.onload = initDynSections;
+-->
+</script>
+<div class="navigation" id="top">
+  <div class="tabs">
+    <ul>
+      <li><a href="index.html"><span>Hauptseite</span></a></li>
+      <li><a href="pages.html"><span>Zusätzliche&nbsp;Informationen</span></a></li>
+      <li><a href="modules.html"><span>Module</span></a></li>
+      <li><a href="namespaces.html"><span>Pakete</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Klassen</span></a></li>
+      <li><a href="files.html"><span>Dateien</span></a></li>
+    </ul>
+  </div>
+  <div class="tabs">
+    <ul>
+      <li><a href="annotated.html"><span>Auflistung&nbsp;der&nbsp;Klassen</span></a></li>
+      <li><a href="functions.html"><span>Klassen-Elemente</span></a></li>
+    </ul>
+  </div>
+</div>
+<div class="contents">
+<h1>ACLibFileManager Klassenreferenz<br/>
+<small>
+[<a class="el" href="group___a_c_lib_add_in_import_wizard.html">Import Wizard: Access-Add-In fuer den Import aus der Code-Bibliothek (ACLibAddInImportWizard)</a>]</small>
+</h1><!-- doxytag: class="ACLibFileManager" -->
+<p>Import/Export der Access-Objekte in/aus lokaler Code-Bibliothek.  
+<a href="#_details">Mehr ...</a></p>
+
+<p><a href="class_a_c_lib_file_manager-members.html">Aufstellung aller Elemente</a></p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td colspan="2"><h2>Öffentliche Methoden</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Sub&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_c_lib_file_manager.html#a417fe768d79b542ced89e3261624ac45">RefreshAll</a> (Optional ByVal ImportMode As CodeLibImportMode=CodeLibImportMode.clim_ImportMissingItems, Optional ByVal ShowMessageAfterRefresh As Boolean=False)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Alle in der Anwendung vorhandenen Codelib-Elemente neu importieren.  <a href="#a417fe768d79b542ced89e3261624ac45"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Sub&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_c_lib_file_manager.html#ac2ab1dd5c26c354e076ab3544ca8c84a">RefreshAllModules</a> (Optional ByVal ImportMode As CodeLibImportMode=CodeLibImportMode.clim_ImportMissingItems, Optional ByVal ShowMessageAfterRefresh As Boolean=False)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Alle in der Anwendung vorhandenen Code-Module mit Codelib-Blcok neu importieren (nur Module und Klassen, keine Formulare oder Berichte).  <a href="#ac2ab1dd5c26c354e076ab3544ca8c84a"></a><br/></td></tr>
+</table>
+<hr/><a name="_details"></a><h2>Ausführliche Beschreibung</h2>
+<p>Import/Export der Access-Objekte in/aus lokaler Code-Bibliothek. </p>
+<p>Das Modul "_config_Application" wird unabhängig vom Import-Modus nicht mehr überschrieben, sobald es in der Anwendung vorhanden ist.</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Noch zu erledigen:</a></b></dt><dd><p class="startdd">Abhängigkeit zu Verweisen berücksichtigen und fehlende Verweise einstellen </p>
+<p class="enddd">getCodeLibInfoFromFile: Auslesen der CodeLib-Informationen aus Ac07-Formluaren/Berichten, die mit SaveAsText erstellt wurden (unicode-Text)</p>
+</dd></dl>
+<hr/><h2>Dokumentation der Elementfunktionen</h2>
+<a class="anchor" id="a417fe768d79b542ced89e3261624ac45"></a><!-- doxytag: member="ACLibFileManager::RefreshAll" ref="a417fe768d79b542ced89e3261624ac45" args="(Optional ByVal ImportMode As CodeLibImportMode=CodeLibImportMode.clim_ImportMissingItems, Optional ByVal ShowMessageAfterRefresh As Boolean=False)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Sub ACLibFileManager.RefreshAll </td>
+          <td>(</td>
+          <td class="paramtype">Optional ByVal ImportMode As&nbsp;</td>
+          <td class="paramname"> <em>CodeLibImportMode</em> = <code>CodeLibImportMode.clim_ImportMissingItems</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Optional ByVal ShowMessageAfterRefresh As&nbsp;</td>
+          <td class="paramname"> <em>Boolean</em> = <code>False</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Alle in der Anwendung vorhandenen Codelib-Elemente neu importieren. </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>Param</em>&nbsp;</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd></dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ac2ab1dd5c26c354e076ab3544ca8c84a"></a><!-- doxytag: member="ACLibFileManager::RefreshAllModules" ref="ac2ab1dd5c26c354e076ab3544ca8c84a" args="(Optional ByVal ImportMode As CodeLibImportMode=CodeLibImportMode.clim_ImportMissingItems, Optional ByVal ShowMessageAfterRefresh As Boolean=False)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Sub ACLibFileManager.RefreshAllModules </td>
+          <td>(</td>
+          <td class="paramtype">Optional ByVal ImportMode As&nbsp;</td>
+          <td class="paramname"> <em>CodeLibImportMode</em> = <code>CodeLibImportMode.clim_ImportMissingItems</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Optional ByVal ShowMessageAfterRefresh As&nbsp;</td>
+          <td class="paramname"> <em>Boolean</em> = <code>False</code></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Alle in der Anwendung vorhandenen Code-Module mit Codelib-Blcok neu importieren (nur Module und Klassen, keine Formulare oder Berichte). </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>ImportMode</em>&nbsp;</td><td>Import-Modus (Stanard: clim_ImportAllUsedItems)</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>ShowMessageAfterRefresh</em>&nbsp;</td><td>Messagebox nach Abschluss der Aktualiserung anzeigen</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>Die Dokumentation für diese Klasse wurde erzeugt aufgrund der Datei:<ul>
+<li>ACLibFileManager.cls</li>
+</ul>
+</div>
+<hr size="1"/><address style="text-align: right;"><small>Erzeugt von&nbsp;
+<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.2 </small></address>
+</body>
+</html>
