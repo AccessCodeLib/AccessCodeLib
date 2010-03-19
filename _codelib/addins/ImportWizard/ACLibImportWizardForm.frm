@@ -1,6 +1,6 @@
 Version =19
 VersionRequired =19
-Checksum =-619042636
+Checksum =-741089559
 Begin Form
     PopUp = NotDefault
     RecordSelectors = NotDefault
@@ -19,10 +19,10 @@ Begin Form
     Width =10215
     DatasheetFontHeight =11
     ItemSuffix =33
-    Left =6375
-    Top =2355
-    Right =17610
-    Bottom =12390
+    Left =7440
+    Top =2220
+    Right =17655
+    Bottom =10140
     OnUnload ="[Event Procedure]"
     RecSrcDt = Begin
         0x212b6fd80e9ce340
@@ -729,10 +729,16 @@ On Error GoTo HandleErr
       .AddMenuItem 10, "Import", MF_POPUP, 1
       
       .AddMenuItem -1, "", MF_SEPARATOR
+      
+      .AddMenuItem 31, "Alle vorhandenen Elemente exportieren", , 2
+      .AddMenuItem 32, "Alle vorhandenen Module exportieren", , 2
+      .AddMenuItem 30, "Export", MF_POPUP, 2
+      
+      
       .AddMenuItem -2, "", MF_SEPARATOR
       .AddMenuItem 21, "Alle vorhandenen Elemente aktualisieren"
       .AddMenuItem 22, "Alle vorhandenen Module aktualisieren"
-      
+
       
    End With
    
@@ -743,6 +749,10 @@ On Error GoTo HandleErr
          CurrentACLibFileManager.RefreshAll Nz(Me.ogImportMode.Value, clim_ImportMissingItems), True
       Case 22
          CurrentACLibFileManager.RefreshAllModules Nz(Me.ogImportMode.Value, clim_ImportMissingItems), True
+      Case 31
+         CurrentACLibFileManager.ExportAll
+      Case 32
+         CurrentACLibFileManager.ExportAllModules
       Case Else
          '
    End Select
