@@ -497,3 +497,17 @@ address {
 	font-style: normal;
 	color: #333;
 }
+
+#footer {position:relative;width:100%;overflow:auto;float:none;clear:both;padding:0;padding-bottom:0.5em;margin:1.5em 0 0;border-top:1px solid #84b0c7;font:normal 75% Arial, sans-serif;color:#84b0c7;}
+#footer p {float:left;margin:1pt 0 0;}
+#footer p.left a {margin-right:2em;}
+#footer p.center {float:none;text-align:center;}
+#footer p.right {float:right; margin-right:0.2em;}
+#footer p.right a {margin-left:2em;}
+#footer a {color:#84b0c7; text-decoration:none;}
+#footer a.acl {color:#036;font-variant:small-caps;}
+#footer a:link { }
+#footer a:visited { }
+#footer a:hover { color:#03C; }
+#footer a:active { color:#03C; }
+#footer a:focus { color:#84b0c7; }

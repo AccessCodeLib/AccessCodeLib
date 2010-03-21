@@ -2,7 +2,7 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "ApplicationHandler_LicenceVerifier"
+Attribute VB_Name = "ApplicationHandler_LicenseVerifier"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
@@ -20,7 +20,7 @@ Attribute VB_Exposed = False
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>base/licence/ApplicationHandler_LicenceVerifier.cls</file>
+'  <file>base/license/ApplicationHandler_LicenseVerifier.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>base/ApplicationHandler.cls</use>
 '  <use>crypt/md5/modMD5.bas</use>
@@ -33,9 +33,9 @@ Option Explicit
 
 #Const DEBUGMODE = 0
 
-Private Const m_EXTENSION_KEY As String = "LicenceVerifier"
-Private Const m_EXTENSION_PROPERTY_LicenceName As String = "LicenceName"
-Private Const m_EXTENSION_PROPERTY_LicenceKey As String = "LicenceKey"
+Private Const m_EXTENSION_KEY As String = "LicenseVerifier"
+Private Const m_EXTENSION_PROPERTY_LicenseName As String = "LicenseName"
+Private Const m_EXTENSION_PROPERTY_LicenseKey As String = "LicenseKey"
 
 Private Const m_VERIFYINFO_KEY_invalid As String = "Der eingebene Lizenschlüssel ist ungültig."
 
@@ -43,24 +43,24 @@ Private Const m_VERIFYINFO_KEY_invalid As String = "Der eingebene Lizenschlüssel
 ' Ereignisse
 '---------------------------------------------------------------------------------------
 
-Public Event LicenceInfoLookup(ByRef sLicenceName As String, ByRef sLicenceKey As String, _
-                               ByVal sLicenceNameDefaultValue As String, ByVal sLicenceKeyDefaultValue As String)
+Public Event LicenseInfoLookup(ByRef sLicenseName As String, ByRef sLicenseKey As String, _
+                               ByVal sLicenseNameDefaultValue As String, ByVal sLicenseKeyDefaultValue As String)
 
 '---------------------------------------------------------------------------------------
 ' Hilfsvariablen
 '---------------------------------------------------------------------------------------
 
    Private m_ApplicationKey As String
-   Private m_LicenceKey_KeyLen As Long
-   Private m_LicenceKey_Prefix As String
-   Private m_LicenceKey_Suffix As String
-   Private m_LicenceKey_Loops As Long
+   Private m_LicenseKey_KeyLen As Long
+   Private m_LicenseKey_Prefix As String
+   Private m_LicenseKey_Suffix As String
+   Private m_LicenseKey_Loops As Long
   
-   Private m_LicenceName As String
-   Private m_LicenceKey As String
+   Private m_LicenseName As String
+   Private m_LicenseKey As String
    
-   Private m_LicenceNameInputboxDefault As String
-   Private m_LicenceKeyInputboxDefault As String
+   Private m_LicenseNameInputboxDefault As String
+   Private m_LicenseKeyInputboxDefault As String
    
 '---------------------------------------------------------------------------------------
 ' Standard-Initialisierung von Erweiterungen
@@ -165,7 +165,7 @@ End Sub
 
 
 '---------------------------------------------------------------------------------------
-' Ergänzungen für Ereiterung: ApplicationHandler_AppLicenceVerifier
+' Ergänzungen für Ereiterung: ApplicationHandler_AppLicenseVerifier
 '---------------------------------------------------------------------------------------
 '
 Private Sub getExtensionPropertyLookup(ByVal PropertyName As String, ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
@@ -175,7 +175,7 @@ On Error GoTo HandleErr
    ResumeMode = AppResumeMode_Completed
    
    Select Case PropertyName
-      Case m_EXTENSION_PROPERTY_LicenceName
+      Case m_EXTENSION_PROPERTY_LicenseName
          ResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Completed
          ResumeMessage = True
      
@@ -205,7 +205,7 @@ Private Sub m_ApplicationHandler_BeforeStartApplication(ResumeMode As Applicatio
    Dim bolVerifyFailed As Boolean
    Dim strVerifyMessage As String
    
-   bolVerifyFailed = Not VerifyLicence(strVerifyMessage)
+   bolVerifyFailed = Not VerifyLicense(strVerifyMessage)
    If bolVerifyFailed Then
       ResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Cancel
 #If DEBUGMODE Then
@@ -218,70 +218,70 @@ Private Sub m_ApplicationHandler_BeforeStartApplication(ResumeMode As Applicatio
 End Sub
 
 Public Sub Init(ByVal sApplicationKey As String, _
-                ByVal lLicenceKey_KeyLen As Long, _
-       Optional ByVal sLicenceKey_Prefix As String = vbNullString, _
-       Optional ByVal sLicenceKey_Suffix As String = vbNullString, _
-       Optional ByVal lLicenceKey_Loops As Long = 0)
+                ByVal lLicenseKey_KeyLen As Long, _
+       Optional ByVal sLicenseKey_Prefix As String = vbNullString, _
+       Optional ByVal sLicenseKey_Suffix As String = vbNullString, _
+       Optional ByVal lLicenseKey_Loops As Long = 0)
 
    m_ApplicationKey = sApplicationKey
-   m_LicenceKey_KeyLen = lLicenceKey_KeyLen
-   m_LicenceKey_Prefix = sLicenceKey_Prefix
-   m_LicenceKey_Suffix = sLicenceKey_Suffix
-   m_LicenceKey_Loops = lLicenceKey_Loops
+   m_LicenseKey_KeyLen = lLicenseKey_KeyLen
+   m_LicenseKey_Prefix = sLicenseKey_Prefix
+   m_LicenseKey_Suffix = sLicenseKey_Suffix
+   m_LicenseKey_Loops = lLicenseKey_Loops
    
 End Sub
 
-Public Property Get LicenceName() As String
+Public Property Get LicenseName() As String
    
-   If StrPtr(m_LicenceName) = 0 Then
-      readLicenceInfo
+   If StrPtr(m_LicenseName) = 0 Then
+      readLicenseInfo
    End If
-   LicenceName = m_LicenceName
+   LicenseName = m_LicenseName
    
 End Property
 
-Public Property Get LicenceKey() As String
+Public Property Get LicenseKey() As String
    
-   If StrPtr(m_LicenceKey) = 0 Then
-      readLicenceInfo
+   If StrPtr(m_LicenseKey) = 0 Then
+      readLicenseInfo
    End If
-   LicenceKey = m_LicenceKey
+   LicenseKey = m_LicenseKey
    
 End Property
 
-Private Sub readLicenceInfo()
+Private Sub readLicenseInfo()
 
 On Error GoTo HandleErr
 
-   RaiseEvent LicenceInfoLookup(m_LicenceName, m_LicenceKey, m_LicenceNameInputboxDefault, m_LicenceKeyInputboxDefault)
+   RaiseEvent LicenseInfoLookup(m_LicenseName, m_LicenseKey, m_LicenseNameInputboxDefault, m_LicenseKeyInputboxDefault)
    
    'Name
-   If StrPtr(m_LicenceName) = 0 Then
-      m_LicenceName = getLicenceInfoFromAppDb(m_EXTENSION_PROPERTY_LicenceName)
-'     If StrPtr(m_LicenceName) = 0 Then
+   If StrPtr(m_LicenseName) = 0 Then
+      m_LicenseName = getLicenseInfoFromAppDb(m_EXTENSION_PROPERTY_LicenseName)
+'     If StrPtr(m_LicenseName) = 0 Then
 '/**
 ' * @todo Lizendaten mit Formular abfragen
 '**/
 '     End If
            
-      If StrPtr(m_LicenceName) = 0 Then 'Notfalllösung über Inputbox
-         m_LicenceName = InputBox("Bitte Namen eingeben:", "Lizenzdaten eingeben", m_LicenceNameInputboxDefault)
-         If Not StrPtr(m_LicenceName) = 0 Then 'speichern
-            m_LicenceNameInputboxDefault = m_LicenceName
-            m_ApplicationHandler.SetApplicationProperty m_EXTENSION_PROPERTY_LicenceName, m_LicenceName, dbText
+      If StrPtr(m_LicenseName) = 0 Then 'Notfalllösung über Inputbox
+         m_LicenseName = InputBox("Bitte Namen eingeben:", "Lizenzdaten eingeben", m_LicenseNameInputboxDefault)
+         If Not StrPtr(m_LicenseName) = 0 Then 'speichern
+            m_LicenseNameInputboxDefault = m_LicenseName
+            m_ApplicationHandler.SetApplicationProperty m_EXTENSION_PROPERTY_LicenseName, m_LicenseName, dbText
          End If
       End If
    End If
    
    'Key
-   If StrPtr(m_LicenceKey) = 0 Then
-      m_LicenceKey = getLicenceInfoFromAppDb(m_EXTENSION_PROPERTY_LicenceKey)
+   If StrPtr(m_LicenseKey) = 0 Then
+      m_LicenseKey = getLicenseInfoFromAppDb(m_EXTENSION_PROPERTY_LicenseKey)
       
-      If StrPtr(m_LicenceKey) = 0 Then 'Notfalllösung über Inputbox
-         m_LicenceKey = InputBox("Bitte Lizenzschlüssel eingeben:", "Lizenzdaten eingeben", m_LicenceKeyInputboxDefault)
-         If Not StrPtr(m_LicenceKey) = 0 Then 'speichern
-            m_LicenceKeyInputboxDefault = m_LicenceKey
-            m_ApplicationHandler.SetApplicationProperty m_EXTENSION_PROPERTY_LicenceKey, m_LicenceKey, dbText
+      If StrPtr(m_LicenseKey) = 0 Then 'Notfalllösung über Inputbox
+         m_LicenseKey = InputBox("Bitte Lizenzschlüssel eingeben:", "Lizenzdaten eingeben", m_LicenseKeyInputboxDefault)
+         If Not StrPtr(m_LicenseKey) = 0 Then 'speichern
+            m_LicenseKeyInputboxDefault = m_LicenseKey
+            m_ApplicationHandler.SetApplicationProperty m_EXTENSION_PROPERTY_LicenseKey, m_LicenseKey, dbText
          End If
       End If
    End If
@@ -290,7 +290,7 @@ ExitHere:
    Exit Sub
 
 HandleErr:
-   Select Case HandleError(Err.Number, "readLicenceInfo", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
+   Select Case HandleError(Err.Number, "readLicenseInfo", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
    Case ACLibErrorResumeMode.aclibErrResume
       Resume
    Case ACLibErrorResumeMode.aclibErrResumeNext
@@ -301,7 +301,7 @@ HandleErr:
    
 End Sub
 
-Private Function getLicenceInfoFromAppDb(propName As String) As String
+Private Function getLicenseInfoFromAppDb(propName As String) As String
    
    Dim props As DAO.Properties
    Dim prop As DAO.Property
@@ -309,63 +309,63 @@ Private Function getLicenceInfoFromAppDb(propName As String) As String
    Set props = m_ApplicationHandler.AppDb.Properties
    For Each prop In props
       If prop.Name = propName Then
-         getLicenceInfoFromAppDb = prop.Value
+         getLicenseInfoFromAppDb = prop.Value
          Exit For
       End If
    Next
    
 End Function
 
-Friend Function GenerateKey(ByVal sLicenceName As String, _
+Friend Function GenerateKey(ByVal sLicenseName As String, _
                             ByVal sApplicationKey As String, _
-                            ByVal lLicenceKey_KeyLen As Long, _
-                   Optional ByVal sLicenceKey_Prefix As String = vbNullString, _
-                   Optional ByVal sLicenceKey_Suffix As String = vbNullString, _
-                   Optional ByVal lLicenceKey_Loops As Long = 0) As String
+                            ByVal lLicenseKey_KeyLen As Long, _
+                   Optional ByVal sLicenseKey_Prefix As String = vbNullString, _
+                   Optional ByVal sLicenseKey_Suffix As String = vbNullString, _
+                   Optional ByVal lLicenseKey_Loops As Long = 0) As String
 
    Dim strAppKeyCode As String
-   Dim strLicenceNameCode As String
-   Dim strLicenceKeyCode As String
+   Dim strLicenseNameCode As String
+   Dim strLicenseKeyCode As String
    Dim i As Long
    
-   strLicenceNameCode = md5(sLicenceKey_Prefix & UCase$(sLicenceName) & sLicenceKey_Suffix)
+   strLicenseNameCode = md5(sLicenseKey_Prefix & UCase$(sLicenseName) & sLicenseKey_Suffix)
    strAppKeyCode = md5(sApplicationKey & sApplicationKey)
    
-   For i = 1 To lLicenceKey_Loops
-      strLicenceNameCode = md5(strLicenceNameCode)
+   For i = 1 To lLicenseKey_Loops
+      strLicenseNameCode = md5(strLicenseNameCode)
       strAppKeyCode = md5(strAppKeyCode)
    Next
 
-   strLicenceKeyCode = Left$(md5(strAppKeyCode & strLicenceNameCode & strAppKeyCode), lLicenceKey_KeyLen)
-   Do While Len(strLicenceKeyCode) < lLicenceKey_KeyLen
-      strLicenceKeyCode = Left$(strLicenceKeyCode & md5(strLicenceKeyCode), lLicenceKey_KeyLen)
+   strLicenseKeyCode = Left$(md5(strAppKeyCode & strLicenseNameCode & strAppKeyCode), lLicenseKey_KeyLen)
+   Do While Len(strLicenseKeyCode) < lLicenseKey_KeyLen
+      strLicenseKeyCode = Left$(strLicenseKeyCode & md5(strLicenseKeyCode), lLicenseKey_KeyLen)
    Loop
    
-   GenerateKey = strLicenceKeyCode
+   GenerateKey = strLicenseKeyCode
 
 End Function
 
-Friend Function VerifyLicence(Optional ByRef sMsg As String) As Boolean
-'Beispiel für LicenceKey: E71C2-7C3EE-34C7E-07C04
+Friend Function VerifyLicense(Optional ByRef sMsg As String) As Boolean
+'Beispiel für LicenseKey: E71C2-7C3EE-34C7E-07C04
 
   
    Dim checkKey(1) As String
 
-   checkKey(0) = Trim$(Replace$(Me.LicenceKey, "-", vbNullString))
-   If Len(checkKey(0)) <> m_LicenceKey_KeyLen Then
+   checkKey(0) = Trim$(Replace$(Me.LicenseKey, "-", vbNullString))
+   If Len(checkKey(0)) <> m_LicenseKey_KeyLen Then
       sMsg = m_VERIFYINFO_KEY_invalid
-      VerifyLicence = False
+      VerifyLicense = False
       Exit Function
    End If
    
-   checkKey(1) = GenerateKey(Me.LicenceName, m_ApplicationKey, m_LicenceKey_KeyLen, _
-                             m_LicenceKey_Prefix, m_LicenceKey_Suffix, m_LicenceKey_Loops)
+   checkKey(1) = GenerateKey(Me.LicenseName, m_ApplicationKey, m_LicenseKey_KeyLen, _
+                             m_LicenseKey_Prefix, m_LicenseKey_Suffix, m_LicenseKey_Loops)
 
    If checkKey(0) = checkKey(1) Then
-      VerifyLicence = True
+      VerifyLicense = True
    Else
       sMsg = m_VERIFYINFO_KEY_invalid
-      VerifyLicence = False
+      VerifyLicense = False
    End If
    
 

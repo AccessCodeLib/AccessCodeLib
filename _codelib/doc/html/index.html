@@ -1,4 +1,3 @@
-<!-- This comment will put IE 6, 7 and 8 in quirks mode -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -9,7 +8,7 @@
 <script type="text/javaScript" src="search/search.js"></script>
 <link href="codelib.css" rel="stylesheet" type="text/css"/>
 </head>
-<body onload='searchBox.OnSelectItem(0);'>
+<body>
 <!-- Erzeugt von Doxygen 1.6.3 -->
 <script type="text/javascript"><!--
 var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
@@ -84,7 +83,6 @@ window.onload = initDynSections;
 <h1>Access Code Library </h1><h3 class="version">draft (1.0.0+) </h3><div align="center">
 <map name="cmap" style="border:none;">
 <area shape="rect" id="node1" href="frm_app_watcher_8frm.html" title="Form_frmAppWatcher &#160;" alt="" coords="14,277,126,299">
-
 <area shape="rect" id="node2" href="frm_login_8frm.html" title="Form_frmLogin &#160;" alt="" coords="42,91,126,113">
 <area shape="rect" id="node27" href="class_application_handler___app_login___win.html" title="ApplicationHandler_AppLogin_Win &#160;" alt="" coords="171,62,341,84">
 <area shape="rect" id="node3" href="_t_e_s_t___dir_textbox_8frm.html" title="Form_TEST_DirTextbox &#160;" alt="" coords="8,490,129,512">
@@ -102,7 +100,6 @@ window.onload = initDynSections;
 <area shape="poly" id="node10" href="namespacemod_direct_c_o_m.html" title="modDirectCOM &#160;" alt="" coords="707,288 704,284 696,281 683,279 667,277 650,277 632,277 616,279 603,281 595,284 593,288 595,291 603,294 616,297 632,298 650,299 667,298 683,297 696,294 704,291">
 <area shape="rect" id="node15" href="class_graphviz_d_o_t.html" title="GraphvizDOT &#160;" alt="" coords="384,429,459,451">
 <area shape="rect" id="node13" href="class_qpc_stoppuhr.html" title="QpcStoppuhr &#160;" alt="" coords="212,8,286,30">
-
 <area shape="rect" id="node16" href="class_graphviz_d_o_tconnection.html" title="GraphvizDOTconnection &#160;" alt="" coords="590,490,713,512">
 <area shape="rect" id="node17" href="class_graphviz_d_o_tgraph.html" title="GraphvizDOTgraph &#160;" alt="" coords="495,382,594,404">
 <area shape="rect" id="node18" href="class_graphviz_d_o_tnode.html" title="GraphvizDOTnode &#160;" alt="" coords="452,529,548,551">
@@ -120,13 +117,13 @@ window.onload = initDynSections;
 </map>
 <img src="codelib.gif" alt="codelib.gif" usemap="#cmap" style="border:none;"/>
 </div>
-<center> <a href="http://access-codelib.net/">http://access-codelib.net/</a> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; <a href="http://access-codelib.net/nutzungsbedingungen.html">Nutzungsbedingungen</a> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; <a href="http://wiki.access-codelib.net/index.php/Coding_Standards">Programmierrichtlinen</a> </center> </div>
+ </div>
 <!--- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>Alle</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Klassen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Namensbereiche</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Dateien</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&nbsp;</span>Funktionen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&nbsp;</span>Aufzählungen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&nbsp;</span>Freundbeziehungen</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>Alle</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Klassen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Module</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Dateien</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&nbsp;</span>Funktionen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&nbsp;</span>Aufzählungen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&nbsp;</span>Freundbeziehungen</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -135,8 +132,17 @@ window.onload = initDynSections;
 </iframe>
 </div>
 
-<hr class="footer"/><address style="text-align: right;"><small>Erzeugt von&nbsp;
-<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
+<div id="footer">
+<p class="left">
+<a class="acl" href="http://access-codelib.net/">Access Code Library</a>
+<a href="http://wiki.access-codelib.net/">Wiki</a>
+<a href="http://forum.access-codelib.net/">Forum</a>
+<a href="http://source.access-codelib.net/">Source</a>
+<a href="http://bug.access-codelib.net/">Bugs</a>
+</p>
+<p class="right"><a href="http://wiki.access-codelib.net/index.php/Coding_Standards">Programmierrichtlinen</a></p>
+<p class="right"><a href="http://access-codelib.net/nutzungsbedingungen.html">Nutzungsbedingungen</a></p>
+<p class="right"><a href="http://access-codelib.net/kontakt.html">Kontakt / Impressum</a></p>
+</div>
 </body>
 </html>

@@ -134,13 +134,13 @@ Public Function DOTstring(Optional bNoSubGraph As Boolean = False) As String
    If Len(Fontcolor) > 0 Then
       strTemp = strTemp & "fontcolor=""" & Fontcolor & ""","
    End If
-   If HtmlExport Then
-      If Len(URL) > 0 Then
-         strTemp = strTemp & "URL=""" & URL & ""","
-      Else
-         strTemp = strTemp & "URL=""" & ID & EXPORTFILEEXTENSION & ""","
-      End If
+   
+   If Len(URL) > 0 Then
+      strTemp = strTemp & "URL=""" & URL & ""","
+   ElseIf HtmlExport Then
+      strTemp = strTemp & "URL=""" & ID & EXPORTFILEEXTENSION & ""","
    End If
+
    If Len(MiscOptions) > 0 Then
       strTemp = strTemp & MiscOptions & ","
    End If

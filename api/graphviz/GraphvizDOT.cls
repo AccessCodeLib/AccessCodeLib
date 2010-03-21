@@ -471,11 +471,12 @@ Public Sub AddNode(sID As String, _
                Optional ByVal sColor As String = vbNullString, _
                Optional ByVal sStyle As String = vbNullString, _
                Optional ByVal sMiscOptions As String = vbNullString, _
-               Optional ByRef oSubGraph As GraphvizDOTgraph = Nothing)
+               Optional ByRef oSubGraph As GraphvizDOTgraph = Nothing, _
+               Optional ByVal sLink As String = vbNullString)
                
 On Error GoTo HandleErr
 
-   DOTgraph.AddNode sID, sLabel, sShape, sColor, sStyle, sMiscOptions, oSubGraph
+   DOTgraph.AddNode sID, sLabel, sShape, sColor, sStyle, sMiscOptions, oSubGraph, , , , sLink
 
 ExitHere:
    Exit Sub

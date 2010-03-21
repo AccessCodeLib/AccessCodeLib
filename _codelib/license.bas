@@ -2,6 +2,14 @@ Attribute VB_Name = "_AccessCodeLib_license"
 '---------------------------------------------------------------------------------------
 ' access-codelib.net Lizenz
 '---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' access-codelib.net Lizenz
+' </summary>
+' <remarks>
+'---------------------------------------------------------------------------------------\n
+' access-codelib.net Lizenz                                                             \n
+'---------------------------------------------------------------------------------------\n
 '
 ' Copyright (c) 2010, access-codelib.net
 ' All rights reserved.
@@ -26,13 +34,15 @@ Attribute VB_Name = "_AccessCodeLib_license"
 ' CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ' SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 '
-'---------------------------------------------------------------------------------------
-' BSD-Lizenz im Originial: http://opensource.org/licenses/bsd-license.php
-'---------------------------------------------------------------------------------------
+'---------------------------------------------------------------------------------------\n
+' BSD-Lizenz im Originial: http://opensource.org/licenses/bsd-license.php               \n
+'---------------------------------------------------------------------------------------\n
 '
-' Beachten Sie auch die Nutzungsbedingungen von access-codelib.net
+' Beachten Sie auch die Nutzungsbedingungen von access-codelib.net:
 ' http://access-codelib.net/nutzungsbedingungen.html
 '
+' </remarks>
+'**/
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/license.bas</file>
