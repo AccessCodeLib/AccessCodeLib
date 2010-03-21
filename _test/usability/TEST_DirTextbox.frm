@@ -224,7 +224,7 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' Form_Form1
+' Test-Formular für DirTextbox
 ' </summary>
 ' <remarks>
 ' </remarks>

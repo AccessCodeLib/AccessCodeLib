@@ -66,6 +66,8 @@ class_application_handler___app_login___win.html
 class_application_handler___app_login___win-members.html
 class_application_handler___dir_textbox.html
 class_application_handler___dir_textbox-members.html
+class_application_handler___licence_verifier.html
+class_application_handler___licence_verifier-members.html
 class_application_handler___n_e_w_c_l_a_s_s.html
 class_application_handler___n_e_w_c_l_a_s_s-members.html
 class_code_module_header_item.html
@@ -74,6 +76,14 @@ class_code_module_procedure.html
 class_code_module_procedure-members.html
 class_code_module_reader.html
 class_code_module_reader-members.html
+class_graphviz_d_o_t.html
+class_graphviz_d_o_t-members.html
+class_graphviz_d_o_tconnection.html
+class_graphviz_d_o_tconnection-members.html
+class_graphviz_d_o_tgraph.html
+class_graphviz_d_o_tgraph-members.html
+class_graphviz_d_o_tnode.html
+class_graphviz_d_o_tnode-members.html
 class_qpc_stoppuhr.html
 class_qpc_stoppuhr-members.html
 class_temp_db_handler.html
@@ -86,8 +96,10 @@ namespace__init_application.html
 namespacedef_global.html
 namespacemod_application.html
 namespacemod_d_a_o___tools.html
+namespacemod_direct_c_o_m.html
 namespacemod_error_handler.html
 namespacemod_files.html
+namespacemod_m_d5.html
 namespacemod_s_q_l___tools.html
 namespacemod_win_a_p_i.html
 namespacemod_win_a_p_i___file_info.html

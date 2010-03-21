@@ -7,7 +7,7 @@
 <link href="codelib.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<!-- Erzeugt von Doxygen 1.6.2 -->
+<!-- Erzeugt von Doxygen 1.6.3 -->
 <script type="text/javascript">
 <!--
 function changeDisplayState (e){
@@ -52,21 +52,74 @@ window.onload = initDynSections;
 <div class="navigation" id="top">
   <div class="tabs">
     <ul>
-      <li><a href="index.html"><span>Hauptseite</span></a></li>
-      <li><a href="pages.html"><span>Zusätzliche&nbsp;Informationen</span></a></li>
-      <li><a href="modules.html"><span>Module</span></a></li>
-      <li><a href="namespaces.html"><span>Pakete</span></a></li>
+      <li><a href="index.html"><span>Übersicht</span></a></li>
+      <li><a href="modules.html"><span>Verzeichnis</span></a></li>
+      <li><a href="namespaces.html"><span>Module</span></a></li>
       <li><a href="annotated.html"><span>Klassen</span></a></li>
       <li><a href="files.html"><span>Dateien</span></a></li>
+      <li><a href="pages.html"><span>Zusätzliche&nbsp;Informationen</span></a></li>
     </ul>
   </div>
 </div>
 <div class="contents">
 <h1>Component Object Model (com)</h1><table border="0" cellpadding="0" cellspacing="0">
+<tr><td colspan="2"><h2>Module</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">package &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemod_direct_c_o_m.html">modDirectCOM</a></td></tr>
+
+<p><tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><p>Instanz aus unregistrierter COM-dll erzeugen. </p>
+<br/></td></tr>
+</p>
+<tr><td colspan="2"><h2>Funktionen</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Function&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_o_m.html#ga5968089ae8b2f1b2416909e2bd1c7911">modDirectCOM.GetInstance</a> (ByVal LibraryString As String, ByVal ProgIdString As String) As stdole.IUnknown</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Erzeugt eine Instanz aus der Klasse in einer COM-dll. Die dll muss nicht registriert sein.  <a href="#ga5968089ae8b2f1b2416909e2bd1c7911"></a><br/></td></tr>
 </table>
+<hr/><h2>Dokumentation der Funktionen</h2>
+<a class="anchor" id="ga5968089ae8b2f1b2416909e2bd1c7911"></a><!-- doxytag: member="modDirectCOM::GetInstance" ref="ga5968089ae8b2f1b2416909e2bd1c7911" args="(ByVal LibraryString As String, ByVal ProgIdString As String) As stdole.IUnknown" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Function modDirectCOM.GetInstance </td>
+          <td>(</td>
+          <td class="paramtype">ByVal LibraryString As&nbsp;</td>
+          <td class="paramname"> <em>String</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ByVal ProgIdString As&nbsp;</td>
+          <td class="paramname"> <em>String</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
 </div>
-<hr size="1"/><address style="text-align: right;"><small>Erzeugt von&nbsp;
+<div class="memdoc">
+
+<p>Erzeugt eine Instanz aus der Klasse in einer COM-dll. Die dll muss nicht registriert sein. </p>
+<dl><dt><b>Parameter:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>LibraryString</em>&nbsp;</td><td>Vollstaendiger Pfad zur COM-dll</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>ProgIdString</em>&nbsp;</td><td>Name der Klasse in der COM-dll</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Rückgabe:</b></dt><dd>Instanz der Klasse</dd></dl>
+<p>Beispiel: <br/>
+ set obj = GetInstance(CurrentProject.Path &amp; "\EineCombibliothek.dll", "XYZ") <br/>
+ Damit wird eine Instanz der Klasse "XYZ" aus der dll (die sich im mdb/accdb-Verzeichnis) befindet erzeugt. <br/>
+<br/>
+ Prozedur im Internet gefunden: <a href="http://www.ppreview.net/Forum/post.asp?method=ReplyQuote&REPLY_ID=846&TOPIC_ID=570&FORUM_ID=2">http://www.ppreview.net/Forum/post.asp?method=ReplyQuote&amp;REPLY_ID=846&amp;TOPIC_ID=570&amp;FORUM_ID=2</a> <br/>
+ Code angepasst </p>
+
+</div>
+</div>
+</div>
+<hr class="footer"/><address style="text-align: right;"><small>Erzeugt von&nbsp;
 <a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.2 </small></address>
+<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>
 </html>

@@ -11,7 +11,7 @@
 <LI><OBJECT type="text/sitemap"><param name="Name" value="Liste der bekannten Fehler"><param name="Local" value="bug.html"><param name="ImageNumber" value="11"></OBJECT>
   <UL>
   </UL>
-<LI><OBJECT type="text/sitemap"><param name="Name" value="Module"><param name="Local" value="modules.html"><param name="ImageNumber" value="1"></OBJECT>
+<LI><OBJECT type="text/sitemap"><param name="Name" value="Verzeichnis"><param name="Local" value="modules.html"><param name="ImageNumber" value="1"></OBJECT>
   <UL>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="&raquo;Basis-Elemente (base)"><param name="Local" value="group__base.html"><param name="ImageNumber" value="1"></OBJECT>
     <UL>
@@ -42,6 +42,7 @@
       <UL>
       <LI><OBJECT type="text/sitemap"><param name="Name" value="ApplicationHandler"><param name="Local" value="class_application_handler.html"><param name="ImageNumber" value="11"></OBJECT>
       <LI><OBJECT type="text/sitemap"><param name="Name" value="ApplicationHandler_AppFile"><param name="Local" value="class_application_handler___app_file.html"><param name="ImageNumber" value="11"></OBJECT>
+      <LI><OBJECT type="text/sitemap"><param name="Name" value="ApplicationHandler_LicenceVerifier"><param name="Local" value="class_application_handler___licence_verifier.html"><param name="ImageNumber" value="11"></OBJECT>
       <LI><OBJECT type="text/sitemap"><param name="Name" value="ApplicationHandler_AppLogin_Win"><param name="Local" value="class_application_handler___app_login___win.html"><param name="ImageNumber" value="11"></OBJECT>
       </UL>
     <LI><OBJECT type="text/sitemap"><param name="Name" value="Dateien"><param name="Local" value="group__base.html"><param name="ImageNumber" value="1"></OBJECT>
@@ -117,8 +118,19 @@
       <LI><OBJECT type="text/sitemap"><param name="Name" value="modFiles"><param name="Local" value="namespacemod_files.html"><param name="ImageNumber" value="11"></OBJECT>
       </UL>
     </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="Component Object Model (com)"><param name="Local" value="group___c_o_m.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="Component Object Model (com)"><param name="Local" value="group___c_o_m.html"><param name="ImageNumber" value="1"></OBJECT>
     <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value="Funktionen"><param name="Local" value="group___c_o_m.html"><param name="ImageNumber" value="1"></OBJECT>
+      <UL>
+      <LI><OBJECT type="text/sitemap"><param name="Name" value="GetInstance"><param name="Local" value="group___c_o_m.html#ga5968089ae8b2f1b2416909e2bd1c7911"><param name="ImageNumber" value="11"></OBJECT>
+      </UL>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value="Namensbereiche"><param name="Local" value="group___c_o_m.html"><param name="ImageNumber" value="1"></OBJECT>
+      <UL>
+      <LI><OBJECT type="text/sitemap"><param name="Name" value="modDirectCOM"><param name="Local" value="namespacemod_direct_c_o_m.html"><param name="ImageNumber" value="11"></OBJECT>
+      </UL>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value="Klassen"><param name="Local" value="group___c_o_m.html"><param name="ImageNumber" value="1"></OBJECT>
+      <UL>
+      </UL>
     </UL>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="Datenzugriff (data)"><param name="Local" value="group__data.html"><param name="ImageNumber" value="1"></OBJECT>
     <UL>
@@ -166,24 +178,31 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ApplicationHandler_AppFile"><param name="Local" value="class_application_handler___app_file.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ApplicationHandler_AppLogin_Win"><param name="Local" value="class_application_handler___app_login___win.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ApplicationHandler_DirTextbox"><param name="Local" value="class_application_handler___dir_textbox.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="ApplicationHandler_LicenceVerifier"><param name="Local" value="class_application_handler___licence_verifier.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="ApplicationHandler_NEWCLASS"><param name="Local" value="class_application_handler___n_e_w_c_l_a_s_s.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CodeModuleHeaderItem"><param name="Local" value="class_code_module_header_item.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CodeModuleProcedure"><param name="Local" value="class_code_module_procedure.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CodeModuleReader"><param name="Local" value="class_code_module_reader.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="GraphvizDOT"><param name="Local" value="class_graphviz_d_o_t.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="GraphvizDOTconnection"><param name="Local" value="class_graphviz_d_o_tconnection.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="GraphvizDOTgraph"><param name="Local" value="class_graphviz_d_o_tgraph.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="GraphvizDOTnode"><param name="Local" value="class_graphviz_d_o_tnode.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="QpcStoppuhr"><param name="Local" value="class_qpc_stoppuhr.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="TempDbHandler"><param name="Local" value="class_temp_db_handler.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="WinApiShortcutMenu"><param name="Local" value="class_win_api_shortcut_menu.html"><param name="ImageNumber" value="11"></OBJECT>
   </UL>
 <LI><OBJECT type="text/sitemap"><param name="Name" value="Klassen-Elemente"><param name="Local" value="functions.html"><param name="ImageNumber" value="11"></OBJECT>
-<LI><OBJECT type="text/sitemap"><param name="Name" value="Paketliste"><param name="Local" value="namespaces.html"><param name="ImageNumber" value="1"></OBJECT>
+<LI><OBJECT type="text/sitemap"><param name="Name" value="Modul-Liste"><param name="Local" value="namespaces.html"><param name="ImageNumber" value="1"></OBJECT>
   <UL>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="_config_Application"><param name="Local" value="namespace__config___application.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="_initApplication"><param name="Local" value="namespace__init_application.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="defGlobal"><param name="Local" value="namespacedef_global.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="modApplication"><param name="Local" value="namespacemod_application.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="modDAO_Tools"><param name="Local" value="namespacemod_d_a_o___tools.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="modDirectCOM"><param name="Local" value="namespacemod_direct_c_o_m.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="modErrorHandler"><param name="Local" value="namespacemod_error_handler.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="modFiles"><param name="Local" value="namespacemod_files.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="modMD5"><param name="Local" value="namespacemod_m_d5.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="modSQL_Tools"><param name="Local" value="namespacemod_s_q_l___tools.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="modWinAPI"><param name="Local" value="namespacemod_win_a_p_i.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="modWinAPI_FileInfo"><param name="Local" value="namespacemod_win_a_p_i___file_info.html"><param name="ImageNumber" value="11"></OBJECT>
