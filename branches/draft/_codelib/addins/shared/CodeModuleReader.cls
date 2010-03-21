@@ -29,6 +29,8 @@ Attribute VB_Exposed = False
 Option Compare Database
 Option Explicit
 
+#Const EARLYBINDING = 0
+
 #If EARLYBINDING Then
    Private m_CodeModule As VBIDE.CodeModule
    Private m_CurrentVbProject As VBIDE.VBProject
@@ -371,8 +373,10 @@ On Error GoTo HandleErr
       With Regex
          .Pattern = searchStringArray(i)
          .Global = False
-         bolUsed = .test(m_CodeModuleText)
-         If bolUsed Then Exit For
+         bolUsed = .Test(m_CodeModuleText)
+         If bolUsed Then
+            Exit For
+         End If
       End With
 #Else
       If m_CodeModuleText Like "*" & searchStringArray(i) & "*" Then
@@ -423,7 +427,7 @@ On Error GoTo HandleErr
       With Regex
          .Pattern = searchStringArray(i)
          .Global = False
-         bolUsed = .test(m_CodeModuleText)
+         bolUsed = .Test(m_CodeModuleText)
          If bolUsed Then Exit For
       End With
 #Else
@@ -459,7 +463,7 @@ Public Property Get PlainCodeText() As String
    
 On Error GoTo HandleErr
 
-   For i = 1 To m_CodeModule.countOfLines
+   For i = 1 To m_CodeModule.CountOfLines
       strCodeText = strCodeText & Trim$(getPlainCodeLine(m_CodeModule.Lines(i, 1))) & vbNewLine
    Next
    
@@ -551,27 +555,28 @@ On Error GoTo HandleErr
    Dim tempProcLine As String
 
    currentLine = m_CodeModule.CountOfDeclarationLines + 1
-   Do While currentLine <= m_CodeModule.countOfLines
+   Do While currentLine <= m_CodeModule.CountOfLines
       tempProcKind = vbext_pk_Proc
       tempProcName = m_CodeModule.ProcOfLine(currentLine, tempProcKind)
       If Len(tempProcName) > 0 Then
          bolAddProc = True
-         'If tempProcKind = vbext_pk_Get Or tempProcKind = vbext_pk_Let Then
-            For Each tempProc In m_ProcCollection
-               If tempProc.Name = tempProcName Then
-                  bolAddProc = False
-                  Exit For
-               End If
-            Next
-         'End If
+         For Each tempProc In m_ProcCollection
+            If tempProc.Name = tempProcName Then
+               bolAddProc = False
+               Exit For
+            End If
+         Next
          
          If bolAddProc Then 'nur Public-Elemente anfügen
-            tempProcLine = Trim(m_CodeModule.Lines(m_CodeModule.ProcStartLine(tempProcName & "", tempProcKind), 1))
+            tempProcLine = Trim(m_CodeModule.Lines(m_CodeModule.ProcBodyLine(tempProcName & "", tempProcKind), 1))
             If includePrivateProc Then
                bolAddProc = True
-            Else
+            ElseIf m_CodeModule.Parent.Type = vbext_ct_StdModule Then 'kein Private
                bolAddProc = Not (Left(tempProcLine, 8) = "Private ")
+            Else 'nur Public oder Friend
+               bolAddProc = (Left(tempProcLine, 7) = "Public ") Or (Left(tempProcLine, 7) = "Friend ")
             End If
+            
          End If
       
          If bolAddProc Then
@@ -585,6 +590,9 @@ On Error GoTo HandleErr
          End If
          
          currentLine = m_CodeModule.ProcStartLine(tempProcName & "", tempProcKind) + m_CodeModule.ProcCountLines(tempProcName, tempProcKind)
+         ' Anm.: ProcCountLines ist inkl. Kommentar oberhalb der Prozedur
+         '       => ProcStartLine + ProcCountLines und nicht ProcBodyLine + ProcCountLines
+         
       End If
       currentLine = currentLine + 1 'm_CodeModule.ProcCountLines(procName, procKind)
    Loop
