@@ -17,12 +17,4 @@
 '
 ' \image html codelib.gif
 '
-' <center>
-' <a href="http://access-codelib.net/">http://access-codelib.net/</a>
-' &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
-' <a href="http://access-codelib.net/nutzungsbedingungen.html">Nutzungsbedingungen</a>
-' &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
-' <a href="http://wiki.access-codelib.net/index.php/Coding_Standards">Programmierrichtlinen</a>
-' </center>
-'
 '**/
