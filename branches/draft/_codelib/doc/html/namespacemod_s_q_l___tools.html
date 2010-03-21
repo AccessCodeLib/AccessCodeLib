@@ -9,7 +9,7 @@
 <script type="text/javaScript" src="search/search.js"></script>
 <link href="codelib.css" rel="stylesheet" type="text/css"/>
 </head>
-<body>
+<body onload='searchBox.OnSelectItem(0);'>
 <!-- Erzeugt von Doxygen 1.6.3 -->
 <script type="text/javascript"><!--
 var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
@@ -66,12 +66,15 @@ window.onload = initDynSections;
       <li><a href="pages.html"><span>Zusätzliche&nbsp;Informationen</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
-          <form id="FSearchBox" action="search.php" method="get">
-            <img id="MSearchSelect" src="search/search.png" alt=""/>
-            <input type="text" id="MSearchField" name="query" value="Suchen" size="20" accesskey="S" 
-                   onfocus="searchBox.OnSearchFieldFocus(true)" 
-                   onblur="searchBox.OnSearchFieldFocus(false)"/>
-          </form>
+        <img id="MSearchSelect" src="search/search.png"
+             onmouseover="return searchBox.OnSearchSelectShow()"
+             onmouseout="return searchBox.OnSearchSelectHide()"
+             alt=""/>
+        <input type="text" id="MSearchField" value="Suchen" accesskey="S"
+             onfocus="searchBox.OnSearchFieldFocus(true)" 
+             onblur="searchBox.OnSearchFieldFocus(false)" 
+             onkeyup="searchBox.OnSearchFieldChange(event)"/>
+        <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
         </div>
       </li>
     </ul>
@@ -102,6 +105,20 @@ window.onload = initDynSections;
 <hr/><a name="_details"></a><h2>Ausführliche Beschreibung</h2>
 <p>SQL-Hilfsfunktionen. </p>
 </div>
+<!--- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&nbsp;</span>Alle</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&nbsp;</span>Klassen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&nbsp;</span>Namensbereiche</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&nbsp;</span>Dateien</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&nbsp;</span>Funktionen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&nbsp;</span>Aufzählungen</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&nbsp;</span>Freundbeziehungen</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
 <hr class="footer"/><address style="text-align: right;"><small>Erzeugt von&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
