@@ -58,6 +58,7 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="class_application_handler___dir_textbox.html"><param name="Name" value="BaseFolderPath"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="class_application_handler___dir_textbox.html"><param name="Name" value="Textbox"></OBJECT>
   </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_application_handler___licence_verifier.html"><param name="Name" value="ApplicationHandler_LicenceVerifier"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_application_handler___n_e_w_c_l_a_s_s.html"><param name="Name" value="ApplicationHandler_NEWCLASS"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_application_handler.html"><param name="Name" value="ApplicationName"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_application_handler.html"><param name="Name" value="ApplicationStartFormName"></OBJECT>
@@ -82,6 +83,7 @@
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_code_module_header_item.html"><param name="Name" value="CodeModuleHeaderItem"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_code_module_procedure.html"><param name="Name" value="CodeModuleProcedure"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_code_module_reader.html"><param name="Name" value="CodeModuleReader"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group___c_o_m.html"><param name="Name" value="COM"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="group___c_o_m.html"><param name="Name" value="Component Object Model (com)"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="class_application_handler.html"><param name="Name" value="CreateAppFile"></OBJECT>
   <UL>
@@ -202,6 +204,11 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="group__file.html"><param name="Name" value="file"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="group__file.html"><param name="Name" value="modFiles"></OBJECT>
   </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group___c_o_m.html"><param name="Name" value="GetInstance"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group___c_o_m.html"><param name="Name" value="COM"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group___c_o_m.html"><param name="Name" value="modDirectCOM"></OBJECT>
+  </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="group__file.html"><param name="Name" value="GetRelativPathFromFullPath"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="group__file.html"><param name="Name" value="file"></OBJECT>
@@ -222,6 +229,10 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="group__data.html"><param name="Name" value="data"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="group__data.html"><param name="Name" value="modSQL_Tools"></OBJECT>
   </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_graphviz_d_o_t.html"><param name="Name" value="GraphvizDOT"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_graphviz_d_o_tconnection.html"><param name="Name" value="GraphvizDOTconnection"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_graphviz_d_o_tgraph.html"><param name="Name" value="GraphvizDOTgraph"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="class_graphviz_d_o_tnode.html"><param name="Name" value="GraphvizDOTnode"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="group__base.html"><param name="Name" value="HandleError"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="group__base.html"><param name="Name" value="base"></OBJECT>
@@ -245,6 +256,10 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="namespacemod_application.html"><param name="Name" value="DisposeCurrentApplicationHandler"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="namespacemod_d_a_o___tools.html"><param name="Name" value="modDAO_Tools"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="namespacemod_direct_c_o_m.html"><param name="Name" value="modDirectCOM"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="namespacemod_direct_c_o_m.html"><param name="Name" value="GetInstance"></OBJECT>
+  </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="namespacemod_error_handler.html"><param name="Name" value="modErrorHandler"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="namespacemod_error_handler.html"><param name="Name" value="DefaultErrorHandlerMode"></OBJECT>
@@ -268,6 +283,7 @@
     <LI><OBJECT type="text/sitemap"><param name="Local" value="namespacemod_files.html"><param name="Name" value="ShortFileName"></OBJECT>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="namespacemod_files.html"><param name="Name" value="TempPath"></OBJECT>
   </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="namespacemod_m_d5.html"><param name="Name" value="modMD5"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="namespacemod_s_q_l___tools.html"><param name="Name" value="modSQL_Tools"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="namespacemod_s_q_l___tools.html"><param name="Name" value="GetSQLString_Date"></OBJECT>

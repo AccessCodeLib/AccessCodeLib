@@ -6,11 +6,15 @@
  Nutzungsbedingungen:
  http://access-codelib.net/nutzungsbedingungen.html
  
- Informationen über die Programmierrichtlinen: 
+ Informationen Ã¼ber die Programmierrichtlinen: 
  http://wiki.access-codelib.net/index.php/Coding_Standards
  
 --
 
-'/** \mainpage Access Code Library
-' \image html ./../images/codelib.png
+
+'/** 
+' \mainpage Access Code Library
+'
+' \image html codelib.png
+'
 '**/
