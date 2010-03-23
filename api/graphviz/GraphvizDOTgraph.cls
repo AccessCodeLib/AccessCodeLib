@@ -96,7 +96,7 @@ Public Sub AddNode(ByVal sID As String, _
       .HtmlExport = bHtmlExport
       If bHtmlExport Then
          If Len(sHtmlFileName) > 0 Then
-            .URL = sHtmlFileName & EXPORTFILEEXTENSION
+            .URL = sHtmlFileName
          End If
       End If
       
