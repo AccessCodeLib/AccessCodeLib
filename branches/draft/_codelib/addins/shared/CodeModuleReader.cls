@@ -8,11 +8,11 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: CodeModuleReader (Josef Pötzl, 2010-02-11)
+' Class Module: CodeModuleReader
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' CodeModuleReader
+' Inhalt von Code-Modul auswerten
 ' </summary>
 ' <remarks>
 ' </remarks>
@@ -23,6 +23,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>_codelib/addins/shared/CodeModuleProcedure.cls</use>
 '  <use>_codelib/addins/shared/CodeModuleHeaderItem.cls</use>
+'  <use>file/modFiles.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -63,6 +64,19 @@ Private m_RequiredModulesChecked As Boolean
 Private Const ERRNUMBER_CheckDependency_notrun As Long = vbObjectError + 5001
 Private Const ERRDESCRIPTION_CheckDependency_notrun As String = "CheckDependency wurde noch nicht ausgeführt"
 
+
+'---------------------------------------------------------------------------------------
+' Property: CodeModule
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Code-Modul, dessen Text ausgewertet werden soll
+' </summary>
+' <returns>VBIDE.CodeModule</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 #If EARLYBINDING Then
 Public Property Get CodeModule() As VBIDE.CodeModule
 #Else
@@ -88,6 +102,17 @@ HandleErr:
    
 End Property
 
+'---------------------------------------------------------------------------------------
+' Property: CodeModule
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Code-Modul, dessen Text ausgewertet werden soll
+' </summary>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 #If EARLYBINDING Then
 Public Property Set CodeModule(cm As VBIDE.CodeModule)
 #Else
@@ -113,6 +138,18 @@ HandleErr:
    
 End Property
 
+'---------------------------------------------------------------------------------------
+' Function: Copy (Josef Pötzl, 2010-03-23)
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Instanz kopieren
+' </summary>
+' <returns>CodeModuleReader</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 Public Function Copy() As CodeModuleReader
 
    Dim newReader As CodeModuleReader
@@ -138,6 +175,20 @@ HandleErr:
 
 End Function
 
+'---------------------------------------------------------------------------------------
+' Property: Name (Josef Pötzl, 2010-03-23)
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Name von VBComponent des Code-Moduls
+' </summary>
+' <param name="Param"></param>
+' <returns>String</returns>
+' <remarks>
+' Name = CodeModule.Parent.Name
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 Public Property Get Name() As String
 
 On Error GoTo HandleErr
@@ -159,6 +210,18 @@ HandleErr:
    
 End Property
 
+'---------------------------------------------------------------------------------------
+' Property: RequiredModules (Josef Pötzl, 2010-03-23)
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Collection der erforderlichen Module
+' </summary>
+' <returns>Collection</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 Public Property Get RequiredModules() As Collection
 
 On Error GoTo HandleErr
@@ -184,10 +247,26 @@ HandleErr:
    
 End Property
 
+'---------------------------------------------------------------------------------------
+' Function: CheckDependency (Josef Pötzl, 2010-03-23)
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Abhängigkeiten prüfen
+' </summary>
+' <param name="vbp">VBProject, bei Nothing wird aktives VBProject verwendet</param>
+' <param name="oModulReaderCollection">Collection der möglichen Abhängigkeiten, bei Nothing werden alle Code-Module aus VBProject verwendet,</param>
+' <returns>Anzahl der Abhängigkeiten</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 #If EARLYBINDING Then
-Public Function CheckDependency(Optional ByVal vbp As VBIDE.VBProject = Nothing, Optional ByRef oModulReaderCollection As Collection = Nothing) As Long
+Public Function CheckDependency(Optional ByVal vbp As VBIDE.VBProject = Nothing, _
+                                Optional ByRef oModulReaderCollection As Collection = Nothing) As Long
 #Else
-Public Function CheckDependency(Optional ByVal vbp As Object = Nothing, Optional ByRef oModulReaderCollection As Collection = Nothing) As Long
+Public Function CheckDependency(Optional ByVal vbp As Object = Nothing, _
+                                Optional ByRef oModulReaderCollection As Collection = Nothing) As Long
 #End If
 
    Dim checkCollection As Collection
@@ -296,6 +375,19 @@ HandleErr:
 End Function
 
 
+'---------------------------------------------------------------------------------------
+' Function: ClassUsed (Josef Pötzl, 2010-03-23)
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Prüft, ob Klasse im Code-Modul verwendet/benötigt wird
+' </summary>
+' <param name="ClassName">Name der Klasse</param>
+' <returns>Boolean</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 Public Function ClassUsed(ByVal ClassName As String) As Boolean
    
    Dim strSearchString(5) As String
@@ -342,6 +434,19 @@ HandleErr:
    
 End Function
 
+'---------------------------------------------------------------------------------------
+' Function: ProcedureUsed (Josef Pötzl, 2010-03-23)
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Prüft, ob Prozedur im Code-Modul verwendet/benötigt wird
+' </summary>
+' <param name="cmp">CodeModuleProcedure-Referenz</param>
+' <returns>Boolean</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 Public Function ProcedureUsed(ByRef cmp As CodeModuleProcedure) As Boolean
    
    Dim searchStringArray() As String
@@ -403,6 +508,19 @@ HandleErr:
    
 End Function
 
+'---------------------------------------------------------------------------------------
+' Function: HeaderItemUsed (Josef Pötzl, 2010-03-23)
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Prüft, ob CodeModuleHeaderItem (Variable, Konstante, ...) im Code-Modul verwendet/benötigt wird
+' </summary>
+' <param name="hdrItm">CodeModuleHeaderItem-Referenz</param>
+' <returns>Boolean</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 Public Function HeaderItemUsed(ByRef hdrItm As CodeModuleHeaderItem) As Boolean
    
    Dim searchStringArray() As String
@@ -455,6 +573,19 @@ HandleErr:
    
 End Function
 
+'---------------------------------------------------------------------------------------
+' Property: PlainCodeText (Josef Pötzl, 2010-03-23)
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Gibt bereinigten Code des Code-Moduls zurück
+' </summary>
+' <returns>String</returns>
+' <remarks>
+' Entfernt Kommentarzeilen
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 Public Property Get PlainCodeText() As String
    
    Dim strCodeText As String
@@ -526,6 +657,20 @@ HandleErr:
    
 End Function
 
+'---------------------------------------------------------------------------------------
+' Property: Procedures (Josef Pötzl, 2010-03-23)
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Collection aller Prozeduren (CodeModuleProcedure-Referenzen)
+' </summary>
+' <param name="bRefresh">True = Collection neu aufbauen; False = falls bereits eine Collection ermittelt wurde, wird diese verwendet und nicht noch einmal neu geprüft</param>
+' <param name="includePrivateProc">True = inkl. als private deklarierten Prozeduren</param>
+' <returns>Collection der CodeModuleProcedure-Referenzen</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 Public Property Get Procedures(Optional ByVal bRefresh As Boolean = False, _
                                Optional ByVal includePrivateProc As Boolean = False) As Collection
    
@@ -614,6 +759,20 @@ HandleErr:
    
 End Property
 
+'---------------------------------------------------------------------------------------
+' Property: HeaderItems (Josef Pötzl, 2010-03-23)
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Einträge des Deklarationsbereits des Code-Moduls (Variablen, Kostanten, Type- und Enum-Definitionen, ..)
+' </summary>
+' <param name="bRefresh">True = Collection neu aufbauen; False = falls bereits eine Collection ermittelt wurde, wird diese verwendet und nicht noch einmal neu geprüft</param>
+' <returns>Collection der CodeModuleHeaderItem-Referenzen</returns>
+' <remarks>
+' siehe auch CodeModuleHeaderItemType
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 Public Property Get HeaderItems(Optional ByVal bRefresh As Boolean = False) As Collection
 
    Dim strCheckString As String
@@ -750,7 +909,7 @@ On Error GoTo HandleErr
    If m_CurrentVbProject Is Nothing Then
       Set m_CurrentVbProject = VBE.ActiveVBProject
       'Prüfen, ob das richtige VbProject gewählt wurde (muss das von CurrentDb sein)
-      strCurrentDbName = CurrentDb.Name
+      strCurrentDbName = UNCPath(CurrentDb.Name)
       If m_CurrentVbProject.FileName <> strCurrentDbName Then
          Set m_CurrentVbProject = Nothing
          For Each proj In VBE.VBProjects

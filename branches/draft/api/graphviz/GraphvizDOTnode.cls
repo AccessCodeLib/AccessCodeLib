@@ -45,6 +45,13 @@ Private p_Label As String
 Private m_color As String
 Private p_LabelDOTstring As String
 
+Private Const EXPORTHTMLFILEEXTENSION As String = ".html"
+Private Const p_conWordWrapMinLen As Long = 16
+Private m_lngWordWrapMinLen As Long
+
+Public Event ReceiveGraphvizSetting(ByVal propName As String, ByRef newValue As Variant)
+
+
 Public Property Let LayoutMode(LayoutID As Long)
 
    Dim strColor As String
@@ -138,7 +145,7 @@ Public Function DOTstring(Optional bNoSubGraph As Boolean = False) As String
    If Len(URL) > 0 Then
       strTemp = strTemp & "URL=""" & URL & ""","
    ElseIf HtmlExport Then
-      strTemp = strTemp & "URL=""" & ID & EXPORTFILEEXTENSION & ""","
+      strTemp = strTemp & "URL=""" & ID & EXPORTHTMLFILEEXTENSION & ""","
    End If
 
    If Len(MiscOptions) > 0 Then
@@ -196,4 +203,60 @@ Public Function DOTstring(Optional bNoSubGraph As Boolean = False) As String
    
    DOTstring = strDOT
 
+End Function
+
+Public Function OptimizeDotLabel(ByRef sLabel As String, Optional ByVal lMinLen As Long = 0) As String
+
+   Dim strLabel As String
+   Dim lngLen As Long
+   Dim lngCutLen As Long
+   Dim strLeft As String, strRight As String
+   Dim lngPosLeft As Long, lngPosRight As Long
+
+   If lMinLen = 0 Then
+      If m_lngWordWrapMinLen = 0 Then
+         m_lngWordWrapMinLen = Val(Nz(GetGraphvizSetting("WordWrapMinLen"), 0))
+         If m_lngWordWrapMinLen = 0 Then m_lngWordWrapMinLen = p_conWordWrapMinLen
+      End If
+      lMinLen = m_lngWordWrapMinLen
+   End If
+
+   strLabel = sLabel
+   lngLen = Len(strLabel)
+
+   If lngLen > lMinLen Then
+      If InStr(strLabel, Chr(32)) > 0 Then
+         lngCutLen = lngLen \ 2
+         strLeft = Left(strLabel, lngCutLen)
+         strRight = Mid(strLabel, lngCutLen + 1)
+         lngPosLeft = InStrRev(strLeft, Chr(32))
+         lngPosRight = InStr(strRight, Chr(32))
+
+         If lngPosLeft = 0 Then
+            lngCutLen = lngCutLen + lngPosRight
+         ElseIf lngPosRight = 0 Then
+            lngCutLen = lngPosLeft
+         ElseIf (lngCutLen - lngPosLeft) < lngPosRight Then
+            lngCutLen = lngPosLeft
+         Else
+            lngCutLen = lngCutLen + lngPosRight
+         End If
+
+         If lngCutLen > 0 Then
+            strLeft = OptimizeDotLabel(Left(strLabel, lngCutLen - 1), lMinLen)
+            strRight = OptimizeDotLabel(Mid(strLabel, lngCutLen + 1), lMinLen)
+            strLabel = strLeft & vbNewLine & strRight
+         End If
+
+      End If
+   End If
+
+   OptimizeDotLabel = strLabel
+
+End Function
+
+Public Function GetGraphvizSetting(sProp As String) As Variant
+   Dim PropValue As Variant
+   RaiseEvent ReceiveGraphvizSetting(sProp, PropValue)
+   GetGraphvizSetting = PropValue
 End Function
