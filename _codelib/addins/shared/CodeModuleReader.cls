@@ -459,7 +459,7 @@ On Error GoTo HandleErr
 
    'bei Überlappung von internen Prozedurnamen mit der zu prüfenden,
    'gilt nur bei der Kombination modulname.prozedur eine Übereinstimmung als Treffer
-   For Each proc In Me.Procedures(True)
+   For Each proc In Me.Procedures(True, True)
       If proc.Name = cmp.Name Then
          bolOnlyWithModulePrefix = True
          Exit For
