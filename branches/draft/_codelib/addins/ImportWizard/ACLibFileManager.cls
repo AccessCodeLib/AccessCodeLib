@@ -1311,8 +1311,8 @@ On Error GoTo HandleErr
    
    'Leerzeilen am Ende säubern
    Set cm = vbc.CodeModule
-   Do While Len(Trim$(cm.Lines(cm.countOfLines, 1))) = 0 And cm.countOfLines > 1
-      cm.DeleteLines cm.countOfLines
+   Do While Len(Trim$(cm.Lines(cm.CountOfLines, 1))) = 0 And cm.CountOfLines > 1
+      cm.DeleteLines cm.CountOfLines
    Loop
    
    getCodeLibInfoFromVbComponent cli, vbc
@@ -1379,7 +1379,7 @@ On Error GoTo HandleErr
 
    If codeModuleExists Then ' Inhalt über CodeModule ändern, damit MS-Add-In für Quellcodeverwaltung keine Schwierigkeiten macht
       Set cm = vbc.CodeModule
-      cm.DeleteLines 1, cm.countOfLines
+      cm.DeleteLines 1, cm.CountOfLines
       cm.AddFromFile ImportFile.Path
       If cli.Type = CodeLibElementType.clet_ClassModule Then
          'wegschneiden von:
@@ -1390,8 +1390,8 @@ On Error GoTo HandleErr
          deleteClassHeaderLinesFromCodeModul cm
       End If
       'Leerzeilen am Ende säubern
-      Do While Len(Trim$(cm.Lines(cm.countOfLines, 1))) = 0 And cm.countOfLines > 1
-         cm.DeleteLines cm.countOfLines
+      Do While Len(Trim$(cm.Lines(cm.CountOfLines, 1))) = 0 And cm.CountOfLines > 1
+         cm.DeleteLines cm.CountOfLines
       Loop
       
    Else
@@ -1534,6 +1534,7 @@ On Error GoTo HandleErr
    Set col = Nothing
    
    Application.LoadFromText acojbType, cli.Name, ImportFile.Path
+   DoCmd.Close acojbType, cli.Name
 
    'Sonderfall: ACLibImportWizardForm
    If cli.Name = "ACLibImportWizardForm_NEU" Then
@@ -1586,26 +1587,26 @@ End Function
 Private Sub getCodeLibInfoFromVbComponent(ByRef cli As CodeLibInfo, ByRef vbc As Object)
         
    Dim checkString As String
-   Dim countOfLines As Long
+   Dim countOfCodeLines As Long
         
 On Error GoTo HandleErr
 
    cli.Name = vbc.Name
    cli.Type = vbc.Type
    
-   countOfLines = vbc.CodeModule.CountOfDeclarationLines
-   If countOfLines < 3 Then
+   countOfCodeLines = vbc.CodeModule.CountOfDeclarationLines
+   If countOfCodeLines < 3 Then
       'Eventuell nur Prozeduren vorhanden und nach den Options eine Leerzeile
       '=> zur Sicherheit den Code bis zur ersten Prozedur verwenden
-      countOfLines = getFirstProcLine(vbc.CodeModule) - 1
-      If countOfLines < 3 Then ' ist auch keine Prozedur vorhanden? => gesamten Code verwenden
-         countOfLines = vbc.CodeModule.countOfLines
+      countOfCodeLines = getFirstProcLine(vbc.CodeModule) - 1
+      If countOfCodeLines < 3 Then ' ist auch keine Prozedur vorhanden? => gesamten Code verwenden
+         countOfCodeLines = vbc.CodeModule.CountOfLines
       End If
    End If
-   If countOfLines = 0 Then 'kein Code vorhanden, der ausgewertet werden könnte
+   If countOfCodeLines = 0 Then 'kein Code vorhanden, der ausgewertet werden könnte
       Exit Sub
    End If
-   checkString = vbc.CodeModule.Lines(1, countOfLines)
+   checkString = vbc.CodeModule.Lines(1, countOfCodeLines)
    checkString = findSubString(checkString, SEARCHSTRING_CODELIB_BEGIN, SEARCHSTRING_CODELIB_END)
    
    If Len(checkString) > 0 Then
@@ -2336,7 +2337,7 @@ Private Function getFirstProcLine(cm As Object) As Long
 
 On Error GoTo HandleErr
 
-   For lngLine = cm.CountOfDeclarationLines + 1 To cm.countOfLines
+   For lngLine = cm.CountOfDeclarationLines + 1 To cm.CountOfLines
       procName = cm.ProcOfLine(lngLine, procKind)
       If Len(procName) > 0 Then
          getFirstProcLine = cm.ProcBodyLine(procName, procKind)
