@@ -18,6 +18,16 @@ Attribute VB_Description = "Erweiterung für ApplicationHandler-Klasse: Verzeichn
 ' <remarks>
 ' </remarks>
 '\ingroup usability
+' Aktivierung im _config_Application-Modul:\n
+' <code>modApplication.AddApplicationHandlerExtension New ApplicationHandler_DirTextbox</code>
+'
+' Aktivierung für eine Textbox in einem Formular:\n
+'<code>
+'With CurrentApplication!DirTextbox
+'   .Textbox = Me.%TextboxSteuerelement%
+'   .BaseFolderPath = %Voreingestellter Pfad%
+'End With
+'</code>
 '
 ' @todo Filtermöglichkeit ergänzen, dass nur Verzeichnisse ausgewählt werden können.
 '**/

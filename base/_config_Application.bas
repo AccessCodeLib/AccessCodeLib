@@ -38,6 +38,8 @@ Option Explicit
 '/** \addtogroup base
 '@{ **/
 
+Private Const m_ApplicationVersion As String = "0.0.0"
+
 Private Const m_ApplicationName As String = "Access Code Library"
 Private Const m_ApplicationFullName As String = m_ApplicationName
 Private Const m_ApplicationTitle As String = m_ApplicationName
@@ -45,13 +47,7 @@ Private Const m_ApplicationIconFile As String = m_ApplicationName & ".ico"
 
 Private Const m_DefaultErrorHandlerMode = ACLibErrorHandlerMode.aclibErrMsgBox
 
-'
-' Farben
-'
-Public Enum ApplicationColors
-   MdiBackColor = 8421504         ' = RGB(128,128,128)
-   MdiBackColorAppStart = 5263440 ' = RGB(80,80,80)
-End Enum
+Private Const m_ApplicationStartFormName As String = ""
 
 '---------------------------------------------------------------------------------------
 ' Sub: InitConfig
@@ -93,9 +89,12 @@ Public Sub InitConfig(Optional oCurrentAppHandler As ApplicationHandler = Nothin
       
       'Titelleiste der Anwendung
       .ApplicationTitle = m_ApplicationTitle
+	  
+	  'Version
+	  .Version = m_ApplicationVersion
       
       ' Formular, das am Ende von StartApplication aufgerufen wird
-      '.ApplicationStartFormName =
+      '.ApplicationStartFormName = m_ApplicationStartFormName
 
    End With
    
@@ -110,7 +109,7 @@ Public Sub InitConfig(Optional oCurrentAppHandler As ApplicationHandler = Nothin
 '
    'Icon der Anwendung und Fenster - erst nach AppFile-Initialisierung laden,
    '                                 falls Icon in AppFile-Tabelle enthalten ist.
-   oCurrentAppHandler.SetAppIcon CurrentProject.Path & "\" & m_ApplicationIconFile, True
+   'oCurrentAppHandler.SetAppIcon CurrentProject.Path & "\" & m_ApplicationIconFile, True
    
    
 End Sub

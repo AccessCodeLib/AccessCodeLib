@@ -22,6 +22,8 @@ Attribute VB_Exposed = False
 ' Erweiterung für ApplicationHandler-Klasse
 ' </summary>
 ' <remarks>
+' Aktivierung im _config_Application-Modul:\n
+' <code>AddApplicationHandlerExtension New ApplicationHandler_%EXTENSION_KEY%</code>
 ' </remarks>
 '\ingroup templates
 '**/
