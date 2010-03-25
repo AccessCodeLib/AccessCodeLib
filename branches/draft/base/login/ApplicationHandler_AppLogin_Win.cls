@@ -15,6 +15,8 @@ Attribute VB_Exposed = False
 ' Erweiterung für ApplicationHandler-Klasse
 ' </summary>
 ' <remarks>
+' Aktivierung im _config_Application-Modul:
+' <code>AddApplicationHandlerExtension New ApplicationHandler_AppLogin_Win</code>
 ' </remarks>
 '\ingroup base
 '**/

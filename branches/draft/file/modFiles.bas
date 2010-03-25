@@ -10,7 +10,6 @@ Attribute VB_Description = "Funktionen für Dateioperationen"
 ' <remarks>
 ' </remarks>
 '\ingroup file
-' @todo Code säubern, Fehlerbehandlung ergänzen
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
@@ -33,7 +32,8 @@ Private Const m_SELECTBOX_File_DlgTitle As String = "Datei auswählen"
 Private Const m_SELECTBOX_Folder_DlgTitle As String = "Ordner auswählen"
 Private Const m_SELECTBOX_OpenTitle As String = "auswählen"
 
-Private Const m_DefaultTempPathNoEnv As String = "C:\"
+Private Const m_DEFAULT_TEMPPATH_NoEnv As String = "C:\"
+Private Const m_MAXPATHLEN As Long = 255
 
 Private Declare Function WNetGetConnection Lib "mpr.dll" Alias "WNetGetConnectionA" ( _
          ByVal lpszLocalName As String, ByVal lpszRemoteName As String, cbRemoteName As Long) As Long
@@ -42,7 +42,7 @@ Private Declare Function API_GetTempPath Lib "kernel32" Alias "GetTempPathA" ( _
          ByVal nBufferLength As Long, _
          ByVal lpBuffer As String) As Long
 
-Private Const m_MaxPathLen As Long = 255
+
 
 
 '---------------------------------------------------------------------------------------
@@ -65,12 +65,12 @@ Private Const m_MaxPathLen As Long = 255
 Public Function SelectFile(Optional ByVal InitialDir As String = vbNullString, _
                            Optional ByVal DlgTitle As String = m_SELECTBOX_File_DlgTitle, _
                            Optional ByVal FilterString As String = "Alle Dateien (*.*)", _
-                           Optional ByVal MultiSelect As Boolean = False, _
+                           Optional ByVal MultiSelectEnabled As Boolean = False, _
                            Optional ByVal ViewMode As Long = -1) As String
 
 On Error GoTo HandleErr
 
-    SelectFile = WizHook_GetFileName(InitialDir, DlgTitle, m_SELECTBOX_OpenTitle, FilterString, MultiSelect, , ViewMode, False)
+    SelectFile = WizHook_GetFileName(InitialDir, DlgTitle, m_SELECTBOX_OpenTitle, FilterString, MultiSelectEnabled, , ViewMode, False)
 
 ExitHere:
 On Error Resume Next
@@ -108,12 +108,12 @@ End Function
 Public Function SelectFolder(Optional ByVal InitialDir As String = vbNullString, _
                              Optional ByVal DlgTitle As String = m_SELECTBOX_Folder_DlgTitle, _
                              Optional ByVal FilterString As String = "*", _
-                             Optional ByVal MultiSelect As Boolean = False, _
+                             Optional ByVal MultiSelectEnabled As Boolean = False, _
                              Optional ByVal ViewMode As Long = -1) As String
 
 On Error GoTo HandleErr
 
-   SelectFolder = WizHook_GetFileName(InitialDir, DlgTitle, m_SELECTBOX_OpenTitle, FilterString, MultiSelect, , ViewMode, True)
+   SelectFolder = WizHook_GetFileName(InitialDir, DlgTitle, m_SELECTBOX_OpenTitle, FilterString, MultiSelectEnabled, , ViewMode, True)
 
 ExitHere:
    Exit Function
@@ -132,14 +132,14 @@ End Function
 
 
 Private Function WizHook_GetFileName( _
-                           ByVal sInitialDir As String, _
+                           ByVal InitialDir As String, _
                            ByVal DlgTitle As String, _
                            ByVal OpenTitle As String, _
-                           ByVal sFilter As String, _
-                           Optional ByVal bMultiSelect As Boolean = False, _
-                           Optional ByVal bSplitDelimiter As String = "|", _
+                           ByVal FilterString As String, _
+                           Optional ByVal MultiSelectEnabled As Boolean = False, _
+                           Optional ByVal SplitDelimiter As String = "|", _
                            Optional ByVal ViewMode As Long = -1, _
-                           Optional ByVal bSelectFolder As Boolean = False) As String
+                           Optional ByVal SelectFolderFlag As Boolean = False) As String
 
 'Zusammenfassung der Parameter von WizHook.GetFileName: http://www.team-moeller.de/?Tipps_und_Tricks:Wizhook-Objekt:GetFileName
 'View  0: Detailansicht
@@ -155,19 +155,19 @@ Private Function WizHook_GetFileName( _
 '     32: Ordnerauswahldialog
 '     64: Wert im Parameter "View" berücksichtigen
 
-   Dim strPath As String
-   Dim RetVal As Long
+   Dim selectedFileString As String
+   Dim wizHookRetVal As Long
 
 On Error GoTo HandleErr
 
-   If InStr(1, sInitialDir, " ") > 0 Then
-      sInitialDir = """" & sInitialDir & """"
+   If InStr(1, InitialDir, " ") > 0 Then
+      InitialDir = """" & InitialDir & """"
    End If
 
    Dim flags As Long
    flags = 0
-   If bMultiSelect Then flags = flags + 8
-   If bSelectFolder Then flags = flags + 32
+   If MultiSelectEnabled Then flags = flags + 8
+   If SelectFolderFlag Then flags = flags + 32
 
    If ViewMode >= 0 Then
       flags = flags + 64
@@ -176,12 +176,12 @@ On Error GoTo HandleErr
    End If
 
    WizHook.Key = 51488399
-   RetVal = WizHook.GetFileName( _
+   wizHookRetVal = WizHook.GetFileName( _
                         Access.Application.hWndAccessApp, CurrentApplicationName, DlgTitle, OpenTitle, _
-                        strPath, sInitialDir, sFilter, 0, ViewMode, flags, True)
-   If RetVal = 0 Then
-      If bMultiSelect Then strPath = Replace(strPath, vbTab, bSplitDelimiter)
-      WizHook_GetFileName = strPath
+                        selectedFileString, InitialDir, FilterString, 0, ViewMode, flags, True)
+   If wizHookRetVal = 0 Then
+      If MultiSelectEnabled Then selectedFileString = Replace(selectedFileString, vbTab, SplitDelimiter)
+      WizHook_GetFileName = selectedFileString
    End If
 
 ExitHere:
@@ -237,6 +237,7 @@ HandleErr:
    Case Else
       Resume ExitHere
    End Select
+   
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -259,11 +260,11 @@ Public Property Get TempPath() As String
 
 On Error GoTo HandleErr
 
-   strTemp = Space$(m_MaxPathLen)
-   API_GetTempPath m_MaxPathLen, strTemp
+   strTemp = Space$(m_MAXPATHLEN)
+   API_GetTempPath m_MAXPATHLEN, strTemp
    strTemp = Left$(strTemp, InStr(strTemp, Chr$(0)) - 1)
    If Len(strTemp) = 0 Then
-      strTemp = m_DefaultTempPathNoEnv
+      strTemp = m_DEFAULT_TEMPPATH_NoEnv
    End If
    TempPath = strTemp
 

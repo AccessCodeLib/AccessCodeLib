@@ -16,6 +16,8 @@ Attribute VB_Description = "Erweiterung für ApplicationHandler-Klasse: Anwendung
 ' Erweiterung für ApplicationHandler-Klasse: Anwendungsspezifische Dateien verwalten
 ' </summary>
 ' <remarks>
+' Aktivierung im _config_Application-Modul:\n
+' <code>modApplication.AddApplicationHandlerExtension New ACLibFileManager</code>
 ' </remarks>
 '\ingroup base
 '**/
