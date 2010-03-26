@@ -43,7 +43,7 @@ Option Explicit
 ' </remarks>
 '**/
 Public Enum ACLibErrorHandlerMode
-   [_acutilErr_default] = -1
+   [_aclibErr_default] = -1
    aclibErrRaise = 0&    'Weitergabe an Anwendung
    aclibErrMsgBox = 1&   'MsgBox
    aclibErrIgnore = 2&   'keine Meldung ausgeben
@@ -70,8 +70,23 @@ Public Enum ACLibErrorResumeMode
    aclibErrResumeNext = 2 'Resume next, im Code weiterarbeiten
 End Enum
 
+'---------------------------------------------------------------------------------------
+' Enum: ACLibErrorNumbers
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' ErrorHandler Modes (Fehlerbehandlungsvarianten)
+' </summary>
+'**/
+Public Enum ACLibErrorNumbers
+   ERRNR_NOOBJECT = vbObjectError + 1001
+   ERRNR_NOCONFIG = vbObjectError + 1002
+   ERRNR_INACTIVE = vbObjectError + 1003
+   ERRNR_FORBIDDEN = vbObjectError + 9001
+End Enum
+
 'Voreinstellungen:
-Private Const m_conDefaultErrorHandlerMode As Long = ACLibErrorHandlerMode.[_acutilErr_default]
+Private Const m_conDefaultErrorHandlerMode As Long = ACLibErrorHandlerMode.[_aclibErr_default]
 Private Const m_conDefaultErrorResumeMode As Long = ACLibErrorResumeMode.aclibErrExit
 
 Private Const m_ErrorSourceDelimiterSymbol As String = "->"
@@ -188,7 +203,7 @@ Public Function HandleError(ByVal lErrorNumber As Long, ByVal sSource As String,
             ) As ACLibErrorResumeMode
 'hier wäre auch das Aktivieren eine anderen ErrorHandlers möglich (z. B. ErrorHandler-Klasse)
 
-   If lErrHandlerMode = ACLibErrorHandlerMode.[_acutilErr_default] Then
+   If lErrHandlerMode = ACLibErrorHandlerMode.[_aclibErr_default] Then
       lErrHandlerMode = m_DefaultErrorHandlerMode
    End If
    
@@ -206,7 +221,7 @@ Private Function procHandleError(ByRef lErrorNumber As Long, ByRef sSource As St
    Dim strErrSource As String
    
    strErrDescription = Err.Description
-   strErrSource = Err.Source
+   strErrSource = Err.source
    
 On Error Resume Next
    
