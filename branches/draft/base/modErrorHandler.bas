@@ -221,7 +221,7 @@ Private Function procHandleError(ByRef lErrorNumber As Long, ByRef sSource As St
    Dim strErrSource As String
    
    strErrDescription = Err.Description
-   strErrSource = Err.source
+   strErrSource = Err.Source
    
 On Error Resume Next
    

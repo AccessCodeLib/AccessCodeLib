@@ -60,6 +60,12 @@ Public Event ErrorMissingCurrentConnection(ByVal Msg As String, ByRef NewCurrent
 Public Event ErrorEmptyConnectionString(ByVal Msg As String, ByRef NewConnectionString As String)
 
 
+Public Event HookInsertIdentityReturn(ByRef InsertSQL As String, ByRef IdentityTable As String, _
+                                      ByRef ActiveConnection As ADODB.Connection, ByRef IdentitySelectString As String, _
+                                      ByRef HookResumeMode As Long, ByRef HookResumeMessage As Variant)
+
+Private m_HooksEnabled As Boolean
+
 'Private Type AdodbCommandParamDef
 '   ParamName As String
 '   ParamValue As Variant
@@ -80,6 +86,14 @@ End Sub
 Public Sub Dispose()
    Set m_AdoConnection = Nothing
 End Sub
+
+Public Property Get HooksEnabled() As Boolean
+   HooksEnabled = m_HooksEnabled
+End Property
+
+Public Property Let HooksEnabled(ByVal bEnable As Boolean)
+   m_HooksEnabled = bEnable
+End Property
 
 
 '---------------------------------------------------------------------------------------
@@ -304,7 +318,7 @@ End Function
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function OpenRecordset(ByVal source As String, _
+Public Function OpenRecordset(ByVal Source As String, _
                      Optional ByVal CursorType As ADODB.CursorTypeEnum = ADODB.CursorTypeEnum.adOpenForwardOnly, _
                      Optional ByVal LockType As ADODB.LockTypeEnum = ADODB.LockTypeEnum.adLockReadOnly, _
                      Optional ByVal CursorLocation As ADODB.CursorLocationEnum = ADODB.CursorLocationEnum.adUseServer, _
@@ -319,7 +333,7 @@ On Error GoTo HandleErr
    Set rst = New ADODB.Recordset
    With rst
       .CursorLocation = CursorLocation
-      .Open source, Me.CurrentConnection, CursorType, LockType
+      .Open Source, Me.CurrentConnection, CursorType, LockType
       
       If DisconnectedRecordset Then
          Set .ActiveConnection = Nothing
@@ -655,11 +669,22 @@ Public Function InsertIdentityReturn(ByVal InsertSQL As String, Optional ByVal I
    Dim cnn As ADODB.Connection
    Dim rst As ADODB.Recordset
    Dim lngRecordsAffected As Long
-   Dim strSQL As String
+   Dim strIdentitySQL As String
+   
+   Dim lngHookResumeMode As Long
+   Dim varHookResumeMessage As Variant
    
 On Error GoTo HandleErr
 
    Set cnn = Me.CurrentConnection
+   
+   If m_HooksEnabled Then
+      RaiseEvent HookInsertIdentityReturn(InsertSQL, IdentityTable, cnn, strIdentitySQL, lngHookResumeMode, varHookResumeMessage)
+      If lngHookResumeMode <> 0 Then 'Hook ermittelte bereits das Ergebnis
+         InsertIdentityReturn = varHookResumeMessage
+         Exit Function
+      End If
+   End If
    
    cnn.Execute InsertSQL, lngRecordsAffected
    
@@ -668,13 +693,15 @@ On Error GoTo HandleErr
       Exit Function
    End If
 
-   If Len(IdentityTable) > 0 Then
-      strSQL = "SELECT IDENT_CURRENT('" & IdentityTable & "')" 'wegen trigger .. funktioniert nicht bei allen DBMS!!!
-   Else
-      strSQL = "SELECT @@Identity" 'zuletzt zugewiesener Autowert
+   If Len(strIdentitySQL) = 0 Then
+      If Len(IdentityTable) > 0 Then
+         strIdentitySQL = "SELECT IDENT_CURRENT('" & IdentityTable & "')" 'wegen trigger .. funktioniert nicht bei allen DBMS!!!
+      Else
+         strIdentitySQL = "SELECT @@Identity" 'zuletzt zugewiesener Autowert
+      End If
    End If
 
-   Set rst = cnn.Execute(strSQL)
+   Set rst = cnn.Execute(strIdentitySQL)
    With rst
       If .EOF Then
          InsertIdentityReturn = Null
