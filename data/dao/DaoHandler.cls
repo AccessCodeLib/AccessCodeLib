@@ -115,7 +115,7 @@ End Property
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function OpenRecordset(ByVal source As String, _
+Public Function OpenRecordset(ByVal Source As String, _
                      Optional ByVal RecordsetType As DAO.RecordsetTypeEnum = dbOpenDynaset, _
                      Optional ByVal RecordsetOptions As DAO.RecordsetOptionEnum = DAO.RecordsetOptionEnum.dbSeeChanges, _
                      Optional ByVal LockEdit As DAO.LockTypeEnum = DAO.LockTypeEnum.dbOptimistic) As DAO.Recordset
@@ -125,7 +125,7 @@ On Error GoTo HandleErr
     If (RecordsetOptions And dbSeeChanges) = 0 Then
         RecordsetOptions = RecordsetOptions + dbSeeChanges
     End If
-    Set OpenRecordset = Me.CurrentDb.OpenRecordset(source, RecordsetType, RecordsetOptions, LockEdit)
+    Set OpenRecordset = Me.CurrentDb.OpenRecordset(Source, RecordsetType, RecordsetOptions, LockEdit)
 
 ExitHere:
     Exit Function

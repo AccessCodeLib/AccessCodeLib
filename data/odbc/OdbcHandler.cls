@@ -22,6 +22,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>base/modErrorHandler.bas</use>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
+'  <test>_test/data/odbc/TEST_OdbcHandlerHook.bas</test>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -81,6 +82,12 @@ Public Event DbObjectRelinked(ByVal LastDbObjectName As String, ByVal lCounter A
 Public Event DbObjectDeleted(ByVal LastDbObjectName As String, ByVal lCounter As Long)
 
 
+Public Event HookInsertIdentityReturn(ByRef InsertSQL As String, _
+                                      ByRef ActiveDb As DAO.Database, ByRef IdentitySelectString As String, _
+                                      ByRef HookResumeMode As Long, ByRef HookResumeMessage As Variant)
+
+Private m_HooksEnabled As Boolean
+
 '
 ' Init / Terminate
 ' ----------------
@@ -105,6 +112,14 @@ On Error Resume Next
    End If
 
 End Sub
+
+Friend Property Get HooksEnabled() As Boolean
+   HooksEnabled = m_HooksEnabled
+End Property
+
+Friend Property Let HooksEnabled(ByVal bEnable As Boolean)
+   m_HooksEnabled = bEnable
+End Property
 
 '---------------------------------------------------------------------------------------
 ' Property: CurrentDb (2009-06-15)
@@ -314,7 +329,7 @@ End Property
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function OpenRecordset(ByVal source As String, _
+Public Function OpenRecordset(ByVal Source As String, _
                      Optional ByVal RecordsetType As DAO.RecordsetTypeEnum = dbOpenForwardOnly, _
                      Optional ByVal RecordsetOptions As DAO.RecordsetOptionEnum = DAO.RecordsetOptionEnum.dbSeeChanges, _
                      Optional ByVal LockEdit As DAO.LockTypeEnum = DAO.LockTypeEnum.dbOptimistic) As DAO.Recordset
@@ -324,7 +339,7 @@ On Error GoTo HandleErr
    If (RecordsetOptions And dbSeeChanges) = 0 Then
       RecordsetOptions = RecordsetOptions + dbSeeChanges
    End If
-   Set OpenRecordset = Me.CurrentDbBE.OpenRecordset(source, RecordsetType, RecordsetOptions, LockEdit)
+   Set OpenRecordset = Me.CurrentDbBE.OpenRecordset(Source, RecordsetType, RecordsetOptions, LockEdit)
 
 ExitHere:
    Exit Function
@@ -793,11 +808,23 @@ Public Function InsertIdentityReturn(ByVal InsertSQL As String) As Variant
    Dim db As DAO.Database
    Dim rst As DAO.Recordset
    Dim lngRecordsAffected As Long
+   Dim strIdentitySQL As String
+   
+   Dim lngHookResumeMode As Long
+   Dim varHookResumeMessage As Variant
    
 On Error GoTo HandleErr
 
    Set db = Me.CurrentDbBE
    
+   If m_HooksEnabled Then
+      RaiseEvent HookInsertIdentityReturn(InsertSQL, db, strIdentitySQL, lngHookResumeMode, varHookResumeMessage)
+      If lngHookResumeMode <> 0 Then 'Hook ermittelte bereits das Ergebnis
+         InsertIdentityReturn = varHookResumeMessage
+         Exit Function
+      End If
+   End If
+     
    db.Execute InsertSQL, dbFailOnError
    lngRecordsAffected = db.RecordsAffected
    
@@ -805,8 +832,12 @@ On Error GoTo HandleErr
       InsertIdentityReturn = Null 'es wurde kein neuer DS angefügt
       Exit Function
    End If
+   
+   If Len(strIdentitySQL) = 0 Then
+      strIdentitySQL = "SELECT @@Identity"
+   End If
 
-   Set rst = db.OpenRecordset("SELECT @@Identity") 'zuletzt zugewiesener Autowert / ... funktioniert nicht bei MySQL!
+   Set rst = db.OpenRecordset(strIdentitySQL) 'zuletzt zugewiesener Autowert / ... funktioniert nicht bei MySQL!
    With rst
       If .EOF Then
          InsertIdentityReturn = Null

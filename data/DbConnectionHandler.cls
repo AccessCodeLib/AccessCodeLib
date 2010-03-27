@@ -415,7 +415,7 @@ On Error Resume Next
    Exit Property
 
 HandleErr:
-   Select Case HandleError(Err.Number, "CurrentDbBE : " & Err.source, Err.Description)
+   Select Case HandleError(Err.Number, "CurrentDbBE : " & Err.Source, Err.Description)
    Case ACLibErrorResumeMode.aclibErrResume
       Resume
    Case ACLibErrorResumeMode.aclibErrResumeNext
