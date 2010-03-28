@@ -553,7 +553,9 @@ Private Sub importFilesFromImportCollection( _
 On Error GoTo HandleErr
 
    activateCurrentProject
-   DoCmd.RunCommand acCmdCompileAndSaveAllModules
+   If CurrentProject.AllModules.Count > 0 Then
+      DoCmd.RunCommand acCmdCompileAndSaveAllModules
+   End If
    
    maxCnt = m_ImportFileCollection.Count
    i = 1
@@ -706,11 +708,29 @@ End Property
 
 Private Sub activateCurrentProject()
 
+   Dim bolActivate As Boolean
+   
+#If EARLYBINDING Then
+   Dim vbc As VBComponent
+#Else
+   Dim vbc As Object
+#End If
+
 On Error GoTo HandleErr
 
-   On Error Resume Next
    If CurrentVbProject.VBComponents.Count > 0 Then
-      CurrentVbProject.VBComponents(1).Activate
+      'zuerst nur Code-Module verwenden, da sonst Formulare/Berichte im Entwurf geöffnet werden
+      For Each vbc In CurrentVbProject.VBComponents
+         If vbc.Type <> vbext_ct_Document Then
+            vbc.Activate
+            bolActivate = True
+            Exit For
+         End If
+      Next
+      'falls nur vbext_ct_Document vorhanden sind, das erste verwenden
+      If Not bolActivate Then
+         CurrentVbProject.VBComponents(1).Activate
+      End If
    End If
 
 ExitHere:
