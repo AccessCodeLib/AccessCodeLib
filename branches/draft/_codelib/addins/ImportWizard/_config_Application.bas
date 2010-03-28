@@ -6,7 +6,7 @@ Attribute VB_Name = "_config_Application"
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/ImportWizard/_config_Application.bas</file>
-'  <replace>base/_config_Application.bas</replace> 'dieses Modul eretzt base/_config_Application.bas
+'  <replace>base/_config_Application.bas</replace> 'dieses Modul ersetzt base/_config_Application.bas
 '  <license>_codelib/license.bas</license>
 '  <use>_codelib/addins/ImportWizard/defGlobal_ACLibImportWizard.bas</use>
 '  <use>base/modApplication.bas</use>
@@ -85,6 +85,7 @@ On Error GoTo HandleErr
       .ApplicationFullName = m_ApplicationFullName
       .ApplicationTitle = m_ApplicationTitle
       
+      'Version
       .Version = m_ApplicationVersion
       
       ' Formular, das am Ende von CurrentApplication.Start aufgerufen wird
@@ -123,7 +124,6 @@ On Error GoTo HandleErr
 
    'AppIcon
    'oCurrentAppHandler.SetAppIcon CodeProject.Path & "\" & m_ApplicationIconFile, True
-
 
 ExitHere:
    Exit Sub
