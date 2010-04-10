@@ -284,6 +284,7 @@ Public Sub ExportAllModules()
    
 On Error GoTo HandleErr
 
+   activateCurrentProject
    DoCmd.RunCommand acCmdCompileAndSaveAllModules
    
    For Each ao In CurrentProject.AllModules
@@ -320,6 +321,7 @@ On Error GoTo HandleErr
       Exit Sub
    End If
 
+   activateCurrentProject
    DoCmd.RunCommand acCmdCompileAndSaveAllModules
    
    For Each ao In CurrentProject.AllForms
@@ -377,6 +379,7 @@ Public Sub ExportAllReports()
    
 On Error GoTo HandleErr
 
+   activateCurrentProject
    DoCmd.RunCommand acCmdCompileAndSaveAllModules
    
    For Each ao In CurrentProject.AllReports
