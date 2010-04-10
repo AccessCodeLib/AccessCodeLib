@@ -7,7 +7,7 @@
  http://access-codelib.net/nutzungsbedingungen.html
  
  Informationen über die Programmierrichtlinen: 
- http://wiki.access-codelib.net/index.php/Coding_Standards
+ http://wiki.access-codelib.net/Coding_Standards
  
 --
 
