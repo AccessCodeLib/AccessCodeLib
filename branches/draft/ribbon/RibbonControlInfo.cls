@@ -20,7 +20,7 @@ Attribute VB_Exposed = False
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>Ribbon/RibbonControlInfo.cls</file>
+'  <file>ribbon/RibbonControlInfo.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <ref><name>Office</name><major>2</major><minor>4</minor><guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</guid></ref>
 '</codelib>
