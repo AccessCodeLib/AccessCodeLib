@@ -33,21 +33,43 @@ Option Explicit
 
 Private m_RibbonUI As IRibbonUI
 
-Private Const m_LargeButtonCount As Long = 6
-Private Const m_NormalButtonCount As Long = 9
-Private Const m_ComboboxItemCount As Long = 0
-Private Const m_RibbonControlInfoArraySize As Long = m_LargeButtonCount + m_NormalButtonCount + m_ComboboxItemCount
-'/**
-' * @todo Anzahl der Buttons als Eigenschaft gestalten
-'**/
+'Benutzer
+Private m_User As Variant
+
+' Anzahl der Ribbon-Controls:
+Private m_LargeButtonCount As Long
+Private m_NormalButtonCount As Long
+Private m_ComboboxItemCount As Long
+Private m_RibbonControlInfoArraySize As Long 'Damit nicht immer neu berechnet werden muss
+
+'Standardwerte, falls die Werte nich von außen eingestellt werden
+Private Const m_DEFAULT_LargeButtonCount As Long = 6
+Private Const m_DEFAULT_NormalButtonCount As Long = 9
+Private Const m_DEFAULT_ComboboxItemCount As Long = 0
 
 Private m_DaoDatabase As DAO.Database
 Private ribbonControlInfoArray() As RibbonControlInfo
 Private m_ribbonControlInfoArrayFilled As Boolean
 
 Private Sub Class_Initialize()
+
+   'Standardwerte einstellen:
+   InitRibbonGroupLayout
+   
+End Sub
+
+Public Sub InitRibbonGroupLayout(Optional ByVal lLargeButtonCount As Long = m_DEFAULT_LargeButtonCount, _
+                                 Optional ByVal lNormalButtonCount As Long = m_DEFAULT_NormalButtonCount, _
+                                 Optional ByVal lComboboxItemCount As Long = m_DEFAULT_ComboboxItemCount)
+   
+   m_LargeButtonCount = lLargeButtonCount
+   m_NormalButtonCount = lNormalButtonCount
+   m_ComboboxItemCount = lComboboxItemCount
+   m_RibbonControlInfoArraySize = m_LargeButtonCount + m_NormalButtonCount + m_ComboboxItemCount
+
+   'Array initialisieren
    initRibbonControlInfoArray m_RibbonControlInfoArraySize
-   'fillRibbonInfoArray ... hier weg, damit Tabelle bzw. DaoDatabase zuvor per Eigenschaft eingestellt werden kann
+   
 End Sub
 
 Private Sub initRibbonControlInfoArray(ByVal lArraySize As Long)
@@ -56,10 +78,13 @@ Private Sub initRibbonControlInfoArray(ByVal lArraySize As Long)
    For i = 1 To lArraySize
       Set ribbonControlInfoArray(i) = New RibbonControlInfo
    Next
+   m_ribbonControlInfoArrayFilled = False
 End Sub
 
 Private Sub fillRibbonInfoArray()
 
+   Dim db As DAO.Database
+   Dim qdf As DAO.QueryDef
    Dim rst As DAO.Recordset
    Dim strSQL As String
    Dim currentArrayCnt As Long
@@ -70,10 +95,14 @@ On Error GoTo HandleErr
    strSQL = "select TOP " & m_RibbonControlInfoArraySize & _
             " RibbonControlId, rcLabel, rcOnAction, rcImageMso" & _
             " from usysUserRibbonClicks" & _
-            " where UserId='" & Me.User & "'" & _
+            " where UserId=[UserParam]" & _
             " order by clicks desc, RibbonControlId asc"
 
-   Set rst = DaoDatabase.OpenRecordset(strSQL)
+   Set db = Me.DaoDatabase
+   Set qdf = db.CreateQueryDef("", strSQL)
+   qdf.Parameters("UserParam").Value = Me.User
+
+   Set rst = qdf.OpenRecordset()
    currentArrayCnt = 0
    Do While Not rst.EOF
       currentArrayCnt = currentArrayCnt + 1
@@ -135,11 +164,19 @@ Public Sub RefreshRibbonWatcherControl(rwcNr As Long)
    End If
 End Sub
 
-Public Property Get User() As String
-   User = "test"
+Public Property Get User() As Variant 'Variant, damit Text oder Zahl möglich wird
    '/**
-   ' * @todo Windows-User (Environ("username")) bzw. DB-User (CurrentUser) einsetzen - zuvor per Ereignis nachfragen
+   ' * @todo Windows-User (Environ("username")) bzw. DB-User (CurrentUser) einsetzen - eventuell zuvor per Ereignis nachfragen
    '**/
+   If IsEmpty(m_User) Then
+      m_User = Environ("username")
+      If Len(m_User) = 0 Then m_User = CurrentUser
+   End If
+   User = m_User
+End Property
+
+Public Property Let User(ByVal newValue As Variant)
+   m_User = newValue
 End Property
 
 Public Property Get DaoDatabase() As DAO.Database
@@ -206,6 +243,7 @@ Private Function getXmlTagValue(ByVal sourceString As String, TagName As String)
    lngStartPos = InStr(1, sourceString, TagName & "=""")
    If lngStartPos = 0 Then
       getXmlTagValue = vbNullString
+      Exit Function
    End If
    
    lngStartPos = lngStartPos + Len(TagName) + 2
@@ -216,28 +254,49 @@ End Function
 Private Sub saveRibbonClick(ByRef rcID As String, rcLabel As String, rcOnAction As String, rcImageMso As String)
    
    Dim db As DAO.Database
+   Dim qdf As DAO.QueryDef
    Dim strSQL As String
    
 On Error GoTo HandleErr
 
    strSQL = "update usysUserRibbonClicks set clicks=clicks+1"
    If Len(rcLabel) > 0 Then
-      strSQL = strSQL & ", rcLabel='" & Replace(rcLabel, "'", "''") & "'"
+      strSQL = strSQL & ", rcLabel=[rcLabelParam]"
    End If
-   If Len(rcLabel) > 0 Then
-      strSQL = strSQL & ", rcOnAction='" & Replace(rcOnAction, "'", "''") & "'"
+   If Len(rcOnAction) > 0 Then
+      strSQL = strSQL & ", rcOnAction=[rcOnActionParam]"
    End If
-   If Len(rcLabel) > 0 Then
-      strSQL = strSQL & ", rcImageMso='" & Replace(rcImageMso, "'", "''") & "'"
+   If Len(rcImageMso) > 0 Then
+      strSQL = strSQL & ", rcImageMso=[rcImageMsoParam]"
    End If
-   strSQL = strSQL & " where UserId = '" & Me.User & "' AND RibbonControlId='" & Replace(rcID, "'", "''") & "'"
+   strSQL = strSQL & " where UserId = [UserParam] AND RibbonControlId=[RibbonControlIdParam]"
    
    Set db = DaoDatabase
-   db.Execute strSQL, dbFailOnError
+   Set qdf = db.CreateQueryDef("", strSQL)
+   
+   qdf.Parameters("UserParam").Value = Me.User 'Damit ist Datentyp vom Feld [UserId] egal (nützlich falls Userkennung durch Zahl dargestellt wird)
+   qdf.Parameters("RibbonControlIdParam").Value = rcID
+   If Len(rcLabel) > 0 Then
+      qdf.Parameters("rcLabelParam").Value = rcLabel
+   End If
+   If Len(rcOnAction) > 0 Then
+      qdf.Parameters("rcOnActionParam").Value = rcOnAction
+   End If
+   If Len(rcImageMso) > 0 Then
+      qdf.Parameters("rcImageMsoParam").Value = rcImageMso
+   End If
+   
+   qdf.Execute dbFailOnError
+   
    If db.RecordsAffected = 0 Then
-      strSQL = "insert into usysUserRibbonClicks (UserId, RibbonControlId, clicks, rcLabel, rcOnAction, rcImageMso)" & _
-               " Values ('" & Me.User & "', '" & Replace(rcID, "'", "''") & "', 1, '" & Replace(rcLabel, "'", "''") & "', '" & Replace(rcOnAction, "'", "''") & "', '" & Replace(rcImageMso, "'", "''") & "')"
-      db.Execute strSQL, dbFailOnError
+      qdf.SQL = "insert into usysUserRibbonClicks (UserId, RibbonControlId, clicks, rcLabel, rcOnAction, rcImageMso)" & _
+                " Values ([UserParam], [RibbonControlIdParam], 1, [rcLabelParam], [rcOnActionParam], [rcImageMsoParam])"
+      qdf.Parameters("UserParam").Value = Me.User
+      qdf.Parameters("RibbonControlIdParam").Value = rcID
+      qdf.Parameters("rcLabelParam").Value = rcLabel
+      qdf.Parameters("rcOnActionParam").Value = rcOnAction
+      qdf.Parameters("rcImageMsoParam").Value = rcImageMso
+      qdf.Execute dbFailOnError
    End If
    
    fillRibbonInfoArray
@@ -287,7 +346,7 @@ Public Property Get RibbonGroupXml(Optional ByVal sGroupName As String = "Zuletz
    Dim i As Long
    Dim strGroupXml As String
    
-   strGroupXml = "<group id=""RibbonWatcherGroup"" label=""" & sGroupName & """>" & vbNewLine
+   strGroupXml = "<group id=""RibbonWatcherGroup"" label=""" & sGroupName & """ getVisible=""RibbonWatcherCallBack_GetGroupVisible"">" & vbNewLine
    
    For i = 1 To m_LargeButtonCount
       strGroupXml = strGroupXml & getRibbonControlXml("RWC" & i, "large") & vbNewLine

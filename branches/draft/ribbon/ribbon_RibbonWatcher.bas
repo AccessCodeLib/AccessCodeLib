@@ -70,6 +70,13 @@ Public Sub RibbonWatcherCallBack_GetVisible(ByRef rc As IRibbonControl, _
 
 End Sub
 
+Public Sub RibbonWatcherCallBack_GetGroupVisible(ByRef rc As IRibbonControl, _
+                                                 ByRef visible As Variant)
+
+   visible = True
+
+End Sub
+
 'Public Sub RibbonWatcherCallBack_DropDown_OnAction( _
 '                      ByRef rc As IRibbonControl, _
 '                      ByRef selectedId As String, _
