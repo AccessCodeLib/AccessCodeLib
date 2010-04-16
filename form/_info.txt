@@ -1,2 +1,6 @@
 
- Module für den Umgang mit Formularen
+ Umgang mit Formularen
+ 
+'/** 
+' @defgroup form Umgang mit Formularen (form)
+'**/
