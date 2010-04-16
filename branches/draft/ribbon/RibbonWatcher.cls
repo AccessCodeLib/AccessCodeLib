@@ -51,7 +51,14 @@ Private m_DaoDatabase As DAO.Database
 Private ribbonControlInfoArray() As RibbonControlInfo
 Private m_ribbonControlInfoArrayFilled As Boolean
 
+Private m_EventGroupCollection As Collection
+
+Public Event RibbonTabChanged(ByVal RibbonTabID As String)
+Public Event SaveRibbonControlAction(ByVal RibbonControlId As String, ByRef Cancel As Boolean)
+
 Private Sub Class_Initialize()
+
+   Set m_EventGroupCollection = New Collection
 
    'Standardwerte einstellen:
    InitRibbonGroupLayout
@@ -66,7 +73,7 @@ Public Sub InitRibbonGroupLayout(Optional ByVal lLargeButtonCount As Long = m_DE
    m_NormalButtonCount = lNormalButtonCount
    m_ComboboxItemCount = lComboboxItemCount
    m_RibbonControlInfoArraySize = m_LargeButtonCount + m_NormalButtonCount + m_ComboboxItemCount
-
+   
    'Array initialisieren
    initRibbonControlInfoArray m_RibbonControlInfoArraySize
    
@@ -256,8 +263,14 @@ Private Sub saveRibbonClick(ByRef rcID As String, rcLabel As String, rcOnAction 
    Dim db As DAO.Database
    Dim qdf As DAO.QueryDef
    Dim strSQL As String
+   Dim bolCancel As Boolean
    
 On Error GoTo HandleErr
+
+   RaiseEvent SaveRibbonControlAction(rcID, bolCancel)
+   If bolCancel Then
+      Exit Sub
+   End If
 
    strSQL = "update usysUserRibbonClicks set clicks=clicks+1"
    If Len(rcLabel) > 0 Then
@@ -288,7 +301,7 @@ On Error GoTo HandleErr
    
    qdf.Execute dbFailOnError
    
-   If db.RecordsAffected = 0 Then
+   If qdf.RecordsAffected = 0 Then
       qdf.SQL = "insert into usysUserRibbonClicks (UserId, RibbonControlId, clicks, rcLabel, rcOnAction, rcImageMso)" & _
                 " Values ([UserParam], [RibbonControlIdParam], 1, [rcLabelParam], [rcOnActionParam], [rcImageMsoParam])"
       qdf.Parameters("UserParam").Value = Me.User
@@ -322,14 +335,52 @@ Public Property Set RibbonUI(newRef As IRibbonUI)
    Set m_RibbonUI = newRef
 End Property
 
-Public Property Get RibbonXml(Optional ByVal TabXmlBefore As String, Optional TabXmlAfter As String) As String
+Public Property Get RibbonXml(Optional ByVal TabXmlBefore As String, Optional TabXmlAfter As String, _
+                              Optional ByVal ActivateTabChangeEvents As Boolean = False) As String
 
-   RibbonXml = "<customUI xmlns=""http://schemas.microsoft.com/office/2006/01/customui"" onLoad=""RibbonWatcherCallBack_OnLoad"">" & vbNewLine & _
+   Dim strRibbonXml As String
+   Dim arrRibbonTabs As Variant
+   Dim i As Long
+   Dim pos As Long
+   Dim tempTabStringStart As String
+   Dim tempTabStringEnd As String
+   Dim tempString As String
+   Dim tempTabID As String
+
+   strRibbonXml = "<customUI xmlns=""http://schemas.microsoft.com/office/2006/01/customui"" onLoad=""RibbonWatcherCallBack_OnLoad"">" & vbNewLine & _
                "<ribbon startFromScratch=""false""><tabs>" & vbNewLine & _
                TabXmlBefore & vbNewLine & _
                RibbonTabXml & vbNewLine & _
                TabXmlAfter & vbNewLine & _
                "</tabs></ribbon></customUI>"
+               
+   If ActivateTabChangeEvents Then
+      arrRibbonTabs = Split(strRibbonXml, "</tab>", , vbTextCompare)
+      For i = 0 To (UBound(arrRibbonTabs) - 1)
+         tempTabID = Mid(arrRibbonTabs(i), InStr(1, arrRibbonTabs(i), "<tab ", vbTextCompare) + 4)
+         tempTabID = Mid(tempTabID, InStr(1, tempTabID, "id=""", vbTextCompare) + 4)
+         tempTabID = Left(tempTabID, InStr(1, tempTabID, """", vbTextCompare) - 1)
+
+         pos = InStr(1, arrRibbonTabs(i), "<group ", vbTextCompare)
+         tempTabStringStart = Left(arrRibbonTabs(i), pos + 6)
+         tempString = Mid(arrRibbonTabs(i), pos + 7)
+         
+         pos = InStr(1, tempString, "</group>", vbTextCompare)
+         tempTabStringEnd = Mid(tempString, pos)
+         tempString = Left(tempString, pos - 1) '=> alles innerhalb der ersten Group
+
+         tempString = tempString & "<button id=""RWEC" & tempTabID & """ tag=""" & tempTabID & """ label=""xxx"" onAction=""RibbonWatcherCallBack_OnAction"" getVisible=""RibbonWatcherCallBack_GetVisible"" />"
+         
+         tempString = tempTabStringStart & tempString & tempTabStringEnd
+         
+         arrRibbonTabs(i) = tempString & "</tab>"
+         
+         'arrRibbonTabs(i) = arrRibbonTabs(i) & "<group id=""RibbonWatcherEventGroup" & i & """ tag=""" & strTabID & """ getLabel=""RibbonWatcherCallBack_GetGroupLabel"" getVisible=""RibbonWatcherCallBack_GetGroupVisible""></group></tab>"
+      Next
+      strRibbonXml = Join(arrRibbonTabs, "")
+   End If
+
+   RibbonXml = strRibbonXml
                
 End Property
 
@@ -347,6 +398,7 @@ Public Property Get RibbonGroupXml(Optional ByVal sGroupName As String = "Zuletz
    Dim strGroupXml As String
    
    strGroupXml = "<group id=""RibbonWatcherGroup"" label=""" & sGroupName & """ getVisible=""RibbonWatcherCallBack_GetGroupVisible"">" & vbNewLine
+   'strGroupXml = "<group id=""RibbonWatcherGroup"" getLabel=""RibbonWatcherCallBack_GetGroupLabel"" getVisible=""RibbonWatcherCallBack_GetGroupVisible"">" & vbNewLine
    
    For i = 1 To m_LargeButtonCount
       strGroupXml = strGroupXml & getRibbonControlXml("RWC" & i, "large") & vbNewLine
@@ -395,7 +447,14 @@ Public Function GetImage(rwcNr As Long) As Variant
 End Function
 
 Public Function GetRibbonControlVisible(rc As IRibbonControl) As Variant
-   GetRibbonControlVisible = GetVisible(Val(Mid(rc.Id, 4)))
+
+   If Left(rc.Id, 4) = "RWEC" Then
+      setActivatedEventControl rc
+      GetRibbonControlVisible = False
+   Else
+      GetRibbonControlVisible = GetVisible(Val(Mid(rc.Id, 4)))
+   End If
+
 End Function
 
 Public Function GetVisible(rwcNr As Long) As Boolean
@@ -406,7 +465,9 @@ Public Function GetVisible(rwcNr As Long) As Boolean
 End Function
 
 Public Sub CallRibbonControlOnAction(rc As IRibbonControl)
+
    CallOnAction Val(Mid(rc.Id, 4))
+
 End Sub
 
 Public Sub CallOnAction(rwcNr As Long)
@@ -465,3 +526,24 @@ End Sub
 Private Function getIsMissing(Optional x As Variant) As Variant
    getIsMissing = x
 End Function
+
+Private Sub setActivatedEventControl(rc As IRibbonControl)
+   
+   Dim Item As IRibbonControl
+   Dim bolItemExits As Boolean
+   
+   For Each Item In m_EventGroupCollection
+      If Item.Id = rc.Id Then
+         bolItemExits = True
+      Else
+         Me.RibbonUI.InvalidateControl Item.Id
+      End If
+   Next
+   
+   If Not bolItemExits Then
+      m_EventGroupCollection.Add rc, rc.Id
+   End If
+   
+   RaiseEvent RibbonTabChanged(rc.Tag)
+   
+End Sub
