@@ -24,9 +24,6 @@ Attribute VB_Description = "Funktionen für Dateioperationen"
 Option Compare Text
 Option Explicit
 
-'Zuordnung der Prozeduren zur Doxygen-Gruppe:
-'/** \addtogroup file
-'@{ **/
 
 Private Const m_SELECTBOX_File_DlgTitle As String = "Datei auswählen"
 Private Const m_SELECTBOX_Folder_DlgTitle As String = "Ordner auswählen"
@@ -41,8 +38,6 @@ Private Declare Function WNetGetConnection Lib "mpr.dll" Alias "WNetGetConnectio
 Private Declare Function API_GetTempPath Lib "kernel32" Alias "GetTempPathA" ( _
          ByVal nBufferLength As Long, _
          ByVal lpBuffer As String) As Long
-
-
 
 
 '---------------------------------------------------------------------------------------
@@ -398,6 +393,10 @@ Public Function CreateDirectory(ByVal sPath As String) As Boolean
    Dim strPathBefore As String
 
 On Error GoTo HandleErr
+
+   If Right(sPath, 1) = "\" Then
+      sPath = Left(sPath, Len(sPath) - 1)
+   End If
 
    If Len(Dir$(sPath, vbDirectory)) > 0 Then 'Verzeichnis ist bereits vorhanden
       CreateDirectory = False
@@ -865,6 +864,3 @@ HandleErr:
    End Select
    
 End Sub
-
-
-'/** @} **/ '<-- Ende der Doxygen-Gruppen-Zuordnung
