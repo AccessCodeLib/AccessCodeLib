@@ -394,8 +394,8 @@ Public Function CreateDirectory(ByVal sPath As String) As Boolean
 
 On Error GoTo HandleErr
 
-   If Right(sPath, 1) = "\" Then
-      sPath = Left(sPath, Len(sPath) - 1)
+   If Right$(sPath, 1) = "\" Then
+      sPath = Left$(sPath, Len(sPath) - 1)
    End If
 
    If Len(Dir$(sPath, vbDirectory)) > 0 Then 'Verzeichnis ist bereits vorhanden

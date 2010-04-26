@@ -20,10 +20,6 @@ Attribute VB_Description = "Prozeduren für die Fehlerbehandlung"
 Option Compare Text
 Option Explicit
 
-'Zuordnung der Prozeduren zur Doxygen-Gruppe:
-'/** \addtogroup base
-'@{ **/
-
 '---------------------------------------------------------------------------------------
 ' Enum: ACLibErrorHandlerMode
 '---------------------------------------------------------------------------------------
@@ -342,6 +338,3 @@ On Error Resume Next
    getApplicationVbProjectName = strVbProjectName
    
 End Function
-
-
-'/** @} **/ '<-- Ende der Doxygen-Gruppen-Zuordnung

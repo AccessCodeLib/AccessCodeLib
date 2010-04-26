@@ -21,10 +21,6 @@ Attribute VB_Description = "Allgemeine Konstanten und Eigenschaften"
 Option Explicit
 Option Compare Text
 
-'Zuordnung der Prozeduren zur Doxygen-Gruppe:
-'/** \addtogroup base
-'@{ **/
-
 '---------------------------------------------------------------------------------------
 '
 ' Konstanten
@@ -97,6 +93,3 @@ On Error Resume Next
    getApplicationNameFromDb = m_ApplicationName
    
 End Function
-
-
-'/** @} **/ '<-- Ende der Doxygen-Gruppen-Zuordnung

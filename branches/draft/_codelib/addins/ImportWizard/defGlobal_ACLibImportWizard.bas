@@ -23,10 +23,6 @@ Attribute VB_Name = "defGlobal_ACLibImportWizard"
 Option Compare Database
 Option Explicit
 
-'Zuordnung der Prozeduren zur Doxygen-Gruppe:
-'/** \addtogroup ACLibAddInImportWizard
-'@{ **/
-
 ' Integrierte Erweiterungen
 Private Const EXTENSION_KEY_ACLibFilemanager As String = "ACLibFileManager"
 Private Const EXTENSION_KEY_ACLibConfiguration As String = "ACLibConfiguration"
@@ -211,5 +207,3 @@ HandleErr:
    End Select
    
 End Function
-
-'/** @} **/ '<-- Ende der Doxygen-Gruppen-Zuordnung

@@ -56,10 +56,10 @@ Private Declare Function FindWindowEx Lib "USER32.DLL" Alias "FindWindowExA" ( _
 Private Declare Function CreateSolidBrush Lib "gdi32.dll" (ByVal crColor As Long) As Long
 
 Private Declare Function SetClassLong Lib "user32" Alias "SetClassLongA" ( _
-       ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+       ByVal Hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
        
 Private Declare Function RedrawWindow Lib "user32" ( _
-       ByVal hWnd As Long, lprcUpdate As Any, _
+       ByVal Hwnd As Long, lprcUpdate As Any, _
        ByVal hrgnUpdate As Long, ByVal fuRedraw As Long) As Long
 
 Private Const GCL_HBRBACKGROUND As Long = -10

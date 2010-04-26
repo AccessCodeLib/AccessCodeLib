@@ -511,3 +511,17 @@ address {
 #footer a:hover { color:#03C; }
 #footer a:active { color:#03C; }
 #footer a:focus { color:#84b0c7; }
+
+
+#main {left:12px;padding-left:128px;background-color:#FFF;margin:0;margin-right:10px;background-position:100px 70px;background-repeat:no-repeat;}
+#header {top:0;left:0;margin:0;padding:0;border:none;color:#FFF;background-color:transparent;margin-top:12px;margin-bottom:4px;padding:0px 5px;background-image:url("./images/bg_header.gif");}
+#header .inner {margin:0;padding:0px;height:65px;background-repeat:no-repeat;padding-left:154px;margin-top:10px;margin-left:10px;background-image:url("./images/site_logo.gif");}
+#header .bglink {margin:0;padding:0px;margin-top:10px;margin-left:10px;float:left;}
+#header .bglink a {width:141px;height:52px;}
+#header h1 {font-family:Verdana, Arial, Helvetica, sans-serif;letter-spacing:2px;margin:0;padding:0;padding-top:6px;
+	text-decoration:none;font-size:24px;line-height:24px;border:none;}
+#header p {margin:0;padding:0;padding-top:4px;font-size:18px;line-height:18px;display:block;letter-spacing:1px;}
+#header span.subtitle{font-size:85%;}
+#header a {padding:0;margin:0;width:100%;display:block;color:#FFF;text-decoration:none;background-color:transparent;}
+
+#content, div.content {padding:0 0.5em;margin:0;overflow:auto;font-size:100%;color:#000;}

@@ -23,10 +23,6 @@ Attribute VB_Name = "_initApplication"
 Option Compare Database
 Option Explicit
 
-'Zuordnung der Prozeduren zur Doxygen-Gruppe:
-'/** \addtogroup base
-'@{ **/
-
 '-------------------------
 ' Anwendungseinstellungen
 '-------------------------
@@ -69,6 +65,3 @@ Public Sub RestoreApplicationDefaultSettings()
    On Error Resume Next
    CurrentApplication.ApplicationTitle = CurrentApplication.ApplicationFullName
 End Sub
-
-
-'/** @} **/ '<-- Ende der Doxygen-Gruppen-Zuordnung

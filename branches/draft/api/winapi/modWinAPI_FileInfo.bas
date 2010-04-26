@@ -23,10 +23,6 @@ Attribute VB_Description = "Dateiinformationen mit Win-API auslesen"
 Option Compare Text
 Option Explicit
 
-'/**
-'\addtogroup WinAPI
-'@{ **/
-
 Private Declare Function GetFileVersionInfoSize Lib "version.dll" Alias "GetFileVersionInfoSizeA" ( _
   ByVal lptstrFilename As String, _
   lpdwHandle As Long) As Long
@@ -51,6 +47,7 @@ Private Declare Sub MoveMemory Lib "kernel32" Alias "RtlMoveMemory" ( _
   dest As Any, _
   ByVal Source As Long, _
   ByVal Length As Long)
+  
 
 Private Type VS_FIXEDFILEINFO
   dwSignature As Long
@@ -72,6 +69,7 @@ Private Type FILEINFOOUT
   FileVersion As String
   ProductVersion As String
 End Type
+
 
 Private Function GetVersion(ByVal sPath As String, _
                            ByRef FInfo As FILEINFOOUT) As Boolean
@@ -139,6 +137,7 @@ HandleErr:
 End Function
 
 
+
 '#####################################################
 '
 ' Ergänzung:
@@ -184,6 +183,3 @@ HandleErr:
    End Select
    
 End Function
-
-
-'/** @} **/ '<-- Ende der Doxygen-Gruppen-Zuordnung

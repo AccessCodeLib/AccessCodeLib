@@ -51,7 +51,7 @@ Private Type RECT
 End Type
 
 Private Type msg
-   hWnd As Long
+   Hwnd As Long
    Message As Long
    wParam As Long
    lParam As Long
@@ -96,7 +96,7 @@ Private Declare Function TrackPopupMenu _
       ByVal x As Long, _
       ByVal Y As Long, _
       ByVal nReserved As Long, _
-      ByVal hWnd As Long, _
+      ByVal Hwnd As Long, _
       lprc As Any _
       ) As Long 'lprc As RECT
 
@@ -110,7 +110,7 @@ Private Declare Function GetMessage _
       Lib "USER32.DLL" _
       Alias "GetMessageA" ( _
       ByRef lpMsg As msg, _
-      ByVal hWnd As Long, _
+      ByVal Hwnd As Long, _
       ByVal wMsgFilterMin As Long, _
       ByVal wMsgFilterMax As Long _
       ) As Long
@@ -126,7 +126,7 @@ Private Declare Function TranslateMessage _
 
 Private Declare Function GetWindowRect _
       Lib "USER32.DLL" ( _
-         ByVal hWnd As Long, _
+         ByVal Hwnd As Long, _
          ByRef lpRect As RECT _
       ) As Long
       
@@ -226,13 +226,13 @@ On Error GoTo HandleErr
    
    Select Case m_Section
       Case 0 'Detailbereich
-         lngSectionHwnd = GetDetailSection(objParent.hWnd)
+         lngSectionHwnd = GetDetailSection(objParent.Hwnd)
       Case 1 'Kopf
-         lngSectionHwnd = GetHeaderSection(objParent.hWnd)
+         lngSectionHwnd = GetHeaderSection(objParent.Hwnd)
       Case 2 ' Fuß
-         lngSectionHwnd = GetFooterSection(objParent.hWnd)
+         lngSectionHwnd = GetFooterSection(objParent.Hwnd)
       Case Else
-         lngSectionHwnd = GetDetailSection(objParent.hWnd)
+         lngSectionHwnd = GetDetailSection(objParent.Hwnd)
    End Select
    Set objParent = Nothing
    
@@ -421,7 +421,7 @@ On Error GoTo HandleErr
    GetWindowRect Helper, rcHelper
    
    If m_MenuControl Is Nothing Then
-      GetWindowRect m_AccessForm.hWnd, rcAccForm
+      GetWindowRect m_AccessForm.Hwnd, rcAccForm
       ButtonLeft = GetPixelFromTwips(x) + rcAccForm.Left
       ButtonTop = GetPixelFromTwips(Y) + rcAccForm.Top
    Else
@@ -445,21 +445,21 @@ On Error GoTo HandleErr
    End If
    
    TrackPopupMenu MenuHwnd, TPM_BOTTOMALIGN, Xpos, Ypos, _
-               ByVal 0&, objParent.hWnd, ByVal 0&
+               ByVal 0&, objParent.Hwnd, ByVal 0&
    
    'Message-Loop (Obacht: für normale Formulare Application.hWndAccessApp, für POPUPS Me.hwnd)
    
-   Dim hWnd As Long
+   Dim Hwnd As Long
    If m_AccessForm.PopUp = True Then
-      hWnd = m_AccessForm.hWnd
+      Hwnd = m_AccessForm.Hwnd
    Else
-      hWnd = Application.hWndAccessApp
+      Hwnd = Application.hWndAccessApp
    End If
    
    Dim repeatGetMessage As Boolean
    Do 'Sicherheitsschliefe, falls es Probleme mit Windows-Message gibt. (WM_MOUSELEAVE)
       repeatGetMessage = False
-      GetMessage Message, hWnd, ByVal 0&, ByVal 0&
+      GetMessage Message, Hwnd, ByVal 0&, ByVal 0&
       TranslateMessage Message
       DispatchMessage Message
       

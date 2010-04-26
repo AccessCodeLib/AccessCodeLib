@@ -23,11 +23,6 @@ Attribute VB_Description = "Standard-Prozeduren für die Arbeit mit ApplicationHa
 Option Compare Database
 Option Explicit
 
-'Zuordnung der Prozeduren zur Doxygen-Gruppe:
-'/** \addtogroup base
-'@{ **/
-
-
 ' Instanz der Hauptsteuerung
 Private m_ApplicationHandler As ApplicationHandler
 
@@ -206,6 +201,3 @@ HandleErr:
    End Select
    
 End Property
-
-
-'/** @} **/ '<-- Ende der Doxygen-Gruppen-Zuordnung
