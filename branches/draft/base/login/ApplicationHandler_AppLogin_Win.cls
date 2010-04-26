@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: ApplicationHandler_WinLogin (Josef Pötzl, 2009-12-11)
+' Klassenmodul: ApplicationHandler_WinLogin
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -324,13 +324,22 @@ End Sub
 '---------------------------------------------------------------------------------------
 Public Function Login() As Boolean
    
+   Dim strDefaultUser As String
+   
 On Error GoTo HandleErr
 
    Dim openArgString As String
    If Not (m_ApplicationHandler Is Nothing) Then
       openArgString = m_ApplicationHandler.ApplicationName & " - "
    End If
-   openArgString = openArgString & "Login@" & Environ("username")
+   
+   If Len(m_UserName) > 0 Then
+      strDefaultUser = m_UserName
+   Else
+      strDefaultUser = Environ("username")
+   End If
+   
+   openArgString = openArgString & "Login@" & strDefaultUser
 
    DoCmd.OpenForm "frmLogin", acNormal, , , acFormEdit, acDialog, openArgString
    '=> Im LoginFormular erfolgt Aufruf der Eigenschaft "LoginForm",
@@ -402,6 +411,7 @@ End Function
 'Ereignisbehandlung vom Login-Formular
 Private Sub m_LoginForm_cancelled()
 On Error Resume Next
+   m_UserName = vbNullString
    m_LoginCancelled = True
 End Sub
 
@@ -411,6 +421,7 @@ On Error GoTo HandleErr
 
    Dim strDomain As String
    Dim pos As Long
+   Dim bolLoginOk As Boolean
    
    m_LoginCancelled = False
    
@@ -424,8 +435,13 @@ On Error GoTo HandleErr
       strDomain = Domain
    End If
    
-   Cancel = Not CheckUser(strDomain, LoginName, Password)
-
+   bolLoginOk = CheckUser(strDomain, LoginName, Password)
+   If bolLoginOk Then
+      m_UserName = LoginName
+   Else
+      Cancel = True
+   End If
+   
 ExitHere:
 On Error Resume Next
    Exit Sub
