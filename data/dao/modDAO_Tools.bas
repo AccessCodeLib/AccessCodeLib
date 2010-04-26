@@ -22,10 +22,20 @@ Attribute VB_Description = "Hilfsfunktionen für den Umgang mit DAO"
 Option Compare Database
 Option Explicit
 
-'Zuordnung der Prozeduren zur Doxygen-Gruppe:
-'/** \addtogroup data_dao
-'@{ **/
-
+'---------------------------------------------------------------------------------------
+' Function: TableDefExists (Josef Pötzl)
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Prüft ob eine Tabelle (TableDef) vorhanden ist
+' </summary>
+' <param name="sTableDefName">Name der Tabelle</param>
+' <param name="dbs">DAO.Database-Referenz (falls keine angegeben wurde, wird CodeDb verwendet)</param>
+' <returns>Boolean</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 Public Function TableDefExists(ByVal sTableDefName As String, Optional ByRef dbs As DAO.Database = Nothing) As Boolean
 'Schneller wäre der Zugriff auf MSysObject (select .. from MSysObject where Name = 'Tabellenname' AND Type IN (1, 4, 6)
 'Eine weitere Alternative wäre das Auswerten über cnn.OpenSchema(adSchemaTables, ...) ... dann werden allerdings keine verknüpften Tabellen geprüft
@@ -51,7 +61,6 @@ On Error Resume Next
    Exit Function
 
 HandleErr:
-   'Diese Funktion wird nie vom Anwender direkt aufgerufen werden, daher Weitergabe des Fehlers an die aufrufende Prozedur
    Select Case HandleError(Err.Number, "TableDefExists", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
    Case ACLibErrorResumeMode.aclibErrResume
       Resume
@@ -62,5 +71,3 @@ HandleErr:
    End Select
 
 End Function
-
-'/** @} **/ '<-- Ende der Doxygen-Gruppen-Zuordnung

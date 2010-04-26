@@ -42,7 +42,7 @@ Private Declare Function LoadCursorBynum Lib "user32" Alias "LoadCursorA" (ByVal
 Private Declare Function SetCursor Lib "user32" (ByVal hCursor As Long) As Long
 
 '---------------------------------------------------------------------------------------
-' Function: MouseCursor (2009-11-11)
+' Sub: MouseCursor (2009-11-11)
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -54,8 +54,8 @@ Private Declare Function SetCursor Lib "user32" (ByVal hCursor As Long) As Long
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function MouseCursor(CursorType As IDC_MouseCursor)
+Public Sub MouseCursor(ByVal CursorType As IDC_MouseCursor)
   Dim lngRet As Long
   lngRet = LoadCursorBynum(0&, CursorType)
   lngRet = SetCursor(lngRet)
-End Function
+End Sub

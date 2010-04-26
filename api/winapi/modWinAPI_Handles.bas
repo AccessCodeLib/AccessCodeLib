@@ -26,17 +26,13 @@ Attribute VB_Description = "Win-API-Funktionen: Handles"
 Option Compare Database
 Option Explicit
 
-'/**
-'\addtogroup WinAPI
-'@{ **/
-
 Private Type POINTAPI
    x As Long
    Y As Long
 End Type
 
 Private Declare Function ClientToScreen Lib "USER32.DLL" ( _
-         ByVal hWnd As Long, _
+         ByVal Hwnd As Long, _
          ByRef lpPoint As POINTAPI _
       ) As Long
 
@@ -47,8 +43,18 @@ Private Declare Function FindWindowEx Lib "USER32.DLL" Alias "FindWindowExA" ( _
          ByVal lpsz2 As String _
       ) As Long
 
-'Private Declare Function GetFocus Lib "USER32.DLL" () As Long
-
+'---------------------------------------------------------------------------------------
+' Function: GetMDI
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Ermittelt den Handle des MDI-Client-Fensters.
+' </summary>
+' <returns>Handle (Long)</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 Public Function GetMDI() As Long
 
    'Ermittelt den Handle des MDI-Client-Fensters.
@@ -78,8 +84,19 @@ HandleErr:
 
 End Function
 
-'----------------------------------------------------------------------------------------
-
+'---------------------------------------------------------------------------------------
+' Function: GetHeaderSection
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Ermittelt den Handle für den Kopfbereich eines Formulares
+' </summary>
+' <param name="fHwnd">Handle des Formulars (Form.Hwnd)</param>
+' <returns>Long</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 Public Function GetHeaderSection(ByVal fHwnd As Long) As Long
 
    'Ermittelt den Handle für den Kopfbereich eines Formulares
@@ -108,7 +125,19 @@ HandleErr:
 
 End Function
 
-'----------------------------------------------------------------------------------------
+'---------------------------------------------------------------------------------------
+' Function: GetDetailSection
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Ermittelt den Handle für den Detailbereich eines Formulares
+' </summary>
+' <param name="fHwnd">Handle des Formulars (Form.Hwnd)</param>
+' <returns>Long</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 Public Function GetDetailSection(ByVal fHwnd As Long) As Long
 
    'Ermittelt den Handle für den Detailbereich eines Formulares
@@ -139,7 +168,19 @@ HandleErr:
 
 End Function
 
-'----------------------------------------------------------------------------------------
+'---------------------------------------------------------------------------------------
+' Function: GetFooterSection
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Ermittelt den Handle für den Fußbereich eines Formulares
+' </summary>
+' <param name="fHwnd">Handle des Formulars (Form.Hwnd)</param>
+' <returns>Long</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 Public Function GetFooterSection(ByVal fHwnd As Long) As Long
 
    'Ermittelt den Handle für den Fußbereich eines Formulares
@@ -170,7 +211,22 @@ HandleErr:
 
 End Function
 
-'----------------------------------------------------------------------------------------
+'---------------------------------------------------------------------------------------
+' Function: GetControl
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Ermittelt den Handle eines beliebigen Controls
+' </summary>
+' <param name="frm">Formular-Referenz</param>
+' <param name="sHwnd">Handle des Bereichs, auf dem sich das Control befindet (Header, Detail, Footer)</param>
+' <param name="ClassName">Name der Fensterklasse des Controls</param>
+' <param name="ControlName">Name des Controls</param>
+' <returns>Long</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 Public Function GetControl(ByRef frm As Access.Form, ByVal sHwnd As Long, ByVal ClassName As String, ByVal ControlName As String) As Long
 
    'Ermittelt den Handle eines beliebigen Controls
@@ -224,6 +280,3 @@ On Error Resume Next
    GetControl = H
 
 End Function
-
-
-'/** @} **/ '<-- Ende der Doxygen-Gruppen-Zuordnung

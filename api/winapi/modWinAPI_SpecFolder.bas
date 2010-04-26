@@ -20,7 +20,7 @@ Attribute VB_Name = "modWinAPI_SpecFolder"
 Option Compare Database
 Option Explicit
 
-Private Const CSIDL_FLAG_CREATE = &H8000&
+Private Const CSIDL_FLAG_CREATE As Long = &H8000&
 
 Public Enum CSIDL_FOLDER
    CSIDL_DESKTOP = &H0& ' Desktop
@@ -72,32 +72,32 @@ Public Enum CSIDL_FOLDER
    CSIDL_FOLDER_MASK = &HFF&
 End Enum
 
-Private Const CSIDL_FLAG_DONT_VERIFY = &H4000&
-Private Const SHGFP_TYPE_CURRENT = 0
-Private Const MAX_PATH = 260
+Private Const CSIDL_FLAG_DONT_VERIFY As Long = &H4000&
+Private Const SHGFP_TYPE_CURRENT As Long = 0&
+Private Const MAX_PATH As Long = 260&
 
 Private Declare Function SHGetFolderPath Lib "shfolder" Alias "SHGetFolderPathA" ( _
    ByVal hwndOwner As Long, ByVal nFolder As Long, _
    ByVal hToken As Long, ByVal dwFlags As Long, _
    ByVal pszPath As String) As Long
 
-Public Function GetSpecFolder(lCSIDL As CSIDL_FOLDER, _
-      Optional bCreate As Boolean = False, _
-      Optional bVerify As Boolean = False) As String
+Public Function GetSpecFolder(ByVal lCSIDL As CSIDL_FOLDER, _
+      Optional ByVal bCreate As Boolean = False, _
+      Optional ByVal bVerify As Boolean = False) As String
       
    Dim sPath As String, RetVal As Long, lFlags As Long
   
 On Error GoTo HandleErr
 
-   sPath = String(MAX_PATH, 0)
+   sPath = String$(MAX_PATH, 0)
    lFlags = lCSIDL
    If bCreate Then lFlags = lFlags Or CSIDL_FLAG_CREATE
-   If Not bCreate Then lFlags = lFlags Or CSIDL_FLAG_DONT_VERIFY
+   If Not bVerify Then lFlags = lFlags Or CSIDL_FLAG_DONT_VERIFY
    RetVal = SHGetFolderPath(0, lFlags, 0, SHGFP_TYPE_CURRENT, sPath)
    Select Case RetVal
    Case 0
       ' Verzeichnis gefunden
-      GetSpecFolder = Left(sPath, InStr(1, sPath, Chr(0)) - 1)
+      GetSpecFolder = Left$(sPath, InStr(1, sPath, Chr$(0)) - 1)
    Case 1
       ' lCSIDL ist gültig, aber das Verzeichnis existiert nicht
       ' CSIDL_FLAG_CREATE erzeugt es automatisch
@@ -105,6 +105,8 @@ On Error GoTo HandleErr
    Case &H80070057
       ' Ungültiges Verzeichnis
       Err.Raise vbObjectError + 2, "GetSpecFolder", "Ungültiger Verzeichnisbezeichner (CSIDL)"
+   Case Else
+      Err.Raise vbObjectError + 999, "GetSpecFolder", "Unerwartete Rückgabe der API-Funktion SHGetFolderPath"
    End Select
 
 

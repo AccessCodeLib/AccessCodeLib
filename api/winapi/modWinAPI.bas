@@ -22,9 +22,7 @@ Attribute VB_Description = "Gebräuchliche WinAPI-Funktionen"
 Option Compare Text
 Option Explicit
 
-'Zuordnung der Prozeduren zur Doxygen-Gruppe:
-'/** \addtogroup WinAPI
-'@{ **/
+
 
 Public Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" ( _
    pDest As Any, _
@@ -32,7 +30,7 @@ Public Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" ( _
    ByVal dwLength As Long)
 
 Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" ( _
-   ByVal hWnd As Long, _
+   ByVal Hwnd As Long, _
    ByVal wMsg As Long, _
    ByVal wParam As Long, _
    lParam As Any) As Long
@@ -60,7 +58,7 @@ Private Const LR_LOADFROMFILE As Long = &H10
 '--
 
 Private Declare Function ShellExecuteA Lib "shell32.dll" ( _
-   ByVal hWnd As Long, _
+   ByVal Hwnd As Long, _
    ByVal lOperation As String, _
    ByVal lpFile As String, _
    ByVal lpParameters As String, _
@@ -122,11 +120,24 @@ Private Declare Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As L
 Private Declare Function WaitForSingleObject Lib "kernel32" (ByVal hHandle As Long, ByVal dwMilliseconds As Long) As Long
 
 
-
 '---------------------------------------------------------------------------------------
 ' Kapselungen
 '---------------------------------------------------------------------------------------
 
+'---------------------------------------------------------------------------------------
+' Function: ShellExecuteOpenFile (Josef Pötzl, 2010-04-19)
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Datei mit ShellExecute öffnen
+' </summary>
+' <param name="sFile">vollständiger Dateiname inkl. Verzeichnis</param>
+' <param name="sAPIOperation">"open", "print", ...</param>
+' <returns>Boolean</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 Public Function ShellExecuteOpenFile(ByVal sFile As String, _
                             Optional ByVal sAPIOperation As String = vbNullString) As Boolean
 
@@ -176,6 +187,22 @@ HandleErr:
 End Function
 
 
+'---------------------------------------------------------------------------------------
+' Function: LaunchAppSynchronous (Josef Pötzl, 2010-04-19)
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Anwnedung Synchron ausführen
+' </summary>
+' <param name="strExecutablePathAndName">Ausführbare Datei</param>
+' <param name="sParam">Startparameter der Anwendung</param>
+' <param name="lShowCommand">Fenstermodus</param>
+' <returns>Boolean</returns>
+' <remarks>
+' Code hält so lange an, bis die gestartete Anwendung beendet wurde.
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 Public Function LaunchAppSynchronous(ByVal strExecutablePathAndName As String, _
                      Optional ByVal sParam As String = vbNullString, _
                      Optional ByVal lShowCommand As Long = vbNormalFocus) As Boolean
@@ -299,10 +326,7 @@ On Error Resume Next ' ... Fehlermeldung würde bei dieser "unwichtigen" Funktion
    imageHandle = LoadImage(0, IconFilePath, IMAGE_ICON, _
                            ICONPIXELSIZE, ICONPIXELSIZE, LR_LOADFROMFILE)
    If imageHandle <> 0 Then
-      SendMessage FormRef.hWnd, WM_MSG_SETICON, WM_PARAM_ICON_SMALL, ByVal imageHandle
+      SendMessage FormRef.Hwnd, WM_MSG_SETICON, WM_PARAM_ICON_SMALL, ByVal imageHandle
    End If
    
 End Sub
-
-
-'/** @} **/ '<-- Ende der Doxygen-Gruppen-Zuordnung

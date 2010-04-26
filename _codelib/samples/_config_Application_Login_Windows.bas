@@ -7,7 +7,6 @@ Attribute VB_Name = "_config_Application"
 '<codelib>
 '  <file>_codelib/samples/_config_Application_Login_Windows.bas</file>
 '  <replace>base/_config_Application.bas</replace> 'dieses Modul mit <file> ersetzen ... es darf nur ein Konfig-Datei geben
-'  <license>_codelib/license.bas</license>
 '  <use>base/modApplication.bas</use>
 '  <use>base/ApplicationHandler.cls</use>
 '  <use>base/modErrorHandler.bas</use>

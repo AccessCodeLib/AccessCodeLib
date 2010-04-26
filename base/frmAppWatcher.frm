@@ -1,6 +1,6 @@
 Version =19
 VersionRequired =19
-Checksum =992900355
+Checksum =-793289968
 Begin Form
     AllowFilters = NotDefault
     PopUp = NotDefault
@@ -22,10 +22,10 @@ Begin Form
     Width =5102
     DatasheetFontHeight =10
     ItemSuffix =4
-    Left =4755
-    Top =3510
-    Right =18645
-    Bottom =8940
+    Left =10050
+    Top =4725
+    Right =15150
+    Bottom =5565
     DatasheetGridlinesColor =12632256
     OnUnload ="[Event Procedure]"
     RecSrcDt = Begin

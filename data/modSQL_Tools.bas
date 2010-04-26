@@ -4,10 +4,16 @@ Attribute VB_Description = "SQL-Hilfsfunktionen"
 ' Modul: modSQL
 '---------------------------------------------------------------------------------------
 '/**
+' \author	Josef Pötzl
 ' <summary>
 ' SQL-Hilfsfunktionen
 ' </summary>
-'\ingroup data
+' <remarks></remarks>
+'
+' \warning Nicht vergessen: SQL_DEFAULT_TEXTDELIMITER und SQL_DEFAULT_DATEFORMAT 
+'          für das DBMS anpassen oder die Parameter entsprechend einstellen.
+'
+' \ingroup	data
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
@@ -21,9 +27,6 @@ Attribute VB_Description = "SQL-Hilfsfunktionen"
 Option Compare Database
 Option Explicit
 
-'Zuordnung der Prozeduren zur Doxygen-Gruppe:
-'/** \addtogroup data
-'@{ **/
 
 '---------------------------------------------------------------------------------------
 ' Function: GetSQLString_Text (2009-07-25)
@@ -148,6 +151,3 @@ HandleErr:
    End Select
    
 End Function
-
-
-'/** @} **/ '<-- Ende der Doxygen-Gruppen-Zuordnung
