@@ -28,6 +28,7 @@ Attribute VB_Description = "ShortcutMenu über Win-API"
 '  <license>_codelib/license.bas</license>
 '  <use>api/winapi/modWinAPI_Layout.bas</use>
 '  <use>api/winapi/modWinAPI_Handles.bas</use>
+'  <use>base/modErrorHandler.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -40,7 +41,7 @@ Option Explicit
 
 Private Type POINTAPI
    x As Long
-   Y As Long
+   y As Long
 End Type
 
 Private Type RECT
@@ -68,7 +69,7 @@ Private Declare Function CreateWindowEx _
       ByVal lpWindowName As String, _
       ByVal dwStyle As Long, _
       ByVal x As Long, _
-      ByVal Y As Long, _
+      ByVal y As Long, _
       ByVal nWidth As Long, _
       ByVal nHeight As Long, _
       ByVal hwndParent As Long, _
@@ -94,7 +95,7 @@ Private Declare Function TrackPopupMenu _
       ByVal hMenu As Long, _
       ByVal wFlags As Long, _
       ByVal x As Long, _
-      ByVal Y As Long, _
+      ByVal y As Long, _
       ByVal nReserved As Long, _
       ByVal Hwnd As Long, _
       lprc As Any _
@@ -130,6 +131,12 @@ Private Declare Function GetWindowRect _
          ByRef lpRect As RECT _
       ) As Long
       
+Private Declare Function SetMenuDefaultItem _
+      Lib "user32" ( _
+         ByVal hMenu As Long, _
+         ByVal uItem As Long, _
+         ByVal fByPos As Long _
+      ) As Long
       
 'Message
 Private Const WM_COMMAND As Long = &H111
@@ -165,6 +172,7 @@ Private Type WinAPIMenuHandlerItem
    ItemText As String
    ItemType As Long
    SubMenu As Long
+   DefaultItem As Boolean
 End Type
 
 Private m_MenuItems() As WinAPIMenuHandlerItem
@@ -325,7 +333,8 @@ End Property
 '---------------------------------------------------------------------------------------
 Public Sub AddMenuItem(ByVal lMenuItemNumber As Long, ByVal sItemText As String, _
               Optional ByVal lItemType As MenuItemStyle = MF_STRING, _
-              Optional ByVal lSubMenu As Long = 0)
+              Optional ByVal lSubMenu As Long = 0, _
+              Optional ByVal bDefaultItem As Boolean = False)
               
 On Error GoTo HandleErr
 
@@ -337,6 +346,7 @@ On Error GoTo HandleErr
       .ItemText = sItemText
       .ItemType = lItemType
       .SubMenu = lSubMenu
+      .DefaultItem = bDefaultItem
    End With
 
 ExitHere:
@@ -369,7 +379,7 @@ End Sub
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function OpenMenu(Optional ByVal x As Single = 0, Optional ByVal Y As Single = 0) As Long
+Public Function OpenMenu(Optional ByVal x As Single = 0, Optional ByVal y As Single = 0) As Long
 
    Dim MenuHwnd As Long
    Dim tmpHwnd As Long
@@ -394,28 +404,31 @@ On Error GoTo HandleErr
    'Leeres Menü erstellen
    MenuHwnd = CreatePopupMenu
    
-   
    'Einträge hinzufügen
    Dim i As Long
    
    For i = 1 To m_ItemCnt
       With m_MenuItems(i)
-      If .SubMenu > 0 Then
-         If tmpHwnd = 0 Then
-            tmpHwnd = CreatePopupMenu
-         End If
-         If .ItemType And MF_POPUP = MF_POPUP Then
-            AppendMenu MenuHwnd, MF_STRING Or MF_POPUP, tmpHwnd, .ItemText
-            tmpHwnd = 0
+         If .SubMenu > 0 Then
+            If tmpHwnd = 0 Then
+               tmpHwnd = CreatePopupMenu
+            End If
+            If .ItemType And MF_POPUP = MF_POPUP Then
+               AppendMenu MenuHwnd, MF_STRING Or MF_POPUP, tmpHwnd, .ItemText
+               tmpHwnd = 0
+            Else
+               AppendMenu tmpHwnd, .ItemType, .ItemNumber, .ItemText
+            End If
          Else
-            AppendMenu tmpHwnd, .ItemType, .ItemNumber, .ItemText
+            AppendMenu MenuHwnd, .ItemType, .ItemNumber, .ItemText
          End If
-      Else
-         AppendMenu MenuHwnd, .ItemType, .ItemNumber, .ItemText
-      End If
+      
+         If .DefaultItem Then SetMenuDefaultItem MenuHwnd, .ItemNumber - 1, &H400&
+      
       End With
+      
    Next i
-   
+
    'Position ermitteln
    '- Hilfsfenster (~Sektionsfenster) absolut
    GetWindowRect Helper, rcHelper
@@ -423,11 +436,11 @@ On Error GoTo HandleErr
    If m_MenuControl Is Nothing Then
       GetWindowRect m_AccessForm.Hwnd, rcAccForm
       ButtonLeft = GetPixelFromTwips(x) + rcAccForm.Left
-      ButtonTop = GetPixelFromTwips(Y) + rcAccForm.Top
+      ButtonTop = GetPixelFromTwips(y) + rcAccForm.Top
    Else
    '- Buttom relativ zum Sektionsfenster
       ButtonLeft = GetPixelFromTwips(m_MenuControl.Left) + GetPixelFromTwips(x)
-      ButtonTop = GetPixelFromTwips(m_MenuControl.Top) + GetPixelFromTwips(Y)
+      ButtonTop = GetPixelFromTwips(m_MenuControl.Top) + GetPixelFromTwips(y)
    End If
    '- Miteinander verrechnen
    Xpos = rcHelper.Left + ButtonLeft - 1
@@ -448,6 +461,7 @@ On Error GoTo HandleErr
                ByVal 0&, objParent.Hwnd, ByVal 0&
    
    'Message-Loop (Obacht: für normale Formulare Application.hWndAccessApp, für POPUPS Me.hwnd)
+   
    
    Dim Hwnd As Long
    If m_AccessForm.PopUp = True Then
