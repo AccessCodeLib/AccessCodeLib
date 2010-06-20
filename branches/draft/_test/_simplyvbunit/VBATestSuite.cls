@@ -15,7 +15,9 @@ Attribute VB_Exposed = False
 ' Anpassung (Kapselung) von SimplyVBUnit für VBA
 ' </summary>
 ' <remarks>
-' Abgestimmt auf die Version 3.0 von SimplyVBUnit
+' Abgestimmt auf die Version 3.0 von <a href="http://sourceforge.net/projects/simplyvbunit/">SimplyVBUnit 3.0</a>
+'
+' Aufruf-Beispiel (mit Nutzung des Moduls _VBATestSuite): MyTestSuite.RunAll
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
@@ -38,13 +40,6 @@ Option Explicit
    Private m_CurrentVbProject As VBIDE.VBProject
 #Else
    Private m_CurrentVbProject As Object
-
-   Public Enum vbext_ProcKind
-      vbext_pk_Proc = 0
-      vbext_pk_Let = 1
-      vbext_pk_Set = 2
-      vbext_pk_Get = 3
-   End Enum
 
    Public Enum vbext_ComponentType
       vbext_ct_StdModule = 1
@@ -146,7 +141,7 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Add(ParamArray TestToAdd()) As VBATestSuite
+Public Function Add(ParamArray TestToAdd() As Variant) As VBATestSuite
 
    Dim itm As Variant
 
@@ -187,7 +182,7 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Reset(Optional removeTests As Boolean = False) As VBATestSuite
+Public Function Reset(Optional ByVal removeTests As Boolean = False) As VBATestSuite
 
    If removeTests Then
       Set suite = New SimplyVBUnit.TestSuite
@@ -208,9 +203,9 @@ Private Sub listener_TestSuiteStarted(ByVal testSuiteRef As SimplyVBUnit.TestSui
 End Sub
 
 Private Sub listener_TestFixtureStarted(ByVal Fixture As SimplyVBUnit.TestFixture)
-   Debug.Print String(50, "-")
+   Debug.Print String$(50, "-")
    Debug.Print Fixture.Name
-   Debug.Print String(Len(Fixture.Name), "-")
+   Debug.Print String$(Len(Fixture.Name), "-")
    Debug.Print , "Started: " & Now()
    Debug.Print
 End Sub
@@ -229,14 +224,14 @@ Private Sub listener_TestCaseFinished(ByVal Result As SimplyVBUnit.TestResult)
    ElseIf Result.IsError Then
       m_Failed = m_Failed + 1
       Debug.Print "Error"
-      Debug.Print String(2, " ");
+      Debug.Print String$(2, " ");
    End If
    Debug.Print Result.Message
 
 End Sub
 
 Private Sub listener_TestFixtureFinished(ByVal Result As SimplyVBUnit.TestResult)
-   Debug.Print String(5, "-")
+   Debug.Print String$(5, "-")
    Debug.Print , "Finished: " & Now()
 End Sub
 
@@ -276,7 +271,7 @@ Private Sub addTestsFromVbProjectClasses()
 #End If
 
    Set testFactoryVbProject = CurrentVbProject
-   Set testFactoryVbComponent = testFactoryVbProject.VBComponents.Add(vbext_ct_StdModule)
+   Set testFactoryVbComponent = testFactoryVbProject.VBComponents.Add(vbext_ComponentType.vbext_ct_StdModule)
    Set testFactoryCodeModule = testFactoryVbComponent.CodeModule
 
    Dim checkString As String
@@ -298,9 +293,9 @@ Private Sub addTestsFromVbProjectClasses()
 End Sub
 
 #If EARLYBINDING_VBIDE Then
-Private Sub addTestClassFromClassName(testFactoryCodeModule As CodeModule, className As String)
+Private Sub addTestClassFromClassName(ByVal testFactoryCodeModule As CodeModule, ByVal className As String)
 #Else
-Private Sub addTestClassFromClassName(testFactoryCodeModule As Object, className As String)
+Private Sub addTestClassFromClassName(ByVal testFactoryCodeModule As Object, ByVal className As String)
 #End If
 
    Dim procString As String
