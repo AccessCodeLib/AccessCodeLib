@@ -7,6 +7,9 @@ Attribute VB_Name = "_VBATestSuite"
 ' Hilfssmodul für den Aufruf einer anwendungsweiten Instanz von VBATestSuite
 ' </summary>
 ' <remarks>
+' Benötigt <a href="http://sourceforge.net/projects/simplyvbunit/">SimplyVBUnit 3.0</a>
+'
+'
 'Test-Klasse(n) anhängen:                                                             \n
 '  MyTestSuite.Add new DataTestClass,  new OtherTestClass                             \n
 '
@@ -27,9 +30,9 @@ Attribute VB_Name = "_VBATestSuite"
 '  <file>_test/_simplyvbunit/_VBATestSuite.bas</file>
 '  <license>_codelib/license.bas</license>
 '  <use>_test/_simplyvbunit/VBATestSuite.cls</use>
-'  <ref><name>NAME</name><major>0</major><minor>0</minor><guid>GUID</guid></ref>
 '</codelib>
-'---------------------------------------------------------------------------------------'
+'---------------------------------------------------------------------------------------
+'
 Option Compare Database
 Option Explicit
 
