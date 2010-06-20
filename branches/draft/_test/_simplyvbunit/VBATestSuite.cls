@@ -15,9 +15,9 @@ Attribute VB_Exposed = False
 ' Anpassung (Kapselung) von SimplyVBUnit für VBA
 ' </summary>
 ' <remarks>
-' Abgestimmt auf die Version 3.0 von <a href="http://sourceforge.net/projects/simplyvbunit/">SimplyVBUnit 3.0</a>
+' Abgestimmt auf die Version 3.0 von <a href="http://sourceforge.net/projects/simplyvbunit/">SimplyVBUnit</a>
 '
-' Aufruf-Beispiel (mit Nutzung des Moduls _VBATestSuite): MyTestSuite.RunAll
+' Aufruf-Beispiel (mit Nutzung des Moduls _VBATestSuite): TestSuite.RunAll
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------

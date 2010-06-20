@@ -4,25 +4,25 @@ Attribute VB_Name = "_VBATestSuite"
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' Hilfssmodul für den Aufruf einer anwendungsweiten Instanz von VBATestSuite
+' Hilfsmodul für den Aufruf einer anwendungsweiten Instanz von VBATestSuite
 ' </summary>
 ' <remarks>
 ' Benötigt <a href="http://sourceforge.net/projects/simplyvbunit/">SimplyVBUnit 3.0</a>
 '
 '
 'Test-Klasse(n) anhängen:                                                             \n
-'  MyTestSuite.Add new DataTestClass,  new OtherTestClass                             \n
+'  TestSuite.Add new DataTestClass,  new OtherTestClass                               \n
 '
 'Tests ausführen:                                                                     \n
-'  MyTestSuite.Run                                                                    \n
+'  TestSuite.Run                                                                      \n
 '
 '
 'Oder alles in einer Zeile:                                                           \n
-'  MyTestSuite.Reset(True).Add(new DataTestClass, new OtherTestClass).Run             \n
+'  TestSuite.Reset(True).Add(new DataTestClass, new OtherTestClass).Run               \n
 '
 'Alle Testklassen der aktiven Anwendunge (VbProject) verwenden:                       \n
-'  MyTestSuite.Reset(True).AddAllFromVbProject().Run                                  \n
-'Kurzfassung: MyTestSuite.RunAll
+'  TestSuite.Reset(True).AddAllFromVbProject().Run                                    \n
+'Kurzfassung: TestSuite.RunAll
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
@@ -35,21 +35,6 @@ Attribute VB_Name = "_VBATestSuite"
 '
 Option Compare Database
 Option Explicit
-
-'Test-Klasse(n) anhängen:
-'  MyTestSuite.Add new DataTestClass,  new OtherTestClass
-'
-'Tests ausführen:
-'  MyTestSuite.Run
-'
-'
-' oder alles in einer Zeile:
-' MyTestSuite.Reset(True).Add(new DataTestClass, new OtherTestClass).Run
-'
-' alle Testklassen der aktiven Anwendunge (VbProject) verwenden:
-' MyTestSuite.Reset(True).AddAllFromVbProject().Run
-' Kurzfassung: MyTestSuite.RunAll
-'
 
 Private m_TestSuite As VBATestSuite
 
