@@ -27,9 +27,9 @@ Attribute VB_Name = "_VBATestSuite"
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>_test/_simplyvbunit/_VBATestSuite.bas</file>
+'  <file>test/_simplyvbunit/_VBATestSuite.bas</file>
 '  <license>_codelib/license.bas</license>
-'  <use>_test/_simplyvbunit/VBATestSuite.cls</use>
+'  <use>test/_simplyvbunit/VBATestSuite.cls</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
