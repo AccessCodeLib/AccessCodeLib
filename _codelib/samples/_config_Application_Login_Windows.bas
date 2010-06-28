@@ -88,6 +88,12 @@ On Error GoTo HandleErr
 ' Erweiterung: WinLogin
 '
    AddApplicationHandlerExtension New ApplicationHandler_AppLogin_Win
+   
+   'Dim objJetUserHook As ApplicationHandler_JetUserHook
+   'Set objJetUserHook = New ApplicationHandler_JetUserHook
+   'AddApplicationHandlerExtension objJetUserHook
+   'objJetUserHook.IdentifyBackendTableDefName = "tblTest"
+   'Set objJetUserHook = Nothing
 
 '----------------------------------------------------------------------------
 ' Konfiguration nach Initialisierung der Erweiterungen

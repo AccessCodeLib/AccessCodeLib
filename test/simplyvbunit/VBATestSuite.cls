@@ -22,9 +22,9 @@ Attribute VB_Exposed = False
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>test/_simplyvbunit/VBATestSuite.cls</file>
+'  <file>test/simplyvbunit/VBATestSuite.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>test/_simplyvbunit/_VBATestSuite.bas</use>
+'  <use>test/simplyvbunit/_VBATestSuite.bas</use>
 '  <ref><name>SimplyVBUnit</name><major>7</major><minor>0</minor><guid>{AD061B4A-38BF-4847-BA00-0B2F9D60C3FB}</guid></ref>
 '</codelib>
 ' Anm.: use(_VBATestSuite.bas) ist eigentlich nicht notwendig, hilft aber beim Import
