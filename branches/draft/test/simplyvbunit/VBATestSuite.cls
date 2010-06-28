@@ -93,7 +93,7 @@ Public Function Run(Optional ByVal bResetSuite As Boolean = True, _
       resetResultCounter
    End If
 
-   Dim Result As SimplyVBUnit.testResult
+   Dim Result As SimplyVBUnit.TestResult
 
    Set Result = suite.Run(listener, Filter)
 
@@ -224,7 +224,7 @@ Private Sub listener_TestFixtureStarted(ByVal Fixture As SimplyVBUnit.TestFixtur
    Debug.Print
 End Sub
 
-Private Sub listener_TestCaseFinished(ByVal Result As SimplyVBUnit.testResult)
+Private Sub listener_TestCaseFinished(ByVal Result As SimplyVBUnit.TestResult)
    Debug.Print Result.Test.Name,
    If Result.IsSuccess Then
       m_Passed = m_Passed + 1
@@ -244,12 +244,12 @@ Private Sub listener_TestCaseFinished(ByVal Result As SimplyVBUnit.testResult)
 
 End Sub
 
-Private Sub listener_TestFixtureFinished(ByVal Result As SimplyVBUnit.testResult)
+Private Sub listener_TestFixtureFinished(ByVal Result As SimplyVBUnit.TestResult)
    Debug.Print String$(5, "-")
    Debug.Print , "Finished: " & Now()
 End Sub
 
-Private Sub printSummary(ByVal Result As SimplyVBUnit.testResult)
+Private Sub printSummary(ByVal Result As SimplyVBUnit.TestResult)
 
    Debug.Print String$(50, "-")
    Debug.Print "Total  : " & Result.Test.TestCount

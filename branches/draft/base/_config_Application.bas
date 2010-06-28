@@ -89,9 +89,9 @@ Public Sub InitConfig(Optional oCurrentAppHandler As ApplicationHandler = Nothin
       
       'Titelleiste der Anwendung
       .ApplicationTitle = m_ApplicationTitle
-	  
-	  'Version
-	  .Version = m_ApplicationVersion
+
+      'Version
+      .Version = m_ApplicationVersion
       
       ' Formular, das am Ende von StartApplication aufgerufen wird
       '.ApplicationStartFormName = m_ApplicationStartFormName
