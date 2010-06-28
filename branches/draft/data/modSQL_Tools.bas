@@ -4,16 +4,16 @@ Attribute VB_Description = "SQL-Hilfsfunktionen"
 ' Modul: modSQL
 '---------------------------------------------------------------------------------------
 '/**
-' \author	Josef Pötzl
+' \author       Josef Pötzl
 ' <summary>
 ' SQL-Hilfsfunktionen
 ' </summary>
 ' <remarks></remarks>
 '
-' \warning Nicht vergessen: SQL_DEFAULT_TEXTDELIMITER und SQL_DEFAULT_DATEFORMAT 
+' \warning Nicht vergessen: SQL_DEFAULT_TEXTDELIMITER und SQL_DEFAULT_DATEFORMAT
 '          für das DBMS anpassen oder die Parameter entsprechend einstellen.
 '
-' \ingroup	data
+' \ingroup      data
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
@@ -21,6 +21,7 @@ Attribute VB_Description = "SQL-Hilfsfunktionen"
 '  <license>_codelib/license.bas</license>
 '  <use>base/defGlobal.bas</use>
 '  <use>base/modErrorHandler.bas</use>
+'  <test>_test/data/modSQL_Tools_FormatTests.cls</test>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
