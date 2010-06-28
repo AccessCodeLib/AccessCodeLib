@@ -87,9 +87,13 @@ End Property
 Public Function Run(Optional ByVal bResetSuite As Boolean = True, _
                     Optional ByVal Filter As ITestFilter) As VBATestSuite
 
-   If bResetSuite Then suite.Reset
+   If bResetSuite Then
+      suite.Reset
+   Else
+      resetResultCounter
+   End If
 
-   Dim Result As SimplyVBUnit.TestResult
+   Dim Result As SimplyVBUnit.testResult
 
    Set Result = suite.Run(listener, Filter)
 
@@ -189,10 +193,20 @@ Public Function Reset(Optional ByVal removeTests As Boolean = False) As VBATestS
    Else
       suite.Reset
    End If
-
+   
+   resetResultCounter
+   
    Set Reset = Me
 
 End Function
+
+Private Sub resetResultCounter()
+
+   m_Passed = 0
+   m_Failed = 0
+   m_Ignored = 0
+   
+End Sub
 
 
 '-----------------------------------------------------
@@ -210,7 +224,7 @@ Private Sub listener_TestFixtureStarted(ByVal Fixture As SimplyVBUnit.TestFixtur
    Debug.Print
 End Sub
 
-Private Sub listener_TestCaseFinished(ByVal Result As SimplyVBUnit.TestResult)
+Private Sub listener_TestCaseFinished(ByVal Result As SimplyVBUnit.testResult)
    Debug.Print Result.Test.Name,
    If Result.IsSuccess Then
       m_Passed = m_Passed + 1
@@ -230,12 +244,12 @@ Private Sub listener_TestCaseFinished(ByVal Result As SimplyVBUnit.TestResult)
 
 End Sub
 
-Private Sub listener_TestFixtureFinished(ByVal Result As SimplyVBUnit.TestResult)
+Private Sub listener_TestFixtureFinished(ByVal Result As SimplyVBUnit.testResult)
    Debug.Print String$(5, "-")
    Debug.Print , "Finished: " & Now()
 End Sub
 
-Private Sub printSummary(ByVal Result As SimplyVBUnit.TestResult)
+Private Sub printSummary(ByVal Result As SimplyVBUnit.testResult)
 
    Debug.Print String$(50, "-")
    Debug.Print "Total  : " & Result.Test.TestCount
