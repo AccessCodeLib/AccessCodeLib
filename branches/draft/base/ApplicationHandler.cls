@@ -38,6 +38,14 @@ Public Enum ApplicationHandlerResumeModes
    AppResumeMode_Cancel = 4    ' Event wurde angenommen, aber Weiterverabeitung soll gestoppt werden
 End Enum
 
+
+Public Enum ApplicationHandlerLogType
+   [_AppLogType_Unknown] = 0
+   AppLogType_Error = 1
+   AppLogType_Tracing = 2
+End Enum
+
+
 ' Integrierte Erweiterungen
 Private Const EXTENSION_KEY_AppFile As String = "AppFile"
 
@@ -94,6 +102,8 @@ Private m_ApplicationStartFormName As String ' Formular das in Start-Methode geö
 
 Private m_CustomMDIBackgroundColor As Long
 
+Private m_TracingEnabled As Boolean
+
 'Events
 Public Event BeforeDispose(ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
 Public Event AfterDispose(ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
@@ -133,6 +143,12 @@ Public Event BeforeStartApplication( _
 
 Public Event AfterStartApplication( _
             ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
+
+'Tracing-Schnittstelle
+Public Event NewAppLog( _
+            ByVal LogType As ApplicationHandlerLogType, ByVal Msg As String, ByVal Args As Variant, _
+            ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
+
 
 '---------------------------------------------------------------------------------------
 ' Dispose-Ablauf
@@ -770,7 +786,7 @@ HandleErr:
 
 End Function
 
-Public Sub WriteApplicationLogEntry(ByVal msg As String)
+Public Sub WriteApplicationLogEntry(ByVal Msg As String)
 
    Dim strLogFile As String
    Dim lfileNo As Long
@@ -781,7 +797,7 @@ On Error GoTo HandleErr
    
    lfileNo = FreeFile
    Open strLogFile For Append As lfileNo
-   Print #lfileNo, msg
+   Print #lfileNo, Msg
    Close #lfileNo
 
 ExitHere:
@@ -799,6 +815,58 @@ HandleErr:
    End Select
 
 End Sub
+
+Public Sub WriteLog(ByVal Msg As String, _
+           Optional LogType As ApplicationHandlerLogType, _
+           Optional ByVal Args As Variant, _
+           Optional ByVal WriteToFileIfNoEventResponse As Boolean = True)
+
+   Dim ResumeMode As ApplicationHandlerResumeModes
+   Dim eventResumeMessage As Variant
+   
+On Error GoTo HandleErr
+
+   RaiseEvent NewAppLog(LogType, Msg, Args, ResumeMode, eventResumeMessage)
+   
+   If ResumeMode = 0 And WriteToFileIfNoEventResponse Then
+      'niemand hat reagiert bzw. einen Abbruch gemeldet => WriteApplicationLogEntry
+      Msg = Now() & ": " & Msg
+      If Len(LogType) > 0 Then
+         Msg = "(" & getLogTypeString(LogType) & ") " & Msg
+      End If
+      WriteApplicationLogEntry Msg
+   End If
+   
+
+ExitHere:
+On Error Resume Next
+   Exit Sub
+
+HandleErr:
+   Select Case HandleError(Err.Number, "ApplicationHandler.WriteApplicationLogEntry", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
+   Case ACLibErrorResumeMode.aclibErrResume
+      Resume
+   Case ACLibErrorResumeMode.aclibErrResumeNext
+      Resume Next
+   Case Else
+      Resume ExitHere
+   End Select
+
+End Sub
+
+Private Function getLogTypeString(Optional LogType As ApplicationHandlerLogType) As String
+   
+   Select Case LogType
+      Case ApplicationHandlerLogType.AppLogType_Error
+         getLogTypeString = "Error"
+      Case ApplicationHandlerLogType.AppLogType_Tracing
+         getLogTypeString = "Tracing"
+      Case Else
+         getLogTypeString = "N/A"
+   End Select
+   
+End Function
+
 
 Public Property Get MdiBackColor() As Long
 '/**

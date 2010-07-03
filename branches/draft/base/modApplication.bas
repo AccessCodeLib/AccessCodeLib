@@ -64,6 +64,20 @@ HandleErr:
    End Select
 End Property
 
+'---------------------------------------------------------------------------------------
+' Sub: AddApplicationHandlerExtension (Josef Pötzl)
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Erweiterung zu Collection hinzufügen
+' </summary>
+' <param name="objRef">Referenz auf Instanz der Erweiterung</param>
+' <remarks>
+' Referenz wird in Collection abgelegt, damit keine zusätzliche (manuelle)
+' Referenzspeicherung notwendig ist.
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 Public Sub AddApplicationHandlerExtension(ByRef objRef As Object)
 
 On Error GoTo HandleErr
@@ -85,6 +99,42 @@ HandleErr:
    End Select
    
 End Sub
+
+
+'---------------------------------------------------------------------------------------
+' Sub: TraceLog (Josef Pötzl, 2010-07-03)
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' TraceLog
+' </summary>
+' <param name="Param"></param>
+' <returns></returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Sub TraceLog(ByRef Msg As String, ParamArray Args() As Variant)
+
+On Error GoTo HandleErr
+
+   CurrentApplication.WriteLog Msg, ApplicationHandlerLogType.AppLogType_Tracing, Args, False
+
+ExitHere:
+   Exit Sub
+
+HandleErr:
+   Select Case HandleError(Err.Number, "TraceLog", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
+   Case ACLibErrorResumeMode.aclibErrResume
+      Resume
+   Case ACLibErrorResumeMode.aclibErrResumeNext
+      Resume Next
+   Case Else
+      Resume ExitHere
+   End Select
+   
+End Sub
+
 
 Private Sub initApplication()
 
@@ -158,11 +208,11 @@ End Sub
 '   ApplicationTitlebar = CurrentApplication.Titelbar
 'End Property
 
-Public Sub WriteApplicationLogEntry(ByVal msg As String)
+Public Sub WriteApplicationLogEntry(ByVal Msg As String)
 
 On Error GoTo HandleErr
 
-   CurrentApplication.WriteApplicationLogEntry msg
+   CurrentApplication.WriteApplicationLogEntry Msg
 
 ExitHere:
 On Error Resume Next
