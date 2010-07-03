@@ -1,5 +1,5 @@
 
- CodeLib-Stammverzeichnis
+ CodeLib-Entwurfsverzeichnis
 
 -- 
 
@@ -15,6 +15,9 @@
 '/** 
 ' \mainpage Access Code Library
 '
-' \image html codelib.gif
+' <p>Aktueller Stand der Dokumentation: SVN-Revision $REV, erstellt am $DATE</p>
+'
+' <p>SVN: <a href="https://svn.access-codelib.net/svn/codelib/branches/draft/">https://svn.access-codelib.net/svn/codelib/branches/draft/</a> / 
+' <a href="http://source.access-codelib.net/listing.php?repname=CodeLib&path=%2Fbranches%2Fdraft%2F#path_branches_draft_">WebSVN</a></p>
 '
 '**/
