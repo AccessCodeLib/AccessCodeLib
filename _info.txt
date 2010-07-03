@@ -17,7 +17,9 @@
 '
 ' <p>Aktueller Stand der Dokumentation: SVN-Revision $REV, erstellt am $DATE</p>
 '
-' <p>SVN: <a href="https://svn.access-codelib.net/svn/codelib/branches/draft/">https://svn.access-codelib.net/svn/codelib/branches/draft/</a> / 
-' <a href="http://source.access-codelib.net/listing.php?repname=CodeLib&path=%2Fbranches%2Fdraft%2F#path_branches_draft_">WebSVN</a></p>
+' <p>SVN: <a href="https://svn.access-codelib.net/svn/codelib/branches/draft/">https://svn.access-codelib.net/svn/codelib/branches/draft/</a> &nbsp; &diams; &nbsp; <a href="http://source.access-codelib.net/listing.php?repname=CodeLib&path=%2Fbranches%2Fdraft%2F#path_branches_draft_">WebSVN</a></p>
+'
+' <h3>zuletzt geändert</h3>
+' <pre>$LOG</pre>
 '
 '**/
