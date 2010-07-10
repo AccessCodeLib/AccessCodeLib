@@ -36,6 +36,7 @@ Attribute VB_Name = "_VBATestSuite"
 Option Compare Database
 Option Explicit
 
+Private x As Long
 Private m_TestSuite As VBATestSuite
 
 '---------------------------------------------------------------------------------------
