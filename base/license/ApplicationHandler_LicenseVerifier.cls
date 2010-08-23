@@ -39,12 +39,16 @@ Private Const m_EXTENSION_PROPERTY_LicenseKey As String = "LicenseKey"
 
 Private Const m_VERIFYINFO_KEY_invalid As String = "Der eingebene Lizenschlüssel ist ungültig."
 
+Private m_UseInputBox As Boolean
+
 '---------------------------------------------------------------------------------------
 ' Ereignisse
 '---------------------------------------------------------------------------------------
 
 Public Event LicenseInfoLookup(ByRef sLicenseName As String, ByRef sLicenseKey As String, _
                                ByVal sLicenseNameDefaultValue As String, ByVal sLicenseKeyDefaultValue As String)
+
+Public Event LicenseChecked(ByVal Verfified As Boolean)
 
 '---------------------------------------------------------------------------------------
 ' Hilfsvariablen
@@ -221,13 +225,19 @@ Public Sub Init(ByVal sApplicationKey As String, _
                 ByVal lLicenseKey_KeyLen As Long, _
        Optional ByVal sLicenseKey_Prefix As String = vbNullString, _
        Optional ByVal sLicenseKey_Suffix As String = vbNullString, _
-       Optional ByVal lLicenseKey_Loops As Long = 0)
+       Optional ByVal lLicenseKey_Loops As Long = 0, _
+       Optional ByVal bUseInputBoxForLicenseData As Boolean = False)
 
    m_ApplicationKey = sApplicationKey
    m_LicenseKey_KeyLen = lLicenseKey_KeyLen
    m_LicenseKey_Prefix = sLicenseKey_Prefix
    m_LicenseKey_Suffix = sLicenseKey_Suffix
    m_LicenseKey_Loops = lLicenseKey_Loops
+   
+   m_UseInputBox = bUseInputBoxForLicenseData
+   
+   'm_LicenseKey = vbNullString
+   'm_LicenseName = vbNullString
    
 End Sub
 
@@ -240,12 +250,24 @@ Public Property Get LicenseName() As String
    
 End Property
 
+Public Property Let LicenseName(newValue As String)
+   
+   m_LicenseName = newValue
+   
+End Property
+
 Public Property Get LicenseKey() As String
    
    If StrPtr(m_LicenseKey) = 0 Then
       readLicenseInfo
    End If
    LicenseKey = m_LicenseKey
+   
+End Property
+
+Public Property Let LicenseKey(newValue As String)
+   
+   m_LicenseKey = newValue
    
 End Property
 
@@ -264,7 +286,7 @@ On Error GoTo HandleErr
 '**/
 '     End If
            
-      If StrPtr(m_LicenseName) = 0 Then 'Notfalllösung über Inputbox
+      If StrPtr(m_LicenseName) = 0 And m_UseInputBox Then 'Notfalllösung über Inputbox
          m_LicenseName = InputBox("Bitte Namen eingeben:", "Lizenzdaten eingeben", m_LicenseNameInputboxDefault)
          If Not StrPtr(m_LicenseName) = 0 Then 'speichern
             m_LicenseNameInputboxDefault = m_LicenseName
@@ -277,7 +299,7 @@ On Error GoTo HandleErr
    If StrPtr(m_LicenseKey) = 0 Then
       m_LicenseKey = getLicenseInfoFromAppDb(m_EXTENSION_PROPERTY_LicenseKey)
       
-      If StrPtr(m_LicenseKey) = 0 Then 'Notfalllösung über Inputbox
+      If StrPtr(m_LicenseKey) = 0 And m_UseInputBox Then 'Notfalllösung über Inputbox
          m_LicenseKey = InputBox("Bitte Lizenzschlüssel eingeben:", "Lizenzdaten eingeben", m_LicenseKeyInputboxDefault)
          If Not StrPtr(m_LicenseKey) = 0 Then 'speichern
             m_LicenseKeyInputboxDefault = m_LicenseKey
@@ -350,23 +372,44 @@ Friend Function VerifyLicense(Optional ByRef sMsg As String) As Boolean
 
   
    Dim checkKey(1) As String
+   Dim bolVerified As Boolean
 
    checkKey(0) = Trim$(Replace$(Me.LicenseKey, "-", vbNullString))
    If Len(checkKey(0)) <> m_LicenseKey_KeyLen Then
       sMsg = m_VERIFYINFO_KEY_invalid
       VerifyLicense = False
-      Exit Function
-   End If
-   
-   checkKey(1) = GenerateKey(Me.LicenseName, m_ApplicationKey, m_LicenseKey_KeyLen, _
-                             m_LicenseKey_Prefix, m_LicenseKey_Suffix, m_LicenseKey_Loops)
-
-   If checkKey(0) = checkKey(1) Then
-      VerifyLicense = True
    Else
-      sMsg = m_VERIFYINFO_KEY_invalid
-      VerifyLicense = False
+      checkKey(1) = GenerateKey(Me.LicenseName, m_ApplicationKey, m_LicenseKey_KeyLen, _
+                                m_LicenseKey_Prefix, m_LicenseKey_Suffix, m_LicenseKey_Loops)
+   
+      If checkKey(0) = checkKey(1) Then
+         bolVerified = True
+      Else
+         sMsg = m_VERIFYINFO_KEY_invalid
+         bolVerified = False
+      End If
+   
    End If
    
+   RaiseEvent LicenseChecked(bolVerified)
+
+   VerifyLicense = bolVerified
 
 End Function
+
+Public Sub RemoveLicenseKey()
+
+   m_ApplicationHandler.SetApplicationProperty m_EXTENSION_PROPERTY_LicenseName, Null, dbText
+   m_ApplicationHandler.SetApplicationProperty m_EXTENSION_PROPERTY_LicenseKey, Null, dbText
+   
+   m_LicenseName = vbNullString
+   m_LicenseKey = vbNullString
+
+End Sub
+
+Friend Sub Save()
+
+   m_ApplicationHandler.SetApplicationProperty m_EXTENSION_PROPERTY_LicenseName, m_LicenseName, dbText
+   m_ApplicationHandler.SetApplicationProperty m_EXTENSION_PROPERTY_LicenseKey, m_LicenseKey, dbText
+
+End Sub
