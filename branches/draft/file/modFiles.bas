@@ -711,7 +711,6 @@ On Error GoTo HandleErr
    GetRelativPathFromFullPath = strRetPath
 
 ExitHere:
-On Error Resume Next
    Exit Function
 
 HandleErr:
@@ -757,7 +756,6 @@ On Error GoTo HandleErr
    GetDirFromFilePath = strPath
 
 ExitHere:
-On Error Resume Next
    Exit Function
 
 HandleErr:
@@ -792,7 +790,7 @@ Public Sub AddToZipFile(ByVal zipFile As String, ByVal sFile As String)
 On Error GoTo HandleErr
 
    If Len(Dir$(zipFile)) = 0 Then
-      NewZip zipFile
+      CreateZipFile zipFile
    End If
 
    With CreateObject("Shell.Application")
@@ -800,7 +798,6 @@ On Error GoTo HandleErr
    End With
 
 ExitHere:
-On Error Resume Next
    Exit Sub
 
 HandleErr:
@@ -825,7 +822,6 @@ On Error GoTo HandleErr
    End With
 
 ExitHere:
-On Error Resume Next
    Exit Function
 
 HandleErr:
@@ -840,22 +836,30 @@ HandleErr:
 
 End Function
 
-Private Sub NewZip(ByVal zipFile As String)
+Public Function CreateZipFile(ByVal zipFile As String, Optional DeleteExistingFile As Boolean = False) As Boolean
 
    Dim fileHandle As Long
 
 On Error GoTo HandleErr
 
-   If Len(Dir$(zipFile)) > 0 Then Kill zipFile
+   If Len(Dir$(zipFile)) > 0 Then
+      If DeleteExistingFile Then
+         Kill zipFile
+      Else
+         CreateZipFile = False
+         Exit Sub
+      End If
+   End If
    
    fileHandle = FreeFile
    Open zipFile For Output As #fileHandle
    Print #fileHandle, Chr$(80) & Chr$(75) & Chr$(5) & Chr$(6) & String$(18, 0)
    Close #fileHandle
 
+   CreateZipFile = (Len(Dir$(zipFile)) > 0)
+
 ExitHere:
-On Error Resume Next
-   Exit Sub
+   Exit Function
 
 HandleErr:
    Select Case HandleError(Err.Number, "NewZip", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
@@ -867,4 +871,4 @@ HandleErr:
       Resume ExitHere
    End Select
    
-End Sub
+End Function
