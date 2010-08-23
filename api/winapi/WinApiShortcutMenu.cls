@@ -51,7 +51,7 @@ Private Type RECT
    Bottom As Long
 End Type
 
-Private Type msg
+Private Type APIMSG
    Hwnd As Long
    Message As Long
    wParam As Long
@@ -110,7 +110,7 @@ Private Declare Function DestroyMenu _
 Private Declare Function GetMessage _
       Lib "USER32.DLL" _
       Alias "GetMessageA" ( _
-      ByRef lpMsg As msg, _
+      ByRef lpMsg As APIMSG, _
       ByVal Hwnd As Long, _
       ByVal wMsgFilterMin As Long, _
       ByVal wMsgFilterMax As Long _
@@ -119,11 +119,11 @@ Private Declare Function GetMessage _
 Private Declare Function DispatchMessage _
       Lib "USER32.DLL" _
       Alias "DispatchMessageA" ( _
-      ByRef lpMsg As msg _
+      ByRef lpMsg As APIMSG _
       ) As Long
 
 Private Declare Function TranslateMessage _
-      Lib "USER32.DLL" (ByRef lpMsg As msg) As Long
+      Lib "USER32.DLL" (ByRef lpMsg As APIMSG) As Long
 
 Private Declare Function GetWindowRect _
       Lib "USER32.DLL" ( _
@@ -389,7 +389,7 @@ Public Function OpenMenu(Optional ByVal x As Single = 0, Optional ByVal y As Sin
    Dim ButtonTop As Long
    Dim Xpos As Long
    Dim Ypos As Long
-   Dim Message As msg
+   Dim Message As APIMSG
    
    Dim objParent As Object
    

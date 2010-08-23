@@ -1,6 +1,6 @@
 Version =19
 VersionRequired =19
-Checksum =-741089559
+Checksum =-248748565
 Begin Form
     PopUp = NotDefault
     RecordSelectors = NotDefault
@@ -18,11 +18,11 @@ Begin Form
     GridY =10
     Width =10215
     DatasheetFontHeight =11
-    ItemSuffix =33
+    ItemSuffix =34
     Left =7440
     Top =2220
-    Right =17655
-    Bottom =10140
+    Right =18915
+    Bottom =11820
     OnUnload ="[Event Procedure]"
     RecSrcDt = Begin
         0x212b6fd80e9ce340
@@ -37,10 +37,10 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x00000000ba28622f0400000001000000605120000e000000d453200088512000 ,
         0x010400069c00440343ef8005010009009a0b3408640001000f00c80002000100 ,
-        0xc800020001004134000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000010000000000000001000000 ,
+        0xc80002000100413400000000c84c0d04c0532000c44c0d04b8512000e993642f ,
+        0xe04c0d04f0930000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe230000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -70,10 +70,11 @@ Begin Form
         0x6f6e000000000000000000000000000000000000000000000000000000000000
     End
     PrtDevNames = Begin
-        0x080013001b00010000000000000000000000000000000000000000525054313a ,
-        0x00
+        0x080013001b000100000000000000000000000000000000000000004672656550 ,
+        0x44465850313a00
     End
     OnLoad ="[Event Procedure]"
+    NoSaveCTIWhenDisabled =1
     Begin
         Begin Label
             BackStyle =0
@@ -90,21 +91,25 @@ Begin Form
         End
         Begin OptionButton
             SpecialEffect =2
+            BorderLineStyle =0
             LabelX =230
             LabelY =-30
         End
         Begin CheckBox
             SpecialEffect =2
+            BorderLineStyle =0
             LabelX =230
             LabelY =-30
         End
         Begin OptionGroup
             SpecialEffect =3
+            BorderLineStyle =0
             Width =1701
             Height =1701
         End
         Begin TextBox
             FELineBreak = NotDefault
+            BorderLineStyle =0
             Width =1701
             LabelX =-1701
             FontSize =11
@@ -112,6 +117,7 @@ Begin Form
             FontName ="Calibri"
         End
         Begin ListBox
+            BorderLineStyle =0
             Width =1701
             Height =1417
             LabelX =-1701
@@ -246,6 +252,7 @@ Begin Form
                 End
                 Begin TextBox
                     OverlapFlags =85
+                    AccessKey =65
                     IMESentenceMode =3
                     Left =113
                     Top =1075
@@ -267,7 +274,7 @@ Begin Form
                             Width =4410
                             Height =315
                             Name ="Label11"
-                            Caption ="Datei anfügen"
+                            Caption ="Datei &anfügen"
                             GUID = Begin
                                 0xdce6936cc22dab4b8aaf87981939126a
                             End
@@ -294,6 +301,7 @@ Begin Form
                 End
                 Begin ListBox
                     OverlapFlags =85
+                    AccessKey =68
                     MultiSelect =2
                     IMESentenceMode =3
                     ColumnCount =2
@@ -316,12 +324,12 @@ Begin Form
                     Begin
                         Begin Label
                             OverlapFlags =85
-                            Left =113
-                            Top =1474
-                            Width =2130
+                            Left =120
+                            Top =1470
+                            Width =2280
                             Height =315
                             Name ="Label13"
-                            Caption ="Ausgewählte Dateien:"
+                            Caption ="Ausgewählte &Dateien:"
                             GUID = Begin
                                 0x60c0884bcdad91479b2f6fa6a23c332f
                             End
@@ -330,13 +338,14 @@ Begin Form
                 End
                 Begin CommandButton
                     OverlapFlags =93
+                    AccessKey =73
                     Left =7035
                     Top =7155
                     Width =2925
                     Height =555
                     TabIndex =9
                     Name ="cmdImportFiles"
-                    Caption ="Dateien importieren"
+                    Caption ="Dateien &importieren"
                     OnClick ="[Event Procedure]"
                     OnMouseDown ="[Event Procedure]"
                     GUID = Begin
@@ -345,6 +354,7 @@ Begin Form
                 End
                 Begin OptionGroup
                     OverlapFlags =223
+                    AccessKey =77
                     Left =113
                     Top =5220
                     Width =10102
@@ -363,7 +373,7 @@ Begin Form
                             Width =6630
                             Height =315
                             Name ="Label16"
-                            Caption ="Import-Modus"
+                            Caption ="Import-&Modus"
                             GUID = Begin
                                 0xf7e99834a0cc8d4e9ebbec0c245e4b62
                             End
@@ -510,10 +520,10 @@ Begin Form
                 End
                 Begin CheckBox
                     OverlapFlags =215
+                    AccessKey =84
                     Left =7035
                     Top =5340
                     TabIndex =10
-                    OptionValue =4
                     Name ="chkImportTests"
                     AfterUpdate ="[Event Procedure]"
                     DefaultValue ="False"
@@ -529,11 +539,26 @@ Begin Form
                             Width =2835
                             Height =315
                             Name ="Bezeichnungsfeld32"
-                            Caption ="inkl. Test-Klassen"
+                            Caption ="inkl. &Test-Klassen"
                             GUID = Begin
                                 0x33a5f8b40df7ad41a4d1f01be3066e80
                             End
                         End
+                    End
+                End
+                Begin CommandButton
+                    Transparent = NotDefault
+                    Cancel = NotDefault
+                    OverlapFlags =85
+                    Left =10185
+                    Width =29
+                    Height =29
+                    TabIndex =11
+                    Name ="cmdClose"
+                    Caption ="Schließen"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x950857d9af4f2d4999b6fb2515640201
                     End
                 End
             End
@@ -637,6 +662,10 @@ HandleErr:
    
 End Sub
 
+Private Sub cmdClose_Click()
+   DoCmd.Close acForm, Me.Name
+End Sub
+
 Private Sub cmdImportFiles_Click()
 
    Dim fileNameArray() As String
@@ -671,6 +700,8 @@ On Error GoTo HandleErr
    
    TempDb.Execute "delete from " & TEMPDB_TABNAME
    lb.Requery
+   
+   Me.SetFocus
 
 ExitHere:
 On Error Resume Next

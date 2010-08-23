@@ -706,9 +706,15 @@ On Error GoTo HandleErr
    Set db = AppDb
    Set propCol = db.Properties
    If dbPropertyExists(propCol, propName) Then
-      db.Properties(propName) = PropValue
+      If Len(PropValue) = 0 Or IsNull(PropValue) Then
+         db.Properties.Delete propName
+      Else
+         db.Properties(propName) = PropValue
+      End If
    Else
-      db.Properties.Append db.CreateProperty(propName, PropType, PropValue)
+      If Len(PropValue) > 0 Then
+         db.Properties.Append db.CreateProperty(propName, PropType, PropValue)
+      End If
    End If
 
 ExitHere:
