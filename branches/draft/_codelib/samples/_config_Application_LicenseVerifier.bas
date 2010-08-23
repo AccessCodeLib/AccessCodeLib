@@ -117,7 +117,7 @@ Public Sub InitConfig(Optional oCurrentAppHandler As ApplicationHandler = Nothin
                            m_ApplicationKey, m_LicenseKey_KeyLen, _
                            m_LicenseKey_Prefix, m_LicenseKey_Suffix, _
                            m_LicenseKey_Loops
-                           
+
 '----------------------------------------------------------------------------
 ' Erweiterung AppLogin:
 '

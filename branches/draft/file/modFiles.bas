@@ -842,12 +842,16 @@ End Function
 
 Private Sub NewZip(ByVal zipFile As String)
 
+   Dim fileHandle As Long
+
 On Error GoTo HandleErr
 
-    If Len(Dir$(zipFile)) > 0 Then Kill zipFile
-    Open zipFile For Output As #1
-    Print #1, Chr$(80) & Chr$(75) & Chr$(5) & Chr$(6) & String$(18, 0)
-    Close #1
+   If Len(Dir$(zipFile)) > 0 Then Kill zipFile
+   
+   fileHandle = FreeFile
+   Open zipFile For Output As #fileHandle
+   Print #fileHandle, Chr$(80) & Chr$(75) & Chr$(5) & Chr$(6) & String$(18, 0)
+   Close #fileHandle
 
 ExitHere:
 On Error Resume Next
