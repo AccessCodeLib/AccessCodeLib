@@ -20,7 +20,6 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>data/dao/DaoHandler.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>base/modErrorHandler.bas</use>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -42,7 +41,6 @@ Private m_DaoDb As DAO.Database
 '**/
 Public Event ErrorMissingCurrentDb(ByVal Msg As String, ByRef NewCurrentDbRef As DAO.Database)
 
-
 '
 ' Init / Terminate
 ' ----------------
@@ -58,7 +56,6 @@ End Sub
 Public Sub Dispose()
    Set m_DaoDb = Nothing
 End Sub
-
 
 '---------------------------------------------------------------------------------------
 ' Property: CurrentDb (2009-06-15)
@@ -119,26 +116,11 @@ Public Function OpenRecordset(ByVal Source As String, _
                      Optional ByVal RecordsetType As DAO.RecordsetTypeEnum = dbOpenDynaset, _
                      Optional ByVal RecordsetOptions As DAO.RecordsetOptionEnum = DAO.RecordsetOptionEnum.dbSeeChanges, _
                      Optional ByVal LockEdit As DAO.LockTypeEnum = DAO.LockTypeEnum.dbOptimistic) As DAO.Recordset
-    
-On Error GoTo HandleErr
 
     If (RecordsetOptions And dbSeeChanges) = 0 Then
         RecordsetOptions = RecordsetOptions + dbSeeChanges
     End If
     Set OpenRecordset = Me.CurrentDb.OpenRecordset(Source, RecordsetType, RecordsetOptions, LockEdit)
-
-ExitHere:
-    Exit Function
-
-HandleErr:
-    Select Case HandleError(Err.Number, "OpenRecordset", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-        Case ACLibErrorResumeMode.aclibErrResume
-            Resume
-        Case ACLibErrorResumeMode.aclibErrResumeNext
-            Resume Next
-        Case Else
-            Resume ExitHere
-    End Select
 
 End Function
 
@@ -158,28 +140,13 @@ End Function
 Public Sub Execute(ByVal CommandText As String, _
           Optional ByRef RecordsAffected As Long, _
           Optional ByVal Options As DAO.RecordsetOptionEnum)
-                  
-On Error GoTo HandleErr
 
     If (Options And dbSeeChanges) = 0 Then
         Options = Options + dbSeeChanges
     End If
     Me.CurrentDb.Execute CommandText, Options
     RecordsAffected = Me.CurrentDb.RecordsAffected
-
-ExitHere:
-    Exit Sub
-
-HandleErr:
-    Select Case HandleError(Err.Number, "Execute", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-        Case ACLibErrorResumeMode.aclibErrResume
-            Resume
-        Case ACLibErrorResumeMode.aclibErrResumeNext
-            Resume Next
-        Case Else
-            Resume ExitHere
-    End Select
-    
+ 
 End Sub
 
 
@@ -200,8 +167,6 @@ Public Function LookupSQL(ByVal sSQL As String, Optional ByVal index As Variant 
 
     Dim rst As DAO.Recordset
 
-On Error GoTo HandleErr
-
     Set rst = Me.OpenRecordset(sSQL, dbOpenForwardOnly, dbSeeChanges, dbReadOnly)
     With rst
         If .EOF Then
@@ -212,19 +177,6 @@ On Error GoTo HandleErr
         .Close
     End With
     Set rst = Nothing
-
-ExitHere:
-    Exit Function
-
-HandleErr:
-    Select Case HandleError(Err.Number, "LookupSQL", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-        Case ACLibErrorResumeMode.aclibErrResume
-            Resume
-        Case ACLibErrorResumeMode.aclibErrResumeNext
-            Resume Next
-        Case Else
-            Resume ExitHere
-    End Select
 
 End Function
 
@@ -246,8 +198,6 @@ Public Function Lookup(ByVal Expr As String, ByVal Domain As String, Optional By
 
     Dim strSQL As String
 
-On Error GoTo HandleErr
-
     strSQL = "SELECT " & Expr & " FROM (" & Domain & ")"
     If Not (VarType(Criteria) = vbError) Then
         If Len(Criteria) > 0 Then
@@ -255,19 +205,6 @@ On Error GoTo HandleErr
         End If
     End If
     Lookup = LookupSQL(strSQL)
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "Lookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Function
 
@@ -286,24 +223,7 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function Count(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Long
-
-On Error GoTo HandleErr
-
     Count = Nz(Me.Lookup("Count(" & Expr & ")", Domain, Criteria), 0)
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "Count", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -321,24 +241,7 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function Max(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
-
-On Error GoTo HandleErr
-
     Max = Me.Lookup("Max(" & Expr & ")", Domain, Criteria)
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "Max", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -356,24 +259,7 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function Min(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
-
-On Error GoTo HandleErr
-
     Min = Me.Lookup("Min(" & Expr & ")", Domain, Criteria)
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "Min", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -391,24 +277,7 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function Sum(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
-
-On Error GoTo HandleErr
-
     Sum = Me.Lookup("Sum(" & Expr & ")", Domain, Criteria)
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "Sum", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -431,11 +300,8 @@ Public Function InsertIdentityReturn(ByVal InsertSQL As String) As Variant
     Dim db As DAO.Database
     Dim rst As DAO.Recordset
     Dim lngRecordsAffected As Long
-    
-On Error GoTo HandleErr
 
     Set db = Me.CurrentDb
-    
     db.Execute InsertSQL
     lngRecordsAffected = db.RecordsAffected
     
@@ -456,17 +322,4 @@ On Error GoTo HandleErr
     Set rst = Nothing
     Set db = Nothing
 
-ExitHere:
-    Exit Function
-
-HandleErr:
-    Select Case HandleError(Err.Number, "InsertIdentityReturn", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-        Case ACLibErrorResumeMode.aclibErrResume
-            Resume
-        Case ACLibErrorResumeMode.aclibErrResumeNext
-            Resume Next
-        Case Else
-            Resume ExitHere
-    End Select
-    
 End Function

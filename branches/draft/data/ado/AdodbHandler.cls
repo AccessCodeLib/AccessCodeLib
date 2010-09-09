@@ -20,7 +20,6 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>data/ado/AdodbHandler.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>base/modErrorHandler.bas</use>
 '  <ref><name>ADODB</name><major>2</major><minor>1</minor><guid>{00000201-0000-0010-8000-00AA006D2EA4}</guid></ref>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -118,8 +117,6 @@ Public Property Get CurrentConnection() As ADODB.Connection
 
    Dim strConnString As String
 
-On Error GoTo HandleErr
-
    If (m_AdoConnection Is Nothing) Then
       'Connection über Event anfordern.
       RaiseEvent ErrorMissingCurrentConnection("Unavailable CurrentConnection", m_AdoConnection)
@@ -140,19 +137,6 @@ On Error GoTo HandleErr
    End If
    Set CurrentConnection = m_AdoConnection
 
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "CurrentConnection", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -167,9 +151,6 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Set CurrentConnection(ByRef NewConnection As ADODB.Connection)
-
-On Error GoTo HandleErr
-
    If Not (m_AdoConnection Is Nothing) Then
       If m_AdoConnection.State <> adStateClosed Then
          m_AdoConnection.Close
@@ -177,20 +158,6 @@ On Error GoTo HandleErr
       Set m_AdoConnection = Nothing
    End If
    Set m_AdoConnection = NewConnection
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "CurrentConnection", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -205,9 +172,6 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get ConnectionString() As String
-
-On Error GoTo HandleErr
-
    If Len(m_conADO_ConnectionString) = 0 Then
       If Not (m_AdoConnection Is Nothing) Then
          m_conADO_ConnectionString = m_AdoConnection.ConnectionString
@@ -218,20 +182,6 @@ On Error GoTo HandleErr
       End If
    End If
    ConnectionString = m_conADO_ConnectionString
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ConnectionString", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -246,24 +196,8 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Let ConnectionString(ByVal sConnectionString As String)
-On Error GoTo HandleErr
-
    Set CurrentConnection = Nothing
    m_conADO_ConnectionString = sConnectionString
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ConnectionString", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 
@@ -282,24 +216,7 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Function Execute(ByVal CommandText As String, Optional ByRef RecordsAffected As Long, Optional ByVal Options As ADODB.ExecuteOptionEnum = -1) As ADODB.Recordset
-
-On Error GoTo HandleErr
-
    Set Execute = Me.CurrentConnection.Execute(CommandText, RecordsAffected, Options)
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "Execute", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -328,8 +245,6 @@ Public Function OpenRecordset(ByVal Source As String, _
 
    Dim rst As ADODB.Recordset
 
-On Error GoTo HandleErr
-
    Set rst = New ADODB.Recordset
    With rst
       .CursorLocation = CursorLocation
@@ -341,20 +256,7 @@ On Error GoTo HandleErr
       
    End With
    Set OpenRecordset = rst
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "OpenRecordset", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-      Case ACLibErrorResumeMode.aclibErrResume
-         Resume
-      Case ACLibErrorResumeMode.aclibErrResumeNext
-         Resume Next
-      Case Else
-         Resume ExitHere
-   End Select
-
+   
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -382,8 +284,6 @@ Public Function OpenRecordsetCommandParam(ByVal CmdText As String, _
    Dim i As Long
    Dim strParamName As String
 
-On Error GoTo HandleErr
-
    Set cmd = New ADODB.Command
    
    With cmd
@@ -407,19 +307,6 @@ On Error GoTo HandleErr
    End With
    
    Set cmd = Nothing
-   
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "OpenRecordsetCommandParam", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-      Case ACLibErrorResumeMode.aclibErrResume
-         Resume
-      Case ACLibErrorResumeMode.aclibErrResumeNext
-         Resume Next
-      Case Else
-         Resume ExitHere
-   End Select
 
 End Function
 
@@ -439,8 +326,6 @@ End Function
 Public Function LookupSQL(ByVal sSQL As String, Optional ByVal index As Variant = 0&) As Variant
 
    Dim rst As ADODB.Recordset
-   
-On Error GoTo HandleErr
 
    Set rst = Me.OpenRecordset(sSQL, adOpenForwardOnly, adLockReadOnly, adUseServer)
    With rst
@@ -452,19 +337,6 @@ On Error GoTo HandleErr
       .Close
    End With
    Set rst = Nothing
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "LookupSQL", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-      Case ACLibErrorResumeMode.aclibErrResume
-         Resume
-      Case ACLibErrorResumeMode.aclibErrResumeNext
-         Resume Next
-      Case Else
-         Resume ExitHere
-   End Select
 
 End Function
 
@@ -486,8 +358,6 @@ Public Function Lookup(ByVal Expr As String, ByVal Domain As String, Optional By
 
    Dim strSQL As String
 
-On Error GoTo HandleErr
-
    strSQL = "SELECT " & Expr & " FROM " & Domain
    If Not (VarType(Criteria) = vbError) Then
       If Len(Criteria) > 0 Then
@@ -495,19 +365,6 @@ On Error GoTo HandleErr
       End If
    End If
    Lookup = Me.LookupSQL(strSQL)
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "Lookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Function
 
@@ -526,24 +383,7 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function DCount(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Long
-
-On Error GoTo HandleErr
-
    DCount = Nz(Me.Lookup("Count(" & Expr & ")", Domain, Criteria), 0)
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "DCount", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -561,24 +401,7 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function Max(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
-
-On Error GoTo HandleErr
-
    Max = Me.Lookup("Max(" & Expr & ")", Domain, Criteria)
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "Max", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -596,26 +419,8 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function Min(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
-
-On Error GoTo HandleErr
-
    Min = Me.Lookup("Min(" & Expr & ")", Domain, Criteria)
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "Min", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
-
 
 '---------------------------------------------------------------------------------------
 ' Function: Sum (2009-06-15)
@@ -632,24 +437,7 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function Sum(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
-
-On Error GoTo HandleErr
-
    Sum = Me.Lookup("Sum(" & Expr & ")", Domain, Criteria)
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "Sum", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -673,8 +461,6 @@ Public Function InsertIdentityReturn(ByVal InsertSQL As String, Optional ByVal I
    
    Dim lngHookResumeMode As Long
    Dim varHookResumeMessage As Variant
-   
-On Error GoTo HandleErr
 
    Set cnn = Me.CurrentConnection
    
@@ -713,17 +499,4 @@ On Error GoTo HandleErr
    Set rst = Nothing
    Set cnn = Nothing
 
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "InsertIdentityReturn", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-      Case ACLibErrorResumeMode.aclibErrResume
-         Resume
-      Case ACLibErrorResumeMode.aclibErrResumeNext
-         Resume Next
-      Case Else
-         Resume ExitHere
-   End Select
-   
 End Function

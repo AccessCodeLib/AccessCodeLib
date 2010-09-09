@@ -1,6 +1,6 @@
 Version =19
 VersionRequired =19
-Checksum =-793289968
+Checksum =122265361
 Begin Form
     AllowFilters = NotDefault
     PopUp = NotDefault
@@ -76,6 +76,7 @@ Begin Form
     End
     OnTimer ="[Event Procedure]"
     OnLoad ="[Event Procedure]"
+    NoSaveCTIWhenDisabled =1
     Begin
         Begin Label
             BackStyle =0
@@ -175,7 +176,7 @@ On Error Resume Next
    If Not m_AppLoaded Then
       m_AppLoaded = CurrentApplication.Start
    End If
-   Me.Visible = False
+   Me.visible = False
    If Not m_AppLoaded Then DoCmd.Close acForm, Me.Name
 End Sub
 

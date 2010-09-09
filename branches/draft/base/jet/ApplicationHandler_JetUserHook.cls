@@ -58,24 +58,7 @@ Private WithEvents m_ApplicationHandler As ApplicationHandler
 Attribute m_ApplicationHandler.VB_VarHelpID = -1
 
 Public Property Set ApplicationHandlerRef(ByRef objRef As ApplicationHandler)
-
-On Error GoTo HandleErr
-
    Set m_ApplicationHandler = objRef
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandlerRef", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Public Property Get ExtensionKey() As String
@@ -96,34 +79,14 @@ End Sub
 
 ' ExtensionLookup
 Private Sub m_ApplicationHandler_ExtensionLookup(ByVal sExtensionKey As String, ExtensionReference As Object)
-
-On Error GoTo HandleErr
-
    If sExtensionKey = m_EXTENSION_KEY Then
       Set ExtensionReference = Me
    End If
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ExtAppFile.m_ApplicationHandler_ExtensionLookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
-
 
 ' AfterDispose
 Private Sub m_ApplicationHandler_AfterDispose(ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
 '=> Referenz in m_ApplicationHandler auf Nothing setzen
-On Error Resume Next
    Set m_ApplicationHandler = Nothing
 End Sub
 
@@ -135,23 +98,7 @@ End Sub
 
 ' Benutzerspezifische Verbindung nach Anwendungsstart öffnen
 Private Sub m_ApplicationHandler_AfterStartApplication(ResumeMode As ApplicationHandlerResumeModes, ResumeMessage As Variant)
-   
    openUserConnection
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ExtWinLogin.getExtensionPropertyLookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Private Sub openUserConnection()
@@ -183,7 +130,6 @@ Private Sub openUserConnection()
       Exit Sub
    End If
    
-   
    checkUserInSystemDb strUserName
    
    Set m_UserWorkspace = DBEngine.CreateWorkspace(m_EXTENSION_KEY, strUserName, vbNullString)
@@ -191,7 +137,6 @@ Private Sub openUserConnection()
    ' ... diese Instanzen könnte man auch für Datenoperationen nutzen! => Property zum Auslesen anfügen
    
 End Sub
-
 
 Private Sub checkUserInSystemDb(ByVal sUserName As String)
 
@@ -216,7 +161,6 @@ Private Sub checkUserInSystemDb(ByVal sUserName As String)
 
 End Sub
 
-
 Private Sub Class_Terminate()
 On Error Resume Next
 
@@ -231,10 +175,10 @@ On Error Resume Next
    End If
 End Sub
 
-
 Public Property Get IdentifyBackendTableDefName() As String
    IdentifyBackendTableDefName = m_IdentifyBackendTableDefName
 End Property
+
 Public Property Let IdentifyBackendTableDefName(ByVal sTdfName As String)
    m_IdentifyBackendTableDefName = sTdfName
 End Property

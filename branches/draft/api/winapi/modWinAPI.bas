@@ -22,8 +22,6 @@ Attribute VB_Description = "Gebräuchliche WinAPI-Funktionen"
 Option Compare Text
 Option Explicit
 
-
-
 Public Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" ( _
    pDest As Any, _
    pSource As Any, _
@@ -145,8 +143,6 @@ Public Function ShellExecuteOpenFile(ByVal sFile As String, _
    Dim sDirectory As String
    Dim lngDeskWin As Long
    
-On Error GoTo HandleErr
-
    If sFile = vbNullString Then
       ShellExecuteOpenFile = False
       Exit Function
@@ -172,17 +168,6 @@ On Error GoTo HandleErr
    End If
    
    ShellExecuteOpenFile = True
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   ShellExecuteOpenFile = False
-   Select Case Err.Number
-   Case Else
-      HandleError Err.Number, "ShellExecuteOpenFile", Err.Description, aclibErrRaise
-   End Select
-   Resume ExitHere
 
 End Function
 
@@ -212,7 +197,6 @@ Public Function LaunchAppSynchronous(ByVal strExecutablePathAndName As String, _
    Dim lngResponse As Long
    Dim typStartUpInfo As STARTUPINFO
    Dim typProcessInfo As PROCESS_INFORMATION
-On Error GoTo HandleErr
 
    LaunchAppSynchronous = False
 
@@ -239,32 +223,17 @@ On Error GoTo HandleErr
       LaunchAppSynchronous = False
    End If
 
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "LaunchAppSynchronous", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
 
 Private Sub WaitForTermination(ByRef typProcessInfo As PROCESS_INFORMATION)
-
    'This wait routine allows other applicat
    '    ion events
    'to be processed while waiting for the p
    '    rocess to
    'complete.
+   
    Dim lngResponse As Long
    'Let the process initialize
-On Error GoTo HandleErr
-
    Call WaitForInputIdle(typProcessInfo.hProcess, INFINITE)
    'We don't need the thread handle so get
    '    rid of it
@@ -273,32 +242,16 @@ On Error GoTo HandleErr
 
    Do
       lngResponse = WaitForSingleObject(typProcessInfo.hProcess, 0)
-
-
       If lngResponse <> WAIT_TIMEOUT Then
          'No timeout, app is terminated
          Exit Do
       End If
-
-
       DoEvents
       Loop While True
 
       'Kill the last handle of the process
       Call CloseHandle(typProcessInfo.hProcess)
 
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "WaitForTermination", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -315,7 +268,7 @@ End Sub
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Sub SetFormIconFromFile(ByRef FormRef As Access.Form, ByVal IconFilePath As String)
+Public Sub SetFormIconFromFile(ByRef formRef As Access.Form, ByVal IconFilePath As String)
    
 On Error Resume Next ' ... Fehlermeldung würde bei dieser "unwichtigen" Funktion nur stören
   
@@ -326,7 +279,7 @@ On Error Resume Next ' ... Fehlermeldung würde bei dieser "unwichtigen" Funktion
    imageHandle = LoadImage(0, IconFilePath, IMAGE_ICON, _
                            ICONPIXELSIZE, ICONPIXELSIZE, LR_LOADFROMFILE)
    If imageHandle <> 0 Then
-      SendMessage FormRef.Hwnd, WM_MSG_SETICON, WM_PARAM_ICON_SMALL, ByVal imageHandle
+      SendMessage formRef.Hwnd, WM_MSG_SETICON, WM_PARAM_ICON_SMALL, ByVal imageHandle
    End If
    
 End Sub

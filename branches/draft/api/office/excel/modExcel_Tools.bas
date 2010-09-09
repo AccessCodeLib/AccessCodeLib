@@ -29,7 +29,9 @@ Public Function RecordsetExcelExport(ByRef RecordsetReference As Object, _
                        Optional ByVal WithRecordsetHeaders As Boolean = True, _
                        Optional ByVal ImportTabName As String = vbNullString)
    
+#If USE_GLOBAL_ERRORHANDLER Then
 On Error GoTo HandleErr
+#End If
 
 #If ExcelEarlyBinding = 1 Then
    Dim xlApp As Excel.Application
@@ -42,7 +44,7 @@ On Error GoTo HandleErr
 #End If
   
    Set xlApp = CreateObject("Excel.Application")
-   xlApp.Visible = True
+   xlApp.visible = True
    Set xlWb = xlApp.Workbooks.Add(TemplateFile)
    If Len(ImportTabName) > 0 Then
       Set xlSh = xlWb.Sheets(ImportTabName)
@@ -52,11 +54,11 @@ On Error GoTo HandleErr
    
    excelSheetCopyFromRecordset xlSh, RecordsetReference, StartRow, StartCol, WithRecordsetHeaders
 
+#If USE_GLOBAL_ERRORHANDLER Then
 ExitHere:
    Exit Function
-
 HandleErr:
-   Select Case HandleError(Err.Number, "RecordsetExcelExport", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
+   Select Case HandleError(Err.Number, "RecordsetExcelExport", Err.Description)
    Case ACLibErrorResumeMode.aclibErrResume
       Resume
    Case ACLibErrorResumeMode.aclibErrResumeNext
@@ -64,6 +66,7 @@ HandleErr:
    Case Else
       Resume ExitHere
    End Select
+#End If
 
 End Function
 
@@ -80,8 +83,6 @@ Private Sub excelSheetCopyFromRecordset(ByRef xlSheet As Object, _
     Dim i As Long
     
     'Überschriften
-On Error GoTo HandleErr
-
     If WithRecordsetHeaders Then
         With rstData
             lngRstFields = .Fields.Count - 1
@@ -98,18 +99,5 @@ On Error GoTo HandleErr
     
     'Daten
     xlSheet.Cells(StartRowNr, StartColNr).CopyFromRecordset rstData
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "excelSheetCopyFromRecordset", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Sub

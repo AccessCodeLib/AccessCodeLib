@@ -57,27 +57,10 @@ Private WithEvents m_ApplicationHandler As ApplicationHandler
 Attribute m_ApplicationHandler.VB_VarHelpID = -1
 
 Public Property Set ApplicationHandlerRef(ByRef objRef As ApplicationHandler)
-
-On Error GoTo HandleErr
-
    Set m_ApplicationHandler = objRef
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandlerRef", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Property
 
 Public Property Get ExtensionKey() As String
-On Error Resume Next
    ExtensionKey = m_EXTENSION_KEY
 End Property
 
@@ -87,39 +70,19 @@ End Property
 
 ' CheckExtension
 Private Sub m_ApplicationHandler_CheckExtension(ByVal sExtensionKey As String, ByRef exists As Boolean)
-On Error Resume Next
    If sExtensionKey = m_EXTENSION_KEY Then exists = True
 End Sub
 
 ' ExtensionLookup
 Private Sub m_ApplicationHandler_ExtensionLookup(ByVal sExtensionKey As String, ByRef ExtensionReference As Object)
-
-On Error GoTo HandleErr
-
    If sExtensionKey = m_EXTENSION_KEY Then
       Set ExtensionReference = Me
    End If
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ExtAppFile.m_ApplicationHandler_ExtensionLookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 ' AfterDispose
 Private Sub m_ApplicationHandler_AfterDispose(ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
 '=> Referenz in m_ApplicationHandler auf Nothing setzen
-On Error Resume Next
    Set m_ApplicationHandler = Nothing
 End Sub
 
@@ -171,11 +134,9 @@ Private Sub writeTraceLog(ByRef Msg As String, ByVal Args As Variant)
 End Sub
 
 Private Sub traceLog2DebugWindow(ByRef Msg As String, ByRef Args As Variant)
-
    Dim tempString As String
    traceLog2String Msg, Args, tempString
    Debug.Print tempString
-      
 End Sub
 
 Private Sub traceLog2Memory(ByRef Msg As String, ByRef Args As Variant)

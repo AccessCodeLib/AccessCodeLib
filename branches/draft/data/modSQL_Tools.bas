@@ -20,14 +20,12 @@ Attribute VB_Description = "SQL-Hilfsfunktionen"
 '  <file>data/modSQL_Tools.bas</file>
 '  <license>_codelib/license.bas</license>
 '  <use>base/defGlobal.bas</use>
-'  <use>base/modErrorHandler.bas</use>
 '  <test>_test/data/modSQL_Tools_FormatTests.cls</test>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
 Option Compare Database
 Option Explicit
-
 
 '---------------------------------------------------------------------------------------
 ' Function: GetSQLString_Text (2009-07-25)
@@ -48,9 +46,6 @@ Option Explicit
 '---------------------------------------------------------------------------------------
 Public Function GetSQLString_Text(ByVal vValue As Variant, Optional ByVal sDelimiter As String = SQL_DEFAULT_TEXTDELIMITER, _
                          Optional ByVal bWithoutLeftRightDelim As Boolean = False) As String
-                         
-On Error GoTo HandleErr
-
    If bWithoutLeftRightDelim Then
       GetSQLString_Text = Replace$(Nz(vValue, vbNullString), sDelimiter, sDelimiter & sDelimiter)
    ElseIf IsNull(vValue) Then
@@ -58,21 +53,6 @@ On Error GoTo HandleErr
    Else
       GetSQLString_Text = sDelimiter & Replace$(vValue, sDelimiter, sDelimiter & sDelimiter) & sDelimiter
    End If
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "GetSQLString_Text", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -88,29 +68,11 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function GetSQLString_Date(ByVal vValue As Variant, Optional sFormatString As String = SQL_DEFAULT_DATEFORMAT) As String
-
-On Error GoTo HandleErr
-
    If IsNull(vValue) Then
       GetSQLString_Date = "NULL"
    Else
       GetSQLString_Date = Format$(vValue, sFormatString)
    End If
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "GetSQLString_Date", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -128,27 +90,9 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function GetSQLString_Number(ByVal vValue As Variant) As String
-
-On Error GoTo HandleErr
-
    If IsNull(vValue) Then
       GetSQLString_Number = "NULL"
    Else
       GetSQLString_Number = Trim$(Str$(vValue))
    End If
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "GetSQLString_Number", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function

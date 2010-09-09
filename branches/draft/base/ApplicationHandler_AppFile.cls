@@ -25,7 +25,6 @@ Attribute VB_Description = "Erweiterung für ApplicationHandler-Klasse: Anwendung
 '<codelib>
 '  <file>base/ApplicationHandler_AppFile.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>base/modErrorHandler.bas</use>
 '  <use>base/ApplicationHandler.cls</use>
 '  <use>api/winapi/modWinAPI_FileInfo.bas</use>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
@@ -52,27 +51,10 @@ Private WithEvents m_ApplicationHandler As ApplicationHandler
 Attribute m_ApplicationHandler.VB_VarHelpID = -1
 
 Public Property Set ApplicationHandlerRef(ByRef objRef As ApplicationHandler)
-
-On Error GoTo HandleErr
-
    Set m_ApplicationHandler = objRef
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandlerRef", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Property
 
 Public Property Get ExtensionKey() As String
-On Error Resume Next
    ExtensionKey = m_EXTENSION_KEY
 End Property
 
@@ -82,66 +64,30 @@ End Property
 
 ' CheckExtension
 Private Sub m_ApplicationHandler_CheckExtension(ByVal sExtensionKey As String, ByRef exists As Boolean)
-On Error Resume Next
    If sExtensionKey = m_EXTENSION_KEY Then exists = True
 End Sub
 
 ' ExtensionLookup
 Private Sub m_ApplicationHandler_ExtensionLookup(ByVal sExtensionKey As String, ByRef ExtensionReference As Object)
-
-On Error GoTo HandleErr
-
    If sExtensionKey = m_EXTENSION_KEY Then
       Set ExtensionReference = Me
    End If
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ExtAppFile.m_ApplicationHandler_ExtensionLookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 'ExtensionPropertyLookup
 Private Sub m_ApplicationHandler_ExtensionPropertyLookup( _
                      ByVal sExtensionKey As String, ByVal PropertyName As String, _
                      ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
-                     
-On Error GoTo HandleErr
 
    If sExtensionKey = m_EXTENSION_KEY Then
       getExtensionPropertyLookup PropertyName, ResumeMode, ResumeMessage
    End If
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ExtAppFile.m_ApplicationHandler_ExtensionPropertyLookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 ' AfterDispose
 Private Sub m_ApplicationHandler_AfterDispose(ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
 '=> Referenz in m_ApplicationHandler auf Nothing setzen
-On Error Resume Next
    Set m_ApplicationHandler = Nothing
 End Sub
 
@@ -155,11 +101,9 @@ End Sub
 Private Sub getExtensionPropertyLookup(ByVal PropertyName As String, _
                                        ByRef ResumeMode As ApplicationHandlerResumeModes, _
                                        ByRef ResumeMessage As Variant)
-   
-On Error GoTo HandleErr
 
    ResumeMode = AppResumeMode_Completed
-   
+
    Select Case PropertyName
       Case m_EXTENSION_PROPERTY_AppFileTableName
          ResumeMessage = m_TABLE_AppFiles
@@ -169,24 +113,9 @@ On Error GoTo HandleErr
          
    End Select
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ExtAppFile.getExtensionPropertyLookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Public Property Get AppFileTableName() As String
-On Error Resume Next
    AppFileTableName = m_TABLE_AppFiles
 End Property
 
@@ -210,8 +139,6 @@ Public Function CreateAppFile(ByVal sFileID As String, ByVal sFileName As String
    Dim lngFieldSize As Long
    Dim rst As DAO.Recordset
    Dim fld As DAO.Field
-
-On Error GoTo HandleErr
 
    Set rst = CodeDb.OpenRecordset("select file from " & m_TABLE_AppFiles & " where id='" & sFileID & "'")
    If rst.EOF Then
@@ -237,20 +164,6 @@ On Error GoTo HandleErr
 
    End If
 
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ExtAppFile.CreateAppFile", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -332,22 +245,13 @@ HandleErr:
       End If
    End If
 
-   Select Case HandleError(lngErrNumber, "ExtAppFile.SaveAppFile", strErrDescription, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
+   Err.Raise lngErrNumber, "ExtAppFile.SaveAppFile", strErrDescription
 
 End Function
 
 Private Function createAppFileTable() As Boolean
    
    Dim strSQL As String
-
-On Error Resume Next
 
    strSQL = "create table " & m_TABLE_AppFiles & " ( " & m_TABLE_FIELD_id & " varchar(20) primary key, " & _
              m_TABLE_FIELD_version & " varchar(10), " & m_TABLE_FIELD_file & " image)"
@@ -367,8 +271,6 @@ Private Sub m_ApplicationHandler_AppFileBeforeCreateFile(ByVal sFileID As String
 
    Dim bolCompleted As Boolean
 
-On Error Resume Next
-   
    bolCompleted = CreateAppFile(sFileID, sFileName)
    If bolCompleted Then
       ResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Completed
@@ -385,12 +287,11 @@ Private Sub m_ApplicationHandler_AppFileBeforeSaveFile(ByVal sFileID As String, 
 
    Dim bolCompleted As Boolean
 
-On Error Resume Next
-   
    bolCompleted = SaveAppFile(sFileID, sFileName, saveVersion)
    If bolCompleted Then
       ResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Completed
    Else 'Fehler rückmelden
       ResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Error
    End If
+   
 End Sub

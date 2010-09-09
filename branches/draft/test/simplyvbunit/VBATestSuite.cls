@@ -258,7 +258,7 @@ Private Sub printSummary(ByVal Result As SimplyVBUnit.TestResult)
    Debug.Print "Failed : " & m_Failed
    Debug.Print "Ignored: " & m_Ignored
    Debug.Print String$(9 + Len(CStr(Result.Test.TestCount)), "-")
-   Debug.Print "Time   : " & Round(Result.Time, 0) & " ms"
+   Debug.Print "Time   : " & Round(Result.time, 0) & " ms"
    Debug.Print String$(50, "-")
 
 End Sub

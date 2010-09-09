@@ -23,7 +23,6 @@ Attribute VB_Description = "Hauptsteuerung der Anwendung"
 '<codelib>
 '  <file>base/ApplicationHandler.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>base/modErrorHandler.bas</use>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -119,7 +118,7 @@ Public Event ExtensionPropertyLookup(ByVal Key As String, ByVal PropertyName As 
 
 Public Event ExtensionProcedureCall(ByVal Key As String, ByVal ProcedureName As String, _
             ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant, _
-            ByRef Params() As Variant)
+            ByRef params() As Variant)
 
 Public Event AppFileBeforeCreateFile( _
             ByVal sFileID As String, ByVal sFileName As String, _
@@ -206,8 +205,6 @@ Public Function Start(Optional ByRef ResumeMessage As Variant) As Boolean
    Dim eventResumeMode As ApplicationHandlerResumeModes
    Dim eventResumeMessage As Variant
    
-On Error GoTo HandleErr
-
    'Evente-Schnittstelle für Anwendungsstart
    ' ... ermöglicht z. B. das Durchführen eines Login-Vorgangs
    RaiseEvent BeforeStartApplication(eventResumeMode, eventResumeMessage)
@@ -265,20 +262,6 @@ On Error GoTo HandleErr
    RaiseEvent AfterStartApplication(eventResumeMode, eventResumeMessage)
 
    Start = True
-   
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandler.Start", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Function
 
@@ -300,18 +283,15 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get ApplicationName() As String
-On Error Resume Next
-
    If Len(m_ApplicationName) = 0 Then 'Wert aus Titel-Eigenschaft, da Konstante nicht eingestellt wurde
+      On Error Resume Next
       m_ApplicationName = AppDb.Properties("AppTitle").Value
       If Len(m_ApplicationName) = 0 Then 'Wert aus Dateinamen
          m_ApplicationName = AppDb.Name
          m_ApplicationName = Left$(m_ApplicationName, InStrRev(m_ApplicationName, ".") - 1)
       End If
    End If
-   
    ApplicationName = m_ApplicationName
-   
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -325,7 +305,6 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Let ApplicationName(ByVal appName As String)
-On Error Resume Next
     m_ApplicationName = appName
 End Property
 
@@ -346,14 +325,10 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get ApplicationFullName() As String
-On Error Resume Next
-
    If Len(m_ApplicationFullName) = 0 Then 'Kurzform verwenden
       m_ApplicationFullName = ApplicationName
    End If
-   
    ApplicationFullName = m_ApplicationFullName
-   
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -367,7 +342,6 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Let ApplicationFullName(ByVal appName As String)
-On Error Resume Next
     m_ApplicationFullName = appName
 End Property
 
@@ -387,7 +361,6 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get Version() As String
-On Error Resume Next
 
    If Len(m_ApplicationVersion) = 0 Then ' ... aus Properties lesen?
 '/**
@@ -411,7 +384,6 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Let Version(ByVal appVersion As String)
-On Error Resume Next
     m_ApplicationVersion = appVersion
 End Property
 
@@ -427,14 +399,10 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get ApplicationStartFormName() As String
-On Error Resume Next
-
-   If Len(m_ApplicationStartFormName) = 0 Then ' ... aus Properties lesen?
+   If StrPtr(m_ApplicationStartFormName) = 0 Then ' ... aus Properties lesen?
       m_ApplicationStartFormName = ""
    End If
-   
    ApplicationStartFormName = m_ApplicationStartFormName
-   
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -449,7 +417,6 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Let ApplicationStartFormName(ByVal FormName As String)
-On Error Resume Next
     m_ApplicationStartFormName = FormName
 End Property
 
@@ -467,144 +434,49 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get AppDb() As DAO.Database
-
-On Error GoTo HandleErr
-
    If m_AppDb Is Nothing Then
       Set m_AppDb = CodeDb
    End If
    Set AppDb = m_AppDb
-
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandler.AppDb", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Friend Property Set AppDb(ByRef db As DAO.Database)
-
-On Error GoTo HandleErr
-
    Set m_AppDb = db
-
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandler.AppDb", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Public Function GetTransferValue(Optional ByVal vValueIfNull As Variant = Null, Optional ByVal bolNoDel As Boolean = False) As Variant
-
-On Error GoTo HandleErr
-
    GetTransferValue = Nz(m_varTransferValue, vValueIfNull)
    If Not bolNoDel Then m_varTransferValue = Null
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandler.GetTransferValue", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
 
 Public Sub SetTransferValue(ByVal newValue As Variant)
-
-On Error GoTo HandleErr
-
    m_varTransferValue = newValue
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandler.SetTransferValue", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Sub
 
 Public Property Get PublicPath() As String
-On Error Resume Next
    PublicPath = m_PublicPath
 End Property
 
 Friend Property Let PublicPath(ByVal sPublicPath As String)
-On Error Resume Next
    m_PublicPath = sPublicPath
 End Property
 
 Public Property Get ApplicationTitle() As String
-On Error Resume Next
    ApplicationTitle = AppDb.Properties("AppTitle").Value
 End Property
 
 Friend Property Let ApplicationTitle(ByVal AppTitle As String)
-
-On Error GoTo HandleErr
-
    If Len(AppTitle) > 0 Then
       setAppDbProperty m_DBPROPNAME_AppTitle, dbText, AppTitle
    Else
       deleteAppDbProperty m_DBPROPNAME_AppTitle
    End If
    Access.Application.RefreshTitleBar
-
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandler.ApplicationTitle", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Property
 
 Friend Sub SetAppIcon(ByVal AppIconFile As String, Optional ByVal UseAppIconForFrmRpt As Boolean = True)
 
    Dim bolCheck As Boolean
-
-On Error GoTo HandleErr
 
    If Len(Dir$(AppIconFile)) > 0 Then
       setAppDbProperty m_DBPROPNAME_AppIcon, dbText, AppIconFile
@@ -625,71 +497,22 @@ On Error GoTo HandleErr
    End If
    Application.RefreshTitleBar
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandler.SetAppIcon", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Friend Property Let StartUpForm(ByVal StartUpFormName As String)
-
-On Error GoTo HandleErr
-
    If Len(StartUpFormName) > 0 Then
       setAppDbProperty m_DBPROPNAME_StartUpForm, dbText, "Form." & StartUpFormName
    Else
       deleteAppDbProperty m_DBPROPNAME_StartUpForm
    End If
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "StartUpForm", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Friend Property Let StartUpMenuBar(ByVal MenuBarName As String)
-
-On Error GoTo HandleErr
-
    If Len(MenuBarName) > 0 Then
       setAppDbProperty m_DBPROPNAME_StartUpMenuBar, dbText, MenuBarName
    Else
       deleteAppDbProperty m_DBPROPNAME_StartUpMenuBar
    End If
-
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandler.StartUpMenuBar", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Public Sub SetApplicationProperty(ByVal propName As String, ByVal PropValue As Variant, Optional ByVal PropType As Long = dbText)
@@ -700,9 +523,7 @@ Private Sub setAppDbProperty(ByVal propName As String, ByVal PropType As Long, B
    
    Dim db As DAO.Database
    Dim propCol As DAO.Properties
-
-On Error GoTo HandleErr
-
+   
    Set db = AppDb
    Set propCol = db.Properties
    If dbPropertyExists(propCol, propName) Then
@@ -717,28 +538,12 @@ On Error GoTo HandleErr
       End If
    End If
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandler.setAppDbProperty", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Private Sub deleteAppDbProperty(ByVal sPropName As String)
    
    Dim db As DAO.Database
    Dim propCol As DAO.Properties
-   
-On Error GoTo HandleErr
 
    Set db = AppDb
    Set propCol = db.Properties
@@ -747,27 +552,11 @@ On Error GoTo HandleErr
       propCol.Delete sPropName
    End If
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandler.deleteAppDbProperty", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Private Function dbPropertyExists(ByRef propCol As DAO.Properties, ByVal sPropName As String) As Boolean
    
    Dim prop As DAO.Property
-   
-On Error GoTo HandleErr
 
    For Each prop In propCol
       If prop.Name = sPropName Then
@@ -776,28 +565,12 @@ On Error GoTo HandleErr
       End If
    Next
 
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandler.dbPropertyExists", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
 
 Public Sub WriteApplicationLogEntry(ByVal Msg As String)
 
    Dim strLogFile As String
    Dim lfileNo As Long
-   
-On Error GoTo HandleErr
 
    strLogFile = CurrentProject.Path & "\" & m_LOG_FILE
    
@@ -805,20 +578,6 @@ On Error GoTo HandleErr
    Open strLogFile For Append As lfileNo
    Print #lfileNo, Msg
    Close #lfileNo
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandler.WriteApplicationLogEntry", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Sub
 
@@ -829,8 +588,6 @@ Public Sub WriteLog(ByVal Msg As String, _
 
    Dim ResumeMode As ApplicationHandlerResumeModes
    Dim eventResumeMessage As Variant
-   
-On Error GoTo HandleErr
 
    RaiseEvent NewAppLog(LogType, Msg, Args, ResumeMode, eventResumeMessage)
    
@@ -842,26 +599,10 @@ On Error GoTo HandleErr
       End If
       WriteApplicationLogEntry Msg
    End If
-   
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandler.WriteApplicationLogEntry", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Sub
 
 Private Function getLogTypeString(Optional LogType As ApplicationHandlerLogType) As String
-   
    Select Case LogType
       Case ApplicationHandlerLogType.AppLogType_Error
          getLogTypeString = "Error"
@@ -870,7 +611,6 @@ Private Function getLogTypeString(Optional LogType As ApplicationHandlerLogType)
       Case Else
          getLogTypeString = "N/A"
    End Select
-   
 End Function
 
 
@@ -878,35 +618,17 @@ Public Property Get MdiBackColor() As Long
 '/**
 ' * @bug Ermitteln der Hintergrundfarbe des MDI-Bereichs Funktioniert nicht unter Access 2007
 '**/
-On Error GoTo HandleErr
-
    If m_CustomMDIBackgroundColor <> 0 Then
       MdiBackColor = m_CustomMDIBackgroundColor
    Else
       MdiBackColor = GetSysColor(SYSCOLOR_COLOR_APPWORKSPACE)
    End If
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "MdiBackColor", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Property
 
 Friend Property Let MdiBackColor(ByVal Color As Long)
   
    Dim NewBrush As Long
    Dim hMDI As Long
-
-On Error GoTo HandleErr
 
    m_CustomMDIBackgroundColor = Color
    hMDI = FindWindowEx(Application.hWndAccessApp, 0&, "MDIClient", vbNullString)
@@ -917,20 +639,6 @@ On Error GoTo HandleErr
    SetClassLong hMDI, GCL_HBRBACKGROUND, NewBrush
    'Fenster neuzeichnen (gesamtes Fenster inkl. Background)
    RedrawWindow hMDI, ByVal 0&, ByVal 0&, RDW_INVALIDATE Or RDW_ERASE
-
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandler.MdiBackColor", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Property
 
@@ -955,10 +663,6 @@ Public Function CreateAppFile(ByVal sFileID As String, ByVal sFileName As String
    Dim eventResumeMode As ApplicationHandlerResumeModes ' Rückgabewert aus Event-Schnittstelle
    Dim eventResumeMessage As Variant                    ' Nachricht, für Abbruchgrund (wird derzeit noch nicht genutzt)
 
-On Error GoTo HandleErr
-
-On Error Resume Next
-
    '---------------------------------------------------
    ' Schnittstelle für andere Klassen .. damit wird es möglich,
    ' dass die Erstellung der Datei eine andere Klasse übernimmt
@@ -971,22 +675,7 @@ On Error Resume Next
       Err.Raise ApplicationHandlerErrors.AppErr_EventInterfaceMissing, _
                 "CreateAppFile", "Auf das AppFileBeforeCreateFile-Ereignis wurde nicht reagiert"
    End If
-  
 
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandler.CreateAppFile", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -1009,8 +698,6 @@ Friend Function SaveAppFile(ByVal sFileID As String, ByVal sFileName As String, 
    Dim eventResumeMode As ApplicationHandlerResumeModes ' Rückgabewert aus Event-Schnittstelle
    Dim eventResumeMessage As Variant                    ' Nachricht, für Abbruchgrund
 
-On Error GoTo HandleErr
-
    '---------------------------------------------------
    ' Event-Schnittstelle AppFileBeforeSaveFile
    '
@@ -1023,20 +710,6 @@ On Error GoTo HandleErr
                 "CreateAppFile", "Auf das AppFileBeforeSaveFile-Ereignis wurde nicht reagiert"
    End If
 
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandler.SaveAppFile", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 Public Property Get Extensions(ByVal ExtensionKey As String) As Object
@@ -1047,50 +720,18 @@ Public Property Get Extensions(ByVal ExtensionKey As String) As Object
 '**/
 
    Dim extRef As Object
-   
-On Error GoTo HandleErr
 
    RaiseEvent ExtensionLookup(ExtensionKey, extRef)
    Set Extensions = extRef
 
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandler.Extensions", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Public Function GetExtensionInstance(ByVal ExtensionKey As String, Optional ByVal InstanceKey As String = vbNullString) As Object
 
    Dim extRef As Object
 
-On Error GoTo HandleErr
-
    RaiseEvent ExtensionInstance(ExtensionKey, InstanceKey, extRef)
    Set GetExtensionInstance = extRef
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandler.GetExtension", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
    
 End Function
 
@@ -1099,8 +740,6 @@ Public Function GetExtensionProperty(ByVal ExtensionKey As String, ByVal Propert
    
    Dim eventResumeMode As ApplicationHandlerResumeModes
    Dim eventResumeMessage As Variant
-   
-On Error GoTo HandleErr
 
    RaiseEvent ExtensionPropertyLookup(ExtensionKey, PropertyName, eventResumeMode, eventResumeMessage)
    
@@ -1110,20 +749,6 @@ On Error GoTo HandleErr
       GetExtensionProperty = ValueIfMissing
    End If
 
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandler.GetExtensionProperty", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 
@@ -1136,28 +761,12 @@ Public Function UpdateApplication() As Boolean
    Dim eventResumeMode As ApplicationHandlerResumeModes
    Dim eventResumeMessage As Variant
 
-On Error GoTo HandleErr
-
    RaiseEvent UpdateApplication(eventResumeMode, eventResumeMessage)
    If eventResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Completed Then
       UpdateApplication = eventResumeMessage
    Else
       UpdateApplication = False
    End If
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "UpdateApplication", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Function
 
@@ -1167,28 +776,12 @@ Private Function checkVersionUpdate() As Boolean
    Dim eventResumeMode As ApplicationHandlerResumeModes
    Dim eventResumeMessage As Variant
 
-On Error GoTo HandleErr
-
    RaiseEvent CheckUpdate(eventResumeMode, eventResumeMessage)
    If eventResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Completed Then
       checkVersionUpdate = eventResumeMessage
    Else
       checkVersionUpdate = False
    End If
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "checkVersionUpdate", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Function
 
@@ -1211,23 +804,8 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Sub CallExtensionProcedure(ByVal Key As String, ByVal ProcedureName As String, _
             ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant, _
-            ByRef Params() As Variant)
+            ByRef params() As Variant)
             
-On Error GoTo HandleErr
-
-   RaiseEvent ExtensionProcedureCall(Key, ProcedureName, ResumeMode, ResumeMessage, Params)
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "CallExtensionProcedure", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-            
+   RaiseEvent ExtensionProcedureCall(Key, ProcedureName, ResumeMode, ResumeMessage, params)
+  
 End Sub

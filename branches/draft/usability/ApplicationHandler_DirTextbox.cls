@@ -36,7 +36,6 @@ Attribute VB_Description = "Erweiterung für ApplicationHandler-Klasse: Verzeichn
 '  <file>usability/ApplicationHandler_DirTextbox.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>base/ApplicationHandler.cls</use>
-'  <use>base/modErrorHandler.bas</use>
 '  <use>file/modFiles.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -124,26 +123,10 @@ Private WithEvents m_ApplicationHandler As ApplicationHandler
 Attribute m_ApplicationHandler.VB_VarHelpID = -1
 
 Public Property Set ApplicationHandlerRef(ByRef objRef As ApplicationHandler)
-On Error GoTo HandleErr
-
    Set m_ApplicationHandler = objRef
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandlerRef", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Property
 
 Public Property Get ExtensionKey() As String
-On Error Resume Next
    ExtensionKey = m_EXTENSION_KEY
 End Property
 
@@ -161,66 +144,29 @@ End Sub
 
 ' CheckExtension
 Private Sub m_ApplicationHandler_CheckExtension(ByVal Key As String, ByRef exists As Boolean)
-On Error Resume Next
    If Key = m_EXTENSION_KEY Then exists = True
 End Sub
 
 ' ExtensionLookup
 Private Sub m_ApplicationHandler_ExtensionLookup(ByVal Key As String, ByRef ExtensionReference As Object)
-
-On Error GoTo HandleErr
-
    If Key = m_EXTENSION_KEY Then
       Set ExtensionReference = Me
    End If
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ExtAppFile.m_ApplicationHandler_ExtensionLookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 'ExtensionNewInstance
 Private Sub m_ApplicationHandler_ExtensionInstance(ByVal sExtensionKey As String, ByVal sInstanceKey As String, ByRef ExtensionReference As Object)
-On Error GoTo HandleErr
-
    If sExtensionKey = m_EXTENSION_KEY Then
       getInstance sInstanceKey, ExtensionReference
    End If
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "m_ApplicationHandler_ExtensionInstance", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Sub
 
 Private Sub getInstance(ByVal sInstanceKey As String, ByRef ExtensionReference As Object)
    
    Dim instanceRef As ApplicationHandler_DirTextbox
    Dim tempRef As ApplicationHandler_DirTextbox
-   
    Dim col As Collection
    Dim i As Long
-   
-On Error GoTo HandleErr
 
    Set col = InstanceCollection
    
@@ -248,52 +194,20 @@ On Error GoTo HandleErr
    
    Set ExtensionReference = instanceRef
 
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "getInstance", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Private Property Get InstanceCollection() As Collection
-
-On Error GoTo HandleErr
-
    If m_InstanceCollection Is Nothing Then
       Set m_InstanceCollection = New Collection
    End If
    Set InstanceCollection = m_InstanceCollection
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "InstanceCollection", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Friend Property Get InstanceKey() As String
-On Error Resume Next
    InstanceKey = m_InstanceKey
 End Property
 
 Friend Property Let InstanceKey(ByVal sKey As String)
-On Error Resume Next
    m_InstanceKey = sKey
 End Property
 
@@ -302,33 +216,14 @@ End Property
 Private Sub m_ApplicationHandler_ExtensionPropertyLookup( _
                      ByVal Key As String, ByVal PropertyName As String, _
                      ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
-                     
-On Error GoTo HandleErr
-
    If Key = m_EXTENSION_KEY Then
       getExtensionPropertyLookup PropertyName, ResumeMode, ResumeMessage
    End If
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ExtAppFile.m_ApplicationHandler_ExtensionPropertyLookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 ' AfterDispose
 Private Sub m_ApplicationHandler_AfterDispose(ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
 '=> Referenz in m_ApplicationHandler auf Nothing setzen
-On Error Resume Next
    Set m_ApplicationHandler = Nothing
 End Sub
 
@@ -338,11 +233,8 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub getExtensionPropertyLookup(ByVal PropertyName As String, ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
-   
-On Error GoTo HandleErr
 
    ResumeMode = AppResumeMode_Completed
-   
    Select Case PropertyName
       'case ...
           
@@ -351,20 +243,6 @@ On Error GoTo HandleErr
                  
    End Select
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ExtDirTextbox.getExtensionPropertyLookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -381,7 +259,6 @@ End Sub
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get BaseFolderPath() As String
-On Error Resume Next
    BaseFolderPath = m_BaseFolderPath
 End Property
 
@@ -398,7 +275,6 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Let BaseFolderPath(ByVal newPath As String)
-On Error Resume Next
    m_BaseFolderPath = newPath
    If Len(m_BaseFolderPath) > 0 Then
       If Right$(m_BaseFolderPath, 1) <> "\" Then
@@ -409,7 +285,6 @@ End Property
 
 Private Sub initNewFileSearch()
 'Zwischenspeicher löschen
-On Error Resume Next
    m_TabMode = False
    m_FolderPath = vbNullString
 End Sub
@@ -426,24 +301,7 @@ End Sub
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get Textbox() As Access.Textbox
-
-On Error GoTo HandleErr
-
    Set Textbox = m_Textbox
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "Textbox", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -460,8 +318,6 @@ End Property
 Public Property Set Textbox(ByVal ref As Access.Textbox)
    
    Dim parentObject As Object
-   
-On Error GoTo HandleErr
 
    Set m_Textbox = Nothing
    
@@ -490,20 +346,6 @@ On Error GoTo HandleErr
    
    initNewFileSearch
 
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "Textbox", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Private Sub m_Textbox_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
@@ -518,8 +360,6 @@ Private Sub m_Textbox_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
    Dim baseFolder As String
    Dim textBoxString As String
    Dim pos As Long
-
-On Error GoTo HandleErr
 
    baseFolder = BaseFolderPath
    textBoxString = m_Textbox.Text
@@ -628,19 +468,4 @@ On Error GoTo HandleErr
       m_TabMode = False
    End If
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "m_Textbox_KeyDown", Err.Description, ACLibErrorHandlerMode.aclibErrMsgBox)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      initNewFileSearch
-      Resume ExitHere
-   End Select
-   
 End Sub

@@ -128,26 +128,10 @@ Private WithEvents m_ApplicationHandler As ApplicationHandler
 Attribute m_ApplicationHandler.VB_VarHelpID = -1
 
 Public Property Set ApplicationHandlerRef(ByRef objRef As ApplicationHandler)
-On Error GoTo HandleErr
-
    Set m_ApplicationHandler = objRef
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandlerRef", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Property
 
 Public Property Get ExtensionKey() As String
-On Error Resume Next
    ExtensionKey = m_EXTENSION_KEY
 End Property
 
@@ -158,66 +142,28 @@ End Property
 
 ' CheckExtension
 Private Sub m_ApplicationHandler_CheckExtension(ByVal sExtensionKey As String, exists As Boolean)
-On Error Resume Next
    If sExtensionKey = m_EXTENSION_KEY Then exists = True
 End Sub
 
 ' ExtensionLookup
 Private Sub m_ApplicationHandler_ExtensionLookup(ByVal sExtensionKey As String, ExtensionReference As Object)
-
-On Error GoTo HandleErr
-
    If sExtensionKey = m_EXTENSION_KEY Then
       Set ExtensionReference = Me
    End If
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ExtAppFile.m_ApplicationHandler_ExtensionLookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 'ExtensionPropertyLookup
 Private Sub m_ApplicationHandler_ExtensionPropertyLookup( _
                      ByVal sExtensionKey As String, ByVal PropertyName As String, _
                      ResumeMode As ApplicationHandlerResumeModes, ResumeMessage As Variant)
-                     
-On Error GoTo HandleErr
-
    If sExtensionKey = m_EXTENSION_KEY Then
       getExtensionPropertyLookup PropertyName, ResumeMode, ResumeMessage
    End If
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ExtAppFile.m_ApplicationHandler_ExtensionPropertyLookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 ' AfterDispose
 Private Sub m_ApplicationHandler_AfterDispose(ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
 '=> Referenz in m_ApplicationHandler auf Nothing setzen
-On Error Resume Next
    Set m_ApplicationHandler = Nothing
 End Sub
 
@@ -226,10 +172,9 @@ End Sub
 ' Ergänzungen für Ereiterung: ApplicationHandler_WinLogin
 '---------------------------------------------------------------------------------------
 '
-Private Sub getExtensionPropertyLookup(ByVal PropertyName As String, ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
-   
-On Error GoTo HandleErr
-
+Private Sub getExtensionPropertyLookup(ByVal PropertyName As String, _
+                                       ByRef ResumeMode As ApplicationHandlerResumeModes, _
+                                       ByRef ResumeMessage As Variant)
    Select Case PropertyName
       Case m_EXTENSION_PROPERTY_UserName
          ResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Completed
@@ -239,51 +184,16 @@ On Error GoTo HandleErr
          ResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Error
        
    End Select
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ExtWinLogin.getExtensionPropertyLookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Public Property Set LoginForm(ByRef formRef As Form_frmLogin)
-
-On Error GoTo HandleErr
-
    Set m_LoginForm = formRef
-
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "LoginForm", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 ' Login-Prüfung vor Anwenduntsstart einschieben
 Private Sub m_ApplicationHandler_BeforeStartApplication(ResumeMode As ApplicationHandlerResumeModes, ResumeMessage As Variant)
 
    Dim bolLoginFailed As Boolean
-   
-On Error GoTo HandleErr
 
    bolLoginFailed = Not Login()
    If bolLoginFailed Then
@@ -294,20 +204,7 @@ On Error GoTo HandleErr
       Application.Quit
 #End If
    End If
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "m_ApplicationHandler_BeforeStartApplication", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
+ 
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -325,10 +222,8 @@ End Sub
 Public Function Login() As Boolean
    
    Dim strDefaultUser As String
-   
-On Error GoTo HandleErr
-
    Dim openArgString As String
+   
    If Not (m_ApplicationHandler Is Nothing) Then
       openArgString = m_ApplicationHandler.ApplicationName & " - "
    End If
@@ -346,20 +241,6 @@ On Error GoTo HandleErr
    '   damit wird Ereignisbehandlung aktiviert => m_LoginCancelled wird eingestellt
    Login = Not m_LoginCancelled
 
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "Login", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 Private Function CheckUser(ByVal Domain As String, ByVal userName As String, ByVal userPassword As String) As Boolean
@@ -368,8 +249,6 @@ Private Function CheckUser(ByVal Domain As String, ByVal userName As String, ByV
    Dim logonAllowed As Boolean
 
    'mehrere LogonTypes ausprobieren
-On Error GoTo HandleErr
-
    logonAllowed = (LogonUser(userName, Domain, userPassword, LogonType.LOGON32_LOGON_NETWORK, LogonProvider.LOGON32_PROVIDER_DEFAULT, tokenHandle) > 0)
    If logonAllowed = False Then
        logonAllowed = (LogonUser(userName, Domain, userPassword, LogonType.LOGON32_LOGON_INTERACTIVE, LogonProvider.LOGON32_PROVIDER_DEFAULT, tokenHandle) > 0)
@@ -392,33 +271,16 @@ On Error GoTo HandleErr
    
    CheckUser = logonAllowed
 
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "CheckUser", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 'Ereignisbehandlung vom Login-Formular
 Private Sub m_LoginForm_cancelled()
-On Error Resume Next
    m_UserName = vbNullString
    m_LoginCancelled = True
 End Sub
 
 Private Sub m_LoginForm_Logon(ByVal LoginName As String, ByVal Password As String, Cancel As Boolean)
    
-On Error GoTo HandleErr
-
    Dim strDomain As String
    Dim pos As Long
    Dim bolLoginOk As Boolean
@@ -441,21 +303,7 @@ On Error GoTo HandleErr
    Else
       Cancel = True
    End If
-   
-ExitHere:
-On Error Resume Next
-   Exit Sub
 
-HandleErr:
-   Select Case HandleError(Err.Number, "m_LoginForm_Logon", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -470,7 +318,6 @@ End Sub
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Let Domain(ByVal DomainName As String)
-On Error Resume Next
    m_UserDomain = DomainName
 End Property
 
@@ -486,7 +333,6 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get Domain() As String
-On Error Resume Next
    Domain = m_UserDomain
 End Property
 
@@ -502,7 +348,6 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Let LoginNameWithDomain(ByVal WithDomain As Boolean)
-On Error Resume Next
    m_LoginNameWithDomain = WithDomain
 End Property
 
@@ -518,7 +363,6 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get LoginNameWithDomain() As Boolean
-On Error Resume Next
    LoginNameWithDomain = m_LoginNameWithDomain
 End Property
 
@@ -534,6 +378,5 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get CurrentUser()
-On Error Resume Next
    CurrentUser = m_UserName
 End Property
