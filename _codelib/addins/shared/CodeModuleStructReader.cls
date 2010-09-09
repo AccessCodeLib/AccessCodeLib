@@ -272,8 +272,6 @@ Public Property Get CurrentVbProject() As Object
 #End If
    Dim strCurrentDbName As String
 
-On Error GoTo HandleErr
-
    If m_CurrentVbProject Is Nothing Then
       Set m_CurrentVbProject = VBE.ActiveVBProject
       'Prüfen, ob das richtige VbProject gewählt wurde (muss das von CurrentDb sein)
@@ -290,19 +288,5 @@ On Error GoTo HandleErr
    End If
    
    Set CurrentVbProject = m_CurrentVbProject
-
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "CurrentVbProject", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Property
