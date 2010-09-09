@@ -23,7 +23,6 @@ Attribute VB_Description = "Konfigurationseinstellungen der CodeLib verwalten"
 '<codelib>
 '  <file>_codelib/addins/shared/ACLibConfiguration.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>base/modErrorHandler.bas</use>
 '  <use>base/ApplicationHandler.cls</use>
 '  <use>file/modFiles.bas</use>
 '  <use>data/modSQL_Tools.bas</use>
@@ -78,26 +77,10 @@ Private WithEvents m_ApplicationHandler As ApplicationHandler
 Attribute m_ApplicationHandler.VB_VarHelpID = -1
 
 Public Property Set ApplicationHandlerRef(ByRef objRef As ApplicationHandler)
-On Error GoTo HandleErr
-
    Set m_ApplicationHandler = objRef
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandlerRef", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Property
 
 Public Property Get ExtensionKey() As String
-On Error Resume Next
    ExtensionKey = m_EXTENSION_KEY
 End Property
 
@@ -107,74 +90,28 @@ End Property
 
 ' CheckExtension
 Private Sub m_ApplicationHandler_CheckExtension(ByVal sExtensionKey As String, ByRef exists As Boolean)
-On Error GoTo HandleErr
-
    If sExtensionKey = m_EXTENSION_KEY Then exists = True
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "m_ApplicationHandler_CheckExtension", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Sub
 
 ' ExtensionLookup
 Private Sub m_ApplicationHandler_ExtensionLookup(ByVal sExtensionKey As String, ByRef ExtensionReference As Object)
-On Error GoTo HandleErr
-
    If sExtensionKey = m_EXTENSION_KEY Then
       Set ExtensionReference = Me
    End If
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "m_ApplicationHandler_ExtensionLookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Sub
 
 'ExtensionPropertyLookup
 Private Sub m_ApplicationHandler_ExtensionPropertyLookup( _
                      ByVal sExtensionKey As String, ByVal PropertyName As String, _
                      ResumeMode As ApplicationHandlerResumeModes, ResumeMessage As Variant)
-On Error GoTo HandleErr
-
    If sExtensionKey = m_EXTENSION_KEY Then
       getExtensionPropertyLookup PropertyName, ResumeMode, ResumeMessage
    End If
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "m_ApplicationHandler_ExtensionPropertyLookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Sub
 
 ' AfterDispose
 Private Sub m_ApplicationHandler_AfterDispose(ResumeMode As ApplicationHandlerResumeModes, ResumeMessage As Variant)
 '=> Referenz in m_ApplicationHandler auf Nothing setzen
-On Error Resume Next
    Set m_ApplicationHandler = Nothing
 End Sub
 
@@ -184,8 +121,6 @@ End Sub
 '---------------------------------------------------------------------------------------
 
 Private Sub getExtensionPropertyLookup(ByVal PropertyName As String, ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
-   
-On Error GoTo HandleErr
 
    ResumeMode = AppResumeMode_Completed
    
@@ -198,25 +133,9 @@ On Error GoTo HandleErr
          
    End Select
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibConfiguration.getExtensionPropertyLookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Public Property Get LocalRepositoryPath() As String
-
-On Error GoTo HandleErr
 
    If Len(m_LocalRepositoryPath) = 0 Then
       m_LocalRepositoryPath = getACLibGlobalProperty(m_PROPNAME_LocalRepositoryRoot)
@@ -234,25 +153,9 @@ On Error GoTo HandleErr
    
    LocalRepositoryPath = m_LocalRepositoryPath
 
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibConfiguration.LocalRepositoryPath", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Public Property Let LocalRepositoryPath(ByVal newPath As String)
-
-On Error GoTo HandleErr
 
    If Len(newPath) > 0 Then
       If Right$(newPath, 1) <> "\" Then
@@ -261,27 +164,11 @@ On Error GoTo HandleErr
    End If
    m_LocalRepositoryPath = newPath
    setACLibGlobalProperty m_PROPNAME_LocalRepositoryRoot, m_LocalRepositoryPath
-
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibConfiguration.LocalRepositoryPath", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
+  
 End Property
 
 
 Public Property Get PrivateRepositoryPath() As String
-
-On Error GoTo HandleErr
 
    If Len(m_PrivateRepositoryPath) = 0 Then
       m_PrivateRepositoryPath = getACLibGlobalProperty(m_PROPNAME_PrivateRepositoryRoot)
@@ -299,25 +186,9 @@ On Error GoTo HandleErr
    
    PrivateRepositoryPath = m_PrivateRepositoryPath
 
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibConfiguration.LocalRepositoryPath", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Public Property Let PrivateRepositoryPath(ByVal newPath As String)
-
-On Error GoTo HandleErr
 
    If Len(newPath) > 0 Then
       If Right$(newPath, 1) <> "\" Then
@@ -326,21 +197,7 @@ On Error GoTo HandleErr
    End If
    m_PrivateRepositoryPath = newPath
    setACLibGlobalProperty m_PROPNAME_PrivateRepositoryRoot, m_PrivateRepositoryPath
-
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibConfiguration.LocalRepositoryPath", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
+ 
 End Property
 
 Public Property Get ImportTestsDefaultValue() As Boolean
@@ -348,59 +205,24 @@ Public Property Get ImportTestsDefaultValue() As Boolean
 '                          1 = false
 '                          2 = true
 
-On Error GoTo HandleErr
-
    If m_ImportTestDefaultValue = 0 Then
       m_ImportTestDefaultValue = Val(getACLibGlobalProperty(m_PROPNAME_ImportTestDefaultValue)) + 1
    End If
    ImportTestsDefaultValue = (m_ImportTestDefaultValue = 2)
 
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibConfiguration.LocalRepositoryPath", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Public Property Let ImportTestsDefaultValue(ByVal newValue As Boolean)
 
-On Error GoTo HandleErr
-
    m_ImportTestDefaultValue = Abs(newValue) + 1
    setACLibGlobalProperty m_PROPNAME_ImportTestDefaultValue, Abs(newValue)
 
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibConfiguration.LocalRepositoryPath", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Private Function getACLibGlobalProperty(ByRef PropertyName As String) As String
    
    Dim rst As DAO.Recordset
    Dim strSQL As String
-   
-   'strSQL = "select PropValue From " & m_ACLIB_CONFIG_TABLEDEFNAME & " where PropName = " & GetSQLString_Text(PropertyName)
-On Error GoTo HandleErr
 
    strSQL = Replace(m_SQL_SELECT_PropertyValue, "[?]", GetSQLString_Text(PropertyName))
    Set rst = ACLibPropertyDb.OpenRecordset(strSQL)
@@ -411,29 +233,12 @@ On Error GoTo HandleErr
    End If
    rst.Close
 
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibConfiguration.getACLibGlobalProperty", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 Private Function setACLibGlobalProperty(ByRef PropertyName As String, ByRef newValue As String) As String
    
    Dim rst As DAO.Recordset
    Dim strSQL As String
-   
-   'strSQL = "select PropName, PropValue From " & m_ACLIB_CONFIG_TABLEDEFNAME & " where PropName = " & GetSQLString_Text(PropertyName)
-On Error GoTo HandleErr
 
    strSQL = Replace(m_SQL_SELECT_PropertyValue, "[?]", GetSQLString_Text(PropertyName))
    Set rst = ACLibPropertyDb.OpenRecordset(strSQL)
@@ -446,26 +251,10 @@ On Error GoTo HandleErr
    rst.Fields(m_SQL_CONFIG_TABLE_FIELD_PropValue).Value = newValue
    rst.Update
    rst.Close
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibConfiguration.setACLibGlobalProperty", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
+ 
 End Function
 
 Private Property Get ACLibPropertyDb() As DAO.Database
-
-On Error GoTo HandleErr
 
    If m_ACLibPropertyDb Is Nothing Then
       If checkConfigTableDef Then
@@ -473,21 +262,7 @@ On Error GoTo HandleErr
       End If
    End If
    Set ACLibPropertyDb = m_ACLibPropertyDb
-
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibConfiguration.ACLibPropertyDb", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
+ 
 End Property
 
 #If ADODB_EARLYBINDING Then
@@ -495,26 +270,9 @@ Private Function CreateConfigTable(ByRef cnn As ADODB.Connection) As Boolean
 #Else
 Private Function CreateConfigTable(ByRef cnn As Object) As Boolean
 #End If
-
-On Error GoTo HandleErr
-        
+      
    cnn.Execute m_SQL_CREATETABLE_ConfigTable
    CreateConfigTable = True
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   CreateConfigTable = False
-   Select Case HandleError(Err.Number, "ACLibConfiguration.CreateConfigTable", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Function
 
@@ -523,8 +281,6 @@ Private Function checkConfigTableDef() As Boolean
 
    Dim db As DAO.Database
    Dim tdf As DAO.TableDef
-    
-On Error GoTo HandleErr
 
    Set db = CodeDb
    
@@ -548,27 +304,11 @@ On Error GoTo HandleErr
    
    checkConfigTableDef = True
 
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibConfiguration.checkConfigTableDef", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
 
 Public Property Get ACLibConfigDirectory() As String
    
    Dim strPath As String
-   
-On Error GoTo HandleErr
 
    strPath = Environ("Appdata") & "\" & m_ACLIB_CONFIG_ROOTFOLDERNAME & "\"
    If Len(Dir$(strPath, vbDirectory)) = 0 Then
@@ -577,21 +317,7 @@ On Error GoTo HandleErr
    
    ACLibConfigDirectory = strPath
 
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibConfigDirectory", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
-
 
 Private Property Get ACLibConfigDatabaseFile() As String
    
@@ -604,8 +330,6 @@ Private Property Get ACLibConfigDatabaseFile() As String
 #Else
    Dim cnn As Object
 #End If
-   
-On Error GoTo HandleErr
 
    strDbFile = CodeDb.Name
    strDbFile = Mid$(strDbFile, InStrRev(strDbFile, "."))
@@ -652,18 +376,4 @@ On Error GoTo HandleErr
 
    ACLibConfigDatabaseFile = strDbFile
 
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibConfiguration.ACLibConfigDatabaseFile", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property

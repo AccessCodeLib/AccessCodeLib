@@ -30,7 +30,6 @@ Attribute VB_Description = "Import/Export der Access-Objekte in/aus lokaler Code
 '<codelib>
 '  <file>_codelib/addins/ImportWizard/ACLibFileManager.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>base/modErrorHandler.bas</use>
 '  <use>base/ApplicationHandler.cls</use>
 '  <use>_codelib/addins/ImportWizard/defGlobal_ACLibImportWizard.bas</use>
 '</codelib>
@@ -123,26 +122,10 @@ Private WithEvents m_ApplicationHandler As ApplicationHandler
 Attribute m_ApplicationHandler.VB_VarHelpID = -1
 
 Public Property Set ApplicationHandlerRef(ByRef objRef As Object) ' as ApplicationHandler
-On Error GoTo HandleErr
-
    Set m_ApplicationHandler = objRef
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandlerRef", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Property
 
 Public Property Get ExtensionKey() As String
-On Error Resume Next
    ExtensionKey = m_EXTENSION_KEY
 End Property
 
@@ -152,54 +135,25 @@ End Property
 
 ' CheckExtension
 Private Sub m_ApplicationHandler_CheckExtension(ByVal sExtensionKey As String, ByRef exists As Boolean)
-On Error Resume Next
    If sExtensionKey = m_EXTENSION_KEY Then exists = True
 End Sub
 
 ' ExtensionLookup
 Private Sub m_ApplicationHandler_ExtensionLookup(ByVal sExtensionKey As String, ByRef ExtensionReference As Object)
-On Error GoTo HandleErr
-
    If sExtensionKey = m_EXTENSION_KEY Then
       Set ExtensionReference = Me
    End If
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "m_ApplicationHandler_ExtensionLookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Sub
 
 'ExtensionPropertyLookup
 Private Sub m_ApplicationHandler_ExtensionPropertyLookup( _
                      ByVal sExtensionKey As String, ByVal PropertyName As String, _
                      ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
-On Error GoTo HandleErr
 
    If sExtensionKey = m_EXTENSION_KEY Then
       getExtensionPropertyLookup PropertyName, ResumeMode, ResumeMessage
    End If
 
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "m_ApplicationHandler_ExtensionPropertyLookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Sub
 
 
@@ -207,7 +161,6 @@ End Sub
 Private Sub m_ApplicationHandler_AfterDispose(ByRef ResumeMode As ApplicationHandlerResumeModes, _
                                               ByRef ResumeMessage As Variant)
 '=> Referenz in m_ApplicationHandler auf Nothing setzen
-On Error Resume Next
    Set m_ApplicationHandler = Nothing
 End Sub
 
@@ -220,8 +173,6 @@ End Sub
 Private Sub getExtensionPropertyLookup(ByVal PropertyName As String, _
                                        ByRef ResumeMode As ApplicationHandlerResumeModes, _
                                        ByRef ResumeMessage As Variant)
-   
-On Error GoTo HandleErr
 
    ResumeMode = AppResumeMode_Completed
    
@@ -230,20 +181,6 @@ On Error GoTo HandleErr
       Case Else 'Property wurde nicht erkannt
          ResumeMode = AppResumeMode_Error
          
-   End Select
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.getExtensionPropertyLookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
    End Select
    
 End Sub
@@ -256,33 +193,14 @@ On Error Resume Next
 End Sub
 
 Public Sub ExportAll()
-
-On Error GoTo HandleErr
-
    ExportAllModules
    ExportAllForms
    ExportAllReports
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ExportAll", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Public Sub ExportAllModules()
 
    Dim ao As AccessObject
-   
-On Error GoTo HandleErr
 
    activateCurrentProject
    DoCmd.RunCommand acCmdCompileAndSaveAllModules
@@ -295,27 +213,11 @@ On Error GoTo HandleErr
    Debug.Print "Module-Export abgeschlossen"
 #End If
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.ExportAllModules", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Sub
 
 Public Sub ExportAllForms()
 
    Dim ao As AccessObject
-   
-On Error GoTo HandleErr
 
    If checkDisallowExportFormReport() Then
       Exit Sub
@@ -332,25 +234,9 @@ On Error GoTo HandleErr
    Debug.Print "Formular-Export abgeschlossen"
 #End If
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.ExportAllForms", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Sub
 
 Private Function checkDisallowExportFormReport() As Boolean
-   
-On Error GoTo HandleErr
 
    If Val(CurrentDb.Version) >= 12 Then
       MsgBox "Formular und Berichte ab dem Access2007-Format dürfen nicht exportiert werden." & _
@@ -358,26 +244,11 @@ On Error GoTo HandleErr
       checkDisallowExportFormReport = True
    End If
 
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "checkDisallowExportFormReport", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 Public Sub ExportAllReports()
 
    Dim ao As AccessObject
-   
-On Error GoTo HandleErr
 
    activateCurrentProject
    DoCmd.RunCommand acCmdCompileAndSaveAllModules
@@ -390,29 +261,12 @@ On Error GoTo HandleErr
    Debug.Print "Bericht-Export abgeschlossen"
 #End If
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.ExportAllReports", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Sub
 
 Public Sub ImportAllFilesFromRepository(Optional ByVal ImportMode As CodeLibImportMode = clim_ImportMissingItems, _
                                         Optional ByVal bImportTestFiles As Boolean = False)
 
    Dim folderCol As Collection
-   
-On Error GoTo HandleErr
-
 #If EARLYBINDING Then
    Dim checkFolder As Folder
    Dim tempFolder As Folder
@@ -453,20 +307,6 @@ On Error GoTo HandleErr
    
    importFilesFromImportCollection True, bImportTestFiles
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.ImportAllFiles", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Sub
 
 Public Sub ImportRepositoryFile(ByVal RepositoryPath As String, _
@@ -474,8 +314,6 @@ Public Sub ImportRepositoryFile(ByVal RepositoryPath As String, _
                        Optional ByVal bImportTestFiles As Boolean = False)
    
    Dim pathString As String
-   
-On Error GoTo HandleErr
 
    pathString = getRepositoryFullPath(RepositoryPath)
    
@@ -486,20 +324,6 @@ On Error GoTo HandleErr
    
    importFilesFromImportCollection True, bImportTestFiles
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.ImportRepositoryFile", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Public Sub ImportRepositoryFiles(ByRef RepositoryPathArray() As String, _
@@ -510,8 +334,6 @@ Public Sub ImportRepositoryFiles(ByRef RepositoryPathArray() As String, _
    Dim i As Long
    Dim pathString As String
    Dim tempFile As Object
-   
-On Error GoTo HandleErr
 
    arraySize = UBound(RepositoryPathArray)
    For i = LBound(RepositoryPathArray) To arraySize
@@ -523,20 +345,6 @@ On Error GoTo HandleErr
    
    importFilesFromImportCollection True, bImportTestFiles
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.ImportRepositoryFiles", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Private Sub importFilesFromImportCollection( _
@@ -553,9 +361,9 @@ Private Sub importFilesFromImportCollection( _
    ' eine VB-Modul aus CurrentVbProject aktivieren, sonst wirkt RunCommand acCmdCompileAndSaveAllModules
    ' möglicherweise im falschen VBProject
    ' zur Sicherheit mit On error resume next, weil es nicht unbedingt notwendig ist und den Ablauf nicht stört
-On Error GoTo HandleErr
-
+   On Error Resume Next
    activateCurrentProject
+   On Error GoTo 0
    If CurrentProject.AllModules.Count > 0 Then
       DoCmd.RunCommand acCmdCompileAndSaveAllModules
    End If
@@ -586,20 +394,6 @@ On Error GoTo HandleErr
    Debug.Print "Import abgeschlossen"
 #End If
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.importFilesFromImportCollection", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 
@@ -607,7 +401,6 @@ Private Function ignoreFolder(ByRef oTestFolder As Object) As Boolean
 '/*
 ' * @todo Ausschlussliste für Verzeichnisse flexibler gestalten
 '**/
-On Error GoTo HandleErr
 
    Select Case oTestFolder.Name
       Case ".svn", "_codelib"
@@ -616,27 +409,12 @@ On Error GoTo HandleErr
          '
    End Select
 
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.ignoreFolder", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 Private Function ignoreFile(ByRef oTestFile As Object) As Boolean
 '/*
 ' * @todo Ausschlussliste für Dateien flexibler gestalten
 '**/
-On Error GoTo HandleErr
 
    Select Case oTestFile.Name
       Case "_info.txt", "_config_Application.bas"
@@ -645,20 +423,6 @@ On Error GoTo HandleErr
          '
    End Select
 
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.ignoreFile", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 #If EARLYBINDING Then
@@ -673,8 +437,6 @@ Public Property Get CurrentVbProject() As Object
    Dim proj As Object
 #End If
    Dim strCurrentDbName As String
-
-On Error GoTo HandleErr
 
    If m_CurrentVbProject Is Nothing Then
       Set m_CurrentVbProject = VBE.ActiveVBProject
@@ -693,33 +455,16 @@ On Error GoTo HandleErr
    
    Set CurrentVbProject = m_CurrentVbProject
 
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.CurrentVbProject", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Property
 
 Private Sub activateCurrentProject()
 
    Dim bolActivate As Boolean
-   
 #If EARLYBINDING Then
    Dim vbc As VBComponent
 #Else
    Dim vbc As Object
 #End If
-
-On Error GoTo HandleErr
 
    If CurrentVbProject.VBComponents.Count > 0 Then
       'zuerst nur Code-Module verwenden, da sonst Formulare/Berichte im Entwurf geöffnet werden
@@ -736,20 +481,6 @@ On Error GoTo HandleErr
       End If
    End If
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.activateCurrentProject", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 #If EARLYBINDING Then
@@ -758,77 +489,29 @@ Private Property Get fso() As FileSystemObject
 Private Property Get fso() As Object
 #End If
 
-   On Error GoTo HandleErr
-
    If fso Is Nothing Then
       'Set fso = New FileSystemObject
       Set m_fso = CreateObject("Scripting.FileSystemObject")
    End If
    Set fso = m_fso
 
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.fso", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Private Property Get CurrentFileCollection() As Collection
-
-On Error GoTo HandleErr
 
    If m_ImportFileCollection Is Nothing Then
       Set m_ImportFileCollection = New Collection
    End If
    Set CurrentFileCollection = m_ImportFileCollection
 
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.CurrentFileCollection", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Property
 
 Private Property Get CurrentReplacedFilesCollection() As Collection
-
-On Error GoTo HandleErr
 
    If m_ReplacedFilesCollection Is Nothing Then
       Set m_ReplacedFilesCollection = New Collection
    End If
    Set CurrentReplacedFilesCollection = m_ReplacedFilesCollection
-
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.CurrentReplacedFilesCollection", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Property
 
@@ -837,10 +520,7 @@ Private Sub addReplacedFilePath(ByVal repFilePath As String)
    Dim tempFile As Object
    Dim i As Long
    Dim maxCount As Long
-   
    Dim col As Collection
-   
-On Error GoTo HandleErr
 
    maxCount = CurrentFileCollection.Count
    For i = 1 To maxCount
@@ -865,27 +545,11 @@ On Error GoTo HandleErr
    Set tempFile = fso.GetFile(repFilePath)
    CurrentReplacedFilesCollection.Add tempFile, tempFile.Path
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.addReplacmentFile", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Sub
 
 Private Function IsReplacedFile(ByRef RepFile As Object) As Boolean
 
    Dim tempFile As Object
-   
-On Error GoTo HandleErr
 
    For Each tempFile In CurrentReplacedFilesCollection
       If tempFile.Path = RepFile.Path Then
@@ -894,25 +558,9 @@ On Error GoTo HandleErr
       End If
    Next
 
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.IsReplacedFile", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 Private Property Get LocalRepositoryRootDirectory() As String
-
-On Error GoTo HandleErr
 
    If Len(m_LocalRepositoryRootDirectory) = 0 Then
       RaiseEvent PropertyMissingLocalRepositoryRootDirectory(m_LocalRepositoryRootDirectory)
@@ -921,51 +569,19 @@ On Error GoTo HandleErr
       End If
    End If
    LocalRepositoryRootDirectory = m_LocalRepositoryRootDirectory
-
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.LocalRepositoryRootDirectory", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
+ 
 End Property
 
 Private Property Let LocalRepositoryRootDirectory(ByVal LocalPath As String)
-
-On Error GoTo HandleErr
 
    If Right$(LocalPath, 1) <> "\" Then
       LocalPath = LocalPath & "\"
    End If
    m_LocalRepositoryRootDirectory = LocalPath
-
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.LocalRepositoryRootDirectory", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
+ 
 End Property
 
 Private Property Get PrivateRepositoryRootDirectory() As String
-
-On Error GoTo HandleErr
 
    If Len(m_PrivateRepositoryRootDirectory) = 0 Then
       RaiseEvent PropertyMissingLocalRepositoryRootDirectory(m_PrivateRepositoryRootDirectory)
@@ -975,52 +591,20 @@ On Error GoTo HandleErr
    End If
    PrivateRepositoryRootDirectory = m_PrivateRepositoryRootDirectory
 
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.LocalRepositoryRootDirectory", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Private Property Let PrivateRepositoryRootDirectory(ByVal PrivatePath As String)
-
-On Error GoTo HandleErr
 
    If Right$(PrivatePath, 1) <> "\" Then
       PrivatePath = PrivatePath & "\"
    End If
    m_PrivateRepositoryRootDirectory = PrivatePath
 
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.LocalRepositoryRootDirectory", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Private Function getRepositoryFullPath(ByVal ReleativPath As String) As String
 
    Dim repPath As String
-   
-On Error GoTo HandleErr
 
    ReleativPath = Replace(ReleativPath, "/", "\")
    
@@ -1050,20 +634,6 @@ On Error GoTo HandleErr
 
    getRepositoryFullPath = repPath & ReleativPath
 
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.getRepositoryFullPath", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibImportMode, _
@@ -1074,8 +644,6 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
    Dim tempFile As Object
    Dim filePath As String
    Dim cancelImport As Integer
-   
-On Error GoTo HandleErr
 
    getCodeLibInfoFromFile cli, ImportFile, (ImportMode <> clim_ImportSelectedOnly)
    
@@ -1144,21 +712,7 @@ On Error GoTo HandleErr
 #If DEBUGMODE Then
    Debug.Print ImportFile.Path; " --> "; cli.Name
 #End If
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.ImportFile", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
+  
 End Sub
 
 Private Sub addMissingReference(ByRef NewCodeLibRef As CodeLibInfoReference)
@@ -1166,8 +720,6 @@ Private Sub addMissingReference(ByRef NewCodeLibRef As CodeLibInfoReference)
    Dim refs As Access.References
    Dim ref As Access.Reference
    Dim bolReplace As Boolean
-   
-On Error GoTo HandleErr
 
    Set refs = Access.References
    For Each ref In refs
@@ -1188,20 +740,7 @@ On Error GoTo HandleErr
    End If
    
    refs.AddFromGuid NewCodeLibRef.GUID, NewCodeLibRef.Major, NewCodeLibRef.Minor
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "addMissingReference", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
+ 
 End Sub
 
 Private Sub addMissingFile(ByVal UsedFile As Object, ByVal ImportMode As CodeLibImportMode)
@@ -1210,8 +749,6 @@ Private Sub addMissingFile(ByVal UsedFile As Object, ByVal ImportMode As CodeLib
    Dim tempFile As Object
    Dim i As Long
    Dim maxCount As Long
-   
-On Error GoTo HandleErr
 
    If IsReplacedFile(UsedFile) Then Exit Sub
 
@@ -1227,27 +764,11 @@ On Error GoTo HandleErr
 
    varfilColItem = Array(UsedFile, ImportMode)
    m_ImportFileCollection.Add varfilColItem, UsedFile.Path
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.addMissingUsedFile", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
+ 
 End Sub
 
 
 Private Sub exportAccessObject(ByRef aoType As AcObjectType, ByRef aoName As String)
-
-On Error GoTo HandleErr
 
    Select Case aoType
       Case AcObjectType.acModule
@@ -1256,20 +777,6 @@ On Error GoTo HandleErr
          exportAccessObjectCli aoType, aoName
       Case Else
          '
-   End Select
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.exportAccessObject", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
    End Select
 
 End Sub
@@ -1282,13 +789,12 @@ Private Sub exportAccessObjectCli(ByRef aoType As AcObjectType, ByRef aoName As 
    
    Dim cli As CodeLibInfo
 
-On Error GoTo HandleErr
-
    getCodeLibInfoFromAccessObject cli, aoType, aoName
    If Len(cli.RepositoryFile) > 0 Then
       cli.LocalFile = getRepositoryFullPath(cli.RepositoryFile)
       createMissingFolder getParentFolderPath(cli.LocalFile)
       Application.SaveAsText aoType, aoName, cli.LocalFile
+      cleanAccessBugExport cli.LocalFile
    End If ' Rest ignorieren .. wenn im Code nicht steht, wird auch nicht exportiert
 
 #If DEBUGMODE Then
@@ -1299,20 +805,47 @@ On Error GoTo HandleErr
       Debug.Print "nicht exportiert"
    End If
 #End If
+ 
+End Sub
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
+Private Sub cleanAccessBugExport(ByVal sFile As String)
+   
+   Dim isAcc2010 As Boolean
+   
+   On Error Resume Next
+   If Application.Version >= "12.0" Then
+      isAcc2010 = True
+   End If
+   On Error GoTo 0
+   If Not isAcc2010 Then
+      Exit Sub
+   End If
+   
+   Dim pos As Long
+   Dim checkString As String
+   Dim tempString As String
+   Dim i As Long
+   Dim fileNumber As Long
 
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.exportAccessObjectCli", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
+   fileNumber = FreeFile
+   Open sFile For Binary Access Read As fileNumber
+   checkString = String$(LOF(fileNumber), 0)
+   Get fileNumber, , checkString
+   Close fileNumber
+   
+   tempString = Replace(checkString, "NoSaveCTIWhenDisabled =1", vbNullString)
+   If StrComp(tempString, checkString, vbBinaryCompare) = 0 Then
+      Exit Sub
+   End If
+   
+   'tempString = Replace(checkString, vbnewline & vbn, vbNullString)
+   
+   Kill sFile
+   fileNumber = FreeFile
+   Open sFile For Binary Access Write As fileNumber
+      Put fileNumber, , tempString
+   Close fileNumber
+   
    
 End Sub
 
@@ -1327,9 +860,7 @@ Private Sub exportVbComponent(ByRef vbcName As String)
 #End If
 
    Dim cli As CodeLibInfo
-   
-On Error GoTo HandleErr
-   
+  
    Set vbc = CurrentVbProject.VBComponents(vbcName)
    
    'Leerzeilen am Ende säubern
@@ -1350,20 +881,6 @@ On Error GoTo HandleErr
    Debug.Print vbcName; " --> "; cli.LocalFile
 #End If
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.exportVbComponent", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Private Sub importVbComponent(ByRef cli As CodeLibInfo, ByRef ImportFile As Object, ByRef fileImportMode As CodeLibImportMode)
@@ -1377,11 +894,8 @@ Private Sub importVbComponent(ByRef cli As CodeLibInfo, ByRef ImportFile As Obje
    Dim vbc As Object
    Dim cm As Object
 #End If
-
    Dim codeModuleExists As Boolean
 
-On Error GoTo HandleErr
-   
    If Len(Trim$(cli.Name)) = 0 Then
       Err.Raise vbObjectError, "ADF_ImportExport.importVbComponent", "Es wurde versucht ein Module ohne Namen zu erstellen."
       Exit Sub
@@ -1420,20 +934,6 @@ On Error GoTo HandleErr
    Else
       vbcCol.import ImportFile.Path
    End If
-   
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.importVbComponent", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Sub
 
@@ -1455,8 +955,6 @@ Private Sub deleteClassHeaderLinesFromCodeModul(ByRef cm As Object)
    Dim searchStartLine As Long, searchStartCol As Long, _
        searchEndLine As Long, searchEndCol As Long
    Dim headerStartLine As Long, headerEndLine As Long
-   
-On Error GoTo HandleErr
 
    searchStartLine = 1
    searchStartCol = 1
@@ -1494,16 +992,6 @@ On Error GoTo HandleErr
 
    cm.DeleteLines headerStartLine, headerEndLine
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "deleteClassHeaderLinesFromCodeModul", Err.Description, ACLibErrorHandlerMode.aclibErrIgnore)
-   Case Else ' ohne Meldung aus Ersetzen aussteigen und restlichen Code fortsetzen
-      Resume ExitHere
-   End Select
-
 End Sub
 
 Private Sub importAccessObject(ByRef acojbType As AcObjectType, ByRef cli As CodeLibInfo, _
@@ -1511,8 +999,6 @@ Private Sub importAccessObject(ByRef acojbType As AcObjectType, ByRef cli As Cod
    
    Dim col As Object ' AllForms oder AllReports
    Dim acObj As AccessObject
-   
-On Error GoTo HandleErr
 
    If Len(Trim$(cli.Name)) = 0 Then
       Err.Raise vbObjectError, "ADF_ImportExport.importVbComponent", "Es wurde versucht ein Module ohne Namen zu erstellen."
@@ -1565,20 +1051,6 @@ On Error GoTo HandleErr
              "Es konnte nicht mit dem Originalnamen erstellt werden, da der Import-Assistent ein gleichnamiges Formular geöffnet hat."
    End If
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.importAccessObject", Err.Description, ACLibErrorHandlerMode.aclibErrMsgBox)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 #If EARLYBINDING = 1 Then
@@ -1593,7 +1065,6 @@ Public Function GetCodeLibInfoFromCodeModule(ByVal sCodeModulName As String, Opt
 #Else
    Dim vbc As Object
 #End If
-   
    
    If oVBProject Is Nothing Then
       Set oVBProject = CurrentVbProject
@@ -1611,8 +1082,6 @@ Private Sub getCodeLibInfoFromVbComponent(ByRef cli As CodeLibInfo, ByRef vbc As
         
    Dim checkString As String
    Dim countOfCodeLines As Long
-        
-On Error GoTo HandleErr
 
    cli.Name = vbc.Name
    cli.Type = vbc.Type
@@ -1640,33 +1109,16 @@ On Error GoTo HandleErr
       getCodeLibInfoReferences cli, checkString
    End If
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.getCodeLibInfoFromVbComponent", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Private Sub getCodeLibInfoFromAccessObject(ByRef cli As CodeLibInfo, _
                ByRef aoType As AcObjectType, ByRef aoName As String)
-
-On Error GoTo HandleErr
 
 #If EARLYBINDING Then
    Dim vbc As VBComponent
 #Else
    Dim vbc As Object
 #End If
-
    Dim vbcName As String
    Dim tempForm As Access.Form
    Dim tempReport As Access.Report
@@ -1707,44 +1159,12 @@ On Error GoTo HandleErr
    Debug.Print aoName; " --> "; cli.LocalFile
 #End If
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.exportAccessObjectCli", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Public Function GetCodeLibInfoFromFilePath(ByVal filePath As String, Optional ByVal FindDependency As Boolean = True) As CodeLibInfo
-   
    Dim cli As CodeLibInfo
-On Error GoTo HandleErr
-
    getCodeLibInfoFromFile cli, fso.GetFile(filePath), FindDependency
    GetCodeLibInfoFromFilePath = cli
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.GetCodeLibInfoFromFilePath", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 
@@ -1757,8 +1177,6 @@ Private Sub getCodeLibInfoFromFile(ByRef cli As CodeLibInfo, ByVal InputFile As 
    Dim tempString As String
    Dim i As Long
    Dim fileNumber As Long
-   
-On Error GoTo HandleErr
 
    fileNumber = FreeFile
    Open InputFile.Path For Binary Access Read As fileNumber
@@ -1834,87 +1252,19 @@ On Error GoTo HandleErr
       getCodeLibInfoReferences cli, checkString
       If FindTests Then getCodeLibInfoTests cli, checkString
    End If
-   
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.getCodeLibInfoFromFile", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Sub
 
 Private Sub getCodeLibInfoRepositoryFile(ByRef cli As CodeLibInfo, ByRef sSourceString As String)
-   
-On Error GoTo HandleErr
-
    cli.RepositoryFile = Replace(findSubString(sSourceString, SEARCHSTRING_FILE_BEGIN, SEARCHSTRING_FILE_END), "\", "/")
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.getCodeLibInfoRepositoryFile", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Private Sub getCodeLibInfoRepositoryFileReplacement(ByRef cli As CodeLibInfo, ByRef sSourceString As String)
-   
-On Error GoTo HandleErr
-
    cli.RepositoryFileReplacement = Replace(findSubString(sSourceString, SEARCHSTRING_REPLACE_BEGIN, SEARCHSTRING_REPLACE_END), "\", "/")
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.getCodeLibInfoRepositoryFile", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Private Sub getCodeLibInfoLicenseFile(ByRef cli As CodeLibInfo, ByRef sSourceString As String)
-   
-On Error GoTo HandleErr
-
    cli.LicenseFile = Replace(findSubString(sSourceString, SEARCHSTRING_LICENSE_BEGIN, SEARCHSTRING_LICENSE_END), "\", "/")
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.getCodeLibInfoRepositoryFile", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Private Sub getCodeLibInfoDependency(ByRef cli As CodeLibInfo, ByRef sSourceString As String)
@@ -1923,52 +1273,20 @@ Private Sub getCodeLibInfoDependency(ByRef cli As CodeLibInfo, ByRef sSourceStri
    
    Dim dep() As String
 
-On Error GoTo HandleErr
-
    If getCodelibInfoTagStrings(sSourceString, SEARCHSTRING_USE_BEGIN, SEARCHSTRING_USE_END, dep) > 0 Then
       cli.Dependency = dep
    End If
-   
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.getCodeLibInfoDependency", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
+  
 End Sub
 
 Private Sub getCodeLibInfoTests(ByRef cli As CodeLibInfo, ByRef sSourceString As String)
 
    Dim tests() As String
 
-On Error GoTo HandleErr
-
    If getCodelibInfoTagStrings(sSourceString, SEARCHSTRING_TEST_BEGIN, SEARCHSTRING_TEST_END, tests) > 0 Then
       cli.TestFiles = tests
    End If
-   
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.getCodeLibInfoTests", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
+ 
 End Sub
 
 Private Function getCodelibInfoTagStrings(ByRef sSourceString As String, _
@@ -1980,8 +1298,6 @@ Private Function getCodelibInfoTagStrings(ByRef sSourceString As String, _
    
    Dim tagString As String
    Dim tagIdx As Long
-   
-On Error GoTo HandleErr
 
    tagIdx = -1
    
@@ -2006,20 +1322,7 @@ On Error GoTo HandleErr
    Loop
 
    getCodelibInfoTagStrings = tagIdx + 1
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "getCodelibInfoTagStrings", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
+ 
 End Function
 
 Private Sub getCodeLibInfoReferences(ByRef cli As CodeLibInfo, ByRef sSourceString As String)
@@ -2030,8 +1333,6 @@ Private Sub getCodeLibInfoReferences(ByRef cli As CodeLibInfo, ByRef sSourceStri
    Dim refBlockMaxIdx As Long
    Dim ref() As CodeLibInfoReference
    Dim i As Long
-   
-On Error GoTo HandleErr
 
    refBlockMaxIdx = -1 + getCodelibInfoTagStrings(sSourceString, SEARCHSTRING_REF_BEGIN, SEARCHSTRING_REF_END, refBlocks)
    
@@ -2048,21 +1349,7 @@ On Error GoTo HandleErr
       cli.References = ref
       
    End If
-   
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.getCodeLibInfoReferences", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
+ 
 End Sub
 
 
@@ -2071,8 +1358,6 @@ Private Function findSubString(ByRef SourceString As String, _
                                Optional ByRef LocatedStartPos As Long, Optional ByRef LocatedEndPos As Long) As String
 
    Dim startPos As Long, endPos As Long
-   
-On Error GoTo HandleErr
 
    startPos = InStr(1, SourceString, StartTag, vbTextCompare)
    If startPos <= 0 Then
@@ -2088,72 +1373,25 @@ On Error GoTo HandleErr
    LocatedStartPos = startPos
    LocatedEndPos = endPos
    findSubString = Trim$(Mid$(SourceString, startPos, endPos - startPos))
-   
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.findSubString", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
+  
 End Function
 
 Private Sub createMissingFolder(ByRef FullPath As String)
    
    Dim TempPath As String
-   
-On Error GoTo HandleErr
 
    If Len(Dir$(FullPath, vbDirectory)) = 0 Then
       TempPath = getParentFolderPath(FullPath)
       createMissingFolder TempPath
       MkDir FullPath
    End If
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.addMissingFolder", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
+  
 End Sub
 
 Private Function getParentFolderPath(ByRef FullPath As String) As String
 
-On Error GoTo HandleErr
-
    getParentFolderPath = Left$(FullPath, InStrRev(FullPath, "\", , vbTextCompare) - 1)
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.getParentFolderPath", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
+ 
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -2173,24 +1411,9 @@ Public Sub RefreshAll(Optional ByVal ImportMode As CodeLibImportMode = _
                                CodeLibImportMode.clim_ImportMissingItems, _
                       Optional ByVal ShowMessageAfterRefresh As Boolean = False)
    
-On Error GoTo HandleErr
 
    refreshAllAccessObjects AcObjectType.acDefault, ImportMode, ShowMessageAfterRefresh
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "RefreshAll", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -2210,25 +1433,9 @@ End Sub
 Public Sub RefreshAllModules(Optional ByVal ImportMode As CodeLibImportMode = _
                                       CodeLibImportMode.clim_ImportMissingItems, _
                              Optional ByVal ShowMessageAfterRefresh As Boolean = False)
-   
-On Error GoTo HandleErr
 
    refreshAllAccessObjects AcObjectType.acModule, ImportMode, ShowMessageAfterRefresh
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "RefreshAllModules", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
+ 
 End Sub
 
 Private Sub refreshAllAccessObjects(ByVal aoType As AcObjectType, _
@@ -2238,8 +1445,6 @@ Private Sub refreshAllAccessObjects(ByVal aoType As AcObjectType, _
 '/**
 ' * @todo Regelung finden, falls FileCollection noch Einträge enthält
 '**/
-
-On Error GoTo HandleErr
 
    If CurrentFileCollection.Count > 0 Then
       'leeren
@@ -2261,20 +1466,6 @@ On Error GoTo HandleErr
       MsgBox "Aktualisierung ist abgeschlossen"
    End If
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "refreshAllAccessObjects", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Private Sub addAccessObjectCollectionToRefreshFileCollection( _
@@ -2283,8 +1474,6 @@ Private Sub addAccessObjectCollectionToRefreshFileCollection( _
 
    Dim aoCol As Object ' AllModules, ...
    Dim ao As AccessObject
-
-On Error GoTo HandleErr
 
    Select Case aoType
       Case AcObjectType.acModule
@@ -2302,28 +1491,12 @@ On Error GoTo HandleErr
       addAccessObjectToRefreshFileCollection ao, ImportMode
    Next
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ACLibFileManager.ExportAllModules", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Sub
 
 Private Sub addAccessObjectToRefreshFileCollection(ByRef ao As AccessObject, ByRef ImportMode As CodeLibImportMode)
    
    Dim cli As CodeLibInfo
    Dim tempFile As Object
-   
-On Error GoTo HandleErr
 
    getCodeLibInfoFromAccessObject cli, ao.Type, ao.Name
    If Len(cli.RepositoryFile) > 0 Then
@@ -2332,20 +1505,6 @@ On Error GoTo HandleErr
       addMissingFile tempFile, ImportMode
    End If
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "addAccessObjectToRefreshFileCollection", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 #If EARLYBINDING = 1 Then
@@ -2358,8 +1517,6 @@ Private Function getFirstProcLine(cm As Object) As Long
    Dim procKind As vbext_ProcKind
    Dim procName As String
 
-On Error GoTo HandleErr
-
    For lngLine = cm.CountOfDeclarationLines + 1 To cm.CountOfLines
       procName = cm.ProcOfLine(lngLine, procKind)
       If Len(procName) > 0 Then
@@ -2368,19 +1525,6 @@ On Error GoTo HandleErr
       End If
    Next
 
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "getFirstProcLine", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 #If EARLYBINDING = 1 Then
@@ -2395,8 +1539,6 @@ Public Sub InsertCodeLibInfo(ByRef cm As Object, cli As CodeLibInfo)
    Dim lngDepCnt As Long
    Dim i As Long
    Dim strCodeLibInfo As String
-
-On Error GoTo HandleErr
 
    strCodeLibInfo = _
       "'<codelib>" & vbNewLine & _
@@ -2440,19 +1582,8 @@ On Error GoTo HandleErr
    strCodeLibInfo = strCodeLibInfo & _
       "'</codelib>" & vbNewLine
    
+#If DEBUGMODE Then
    Debug.Print strCodeLibInfo
+#End If
 
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "InsertCodeLibInfo", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
