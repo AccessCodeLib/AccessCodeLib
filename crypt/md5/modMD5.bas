@@ -14,7 +14,6 @@ Attribute VB_Name = "modMD5"
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>crypt/md5/modMD5.bas</file>
-'  <use>base/modErrorHandler.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -607,26 +606,9 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function md5(Optional Source As String, Optional FileMD5 As Boolean = False) As String
- 
-On Error GoTo HandleErr
-
    If FileMD5 Then
       md5 = DigestFileToHexStr(Source)
    Else
       md5 = DigestStrToHexStr(Source)
    End If
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "md5", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function

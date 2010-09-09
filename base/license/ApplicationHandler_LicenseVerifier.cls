@@ -74,26 +74,10 @@ Private WithEvents m_ApplicationHandler As ApplicationHandler
 Attribute m_ApplicationHandler.VB_VarHelpID = -1
 
 Public Property Set ApplicationHandlerRef(ByRef objRef As ApplicationHandler)
-On Error GoTo HandleErr
-
    Set m_ApplicationHandler = objRef
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ApplicationHandlerRef", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Property
 
 Public Property Get ExtensionKey() As String
-On Error Resume Next
    ExtensionKey = m_EXTENSION_KEY
 End Property
 
@@ -104,33 +88,14 @@ End Property
 
 ' CheckExtension
 Private Sub m_ApplicationHandler_CheckExtension(ByVal sExtensionKey As String, exists As Boolean)
-On Error Resume Next
    If sExtensionKey = m_EXTENSION_KEY Then exists = True
 End Sub
 
 ' ExtensionLookup
 Private Sub m_ApplicationHandler_ExtensionLookup(ByVal sExtensionKey As String, ExtensionReference As Object)
-
-On Error GoTo HandleErr
-
    If sExtensionKey = m_EXTENSION_KEY Then
       Set ExtensionReference = Me
    End If
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ExtAppFile.m_ApplicationHandler_ExtensionLookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 'ExtensionPropertyLookup
@@ -138,32 +103,15 @@ Private Sub m_ApplicationHandler_ExtensionPropertyLookup( _
                      ByVal sExtensionKey As String, ByVal PropertyName As String, _
                      ResumeMode As ApplicationHandlerResumeModes, ResumeMessage As Variant)
                      
-On Error GoTo HandleErr
-
    If sExtensionKey = m_EXTENSION_KEY Then
       getExtensionPropertyLookup PropertyName, ResumeMode, ResumeMessage
    End If
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ExtAppFile.m_ApplicationHandler_ExtensionPropertyLookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 ' AfterDispose
 Private Sub m_ApplicationHandler_AfterDispose(ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
 '=> Referenz in m_ApplicationHandler auf Nothing setzen
-On Error Resume Next
    Set m_ApplicationHandler = Nothing
 End Sub
 
@@ -173,8 +121,6 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub getExtensionPropertyLookup(ByVal PropertyName As String, ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
-   
-On Error GoTo HandleErr
 
    ResumeMode = AppResumeMode_Completed
    
@@ -188,20 +134,6 @@ On Error GoTo HandleErr
        
    End Select
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ExtWinLogin.getExtensionPropertyLookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Private Sub m_ApplicationHandler_BeforeStartApplication(ResumeMode As ApplicationHandlerResumeModes, ResumeMessage As Variant)
@@ -233,47 +165,33 @@ Public Sub Init(ByVal sApplicationKey As String, _
    m_LicenseKey_Prefix = sLicenseKey_Prefix
    m_LicenseKey_Suffix = sLicenseKey_Suffix
    m_LicenseKey_Loops = lLicenseKey_Loops
-   
    m_UseInputBox = bUseInputBoxForLicenseData
-   
-   'm_LicenseKey = vbNullString
-   'm_LicenseName = vbNullString
-   
+
 End Sub
 
 Public Property Get LicenseName() As String
-   
    If StrPtr(m_LicenseName) = 0 Then
       readLicenseInfo
    End If
    LicenseName = m_LicenseName
-   
 End Property
 
 Public Property Let LicenseName(newValue As String)
-   
    m_LicenseName = newValue
-   
 End Property
 
 Public Property Get LicenseKey() As String
-   
    If StrPtr(m_LicenseKey) = 0 Then
       readLicenseInfo
    End If
    LicenseKey = m_LicenseKey
-   
 End Property
 
 Public Property Let LicenseKey(newValue As String)
-   
    m_LicenseKey = newValue
-   
 End Property
 
 Private Sub readLicenseInfo()
-
-On Error GoTo HandleErr
 
    RaiseEvent LicenseInfoLookup(m_LicenseName, m_LicenseKey, m_LicenseNameInputboxDefault, m_LicenseKeyInputboxDefault)
    
@@ -308,19 +226,6 @@ On Error GoTo HandleErr
       End If
    End If
 
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "readLicenseInfo", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Private Function getLicenseInfoFromAppDb(propName As String) As String

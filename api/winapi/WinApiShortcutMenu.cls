@@ -28,7 +28,6 @@ Attribute VB_Description = "ShortcutMenu über Win-API"
 '  <license>_codelib/license.bas</license>
 '  <use>api/winapi/modWinAPI_Layout.bas</use>
 '  <use>api/winapi/modWinAPI_Handles.bas</use>
-'  <use>base/modErrorHandler.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -40,7 +39,7 @@ Option Explicit
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Private Type POINTAPI
-   x As Long
+   X As Long
    y As Long
 End Type
 
@@ -68,7 +67,7 @@ Private Declare Function CreateWindowEx _
       ByVal lpClassname As String, _
       ByVal lpWindowName As String, _
       ByVal dwStyle As Long, _
-      ByVal x As Long, _
+      ByVal X As Long, _
       ByVal y As Long, _
       ByVal nWidth As Long, _
       ByVal nHeight As Long, _
@@ -94,7 +93,7 @@ Private Declare Function TrackPopupMenu _
       Lib "USER32.DLL" ( _
       ByVal hMenu As Long, _
       ByVal wFlags As Long, _
-      ByVal x As Long, _
+      ByVal X As Long, _
       ByVal y As Long, _
       ByVal nReserved As Long, _
       ByVal Hwnd As Long, _
@@ -200,36 +199,22 @@ On Error Resume Next
 End Property
 
 Public Property Get MenuControl() As Access.Control
-On Error GoTo HandleErr
-
    Set MenuControl = m_MenuControl
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "MenuControl", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Property
 
 Public Property Set MenuControl(ByRef MnuCtl As Access.Control)
    
    Dim lngSectionHwnd As Long
    Dim objParent As Object
-   
-On Error GoTo HandleErr
 
    Set m_MenuControl = MnuCtl
    
    Set objParent = m_MenuControl.Parent
    If TypeOf objParent Is Access.Page Then
       Set objParent = objParent.Parent.Parent
+   End If
+   If m_AccessForm Is Nothing Then
+      Set m_AccessForm = objParent
    End If
    
    Select Case m_Section
@@ -262,58 +247,14 @@ On Error GoTo HandleErr
    'werden
    ' => ??? wie ?
 
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "WinApiShortcutMenu.MenuControl", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Public Property Get AccessForm() As Access.Form
-On Error GoTo HandleErr
-
    Set AccessForm = m_AccessForm
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "AccessForm", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Property
 
 Public Property Set AccessForm(ByRef frm As Access.Form)
-On Error GoTo HandleErr
-
    Set m_AccessForm = frm
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "AccessForm", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -336,8 +277,6 @@ Public Sub AddMenuItem(ByVal lMenuItemNumber As Long, ByVal sItemText As String,
               Optional ByVal lSubMenu As Long = 0, _
               Optional ByVal bDefaultItem As Boolean = False)
               
-On Error GoTo HandleErr
-
    m_ItemCnt = m_ItemCnt + 1
    ReDim Preserve m_MenuItems(m_ItemCnt)
    
@@ -349,20 +288,6 @@ On Error GoTo HandleErr
       .DefaultItem = bDefaultItem
    End With
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "WinApiShortcutMenu.AddMenuItem", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -379,7 +304,7 @@ End Sub
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function OpenMenu(Optional ByVal x As Single = 0, Optional ByVal y As Single = 0) As Long
+Public Function OpenMenu(Optional ByVal X As Single = 0, Optional ByVal y As Single = 0) As Long
 
    Dim MenuHwnd As Long
    Dim tmpHwnd As Long
@@ -390,13 +315,9 @@ Public Function OpenMenu(Optional ByVal x As Single = 0, Optional ByVal y As Sin
    Dim Xpos As Long
    Dim Ypos As Long
    Dim Message As APIMSG
-   
+ 
    Dim objParent As Object
-   
    Dim rcAccForm As RECT
-   
-   
-On Error GoTo HandleErr
 
    'Sonst wird bei ENTER nix angezeigt:
    DoEvents
@@ -435,11 +356,11 @@ On Error GoTo HandleErr
    
    If m_MenuControl Is Nothing Then
       GetWindowRect m_AccessForm.Hwnd, rcAccForm
-      ButtonLeft = GetPixelFromTwips(x) + rcAccForm.Left
+      ButtonLeft = GetPixelFromTwips(X) + rcAccForm.Left
       ButtonTop = GetPixelFromTwips(y) + rcAccForm.Top
    Else
    '- Buttom relativ zum Sektionsfenster
-      ButtonLeft = GetPixelFromTwips(m_MenuControl.Left) + GetPixelFromTwips(x)
+      ButtonLeft = GetPixelFromTwips(m_MenuControl.Left) + GetPixelFromTwips(X)
       ButtonTop = GetPixelFromTwips(m_MenuControl.Top) + GetPixelFromTwips(y)
    End If
    '- Miteinander verrechnen
@@ -461,7 +382,6 @@ On Error GoTo HandleErr
                ByVal 0&, objParent.Hwnd, ByVal 0&
    
    'Message-Loop (Obacht: für normale Formulare Application.hWndAccessApp, für POPUPS Me.hwnd)
-   
    
    Dim Hwnd As Long
    If m_AccessForm.PopUp = True Then
@@ -489,19 +409,5 @@ On Error GoTo HandleErr
    
    'Menü zerstören
    DestroyMenu MenuHwnd
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "WinApiShortcutMenu.OpenMenu", Err.Descriptionmm, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Function

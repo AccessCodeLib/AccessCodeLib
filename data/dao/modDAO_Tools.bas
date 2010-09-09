@@ -41,8 +41,6 @@ Public Function TableDefExists(ByVal sTableDefName As String, Optional ByRef dbs
 'Eine weitere Alternative wäre das Auswerten über cnn.OpenSchema(adSchemaTables, ...) ... dann werden allerdings keine verknüpften Tabellen geprüft
    
    Dim tdf As DAO.TableDef
-   
-On Error GoTo HandleErr
 
    If dbs Is Nothing Then
       Set dbs = CodeDb
@@ -55,19 +53,5 @@ On Error GoTo HandleErr
          Exit For
       End If
    Next
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "TableDefExists", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Function

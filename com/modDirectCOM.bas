@@ -157,7 +157,7 @@ End Type
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetInstance(ByVal LibraryString As String, ByVal ProgIdString As String) As stdole.IUnknown
+Public Function getInstance(ByVal LibraryString As String, ByVal ProgIdString As String) As stdole.IUnknown
     Dim newobj As stdole.IUnknown
     Dim TFactory As IClassFactory
 
@@ -251,7 +251,7 @@ Public Function GetInstance(ByVal LibraryString As String, ByVal ProgIdString As
     ' Set IClassFactory = Nothing
     callPointer TFactory.IUnk.Release, obj
 
-    Set GetInstance = newobj
+    Set getInstance = newobj
 
    
 End Function

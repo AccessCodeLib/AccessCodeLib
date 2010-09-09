@@ -63,7 +63,14 @@ Private m_ClientDatabase As DAO.Database
 ' <param name="Response">ACLibErrorResumeMode-Wert</param>
 ' <remarks>Ermˆglich die Behebung des Fehlers bzw. die Behandlung des Fehlers im Frontend</remarks>
 '**/
-Public Event TempDbHandlerError(ByVal ErrMsg As String, ByVal ErrNumber As Long, ByRef Response As Integer)
+Public Event TempDbHandlerError(ByVal ErrMsg As String, ByVal ErrNumber As Long, ByRef Response As TempDbErrorResumeMode)
+
+Public Enum TempDbErrorResumeMode
+   aclibTempDbErrExit = 0       'Abbruch
+   aclibTempDbErrResume = 1     'Resume, Problem wurde (von auﬂen) behoben
+   aclibTempDbErrResumeNext = 2 'Resume next, im Code weiterarbeiten
+End Enum
+
 
 '---------------------------------------------------------------------------------------
 ' Event: ErrorMissingDbConnection (24.02.2008)
@@ -165,9 +172,9 @@ On Error Resume Next
 
 HandleErr:
    Select Case handleTempDbHandlerError(Err.Number, "ClientDatabase", Err.Description)
-   Case ACLibErrorResumeMode.aclibErrResume
+   Case TempDbErrorResumeMode.aclibTempDbErrResume
       Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
+   Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
       Resume Next
    Case Else
       Resume ExitHere
@@ -198,9 +205,9 @@ On Error Resume Next
 
 HandleErr:
    Select Case handleTempDbHandlerError(Err.Number, "ClientDatabase", Err.Description)
-   Case ACLibErrorResumeMode.aclibErrResume
+   Case TempDbErrorResumeMode.aclibTempDbErrResume
       Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
+   Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
       Resume Next
    Case Else
       Resume ExitHere
@@ -232,9 +239,9 @@ On Error Resume Next
 
 HandleErr:
    Select Case handleTempDbHandlerError(Err.Number, "CurrentDatabase", Err.Description)
-   Case ACLibErrorResumeMode.aclibErrResume
+   Case TempDbErrorResumeMode.aclibTempDbErrResume
       Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
+   Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
       Resume Next
    Case Else
       Resume ExitHere
@@ -269,9 +276,9 @@ On Error Resume Next
 
 HandleErr:
    Select Case handleTempDbHandlerError(Err.Number, "CloseCurrentDatabase", Err.Description)
-   Case ACLibErrorResumeMode.aclibErrResume
+   Case TempDbErrorResumeMode.aclibTempDbErrResume
       Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
+   Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
       Resume Next
    Case Else
       Resume ExitHere
@@ -356,9 +363,9 @@ ExitHere:
 
 HandleErr:
    Select Case handleTempDbHandlerError(Err.Number, "CreateDatabase", Err.Description)
-      Case ACLibErrorResumeMode.aclibErrResume
+      Case TempDbErrorResumeMode.aclibTempDbErrResume
          Resume
-      Case ACLibErrorResumeMode.aclibErrResumeNext
+      Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
          Resume Next
       Case Else
          Resume ExitHere
@@ -398,9 +405,9 @@ On Error Resume Next
 
 HandleErr:
    Select Case handleTempDbHandlerError(Err.Number, "OpenDatabase : " & Err.Source, Err.Description)
-      Case ACLibErrorResumeMode.aclibErrResume
+      Case TempDbErrorResumeMode.aclibTempDbErrResume
          Resume
-      Case ACLibErrorResumeMode.aclibErrResumeNext
+      Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
          Resume Next
       Case Else
          Resume ExitHere
@@ -488,9 +495,9 @@ On Error Resume Next
 
 HandleErr:
    Select Case handleTempDbHandlerError(Err.Number, "CheckTable : " & Err.Source, Err.Description)
-      Case ACLibErrorResumeMode.aclibErrResume
+      Case TempDbErrorResumeMode.aclibTempDbErrResume
          Resume
-      Case ACLibErrorResumeMode.aclibErrResumeNext
+      Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
          Resume Next
       Case Else
          Resume ExitHere
@@ -543,9 +550,9 @@ On Error Resume Next
 
 HandleErr:
    Select Case handleTempDbHandlerError(Err.Number, "CreateTable : " & Err.Source, Err.Description)
-   Case ACLibErrorResumeMode.aclibErrResume
+   Case TempDbErrorResumeMode.aclibTempDbErrResume
       Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
+   Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
       Resume Next
    Case Else
       Resume ExitHere
@@ -587,9 +594,9 @@ On Error Resume Next
 
 HandleErr:
    Select Case handleTempDbHandlerError(Err.Number, "DropTable : " & Err.Source, Err.Description)
-   Case ACLibErrorResumeMode.aclibErrResume
+   Case TempDbErrorResumeMode.aclibTempDbErrResume
       Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
+   Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
       Resume Next
    Case Else
       Resume ExitHere
@@ -645,9 +652,9 @@ On Error Resume Next
 
 HandleErr:
    Select Case handleTempDbHandlerError(Err.Number, "DropLinkedTableDefs : " & Err.Source, Err.Description)
-   Case ACLibErrorResumeMode.aclibErrResume
+   Case TempDbErrorResumeMode.aclibTempDbErrResume
       Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
+   Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
       Resume Next
    Case Else
       Resume ExitHere
@@ -691,10 +698,10 @@ ExitHere:
    Exit Property
 
 HandleErr:
-   Select Case HandleError(Err.Number, "LinkedTableDefExists", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
+   Select Case handleTempDbHandlerError(Err.Number, "LinkedTableDefExists", Err.Description)
+   Case TempDbErrorResumeMode.aclibTempDbErrResume
       Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
+   Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
       Resume Next
    Case Else
       Resume ExitHere
@@ -736,10 +743,10 @@ ExitHere:
    Exit Property
 
 HandleErr:
-   Select Case HandleError(Err.Number, "SourceTableDefExists", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
+   Select Case handleTempDbHandlerError(Err.Number, "SourceTableDefExists", Err.Description)
+   Case TempDbErrorResumeMode.aclibTempDbErrResume
       Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
+   Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
       Resume Next
    Case Else
       Resume ExitHere
@@ -771,10 +778,10 @@ ExitHere:
    Exit Sub
 
 HandleErr:
-   Select Case HandleError(Err.Number, "reconnectTempTable", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
+   Select Case handleTempDbHandlerError(Err.Number, "reconnectTempTable", Err.Description)
+   Case TempDbErrorResumeMode.aclibTempDbErrResume
       Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
+   Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
       Resume Next
    Case Else
       Resume ExitHere
@@ -806,9 +813,9 @@ ExitHere:
 
 HandleErr:
    Select Case handleTempDbHandlerError(Err.Number, "connectTempTable : " & Err.Source, Err.Description)
-      Case ACLibErrorResumeMode.aclibErrResume
+      Case TempDbErrorResumeMode.aclibTempDbErrResume
          Resume
-      Case ACLibErrorResumeMode.aclibErrResumeNext
+      Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
          Resume Next
       Case Else
          Resume ExitHere
@@ -854,9 +861,9 @@ On Error GoTo 0
 
 HandleErr:
    Select Case handleTempDbHandlerError(Err.Number, "getTempFileName : " & Err.Source, Err.Description)
-      Case ACLibErrorResumeMode.aclibErrResume
+      Case TempDbErrorResumeMode.aclibTempDbErrResume
          Resume
-      Case ACLibErrorResumeMode.aclibErrResumeNext
+      Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
          Resume Next
       Case Else
          getTempFileName = vbNullString
@@ -898,9 +905,9 @@ On Error Resume Next
 
 HandleErr:
    Select Case handleTempDbHandlerError(Err.Number, "OpenRecordset : " & Err.Source, Err.Description)
-      Case ACLibErrorResumeMode.aclibErrResume
+      Case TempDbErrorResumeMode.aclibTempDbErrResume
          Resume
-      Case ACLibErrorResumeMode.aclibErrResumeNext
+      Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
          Resume Next
       Case Else
          Resume ExitHere
@@ -940,9 +947,9 @@ On Error Resume Next
 
 HandleErr:
    Select Case handleTempDbHandlerError(Err.Number, "Execute : " & Err.Source, Err.Description)
-      Case ACLibErrorResumeMode.aclibErrResume
+      Case TempDbErrorResumeMode.aclibTempDbErrResume
          Resume
-      Case ACLibErrorResumeMode.aclibErrResumeNext
+      Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
          Resume Next
       Case Else
          Resume ExitHere
@@ -987,9 +994,9 @@ On Error Resume Next
 
 HandleErr:
    Select Case handleTempDbHandlerError(Err.Number, "DLookupSQL : " & Err.Source, Err.Description)
-      Case ACLibErrorResumeMode.aclibErrResume
+      Case TempDbErrorResumeMode.aclibTempDbErrResume
          Resume
-      Case ACLibErrorResumeMode.aclibErrResumeNext
+      Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
          Resume Next
       Case Else
          Resume ExitHere
@@ -998,15 +1005,15 @@ HandleErr:
 End Function
 
 Private Function handleTempDbHandlerError(ByVal lErrorNumber As Long, ByVal sSource As String, _
-                                          ByVal sErrorDescription As String) As ACLibErrorResumeMode
+                                          ByVal sErrorDescription As String) As TempDbErrorResumeMode
 'ACLibErrorResumeMode
-'   acutilErrContinue = 0   'Abbruch ohne Meldung
-'   acutilErrDisplay = 1   'Abbruch mit Meldung
-'   acutilErrResume = 2    'Resume, Problem von auﬂen behoben
-'   acutilErrResumeNext = 3 'Resume next, im Code weiterarbeiten
+'   ErrContinue = 0  'Abbruch ohne Meldung
+'   ErrDisplay = 1   'Abbruch mit Meldung
+'   Resume = 2       'Resume, Problem von auﬂen behoben
+'   ResumeNext = 3   'Resume next, im Code weiterarbeiten
 
    Dim strMsg As String
-   Dim lResponse As Integer
+   Dim lResponse As TempDbErrorResumeMode
    
 On Error Resume Next
 
@@ -1019,7 +1026,11 @@ On Error Resume Next
    RaiseEvent TempDbHandlerError(strMsg, lErrorNumber, lResponse)
    If lResponse = -1 Then 'Auf event wurde nicht reagiert bzw. lResponse nicht ver‰ndert
 On Error GoTo 0
+#If USE_GLOBAL_ERRORHANDLER Then
       lResponse = HandleError(lErrorNumber, "TempDbHandler." & sSource, sErrorDescription)
+#Else
+      Err.Raise lErrorNumber, "TempDbHandler." & sSource, sErrorDescription
+#End If
    End If
 
    handleTempDbHandlerError = lResponse

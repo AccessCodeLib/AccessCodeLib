@@ -1,6 +1,6 @@
 Version =19
 VersionRequired =19
-Checksum =-52415626
+Checksum =122265352
 Begin Form
     RecordSelectors = NotDefault
     NavigationButtons = NotDefault
@@ -31,10 +31,10 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x00000000ba28d92f0400000001000000f0501300180000006453130018511300 ,
         0x010400069c00440343ef8005010009009a0b3408640001000f00c80002000100 ,
-        0xc800020001004134000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000010000000000000001000000 ,
+        0xc80002000100413400000000c8fc8a0950531300c4fc8a0948511300e993db2f ,
+        0xe0fc8a09f0930000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe230000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -64,10 +64,11 @@ Begin Form
         0x6f6e000000000000000000000000000000000000000000000000000000000000
     End
     PrtDevNames = Begin
-        0x080013001b00010000000000000000000000000000000000000000525054313a ,
-        0x00
+        0x080013001b000100000000000000000000000000000000000000004672656550 ,
+        0x44465850313a00
     End
     OnLoad ="[Event Procedure]"
+    NoSaveCTIWhenDisabled =1
     Begin
         Begin Label
             BackStyle =0
@@ -84,6 +85,7 @@ Begin Form
         End
         Begin TextBox
             FELineBreak = NotDefault
+            BorderLineStyle =0
             Width =1701
             LabelX =-1701
             FontSize =11
@@ -249,8 +251,6 @@ Private Sub bindTextbox(ByRef tb As Textbox, Optional ByVal BaseFolderPath As St
    Dim ojbDirTextbox As Object ' = ApplicationHandler_DirTextbox
 
    'Standard-Instanz verwenden:
-On Error GoTo HandleErr
-
    Set ojbDirTextbox = CurrentApplication.Extensions("DirTextbox")
 
    'extra Instanz für Textbox-Steuerung initialisieren ... ist nützlich,
@@ -263,116 +263,26 @@ On Error GoTo HandleErr
       ojbDirTextbox.BaseFolderPath = BaseFolderPath
    End If
 
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "bindTextbox", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Sub
 
 
 Private Sub FileSearchTextbox1_GotFocus()
-On Error GoTo HandleErr
-
    bindTextbox Me.FileSearchTextbox1
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "FileSearchTextbox1_GotFocus", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Sub
 
 Private Sub FileSearchTextbox2_GotFocus()
-On Error GoTo HandleErr
-
    bindTextbox Me.FileSearchTextbox2
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "FileSearchTextbox2_GotFocus", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Sub
 
 Private Sub FileSearchTextbox3_GotFocus()
-On Error GoTo HandleErr
-
    bindTextbox Me.FileSearchTextbox3
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "FileSearchTextbox3_GotFocus", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Sub
 
 Private Sub FileSearchTextbox4_GotFocus()
-On Error GoTo HandleErr
-
    bindTextbox Me.FileSearchTextbox4, Nz(Me.FileSearchTextbox3, vbNullString)
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "FileSearchTextbox4_GotFocus", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Sub
 
 Private Sub Form_Load()
-   
-On Error GoTo HandleErr
-
    Me.FileSearchTextbox3.Value = Environ("ProgramFiles")
    Me.FileSearchTextbox4.Value = "..\"
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "Form_Load", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub

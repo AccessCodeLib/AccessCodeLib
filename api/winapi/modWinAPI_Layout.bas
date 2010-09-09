@@ -21,7 +21,6 @@ Attribute VB_Description = "WinAPI-Funktionen zur Layoutgestaltung"
 Option Compare Database
 Option Explicit
 
-
 Private Declare Function CreateSolidBrush _
       Lib "gdi32.dll" ( _
       ByVal crColor As Long _
@@ -79,27 +78,11 @@ Public Sub SetBackColor(ByVal Hwnd As Long, ByVal Color As Long)
    Dim NewBrush As Long
    
    'Brush erzeugen
-On Error GoTo HandleErr
-
    NewBrush = CreateSolidBrush(Color)
    'Brush zuweisen
    SetClassLong Hwnd, GCL_HBRBACKGROUND, NewBrush
    'Fenster neuzeichnen (gesamtes Fenster inkl. Background)
    RedrawWindow Hwnd, ByVal 0&, ByVal 0&, RDW_INVALIDATE Or RDW_ERASE
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "SetBackColor", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Sub
 
@@ -118,28 +101,10 @@ End Sub
 '**/
 '---------------------------------------------------------------------------------------
 Public Function TwipsPerPixelX() As Single
-
    Dim lngDC As Long
-   
-On Error GoTo HandleErr
-
    lngDC = GetDC(HWND_DESKTOP)
    TwipsPerPixelX = 1440& / GetDeviceCaps(lngDC, LOGPIXELSX)
    ReleaseDC HWND_DESKTOP, lngDC
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "TwipsPerPixelX", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -156,30 +121,11 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function TwipsPerPixelY() As Single
-
    Dim lngDC As Long
-On Error GoTo HandleErr
-
    lngDC = GetDC(HWND_DESKTOP)
    TwipsPerPixelY = 1440& / GetDeviceCaps(lngDC, LOGPIXELSY)
    ReleaseDC HWND_DESKTOP, lngDC
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "TwipsPerPixelY", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
-      
 
 '---------------------------------------------------------------------------------------
 ' Function: GetScrollbarWidth
@@ -195,27 +141,8 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function GetScrollbarWidth() As Single
-
-On Error GoTo HandleErr
-
    GetScrollbarWidth = GetSystemMetrics(SM_CXVSCROLL) * TwipsPerPixelX
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "GetScrollbarWidth", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
-
 
 '---------------------------------------------------------------------------------------
 ' Function: GetTwipsFromPixel
@@ -232,25 +159,7 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function GetTwipsFromPixel(ByVal pixel As Long) As Long
-
-On Error GoTo HandleErr
-
    GetTwipsFromPixel = TwipsPerPixelX * pixel
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "GetTwipsFromPixel", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -268,23 +177,5 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function GetPixelFromTwips(ByVal twips As Long) As Long
-
-On Error GoTo HandleErr
-
-GetPixelFromTwips = twips / TwipsPerPixelX
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "GetPixelFromTwips", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
+        GetPixelFromTwips = twips / TwipsPerPixelX
 End Function

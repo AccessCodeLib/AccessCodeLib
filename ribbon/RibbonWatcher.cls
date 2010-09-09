@@ -23,7 +23,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>ribbon/RibbonControlInfo.cls</use>
 '  <use>ribbon/ribbon_RibbonWatcher.bas</use>
-'  <ref><name>Office</name><major>2</major><minor>4</minor><guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</guid></ref>
+'  <ref><name>Office</name><major></major><minor></minor><guid></guid></ref>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -124,8 +124,8 @@ On Error GoTo HandleErr
          .ImageMso = Nz(rst.Fields("rcImageMso"), vbNullString)
          .visible = True
          
-         If .Id <> strID Then
-            .Id = strID
+         If .ID <> strID Then
+            .ID = strID
             RefreshRibbonWatcherControl currentArrayCnt
          End If
    
@@ -243,18 +243,18 @@ Public Property Let UsedRibbonItemXml(ByVal xmlString As String)
    
 End Property
 
-Private Function getXmlTagValue(ByVal sourceString As String, TagName As String) As String
+Private Function getXmlTagValue(ByVal SourceString As String, TagName As String) As String
 
    Dim lngStartPos As Long
    
-   lngStartPos = InStr(1, sourceString, TagName & "=""")
+   lngStartPos = InStr(1, SourceString, TagName & "=""")
    If lngStartPos = 0 Then
       getXmlTagValue = vbNullString
       Exit Function
    End If
    
    lngStartPos = lngStartPos + Len(TagName) + 2
-   getXmlTagValue = Mid(sourceString, lngStartPos, InStr(lngStartPos, sourceString, """") - lngStartPos)
+   getXmlTagValue = Mid(SourceString, lngStartPos, InStr(lngStartPos, SourceString, """") - lngStartPos)
    
 End Function
 
@@ -425,7 +425,7 @@ Private Function getRibbonControlXml(sID As String, sSize As String) As String
 End Function
 
 Public Function GetRibbonControlLabel(rc As IRibbonControl) As Variant
-   GetRibbonControlLabel = GetLabel(Val(Mid(rc.Id, 4)))
+   GetRibbonControlLabel = GetLabel(Val(Mid(rc.ID, 4)))
 End Function
 
 Public Function GetLabel(rwcNr As Long) As String
@@ -436,7 +436,7 @@ Public Function GetLabel(rwcNr As Long) As String
 End Function
 
 Public Function GetRibbonControlImage(rc As IRibbonControl) As Variant
-   GetRibbonControlImage = GetImage(Val(Mid(rc.Id, 4)))
+   GetRibbonControlImage = GetImage(Val(Mid(rc.ID, 4)))
 End Function
 
 Public Function GetImage(rwcNr As Long) As Variant
@@ -448,11 +448,11 @@ End Function
 
 Public Function GetRibbonControlVisible(rc As IRibbonControl) As Variant
 
-   If Left(rc.Id, 4) = "RWEC" Then
+   If Left(rc.ID, 4) = "RWEC" Then
       setActivatedEventControl rc
       GetRibbonControlVisible = False
    Else
-      GetRibbonControlVisible = GetVisible(Val(Mid(rc.Id, 4)))
+      GetRibbonControlVisible = GetVisible(Val(Mid(rc.ID, 4)))
    End If
 
 End Function
@@ -466,7 +466,7 @@ End Function
 
 Public Sub CallRibbonControlOnAction(rc As IRibbonControl)
 
-   CallOnAction Val(Mid(rc.Id, 4))
+   CallOnAction Val(Mid(rc.ID, 4))
 
 End Sub
 
@@ -523,8 +523,8 @@ Public Sub CallOnAction(rwcNr As Long)
    
 End Sub
 
-Private Function getIsMissing(Optional x As Variant) As Variant
-   getIsMissing = x
+Private Function getIsMissing(Optional X As Variant) As Variant
+   getIsMissing = X
 End Function
 
 Private Sub setActivatedEventControl(rc As IRibbonControl)
@@ -533,15 +533,15 @@ Private Sub setActivatedEventControl(rc As IRibbonControl)
    Dim bolItemExits As Boolean
    
    For Each Item In m_EventGroupCollection
-      If Item.Id = rc.Id Then
+      If Item.ID = rc.ID Then
          bolItemExits = True
       Else
-         Me.RibbonUI.InvalidateControl Item.Id
+         Me.RibbonUI.InvalidateControl Item.ID
       End If
    Next
    
    If Not bolItemExits Then
-      m_EventGroupCollection.Add rc, rc.Id
+      m_EventGroupCollection.Add rc, rc.ID
    End If
    
    RaiseEvent RibbonTabChanged(rc.Tag)

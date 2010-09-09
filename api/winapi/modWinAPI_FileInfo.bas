@@ -27,7 +27,6 @@ Private Declare Function GetFileVersionInfoSize Lib "version.dll" Alias "GetFile
   ByVal lptstrFilename As String, _
   lpdwHandle As Long) As Long
 
-
 Private Declare Function GetFileVersionInfo Lib "version.dll" Alias "GetFileVersionInfoA" ( _
   ByVal lptstrFilename As String, _
   ByVal dwHandle As Long, _
@@ -35,7 +34,6 @@ Private Declare Function GetFileVersionInfo Lib "version.dll" Alias "GetFileVers
   lpData As Any _
   ) As Long
 
-      
 Private Declare Function VerQueryValue Lib "version.dll" Alias "VerQueryValueA" ( _
   pBlock As Any, _
   ByVal lpSubBlock As String, _
@@ -48,7 +46,6 @@ Private Declare Sub MoveMemory Lib "kernel32" Alias "RtlMoveMemory" ( _
   ByVal Source As Long, _
   ByVal Length As Long)
   
-
 Private Type VS_FIXEDFILEINFO
   dwSignature As Long
   dwStrucVersion As Long
@@ -70,16 +67,13 @@ Private Type FILEINFOOUT
   ProductVersion As String
 End Type
 
-
 Private Function GetVersion(ByVal sPath As String, _
-                           ByRef FInfo As FILEINFOOUT) As Boolean
+                            ByRef FInfo As FILEINFOOUT) As Boolean
 
   Dim lRet As Long, lSize As Long, lHandle As Long
   Dim lVerBufLen As Long, lVerPointer As Long
   Dim FileInfo As VS_FIXEDFILEINFO
   Dim sBuffer() As Byte
-
-On Error GoTo HandleErr
 
   lSize = GetFileVersionInfoSize(sPath, lHandle)
   If lSize = 0 Then
@@ -120,23 +114,7 @@ On Error GoTo HandleErr
   
   GetVersion = True
 
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "GetVersion", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
-
-
 
 '#####################################################
 '
@@ -157,29 +135,10 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function GetFileVersion(ByVal sFile As String) As String
-   
    Dim verInfo As FILEINFOOUT
-   
-On Error GoTo HandleErr
-
    If GetVersion(sFile, verInfo) Then
       GetFileVersion = verInfo.FileVersion
    Else
       GetFileVersion = vbNullString
    End If
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "GetFileVersion", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function

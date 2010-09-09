@@ -15,7 +15,6 @@ Attribute VB_Description = "Funktionen für Dateioperationen"
 '<codelib>
 '  <file>file/modFiles.bas</file>
 '  <license>_codelib/license.bas</license>
-'  <use>base/modErrorHandler.bas</use>
 '  <use>base/defGlobal.bas</use>
 '  <test>_test/file/Test_modFiles.cls</test>
 '</codelib>
@@ -63,23 +62,7 @@ Public Function SelectFile(Optional ByVal InitialDir As String = vbNullString, _
                            Optional ByVal MultiSelectEnabled As Boolean = False, _
                            Optional ByVal ViewMode As Long = -1) As String
 
-On Error GoTo HandleErr
-
     SelectFile = WizHook_GetFileName(InitialDir, DlgTitle, m_SELECTBOX_OpenTitle, FilterString, MultiSelectEnabled, , ViewMode, False)
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "SelectFile", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Function
 
@@ -106,22 +89,7 @@ Public Function SelectFolder(Optional ByVal InitialDir As String = vbNullString,
                              Optional ByVal MultiSelectEnabled As Boolean = False, _
                              Optional ByVal ViewMode As Long = -1) As String
 
-On Error GoTo HandleErr
-
    SelectFolder = WizHook_GetFileName(InitialDir, DlgTitle, m_SELECTBOX_OpenTitle, FilterString, MultiSelectEnabled, , ViewMode, True)
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "SelectFolder", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Function
 
@@ -153,8 +121,6 @@ Private Function WizHook_GetFileName( _
    Dim selectedFileString As String
    Dim wizHookRetVal As Long
 
-On Error GoTo HandleErr
-
    If InStr(1, InitialDir, " ") > 0 Then
       InitialDir = """" & InitialDir & """"
    End If
@@ -179,26 +145,11 @@ On Error GoTo HandleErr
       WizHook_GetFileName = selectedFileString
    End If
 
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "WizHook_GetFileName", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
 
 Public Function UNCPath(ByVal Path As String, Optional ByVal IgnoreErrors As Boolean = True) As String
 
   Dim UNC As String * 512
-
-On Error GoTo HandleErr
 
   If Len(Path) = 1 Then Path = Path & ":"
 
@@ -219,20 +170,6 @@ On Error GoTo HandleErr
 
   End If
 
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "UNCPath", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -253,8 +190,6 @@ Public Property Get TempPath() As String
 
    Dim strTemp As String
 
-On Error GoTo HandleErr
-
    strTemp = Space$(m_MAXPATHLEN)
    API_GetTempPath m_MAXPATHLEN, strTemp
    strTemp = Left$(strTemp, InStr(strTemp, Chr$(0)) - 1)
@@ -262,19 +197,6 @@ On Error GoTo HandleErr
       strTemp = m_DEFAULT_TEMPPATH_NoEnv
    End If
    TempPath = strTemp
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "TempPath", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Property
 
@@ -300,8 +222,6 @@ Public Function ShortFileName(ByVal vFile As Variant, Optional ByVal lMaxLen As 
    Dim strTemp As String
    Dim lngPos As Long
 
-On Error GoTo HandleErr
-
    If IsNull(vFile) Then
       strFile = vbNullString
    Else
@@ -324,15 +244,6 @@ On Error GoTo HandleErr
 
    ShortFileName = strFile
 
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ShortFileName", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -353,8 +264,6 @@ Public Function FileNameWithoutPath(ByVal vFile As Variant) As String
    Dim sFile As String
    Dim lngPos As Long
 
-On Error GoTo HandleErr
-
    sFile = Nz(vFile, vbNullString)
    lngPos = InStrRev(sFile, "\")
    If lngPos > 0 Then
@@ -362,15 +271,6 @@ On Error GoTo HandleErr
    Else
       FileNameWithoutPath = sFile
    End If
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "FileNameWithoutPath", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Function
 
@@ -391,8 +291,6 @@ End Function
 Public Function CreateDirectory(ByVal sPath As String) As Boolean
 
    Dim strPathBefore As String
-
-On Error GoTo HandleErr
 
    If Right$(sPath, 1) = "\" Then
       sPath = Left$(sPath, Len(sPath) - 1)
@@ -415,19 +313,6 @@ On Error GoTo HandleErr
 
    CreateDirectory = True
 
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "CreateDirectory", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -445,26 +330,11 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Function FileExists(ByVal PathName As String) As Boolean
 
-On Error GoTo HandleErr
-
    Do While Right$(PathName, 1) = "\"
       PathName = Left$(PathName, Len(PathName) - 1)
    Loop
    FileExists = (Len(Dir$(PathName, vbReadOnly Or vbHidden Or vbSystem)) > 0)
       '6 = vbNormal or vbHidden or vbSystem
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "FileExists", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Function
 
@@ -483,27 +353,11 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Function DirExists(ByVal PathName As String) As Boolean
 
-On Error GoTo HandleErr
-
    If Right$(PathName, 1) <> "\" Then
       PathName = PathName & "\"
    End If
 
    DirExists = (Dir$(PathName, vbDirectory Or vbReadOnly Or vbHidden Or vbSystem) = ".")
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "DirExists", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Function
 
@@ -588,8 +442,6 @@ Public Function GetFullPathFromRelativPath(ByVal sRelativPath As String, ByVal s
    Dim strBase As String
    Dim lngPos As Long
 
-On Error GoTo HandleErr
-
    strBase = sBaseFolder
    If Right$(strBase, 1) = "\" Then
       strBase = Left$(strBase, Len(strBase) - 1)
@@ -623,20 +475,6 @@ On Error GoTo HandleErr
 
    GetFullPathFromRelativPath = strBase & "\" & strPath
 
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "GetFullPathFromRelativPath", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -666,10 +504,7 @@ Public Function GetRelativPathFromFullPath( _
    Dim strPath As String
    Dim strRetPath As String
    Dim lngPos As Long
-
    Dim lngRetCounter As Long, i As Long
-
-On Error GoTo HandleErr
 
    If sFullPath = sBaseFolder Then
       GetRelativPathFromFullPath = "."
@@ -710,19 +545,6 @@ On Error GoTo HandleErr
 
    GetRelativPathFromFullPath = strRetPath
 
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "GetRelativPathFromFullPath", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -743,8 +565,6 @@ Public Function GetDirFromFilePath(ByVal sFileName As String) As String
    Dim strPath As String
    Dim lngPos As Long
 
-On Error GoTo HandleErr
-
    strPath = sFileName
    lngPos = InStrRev(strPath, "\")
    If lngPos > 0 Then
@@ -754,19 +574,6 @@ On Error GoTo HandleErr
    End If
 
    GetDirFromFilePath = strPath
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "GetPathFromFullFileName", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Function
 
@@ -787,8 +594,6 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Sub AddToZipFile(ByVal zipFile As String, ByVal sFile As String)
 
-On Error GoTo HandleErr
-
    If Len(Dir$(zipFile)) = 0 Then
       CreateZipFile zipFile
    End If
@@ -797,42 +602,14 @@ On Error GoTo HandleErr
       .Namespace(zipFile & "").CopyHere sFile & ""
    End With
 
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "AddToZipFile", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Sub
 
 Private Function ExtractFromZipFile(ByVal zipFile As String, ByVal Destination As String) As String
-
-On Error GoTo HandleErr
 
    With CreateObject("Shell.Application")
       .Namespace(Destination & "").CopyHere .Namespace(zipFile & "").Items
       ExtractFromZipFile = .Namespace(zipFile & "").Items.Item(0).Name
    End With
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ExtractFromZipFile", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Function
 
@@ -840,14 +617,12 @@ Public Function CreateZipFile(ByVal zipFile As String, Optional DeleteExistingFi
 
    Dim fileHandle As Long
 
-On Error GoTo HandleErr
-
    If Len(Dir$(zipFile)) > 0 Then
       If DeleteExistingFile Then
          Kill zipFile
       Else
          CreateZipFile = False
-         Exit Sub
+         Exit Function
       End If
    End If
    
@@ -858,17 +633,4 @@ On Error GoTo HandleErr
 
    CreateZipFile = (Len(Dir$(zipFile)) > 0)
 
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "NewZip", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function

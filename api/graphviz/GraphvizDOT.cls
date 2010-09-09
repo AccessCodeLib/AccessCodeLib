@@ -71,26 +71,9 @@ Private p_InvisibleSubGraph As Boolean
 Private p_RndSeed As Double
 
 Private Sub Class_Initialize()
-
-On Error GoTo HandleErr
-
    Set p_DOTgraph = New GraphvizDOTgraph
    p_strGraphName = conDefaultGraphName
    p_InvisibleSubGraph = False
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "Class_Initialize", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Private Sub Class_Terminate()
@@ -100,24 +83,7 @@ On Error Resume Next
 End Sub
 
 Public Property Get UseExe() As Boolean
-
-On Error GoTo HandleErr
-
    UseExe = m_conUseEXE
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "UseExe", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Private Property Get CheckedObjWingraph() As Object
@@ -125,8 +91,6 @@ Private Property Get CheckedObjWingraph() As Object
    Dim strLibFile As String
    Dim strObjName As String
    
-On Error GoTo HandleErr
-
    strLibFile = CurrentProject.Path & "\lib\WinGraphviz.dll"
    
    If p_objDOT Is Nothing Then
@@ -144,43 +108,13 @@ On Error GoTo HandleErr
    End If
    Set CheckedObjWingraph = p_objDOT
 
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "CheckedObjWingraph", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Property
 
 Public Property Get DOTstring() As String
-
-On Error GoTo HandleErr
-
    If Len(p_strDOT) = 0 Then
       CreateDOT
    End If
    DOTstring = p_strDOT
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "DOTstring", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Public Sub ClearDOT()
@@ -189,13 +123,11 @@ On Error Resume Next
    Set p_DOTgraph = Nothing
 End Sub
 
-Public Sub init(Optional GraphMode As DOT_GraphMode = 0, _
+Public Sub Init(Optional GraphMode As DOT_GraphMode = 0, _
             Optional RankDir As DOT_RankDir = 0, _
             Optional GraphName As String = vbNullString, _
             Optional FirstNodeProp As String = vbNullString, _
             Optional GraphProp As String = vbNullString)
-
-On Error GoTo HandleErr
 
    p_strDOT = vbNullString
    p_lngGraphMode = GraphMode
@@ -204,20 +136,7 @@ On Error GoTo HandleErr
    
    p_strFirstLevelNodeProp = FirstNodeProp
    p_strGraphProp = GraphProp
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "init", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
+   
 End Sub
 
 Public Property Let RndSeed(sNewValue As Double)
@@ -231,52 +150,18 @@ On Error Resume Next
 End Property
 
 Public Property Get DOTgraph() As GraphvizDOTgraph
-
-On Error GoTo HandleErr
-
    If p_DOTgraph Is Nothing Then
       Set p_DOTgraph = New GraphvizDOTgraph
    End If
    Set DOTgraph = p_DOTgraph
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "DOTgraph", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Public Property Let GraphMode(lNewValue As DOT_GraphMode)
-
-On Error GoTo HandleErr
-
    If p_lngGraphMode <> lNewValue Then
       p_lngGraphMode = lNewValue
       ClearDOT
       Set p_objDOT = Nothing
    End If
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "GraphMode", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Public Property Get GraphMode() As DOT_GraphMode
@@ -285,76 +170,29 @@ On Error Resume Next
 End Property
 
 Public Property Let GraphName(sNewValue As String)
-
-On Error GoTo HandleErr
-
    If p_strGraphName <> sNewValue Then
       p_strGraphName = sNewValue
       Me.ClearDOT
    End If
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "GraphName", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Public Property Get GraphName() As String
-
-On Error GoTo HandleErr
 
    If Len(p_strGraphName) = 0 Then
       GraphName = conDefaultGraphName
    Else
       GraphName = p_strGraphName
    End If
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "GraphName", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
    
 End Property
 
 Public Property Let GraphLabel(sNewValue As String)
-
-On Error GoTo HandleErr
 
    If p_strGraphLabel <> sNewValue Then
       p_strGraphLabel = sNewValue
       Me.ClearDOT
    End If
 
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "GraphLabel", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Public Property Get GraphLabel() As String
@@ -364,27 +202,12 @@ End Property
 
 Public Property Let RankDir(sNewValue As DOT_RankDir)
 
-On Error GoTo HandleErr
-
    If p_RankDir <> sNewValue Then
       p_RankDir = sNewValue
       Me.ClearDOT
       Set p_objDOT = Nothing
    End If
 
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "RankDir", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Public Property Get RankDir() As DOT_RankDir
@@ -394,27 +217,12 @@ End Property
 
 Public Property Let InvisibleSubGraph(sNewValue As Boolean)
 
-On Error GoTo HandleErr
-
    If p_InvisibleSubGraph <> sNewValue Then
       p_InvisibleSubGraph = sNewValue
       Me.ClearDOT
       Set p_objDOT = Nothing
    End If
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "InvisibleSubGraph", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
+ 
 End Property
 
 Public Property Get InvisibleSubGraph() As Boolean
@@ -423,45 +231,11 @@ On Error Resume Next
 End Property
 
 Public Property Get Node(vIndex As Variant) As GraphvizDOTnode
-
-On Error GoTo HandleErr
-
    Set Node = p_DOTgraph.Node(vIndex)
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "Node", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Public Property Get Nodes() As Collection
-
-On Error GoTo HandleErr
-
    Set Nodes = p_DOTgraph.Nodes
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "Nodes", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 
@@ -473,51 +247,17 @@ Public Sub AddNode(sID As String, _
                Optional ByVal sMiscOptions As String = vbNullString, _
                Optional ByRef oSubGraph As GraphvizDOTgraph = Nothing, _
                Optional ByVal sLink As String = vbNullString)
-               
-On Error GoTo HandleErr
 
    DOTgraph.AddNode sID, sLabel, sShape, sColor, sStyle, sMiscOptions, oSubGraph, , , , sLink
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "AddNode", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
    
 End Sub
 
 Public Sub AddConnection(sFrom As String, sTo As String)
-
-On Error GoTo HandleErr
-
    p_DOTgraph.AddConnection sFrom, sTo
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "AddConnection", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Public Function ToBinaryGraph(ByVal OutputType As DOT_OutputGraphType, _
                      Optional ByVal show As Boolean = False) As String 'Rückgabe = Dateiname
-
-On Error GoTo HandleErr
 
    If m_conUseEXE Then
       ToBinaryGraph = ToBinaryGraphExe(OutputType, show)
@@ -525,19 +265,6 @@ On Error GoTo HandleErr
       ToBinaryGraph = ToBinaryGraphOcx(OutputType, show)
    End If
 
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ToBinaryGraph", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 Private Function ToBinaryGraphOcx(OutputType As DOT_OutputGraphType, _
@@ -549,25 +276,10 @@ Private Function ToBinaryGraphOcx(OutputType As DOT_OutputGraphType, _
    
    Dim strTempDOT As String
    Dim IfileNo As Long
-   
-On Error GoTo HandleErr
-   
-'   If ValidateDOT = False Then
-'      MsgBox "DOT-String ist fehlerhaft."
-'      ToBinaryGraphOcx = vbNullString
-'      Exit Function
-'   End If
-   
+
    'DOT ermitteln
    strTempDOT = CheckedObjWingraph.ToDot(DOTstring)
 
-   'DOT-File zwischenspeichern
-'   strFile = TempPath & Me.GraphName & ".dot"
-'   IfileNo = FreeFile
-'   Open strFile For Output As #IfileNo
-'      Print #IfileNo, strTempDOT
-'   Close #IfileNo
-   
    'Image-Map zwischenspeichern
    strFile = TempPath & Me.GraphName & ".cmap"
    IfileNo = FreeFile
@@ -594,20 +306,6 @@ On Error GoTo HandleErr
    End If
 
    ToBinaryGraphOcx = strFile
-   'ClearDOT
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ToBinaryGraphOcx", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Function
 
@@ -624,15 +322,7 @@ Private Function ToBinaryGraphExe(OutputType As DOT_OutputGraphType, _
    
    Dim strExe As String
    Dim strFileExtension As String
-   
-On Error GoTo HandleErr
 
-'   If ValidateDOT = False Then
-'      MsgBox "DOT-String ist fehlerhaft."
-'      ToBinaryGraphEXE = vbNullString
-'      Exit Function
-'   End If
-   
    Select Case OutputType
       Case DOT_OutputGraphType.DOT2EMF
          strFileExtension = ".emf"
@@ -655,21 +345,18 @@ On Error GoTo HandleErr
    
    'DOT ermitteln
    'If p_lngGraphMode = DOT_GraphMode.DOT Then
-      'strExe = "-Gcharset=latin1 -Tdot -o " & strDotFile & " " & strDotFile
       strExe = "-Gcharset=latin1 -Tdot -o """ & strDotFile & """ """ & strDotFile & """"
       runDotExe strExe
    'End If
    
    'Image-Map zwischenspeichern
    strFile = TempPath & Me.GraphName & ".cmap"
-   'strExe = "-Gcharset=latin1 -Tcmap -o " & strFile & " " & strDotFile
    strExe = "-Tcmap -o " & strFile & " " & strDotFile
    
    runDotExe strExe
    
    strFile = TempPath & Me.GraphName & strFileExtension
    strExe = "-Gcharset=latin1 -T" & Mid(strFileExtension, 2) & " -o """ & strFile & """ """ & strDotFile & """"
-   'strExe = "-T" & Mid(strFileExtension, 2) & " -o " & strFile & " " & strDotFile
    runDotExe strExe
 
    If show Then
@@ -677,20 +364,6 @@ On Error GoTo HandleErr
    End If
 
    ToBinaryGraphExe = strFile
-   'ClearDOT
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ToBinaryGraphExe", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Function
 
@@ -700,8 +373,6 @@ Private Function runDotExe(sDotCmd As String)
    Dim bolReadPath As Boolean
    Dim strFile As String
    Dim strDotExe As String
-
-On Error GoTo HandleErr
 
    If Len(strDotPath) = 0 Then
       bolReadPath = True
@@ -744,20 +415,6 @@ On Error GoTo HandleErr
    
    modWinAPI.LaunchAppSynchronous strDotExe, sDotCmd, vbHide
 
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "runDotExe", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 
@@ -767,8 +424,6 @@ Public Function ToTextGraph(lType As Long, _
    Dim strFile As String, strFileExt As String
    Dim bolDotValid As Boolean
    Dim strGraphText As String
-
-On Error GoTo HandleErr
 
    If ValidateDOT = False Then
       MsgBox "DOT-String ist fehlerhaft."
@@ -801,20 +456,6 @@ On Error GoTo HandleErr
 
    ToTextGraph = strFile
 
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ToTextGraph", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
 
 Public Function ToPS(Optional ByVal show As Boolean = False) As String 'Rückgabe = Dateiname
@@ -822,8 +463,6 @@ Public Function ToPS(Optional ByVal show As Boolean = False) As String 'Rückgabe
    Dim strFile As String, strFileExt As String
    Dim bolDotValid As Boolean
    Dim strGraphText As String
-
-On Error GoTo HandleErr
 
    If ValidateDOT = False Then
       MsgBox "DOT-String ist fehlerhaft."
@@ -844,86 +483,22 @@ On Error GoTo HandleErr
 
    ToPS = strFile
 
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ToPS", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
 
 
 Public Function ToPNG(Optional ByVal show As Boolean = False) As String
 'Generate BinaryImage(PNG)
-
-On Error GoTo HandleErr
-
    ToPNG = Me.ToBinaryGraph(DOT2PNG, show)
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ToPNG", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
 
 Public Function ToJPEG(Optional ByVal show As Boolean = False) As String
 'Generate BinaryImage(PNG)
-
-On Error GoTo HandleErr
-
    ToJPEG = Me.ToBinaryGraph(DOT2JPEG, show)
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ToJPEG", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
 
 Public Function ToGIF(Optional ByVal show As Boolean = False) As String
 'Generate BinaryImage(PNG)
-
-On Error GoTo HandleErr
-
    ToGIF = Me.ToBinaryGraph(DOT2GIF, show)
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ToGIF", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
 
 Public Function ToSvg() As String  'Text-Output
@@ -931,8 +506,6 @@ Public Function ToSvg() As String  'Text-Output
    Dim strFile As String, strFileExt As String
    Dim bolDotValid As Boolean
    Dim strGraphText As String
-
-On Error GoTo HandleErr
 
    If ValidateDOT = False Then
       MsgBox "DOT-String ist fehlerhaft."
@@ -946,39 +519,15 @@ On Error GoTo HandleErr
    Open strFile For Output As #1
       Print #1, strGraphText
    Close #1
-'
-'   If show Then
-'      WinAPI.ShellExecuteOpenFile strFile, "open"
-'   End If
 
    ToSvg = strFile
 
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ToSvg", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 Private Sub CreateDOT()
 
    Dim strDOT As String
    Dim strRankDir As String
-
-'   If p_RankDir = 0 Then
-'      strRankDir = "LR"
-'   Else
-'      strRankDir = "TB"
-'   End If
-On Error GoTo HandleErr
 
    Select Case p_RankDir
       Case DOT_RankDir.RankDir_LR
@@ -1018,24 +567,9 @@ On Error GoTo HandleErr
    strDOT = strDOT & p_DOTgraph.DOTstring(p_InvisibleSubGraph) & vbNewLine & "}" & vbNewLine
    p_strDOT = strDOT
 
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "CreateDOT", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Sub
 
 Private Function ValidateDOT() As Boolean
-
-On Error GoTo HandleErr
 
    If m_conUseEXE Then
       ValidateDOT = True
@@ -1043,17 +577,4 @@ On Error GoTo HandleErr
       ValidateDOT = CheckedObjWingraph.Validate(DOTstring)
    End If
 
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ValidateDOT", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function

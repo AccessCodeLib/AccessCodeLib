@@ -20,7 +20,6 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>data/odbc/OdbcHandler.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>base/modErrorHandler.bas</use>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
 '  <test>_test/data/odbc/TEST_OdbcHandlerHook.bas</test>
 '</codelib>
@@ -168,34 +167,14 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get CurrentDbBE() As DAO.Database
-   
    Dim tempOdbConnectionstring As String
-
-On Error GoTo HandleErr
-
    If (m_DaoDbBE Is Nothing) Then
       tempOdbConnectionstring = ConnectionString
       If Len(tempOdbConnectionstring) > 0 Then
          Set m_DaoDbBE = DBEngine.OpenDatabase("", dbDriverComplete, False, tempOdbConnectionstring)
       End If
    End If
-   
    Set CurrentDbBE = m_DaoDbBE
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "CurrentDbBE", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
-   
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -211,28 +190,11 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Set CurrentDbBE(ByRef NewCurrentDbBE As DAO.Database)
-
-On Error GoTo HandleErr
-
    closeDaoDbBE
    Set m_DaoDbBE = NewCurrentDbBE
    If Not (NewCurrentDbBE Is Nothing) Then
       m_OdbcConnectionString = NewCurrentDbBE.Connect
    End If
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "CurrentDbBE", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 
@@ -248,34 +210,17 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get ConnectionString() As String
-
-On Error GoTo HandleErr
-
-On Error Resume Next
-
    If Len(m_OdbcConnectionString) = 0 Then
       If Not (m_DaoDbBE Is Nothing) Then
+                 On Error Resume Next
          m_OdbcConnectionString = m_DaoDbBE.Connect
+                 On Error GoTo 0
       End If
       If Len(m_OdbcConnectionString) = 0 Then
          RaiseEvent ErrorEmptyConnectionString("OdbcHandler.ConnectionString", m_OdbcConnectionString)
       End If
    End If
    ConnectionString = m_OdbcConnectionString
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ConnectionString", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -290,27 +235,10 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Let ConnectionString(ByVal sConnectionString As String)
-
-On Error GoTo HandleErr
-
    If m_OdbcConnectionString <> sConnectionString Then
       closeDaoDbBE
    End If
    m_OdbcConnectionString = sConnectionString
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ConnectionString", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 
@@ -333,26 +261,11 @@ Public Function OpenRecordset(ByVal Source As String, _
                      Optional ByVal RecordsetType As DAO.RecordsetTypeEnum = dbOpenForwardOnly, _
                      Optional ByVal RecordsetOptions As DAO.RecordsetOptionEnum = DAO.RecordsetOptionEnum.dbSeeChanges, _
                      Optional ByVal LockEdit As DAO.LockTypeEnum = DAO.LockTypeEnum.dbOptimistic) As DAO.Recordset
-   
-On Error GoTo HandleErr
-
+                                         
    If (RecordsetOptions And dbSeeChanges) = 0 Then
       RecordsetOptions = RecordsetOptions + dbSeeChanges
    End If
    Set OpenRecordset = Me.CurrentDbBE.OpenRecordset(Source, RecordsetType, RecordsetOptions, LockEdit)
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "OpenRecordset", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-      Case ACLibErrorResumeMode.aclibErrResume
-         Resume
-      Case ACLibErrorResumeMode.aclibErrResumeNext
-         Resume Next
-      Case Else
-         Resume ExitHere
-   End Select
 
 End Function
 
@@ -380,8 +293,6 @@ Public Function OpenRecordsetPT(ByVal sSQL As String, _
    Dim qdf As DAO.QueryDef
    Dim rst As DAO.Recordset
 
-On Error GoTo HandleErr
-
    If (RecordsetOptions And dbSeeChanges) = 0 Then
      RecordsetOptions = RecordsetOptions + dbSeeChanges
    End If
@@ -399,19 +310,6 @@ On Error GoTo HandleErr
    End With
 
    Set OpenRecordsetPT = rst
-   
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "OpenRecordsetPT", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-     Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-     Resume Next
-   Case Else
-     Resume ExitHere
-   End Select
 
 End Function
 
@@ -433,9 +331,7 @@ Public Sub Execute(ByVal CommandText As String, _
           Optional ByVal Options As DAO.RecordsetOptionEnum)
 
    Dim db As DAO.Database
-
-On Error GoTo HandleErr
-
+   
    Set db = Me.CurrentDbBE
 
    If (Options And dbSeeChanges) = 0 Then
@@ -444,19 +340,6 @@ On Error GoTo HandleErr
    db.Execute CommandText, Options
    RecordsAffected = db.RecordsAffected
 
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "Execute", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-      Case ACLibErrorResumeMode.aclibErrResume
-         Resume
-      Case ACLibErrorResumeMode.aclibErrResumeNext
-         Resume Next
-      Case Else
-         Resume ExitHere
-   End Select
-   
 End Sub
 
 
@@ -480,8 +363,6 @@ Public Sub ExecutePT(ByVal sSQL As String, _
    Dim db As DAO.Database
    Dim qdf As DAO.QueryDef
 
-On Error GoTo HandleErr
-
    Set db = Me.CurrentDb
    
    If (Options And dbSQLPassThrough) = 0 Then
@@ -500,19 +381,6 @@ On Error GoTo HandleErr
    
    RecordsAffected = db.RecordsAffected
 
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ExecutePT", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-      Case ACLibErrorResumeMode.aclibErrResume
-         Resume
-      Case ACLibErrorResumeMode.aclibErrResumeNext
-         Resume Next
-      Case Else
-         Resume ExitHere
-   End Select
-   
 End Sub
 
 
@@ -533,8 +401,6 @@ Public Function LookupSQL(ByVal sSQL As String, Optional ByVal index As Variant 
 
    Dim rst As DAO.Recordset
 
-On Error GoTo HandleErr
-
    Set rst = Me.OpenRecordset(sSQL, dbOpenForwardOnly, dbSeeChanges, dbReadOnly)
    'Alternative:
    'Set rst = Me.OpenRecordsetPT(sSQL, dbOpenForwardOnly, dbSeeChanges, dbReadOnly)
@@ -547,19 +413,6 @@ On Error GoTo HandleErr
       .Close
    End With
    Set rst = Nothing
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "LookupSQL", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-      Case ACLibErrorResumeMode.aclibErrResume
-         Resume
-      Case ACLibErrorResumeMode.aclibErrResumeNext
-         Resume Next
-      Case Else
-         Resume ExitHere
-   End Select
 
 End Function
 
@@ -580,8 +433,6 @@ Public Function LookupSQLPT(ByVal sSQL As String, Optional ByVal index As Varian
 
    Dim rst As DAO.Recordset
 
-On Error GoTo HandleErr
-
    Set rst = Me.OpenRecordsetPT(sSQL, dbOpenForwardOnly, dbSeeChanges, dbReadOnly)
    With rst
       If .EOF Then
@@ -592,19 +443,6 @@ On Error GoTo HandleErr
       .Close
    End With
    Set rst = Nothing
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "LookupSQLPT", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-      Case ACLibErrorResumeMode.aclibErrResume
-         Resume
-      Case ACLibErrorResumeMode.aclibErrResumeNext
-         Resume Next
-      Case Else
-         Resume ExitHere
-   End Select
 
 End Function
 
@@ -626,8 +464,6 @@ Public Function Lookup(ByVal Expr As String, ByVal Domain As String, Optional By
 
    Dim strSQL As String
 
-On Error GoTo HandleErr
-
    strSQL = "SELECT " & Expr & " FROM " & Domain
    If Not (VarType(Criteria) = vbError) Then
       If Len(Criteria) > 0 Then
@@ -635,19 +471,6 @@ On Error GoTo HandleErr
       End If
    End If
    Lookup = Me.LookupSQL(strSQL)
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "Lookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Function
 
@@ -666,24 +489,7 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function DCount(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
-
-On Error GoTo HandleErr
-
    DCount = Nz(Me.Lookup("Count(" & Expr & ")", Domain, Criteria), 0)
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "DCount", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -701,24 +507,7 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function DMax(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
-
-On Error GoTo HandleErr
-
    DMax = Me.Lookup("Max(" & Expr & ")", Domain, Criteria)
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "DMax", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -736,24 +525,7 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function DMin(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
-
-On Error GoTo HandleErr
-
     DMin = Me.Lookup("Min(" & Expr & ")", Domain, Criteria)
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "DMin", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-    
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -771,24 +543,7 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function DSum(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
-
-On Error GoTo HandleErr
-
    DSum = Me.Lookup("Sum(" & Expr & ")", Domain, Criteria)
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "DSum", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -809,11 +564,8 @@ Public Function InsertIdentityReturn(ByVal InsertSQL As String) As Variant
    Dim rst As DAO.Recordset
    Dim lngRecordsAffected As Long
    Dim strIdentitySQL As String
-   
    Dim lngHookResumeMode As Long
    Dim varHookResumeMessage As Variant
-   
-On Error GoTo HandleErr
 
    Set db = Me.CurrentDbBE
    
@@ -849,22 +601,7 @@ On Error GoTo HandleErr
    Set rst = Nothing
    Set db = Nothing
 
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "InsertIdentityReturn", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-      Case ACLibErrorResumeMode.aclibErrResume
-         Resume
-      Case ACLibErrorResumeMode.aclibErrResumeNext
-         Resume Next
-      Case Else
-         Resume ExitHere
-   End Select
-   
 End Function
-
-
 
 '---------------------------------------------------------------------------------------
 ' Sub: LinkTable (17.02.2009)
@@ -886,8 +623,6 @@ Public Sub LinkTable(ByVal SourceTableName As String, Optional ByVal LinkedTable
    Dim dbs As DAO.Database
    Dim tdf As DAO.TableDef
    Dim lngPos As Long
-   
-On Error GoTo HandleErr
 
    If Len(Me.ConnectionString) = 0 Then
       Err.Raise ACLibErrorNumbers.ERRNR_NOCONFIG, _
@@ -942,21 +677,7 @@ On Error GoTo HandleErr
    Set tdf = Nothing
    dbs.TableDefs.Refresh
    Set dbs = Nothing
-   
-ExitHere:
-   Exit Sub
 
-HandleErr:
-   Select Case HandleError(Err.Number, "LinkTable", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
-   
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -976,12 +697,8 @@ Public Sub RelinkTable(ByVal LinkedTableName As String, _
 
    Dim dbs As DAO.Database
    Dim tdf As DAO.TableDef
-   
    Dim sConnectionString As String
-   
    Dim attr As TableDefAttributeEnum
-
-On Error GoTo HandleErr
 
    sConnectionString = Me.ConnectionString
 
@@ -1014,20 +731,6 @@ On Error GoTo HandleErr
       End If
    End With
 
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "RelinkTable", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
-   
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -1048,8 +751,6 @@ Public Sub RelinkPassThroughQuery(ByVal QueryName As String, _
    Dim dbs As DAO.Database
    Dim qdf As DAO.QueryDef
 
-On Error GoTo HandleErr
-
    If Len(sConnectionString) = 0 Then
       sConnectionString = Me.ConnectionString
    End If
@@ -1068,21 +769,7 @@ On Error GoTo HandleErr
       End If
       End With
    Next qdf
-   
-ExitHere:
-   Exit Sub
 
-HandleErr:
-   Select Case HandleError(Err.Number, "RelinkPassThroughQuery", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
-   
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -1109,11 +796,8 @@ Public Function RelinkTablesAndQueries( _
    Dim dbs As DAO.Database
    Dim tdf As DAO.TableDef
    Dim qdf As DAO.QueryDef
-   
    Dim lConnectCounter As Long
    Dim attr As TableDefAttributeEnum
-   
-On Error GoTo HandleErr
 
    If Len(sConnectionString) = 0 Then
       sConnectionString = Me.ConnectionString
@@ -1168,19 +852,6 @@ On Error GoTo HandleErr
 
    RelinkTablesAndQueries = True
 
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "RelinkTablesAndQueries", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-        Case ACLibErrorResumeMode.aclibErrResume
-            Resume
-        Case ACLibErrorResumeMode.aclibErrResumeNext
-            Resume Next
-        Case Else
-            Resume ExitHere
-    End Select
-   
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -1204,11 +875,8 @@ Public Function DeleteOdbcTableDefs(Optional ByVal lEventCounter As Long = 0) As
    Dim tdf As DAO.TableDef
    Dim i As Long
    Dim tdfCount As Long
-   
    Dim lConnectCounter As Long
    Dim sLastDbObjectName As String
-   
-On Error GoTo HandleErr
 
    Set dbs = Me.CurrentDb
    
@@ -1232,19 +900,6 @@ On Error GoTo HandleErr
       End With
    Next
 
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "DeleteOdbcTableDef", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-        Case ACLibErrorResumeMode.aclibErrResume
-            Resume
-        Case ACLibErrorResumeMode.aclibErrResumeNext
-            Resume Next
-        Case Else
-            Resume ExitHere
-    End Select
-   
 End Function
 
 
@@ -1261,10 +916,7 @@ Private Sub RemoveTableDefAttribut(ByRef tdf As DAO.TableDef, attr As TableDefAt
 
    Dim lngAttributes As Long
 
-On Error GoTo HandleErr
-
    lngAttributes = tdf.Attributes
-   
    If (lngAttributes And attr) = attr Then
    
       If (tdf.Attributes And dbAttachedODBC) = dbAttachedODBC Then
@@ -1279,29 +931,13 @@ On Error GoTo HandleErr
       
    End If
 
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "RemoveTableDefAttribut", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Private Sub AddTableDefAttribut(ByRef tdf As DAO.TableDef, attr As TableDefAttributeEnum)
 
    Dim lngAttributes As Long
 
-On Error GoTo HandleErr
-
    lngAttributes = tdf.Attributes
-   
    If (lngAttributes And attr) = 0 Then
    
       If (tdf.Attributes And dbAttachedODBC) = dbAttachedODBC Then
@@ -1314,18 +950,5 @@ On Error GoTo HandleErr
       lngAttributes = lngAttributes Or attr
       tdf.Attributes = lngAttributes
    End If
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "AddTableDefAttribut", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Sub

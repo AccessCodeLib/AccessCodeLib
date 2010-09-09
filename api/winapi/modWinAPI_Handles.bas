@@ -27,7 +27,7 @@ Option Compare Database
 Option Explicit
 
 Private Type POINTAPI
-   x As Long
+   X As Long
    y As Long
 End Type
 
@@ -56,32 +56,10 @@ Private Declare Function FindWindowEx Lib "USER32.DLL" Alias "FindWindowExA" ( _
 '**/
 '---------------------------------------------------------------------------------------
 Public Function GetMDI() As Long
-
-   'Ermittelt den Handle des MDI-Client-Fensters.
-
-   Dim H As Long
-On Error GoTo HandleErr
-
-   H = Application.hWndAccessApp
-
+   Dim h As Long
+   h = Application.hWndAccessApp
    'Erstes (und einziges) "MDIClient"-Kindfenster des Applikationsfensters suchen
-   GetMDI = FindWindowEx(H, 0&, "MDIClient", vbNullString)
-
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "GetMDI", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
+   GetMDI = FindWindowEx(h, 0&, "MDIClient", vbNullString)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -98,31 +76,10 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function GetHeaderSection(ByVal fHwnd As Long) As Long
-
-   'Ermittelt den Handle für den Kopfbereich eines Formulares
-
-   Dim H As Long
-
+   Dim h As Long
    'Erstes "OFormsub"-Kindfenster des Formulares (fhwnd) ermitteln
-On Error GoTo HandleErr
-
-   H = FindWindowEx(fHwnd, 0&, "OformSub", vbNullString)
-   GetHeaderSection = H
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "GetHeaderSection", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
+   h = FindWindowEx(fHwnd, 0&, "OformSub", vbNullString)
+   GetHeaderSection = h
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -139,33 +96,12 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function GetDetailSection(ByVal fHwnd As Long) As Long
-
-   'Ermittelt den Handle für den Detailbereich eines Formulares
-
-   Dim H As Long
-
+   Dim h As Long
    'Erstes "OFormsub"-Kindfenster des Formulares (fhwnd) ermitteln, beginnend
    'nach dem Kopfbereich
-On Error GoTo HandleErr
-
-   H = GetHeaderSection(fHwnd)
-   H = FindWindowEx(fHwnd, H, "OformSub", vbNullString)
-   GetDetailSection = H
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "GetDetailSection", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
+   h = GetHeaderSection(fHwnd)
+   h = FindWindowEx(fHwnd, h, "OformSub", vbNullString)
+   GetDetailSection = h
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -182,33 +118,12 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function GetFooterSection(ByVal fHwnd As Long) As Long
-
-   'Ermittelt den Handle für den Fußbereich eines Formulares
-
-   Dim H As Long
-
+   Dim h As Long
    'Erstes "OFormsub"-Kindfenster des Formulares (fhwnd) ermitteln, beginnend
    'nach dem Detailbereich
-On Error GoTo HandleErr
-
-   H = GetDetailSection(fHwnd)
-   H = FindWindowEx(fHwnd, H, "OformSub", vbNullString)
-   GetFooterSection = H
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "GetFooterSection", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
+   h = GetDetailSection(fHwnd)
+   h = FindWindowEx(fHwnd, h, "OformSub", vbNullString)
+   GetFooterSection = h
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -227,7 +142,7 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetControl(ByRef frm As Access.Form, ByVal sHwnd As Long, ByVal ClassName As String, ByVal ControlName As String) As Long
+Public Function GetControl(ByRef frm As Access.Form, ByVal sHwnd As Long, ByVal className As String, ByVal ControlName As String) As Long
 
    'Ermittelt den Handle eines beliebigen Controls
 
@@ -251,32 +166,32 @@ Public Function GetControl(ByRef frm As Access.Form, ByVal sHwnd As Long, ByVal 
 
 On Error Resume Next
 
-   Dim H As Long
+   Dim h As Long
    Dim obj As Object
    Dim pt As POINTAPI
 
-   H = 0
+   h = 0
 
    Do
       'Erstes (h=0)/nächstes (h<>0) Control auf dem Sektionsfenster ermitteln
-      H = FindWindowEx(sHwnd, H, ClassName, vbNullString)
+      h = FindWindowEx(sHwnd, h, className, vbNullString)
 
       'Bildschirmkoordinaten dieses Controls ermitteln
       'dafür die Punktkoordinaten aus dem letzten Durchlauf zurücksetzen, sonst wird addiert!
-      pt.x = 0
+      pt.X = 0
       pt.y = 0
-      ClientToScreen H, pt
+      ClientToScreen h, pt
 
       'Objekt bei den Koordinaten ermitteln
-      Set obj = frm.accHitTest(pt.x, pt.y)
+      Set obj = frm.accHitTest(pt.X, pt.y)
 
       'Wenn Objektname = Tabname Ausstieg aus der Schleife
       If obj.Name = ControlName Then
          Exit Do
       End If
-   Loop While H <> 0
+   Loop While h <> 0
 
    'Handle zurückgeben
-   GetControl = H
+   GetControl = h
 
 End Function

@@ -13,7 +13,6 @@ Attribute VB_Name = "modWinAPI_SpecFolder"
 '<codelib>
 '  <file>api/winapi/modWinAPI_SpecFolder.bas</file>
 '  <license>_codelib/license.bas</license>
-'  <use>base/modErrorHandler.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -86,8 +85,6 @@ Public Function GetSpecFolder(ByVal lCSIDL As CSIDL_FOLDER, _
       Optional ByVal bVerify As Boolean = False) As String
       
    Dim sPath As String, RetVal As Long, lFlags As Long
-  
-On Error GoTo HandleErr
 
    sPath = String$(MAX_PATH, 0)
    lFlags = lCSIDL
@@ -107,20 +104,6 @@ On Error GoTo HandleErr
       Err.Raise vbObjectError + 2, "GetSpecFolder", "Ungültiger Verzeichnisbezeichner (CSIDL)"
    Case Else
       Err.Raise vbObjectError + 999, "GetSpecFolder", "Unerwartete Rückgabe der API-Funktion SHGetFolderPath"
-   End Select
-
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "GetSpecFolder", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
    End Select
 
 End Function

@@ -69,7 +69,6 @@ On Error GoTo HandleErr
    CurrentApplicationName = CurrentApplication.ApplicationName
       
 ExitHere:
-On Error Resume Next
    Exit Property
 
 HandleErr:
@@ -80,9 +79,8 @@ End Property
 
 Private Function getApplicationNameFromDb() As String
 
-On Error Resume Next
-
    If Len(m_ApplicationName) = 0 Then 'Wert aus Titel-Eigenschaft, da Konstante nicht eingestellt wurde
+          On Error Resume Next
       m_ApplicationName = CodeDb.Properties("AppTitle").Value
       If Len(m_ApplicationName) = 0 Then 'Wert aus Dateinamen
          m_ApplicationName = CodeDb.Name

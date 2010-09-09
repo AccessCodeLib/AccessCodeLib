@@ -22,7 +22,6 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>data/DbConnectionHandler.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>base/modErrorHandler.bas</use>
 '  <use>data/dao/DaoHandler.cls</use>
 '  <use>data/ado/AdodbHandler.cls</use>
 '  <use>data/odbc/OdbcHandler.cls</use>
@@ -181,14 +180,10 @@ End Sub
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get ADODB() As AdodbHandler
-
-On Error Resume Next
-   
    If m_AdodbHandler Is Nothing Then
       Set m_AdodbHandler = New AdodbHandler
    End If
    Set ADODB = m_AdodbHandler
-
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -203,7 +198,6 @@ End Property
 '*/
 '---------------------------------------------------------------------------------------
 Public Property Get CurrentConnection() As ADODB.Connection
-   On Error Resume Next
    Set CurrentConnection = Me.ADODB.CurrentConnection
 End Property
 
@@ -234,7 +228,6 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get OledbConnectionString() As String
-   On Error Resume Next
    OledbConnectionString = Me.ADODB.ConnectionString
 End Property
 
@@ -275,7 +268,6 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get DAO() As DaoHandler
-   On Error Resume Next
    If m_DaoHandler Is Nothing Then
       Set m_DaoHandler = New DaoHandler
    End If
@@ -294,7 +286,6 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get CurrentDb() As DAO.Database
-   On Error Resume Next
    Set CurrentDb = Me.DAO.CurrentDb
 End Property
 
@@ -338,7 +329,6 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get ODBC() As OdbcHandler
-   On Error Resume Next
    If m_OdbcHandler Is Nothing Then
      Set m_OdbcHandler = New OdbcHandler
    End If
@@ -357,7 +347,6 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get OdbcConnectionString() As String
-   On Error Resume Next
    OdbcConnectionString = Me.ODBC.ConnectionString
 End Property
 
@@ -403,28 +392,9 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Set CurrentDbBE(ByRef NewCurrentDbBE As DAO.Database)
-
-On Error GoTo HandleErr
-
    If Not (NewCurrentDbBE Is Nothing) Then
       Set Me.ODBC.CurrentDbBE = NewCurrentDbBE
    End If
-
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "CurrentDbBE : " & Err.Source, Err.Description)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
-   
 End Property
 
 '//@}
@@ -459,7 +429,7 @@ Private Sub m_OdbcHandler_ErrorEmptyConnectionString(ByVal Msg As String, NewCon
 End Sub
 
 Private Sub m_OdbcHandler_ErrorMissingCurrentDb(ByVal Msg As String, NewCurrentDbRef As DAO.Database)
-On Error Resume Next
+
    '1. Versuchen aus DAO-Klasse zu übergeben:
    Set NewCurrentDbRef = Me.DAO.CurrentDb
    

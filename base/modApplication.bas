@@ -43,25 +43,10 @@ Private m_Extension As Collection
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get CurrentApplication() As ApplicationHandler
-On Error GoTo HandleErr
-
    If m_ApplicationHandler Is Nothing Then
       initApplication
    End If
    Set CurrentApplication = m_ApplicationHandler
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "CurrentApplication", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -79,25 +64,8 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Sub AddApplicationHandlerExtension(ByRef objRef As Object)
-
-On Error GoTo HandleErr
-
    Set objRef.ApplicationHandlerRef = CurrentApplication
    m_Extension.Add objRef, objRef.ExtensionKey
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "AddApplicationHandlerExtension", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 
@@ -115,32 +83,13 @@ End Sub
 '**/
 '---------------------------------------------------------------------------------------
 Public Sub TraceLog(ByRef Msg As String, ParamArray Args() As Variant)
-
-On Error GoTo HandleErr
-
    CurrentApplication.WriteLog Msg, ApplicationHandlerLogType.AppLogType_Tracing, Args, False
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "TraceLog", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 
 Private Sub initApplication()
 
    ' Hauptinstanz erzeugen
-On Error GoTo HandleErr
-
    Set m_ApplicationHandler = New ApplicationHandler
    
    ' Extension-Collection neu setzen
@@ -149,19 +98,6 @@ On Error GoTo HandleErr
    'Einstellungen initialisieren
    Call InitConfig(m_ApplicationHandler)
 
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "initApplication", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 
@@ -209,45 +145,9 @@ End Sub
 'End Property
 
 Public Sub WriteApplicationLogEntry(ByVal Msg As String)
-
-On Error GoTo HandleErr
-
    CurrentApplication.WriteApplicationLogEntry Msg
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "WriteApplicationLogEntry", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 Public Property Get PublicPath() As String
-
-On Error GoTo HandleErr
-
    PublicPath = CurrentApplication.PublicPath
-
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "PublicPath", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property

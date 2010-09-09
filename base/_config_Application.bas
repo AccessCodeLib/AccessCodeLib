@@ -23,7 +23,6 @@ Attribute VB_Name = "_config_Application"
 '  <license>_codelib/license.bas</license>
 '  <use>base/modApplication.bas</use>
 '  <use>base/ApplicationHandler.cls</use>
-'  <use>base/modErrorHandler.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
