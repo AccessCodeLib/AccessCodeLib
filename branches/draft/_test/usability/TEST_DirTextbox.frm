@@ -68,7 +68,6 @@ Begin Form
         0x44465850313a00
     End
     OnLoad ="[Event Procedure]"
-    NoSaveCTIWhenDisabled =1
     Begin
         Begin Label
             BackStyle =0

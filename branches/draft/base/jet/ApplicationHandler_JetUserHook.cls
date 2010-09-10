@@ -32,7 +32,6 @@ Attribute VB_Exposed = False
 '  <file>base/jet/ApplicationHandler_JetUserHook.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>base/ApplicationHandler.cls</use>
-'  <use>base/modErrorHandler.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -62,7 +61,6 @@ Public Property Set ApplicationHandlerRef(ByRef objRef As ApplicationHandler)
 End Property
 
 Public Property Get ExtensionKey() As String
-On Error Resume Next
    ExtensionKey = m_EXTENSION_KEY
 End Property
 
@@ -73,7 +71,6 @@ End Property
 
 ' CheckExtension
 Private Sub m_ApplicationHandler_CheckExtension(ByVal sExtensionKey As String, exists As Boolean)
-On Error Resume Next
    If sExtensionKey = m_EXTENSION_KEY Then exists = True
 End Sub
 

@@ -24,7 +24,6 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>base/ApplicationHandler.cls</use>
 '  <use>crypt/md5/modMD5.bas</use>
-'  <use>base/modErrorHandler.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
