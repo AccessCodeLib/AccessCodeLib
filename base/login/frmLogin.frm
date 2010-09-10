@@ -75,7 +75,6 @@ Begin Form
         0x44465850313a00
     End
     OnLoad ="[Event Procedure]"
-    NoSaveCTIWhenDisabled =1
     Begin
         Begin Label
             BackStyle =0
@@ -228,7 +227,6 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>base/login/frmLogin.frm</file>
 '  <license>_codelib/license.bas</license>
-'  <use>base/modErrorHandler.bas</use>
 '  <use>base/modApplication.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------

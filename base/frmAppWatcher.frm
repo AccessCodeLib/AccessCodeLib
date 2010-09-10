@@ -76,7 +76,6 @@ Begin Form
     End
     OnTimer ="[Event Procedure]"
     OnLoad ="[Event Procedure]"
-    NoSaveCTIWhenDisabled =1
     Begin
         Begin Label
             BackStyle =0

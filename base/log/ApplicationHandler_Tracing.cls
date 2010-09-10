@@ -24,7 +24,6 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>base/log/ApplicationHandler_Tracing.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>base/modErrorHandler.bas</use>
 '  <use>base/ApplicationHandler.cls</use>
 '  <test>_test/base/log/ApplicationHandler_TracingTest.cls</test>
 '</codelib>
