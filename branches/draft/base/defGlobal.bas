@@ -26,10 +26,6 @@ Option Compare Text
 ' Konstanten
 '
 
-' SQL-Konstanten
-
-   Public Const SQL_DEFAULT_TEXTDELIMITER As String = "'"
-   Public Const SQL_DEFAULT_DATEFORMAT As String = "\#yyyy\-mm\-dd\#"
 
 '---------------------------------------------------------------------------------------
 '

@@ -604,7 +604,7 @@ Public Sub AddToZipFile(ByVal zipFile As String, ByVal sFile As String)
 
 End Sub
 
-Private Function ExtractFromZipFile(ByVal zipFile As String, ByVal Destination As String) As String
+Public Function ExtractFromZipFile(ByVal zipFile As String, ByVal Destination As String) As String
 
    With CreateObject("Shell.Application")
       .Namespace(Destination & "").CopyHere .Namespace(zipFile & "").Items

@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: DaoHandler (2009-06-15)
+' Klassenmodul: DaoHandler
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -58,7 +58,7 @@ Public Sub Dispose()
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Property: CurrentDb (2009-06-15)
+' Property: CurrentDb
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -82,7 +82,7 @@ Public Property Get CurrentDb() As DAO.Database
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: CurrentDb (2009-06-15)
+' Property: CurrentDb
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -98,7 +98,7 @@ Public Property Set CurrentDb(ByRef NewCurrentDb As DAO.Database)
 End Property
 
 '---------------------------------------------------------------------------------------
-' Function: OpenRecordset (2009-06-15)
+' Function: OpenRecordset
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -125,7 +125,7 @@ Public Function OpenRecordset(ByVal Source As String, _
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: Execute (2009-06-15)
+' Function: Execute
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -151,7 +151,7 @@ End Sub
 
 
 '---------------------------------------------------------------------------------------
-' Function: LookupSQL (2009-06-15)
+' Function: LookupSQL
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -163,16 +163,17 @@ End Sub
 ' <remarks>Die SQL-Anweisung ist im Jet-SQL-Dialekt zu schreiben.</remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function LookupSQL(ByVal sSQL As String, Optional ByVal index As Variant = 0&) As Variant
+Public Function LookupSQL(ByVal sSQL As String, Optional ByVal Index As Variant = 0&, _
+                 Optional ByVal ValueIfNull As Variant = Null) As Variant
 
     Dim rst As DAO.Recordset
 
     Set rst = Me.OpenRecordset(sSQL, dbOpenForwardOnly, dbSeeChanges, dbReadOnly)
     With rst
         If .EOF Then
-            LookupSQL = Null
+            LookupSQL = ValueIfNull
         Else
-            LookupSQL = .Fields(index)
+            LookupSQL = Nz(.Fields(Index), ValueIfNull)
         End If
         .Close
     End With
@@ -181,7 +182,7 @@ Public Function LookupSQL(ByVal sSQL As String, Optional ByVal index As Variant 
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: Lookup (2009-06-15)
+' Function: Lookup
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -194,7 +195,9 @@ End Function
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Lookup(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
+Public Function Lookup(ByVal Expr As String, ByVal Domain As String, _
+              Optional ByVal Criteria As Variant, _
+              Optional ByVal ValueIfNull As Variant = Null) As Variant
 
     Dim strSQL As String
 
@@ -204,12 +207,12 @@ Public Function Lookup(ByVal Expr As String, ByVal Domain As String, Optional By
             strSQL = strSQL & " WHERE " & Criteria
         End If
     End If
-    Lookup = LookupSQL(strSQL)
+    Lookup = LookupSQL(strSQL, , ValueIfNull)
 
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: Count (2009-06-15)
+' Function: Count
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -227,7 +230,7 @@ Public Function Count(ByVal Expr As String, ByVal Domain As String, Optional ByV
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: Max (2009-06-15)
+' Function: Max
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -245,7 +248,7 @@ Public Function Max(ByVal Expr As String, ByVal Domain As String, Optional ByVal
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: DMin (2009-06-15)
+' Function: DMin
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -263,7 +266,7 @@ Public Function Min(ByVal Expr As String, ByVal Domain As String, Optional ByVal
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: DSum (2009-06-15)
+' Function: DSum
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -281,7 +284,7 @@ Public Function Sum(ByVal Expr As String, ByVal Domain As String, Optional ByVal
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: InsertIdentityReturn (2009-06-15)
+' Function: InsertIdentityReturn
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>

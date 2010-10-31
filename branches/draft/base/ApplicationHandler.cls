@@ -27,7 +27,7 @@ Attribute VB_Description = "Hauptsteuerung der Anwendung"
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
-Option Compare Database
+Option Compare Text
 Option Explicit
 
 Public Enum ApplicationHandlerResumeModes

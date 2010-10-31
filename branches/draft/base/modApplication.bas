@@ -20,7 +20,7 @@ Attribute VB_Description = "Standard-Prozeduren für die Arbeit mit ApplicationHa
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
-Option Compare Database
+Option Compare Text
 Option Explicit
 
 ' Instanz der Hauptsteuerung

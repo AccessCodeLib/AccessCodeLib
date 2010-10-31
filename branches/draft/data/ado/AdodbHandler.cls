@@ -140,7 +140,7 @@ Public Property Get CurrentConnection() As ADODB.Connection
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: CurrentConnection (2009-06-15)
+' Property: CurrentConnection
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -161,7 +161,7 @@ Public Property Set CurrentConnection(ByRef NewConnection As ADODB.Connection)
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: ConnectionString (2009-06-15)
+' Property: ConnectionString
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -185,7 +185,7 @@ Public Property Get ConnectionString() As String
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: ConnectionString (2009-06-15)
+' Property: ConnectionString
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -202,7 +202,7 @@ End Property
 
 
 '---------------------------------------------------------------------------------------
-' Function: Execute (2009-06-15)
+' Function: Execute
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -260,7 +260,7 @@ Public Function OpenRecordset(ByVal Source As String, _
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: OpenRecordsetCommandParam (2009-06-15)
+' Function: OpenRecordsetCommandParam
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -311,7 +311,7 @@ Public Function OpenRecordsetCommandParam(ByVal CmdText As String, _
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: LookupSQL (2009-06-15)
+' Function: LookupSQL
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -323,16 +323,17 @@ End Function
 ' <remarks>Die SQL-Anweisung ist im SQL-Dialekt des betroffenen DBMS zu schreiben.</remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function LookupSQL(ByVal sSQL As String, Optional ByVal index As Variant = 0&) As Variant
+Public Function LookupSQL(ByVal sSQL As String, Optional ByVal Index As Variant = 0&, _
+                 Optional ByVal ValueIfNull As Variant = Null) As Variant
 
    Dim rst As ADODB.Recordset
 
    Set rst = Me.OpenRecordset(sSQL, adOpenForwardOnly, adLockReadOnly, adUseServer)
    With rst
       If .EOF Then
-         LookupSQL = Null
+         LookupSQL = ValueIfNull
       Else
-         LookupSQL = .Fields(index)
+         LookupSQL = Nz(.Fields(Index), ValueIfNull)
       End If
       .Close
    End With
@@ -341,7 +342,7 @@ Public Function LookupSQL(ByVal sSQL As String, Optional ByVal index As Variant 
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: Lookup (2009-06-15)
+' Function: Lookup
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -354,7 +355,9 @@ End Function
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Lookup(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
+Public Function Lookup(ByVal Expr As String, ByVal Domain As String, _
+              Optional ByVal Criteria As Variant, _
+              Optional ByVal ValueIfNull As Variant = Null) As Variant
 
    Dim strSQL As String
 
@@ -364,12 +367,12 @@ Public Function Lookup(ByVal Expr As String, ByVal Domain As String, Optional By
          strSQL = strSQL & " WHERE " & Criteria
       End If
    End If
-   Lookup = Me.LookupSQL(strSQL)
+   Lookup = Me.LookupSQL(strSQL, , ValueIfNull)
 
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: DCount (2009-06-15)
+' Function: DCount
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -387,7 +390,7 @@ Public Function DCount(ByVal Expr As String, ByVal Domain As String, Optional By
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: Max (2009-06-15)
+' Function: Max
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -405,7 +408,7 @@ Public Function Max(ByVal Expr As String, ByVal Domain As String, Optional ByVal
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: Min (2009-06-15)
+' Function: Min
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -423,7 +426,7 @@ Public Function Min(ByVal Expr As String, ByVal Domain As String, Optional ByVal
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: Sum (2009-06-15)
+' Function: Sum
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -441,7 +444,7 @@ Public Function Sum(ByVal Expr As String, ByVal Domain As String, Optional ByVal
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: InsertIdentityReturn (2009-06-15)
+' Function: InsertIdentityReturn
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>

@@ -49,7 +49,7 @@ Attribute VB_Name = "_AccessCodeLib_license"
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
-Option Compare Database
+Option Compare Text
 Option Explicit
 
 Public Function GetAccessCodeLibLicense() As String

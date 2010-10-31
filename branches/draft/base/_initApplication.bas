@@ -20,7 +20,7 @@ Attribute VB_Name = "_initApplication"
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
-Option Compare Database
+Option Compare Text
 Option Explicit
 
 '-------------------------

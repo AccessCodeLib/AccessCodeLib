@@ -31,7 +31,7 @@ Attribute VB_Name = "_config_Application"
 ' ist das alte zuvor umzubennen oder zu löschen.
 '
 '
-Option Compare Database
+Option Compare Text
 Option Explicit
 
 '/** \addtogroup base
@@ -39,12 +39,14 @@ Option Explicit
 
 Private Const m_ApplicationVersion As String = "0.0.0"
 
-Private Const m_ApplicationName As String = "Access Code Library"
+Private Const m_ApplicationName As String = "Anwendungsnamen eingeben"
 Private Const m_ApplicationFullName As String = m_ApplicationName
 Private Const m_ApplicationTitle As String = m_ApplicationName
 Private Const m_ApplicationIconFile As String = m_ApplicationName & ".ico"
 
-Private Const m_DefaultErrorHandlerMode = ACLibErrorHandlerMode.aclibErrMsgBox
+#If USE_GLOBAL_ERRORHANDLER Then
+Const m_DefaultErrorHandlerMode = ACLibErrorHandlerMode.aclibErrMsgBox
+#End If
 
 Private Const m_ApplicationStartFormName As String = ""
 
@@ -66,7 +68,9 @@ Public Sub InitConfig(Optional oCurrentAppHandler As ApplicationHandler = Nothin
 '----------------------------------------------------------------------------
 ' Fehlerbehandlung
 '
+#If USE_GLOBAL_ERRORHANDLER Then
    modErrorHandler.DefaultErrorHandlerMode = m_DefaultErrorHandlerMode
+#End If
 
 '----------------------------------------------------------------------------
 ' Globale Variablen einstellen
