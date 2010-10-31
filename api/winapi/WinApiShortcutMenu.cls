@@ -31,7 +31,7 @@ Attribute VB_Description = "ShortcutMenu über Win-API"
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
-Option Compare Database
+Option Compare Text
 Option Explicit
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -39,7 +39,7 @@ Option Explicit
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Private Type POINTAPI
-   X As Long
+   x As Long
    y As Long
 End Type
 
@@ -67,7 +67,7 @@ Private Declare Function CreateWindowEx _
       ByVal lpClassname As String, _
       ByVal lpWindowName As String, _
       ByVal dwStyle As Long, _
-      ByVal X As Long, _
+      ByVal x As Long, _
       ByVal y As Long, _
       ByVal nWidth As Long, _
       ByVal nHeight As Long, _
@@ -93,7 +93,7 @@ Private Declare Function TrackPopupMenu _
       Lib "USER32.DLL" ( _
       ByVal hMenu As Long, _
       ByVal wFlags As Long, _
-      ByVal X As Long, _
+      ByVal x As Long, _
       ByVal y As Long, _
       ByVal nReserved As Long, _
       ByVal Hwnd As Long, _
@@ -304,7 +304,7 @@ End Sub
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function OpenMenu(Optional ByVal X As Single = 0, Optional ByVal y As Single = 0) As Long
+Public Function OpenMenu(Optional ByVal x As Single = 0, Optional ByVal y As Single = 0) As Long
 
    Dim MenuHwnd As Long
    Dim tmpHwnd As Long
@@ -356,11 +356,11 @@ Public Function OpenMenu(Optional ByVal X As Single = 0, Optional ByVal y As Sin
    
    If m_MenuControl Is Nothing Then
       GetWindowRect m_AccessForm.Hwnd, rcAccForm
-      ButtonLeft = GetPixelFromTwips(X) + rcAccForm.Left
+      ButtonLeft = GetPixelFromTwips(x) + rcAccForm.Left
       ButtonTop = GetPixelFromTwips(y) + rcAccForm.Top
    Else
    '- Buttom relativ zum Sektionsfenster
-      ButtonLeft = GetPixelFromTwips(m_MenuControl.Left) + GetPixelFromTwips(X)
+      ButtonLeft = GetPixelFromTwips(m_MenuControl.Left) + GetPixelFromTwips(x)
       ButtonTop = GetPixelFromTwips(m_MenuControl.Top) + GetPixelFromTwips(y)
    End If
    '- Miteinander verrechnen

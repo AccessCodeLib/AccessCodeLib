@@ -24,8 +24,17 @@ Attribute VB_Description = "SQL-Hilfsfunktionen"
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
-Option Compare Database
+Option Compare Text
 Option Explicit
+
+Private Enum SqlToolsErrorNumbers
+   ERRNR_NOCONFIG = vbObjectError + 1
+End Enum
+
+Public Const SQL_DEFAULT_TEXTDELIMITER As String = "'"
+Public Const SQL_DEFAULT_DATEFORMAT As String = "" ' => SQL_DATEFORMAT wird verwendet.
+                                                   '    Zum Deaktivieren Wert eintragen (z. B. "\#yyyy\-mm\-dd\#")
+Public SQL_DATEFORMAT As String
 
 '---------------------------------------------------------------------------------------
 ' Function: GetSQLString_Text (2009-07-25)
@@ -71,6 +80,12 @@ Public Function GetSQLString_Date(ByVal vValue As Variant, Optional sFormatStrin
    If IsNull(vValue) Then
       GetSQLString_Date = "NULL"
    Else
+      If Len(sFormatString) = 0 Then
+         sFormatString = SQL_DATEFORMAT
+         If Len(sFormatString) = 0 Then
+            Err.Raise SqlToolsErrorNumbers.ERRNR_NOCONFIG, "GetSQLString_Date", "Kein Datumsformat verfügbar"
+         End If
+      End If
       GetSQLString_Date = Format$(vValue, sFormatString)
    End If
 End Function

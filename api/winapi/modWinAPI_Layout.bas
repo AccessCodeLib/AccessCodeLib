@@ -18,7 +18,7 @@ Attribute VB_Description = "WinAPI-Funktionen zur Layoutgestaltung"
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
-Option Compare Database
+Option Compare Text
 Option Explicit
 
 Private Declare Function CreateSolidBrush _

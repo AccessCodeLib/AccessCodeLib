@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: DbConnectionHandler (2009-06-15)
+' Klassenmodul: DbConnectionHandler
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -169,7 +169,7 @@ End Sub
 '//@{
 
 '---------------------------------------------------------------------------------------
-' Property: ADODB (2009-06-15)
+' Property: ADODB
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -187,7 +187,7 @@ Public Property Get ADODB() As AdodbHandler
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: CurrentConnection (2009-06-15)
+' Property: CurrentConnection
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -202,7 +202,7 @@ Public Property Get CurrentConnection() As ADODB.Connection
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: CurrentConnection (2009-06-15)
+' Property: CurrentConnection
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -217,7 +217,7 @@ Public Property Set CurrentConnection(ByRef NewConnection As ADODB.Connection)
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: OledbConnectionString (2009-06-15)
+' Property: OledbConnectionString
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -232,7 +232,7 @@ Public Property Get OledbConnectionString() As String
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: OleDBConnectionString (2009-06-15)
+' Property: OleDBConnectionString
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -257,7 +257,7 @@ End Property
 '//@{
 
 '---------------------------------------------------------------------------------------
-' Property: DAO (2009-06-15)
+' Property: DAO
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -275,7 +275,7 @@ Public Property Get DAO() As DaoHandler
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: CurrentDb (2009-06-15)
+' Property: CurrentDb
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -290,7 +290,7 @@ Public Property Get CurrentDb() As DAO.Database
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: CurrentDb (2009-06-15)
+' Property: CurrentDb
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -318,7 +318,7 @@ End Property
 '//@{
 
 '---------------------------------------------------------------------------------------
-' Property: ODBC (2009-06-15)
+' Property: ODBC
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -336,7 +336,7 @@ Public Property Get ODBC() As OdbcHandler
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: OdbcConnectionString (2009-06-15)
+' Property: OdbcConnectionString
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -351,7 +351,7 @@ Public Property Get OdbcConnectionString() As String
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: OdbcConnectionString (2009-06-15)
+' Property: OdbcConnectionString
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -365,7 +365,7 @@ Public Property Let OdbcConnectionString(ByVal sConnectionString As String)
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: CurrentDbBE (2009-06-15)
+' Property: CurrentDbBE
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -380,7 +380,7 @@ Public Property Get CurrentDbBE() As DAO.Database
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: CurrentDbBE (2009-06-15)
+' Property: CurrentDbBE
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>

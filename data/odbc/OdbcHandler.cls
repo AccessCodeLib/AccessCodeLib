@@ -28,6 +28,7 @@ Attribute VB_Exposed = False
 Option Compare Text
 Option Explicit
 
+Private Const ERRNR_NOCONFIG As Long = vbObjectError + 1002
 
 'ODBC-Connectionstring
 Private m_OdbcConnectionString As String
@@ -121,7 +122,7 @@ Friend Property Let HooksEnabled(ByVal bEnable As Boolean)
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: CurrentDb (2009-06-15)
+' Property: CurrentDb
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -140,7 +141,7 @@ Public Property Get CurrentDb() As DAO.Database
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: CurrentDb (2009-06-15)
+' Property: CurrentDb
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -156,7 +157,7 @@ Public Property Set CurrentDb(ByRef NewCurrentDb As DAO.Database)
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: CurrentDbBE (2009-06-15)
+' Property: CurrentDbBE
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -178,7 +179,7 @@ Public Property Get CurrentDbBE() As DAO.Database
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: CurrentDbBE (2009-06-15)
+' Property: CurrentDbBE
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -199,7 +200,7 @@ End Property
 
 
 '---------------------------------------------------------------------------------------
-' Property: ConnectionString (2009-06-15)
+' Property: ConnectionString
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -224,7 +225,7 @@ Public Property Get ConnectionString() As String
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: ConnectionString (2009-06-15)
+' Property: ConnectionString
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -243,7 +244,7 @@ End Property
 
 
 '---------------------------------------------------------------------------------------
-' Function: OpenRecordset (2009-06-15)
+' Function: OpenRecordset
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -314,7 +315,7 @@ Public Function OpenRecordsetPT(ByVal sSQL As String, _
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: Execute (2009-06-15)
+' Function: Execute
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -385,7 +386,7 @@ End Sub
 
 
 '---------------------------------------------------------------------------------------
-' Function: LookupSQL (2009-06-15)
+' Function: LookupSQL
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -397,7 +398,8 @@ End Sub
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function LookupSQL(ByVal sSQL As String, Optional ByVal index As Variant = 0&) As Variant
+Public Function LookupSQL(ByVal sSQL As String, Optional ByVal Index As Variant = 0&, _
+                 Optional ByVal ValueIfNull As Variant = Null) As Variant
 
    Dim rst As DAO.Recordset
 
@@ -406,9 +408,9 @@ Public Function LookupSQL(ByVal sSQL As String, Optional ByVal index As Variant 
    'Set rst = Me.OpenRecordsetPT(sSQL, dbOpenForwardOnly, dbSeeChanges, dbReadOnly)
    With rst
       If .EOF Then
-         LookupSQL = Null
+         LookupSQL = ValueIfNull
       Else
-         LookupSQL = .Fields(index)
+         LookupSQL = Nz(.Fields(Index), ValueIfNull)
       End If
       .Close
    End With
@@ -417,7 +419,7 @@ Public Function LookupSQL(ByVal sSQL As String, Optional ByVal index As Variant 
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: LookupSQL (2009-06-15)
+' Function: LookupSQL
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -429,16 +431,17 @@ End Function
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function LookupSQLPT(ByVal sSQL As String, Optional ByVal index As Variant = 0&) As Variant
+Public Function LookupSQLPT(ByVal sSQL As String, Optional ByVal Index As Variant = 0&, _
+                   Optional ByVal ValueIfNull As Variant = Null) As Variant
 
    Dim rst As DAO.Recordset
 
    Set rst = Me.OpenRecordsetPT(sSQL, dbOpenForwardOnly, dbSeeChanges, dbReadOnly)
    With rst
       If .EOF Then
-         LookupSQLPT = Null
+         LookupSQLPT = ValueIfNull
       Else
-         LookupSQLPT = .Fields(index)
+         LookupSQLPT = Nz(.Fields(Index), ValueIfNull)
       End If
       .Close
    End With
@@ -447,7 +450,7 @@ Public Function LookupSQLPT(ByVal sSQL As String, Optional ByVal index As Varian
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: Lookup (2009-06-15)
+' Function: Lookup
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -460,7 +463,9 @@ End Function
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Lookup(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
+Public Function Lookup(ByVal Expr As String, ByVal Domain As String, _
+              Optional ByVal Criteria As Variant, _
+              Optional ByVal ValueIfNull As Variant = Null) As Variant
 
    Dim strSQL As String
 
@@ -470,12 +475,12 @@ Public Function Lookup(ByVal Expr As String, ByVal Domain As String, Optional By
          strSQL = strSQL & " WHERE " & Criteria
       End If
    End If
-   Lookup = Me.LookupSQL(strSQL)
+   Lookup = Me.LookupSQL(strSQL, , ValueIfNull)
 
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: DCount (2009-06-15)
+' Function: DCount
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -493,7 +498,7 @@ Public Function DCount(ByVal Expr As String, ByVal Domain As String, Optional By
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: DMax (2009-06-15)
+' Function: DMax
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -511,7 +516,7 @@ Public Function DMax(ByVal Expr As String, ByVal Domain As String, Optional ByVa
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: DMin (2009-06-15)
+' Function: DMin
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -529,7 +534,7 @@ Public Function DMin(ByVal Expr As String, ByVal Domain As String, Optional ByVa
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: DSum (2009-06-15)
+' Function: DSum
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -547,7 +552,7 @@ Public Function DSum(ByVal Expr As String, ByVal Domain As String, Optional ByVa
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: InsertIdentityReturn (2009-06-15)
+' Function: InsertIdentityReturn
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -625,7 +630,7 @@ Public Sub LinkTable(ByVal SourceTableName As String, Optional ByVal LinkedTable
    Dim lngPos As Long
 
    If Len(Me.ConnectionString) = 0 Then
-      Err.Raise ACLibErrorNumbers.ERRNR_NOCONFIG, _
+      Err.Raise ERRNR_NOCONFIG, _
               "LinkTable", "ODBC-Connectionstring fehlt!"
    End If
    
@@ -703,7 +708,7 @@ Public Sub RelinkTable(ByVal LinkedTableName As String, _
    sConnectionString = Me.ConnectionString
 
    If Len(sConnectionString) = 0 Then
-      Err.Raise ACLibErrorNumbers.ERRNR_NOCONFIG, _
+      Err.Raise ERRNR_NOCONFIG, _
               "RelinkTable", "ODBC-Connectionstring fehlt!"
    End If
    
@@ -711,7 +716,7 @@ Public Sub RelinkTable(ByVal LinkedTableName As String, _
    dbs.TableDefs.Refresh
    Set tdf = dbs.TableDefs(LinkedTableName)
    With tdf
-      If Left$(.Connect, 4) = "ODBC" Then
+      If IsLinkedTable(tdf) Then
          .Connect = sConnectionString
          attr = .Attributes
          If bSavePWD Then
@@ -756,7 +761,7 @@ Public Sub RelinkPassThroughQuery(ByVal QueryName As String, _
    End If
    
    If Len(sConnectionString) = 0 Then
-      Err.Raise ACLibErrorNumbers.ERRNR_NOCONFIG, _
+      Err.Raise ERRNR_NOCONFIG, _
               "RelinkPassThroughQuery", "ODBC-Connectionstring fehlt!"
    End If
    
@@ -804,7 +809,7 @@ Public Function RelinkTablesAndQueries( _
    End If
    
    If Len(sConnectionString) = 0 Then
-      Err.Raise ACLibErrorNumbers.ERRNR_NOCONFIG, _
+      Err.Raise ERRNR_NOCONFIG, _
               "RelinkTablesAndQueries", "ODBC-Connectionstring fehlt!"
    End If
 
@@ -814,23 +819,23 @@ Public Function RelinkTablesAndQueries( _
    dbs.TableDefs.Refresh
    For Each tdf In dbs.TableDefs
       With tdf
-      If Left$(.Connect, 4) = "ODBC" Then
-         .Connect = sConnectionString
-         .RefreshLink
-         If bSavePWD Then
-            AddTableDefAttribut tdf, dbAttachSavePWD
-         Else
-            RemoveTableDefAttribut tdf, dbAttachSavePWD
-         End If
-
-         If lEventCounter > 0 Then '0 ... Rückgabe ist deaktiviert
-            lConnectCounter = lConnectCounter + 1
-            If lConnectCounter Mod lEventCounter = 0 Then
-               RaiseEvent DbObjectRelinked(.Name, lConnectCounter)
+         If IsLinkedTable(tdf) Then
+            .Connect = sConnectionString
+            .RefreshLink
+            If bSavePWD Then
+               AddTableDefAttribut tdf, dbAttachSavePWD
+            Else
+               RemoveTableDefAttribut tdf, dbAttachSavePWD
             End If
+   
+            If lEventCounter > 0 Then '0 ... Rückgabe ist deaktiviert
+               lConnectCounter = lConnectCounter + 1
+               If lConnectCounter Mod lEventCounter = 0 Then
+                  RaiseEvent DbObjectRelinked(.Name, lConnectCounter)
+               End If
+            End If
+   
          End If
-
-      End If
       End With
    Next tdf
 
@@ -880,23 +885,25 @@ Public Function DeleteOdbcTableDefs(Optional ByVal lEventCounter As Long = 0) As
 
    Set dbs = Me.CurrentDb
    
+   Dim bDelete As Boolean
+   
    dbs.TableDefs.Refresh
    tdfCount = dbs.TableDefs.Count - 1
    For i = tdfCount To 0 Step -1
       Set tdf = dbs.TableDefs(i)
       With tdf
-      If Left$(.Connect, 4) = "ODBC" Then
-         sLastDbObjectName = .Name
-         dbs.TableDefs.Delete sLastDbObjectName
-
-         If lEventCounter > 0 Then '0 ... Rückgabe ist deaktiviert
-            lConnectCounter = lConnectCounter + 1
-            If lConnectCounter Mod lEventCounter = 0 Then
-               RaiseEvent DbObjectDeleted(sLastDbObjectName, lConnectCounter)
+         If IsLinkedTable(tdf) Then
+            sLastDbObjectName = .Name
+            dbs.TableDefs.Delete sLastDbObjectName
+   
+            If lEventCounter > 0 Then '0 ... Rückgabe ist deaktiviert
+               lConnectCounter = lConnectCounter + 1
+               If lConnectCounter Mod lEventCounter = 0 Then
+                  RaiseEvent DbObjectDeleted(sLastDbObjectName, lConnectCounter)
+               End If
             End If
+   
          End If
-
-      End If
       End With
    Next
 
@@ -952,3 +959,13 @@ Private Sub AddTableDefAttribut(ByRef tdf As DAO.TableDef, attr As TableDefAttri
    End If
 
 End Sub
+
+Public Function IsLinkedTable(ByVal tdf As DAO.TableDef) As Boolean
+   If Left$(tdf.Connect, 4) = "ODBC" Then
+      IsLinkedTable = True
+   ElseIf Left$(tdf.Connect, 10) = ";DATABASE=" Then
+      IsLinkedTable = True
+   Else
+      IsLinkedTable = False
+   End If
+End Function

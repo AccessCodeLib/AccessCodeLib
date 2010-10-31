@@ -117,6 +117,7 @@ Private Declare Function WaitForInputIdle Lib "user32" (ByVal hProcess As Long, 
 Private Declare Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As Long
 Private Declare Function WaitForSingleObject Lib "kernel32" (ByVal hHandle As Long, ByVal dwMilliseconds As Long) As Long
 
+Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
 '---------------------------------------------------------------------------------------
 ' Kapselungen
@@ -171,6 +172,55 @@ Public Function ShellExecuteOpenFile(ByVal sFile As String, _
 
 End Function
 
+'---------------------------------------------------------------------------------------
+' Function: ShellExecuteSendMail
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Email mit Standard-Programm versenden
+' </summary>
+' <param name="sTo">Empfänger-Adresse</param>
+' <param name="sSubject">Betreff-Zeile</param>
+' <param name="sBody">Email-Text</param>
+' <returns>Boolean</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function ShellExecuteSendMail(ByVal sTo As String, _
+                                     ByVal sSubject As String, _
+                                     ByVal sBody As String) As Boolean
+
+   Dim lRet As Long
+   Dim strLpFile As String
+   
+   If Len(sTo) = 0 Then
+      ShellExecuteSendMail = False
+      Exit Function
+   End If
+   
+   If sSubject > vbNullString Then
+      strLpFile = "subject=" & sSubject
+   End If
+   If sBody > vbNullString Then
+      If strLpFile > vbNullString Then
+         strLpFile = strLpFile & "&body=" & sBody
+      Else
+         strLpFile = "body=" & sBody
+      End If
+   End If
+   If strLpFile > vbNullString Then
+       strLpFile = "mailto:" & sTo & "?" & strLpFile
+   Else
+      strLpFile = "mailto:" & sTo
+   End If
+
+   
+   
+   lRet = ShellExecuteA(GetDesktopWindow(), "open", strLpFile, vbNullString, vbNullString, vbNormalFocus)
+   ShellExecuteSendMail = (lRet <> 0)
+
+End Function
 
 '---------------------------------------------------------------------------------------
 ' Function: LaunchAppSynchronous (Josef Pötzl, 2010-04-19)
