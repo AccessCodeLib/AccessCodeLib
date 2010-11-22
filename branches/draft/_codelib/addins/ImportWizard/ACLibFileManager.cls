@@ -31,6 +31,7 @@ Attribute VB_Description = "Import/Export der Access-Objekte in/aus lokaler Code
 '  <file>_codelib/addins/ImportWizard/ACLibFileManager.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>base/ApplicationHandler.cls</use>
+'  <use>file/modFiles.bas</use>
 '  <use>_codelib/addins/ImportWizard/defGlobal_ACLibImportWizard.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -440,8 +441,8 @@ Public Property Get CurrentVbProject() As Object
 
    If m_CurrentVbProject Is Nothing Then
       Set m_CurrentVbProject = VBE.ActiveVBProject
-      'Pürfen, ob das richtige VbProject gewählt wurde (muss das von CurrentDb sein)
-      strCurrentDbName = CurrentDb.Name
+      'Prüfen, ob das richtige VbProject gewählt wurde (muss das von CurrentDb sein)
+      strCurrentDbName = UNCPath(CurrentDb.Name)
       If m_CurrentVbProject.FileName <> strCurrentDbName Then
          Set m_CurrentVbProject = Nothing
          For Each proj In VBE.VBProjects
