@@ -21,8 +21,8 @@ Begin Form
     ItemSuffix =34
     Left =7440
     Top =2220
-    Right =18915
-    Bottom =11820
+    Right =17655
+    Bottom =10140
     OnUnload ="[Event Procedure]"
     RecSrcDt = Begin
         0x212b6fd80e9ce340
@@ -37,10 +37,10 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x0000000000000000ba28822f040000000100000044e0370018000000b8e23700 ,
+        0x00000000ba28152f0400000001000000105a300018000000845c3000385a3000 ,
         0x010400069c00440343ef8005010009009a0b3408640001000f00c80002000100 ,
-        0xc80002000100413400e237000d000000c8c42500a4e23700c4c425009ce03700 ,
-        0xe993842fe0c40000000000000000000000000000010000000000000001000000 ,
+        0xc80002000100413400000000c8044204705c3000c4044204685a3000e993172f ,
+        0xe0044204f0930000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe230000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -71,9 +71,10 @@ Begin Form
     End
     PrtDevNames = Begin
         0x080013001b000100000000000000000000000000000000000000004672656550 ,
-        0x44465850313a0000000000
+        0x44465850313a000000000000000000
     End
     OnLoad ="[Event Procedure]"
+    
     Begin
         Begin Label
             BackStyle =0
@@ -313,6 +314,7 @@ Begin Form
                     Name ="lstImportFiles"
                     RowSourceType ="Table/Query"
                     ColumnWidths ="2835;6804"
+                    OnDblClick ="[Event Procedure]"
                     OnKeyDown ="[Event Procedure]"
                     OnLostFocus ="[Event Procedure]"
                     ControlTipText ="Liste der zu importierenden Dateien\015\012Markierte Einträge können mit {Entf}-"
@@ -718,7 +720,7 @@ HandleErr:
 
 End Sub
 
-Private Sub cmdImportFiles_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub cmdImportFiles_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
 On Error GoTo HandleErr
 
@@ -893,11 +895,11 @@ HandleErr:
    
 End Sub
 
-Private Function getLocalRepositoryPath(ByRef FullPath As String) As String
+Private Function getLocalRepositoryPath(ByRef fullPath As String) As String
 
 On Error GoTo HandleErr
 
-   getLocalRepositoryPath = Replace(GetRelativPathFromFullPath(Replace(FullPath, "/", "\"), CurrentLocalRepositoryPath, False), "\", "/")
+   getLocalRepositoryPath = Replace(GetRelativPathFromFullPath(Replace(fullPath, "/", "\"), CurrentLocalRepositoryPath, False), "\", "/")
 
 ExitHere:
 On Error Resume Next
@@ -1030,12 +1032,18 @@ On Error Resume Next
    DisposeCurrentApplicationHandler
 End Sub
 
+Private Sub lstImportFiles_DblClick(Cancel As Integer)
+   OpenSelectItemFormImportFilesListboxInTextViewer
+End Sub
+
 Private Sub lstImportFiles_KeyDown(KeyCode As Integer, Shift As Integer)
 
 On Error GoTo HandleErr
 
    If KeyCode = vbKeyDelete Then
       removeSelectedItemsFromListbox
+   ElseIf KeyCode = vbKeyF2 Then
+      OpenSelectItemFormImportFilesListboxInTextViewer
    End If
 
 ExitHere:
@@ -1117,6 +1125,9 @@ On Error GoTo HandleErr
          addFileFromFileName Me.txtFileString.Text
          KeyCode = 0
       End If
+   ElseIf KeyCode = vbKeyF2 Then
+      OpenRepositoryFileInTextViewer Me.txtFileString.Text
+      KeyCode = 0
    End If
 
 ExitHere:
@@ -1363,3 +1374,13 @@ HandleErr:
    End Select
    
 End Property
+
+Private Sub OpenSelectItemFormImportFilesListboxInTextViewer()
+   OpenRepositoryFileInTextViewer Me.lstImportFiles.Column(1)
+End Sub
+
+Private Sub OpenRepositoryFileInTextViewer(ByVal sRelativeFilePath As String)
+   Dim fullPath As String
+   fullPath = CurrentACLibFileManager.GetRepositoryFullPath(sRelativeFilePath)
+   ShellExecuteOpenFile fullPath, "open"
+End Sub

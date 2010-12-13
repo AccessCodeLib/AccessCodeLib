@@ -142,7 +142,7 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetControl(ByRef frm As Access.Form, ByVal sHwnd As Long, ByVal className As String, ByVal ControlName As String) As Long
+Public Function GetControl(ByRef frm As Access.Form, ByVal sHwnd As Long, ByVal sClassName As String, ByVal ControlName As String) As Long
 
    'Ermittelt den Handle eines beliebigen Controls
 
@@ -174,7 +174,7 @@ On Error Resume Next
 
    Do
       'Erstes (h=0)/nächstes (h<>0) Control auf dem Sektionsfenster ermitteln
-      h = FindWindowEx(sHwnd, h, className, vbNullString)
+      h = FindWindowEx(sHwnd, h, sClassName, vbNullString)
 
       'Bildschirmkoordinaten dieses Controls ermitteln
       'dafür die Punktkoordinaten aus dem letzten Durchlauf zurücksetzen, sonst wird addiert!
