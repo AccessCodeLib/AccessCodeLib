@@ -58,6 +58,7 @@ Public Type CodeLibInfo
    References() As CodeLibInfoReference
    TestFiles() As String
    LicenseFile As String
+   Description As String
 End Type
 
 

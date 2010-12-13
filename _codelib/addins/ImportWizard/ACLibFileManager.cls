@@ -29,6 +29,7 @@ Attribute VB_Description = "Import/Export der Access-Objekte in/aus lokaler Code
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/ImportWizard/ACLibFileManager.cls</file>
+'  <description>Kmmert sich um den Import und Export der Codemodule aus dem und in das Repository</description>
 '  <license>_codelib/license.bas</license>
 '  <use>base/ApplicationHandler.cls</use>
 '  <use>file/modFiles.bas</use>
@@ -67,6 +68,8 @@ Private Const SEARCHSTRING_FILE_BEGIN As String = "<file>"
 Private Const SEARCHSTRING_FILE_END   As String = "</file>"
 Private Const SEARCHSTRING_LICENSE_BEGIN As String = "<license>"
 Private Const SEARCHSTRING_LICENSE_END   As String = "</license>"
+Private Const SEARCHSTRING_DESCRIPTION_BEGIN As String = "<description>"
+Private Const SEARCHSTRING_DESCRIPTION_END   As String = "</description>"
 Private Const SEARCHSTRING_USE_BEGIN As String = "<use>"
 Private Const SEARCHSTRING_USE_END   As String = "</use>"
 Private Const SEARCHSTRING_REF_BEGIN As String = "<ref>"
@@ -1252,6 +1255,7 @@ Private Sub getCodeLibInfoFromFile(ByRef cli As CodeLibInfo, ByVal InputFile As 
       If FindDependency Then getCodeLibInfoDependency cli, checkString
       getCodeLibInfoReferences cli, checkString
       If FindTests Then getCodeLibInfoTests cli, checkString
+      getCodeLibInfoDescription cli, checkString
    End If
 
 End Sub
@@ -1266,6 +1270,10 @@ End Sub
 
 Private Sub getCodeLibInfoLicenseFile(ByRef cli As CodeLibInfo, ByRef sSourceString As String)
    cli.LicenseFile = Replace(findSubString(sSourceString, SEARCHSTRING_LICENSE_BEGIN, SEARCHSTRING_LICENSE_END), "\", "/")
+End Sub
+
+Private Sub getCodeLibInfoDescription(ByRef cli As CodeLibInfo, ByRef sSourceString As String)
+   cli.Description = Replace(findSubString(sSourceString, SEARCHSTRING_DESCRIPTION_BEGIN, SEARCHSTRING_DESCRIPTION_END), "\", "/")
 End Sub
 
 Private Sub getCodeLibInfoDependency(ByRef cli As CodeLibInfo, ByRef sSourceString As String)
