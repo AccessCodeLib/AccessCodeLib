@@ -1,6 +1,6 @@
 Version =19
 VersionRequired =19
-Checksum =-122265353
+Checksum =122265366
 Begin Form
     PopUp = NotDefault
     RecordSelectors = NotDefault
@@ -19,16 +19,13 @@ Begin Form
     Width =10215
     DatasheetFontHeight =11
     ItemSuffix =51
-    Left =7440
-    Top =2220
-    Right =17655
-    Bottom =10140
+    Left =1890
+    Top =2280
+    Right =14985
+    Bottom =10200
     OnUnload ="[Event Procedure]"
     RecSrcDt = Begin
         0x212b6fd80e9ce340
-    End
-    GUID = Begin
-        0xa3d845ad25264346826ddbe71a4f57ef
     End
     Caption ="Access Code Library - Import Wizard"
     DatasheetFontName ="Calibri"
@@ -37,18 +34,13 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x000000000000000000000000ba28fd2f04000000010000005847280018000000 ,
-        0x010400069c00440343ef8005010009009a0b3408640001000f00c80002000100 ,
-        0xc80002000100413400000000cc4928000d000000c804ba04b8492800c404ba04 ,
-        0xb0472800e9930000000000000000000000000000010000000000000001000000 ,
-        0x0200000001000000000000000000000000000000000000000000000050524956 ,
-        0xe230000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000180000000000102710271027 ,
-        0x0000102700000000000000007000440300000000000000000000000000000000 ,
-        0x0000000000000000030000000000000000001000503403002888040000000000 ,
-        0x0000000000000100000000000000000000000000000000002401df8c03000000 ,
-        0x05000400ff000000000000000000000000000000000000000000000000000000 ,
+        0x4d6963726f736f66742058505320446f63756d656e7420577269746572000000 ,
+        0x010400069c00580343ef8005010009009a0b3408640001000f00c80002000100 ,
+        0xc800020001004134000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff0000000000000000000000000000000044494e55 ,
+        0x220010014c030c00cad2f6720000000000000000000000000000000000000000 ,
+        0x0000000000000000090000000000000000000100000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -64,14 +56,21 @@ Begin Form
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0100000000000000000000000000000070000000534d544a0000000010006000 ,
-        0x46007200650065005000440046005f005800500000005265736f6c7574696f6e ,
-        0x00363030647069005061676553697a65004c6574746572005061676552656769 ,
-        0x6f6e000000000000000000000000000000000000000000000000000000000000
+        0x00000000000000000000000001000000000000000000000010010000534d544a ,
+        0x00000000100000014d006900630072006f0073006f0066007400200058005000 ,
+        0x5300200044006f00630075006d0065006e007400200057007200690074006500 ,
+        0x72000000496e70757442696e00464f524d534f5552434500524553444c4c0055 ,
+        0x6e69726573444c4c00496e7465726c656176696e67004f464600496d61676554 ,
+        0x797065004a5045474d6564004f7269656e746174696f6e00504f525452414954 ,
+        0x00436f6c6c617465004f4646005265736f6c7574696f6e004f7074696f6e3100 ,
+        0x506170657253697a65004c455454455200436f6c6f724d6f6465003234627070 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x00000000000000000c0000004d58445701010000
     End
     PrtDevNames = Begin
-        0x080013001b000100000000000000000000000000000000000000004672656550 ,
-        0x44465850313a00
+        0x08002600440001004d6963726f736f66742058505320446f63756d656e742057 ,
+        0x7269746572004d6963726f736f66742058505320446f63756d656e7420577269 ,
+        0x74657200585053506f72743a00
     End
     OnLoad ="[Event Procedure]"
     
@@ -82,7 +81,6 @@ Begin Form
             FontName ="Calibri"
         End
         Begin Line
-            BorderLineStyle =0
             Width =1701
         End
         Begin CommandButton
@@ -95,25 +93,21 @@ Begin Form
         End
         Begin OptionButton
             SpecialEffect =2
-            BorderLineStyle =0
             LabelX =230
             LabelY =-30
         End
         Begin CheckBox
             SpecialEffect =2
-            BorderLineStyle =0
             LabelX =230
             LabelY =-30
         End
         Begin OptionGroup
             SpecialEffect =3
-            BorderLineStyle =0
             Width =1701
             Height =1701
         End
         Begin TextBox
             FELineBreak = NotDefault
-            BorderLineStyle =0
             Width =1701
             LabelX =-1701
             FontSize =11
@@ -121,7 +115,6 @@ Begin Form
             FontName ="Calibri"
         End
         Begin ListBox
-            BorderLineStyle =0
             Width =1701
             Height =1417
             LabelX =-1701
@@ -311,14 +304,14 @@ Begin Form
                     End
                 End
                 Begin ListBox
-                    OverlapFlags =85
+                    OverlapFlags =247
                     AccessKey =68
                     MultiSelect =2
                     IMESentenceMode =3
                     ColumnCount =2
                     Left =113
                     Top =1814
-                    Width =6694
+                    Width =9979
                     Height =3232
                     TabIndex =6
                     BoundColumn =1
@@ -370,7 +363,7 @@ Begin Form
                     AccessKey =77
                     Left =113
                     Top =5220
-                    Width =10102
+                    Width =9982
                     Height =2616
                     TabIndex =7
                     Name ="ogImportMode"
@@ -549,7 +542,7 @@ Begin Form
                             OverlapFlags =215
                             Left =7311
                             Top =5280
-                            Width =2835
+                            Width =2730
                             Height =315
                             Name ="Bezeichnungsfeld32"
                             Caption ="inkl. &Test-Klassen"
@@ -577,7 +570,7 @@ Begin Form
                 Begin TextBox
                     Locked = NotDefault
                     OldBorderStyle =0
-                    OverlapFlags =85
+                    OverlapFlags =93
                     BackStyle =0
                     IMESentenceMode =3
                     Left =6979
@@ -595,7 +588,7 @@ Begin Form
                     Locked = NotDefault
                     FontUnderline = NotDefault
                     OldBorderStyle =0
-                    OverlapFlags =85
+                    OverlapFlags =93
                     BackStyle =0
                     IMESentenceMode =3
                     Left =6979
@@ -607,17 +600,6 @@ Begin Form
                     Name ="txtCodeModuleName"
                     GUID = Begin
                         0x6eef0d90281fdd4a90c14881cc72f01f
-                    End
-                End
-                Begin Line
-                    OverlapFlags =85
-                    Left =6890
-                    Top =1814
-                    Width =0
-                    Height =3232
-                    Name ="LineCodeModuleDescription"
-                    GUID = Begin
-                        0x4e1826d46c68404aa15c5bd5f61ce681
                     End
                 End
                 Begin ToggleButton
@@ -1494,14 +1476,15 @@ End Sub
 
 Private Sub EnableCodeModuleDescription(ByVal bViewDescription As Boolean)
 
-   If bViewDescription Then
-      Me.lstImportFiles.Width = Me.lblImportMode.Left + Me.lblImportMode.Width
-      RefreshCodeModuleDescription
-   Else
-      Me.lstImportFiles.Width = Me.InsideWidth - 2 * Me.lstImportFiles.Left
-   End If
+   With Me.lstImportFiles
+      If bViewDescription Then
+         .Width = Me.lblImportMode.Left + Me.lblImportMode.Width - .Left
+         RefreshCodeModuleDescription
+      Else
+         .Width = Me.InsideWidth - 2 * .Left
+      End If
+   End With
    
-   Me.LineCodeModuleDescription.Visible = bViewDescription
    Me.txtCodeModuleDescription.Visible = bViewDescription
    Me.txtCodeModuleName.Visible = bViewDescription
    
