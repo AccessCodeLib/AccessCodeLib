@@ -316,7 +316,7 @@ Public Sub ImportRepositoryFile(ByVal RepositoryPath As String, _
    
    Dim pathString As String
 
-   pathString = getRepositoryFullPath(RepositoryPath)
+   pathString = GetRepositoryFullPath(RepositoryPath)
    
    Dim tempFile As Object
    Set tempFile = fso.GetFile(pathString)
@@ -338,7 +338,7 @@ Public Sub ImportRepositoryFiles(ByRef RepositoryPathArray() As String, _
 
    arraySize = UBound(RepositoryPathArray)
    For i = LBound(RepositoryPathArray) To arraySize
-      pathString = getRepositoryFullPath(RepositoryPathArray(i))
+      pathString = GetRepositoryFullPath(RepositoryPathArray(i))
       Set tempFile = fso.GetFile(pathString)
       addMissingFile tempFile, ImportMode
    Next
@@ -603,7 +603,7 @@ Private Property Let PrivateRepositoryRootDirectory(ByVal PrivatePath As String)
 
 End Property
 
-Private Function getRepositoryFullPath(ByVal ReleativPath As String) As String
+Public Function GetRepositoryFullPath(ByVal ReleativPath As String) As String
 
    Dim repPath As String
 
@@ -633,7 +633,7 @@ Private Function getRepositoryFullPath(ByVal ReleativPath As String) As String
       ReleativPath = Mid$(ReleativPath, 2)
    Loop
 
-   getRepositoryFullPath = repPath & ReleativPath
+   GetRepositoryFullPath = repPath & ReleativPath
 
 End Function
 
@@ -649,7 +649,7 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
    getCodeLibInfoFromFile cli, ImportFile, (ImportMode <> clim_ImportSelectedOnly)
    
    If Len(cli.RepositoryFileReplacement) > 0 Then
-      addReplacedFilePath getRepositoryFullPath(cli.RepositoryFileReplacement)
+      addReplacedFilePath GetRepositoryFullPath(cli.RepositoryFileReplacement)
    End If
    
    'Abbruch ermöglichen
@@ -660,7 +660,7 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
    
    'Lizenz (LICENSE-Block)
    If Len(cli.LicenseFile) > 0 Then
-      filePath = getRepositoryFullPath(cli.LicenseFile)
+      filePath = GetRepositoryFullPath(cli.LicenseFile)
       Set tempFile = fso.GetFile(filePath)
       addMissingFile tempFile, clim_ImportMissingItems
    End If
@@ -669,7 +669,7 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
    If ImportMode <> clim_ImportSelectedOnly Then
       If (0 / 1) + (Not Not cli.Dependency) Then
       For i = 0 To UBound(cli.Dependency)
-         filePath = getRepositoryFullPath(cli.Dependency(i))
+         filePath = GetRepositoryFullPath(cli.Dependency(i))
          If fso.FileExists(filePath) Then
             Set tempFile = fso.GetFile(filePath)
             addMissingFile tempFile, ImportMode
@@ -701,7 +701,7 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
    If bImportTestFiles Then
    If (0 / 1) + (Not Not cli.TestFiles) Then
       For i = 0 To UBound(cli.TestFiles)
-         filePath = getRepositoryFullPath(cli.TestFiles(i))
+         filePath = GetRepositoryFullPath(cli.TestFiles(i))
          If fso.FileExists(filePath) Then
             Set tempFile = fso.GetFile(filePath)
             addMissingFile tempFile, ImportMode
@@ -792,7 +792,7 @@ Private Sub exportAccessObjectCli(ByRef aoType As AcObjectType, ByRef aoName As 
 
    getCodeLibInfoFromAccessObject cli, aoType, aoName
    If Len(cli.RepositoryFile) > 0 Then
-      cli.LocalFile = getRepositoryFullPath(cli.RepositoryFile)
+      cli.LocalFile = GetRepositoryFullPath(cli.RepositoryFile)
       createMissingFolder getParentFolderPath(cli.LocalFile)
       Application.SaveAsText aoType, aoName, cli.LocalFile
       cleanAccessBugExport cli.LocalFile
@@ -873,7 +873,7 @@ Private Sub exportVbComponent(ByRef vbcName As String)
    getCodeLibInfoFromVbComponent cli, vbc
    
    If Len(cli.RepositoryFile) > 0 Then
-      cli.LocalFile = getRepositoryFullPath(cli.RepositoryFile)
+      cli.LocalFile = GetRepositoryFullPath(cli.RepositoryFile)
       createMissingFolder getParentFolderPath(cli.LocalFile)
       vbc.Export cli.LocalFile
    End If
@@ -1152,7 +1152,7 @@ Private Sub getCodeLibInfoFromAccessObject(ByRef cli As CodeLibInfo, _
       Set vbc = CurrentVbProject.VBComponents(vbcName)
       getCodeLibInfoFromVbComponent cli, vbc
       If Len(cli.RepositoryFile) > 0 Then
-         cli.LocalFile = getRepositoryFullPath(cli.RepositoryFile)
+         cli.LocalFile = GetRepositoryFullPath(cli.RepositoryFile)
       End If ' Rest ignorieren .. wenn im Code nicht steht, wird auch nicht exportiert
    End If
    
@@ -1377,21 +1377,21 @@ Private Function findSubString(ByRef SourceString As String, _
   
 End Function
 
-Private Sub createMissingFolder(ByRef FullPath As String)
+Private Sub createMissingFolder(ByRef fullPath As String)
    
    Dim TempPath As String
 
-   If Len(Dir$(FullPath, vbDirectory)) = 0 Then
-      TempPath = getParentFolderPath(FullPath)
+   If Len(Dir$(fullPath, vbDirectory)) = 0 Then
+      TempPath = getParentFolderPath(fullPath)
       createMissingFolder TempPath
-      MkDir FullPath
+      MkDir fullPath
    End If
   
 End Sub
 
-Private Function getParentFolderPath(ByRef FullPath As String) As String
+Private Function getParentFolderPath(ByRef fullPath As String) As String
 
-   getParentFolderPath = Left$(FullPath, InStrRev(FullPath, "\", , vbTextCompare) - 1)
+   getParentFolderPath = Left$(fullPath, InStrRev(fullPath, "\", , vbTextCompare) - 1)
  
 End Function
 
@@ -1501,7 +1501,7 @@ Private Sub addAccessObjectToRefreshFileCollection(ByRef ao As AccessObject, ByR
 
    getCodeLibInfoFromAccessObject cli, ao.Type, ao.Name
    If Len(cli.RepositoryFile) > 0 Then
-      cli.LocalFile = getRepositoryFullPath(cli.RepositoryFile)
+      cli.LocalFile = GetRepositoryFullPath(cli.RepositoryFile)
       Set tempFile = fso.GetFile(cli.LocalFile)
       addMissingFile tempFile, ImportMode
    End If
