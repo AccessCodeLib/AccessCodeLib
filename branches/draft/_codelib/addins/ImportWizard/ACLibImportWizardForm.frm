@@ -18,7 +18,7 @@ Begin Form
     GridY =10
     Width =10215
     DatasheetFontHeight =11
-    ItemSuffix =34
+    ItemSuffix =51
     Left =7440
     Top =2220
     Right =17655
@@ -37,10 +37,10 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x00000000ba28152f0400000001000000105a300018000000845c3000385a3000 ,
+        0x000000000000000000000000ba28fd2f04000000010000005847280018000000 ,
         0x010400069c00440343ef8005010009009a0b3408640001000f00c80002000100 ,
-        0xc80002000100413400000000c8044204705c3000c4044204685a3000e993172f ,
-        0xe0044204f0930000000000000000000000000000010000000000000001000000 ,
+        0xc80002000100413400000000cc4928000d000000c804ba04b8492800c404ba04 ,
+        0xb0472800e9930000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe230000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -71,7 +71,7 @@ Begin Form
     End
     PrtDevNames = Begin
         0x080013001b000100000000000000000000000000000000000000004672656550 ,
-        0x44465850313a000000000000000000
+        0x44465850313a00
     End
     OnLoad ="[Event Procedure]"
     
@@ -80,6 +80,10 @@ Begin Form
             BackStyle =0
             FontSize =11
             FontName ="Calibri"
+        End
+        Begin Line
+            BorderLineStyle =0
+            Width =1701
         End
         Begin CommandButton
             Width =1701
@@ -123,6 +127,13 @@ Begin Form
             LabelX =-1701
             FontSize =11
             BorderColor =12632256
+            FontName ="Calibri"
+        End
+        Begin ToggleButton
+            Width =283
+            Height =283
+            FontSize =11
+            FontWeight =400
             FontName ="Calibri"
         End
         Begin Section
@@ -307,13 +318,14 @@ Begin Form
                     ColumnCount =2
                     Left =113
                     Top =1814
-                    Width =9979
+                    Width =6694
                     Height =3232
                     TabIndex =6
                     BoundColumn =1
                     Name ="lstImportFiles"
                     RowSourceType ="Table/Query"
-                    ColumnWidths ="2835;6804"
+                    ColumnWidths ="2835;3402"
+                    AfterUpdate ="[Event Procedure]"
                     OnDblClick ="[Event Procedure]"
                     OnKeyDown ="[Event Procedure]"
                     OnLostFocus ="[Event Procedure]"
@@ -373,7 +385,7 @@ Begin Form
                             Top =5277
                             Width =6630
                             Height =315
-                            Name ="Label16"
+                            Name ="lblImportMode"
                             Caption ="Import-&Modus"
                             GUID = Begin
                                 0xf7e99834a0cc8d4e9ebbec0c245e4b62
@@ -562,6 +574,69 @@ Begin Form
                         0x950857d9af4f2d4999b6fb2515640201
                     End
                 End
+                Begin TextBox
+                    Locked = NotDefault
+                    OldBorderStyle =0
+                    OverlapFlags =85
+                    BackStyle =0
+                    IMESentenceMode =3
+                    Left =6979
+                    Top =2136
+                    Width =3120
+                    Height =2910
+                    TabIndex =12
+                    BorderColor =0
+                    Name ="txtCodeModuleDescription"
+                    GUID = Begin
+                        0xfd1cc5ab6fc5024dbe9b6cf4925d1a14
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    FontUnderline = NotDefault
+                    OldBorderStyle =0
+                    OverlapFlags =85
+                    BackStyle =0
+                    IMESentenceMode =3
+                    Left =6979
+                    Top =1814
+                    Width =3120
+                    Height =285
+                    TabIndex =13
+                    BorderColor =0
+                    Name ="txtCodeModuleName"
+                    GUID = Begin
+                        0x6eef0d90281fdd4a90c14881cc72f01f
+                    End
+                End
+                Begin Line
+                    OverlapFlags =85
+                    Left =6890
+                    Top =1814
+                    Width =0
+                    Height =3232
+                    Name ="LineCodeModuleDescription"
+                    GUID = Begin
+                        0x4e1826d46c68404aa15c5bd5f61ce681
+                    End
+                End
+                Begin ToggleButton
+                    OverlapFlags =85
+                    Left =6975
+                    Top =1500
+                    Width =3105
+                    Height =273
+                    FontSize =8
+                    TabIndex =14
+                    ForeColor =4138256
+                    Name ="tbViewCodeModuleDescription"
+                    AfterUpdate ="[Event Procedure]"
+                    DefaultValue ="False"
+                    Caption ="Beschreibung anzeigen"
+                    GUID = Begin
+                        0x8ac695bd55ec8f448547c7aa22b0feae
+                    End
+                End
             End
         End
     End
@@ -584,6 +659,7 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/ImportWizard/ACLibImportWizardForm.frm</file>
+'  <description>Maske für Import-Wizard</description>
 '  <use>base/modErrorHandler.bas</use>
 '  <use>_codelib/addins/ImportWizard/defGlobal_ACLibImportWizard.bas</use>
 '  <use>api/winapi/modWinAPI.bas</use>
@@ -602,8 +678,10 @@ Private Const EXTENSION_KEY_AppFile As String = "AppFile"
 Private Const APPFILE_PROPNAME_AppIcon As String = "AppIcon"
 
 Private Const TEMPDB_TABNAME As String = "tRepositoryFiles"
-Private Const TEMPDB_TABDDL As String = "create table " & TEMPDB_TABNAME & " (LocalRepositoryPath varchar(255) primary key, ObjectName varchar(255))"
+Private Const TEMPDB_TABDDL As String = "create table " & TEMPDB_TABNAME & " (LocalRepositoryPath varchar(255) primary key, ObjectName varchar(255), Description memo)"
 Private m_TempDb As TempDbHandler
+
+Private m_LastSelectionID As Variant
 
 Private Sub bindTextbox(ByRef tb As Textbox, Optional ByVal BaseFolderPath As String = vbNullString)
 
@@ -872,8 +950,8 @@ On Error GoTo HandleErr
       cli = CurrentACLibFileManager.GetCodeLibInfoFromFilePath(fileArray(i))
       'lb.AddItem """" & cli.Name & """;""" & getLocalRepositoryPath(fileArray(i)) & """"
       ' auf Temp-Tabelle umgestellt, damit es auch unter Ac00 läuft
-      TempDb.Execute "insert into " & TEMPDB_TABNAME & " (ObjectName, LocalRepositoryPath) VALUES (" & _
-                     GetSQLString_Text(cli.Name) & ", " & GetSQLString_Text(getLocalRepositoryPath(fileArray(i))) & ")", dbFailOnError
+      TempDb.Execute "insert into " & TEMPDB_TABNAME & " (ObjectName, LocalRepositoryPath, Description) VALUES (" & _
+                     GetSQLString_Text(cli.Name) & ", " & GetSQLString_Text(getLocalRepositoryPath(fileArray(i))) & ", " & GetSQLString_Text(cli.Description) & ")", dbFailOnError
    Next
    
    lb.Requery
@@ -1004,8 +1082,10 @@ On Error GoTo HandleErr
    Me.txtLocalRepositoryPath.Value = CurrentACLibConfiguration.LocalRepositoryPath
    Me.chkImportTests.Value = CurrentACLibConfiguration.ImportTestsDefaultValue
    
+   EnableCodeModuleDescription Me.tbViewCodeModuleDescription.Value
+   
    setEnableMode
-
+   
 ExitHere:
 On Error Resume Next
    Exit Sub
@@ -1030,6 +1110,10 @@ On Error Resume Next
       m_TempDb.Dispose
    End If
    DisposeCurrentApplicationHandler
+End Sub
+
+Private Sub lstImportFiles_AfterUpdate()
+   RefreshCodeModuleDescription
 End Sub
 
 Private Sub lstImportFiles_DblClick(Cancel As Integer)
@@ -1072,7 +1156,6 @@ On Error GoTo HandleErr
 
    Set lb = Me.lstImportFiles
    
-   
    For Each selectedItem In lb.ItemsSelected
       strItemFilter = ", " & GetSQLString_Text(lb.Column(1, selectedItem))
    Next
@@ -1085,6 +1168,8 @@ On Error GoTo HandleErr
    TempDb.Execute "delete from " & TEMPDB_TABNAME & " where LocalRepositoryPath IN (" & strItemFilter & ")"
    
    lb.Requery
+   
+   RefreshCodeModuleDescription
 
 ExitHere:
 On Error Resume Next
@@ -1104,7 +1189,29 @@ End Sub
 
 Private Sub lstImportFiles_LostFocus()
 On Error Resume Next
+   m_LastSelectionID = Me.lstImportFiles.Column(1)
    Me.lstImportFiles = Null
+End Sub
+
+Private Sub tbViewCodeModuleDescription_AfterUpdate()
+   EnableCodeModuleDescription Me.tbViewCodeModuleDescription.Value
+   If Len(m_LastSelectionID) > 0 Then
+      SelectListItem m_LastSelectionID
+   End If
+End Sub
+
+Private Sub SelectListItem(ByVal sItemID As String)
+   Dim i As Long
+   Dim lb As ListBox
+   Set lb = Me.lstImportFiles
+   For i = 0 To (lb.ListCount - 1)
+      If lb.Column(1, i) = sItemID Then
+         lb.SetFocus
+         lb.Selected(i) = True
+         RefreshCodeModuleDescriptionFromID sItemID, lb.Column(0, i)
+         Exit Sub
+      End If
+   Next
 End Sub
 
 Private Sub txtFileString_GotFocus()
@@ -1383,4 +1490,34 @@ Private Sub OpenRepositoryFileInTextViewer(ByVal sRelativeFilePath As String)
    Dim fullPath As String
    fullPath = CurrentACLibFileManager.GetRepositoryFullPath(sRelativeFilePath)
    ShellExecuteOpenFile fullPath, "open"
+End Sub
+
+Private Sub EnableCodeModuleDescription(ByVal bViewDescription As Boolean)
+
+   If bViewDescription Then
+      Me.lstImportFiles.Width = Me.lblImportMode.Left + Me.lblImportMode.Width
+      RefreshCodeModuleDescription
+   Else
+      Me.lstImportFiles.Width = Me.InsideWidth - 2 * Me.lstImportFiles.Left
+   End If
+   
+   Me.LineCodeModuleDescription.Visible = bViewDescription
+   Me.txtCodeModuleDescription.Visible = bViewDescription
+   Me.txtCodeModuleName.Visible = bViewDescription
+   
+End Sub
+
+Private Sub RefreshCodeModuleDescription()
+   RefreshCodeModuleDescriptionFromID Nz(Me.lstImportFiles.Column(1), vbNullString), Nz(Me.lstImportFiles.Column(0), vbNullString)
+End Sub
+
+Private Sub RefreshCodeModuleDescriptionFromID(ByVal sLocalRepositoryPath As String, ByVal sName As String)
+
+   Dim strDescription As String
+   If Len(sLocalRepositoryPath) > 0 Then
+      strDescription = Nz(m_TempDb.DLookupSQL("select Description from " & TEMPDB_TABNAME & " where LocalRepositoryPath = " & GetSQLString_Text(sLocalRepositoryPath)), vbNullString)
+   End If
+   Me.txtCodeModuleName.Value = sName
+   Me.txtCodeModuleDescription.Value = strDescription
+   
 End Sub
