@@ -21,6 +21,7 @@ Attribute VB_Exposed = False
 '  <file>data/dao/DaoHandler.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
+'  <test>_test/data/dao/DaoHandlerTests.cls</test>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -195,13 +196,13 @@ End Function
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Lookup(ByVal Expr As String, ByVal Domain As String, _
+Public Function Lookup(ByVal expr As String, ByVal Domain As String, _
               Optional ByVal Criteria As Variant, _
               Optional ByVal ValueIfNull As Variant = Null) As Variant
 
     Dim strSQL As String
 
-    strSQL = "SELECT " & Expr & " FROM (" & Domain & ")"
+    strSQL = "SELECT " & expr & " FROM (" & Domain & ")"
     If Not (VarType(Criteria) = vbError) Then
         If Len(Criteria) > 0 Then
             strSQL = strSQL & " WHERE " & Criteria
@@ -225,8 +226,8 @@ End Function
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Count(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Long
-    Count = Nz(Me.Lookup("Count(" & Expr & ")", Domain, Criteria), 0)
+Public Function Count(ByVal expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Long
+    Count = Nz(Me.Lookup("Count(" & expr & ")", Domain, Criteria), 0)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -243,8 +244,8 @@ End Function
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Max(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
-    Max = Me.Lookup("Max(" & Expr & ")", Domain, Criteria)
+Public Function Max(ByVal expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
+    Max = Me.Lookup("Max(" & expr & ")", Domain, Criteria)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -261,8 +262,8 @@ End Function
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Min(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
-    Min = Me.Lookup("Min(" & Expr & ")", Domain, Criteria)
+Public Function Min(ByVal expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
+    Min = Me.Lookup("Min(" & expr & ")", Domain, Criteria)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -279,8 +280,8 @@ End Function
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Sum(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
-    Sum = Me.Lookup("Sum(" & Expr & ")", Domain, Criteria)
+Public Function Sum(ByVal expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
+    Sum = Me.Lookup("Sum(" & expr & ")", Domain, Criteria)
 End Function
 
 '---------------------------------------------------------------------------------------

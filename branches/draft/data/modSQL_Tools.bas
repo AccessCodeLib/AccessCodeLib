@@ -76,7 +76,7 @@ End Function
 ' <returns>String</returns>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetSQLString_Date(ByVal vValue As Variant, Optional sFormatString As String = SQL_DEFAULT_DATEFORMAT) As String
+Public Function GetSQLString_Date(ByVal vValue As Variant, Optional ByVal sFormatString As String = SQL_DEFAULT_DATEFORMAT) As String
    If IsNull(vValue) Then
       GetSQLString_Date = "NULL"
    Else

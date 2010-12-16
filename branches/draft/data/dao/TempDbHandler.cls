@@ -720,16 +720,16 @@ End Sub
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function DLookupSQL(ByVal sSQL As String, Optional ByVal index As Variant = 0&) As Variant
+Public Function LookupSQL(ByVal sSQL As String, Optional ByVal Index As Variant = 0&) As Variant
 
    Dim rst As DAO.Recordset
 
    Set rst = Me.OpenRecordset(sSQL, dbOpenForwardOnly, dbSeeChanges, dbReadOnly)
    With rst
       If .EOF Then
-         DLookupSQL = Null
+         LookupSQL = Null
       Else
-         DLookupSQL = .Fields(index)
+         LookupSQL = .Fields(Index)
       End If
       .Close
    End With
