@@ -21,13 +21,15 @@ Attribute VB_Description = "Erzeugt und verwaltet eine mdb/accdb für temporäre T
 '<codelib>
 '  <file>data/dao/TempDbHandler.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>base/modErrorHandler.bas</use>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
+'  <test>_test/data/dao/TempDbHandlerTests.cls</test>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
 Option Compare Text
 Option Explicit
+
+Private Const CLASSNAME As String = "TempDbHandler"
 
 Private Const m_conFilePrefix As String = "TDB"
 Private Const m_conFileExtension As String = vbNullString 'Dateinamenerweiterung: vbNullString ... Standard von GetTempFileNameA wird verwendet ("tmp")
@@ -43,13 +45,17 @@ Private Declare Function API_GetTempFilename Lib "kernel32" Alias "GetTempFileNa
          ByVal wUnique As Long, _
          ByVal lpTempFileName As String) As Long
 
-Private m_TempDb As DAO.Database
+Private m_tempDb As DAO.Database
 Private m_TempDbFile As String
 Private m_SharedMode As Boolean
 Private m_DeleteFileOnTerminiate As Boolean
 Private m_Disposed As Boolean
          
 Private m_ClientDatabase As DAO.Database
+
+Private Enum ErrorNumbers
+      ErrTableCanNotBeCreatedTableExists = vbObjectError + 9001
+End Enum
          
 '---------------------------------------------------------------------------------------
 ' Event: TempDbHandlerError (03.05.2008)
@@ -134,10 +140,10 @@ On Error Resume Next
 
    Set m_ClientDatabase = Nothing
 
-   If Not (m_TempDb Is Nothing) Then
-      m_TempDb.Close
+   If Not (m_tempDb Is Nothing) Then
+      m_tempDb.Close
       Access.DBEngine.Idle dbRefreshCache
-      Set m_TempDb = Nothing
+      Set m_tempDb = Nothing
    End If
 
 End Sub
@@ -154,8 +160,6 @@ End Sub
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get ClientDatabase() As DAO.Database
-   
-On Error GoTo HandleErr
 
    If m_ClientDatabase Is Nothing Then
       RaiseEvent ErrorMissingClientDatabase("TempDbHandler.ClientDatabase: DAO.Database von Client-Anwendung fehlt.", vbObjectError, m_ClientDatabase)
@@ -166,20 +170,6 @@ On Error GoTo HandleErr
    
    Set ClientDatabase = m_ClientDatabase
 
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case handleTempDbHandlerError(Err.Number, "ClientDatabase", Err.Description)
-   Case TempDbErrorResumeMode.aclibTempDbErrResume
-      Resume
-   Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -194,25 +184,7 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Set ClientDatabase(ByRef db As DAO.Database)
-
-On Error GoTo HandleErr
-
    Set m_ClientDatabase = db
-
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case handleTempDbHandlerError(Err.Number, "ClientDatabase", Err.Description)
-   Case TempDbErrorResumeMode.aclibTempDbErrResume
-      Resume
-   Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -227,26 +199,8 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get CurrentDatabase() As DAO.Database
-   
-On Error GoTo HandleErr
-
    checkCurrentDatabase
-   Set CurrentDatabase = m_TempDb
-
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case handleTempDbHandlerError(Err.Number, "CurrentDatabase", Err.Description)
-   Case TempDbErrorResumeMode.aclibTempDbErrResume
-      Resume
-   Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
+   Set CurrentDatabase = m_tempDb
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -260,30 +214,14 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Sub CloseCurrentDatabase()
-     
-On Error GoTo HandleErr
 
-   On Error Resume Next
+On Error Resume Next
 
-   If Not (m_TempDb Is Nothing) Then
-      m_TempDb.Close
-      Set m_TempDb = Nothing
+   If Not (m_tempDb Is Nothing) Then
+      m_tempDb.Close
+      Set m_tempDb = Nothing
    End If
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case handleTempDbHandlerError(Err.Number, "CloseCurrentDatabase", Err.Description)
-   Case TempDbErrorResumeMode.aclibTempDbErrResume
-      Resume
-   Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Sub
 
 
@@ -293,10 +231,10 @@ Private Sub checkCurrentDatabase()
    
 On Error Resume Next
 
-   If m_TempDb Is Nothing Then
+   If m_tempDb Is Nothing Then
       If Len(m_TempDbFile) > 0 And Len(Dir$(m_TempDbFile)) > 0 Then
-         Set m_TempDb = Access.DBEngine.OpenDatabase(m_TempDbFile, Not m_SharedMode, False)
-         strFile = m_TempDb.Name 'Zugriff testen
+         Set m_tempDb = Access.DBEngine.OpenDatabase(m_TempDbFile, Not m_SharedMode, False)
+         strFile = m_tempDb.Name 'Zugriff testen
          If Err.Number <> 0 Then
             Err.Clear
             Me.CreateDatabase
@@ -306,12 +244,12 @@ On Error Resume Next
       End If
    Else
       Err.Clear
-      strFile = m_TempDb.Name 'Zugriff testen
+      strFile = m_tempDb.Name 'Zugriff testen
       If Err.Number <> 0 Then
          Err.Clear
          If Len(m_TempDbFile) > 0 And Len(Dir$(m_TempDbFile)) > 0 Then
-            Set m_TempDb = Access.DBEngine.OpenDatabase(m_TempDbFile, Not m_SharedMode, False)
-            strFile = m_TempDb.Name 'Zugriff testen
+            Set m_tempDb = Access.DBEngine.OpenDatabase(m_TempDbFile, Not m_SharedMode, False)
+            strFile = m_tempDb.Name 'Zugriff testen
             If Err.Number <> 0 Then
                Err.Clear
                Me.CreateDatabase
@@ -338,38 +276,27 @@ End Sub
 '**/
 '---------------------------------------------------------------------------------------
 Public Function CreateDatabase(Optional ByVal OpenSharedMode As Boolean = False, _
-                        Optional ByVal DeleteFileOnTerminate As Boolean = True) As DAO.Database
-   
- 
-On Error GoTo HandleErr
+                               Optional ByVal DeleteFileOnTerminate As Boolean = True) As DAO.Database
 
    m_TempDbFile = getTempFileName(, m_conFilePrefix, m_conFileExtension)
-   Set m_TempDb = Access.DBEngine.CreateDatabase(m_TempDbFile, dbLangGeneral) ' => DB wird exklusiv geöffnet!
+   
+   If CurrentDb.Version = "4.0" Then
+      'Set m_tempDb = Access.DBEngine.CreateDatabase(m_TempDbFile, dbLangGeneral, dbVersion40)
+      Set m_tempDb = DBEngine.Workspaces(0).CreateDatabase(m_TempDbFile, dbLangGeneral, dbVersion40)
+   Else
+      Set m_tempDb = Access.DBEngine.CreateDatabase(m_TempDbFile, dbLangGeneral)
+   End If ' => DB wird exklusiv geöffnet!
    
    m_SharedMode = OpenSharedMode
    m_DeleteFileOnTerminiate = DeleteFileOnTerminate
    
    'schließen und wieder öffnen, um nicht mehr im Exclusiv-Modus zu sein.
    If m_SharedMode Then
-      m_TempDb.Close
-      Set m_TempDb = Access.DBEngine.OpenDatabase(m_TempDbFile, False, False)
+      m_tempDb.Close
+      Set m_tempDb = Access.DBEngine.OpenDatabase(m_TempDbFile, False, False)
    End If
    
-   Set CreateDatabase = m_TempDb
-
-ExitHere:
-   On Error GoTo 0
-   Exit Function
-
-HandleErr:
-   Select Case handleTempDbHandlerError(Err.Number, "CreateDatabase", Err.Description)
-      Case TempDbErrorResumeMode.aclibTempDbErrResume
-         Resume
-      Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
-         Resume Next
-      Case Else
-         Resume ExitHere
-   End Select
+   Set CreateDatabase = m_tempDb
 
 End Function
 
@@ -390,29 +317,13 @@ End Function
 Public Function OpenDatabase(ByVal DatabaseFile As String, _
                   Optional ByVal Exclusive As Boolean = False, _
                   Optional ByVal ReadOnly As Boolean = False) As DAO.Database
-   
-On Error GoTo HandleErr
 
    m_TempDbFile = DatabaseFile
    m_SharedMode = Not Exclusive
-   Set m_TempDb = Access.DBEngine.OpenDatabase(DatabaseFile, Exclusive, ReadOnly)
+   Set m_tempDb = Access.DBEngine.OpenDatabase(DatabaseFile, Exclusive, ReadOnly)
    m_DeleteFileOnTerminiate = False 'DB nicht löschen, da nicht von Klasse erstellt
-   Set OpenDatabase = m_TempDb
+   Set OpenDatabase = m_tempDb
 
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case handleTempDbHandlerError(Err.Number, "OpenDatabase : " & Err.Source, Err.Description)
-      Case TempDbErrorResumeMode.aclibTempDbErrResume
-         Resume
-      Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
-         Resume Next
-      Case Else
-         Resume ExitHere
-   End Select
-   
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -431,12 +342,12 @@ Public Sub DeleteCurrentDatabase()
    
 On Error Resume Next ' Da hier eine Fehlermeldung nutzlos ist.
    
-   If Not (m_TempDb Is Nothing) Then
-      strFile = m_TempDb.Name
-      m_TempDb.Close
+   If Not (m_tempDb Is Nothing) Then
+      strFile = m_tempDb.Name
+      m_tempDb.Close
       Access.DBEngine.Idle dbRefreshCache
       DoEvents
-      Set m_TempDb = Nothing
+      Set m_tempDb = Nothing
    Else
       strFile = m_TempDbFile
    End If
@@ -467,8 +378,6 @@ End Sub
 Public Function CheckTable(ByVal SourceTableDefName As String, _
               Optional ByVal CreateTableDDL As String, _
               Optional ByVal LinkedTableDefName As String) As Boolean
-   
-On Error GoTo HandleErr
 
    If Not SourceTableDefExists(SourceTableDefName) Then
       If Len(CreateTableDDL) > 0 Then
@@ -489,20 +398,6 @@ On Error GoTo HandleErr
    
    CheckTable = True
 
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case handleTempDbHandlerError(Err.Number, "CheckTable : " & Err.Source, Err.Description)
-      Case TempDbErrorResumeMode.aclibTempDbErrResume
-         Resume
-      Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
-         Resume Next
-      Case Else
-         Resume ExitHere
-   End Select
-   
 End Function
 
 
@@ -521,18 +416,16 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function CreateTable(ByVal SourceTableDefName As String, _
-                     ByVal CreateTableDDL As String, _
-               Optional ByVal LinkedTableDefName As String = vbNullString _
+                            ByVal CreateTableDDL As String, _
+                   Optional ByVal LinkedTableDefName As String = vbNullString _
                      ) As Boolean
 
-On Error GoTo HandleErr
-
    checkCurrentDatabase
-     
    If SourceTableDefExists(SourceTableDefName) Then 'zur Sicherheit löschen, falls unterschiedliche DDL-Anweisung
-      dropSourceTable SourceTableDefName
+      Err.Raise ErrorNumbers.ErrTableCanNotBeCreatedTableExists, CLASSNAME & CreateTable, "Table '" & SourceTableDefName & "' exists"
    End If
-   m_TempDb.Execute CreateTableDDL
+   
+   m_tempDb.Execute CreateTableDDL
    
    If Len(LinkedTableDefName) > 0 Then
       If LinkedTableDefExists(LinkedTableDefName) Then
@@ -543,20 +436,6 @@ On Error GoTo HandleErr
    End If
    
    CreateTable = True
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case handleTempDbHandlerError(Err.Number, "CreateTable : " & Err.Source, Err.Description)
-   Case TempDbErrorResumeMode.aclibTempDbErrResume
-      Resume
-   Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Function
 
@@ -576,8 +455,6 @@ End Function
 Public Function DropTable(ByVal SourceTableDefName As String, _
              Optional ByVal LinkedTableDefName As String = vbNullString) As Boolean
                      
-On Error GoTo HandleErr
-
    If Len(LinkedTableDefName) > 0 Then
       dropLinkedTableDef LinkedTableDefName
    End If
@@ -587,21 +464,6 @@ On Error GoTo HandleErr
    End If
    
    DropTable = True
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case handleTempDbHandlerError(Err.Number, "DropTable : " & Err.Source, Err.Description)
-   Case TempDbErrorResumeMode.aclibTempDbErrResume
-      Resume
-   Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 
 End Function
 
@@ -618,17 +480,13 @@ End Function
 Public Sub DropLinkedTableDefs()
 
    Dim strFile As String
-
    Dim db As DAO.Database
    Dim tdf As DAO.TableDef
-   
    Dim tdfCnt As Long, i As Long
-   
-On Error GoTo HandleErr
 
-   If Not (m_TempDb Is Nothing) Then
+   If Not (m_tempDb Is Nothing) Then
       checkCurrentDatabase
-      strFile = m_TempDb.Name
+      strFile = m_tempDb.Name
    Else
       strFile = m_TempDbFile
    End If
@@ -645,22 +503,7 @@ On Error GoTo HandleErr
          End If
       Next
    End With
-
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case handleTempDbHandlerError(Err.Number, "DropLinkedTableDefs : " & Err.Source, Err.Description)
-   Case TempDbErrorResumeMode.aclibTempDbErrResume
-      Resume
-   Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
-
+   
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -680,8 +523,6 @@ Public Property Get LinkedTableDefExists(ByVal TableDefName As String) As Boolea
    Dim db As DAO.Database
    Dim tdf As DAO.TableDef
    
-On Error GoTo HandleErr
-
    Set db = ClientDatabase
    db.TableDefs.Refresh 'zur Sicherheit, falls im FE Tab gelöscht wurde
    
@@ -694,19 +535,6 @@ On Error GoTo HandleErr
       End If
    Next
 
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case handleTempDbHandlerError(Err.Number, "LinkedTableDefExists", Err.Description)
-   Case TempDbErrorResumeMode.aclibTempDbErrResume
-      Resume
-   Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -724,34 +552,19 @@ End Property
 Public Property Get SourceTableDefExists(ByVal TableDefName As String) As Boolean
    
    Dim tdf As DAO.TableDef
-   
-On Error GoTo HandleErr
 
    SourceTableDefExists = False
 
    '1. Aufruf über CurrentDatabase, damit Existenz der Datei sichergestellt ist
    Me.CurrentDatabase.TableDefs.Refresh
    
-   For Each tdf In m_TempDb.TableDefs
+   For Each tdf In m_tempDb.TableDefs
       If tdf.Name = TableDefName Then
          SourceTableDefExists = True
          Exit For
       End If
    Next
 
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case handleTempDbHandlerError(Err.Number, "SourceTableDefExists", Err.Description)
-   Case TempDbErrorResumeMode.aclibTempDbErrResume
-      Resume
-   Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 Private Sub dropLinkedTableDef(ByVal TdfName As String)
@@ -763,38 +576,36 @@ On Error Resume Next '... damit muss nicht unbedingt auf Existenz geprüft werden
 End Sub
 
 Private Sub dropSourceTable(ByVal SourceTableDefName As String)
-On Error Resume Next
-   CurrentDatabase.Execute "DROP TABLE [" & SourceTableDefName & "]"
-End Sub
 
-Private Sub reconnectTempTable(ByVal LinkedTableDefName As String, ByVal SourceTableDefName As String)
-   
 On Error GoTo HandleErr
 
-   dropLinkedTableDef LinkedTableDefName
-   connectTempTable LinkedTableDefName, SourceTableDefName
+   CurrentDatabase.Execute "DROP TABLE [" & SourceTableDefName & "]", dbFailOnError
 
 ExitHere:
    Exit Sub
 
 HandleErr:
-   Select Case handleTempDbHandlerError(Err.Number, "reconnectTempTable", Err.Description)
-   Case TempDbErrorResumeMode.aclibTempDbErrResume
-      Resume
-   Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
-      Resume Next
-   Case Else
+   Select Case Err.Number
+   Case 3376 'Table does not exist.
+      Err.Raise 123, Err.Source, Err.Description
       Resume ExitHere
+   Case Else
+      Err.Raise Err.Number, Err.Source, Err.Description
    End Select
    
+End Sub
+
+Private Sub reconnectTempTable(ByVal LinkedTableDefName As String, ByVal SourceTableDefName As String)
+
+   dropLinkedTableDef LinkedTableDefName
+   connectTempTable LinkedTableDefName, SourceTableDefName
+ 
 End Sub
 
 Private Sub connectTempTable(ByVal LinkedTableDefName As String, ByVal SourceTableDefName As String)
    
    Dim dbs As DAO.Database
    Dim tdf As DAO.TableDef
-   
-On Error GoTo HandleErr
 
    Set dbs = ClientDatabase
    dbs.TableDefs.Refresh
@@ -802,24 +613,11 @@ On Error GoTo HandleErr
    Set tdf = dbs.CreateTableDef(LinkedTableDefName)
    With tdf
       tdf.SourceTableName = SourceTableDefName
-      tdf.Connect = ";DATABASE=" & m_TempDb.Name
+      tdf.Connect = ";DATABASE=" & m_tempDb.Name
    End With
    dbs.TableDefs.Append tdf
    
    dbs.TableDefs.Refresh
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case handleTempDbHandlerError(Err.Number, "connectTempTable : " & Err.Source, Err.Description)
-      Case TempDbErrorResumeMode.aclibTempDbErrResume
-         Resume
-      Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
-         Resume Next
-      Case Else
-         Resume ExitHere
-   End Select
 
 End Sub
 
@@ -830,8 +628,6 @@ Private Function getTempFileName(Optional ByRef sTempPath As String = "", _
    Dim strTempFileName As String
    Dim strTempPath As String
    Dim lngRet As Long
-   
-On Error GoTo HandleErr
 
    If Len(sTempPath) = 0 Then
       strTempFileName = String$(m_conMaxPathLen, 0)
@@ -855,21 +651,6 @@ On Error GoTo HandleErr
    End If
    getTempFileName = strTempFileName
 
-ExitHere:
-On Error GoTo 0
-   Exit Function
-
-HandleErr:
-   Select Case handleTempDbHandlerError(Err.Number, "getTempFileName : " & Err.Source, Err.Description)
-      Case TempDbErrorResumeMode.aclibTempDbErrResume
-         Resume
-      Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
-         Resume Next
-      Case Else
-         getTempFileName = vbNullString
-         Resume ExitHere
-   End Select
-  
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -892,26 +673,10 @@ Public Function OpenRecordset(ByVal Source As String, _
                        Optional ByVal RecordsetOptions As DAO.RecordsetOptionEnum = DAO.RecordsetOptionEnum.dbSeeChanges, _
                        Optional ByVal LockEdit As DAO.LockTypeEnum = DAO.LockTypeEnum.dbOptimistic) As DAO.Recordset
    
-On Error GoTo HandleErr
-
    If (RecordsetOptions And dbSeeChanges) = 0 Then
       RecordsetOptions = RecordsetOptions + dbSeeChanges
    End If
    Set OpenRecordset = CurrentDatabase.OpenRecordset(Source, RecordsetType, RecordsetOptions, LockEdit)
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case handleTempDbHandlerError(Err.Number, "OpenRecordset : " & Err.Source, Err.Description)
-      Case TempDbErrorResumeMode.aclibTempDbErrResume
-         Resume
-      Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
-         Resume Next
-      Case Else
-         Resume ExitHere
-   End Select
 
 End Function
 
@@ -933,28 +698,12 @@ Public Sub Execute(ByVal sSQL As String, _
                Optional ByVal Options As DAO.RecordsetOptionEnum, _
                Optional ByRef RecordsAffected As Long)
 
-On Error GoTo HandleErr
-
    If (Options And dbSeeChanges) = 0 Then
       Options = Options + dbSeeChanges
    End If
    CurrentDatabase.Execute sSQL, Options
    RecordsAffected = CurrentDatabase.RecordsAffected
 
-ExitHere:
-On Error Resume Next
-   Exit Sub
-
-HandleErr:
-   Select Case handleTempDbHandlerError(Err.Number, "Execute : " & Err.Source, Err.Description)
-      Case TempDbErrorResumeMode.aclibTempDbErrResume
-         Resume
-      Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
-         Resume Next
-      Case Else
-         Resume ExitHere
-   End Select
-   
 End Sub
 
 
@@ -975,8 +724,6 @@ Public Function DLookupSQL(ByVal sSQL As String, Optional ByVal index As Variant
 
    Dim rst As DAO.Recordset
 
-On Error GoTo HandleErr
-
    Set rst = Me.OpenRecordset(sSQL, dbOpenForwardOnly, dbSeeChanges, dbReadOnly)
    With rst
       If .EOF Then
@@ -987,52 +734,5 @@ On Error GoTo HandleErr
       .Close
    End With
    Set rst = Nothing
-
-ExitHere:
-On Error Resume Next
-   Exit Function
-
-HandleErr:
-   Select Case handleTempDbHandlerError(Err.Number, "DLookupSQL : " & Err.Source, Err.Description)
-      Case TempDbErrorResumeMode.aclibTempDbErrResume
-         Resume
-      Case TempDbErrorResumeMode.aclibTempDbErrResumeNext
-         Resume Next
-      Case Else
-         Resume ExitHere
-   End Select
-
-End Function
-
-Private Function handleTempDbHandlerError(ByVal lErrorNumber As Long, ByVal sSource As String, _
-                                          ByVal sErrorDescription As String) As TempDbErrorResumeMode
-'ACLibErrorResumeMode
-'   ErrContinue = 0  'Abbruch ohne Meldung
-'   ErrDisplay = 1   'Abbruch mit Meldung
-'   Resume = 2       'Resume, Problem von außen behoben
-'   ResumeNext = 3   'Resume next, im Code weiterarbeiten
-
-   Dim strMsg As String
-   Dim lResponse As TempDbErrorResumeMode
-   
-On Error Resume Next
-
-   strMsg = sErrorDescription
-   If Len(sSource) > 0 Then
-      strMsg = sSource & ": " & vbNewLine & strMsg
-   End If
-
-   lResponse = -1
-   RaiseEvent TempDbHandlerError(strMsg, lErrorNumber, lResponse)
-   If lResponse = -1 Then 'Auf event wurde nicht reagiert bzw. lResponse nicht verändert
-On Error GoTo 0
-#If USE_GLOBAL_ERRORHANDLER Then
-      lResponse = HandleError(lErrorNumber, "TempDbHandler." & sSource, sErrorDescription)
-#Else
-      Err.Raise lErrorNumber, "TempDbHandler." & sSource, sErrorDescription
-#End If
-   End If
-
-   handleTempDbHandlerError = lResponse
 
 End Function

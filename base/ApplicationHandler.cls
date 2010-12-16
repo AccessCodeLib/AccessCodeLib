@@ -37,7 +37,6 @@ Public Enum ApplicationHandlerResumeModes
    AppResumeMode_Cancel = 4    ' Event wurde angenommen, aber Weiterverabeitung soll gestoppt werden
 End Enum
 
-
 Public Enum ApplicationHandlerLogType
    [_AppLogType_Unknown] = 0
    AppLogType_Error = 1
