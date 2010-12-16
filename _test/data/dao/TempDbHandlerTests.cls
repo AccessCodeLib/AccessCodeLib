@@ -61,12 +61,12 @@ End Sub
 '--------------------------------------------------------------------
 
 Public Sub CheckTable_TableMissing_CreateTable()
-   m_TempDbHandler.CheckTable TestTableName, TestTableDDL, TestTableName
+   m_TempDbHandler.CheckTable TestTableName, TestTableDDL
    Assert.IsTrue TestTableExists
 End Sub
 
 Public Sub CreateTable_TableMissing_CreateTable()
-   m_TempDbHandler.CreateTable TestTableName, TestTableDDL, vbNullString
+   m_TempDbHandler.CreateTable TestTableName, TestTableDDL
    Assert.IsTrue TestTableExists
 End Sub
 
@@ -78,7 +78,7 @@ Public Sub CreateTable_TableExists_RaiseError()
    CreateTestTableInTempDB
    
    Assert.Throws vbObjectError + 9001
-   m_TempDbHandler.CreateTable TestTableName, TestTableDDL, vbNullString
+   m_TempDbHandler.CreateTable TestTableName, TestTableDDL
    
 End Sub
 
@@ -145,7 +145,7 @@ Public Sub DLookupSQL_FilterRecordWithID_ReturnValuesFromFieldIndex(ByVal FieldI
    CreateTestTableInTempDB
    InsertRecordsInTestTable
    
-   actual = m_TempDbHandler.DLookupSQL(FormatString(SelectDDLTemplate, lId), FieldIndex)
+   actual = m_TempDbHandler.LookupSQL(FormatString(SelectDDLTemplate, lId), FieldIndex)
 
    Assert.That actual, Iz.EqualTo(expected)
    
@@ -209,6 +209,7 @@ Private Property Get RecordCountInTestTable() As Long
 End Property
 
 Private Property Get TestTableExists() As Boolean
+
    Dim db As DAO.Database
    Dim tdf As DAO.TableDef
    
