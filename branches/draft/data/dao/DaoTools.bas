@@ -1,4 +1,4 @@
-Attribute VB_Name = "modDAO_Tools"
+Attribute VB_Name = "DaoTools"
 Attribute VB_Description = "Hilfsfunktionen für den Umgang mit DAO"
 '---------------------------------------------------------------------------------------
 ' Module: modDAO_Tools
@@ -13,7 +13,7 @@ Attribute VB_Description = "Hilfsfunktionen für den Umgang mit DAO"
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>data/dao/modDAO_Tools.bas</file>
+'  <file>data/dao/DaoTools.bas</file>
 '  <license>_codelib/license.bas</license>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
 '</codelib>
@@ -37,21 +37,17 @@ Option Explicit
 '**/
 '---------------------------------------------------------------------------------------
 Public Function TableDefExists(ByVal sTableDefName As String, Optional ByRef dbs As DAO.Database = Nothing) As Boolean
-'Schneller wäre der Zugriff auf MSysObject (select .. from MSysObject where Name = 'Tabellenname' AND Type IN (1, 4, 6)
+'Man könnte auch die TableDef-Liste durchlaufen.
 'Eine weitere Alternative wäre das Auswerten über cnn.OpenSchema(adSchemaTables, ...) ... dann werden allerdings keine verknüpften Tabellen geprüft
    
-   Dim tdf As DAO.TableDef
+   Dim rst As DAO.Recordset
 
    If dbs Is Nothing Then
       Set dbs = CodeDb
    End If
    
-   dbs.TableDefs.Refresh
-   For Each tdf In dbs.TableDefs
-      If tdf.Name = sTableDefName Then
-         TableDefExists = True
-         Exit For
-      End If
-   Next
-
+   Set rst = dbs.OpenRecordset("select Name from MSysObjects where Name = '" & Replace(sTableDefName, "'", "''") & "' AND Type IN (1, 4, 6)", dbOpenForwardOnly, dbReadOnly)
+   TableDefExists = Not rst.EOF
+   rst.Close
+   
 End Function

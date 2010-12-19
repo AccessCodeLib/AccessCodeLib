@@ -1,7 +1,7 @@
-Attribute VB_Name = "modSQL_Tools"
+Attribute VB_Name = "SqlTools"
 Attribute VB_Description = "SQL-Hilfsfunktionen"
 '---------------------------------------------------------------------------------------
-' Modul: modSQL
+' Modul: SqlTools
 '---------------------------------------------------------------------------------------
 '/**
 ' \author       Josef Pötzl
@@ -13,14 +13,14 @@ Attribute VB_Description = "SQL-Hilfsfunktionen"
 ' \warning Nicht vergessen: SQL_DEFAULT_TEXTDELIMITER und SQL_DEFAULT_DATEFORMAT
 '          für das DBMS anpassen oder die Parameter entsprechend einstellen.
 '
-' \ingroup      data
+' \ingroup data
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>data/modSQL_Tools.bas</file>
+'  <file>data/SqlTools.bas</file>
 '  <license>_codelib/license.bas</license>
 '  <use>base/defGlobal.bas</use>
-'  <test>_test/data/modSQL_Tools_FormatTests.cls</test>
+'  <test>_test/data/SqlToolsTests.cls</test>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -37,7 +37,7 @@ Public Const SQL_DEFAULT_DATEFORMAT As String = "" ' => SQL_DATEFORMAT wird verw
 Public SQL_DATEFORMAT As String
 
 '---------------------------------------------------------------------------------------
-' Function: GetSQLString_Text (2009-07-25)
+' Function: FormatTextToSqlText
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -48,24 +48,24 @@ Public SQL_DATEFORMAT As String
 ' <param name="bWithoutLeftRightDelim">Nur Begrenzungszeichnen innerhalb des Werte verdoppeln, Eingrenzung jedoch nicht setzen.</param>
 ' <returns>String</returns>
 ' <remarks>
-' Beispiel: strSQL = "select ... from tabelle where Feld = " & GetSQLString_Text("ab'cd")
+' Beispiel: strSQL = "select ... from tabelle where Feld = " & FormatTextToSqlText("ab'cd")
 '           => strSQL = "select ... from tabelle where Feld = 'ab''cd'"
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetSQLString_Text(ByVal vValue As Variant, Optional ByVal sDelimiter As String = SQL_DEFAULT_TEXTDELIMITER, _
+Public Function FormatTextToSqlText(ByVal vValue As Variant, Optional ByVal sDelimiter As String = SQL_DEFAULT_TEXTDELIMITER, _
                          Optional ByVal bWithoutLeftRightDelim As Boolean = False) As String
    If bWithoutLeftRightDelim Then
-      GetSQLString_Text = Replace$(Nz(vValue, vbNullString), sDelimiter, sDelimiter & sDelimiter)
+      FormatTextToSqlText = Replace$(Nz(vValue, vbNullString), sDelimiter, sDelimiter & sDelimiter)
    ElseIf IsNull(vValue) Then
-      GetSQLString_Text = "NULL"
+      FormatTextToSqlText = "NULL"
    Else
-      GetSQLString_Text = sDelimiter & Replace$(vValue, sDelimiter, sDelimiter & sDelimiter) & sDelimiter
+      FormatTextToSqlText = sDelimiter & Replace$(vValue, sDelimiter, sDelimiter & sDelimiter) & sDelimiter
    End If
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: GetSQLString_Date (2009-07-25)
+' Function: FormatDateToSqlText
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -76,22 +76,22 @@ End Function
 ' <returns>String</returns>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetSQLString_Date(ByVal vValue As Variant, Optional ByVal sFormatString As String = SQL_DEFAULT_DATEFORMAT) As String
+Public Function FormatDateToSqlText(ByVal vValue As Variant, Optional ByVal sFormatString As String = SQL_DEFAULT_DATEFORMAT) As String
    If IsNull(vValue) Then
-      GetSQLString_Date = "NULL"
+      FormatDateToSqlText = "NULL"
    Else
       If Len(sFormatString) = 0 Then
          sFormatString = SQL_DATEFORMAT
          If Len(sFormatString) = 0 Then
-            Err.Raise SqlToolsErrorNumbers.ERRNR_NOCONFIG, "GetSQLString_Date", "Kein Datumsformat verfügbar"
+            Err.Raise SqlToolsErrorNumbers.ERRNR_NOCONFIG, "FormatDateToSqlText", "Kein Datumsformat verfügbar"
          End If
       End If
-      GetSQLString_Date = Format$(vValue, sFormatString)
+      FormatDateToSqlText = Format$(vValue, sFormatString)
    End If
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: GetSQLString_Number (2009-07-25)
+' Function: FormatNumberToSqlText
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -104,10 +104,10 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetSQLString_Number(ByVal vValue As Variant) As String
+Public Function FormatNumberToSqlText(ByVal vValue As Variant) As String
    If IsNull(vValue) Then
-      GetSQLString_Number = "NULL"
+      FormatNumberToSqlText = "NULL"
    Else
-      GetSQLString_Number = Trim$(Str$(vValue))
+      FormatNumberToSqlText = Trim$(Str$(vValue))
    End If
 End Function
