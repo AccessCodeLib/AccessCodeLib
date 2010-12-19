@@ -2,7 +2,7 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "TempDbHandlerTests"
+Attribute VB_Name = "DaoHandlerTests"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
@@ -12,14 +12,14 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' AccUnit-Testklasse für TempDbHandler
+' AccUnit-Testklasse für DaoHandler
 ' </summary>
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>_test/data/dao/TempDbHandlerTests.cls</file>
+'  <file>_test/data/dao/DaoHandlerTests.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>data/dao/TempDbHandler.cls</use>
+'  <use>data/dao/DaoHandler.cls</use>
 '  <ref><name>SimplyVBUnit</name><major>7</major><minor>0</minor><guid>{AD061B4A-38BF-4847-BA00-0B2F9D60C3FB}</guid></ref>
 '  <ref><name>AccUnit_Integration</name><major>0</major><minor>9</minor><guid>{4D92B0E4-E59B-4DD5-8B52-B1AEF82B8941}</guid></ref>
 '</codelib>
@@ -28,9 +28,11 @@ Attribute VB_Exposed = False
 Option Compare Text
 Option Explicit
 
-Private m_TempDbHandler As TempDbHandler
+Private m_DaoHandler As DaoHandler
+
 Private Const TestTableName As String = "Test"
-Private Const TestTableDDL As String = "CREATE TABLE " & TestTableName & " (id counter(1,1), T varchar(255), Z int)"
+Private Const TestTableCreateDDL As String = "CREATE TABLE " & TestTableName & " (id counter(1,1), T varchar(255), Z int)"
+Private Const TestTableDropDDL As String = "Drop TABLE " & TestTableName
 Private Const InsertSQL As String = "Insert INTO " & TestTableName & " (T, Z) VALUES ('{0}', {1})"
 Private Const DeleteRecordsSQL As String = "DELETE FROM " & TestTableName
 
@@ -45,67 +47,32 @@ Private Sub ITestManagerBridge_InitTestManager(ByVal NewTestManager As AccUnit_I
 Private Sub ITestFixture_AddTestCases(ByVal Tests As SimplyVBUnit.TestCaseCollector): TestManager.AddTestCases Tests: End Sub
 
 Public Sub Setup()
-   Set m_TempDbHandler = New TempDbHandler
+   Set m_DaoHandler = New DaoHandler
+   Set m_DaoHandler.CurrentDb = CurrentDb
+   CreateTestTable
+   InsertRecordsInTestTable
 End Sub
 
 Public Sub TearDown()
-   m_TempDbHandler.Dispose
-   Set m_TempDbHandler = Nothing
+   m_DaoHandler.Dispose
+   Set m_DaoHandler = Nothing
+   DropTestTable
 End Sub
-
 
 '--------------------------------------------------------------------
 ' Tests
 '--------------------------------------------------------------------
 
-Public Sub CheckTable_TableMissing_CreateTable()
-   m_TempDbHandler.CheckTable TestTableName, TestTableDDL
-   Assert.IsTrue TestTableExists
-End Sub
-
-Public Sub CreateTable_TableMissing_CreateTable()
-   m_TempDbHandler.CreateTable TestTableName, TestTableDDL
-   Assert.IsTrue TestTableExists
-End Sub
-
-Public Sub CreateTable_TableExists_RaiseError()
+Public Sub Execute_LokalTable_ExpectedBehaviour()
 
    Const expected As Long = 0
    Dim actual As Long
-   
-   CreateTestTableInTempDB
-   
-   Assert.Throws vbObjectError + 9001
-   m_TempDbHandler.CreateTable TestTableName, TestTableDDL
-   
-End Sub
 
-Public Sub DropTable_TableExits_TableDeleted()
-
-   CreateTestTableInTempDB
+   m_DaoHandler.Execute DeleteRecordsSQL, dbFailOnError
+   actual = RecordCountInTestTable
    
-   m_TempDbHandler.DropTable TestTableName
-   
-   Assert.IsFalse TestTableExists
-   
-End Sub
-
-Public Sub DropLinkedTableDefs_TableMissing_NoError()
-   
-On Error GoTo HandleErr
-
-   m_TempDbHandler.DropTable TestTableName
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case Err.Number
-   Case 3376 'Table does not exist.
-      Assert.Fail "Error 3376 raised"
-   Case Else
-      Assert.Pass
-   End Select
+   ' Assert
+   Assert.That actual, Iz.EqualTo(expected)
    
 End Sub
 
@@ -117,11 +84,8 @@ Public Sub OpenRecordset_FilterRecordWithID_ReturnFieldValues(ByVal FieldName As
    Const SelectDDLTemplate As String = "select ID, T, Z from " & TestTableName & " where ID={0}"
    Dim actual As Variant
    Dim rst As DAO.Recordset
-   
-   CreateTestTableInTempDB
-   InsertRecordsInTestTable
-   
-   Set rst = m_TempDbHandler.OpenRecordset(FormatString(SelectDDLTemplate, lId))
+
+   Set rst = m_DaoHandler.OpenRecordset(FormatString(SelectDDLTemplate, lId))
    actual = rst.Fields(FieldName).Value
    rst.Close
    
@@ -135,33 +99,98 @@ End Sub
 'AccUnit:Row(0, 2, 2)
 'AccUnit:Row(1, 2, "b")
 'AccUnit:Row(2, 2, 2)
-Public Sub DLookupSQL_FilterRecordWithID_ReturnValuesFromFieldIndex(ByVal FieldIndex As Variant, ByVal lId As Long, ByVal expected As Variant)
+Public Sub DLookupSQL_FilterRecordWithID_ReturnValuesFromFieldIndex(ByVal FieldIndex As Variant, _
+                                                                    ByVal lId As Long, _
+                                                                    ByVal expected As Variant)
 
    Const SelectDDLTemplate As String = "select ID, T, Z from " & TestTableName & " where ID={0}"
    Dim actual As Variant
    
-   CreateTestTableInTempDB
-   InsertRecordsInTestTable
-   
-   actual = m_TempDbHandler.LookupSQL(FormatString(SelectDDLTemplate, lId), FieldIndex)
-
+   actual = m_DaoHandler.LookupSQL(FormatString(SelectDDLTemplate, lId), FieldIndex)
    Assert.That actual, Iz.EqualTo(expected)
    
 End Sub
 
-Public Sub Execute_DeleteRecordsInTestTable_EmptyTestTable()
-   
-   Const expected As Long = 0
-   Dim actual As Long
-   
-   CreateTestTableInTempDB
-   InsertRecordsInTestTable
-   
-   m_TempDbHandler.Execute DeleteRecordsSQL, dbFailOnError
-   actual = RecordCountInTestTable
-   
-   ' Assert
+'AccUnit:Row("ID", 2, 2)
+'AccUnit:Row("T", 2, "b")
+'AccUnit:Row("Z", 2, 2)
+Public Sub Lookup_FilterRecordWithID_ReturnValuesFromFieldIndex(ByVal FieldName As Variant, _
+                                                                ByVal lId As Long, _
+                                                                ByVal expected As Variant)
+   Dim actual As Variant
+   actual = m_DaoHandler.Lookup(FieldName, TestTableName, FormatString("ID={0}", lId))
    Assert.That actual, Iz.EqualTo(expected)
+End Sub
+
+'AccUnit:Row("=", 2, 1)
+'AccUnit:Row("=", 0, 0)
+'AccUnit:Row("<=", 2 , 2)
+Public Sub Count_FilterRecordWithID_ReturnCount(ByVal expr As String, ByVal lId As Long, ByVal expected As Long)
+   Dim actual As Variant
+   actual = m_DaoHandler.Count("*", TestTableName, FormatString("ID{0}{1}", expr, lId))
+   Assert.That actual, Iz.EqualTo(expected)
+End Sub
+
+'AccUnit:Row("=", 2, 2)
+'AccUnit:Row("=", 0, Null)
+'AccUnit:Row("<=", 2 , 2)
+'AccUnit:Row(">=", 2 , 5)
+Public Sub Max_FilterRecordWithID_ReturnMaxZ(ByVal expr As String, ByVal lId As Long, ByVal expected As Variant)
+
+   Dim actual As Variant
+   actual = m_DaoHandler.Max("Z", TestTableName, FormatString("ID{0}{1}", expr, lId))
+   
+   If IsNull(expected) Then
+      Assert.IsNull actual
+   Else
+      Assert.AreEqual expected, actual
+   End If
+   
+End Sub
+
+'AccUnit:Row("=", 2, 2)
+'AccUnit:Row("=", 0, Null)
+'AccUnit:Row("<=", 2 , 1)
+'AccUnit:Row(">=", 2 , 2)
+Public Sub Min_FilterRecordWithID_ReturnMinZ(ByVal expr As String, ByVal lId As Long, ByVal expected As Variant)
+
+   Dim actual As Variant
+   actual = m_DaoHandler.Min("Z", TestTableName, FormatString("ID{0}{1}", expr, lId))
+   
+   If IsNull(expected) Then
+      Assert.IsNull actual
+   Else
+      Assert.AreEqual expected, actual
+   End If
+   
+End Sub
+
+'AccUnit:Row("=", 2, 2)
+'AccUnit:Row("=", 0, Null)
+'AccUnit:Row("<=", 2 , 3)
+'AccUnit:Row(">=", 2 , 14)
+Public Sub Sum_FilterRecordWithID_ReturnSumZ(ByVal expr As String, ByVal lId As Long, ByVal expected As Variant)
+
+   Dim actual As Variant
+   actual = m_DaoHandler.Sum("Z", TestTableName, FormatString("ID{0}{1}", expr, lId))
+   
+   If IsNull(expected) Then
+      Assert.IsNull actual
+   Else
+      Assert.AreEqual expected, actual
+   End If
+   
+End Sub
+
+Public Sub InsertIdentityReturn_InsertNewRecord_ReturnIdentityFromNewRecord()
+
+   Const NewZ As Long = 999
+   Dim actual As Long
+   Dim expected As Long
+   
+   actual = m_DaoHandler.InsertIdentityReturn(FormatString(InsertSQL, "ABC", NewZ))
+   expected = Nz(DLookup("ID", TestTableName, "Z=" & NewZ), 0)
+   Assert.AreEqual expected, actual
    
 End Sub
 
@@ -170,15 +199,19 @@ End Sub
 ' Test support
 '--------------------------------------------------------------------
 
-Private Sub CreateTestTableInTempDB()
-   m_TempDbHandler.CurrentDatabase.Execute TestTableDDL
+Private Sub CreateTestTable()
+   CurrentDb.Execute TestTableCreateDDL
+End Sub
+
+Private Sub DropTestTable()
+   CurrentDb.Execute TestTableDropDDL
 End Sub
 
 Private Function InsertRecordsInTestTable() As Long
    Dim db As DAO.Database
    Dim i As Long
    
-   Set db = m_TempDbHandler.CurrentDatabase
+   Set db = CurrentDb
    
    For i = 1 To 5
       db.Execute FormatString(InsertSQL, Chr(i + 96), i)
@@ -197,7 +230,7 @@ Private Property Get RecordCountInTestTable() As Long
    Dim rst As DAO.Recordset
    Dim lngRecordCount As Long
    
-   Set db = m_TempDbHandler.CurrentDatabase
+   Set db = CurrentDb
    Set rst = db.OpenRecordset("select count(*) from " & TestTableName)
    lngRecordCount = rst.Fields(0)
    rst.Close
@@ -211,7 +244,7 @@ Private Property Get TestTableExists() As Boolean
    Dim db As DAO.Database
    Dim tdf As DAO.TableDef
    
-   Set db = m_TempDbHandler.CurrentDatabase
+   Set db = CurrentDb
    db.TableDefs.Refresh
    For Each tdf In db.TableDefs
       If tdf.Name = TestTableName Then
