@@ -224,7 +224,7 @@ Private Function getACLibGlobalProperty(ByRef PropertyName As String) As String
    Dim rst As DAO.Recordset
    Dim strSQL As String
 
-   strSQL = Replace(m_SQL_SELECT_PropertyValue, "[?]", GetSQLString_Text(PropertyName))
+   strSQL = Replace(m_SQL_SELECT_PropertyValue, "[?]", SqlTools.FormatTextToSqlText(PropertyName))
    Set rst = ACLibPropertyDb.OpenRecordset(strSQL)
    If Not rst.EOF Then
       getACLibGlobalProperty = Nz(rst.Fields(m_SQL_CONFIG_TABLE_FIELD_PropValue), vbNullString)
@@ -240,7 +240,7 @@ Private Function setACLibGlobalProperty(ByRef PropertyName As String, ByRef newV
    Dim rst As DAO.Recordset
    Dim strSQL As String
 
-   strSQL = Replace(m_SQL_SELECT_PropertyValue, "[?]", GetSQLString_Text(PropertyName))
+   strSQL = Replace(m_SQL_SELECT_PropertyValue, "[?]", SqlTools.FormatTextToSqlText(PropertyName))
    Set rst = ACLibPropertyDb.OpenRecordset(strSQL)
    If rst.EOF Then
       rst.AddNew

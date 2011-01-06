@@ -388,7 +388,7 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function ClassUsed(ByVal ClassName As String) As Boolean
+Public Function ClassUsed(ByVal CLASSNAME As String) As Boolean
    
    Dim strSearchString(5) As String
    Dim i As Long
@@ -397,9 +397,9 @@ Public Function ClassUsed(ByVal ClassName As String) As Boolean
    
 On Error GoTo HandleErr
 
-   strSearchString(0) = " As " & Trim$(ClassName) & vbNewLine
-   strSearchString(1) = " As " & Trim$(ClassName) & ","
-   strSearchString(2) = " As " & Trim$(ClassName) & " "
+   strSearchString(0) = " As " & Trim$(CLASSNAME) & vbNewLine
+   strSearchString(1) = " As " & Trim$(CLASSNAME) & ","
+   strSearchString(2) = " As " & Trim$(CLASSNAME) & " "
    
    lngMaxCnt = 2
    For i = 0 To lngMaxCnt
