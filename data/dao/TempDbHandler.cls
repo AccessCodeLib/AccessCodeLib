@@ -45,7 +45,7 @@ Private Declare Function API_GetTempFilename Lib "kernel32" Alias "GetTempFileNa
          ByVal wUnique As Long, _
          ByVal lpTempFileName As String) As Long
 
-Private m_tempDb As DAO.Database
+Private m_TempDb As DAO.Database
 Private m_TempDbFile As String
 Private m_SharedMode As Boolean
 Private m_DeleteFileOnTerminiate As Boolean
@@ -140,10 +140,10 @@ On Error Resume Next
 
    Set m_ClientDatabase = Nothing
 
-   If Not (m_tempDb Is Nothing) Then
-      m_tempDb.Close
+   If Not (m_TempDb Is Nothing) Then
+      m_TempDb.Close
       Access.DBEngine.Idle dbRefreshCache
-      Set m_tempDb = Nothing
+      Set m_TempDb = Nothing
    End If
 
 End Sub
@@ -200,7 +200,7 @@ End Property
 '---------------------------------------------------------------------------------------
 Public Property Get CurrentDatabase() As DAO.Database
    checkCurrentDatabase
-   Set CurrentDatabase = m_tempDb
+   Set CurrentDatabase = m_TempDb
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -217,9 +217,9 @@ Public Sub CloseCurrentDatabase()
 
 On Error Resume Next
 
-   If Not (m_tempDb Is Nothing) Then
-      m_tempDb.Close
-      Set m_tempDb = Nothing
+   If Not (m_TempDb Is Nothing) Then
+      m_TempDb.Close
+      Set m_TempDb = Nothing
    End If
 
 End Sub
@@ -231,10 +231,10 @@ Private Sub checkCurrentDatabase()
    
 On Error Resume Next
 
-   If m_tempDb Is Nothing Then
+   If m_TempDb Is Nothing Then
       If Len(m_TempDbFile) > 0 And Len(Dir$(m_TempDbFile)) > 0 Then
-         Set m_tempDb = Access.DBEngine.OpenDatabase(m_TempDbFile, Not m_SharedMode, False)
-         strFile = m_tempDb.Name 'Zugriff testen
+         Set m_TempDb = Access.DBEngine.OpenDatabase(m_TempDbFile, Not m_SharedMode, False)
+         strFile = m_TempDb.Name 'Zugriff testen
          If Err.Number <> 0 Then
             Err.Clear
             Me.CreateDatabase
@@ -244,12 +244,12 @@ On Error Resume Next
       End If
    Else
       Err.Clear
-      strFile = m_tempDb.Name 'Zugriff testen
+      strFile = m_TempDb.Name 'Zugriff testen
       If Err.Number <> 0 Then
          Err.Clear
          If Len(m_TempDbFile) > 0 And Len(Dir$(m_TempDbFile)) > 0 Then
-            Set m_tempDb = Access.DBEngine.OpenDatabase(m_TempDbFile, Not m_SharedMode, False)
-            strFile = m_tempDb.Name 'Zugriff testen
+            Set m_TempDb = Access.DBEngine.OpenDatabase(m_TempDbFile, Not m_SharedMode, False)
+            strFile = m_TempDb.Name 'Zugriff testen
             If Err.Number <> 0 Then
                Err.Clear
                Me.CreateDatabase
@@ -282,9 +282,9 @@ Public Function CreateDatabase(Optional ByVal OpenSharedMode As Boolean = False,
    
    If CurrentDb.Version = "4.0" Then
       'Set m_tempDb = Access.DBEngine.CreateDatabase(m_TempDbFile, dbLangGeneral, dbVersion40)
-      Set m_tempDb = DBEngine.Workspaces(0).CreateDatabase(m_TempDbFile, dbLangGeneral, dbVersion40)
+      Set m_TempDb = DBEngine.Workspaces(0).CreateDatabase(m_TempDbFile, dbLangGeneral, dbVersion40)
    Else
-      Set m_tempDb = Access.DBEngine.CreateDatabase(m_TempDbFile, dbLangGeneral)
+      Set m_TempDb = Access.DBEngine.CreateDatabase(m_TempDbFile, dbLangGeneral)
    End If ' => DB wird exklusiv geöffnet!
    
    m_SharedMode = OpenSharedMode
@@ -292,11 +292,11 @@ Public Function CreateDatabase(Optional ByVal OpenSharedMode As Boolean = False,
    
    'schließen und wieder öffnen, um nicht mehr im Exclusiv-Modus zu sein.
    If m_SharedMode Then
-      m_tempDb.Close
-      Set m_tempDb = Access.DBEngine.OpenDatabase(m_TempDbFile, False, False)
+      m_TempDb.Close
+      Set m_TempDb = Access.DBEngine.OpenDatabase(m_TempDbFile, False, False)
    End If
    
-   Set CreateDatabase = m_tempDb
+   Set CreateDatabase = m_TempDb
 
 End Function
 
@@ -320,9 +320,9 @@ Public Function OpenDatabase(ByVal DatabaseFile As String, _
 
    m_TempDbFile = DatabaseFile
    m_SharedMode = Not Exclusive
-   Set m_tempDb = Access.DBEngine.OpenDatabase(DatabaseFile, Exclusive, ReadOnly)
+   Set m_TempDb = Access.DBEngine.OpenDatabase(DatabaseFile, Exclusive, ReadOnly)
    m_DeleteFileOnTerminiate = False 'DB nicht löschen, da nicht von Klasse erstellt
-   Set OpenDatabase = m_tempDb
+   Set OpenDatabase = m_TempDb
 
 End Function
 
@@ -342,12 +342,12 @@ Public Sub DeleteCurrentDatabase()
    
 On Error Resume Next ' Da hier eine Fehlermeldung nutzlos ist.
    
-   If Not (m_tempDb Is Nothing) Then
-      strFile = m_tempDb.Name
-      m_tempDb.Close
+   If Not (m_TempDb Is Nothing) Then
+      strFile = m_TempDb.Name
+      m_TempDb.Close
       Access.DBEngine.Idle dbRefreshCache
       DoEvents
-      Set m_tempDb = Nothing
+      Set m_TempDb = Nothing
    Else
       strFile = m_TempDbFile
    End If
@@ -425,7 +425,7 @@ Public Function CreateTable(ByVal SourceTableDefName As String, _
       Err.Raise ErrorNumbers.ErrTableCanNotBeCreatedTableExists, CLASSNAME & CreateTable, "Table '" & SourceTableDefName & "' exists"
    End If
    
-   m_tempDb.Execute CreateTableDDL
+   m_TempDb.Execute CreateTableDDL
    
    If Len(LinkedTableDefName) > 0 Then
       If LinkedTableDefExists(LinkedTableDefName) Then
@@ -484,9 +484,9 @@ Public Sub DropLinkedTableDefs()
    Dim tdf As DAO.TableDef
    Dim tdfCnt As Long, i As Long
 
-   If Not (m_tempDb Is Nothing) Then
+   If Not (m_TempDb Is Nothing) Then
       checkCurrentDatabase
-      strFile = m_tempDb.Name
+      strFile = m_TempDb.Name
    Else
       strFile = m_TempDbFile
    End If
@@ -558,7 +558,7 @@ Public Property Get SourceTableDefExists(ByVal TableDefName As String) As Boolea
    '1. Aufruf über CurrentDatabase, damit Existenz der Datei sichergestellt ist
    Me.CurrentDatabase.TableDefs.Refresh
    
-   For Each tdf In m_tempDb.TableDefs
+   For Each tdf In m_TempDb.TableDefs
       If tdf.Name = TableDefName Then
          SourceTableDefExists = True
          Exit For
@@ -613,7 +613,7 @@ Private Sub connectTempTable(ByVal LinkedTableDefName As String, ByVal SourceTab
    Set tdf = dbs.CreateTableDef(LinkedTableDefName)
    With tdf
       tdf.SourceTableName = SourceTableDefName
-      tdf.Connect = ";DATABASE=" & m_tempDb.Name
+      tdf.Connect = ";DATABASE=" & m_TempDb.Name
    End With
    dbs.TableDefs.Append tdf
    
