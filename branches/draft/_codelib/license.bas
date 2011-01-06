@@ -61,7 +61,7 @@ On Error Resume Next
       "All rights reserved." & vbNewLine & vbNewLine & _
       "Redistribution and use in source and binary forms, with or without modification," & vbNewLine & _
       "are permitted provided that the following conditions are met:" & vbNewLine & _
-      "" & vbNewLine & _
+      vbNewLine & _
       "* Redistributions of source code must retain the above copyright notice," & vbNewLine & _
       "  this list of conditions and the following disclaimer." & vbNewLine & _
       "* Redistributions in binary form must reproduce the above copyright notice," & vbNewLine & _
