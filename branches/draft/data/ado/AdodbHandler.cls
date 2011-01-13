@@ -215,7 +215,9 @@ End Property
 ' <remarks>Kapselung der ADODB.Connection.Execute-Methode (Parameter werden 1:1 weitergereicht)</remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Execute(ByVal CommandText As String, Optional ByRef RecordsAffected As Long, Optional ByVal Options As ADODB.ExecuteOptionEnum = -1) As ADODB.Recordset
+Public Function Execute(ByVal CommandText As String, _
+               Optional ByRef RecordsAffected As Long, _
+               Optional ByVal Options As ADODB.ExecuteOptionEnum = -1) As ADODB.Recordset
    Set Execute = Me.CurrentConnection.Execute(CommandText, RecordsAffected, Options)
 End Function
 
@@ -323,12 +325,14 @@ End Function
 ' <remarks>Die SQL-Anweisung ist im SQL-Dialekt des betroffenen DBMS zu schreiben.</remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function LookupSQL(ByVal sSQL As String, Optional ByVal Index As Variant = 0&, _
+Public Function LookupSQL(ByVal SqlText As String, Optional ByVal Index As Variant = 0&, _
                  Optional ByVal ValueIfNull As Variant = Null) As Variant
 
    Dim rst As ADODB.Recordset
 
-   Set rst = Me.OpenRecordset(sSQL, adOpenForwardOnly, adLockReadOnly, adUseServer)
+On Error GoTo HandleErr
+
+   Set rst = Me.OpenRecordset(SqlText, adOpenForwardOnly, adLockReadOnly, adUseServer)
    With rst
       If .EOF Then
          LookupSQL = ValueIfNull
@@ -338,6 +342,17 @@ Public Function LookupSQL(ByVal sSQL As String, Optional ByVal Index As Variant 
       .Close
    End With
    Set rst = Nothing
+
+ExitHere:
+   Exit Function
+   
+HandleErr:
+   If Not (rst Is Nothing) Then
+      rst.Close
+      Set rst = Nothing
+   End If
+
+   Err.Raise Err.Number, "LookupSQL:" & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
 
 End Function
 
@@ -490,6 +505,8 @@ Public Function InsertIdentityReturn(ByVal InsertSQL As String, Optional ByVal I
       End If
    End If
 
+On Error GoTo HandleErr
+
    Set rst = cnn.Execute(strIdentitySQL)
    With rst
       If .EOF Then
@@ -501,5 +518,17 @@ Public Function InsertIdentityReturn(ByVal InsertSQL As String, Optional ByVal I
    End With
    Set rst = Nothing
    Set cnn = Nothing
+
+ExitHere:
+   Exit Function
+
+HandleErr:
+   If Not (rst Is Nothing) Then
+      rst.Close
+      Set rst = Nothing
+   End If
+
+   Err.Raise Err.Number, "InsertIdentityReturn:" & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
+
 
 End Function
