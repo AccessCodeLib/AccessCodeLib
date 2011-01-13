@@ -125,9 +125,9 @@ End Sub
 'AccUnit:Row("=", 2, 1)
 'AccUnit:Row("=", 0, 0)
 'AccUnit:Row("<=", 2 , 2)
-Public Sub Count_FilterRecordWithID_ReturnCount(ByVal expr As String, ByVal lId As Long, ByVal expected As Long)
+Public Sub Count_FilterRecordWithID_ReturnCount(ByVal Expr As String, ByVal lId As Long, ByVal expected As Long)
    Dim actual As Variant
-   actual = m_DaoHandler.Count("*", TestTableName, FormatString("ID{0}{1}", expr, lId))
+   actual = m_DaoHandler.Count("*", TestTableName, FormatString("ID{0}{1}", Expr, lId))
    Assert.That actual, Iz.EqualTo(expected)
 End Sub
 
@@ -135,10 +135,10 @@ End Sub
 'AccUnit:Row("=", 0, Null)
 'AccUnit:Row("<=", 2 , 2)
 'AccUnit:Row(">=", 2 , 5)
-Public Sub Max_FilterRecordWithID_ReturnMaxZ(ByVal expr As String, ByVal lId As Long, ByVal expected As Variant)
+Public Sub Max_FilterRecordWithID_ReturnMaxZ(ByVal Expr As String, ByVal lId As Long, ByVal expected As Variant)
 
    Dim actual As Variant
-   actual = m_DaoHandler.Max("Z", TestTableName, FormatString("ID{0}{1}", expr, lId))
+   actual = m_DaoHandler.Max("Z", TestTableName, FormatString("ID{0}{1}", Expr, lId))
    
    If IsNull(expected) Then
       Assert.IsNull actual
@@ -152,10 +152,10 @@ End Sub
 'AccUnit:Row("=", 0, Null)
 'AccUnit:Row("<=", 2 , 1)
 'AccUnit:Row(">=", 2 , 2)
-Public Sub Min_FilterRecordWithID_ReturnMinZ(ByVal expr As String, ByVal lId As Long, ByVal expected As Variant)
+Public Sub Min_FilterRecordWithID_ReturnMinZ(ByVal Expr As String, ByVal lId As Long, ByVal expected As Variant)
 
    Dim actual As Variant
-   actual = m_DaoHandler.Min("Z", TestTableName, FormatString("ID{0}{1}", expr, lId))
+   actual = m_DaoHandler.Min("Z", TestTableName, FormatString("ID{0}{1}", Expr, lId))
    
    If IsNull(expected) Then
       Assert.IsNull actual
@@ -169,10 +169,10 @@ End Sub
 'AccUnit:Row("=", 0, Null)
 'AccUnit:Row("<=", 2 , 3)
 'AccUnit:Row(">=", 2 , 14)
-Public Sub Sum_FilterRecordWithID_ReturnSumZ(ByVal expr As String, ByVal lId As Long, ByVal expected As Variant)
+Public Sub Sum_FilterRecordWithID_ReturnSumZ(ByVal Expr As String, ByVal lId As Long, ByVal expected As Variant)
 
    Dim actual As Variant
-   actual = m_DaoHandler.Sum("Z", TestTableName, FormatString("ID{0}{1}", expr, lId))
+   actual = m_DaoHandler.Sum("Z", TestTableName, FormatString("ID{0}{1}", Expr, lId))
    
    If IsNull(expected) Then
       Assert.IsNull actual

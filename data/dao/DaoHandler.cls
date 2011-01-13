@@ -138,14 +138,14 @@ End Function
 ' <remarks>Achtung: Execute-Parameter weichen von DAO-Execute ab, da RecordsAffected ergänzt wurde</remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Sub Execute(ByVal CommandText As String, _
-          Optional ByRef RecordsAffected As Long, _
-          Optional ByVal Options As DAO.RecordsetOptionEnum)
+Public Sub Execute(ByVal Query As String, _
+          Optional ByVal Options As DAO.RecordsetOptionEnum, _
+          Optional ByRef RecordsAffected As Long)
 
     If (Options And dbSeeChanges) = 0 Then
         Options = Options + dbSeeChanges
     End If
-    Me.CurrentDb.Execute CommandText, Options
+    Me.CurrentDb.Execute Query, Options
     RecordsAffected = Me.CurrentDb.RecordsAffected
  
 End Sub
@@ -164,12 +164,14 @@ End Sub
 ' <remarks>Die SQL-Anweisung ist im Jet-SQL-Dialekt zu schreiben.</remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function LookupSQL(ByVal sSQL As String, Optional ByVal Index As Variant = 0&, _
+Public Function LookupSQL(ByVal SqlText As String, Optional ByVal Index As Variant = 0&, _
                  Optional ByVal ValueIfNull As Variant = Null) As Variant
 
     Dim rst As DAO.Recordset
 
-    Set rst = Me.OpenRecordset(sSQL, dbOpenForwardOnly, dbSeeChanges, dbReadOnly)
+On Error GoTo HandleErr
+
+    Set rst = Me.OpenRecordset(SqlText, dbOpenForwardOnly, dbSeeChanges, dbReadOnly)
     With rst
         If .EOF Then
             LookupSQL = ValueIfNull
@@ -179,6 +181,17 @@ Public Function LookupSQL(ByVal sSQL As String, Optional ByVal Index As Variant 
         .Close
     End With
     Set rst = Nothing
+
+ExitHere:
+   Exit Function
+   
+HandleErr:
+   If Not (rst Is Nothing) Then
+      rst.Close
+      Set rst = Nothing
+   End If
+
+   Err.Raise Err.Number, "LookupSQL:" & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
 
 End Function
 
@@ -196,13 +209,13 @@ End Function
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Lookup(ByVal expr As String, ByVal Domain As String, _
+Public Function Lookup(ByVal Expr As String, ByVal Domain As String, _
               Optional ByVal Criteria As Variant, _
               Optional ByVal ValueIfNull As Variant = Null) As Variant
 
     Dim strSQL As String
 
-    strSQL = "SELECT " & expr & " FROM (" & Domain & ")"
+    strSQL = "SELECT " & Expr & " FROM (" & Domain & ")"
     If Not (VarType(Criteria) = vbError) Then
         If Len(Criteria) > 0 Then
             strSQL = strSQL & " WHERE " & Criteria
@@ -226,8 +239,8 @@ End Function
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Count(ByVal expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Long
-    Count = Nz(Me.Lookup("Count(" & expr & ")", Domain, Criteria), 0)
+Public Function Count(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Long
+    Count = Nz(Me.Lookup("Count(" & Expr & ")", Domain, Criteria), 0)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -244,8 +257,8 @@ End Function
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Max(ByVal expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
-    Max = Me.Lookup("Max(" & expr & ")", Domain, Criteria)
+Public Function Max(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
+    Max = Me.Lookup("Max(" & Expr & ")", Domain, Criteria)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -262,8 +275,8 @@ End Function
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Min(ByVal expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
-    Min = Me.Lookup("Min(" & expr & ")", Domain, Criteria)
+Public Function Min(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
+    Min = Me.Lookup("Min(" & Expr & ")", Domain, Criteria)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -280,8 +293,8 @@ End Function
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Sum(ByVal expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
-    Sum = Me.Lookup("Sum(" & expr & ")", Domain, Criteria)
+Public Function Sum(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
+    Sum = Me.Lookup("Sum(" & Expr & ")", Domain, Criteria)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -305,6 +318,8 @@ Public Function InsertIdentityReturn(ByVal InsertSQL As String) As Variant
     Dim rst As DAO.Recordset
     Dim lngRecordsAffected As Long
 
+On Error GoTo HandleErr
+
     Set db = Me.CurrentDb
     db.Execute InsertSQL
     lngRecordsAffected = db.RecordsAffected
@@ -324,6 +339,16 @@ Public Function InsertIdentityReturn(ByVal InsertSQL As String) As Variant
         .Close
     End With
     Set rst = Nothing
-    Set db = Nothing
+    
+ExitHere:
+   Exit Function
+
+HandleErr:
+   If Not (rst Is Nothing) Then
+      rst.Close
+      Set rst = Nothing
+   End If
+
+   Err.Raise Err.Number, "InsertIdentityReturn:" & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
 
 End Function

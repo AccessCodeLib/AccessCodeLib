@@ -93,6 +93,6 @@ Public Sub FormatTextToSqlText_JetSQL_FailedTest( _
    Dim actual As String
    actual = FormatTextToSqlText(vValue, sDelimiter, bWithoutLeftRightDelim)
    
-   Assert.That actual, Iz.not.EqualTo(sNotExpect)
+   Assert.That actual, Iz.Not.EqualTo(sNotExpect)
 
 End Sub
