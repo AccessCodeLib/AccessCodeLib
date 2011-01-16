@@ -38,61 +38,101 @@ Implements SimplyVBUnit.ITestFixture
 Implements AccUnit_Integration.ITestManagerBridge
 Private TestManager As AccUnit_Integration.TestManager
 Private Sub ITestManagerBridge_InitTestManager(ByVal NewTestManager As AccUnit_Integration.ITestManagerComInterface): Set TestManager = NewTestManager: End Sub
+Private Function ITestManagerBridge_GetTestManager() As AccUnit_Integration.ITestManagerComInterface: Set ITestManagerBridge_GetTestManager = TestManager: End Function
 Private Sub ITestFixture_AddTestCases(ByVal Tests As SimplyVBUnit.TestCaseCollector): TestManager.AddTestCases Tests: End Sub
 
 Public Sub Setup()
-
-
+   SqlTools.SqlDateFormat = vbNullString
 End Sub
 
-Public Sub TearDown()
-
+Public Sub Teardown()
+   SqlTools.SqlDateFormat = vbNullString
 End Sub
 
 '--------------------------------------------------------------------
 ' Tests
 '--------------------------------------------------------------------
 
+
+'
+' TextToSqlText
+'
+
 'AccUnit:Row("abcdefg", "'", False, "'abcdefg'")
+'AccUnit:Row("abcdefg", "'", True, "abcdefg")
 'AccUnit:Row("abc'defg", "'", False, "'abc''defg'")
 'AccUnit:Row("abc""defg", "'", False, "'abc""defg'")
-Public Function FormatTextToSqlText_JetSQL( _
-                     ByVal vValue As Variant, _
-                     ByVal sDelimiter As String, _
-                     ByVal bWithoutLeftRightDelim As Boolean, _
+'AccUnit:Row(Null, "'", False, "NULL")
+Public Function TextToSqlText_DefaultValueIfNullArg_ReturnsSqlText( _
+                     ByVal Value As Variant, _
+                     ByVal Delimiter As String, _
+                     ByVal WithoutLeftRightDelim As Boolean, _
                      ByVal expected As String) As String
 
    Dim actual As String
-   actual = FormatTextToSqlText(vValue, sDelimiter, bWithoutLeftRightDelim)
+   actual = SqlTools.TextToSqlText(Value, Delimiter, WithoutLeftRightDelim)
    Assert.That actual, Iz.EqualTo(expected)
 
 End Function
 
-'AccUnit:Row("abcdefg", "'", False, "'abcdefg'")
-'AccUnit:Row("abc'defg", "'", False, "'abc''defg'")
-'AccUnit:Row("abc""defg", "'", False, "'abc""defg'")
-Public Function FormatTextToSqlText_JetSQL2( _
-                     ByVal vValue As Variant, _
-                     ByVal sDelimiter As String, _
-                     ByVal bWithoutLeftRightDelim As Boolean, _
-                     ByVal expected As String) As String
 
+'
+' DateToSqlText
+'
+
+'AccUnit:Row(Null, "", "NULL")
+'AccUnit:Row(System.Convert.ToDateTime("2000-01-31"), "\#yyyy-mm-dd\#", "#2000-01-31#")
+'AccUnit:Row(System.Convert.ToDateTime("2000-01-31"), "\#mm\/dd\/yyyy\#", "#01/31/2000#")
+'AccUnit:Row(System.Convert.ToDateTime("2000-01-31"), "'yyyymmdd'", "'20000131'")
+Public Sub DateToSqlText_UseFormatArg_ReturnsSqlText(ByVal Value As Variant, _
+                     ByVal FormatString As String, _
+                     ByVal expected As String)
    Dim actual As String
-   actual = FormatTextToSqlText(vValue, sDelimiter, bWithoutLeftRightDelim)
+   actual = SqlTools.DateToSqlText(Value, FormatString)
    Assert.That actual, Iz.EqualTo(expected)
+End Sub
 
-End Function
-
-'AccUnit:Row("abc'defg", "'", False, "abc'defg")
-Public Sub FormatTextToSqlText_JetSQL_FailedTest( _
-                     ByVal vValue As Variant, _
-                     ByVal sDelimiter As String, _
-                     ByVal bWithoutLeftRightDelim As Boolean, _
-                     ByVal sNotExpect As String)
-
+'AccUnit:Row(Null, "", "NULL")
+'AccUnit:Row(System.Convert.ToDateTime("2000-01-31"), "\#yyyy-mm-dd\#", "#2000-01-31#")
+'AccUnit:Row(System.Convert.ToDateTime("2000-01-31"), "\#mm\/dd\/yyyy\#", "#01/31/2000#")
+'AccUnit:Row(System.Convert.ToDateTime("2000-01-31"), "'yyyymmdd'", "'20000131'")
+Public Sub DateToSqlText_UsePublicFormatVariable_ReturnsSqlText(ByVal Value As Variant, _
+                     ByVal FormatString As String, _
+                     ByVal expected As String)
    Dim actual As String
-   actual = FormatTextToSqlText(vValue, sDelimiter, bWithoutLeftRightDelim)
-   
-   Assert.That actual, Iz.Not.EqualTo(sNotExpect)
+   SqlTools.SqlDateFormat = FormatString
+   actual = SqlTools.DateToSqlText(Value)
+   Assert.That actual, Iz.EqualTo(expected)
+End Sub
 
+Public Sub DateToSqlText_FormatVariableNotDefined_RaiseError()
+   Dim actual As String
+   Assert.Throws -2147221503, "DateToSqlText"
+   actual = SqlTools.DateToSqlText(Date)
+End Sub
+
+
+'
+' NumberToSqlText
+'
+
+'AccUnit:Row(Null, "NULL")
+'AccUnit:Row(0, "0")
+'AccUnit:Row(000, "0")
+'AccUnit:Row(12345, "12345")
+'AccUnit:Row(1.2345, "1.2345")
+'AccUnit:Row(0.123, "0.123")
+'AccUnit:Row(.123, "0.123")
+'AccUnit:Row(1E2, "100")
+'AccUnit:Row(1E-2, "0.01")
+Public Sub NumberToSqlText_UseNumbers_ReturnsSqlText(ByVal Value As Variant, ByVal expected As String)
+   Dim actual As String
+   actual = SqlTools.NumberToSqlText(Value)
+   Assert.That actual, Iz.EqualTo(expected)
+End Sub
+
+Public Sub NumberToSqlText_UseText_ReturnsSqlText()
+   Dim actual As String
+   Assert.Throws 13
+   actual = SqlTools.NumberToSqlText("abc")
 End Sub

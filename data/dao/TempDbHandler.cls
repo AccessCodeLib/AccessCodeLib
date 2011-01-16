@@ -12,10 +12,12 @@ Attribute VB_Description = "Erzeugt und verwaltet eine mdb/accdb für temporäre T
 ' Klassenmodul: TempDbHandler
 '---------------------------------------------------------------------------------------
 '/**
+' \author       Josef Poetzl
 ' <summary>
-' Erzeugt und verwaltet eine mdb/accdb für temporäre Tabellen
+' Erzeugt und verwaltet eine mdb/accdb für temporaere Tabellen
 ' </summary>
 ' <remarks></remarks>
+'\ingroup data_dao
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
@@ -691,16 +693,14 @@ End Function
 ' </summary>
 ' <param name="sSQL">SQL-Anweisung</param>
 ' <param name="Options"></param>
-' <param name="RecordsAffected"></param>
-
+' <returns>Long (Anzahl der betroffenen Datensätze)</returns>
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Sub Execute(ByVal Query As String, _
-          Optional ByVal Options As DAO.RecordsetOptionEnum, _
-          Optional ByRef RecordsAffected As Long)
-   m_DaoHandler.Execute Query, Options, RecordsAffected
-End Sub
+Public Function Execute(ByVal Query As String, _
+          Optional ByVal Options As DAO.RecordsetOptionEnum) As Long
+   Execute = m_DaoHandler.Execute(Query, Options)
+End Function
 
 
 '---------------------------------------------------------------------------------------

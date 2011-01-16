@@ -137,7 +137,7 @@ Private Function WizHook_GetFileName( _
    End If
 
    WizHook.Key = 51488399
-   wizHookRetVal = WizHook.GetFileName( _
+   wizHookRetVal = WizHook.getFileName( _
                         Access.Application.hWndAccessApp, CurrentApplicationName, DlgTitle, OpenTitle, _
                         selectedFileString, InitialDir, FilterString, 0, ViewMode, flags, True)
    If wizHookRetVal = 0 Then

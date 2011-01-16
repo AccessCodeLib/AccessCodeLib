@@ -83,22 +83,7 @@ Public Property Get CodeModule() As VBIDE.CodeModule
 Public Property Get CodeModule() As Object
 #End If
 
-On Error GoTo HandleErr
-
    Set CodeModule = m_CodeModule
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "CodeModule", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
    
 End Property
 
@@ -119,23 +104,8 @@ Public Property Set CodeModule(cm As VBIDE.CodeModule)
 Public Property Set CodeModule(cm As Object)
 #End If
 
-On Error GoTo HandleErr
-
    Set m_CodeModule = cm
 
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "CodeModule", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -153,25 +123,10 @@ End Property
 Public Function Copy() As CodeModuleReader
 
    Dim newReader As CodeModuleReader
-   
-On Error GoTo HandleErr
 
    Set newReader = New CodeModuleReader
    Set newReader.CodeModule = Me.CodeModule
    Set Copy = newReader
-
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "Copy", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Function
 
@@ -191,23 +146,8 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Property Get Name() As String
 
-On Error GoTo HandleErr
-
    Name = m_CodeModule.Parent.Name
 
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "Name", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -224,27 +164,12 @@ End Property
 '---------------------------------------------------------------------------------------
 Public Property Get RequiredModules() As Collection
 
-On Error GoTo HandleErr
-
    If Not m_RequiredModulesChecked Then
       Err.Raise ERRNUMBER_CheckDependency_notrun, "RequiredModules", ERRDESCRIPTION_CheckDependency_notrun
    End If
 
    Set RequiredModules = m_RequiredModules
-
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "RequiredModules", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
+ 
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -282,8 +207,6 @@ Public Function CheckDependency(Optional ByVal vbp As Object = Nothing, _
    Dim newModuleReader As CodeModuleReader
    Dim tempProc As CodeModuleProcedure
    Dim tempHeaderItem As CodeModuleHeaderItem
-   
-On Error GoTo HandleErr
 
    Set m_RequiredModules = Nothing
    Set m_RequiredModules = New Collection
@@ -359,19 +282,6 @@ On Error GoTo HandleErr
    m_RequiredModulesChecked = True
    CheckDependency = m_RequiredModules.Count
 
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "CheckDependency", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Function
 
 
@@ -388,18 +298,16 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function ClassUsed(ByVal CLASSNAME As String) As Boolean
+Public Function ClassUsed(ByVal ClassName As String) As Boolean
    
    Dim strSearchString(5) As String
    Dim i As Long
    Dim bolUsed As Boolean
    Dim lngMaxCnt As Long
-   
-On Error GoTo HandleErr
 
-   strSearchString(0) = " As " & Trim$(CLASSNAME) & vbNewLine
-   strSearchString(1) = " As " & Trim$(CLASSNAME) & ","
-   strSearchString(2) = " As " & Trim$(CLASSNAME) & " "
+   strSearchString(0) = " As " & Trim$(ClassName) & vbNewLine
+   strSearchString(1) = " As " & Trim$(ClassName) & ","
+   strSearchString(2) = " As " & Trim$(ClassName) & " "
    
    lngMaxCnt = 2
    For i = 0 To lngMaxCnt
@@ -419,19 +327,6 @@ On Error GoTo HandleErr
    
    ClassUsed = bolUsed
 
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ClassUsed", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -454,8 +349,6 @@ Public Function ProcedureUsed(ByRef cmp As CodeModuleProcedure) As Boolean
    Dim bolUsed As Boolean
    Dim proc As CodeModuleProcedure
    Dim bolOnlyWithModulePrefix As Boolean
-   
-On Error GoTo HandleErr
 
    'bei Überlappung von internen Prozedurnamen mit der zu prüfenden,
    'gilt nur bei der Kombination modulname.prozedur eine Übereinstimmung als Treffer
@@ -475,10 +368,10 @@ On Error GoTo HandleErr
    'Text durchsuchen
    For i = LBound(searchStringArray) To UBound(searchStringArray)
 #If USEREGEX = 1 Then
-      With Regex
+      With RegEx
          .Pattern = searchStringArray(i)
          .Global = False
-         bolUsed = .Test(m_CodeModuleText)
+         bolUsed = .test(m_CodeModuleText)
          If bolUsed Then
             Exit For
          End If
@@ -493,19 +386,6 @@ On Error GoTo HandleErr
    
    ProcedureUsed = bolUsed
 
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "ProcedureUsed", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -531,8 +411,6 @@ Public Function HeaderItemUsed(ByRef hdrItm As CodeModuleHeaderItem) As Boolean
    ' * @bug Wenn sich eine Public-Variable mit einer interner (private Variable im Kopf oder in einer Proc)
    ' *      des zu durchsuchenden Codemoduls überlagert, wird die Public-Variable als Treffer angesehen
    '**/
-   
-On Error GoTo HandleErr
 
    searchStringArray = hdrItm.SearchStrings
    
@@ -542,10 +420,10 @@ On Error GoTo HandleErr
    
    For i = LBound(searchStringArray) To UBound(searchStringArray)
 #If USEREGEX = 1 Then
-      With Regex
+      With RegEx
          .Pattern = searchStringArray(i)
          .Global = False
-         bolUsed = .Test(m_CodeModuleText)
+         bolUsed = .test(m_CodeModuleText)
          If bolUsed Then Exit For
       End With
 #Else
@@ -558,19 +436,6 @@ On Error GoTo HandleErr
 
    HeaderItemUsed = bolUsed
 
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "HeaderItemUsed", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -591,8 +456,6 @@ Public Property Get PlainCodeText() As String
    Dim strCodeText As String
    Dim strCodeLine As String
    Dim i As Long
-   
-On Error GoTo HandleErr
 
    For i = 1 To m_CodeModule.CountOfLines
       strCodeText = strCodeText & Trim$(getPlainCodeLine(m_CodeModule.Lines(i, 1))) & vbNewLine
@@ -600,27 +463,12 @@ On Error GoTo HandleErr
    
    PlainCodeText = strCodeText
 
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "PlainCodeText", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-
 End Property
 
 Private Function getPlainCodeLine(ByVal strCodeLine As String) As String
 
    Dim posSingleQuote As Long
    Dim posDoubleQuote As Long
-   
-On Error GoTo HandleErr
 
    posSingleQuote = InStr(1, strCodeLine, "'")
    posDoubleQuote = InStr(1, strCodeLine, """")
@@ -642,19 +490,6 @@ On Error GoTo HandleErr
       End If
    End If
 
-ExitHere:
-   Exit Function
-
-HandleErr:
-   Select Case HandleError(Err.Number, "getPlainCodeLine", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -673,8 +508,6 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Property Get Procedures(Optional ByVal bRefresh As Boolean = False, _
                                Optional ByVal includePrivateProc As Boolean = False) As Collection
-   
-On Error GoTo HandleErr
 
    Static bolIncludePrivateProc As Boolean
    
@@ -744,19 +577,6 @@ On Error GoTo HandleErr
    
    Set Procedures = m_ProcCollection
 
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "Procedures", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -783,8 +603,6 @@ Public Property Get HeaderItems(Optional ByVal bRefresh As Boolean = False) As C
    Dim lngPos As Long
    Dim bolAddHeaderItem As Boolean
 
-On Error GoTo HandleErr
-
    If bRefresh Then
       Set m_HeaderItemCollection = Nothing
    ElseIf Not m_HeaderItemCollection Is Nothing Then
@@ -794,8 +612,6 @@ On Error GoTo HandleErr
 
    Set m_HeaderItemCollection = New Collection
 
-   
-   
    If m_CodeModule.CountOfDeclarationLines = 0 Then
       Set HeaderItems = m_HeaderItemCollection
       Exit Property
@@ -875,19 +691,6 @@ On Error GoTo HandleErr
    
    Set HeaderItems = m_HeaderItemCollection
 
-ExitHere:
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "HeaderItems", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-   
 End Property
 
 
@@ -903,8 +706,6 @@ Private Property Get CurrentVbProject() As Object
    Dim proj As Object
 #End If
    Dim strCurrentDbName As String
-
-On Error GoTo HandleErr
 
    If m_CurrentVbProject Is Nothing Then
       Set m_CurrentVbProject = VBE.ActiveVBProject
@@ -922,19 +723,5 @@ On Error GoTo HandleErr
    End If
    
    Set CurrentVbProject = m_CurrentVbProject
-
-ExitHere:
-On Error Resume Next
-   Exit Property
-
-HandleErr:
-   Select Case HandleError(Err.Number, "CurrentVbProject", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 
 End Property

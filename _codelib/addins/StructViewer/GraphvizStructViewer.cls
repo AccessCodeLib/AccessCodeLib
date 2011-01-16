@@ -113,7 +113,7 @@ Public Sub CreateDOT( _
    
    Set m_DOT = New GraphvizDOT
    
-   m_DOT.init GraphMode, RankDir, GraphName, , conDOT_GraphProp
+   m_DOT.Init GraphMode, RankDir, GraphName, , conDOT_GraphProp
    m_DOT.RndSeed = RndSeed
    
    addDOTobjects markFirstItem

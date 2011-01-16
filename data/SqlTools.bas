@@ -4,7 +4,7 @@ Attribute VB_Description = "SQL-Hilfsfunktionen"
 ' Modul: SqlTools
 '---------------------------------------------------------------------------------------
 '/**
-' \author       Josef Pötzl
+' \author       Josef Poetzl
 ' <summary>
 ' SQL-Hilfsfunktionen
 ' </summary>
@@ -19,7 +19,6 @@ Attribute VB_Description = "SQL-Hilfsfunktionen"
 '<codelib>
 '  <file>data/SqlTools.bas</file>
 '  <license>_codelib/license.bas</license>
-'  <use>base/defGlobal.bas</use>
 '  <test>_test/data/SqlToolsTests.cls</test>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -32,40 +31,52 @@ Private Enum SqlToolsErrorNumbers
 End Enum
 
 Public Const SQL_DEFAULT_TEXTDELIMITER As String = "'"
-Public Const SQL_DEFAULT_DATEFORMAT As String = "" ' => SQL_DATEFORMAT wird verwendet.
+Public Const SQL_DEFAULT_DATEFORMAT As String = "" ' => SqlDateFormat wird verwendet.
                                                    '    Zum Deaktivieren Wert eintragen (z. B. "\#yyyy\-mm\-dd\#")
-Public SQL_DATEFORMAT As String
+Public SqlDateFormat As String
+
+Private Const ResultTextIfNull As String = "NULL"
 
 '---------------------------------------------------------------------------------------
-' Function: FormatTextToSqlText
+' Function: TextToSqlText
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
 ' Text für SQL-Anweisung aufbereiten.
 ' </summary>
-' <param name="vValue">Übergabewert</param>
-' <param name="sDelimiter">Begrenzungszeichen für Text-Werte. (In den meinsten DBMS wird ' als Begrenzungszeichen verwendet.)</param>
-' <param name="bWithoutLeftRightDelim">Nur Begrenzungszeichnen innerhalb des Werte verdoppeln, Eingrenzung jedoch nicht setzen.</param>
+' <param name="Value">Übergabewert</param>
+' <param name="Delimiter">Begrenzungszeichen für Text-Werte. (In den meisten DBMS wird ' als Begrenzungszeichen verwendet.)</param>
+' <param name="WithoutLeftRightDelim">Nur Begrenzungszeichnen innerhalb des Werte verdoppeln, Eingrenzung jedoch nicht setzen.</param>
+' <param name="ValueIfNull">Ersatzstring bei NULL (Standard = "NULL")</param>
 ' <returns>String</returns>
 ' <remarks>
-' Beispiel: strSQL = "select ... from tabelle where Feld = " & FormatTextToSqlText("ab'cd")
+' Beispiel: strSQL = "select ... from tabelle where Feld = " & TextToSqlText("ab'cd")
 '           => strSQL = "select ... from tabelle where Feld = 'ab''cd'"
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function FormatTextToSqlText(ByVal vValue As Variant, Optional ByVal sDelimiter As String = SQL_DEFAULT_TEXTDELIMITER, _
-                         Optional ByVal bWithoutLeftRightDelim As Boolean = False) As String
-   If bWithoutLeftRightDelim Then
-      FormatTextToSqlText = Replace$(Nz(vValue, vbNullString), sDelimiter, sDelimiter & sDelimiter)
-   ElseIf IsNull(vValue) Then
-      FormatTextToSqlText = "NULL"
-   Else
-      FormatTextToSqlText = sDelimiter & Replace$(vValue, sDelimiter, sDelimiter & sDelimiter) & sDelimiter
+Public Function TextToSqlText(ByVal Value As Variant, _
+                     Optional ByVal Delimiter As String = SQL_DEFAULT_TEXTDELIMITER, _
+                     Optional ByVal WithoutLeftRightDelim As Boolean = False) As String
+   
+   Dim Result As String
+   
+   If IsNull(Value) Then
+      TextToSqlText = ResultTextIfNull
+      Exit Function
    End If
+   
+   Result = Replace$(Value, Delimiter, Delimiter & Delimiter)
+   If Not WithoutLeftRightDelim Then
+      Result = Delimiter & Result & Delimiter
+   End If
+   
+   TextToSqlText = Result
+
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: FormatDateToSqlText
+' Function: DateToSqlText
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -73,41 +84,58 @@ End Function
 ' </summary>
 ' <param name="vValue">Übergabewert</param>
 ' <param name="sFormatString">Datumsformat (von DBMS abhängig!)</param>
+' <param name="ValueIfNull">Ersatzstring bei NULL (Standard = "NULL")</param>
 ' <returns>String</returns>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function FormatDateToSqlText(ByVal vValue As Variant, Optional ByVal sFormatString As String = SQL_DEFAULT_DATEFORMAT) As String
-   If IsNull(vValue) Then
-      FormatDateToSqlText = "NULL"
-   Else
-      If Len(sFormatString) = 0 Then
-         sFormatString = SQL_DATEFORMAT
-         If Len(sFormatString) = 0 Then
-            Err.Raise SqlToolsErrorNumbers.ERRNR_NOCONFIG, "FormatDateToSqlText", "Kein Datumsformat verfügbar"
-         End If
-      End If
-      FormatDateToSqlText = Format$(vValue, sFormatString)
+Public Function DateToSqlText(ByVal Value As Variant, _
+                     Optional ByVal FormatString As String = SQL_DEFAULT_DATEFORMAT) As String
+
+   If IsNull(Value) Then
+      DateToSqlText = ResultTextIfNull
+      Exit Function
    End If
+
+   If Len(FormatString) = 0 Then
+      FormatString = SqlDateFormat
+      If Len(FormatString) = 0 Then
+         Err.Raise SqlToolsErrorNumbers.ERRNR_NOCONFIG, "DateToSqlText", "date format is not defined"
+      End If
+   End If
+   
+   DateToSqlText = Format$(Value, FormatString)
+
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: FormatNumberToSqlText
+' Function: NumberToSqlText
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
 ' Zahl für SQL-Text aufbereiten
 ' </summary>
-' <param name="vValue">Übergabewert</param>
+' <param name="Value">Übergabewert</param>
+' <param name="ValueIfNull">Ersatzstring bei NULL (Standard = "NULL")</param>
 ' <returns>String</returns>
 ' <remarks>
 ' Durch Str-Funktion wird . statt , verwendet.
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function FormatNumberToSqlText(ByVal vValue As Variant) As String
-   If IsNull(vValue) Then
-      FormatNumberToSqlText = "NULL"
-   Else
-      FormatNumberToSqlText = Trim$(Str$(vValue))
+Public Function NumberToSqlText(ByVal Value As Variant) As String
+
+   Dim Result As String
+
+   If IsNull(Value) Then
+      NumberToSqlText = ResultTextIfNull
+      Exit Function
    End If
+   
+   Result = Trim$(Str$(Value))
+   If Left(Result, 1) = "." Then
+      Result = "0" & Result
+   End If
+   
+   NumberToSqlText = Result
+   
 End Function

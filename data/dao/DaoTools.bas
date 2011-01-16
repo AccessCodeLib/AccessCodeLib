@@ -4,6 +4,7 @@ Attribute VB_Description = "Hilfsfunktionen für den Umgang mit DAO"
 ' Module: modDAO_Tools
 '---------------------------------------------------------------------------------------
 '/**
+' \author       Josef Poetzl
 ' <summary>
 ' Hilfsfunktionen für den Umgang mit DAO
 ' </summary>
@@ -16,6 +17,7 @@ Attribute VB_Description = "Hilfsfunktionen für den Umgang mit DAO"
 '  <file>data/dao/DaoTools.bas</file>
 '  <license>_codelib/license.bas</license>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
+'  <test>_test/data/dao/DaoToolsTests.cls</test>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -23,7 +25,7 @@ Option Compare Database
 Option Explicit
 
 '---------------------------------------------------------------------------------------
-' Function: TableDefExists (Josef Pötzl)
+' Function: TableDefExists
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -36,7 +38,7 @@ Option Explicit
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function TableDefExists(ByVal sTableDefName As String, Optional ByRef dbs As DAO.Database = Nothing) As Boolean
+Public Function TableDefExists(ByVal TableDefName As String, Optional ByRef dbs As DAO.Database = Nothing) As Boolean
 'Man könnte auch die TableDef-Liste durchlaufen.
 'Eine weitere Alternative wäre das Auswerten über cnn.OpenSchema(adSchemaTables, ...) ... dann werden allerdings keine verknüpften Tabellen geprüft
    
@@ -46,7 +48,7 @@ Public Function TableDefExists(ByVal sTableDefName As String, Optional ByRef dbs
       Set dbs = CodeDb
    End If
    
-   Set rst = dbs.OpenRecordset("select Name from MSysObjects where Name = '" & Replace(sTableDefName, "'", "''") & "' AND Type IN (1, 4, 6)", dbOpenForwardOnly, dbReadOnly)
+   Set rst = dbs.OpenRecordset("select Name from MSysObjects where Name = '" & Replace(TableDefName, "'", "''") & "' AND Type IN (1, 4, 6)", dbOpenForwardOnly, dbReadOnly)
    TableDefExists = Not rst.EOF
    rst.Close
    

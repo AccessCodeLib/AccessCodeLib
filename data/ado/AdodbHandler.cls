@@ -8,13 +8,15 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: AdodbHandler (2009-08-06)
+' Class: AdodbHandler
 '---------------------------------------------------------------------------------------
 '/**
+' \author       Josef Poetzl
 ' <summary>
 ' ADODB-Zugriffsmethoden
 ' </summary>
 ' <remarks></remarks>
+'\ingroup data_adodb
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
@@ -191,26 +193,25 @@ End Property
 ' <summary>
 ' OLEDB-Connectionstring
 ' </summary>
-' <param name="sConnectionString">OLEDB-Connectionstring für den Verbindungaufbau</param>
+' <param name="Value">OLEDB-Connectionstring für den Verbindungaufbau</param>
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Property Let ConnectionString(ByVal sConnectionString As String)
+Public Property Let ConnectionString(ByVal Value As String)
    Set CurrentConnection = Nothing
-   m_conADO_ConnectionString = sConnectionString
+   m_conADO_ConnectionString = Value
 End Property
-
 
 '---------------------------------------------------------------------------------------
 ' Function: Execute
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' Execute
+' Sql-Anweisung ausführen
 ' </summary>
 ' <param name="CommandText">SQL-Anweisung</param>
 ' <param name="RecordsAffected">ByRef-Parameter zur Rückgabe der Anzahl der von der Execute-Anweisung betroffenen Datensätze</param>
-' <param name="Options">zusäztliche Optionen der ADODB.Connection-Execute-Methode</param>
+' <param name="Options">zusätztliche Optionen der ADODB.Connection-Execute-Methode</param>
 ' <returns>ADODB.Recordset</returns>
 ' <remarks>Kapselung der ADODB.Connection.Execute-Methode (Parameter werden 1:1 weitergereicht)</remarks>
 '**/
@@ -219,6 +220,58 @@ Public Function Execute(ByVal CommandText As String, _
                Optional ByRef RecordsAffected As Long, _
                Optional ByVal Options As ADODB.ExecuteOptionEnum = -1) As ADODB.Recordset
    Set Execute = Me.CurrentConnection.Execute(CommandText, RecordsAffected, Options)
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: ExecuteCommand
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Sql-Anweisung mittels ADODB.Command ausführen
+' </summary>
+' <param name="CmdText">ADODB.CommandText-Wert</param>
+' <param name="CmdType">ADODB.CommandType-Wert</param>
+' <param name="commandParamDefs">2-dimensionales Parameter-Array (Array(n,1) ... x(n,0) = Parametername, x(n,1) = Parameterwert)</param>
+' <param name="RecordsAffected">ByRef-Parameter zur Rückgabe der Anzahl der von der Execute-Anweisung betroffenen Datensätze</param>
+' <param name="Options">zusätztliche Optionen der ADODB.Connection-Execute-Methode</param>
+' <returns>ADODB.Recordset</returns>
+' <remarks>Mit dieser Variante kann sehr einfach SQL-Injection vermieden werden, da die Parameter nicht direkt in der SQL-Anweisung eingebaut sind und somit ein Parameterwert (der z. B. von einer Benutzereingabe stammt) keine SQL-Anweisung einschleusen kann.</remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function ExecuteCommand(ByVal CmdText As String, _
+                               ByVal CmdType As ADODB.CommandTypeEnum, _
+                      Optional ByVal CmdParamDefs As Variant, _
+                      Optional ByRef RecordsAffected As Long, _
+                      Optional ByVal Options As Long = -1) As ADODB.Recordset
+'gibt geöffnetes ADODB-Recordset zurück
+
+   Dim cmd As ADODB.Command
+   Dim ParamDefsArraySize As Long
+   Dim i As Long
+   Dim strParamName As String
+
+   Set cmd = New ADODB.Command
+   With cmd
+   
+      Set .ActiveConnection = Me.CurrentConnection
+      .CommandText = CmdText
+      .CommandType = CmdType
+   
+      If Not IsMissing(CmdParamDefs) Then
+         ParamDefsArraySize = UBound(CmdParamDefs, 1)
+         For i = 0 To ParamDefsArraySize
+            strParamName = Nz(CmdParamDefs(i, 0), vbNullString)
+            If Len(strParamName) > 0 Then
+               .Parameters(strParamName).Value = CmdParamDefs(i, 1)
+            End If
+         Next i
+      End If
+      
+      Set ExecuteCommand = .Execute(RecordsAffected, , Options)
+      
+   End With
+   Set cmd = Nothing
+
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -262,70 +315,21 @@ Public Function OpenRecordset(ByVal Source As String, _
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: OpenRecordsetCommandParam
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Recocordset mittels ADODB.Command öffnen
-' </summary>
-' <param name="CmdText">ADODB.CommandText-Wert</param>
-' <param name="CmdType">ADODB.CommandType-Wert</param>
-' <param name="commandParamDefs">2-dimensionales Parameter-Array (Array(n,1) ... x(n,0) = Parametername, x(n,0) = Parameterwert) ... abwechselnd Paramtername und Parameterwert einstellen</param>
-' <returns>ADODB.Recordset</returns>
-' <remarks>Mit dieser Variante kann sehr einfach SQL-Injection vermieden werden, da die Parameter nicht direkt in der SQL-Anweisung eingebaut sind und somit ein Parameterwert (der z. B. von einer Benutzereingabe stammt) keine SQL-Anweisung einschleusen kann.</remarks>
-'**/
-'---------------------------------------------------------------------------------------
-Public Function OpenRecordsetCommandParam(ByVal CmdText As String, _
-                                          ByVal CmdType As ADODB.CommandTypeEnum, _
-                                 Optional ByVal commandParamDefs As Variant) As ADODB.Recordset
-'gibt geöffnetes ADO-Recordset zurück
-
-   Dim cmd As ADODB.Command
-   
-   Dim paramDefsArraySize As Long
-   Dim i As Long
-   Dim strParamName As String
-
-   Set cmd = New ADODB.Command
-   
-   With cmd
-   
-      Set .ActiveConnection = Me.CurrentConnection
-      .CommandText = CmdText
-      .CommandType = CmdType
-   
-      If Not IsMissing(commandParamDefs) Then
-         paramDefsArraySize = UBound(commandParamDefs, 1)
-         For i = 0 To paramDefsArraySize
-         strParamName = Nz(commandParamDefs(i, 0), vbNullString)
-         If Len(strParamName) > 0 Then
-            .Parameters(commandParamDefs(i, 0)).Value = commandParamDefs(i, 1)
-         End If
-         Next i
-      End If
-      
-      Set OpenRecordsetCommandParam = .Execute()
-      
-   End With
-   
-   Set cmd = Nothing
-
-End Function
-
-'---------------------------------------------------------------------------------------
 ' Function: LookupSQL
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
 ' Lookup-Recordset-Ersatzfunktion für Übergabe einer vollständigen SQL-Anweisung
 ' </summary>
-' <param name="sSQL">SQL-Anweisung</param>
+' <param name="SqlText">SQL-Anweisung</param>
 ' <param name="Index">Feldauswahl, falls nicht das erste Feld des Recordsets zurückgeliefert werden soll. Die Index-Übergabe erfolgt analaog ADODB.Recordset.Fields(index)</param>
+' <param name="ValueIfNull">Rückgabewert bei fehlendem Datensatz oder NULL-Feldwert (Standard: Null</param>
 ' <returns>Variant (NULL, falls SQL-Anweisung keinen Datensatz liefert.)</returns>
 ' <remarks>Die SQL-Anweisung ist im SQL-Dialekt des betroffenen DBMS zu schreiben.</remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function LookupSQL(ByVal SqlText As String, Optional ByVal Index As Variant = 0&, _
+Public Function LookupSQL(ByVal SqlText As String, _
+                 Optional ByVal Index As Variant = 0&, _
                  Optional ByVal ValueIfNull As Variant = Null) As Variant
 
    Dim rst As ADODB.Recordset
@@ -400,8 +404,8 @@ End Function
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function DCount(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Long
-   DCount = Nz(Me.Lookup("Count(" & Expr & ")", Domain, Criteria), 0)
+Public Function Count(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Long
+   Count = Nz(Me.Lookup("Count(" & Expr & ")", Domain, Criteria), 0)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -529,6 +533,5 @@ HandleErr:
    End If
 
    Err.Raise Err.Number, "InsertIdentityReturn:" & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
-
 
 End Function
