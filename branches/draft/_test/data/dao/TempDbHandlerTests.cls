@@ -42,13 +42,14 @@ Implements SimplyVBUnit.ITestFixture
 Implements AccUnit_Integration.ITestManagerBridge
 Private TestManager As AccUnit_Integration.TestManager
 Private Sub ITestManagerBridge_InitTestManager(ByVal NewTestManager As AccUnit_Integration.ITestManagerComInterface): Set TestManager = NewTestManager: End Sub
+Private Function ITestManagerBridge_GetTestManager() As AccUnit_Integration.ITestManagerComInterface: Set ITestManagerBridge_GetTestManager = TestManager: End Function
 Private Sub ITestFixture_AddTestCases(ByVal Tests As SimplyVBUnit.TestCaseCollector): TestManager.AddTestCases Tests: End Sub
 
 Public Sub Setup()
    Set m_TempDbHandler = New TempDbHandler
 End Sub
 
-Public Sub TearDown()
+Public Sub Teardown()
    m_TempDbHandler.Dispose
    Set m_TempDbHandler = Nothing
 End Sub

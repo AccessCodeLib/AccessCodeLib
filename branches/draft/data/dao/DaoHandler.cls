@@ -8,13 +8,15 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: DaoHandler
+' Class: DaoHandler
 '---------------------------------------------------------------------------------------
 '/**
+' \author       Josef Poetzl
 ' <summary>
 ' DAO-Zugriffsmethoden
 ' </summary>
 ' <remarks></remarks>
+'\ingroup data_dao
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
@@ -99,13 +101,158 @@ Public Property Set CurrentDb(ByRef NewCurrentDb As DAO.Database)
 End Property
 
 '---------------------------------------------------------------------------------------
+' Function: Execute
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' SQL-Anweisung ausführen
+' </summary>
+' <param name="CommandText">SQL-Anweisung</param>
+' <param name="Options"></param>
+' <returns>Long (Anzahl der betroffenen Datensätze)</returns>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function Execute(ByVal Query As String, _
+          Optional ByVal Options As DAO.RecordsetOptionEnum) As Long
+
+    If (Options And dbSeeChanges) = 0 Then
+        Options = Options + dbSeeChanges
+    End If
+    Me.CurrentDb.Execute Query, Options
+    Execute = Me.CurrentDb.RecordsAffected
+ 
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: ExecuteParamSQL
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Sql-Anweisung mit Parametern ausführen
+' </summary>
+' <param name="SqlText">SQL-Anweisung</param>
+' <param name="ParamValues">Parmeterwerte in passender Reihenfolge</param>
+' <returns>Long (Anzahl der betroffenen Datensätze)</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function ExecuteParamSQL(ByVal SqlText As String, _
+                           ParamArray ParamValues() As Variant) As Long
+ 
+   Dim qdf As DAO.QueryDef
+   Dim i As Long
+   Dim ArraySize As Long
+   
+   ArraySize = UBound(ParamValues)
+   ReDim QdfParamDefs(ArraySize, 1)
+   For i = 0 To ArraySize
+      QdfParamDefs(i, 0) = i
+      QdfParamDefs(i, 1) = ParamValues(i)
+   Next
+   
+On Error GoTo HandleErr
+   
+   Set qdf = Me.CurrentDb.CreateQueryDef("", SqlText)
+   ExecuteParamSQL = ExecuteQueryDef(qdf, QdfParamDefs)
+
+On Error GoTo 0
+
+   qdf.Close
+   Set qdf = Nothing
+   
+ExitHere:
+   Exit Function
+   
+HandleErr:
+   If Not (qdf Is Nothing) Then
+      qdf.Close
+      Set qdf = Nothing
+   End If
+   Err.Raise Err.Number, "ExecuteParamSQL:" & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
+ 
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: ExecuteQueryDefByName
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Gespeicherte Abfrage (optional mit Parametern) ausführen
+' </summary>
+' <param name="QueryName">Name der gespeicherten Abfrage (QueryDef)</param>
+' <param name="QueryParamDefs">2-dimensionales Parameter-Array (Array(n,1) ... x(n,0) = Parametername, x(n,1) = Parameterwert)</param>
+' <returns>Long (Anzahl der betroffenen Datensätze)</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function ExecuteQueryDefByName(ByVal QueryName As String, _
+                             Optional ByVal QueryParamDefs As Variant) As Long
+   
+   Dim qdf As DAO.QueryDef
+ 
+On Error GoTo HandleErr
+ 
+   Set qdf = Me.CurrentDb.QueryDefs(QueryName)
+   ExecuteQueryDefByName = ExecuteQueryDef(qdf, QueryParamDefs)
+
+On Error GoTo 0
+
+   qdf.Close
+   Set qdf = Nothing
+   
+ExitHere:
+   Exit Function
+   
+HandleErr:
+   If Not (qdf Is Nothing) Then
+      qdf.Close
+      Set qdf = Nothing
+   End If
+   Err.Raise Err.Number, "ExecuteParamQdfByName:" & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
+ 
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: ExecuteQueryDefByName
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Gespeicherte Abfrage (optional mit Parametern) ausführen
+' </summary>
+' <param name="Qdf">QueryDef-Referenz</param>
+' <param name="QueryParamDefs">2-dimensionales Parameter-Array (Array(n,1) ... x(n,0) = Parametername, x(n,1) = Parameterwert)</param>
+' <returns>Long (Anzahl der betroffenen Datensätze)</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function ExecuteQueryDef(ByVal qdf As DAO.QueryDef, _
+                       Optional ByVal QdfParamDefs As Variant) As Long
+ 
+   Dim ParamDefsArraySize As Long
+   Dim ParamIndex As Variant
+   Dim i As Long
+   
+   If Not IsMissing(QdfParamDefs) Then
+      FillQueryDefParameters qdf, QdfParamDefs
+   End If
+   
+   qdf.Execute dbFailOnError
+   
+   ExecuteQueryDef = qdf.RecordsAffected
+
+End Function
+
+'---------------------------------------------------------------------------------------
 ' Function: OpenRecordset
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' openRecordset
+' Recordset öffnen
 ' </summary>
-' <param name="Source">SQL-Anweisung</param>
+' <param name="Source">SQL-Anweisung oder Tabllen- bzw. Abfragename</param>
 ' <param name="RecordsetType">DAO.RecordsetTypeEnum (Standard: dbOpenDynaset)</param>
 ' <param name="RecordsetOptions">DAO.RecordsetOptionEnum (Standard: dbSeeChanges)</param>
 ' <param name="LockEdit">DAO.LockTypeEnum (Standard: dbOptimistic)</param>
@@ -126,30 +273,163 @@ Public Function OpenRecordset(ByVal Source As String, _
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: Execute
+' Function: OpenRecordsetParamSQL
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' Execute
+' Parameter-SQL-Anweisung öffnen (verwendet temporäres QueryDef)
 ' </summary>
-' <param name="CommandText">SQL-Anweisung</param>
-' <param name="RecordsAffected"></param>
-' <param name="Options"></param>
-' <remarks>Achtung: Execute-Parameter weichen von DAO-Execute ab, da RecordsAffected ergänzt wurde</remarks>
+' <param name="ParamSqlText">SQL-Anweisung mit Parameter (Parameters-Deklaration)</param>
+' <param name="RecordsetType">DAO.RecordsetTypeEnum (Standard: dbOpenDynaset)</param>
+' <param name="RecordsetOptions">DAO.RecordsetOptionEnum (Standard: dbSeeChanges)</param>
+' <param name="LockEdit">DAO.LockTypeEnum (Standard: dbOptimistic)</param>
+' <param name="ParamValues">Parmeterwerte in passender Reihenfolge</param>
+' <returns>DAO.Recordset</returns>
+' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Sub Execute(ByVal Query As String, _
-          Optional ByVal Options As DAO.RecordsetOptionEnum, _
-          Optional ByRef RecordsAffected As Long)
+Public Function OpenRecordsetParamSQL(ByVal ParamSqlText As String, _
+                     ByVal RecordsetType As DAO.RecordsetTypeEnum, _
+                     ByVal Options As DAO.RecordsetOptionEnum, _
+                     ByVal LockEdit As DAO.LockTypeEnum, _
+                     ParamArray ParamValues() As Variant) As DAO.Recordset
 
-    If (Options And dbSeeChanges) = 0 Then
-        Options = Options + dbSeeChanges
-    End If
-    Me.CurrentDb.Execute Query, Options
-    RecordsAffected = Me.CurrentDb.RecordsAffected
+   Dim qdf As DAO.QueryDef
+   Dim i As Long
+   Dim QdfParamDefs() As Variant
+   Dim ArraySize As Long
+   
+   ArraySize = UBound(ParamValues)
+   ReDim QdfParamDefs(ArraySize, 1)
+
+   For i = 0 To ArraySize
+      QdfParamDefs(i, 0) = i
+      QdfParamDefs(i, 1) = ParamValues(i)
+   Next
+   
+On Error GoTo HandleErr
+   
+   Set qdf = Me.CurrentDb.CreateQueryDef("", ParamSqlText)
+   Set OpenRecordsetParamSQL = OpenRecordsetQueryDef(qdf, QdfParamDefs, RecordsetType, Options, LockEdit)
+   
+On Error GoTo 0
+
+   qdf.Close
+   Set qdf = Nothing
+   
+ExitHere:
+   Exit Function
+   
+HandleErr:
+   If Not (qdf Is Nothing) Then
+      qdf.Close
+      Set qdf = Nothing
+   End If
+   Err.Raise Err.Number, "OpenRecordsetParamSQL:" & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
  
-End Sub
+End Function
 
+'---------------------------------------------------------------------------------------
+' Function: OpenRecordsetQueryDefByName
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Recordset von gespeicherter Abfrage (optional mit Parametern) öffnen
+' </summary>
+' <param name="QueryName">Name der gespeicherten Abfrage (QueryDef)</param>
+' <param name="QueryParamDefs">2-dimensionales Parameter-Array (Array(n,1) ... x(n,0) = Parametername, x(n,1) = Parameterwert)</param>
+' <param name="RecordsetType">DAO.RecordsetTypeEnum (Standard: dbOpenDynaset)</param>
+' <param name="RecordsetOptions">DAO.RecordsetOptionEnum (Standard: dbSeeChanges)</param>
+' <param name="LockEdit">DAO.LockTypeEnum (Standard: dbOptimistic)</param>
+' <returns>DAO.Recordset</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function OpenRecordsetQueryDefByName(ByVal QueryName As String, _
+                             Optional ByVal QueryParamDefs As Variant, _
+                             Optional ByVal RecordsetType As DAO.RecordsetTypeEnum, _
+                             Optional ByVal Options As DAO.RecordsetOptionEnum, _
+                             Optional ByVal LockEdit As DAO.LockTypeEnum) As DAO.Recordset
+
+   Dim qdf As DAO.QueryDef
+   Dim i As Long
+ 
+On Error GoTo HandleErr
+ 
+   Set qdf = Me.CurrentDb.QueryDefs(QueryName)
+   Set OpenRecordsetQueryDefByName = OpenRecordsetQueryDef(qdf, QueryParamDefs, RecordsetType, Options, LockEdit)
+
+On Error GoTo 0
+
+   qdf.Close
+   Set qdf = Nothing
+   
+ExitHere:
+   Exit Function
+   
+HandleErr:
+   If Not (qdf Is Nothing) Then
+      qdf.Close
+      Set qdf = Nothing
+   End If
+   Err.Raise Err.Number, "OpenQueryDefRecordsetByName:" & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
+ 
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: OpenRecordsetQueryDef
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Recordset von gespeicherter Abfrage (optional mit Parametern) öffnen
+' </summary>
+' <param name="Qdf">QueryDef-Referenz</param>
+' <param name="QueryParamDefs">2-dimensionales Parameter-Array (Array(n,1) ... x(n,0) = Parametername, x(n,1) = Parameterwert)</param>
+' <param name="RecordsetType">DAO.RecordsetTypeEnum (Standard: dbOpenDynaset)</param>
+' <param name="RecordsetOptions">DAO.RecordsetOptionEnum (Standard: dbSeeChanges)</param>
+' <param name="LockEdit">DAO.LockTypeEnum (Standard: dbOptimistic)</param>
+' <returns>DAO.Recordset</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function OpenRecordsetQueryDef(ByVal qdf As DAO.QueryDef, _
+                             Optional ByVal QdfParamDefs As Variant, _
+                             Optional ByVal RecordsetType As DAO.RecordsetTypeEnum, _
+                             Optional ByVal Options As DAO.RecordsetOptionEnum, _
+                             Optional ByVal LockEdit As DAO.LockTypeEnum) As DAO.Recordset
+ 
+   Dim ParamDefsArraySize As Long
+   Dim ParamIndex As Variant
+   Dim i As Long
+   
+   If Not IsMissing(QdfParamDefs) Then
+      FillQueryDefParameters qdf, QdfParamDefs
+   End If
+
+   Set OpenRecordsetQueryDef = qdf.OpenRecordset(RecordsetType, Options, LockEdit)
+
+End Function
+
+Private Sub FillQueryDefParameters(ByVal qdf As DAO.QueryDef, ByVal QdfParamDefs As Variant)
+   
+   Dim ParamDefsArraySize As Long
+   Dim ParamIndex As Variant
+   Dim i As Long
+
+   ParamDefsArraySize = UBound(QdfParamDefs, 1)
+   
+   With qdf
+      For i = 0 To ParamDefsArraySize
+         ParamIndex = QdfParamDefs(i, 0)
+         If Len(ParamIndex) > 0 Then
+            .Parameters(ParamIndex).Value = QdfParamDefs(i, 1)
+         End If
+      Next i
+   End With
+   
+End Sub
 
 '---------------------------------------------------------------------------------------
 ' Function: LookupSQL
@@ -158,13 +438,15 @@ End Sub
 ' <summary>
 ' Lookup-Recordset-Ersatzfunktion für die Übergabe einer vollständigen SQL-Anweisung
 ' </summary>
-' <param name="sSQL">SQL-Anweisung</param>
+' <param name="SqlText">SQL-Anweisung</param>
 ' <param name="Index">Feldauswahl, falls nicht das erste Feld des Recordsets zurückgegeben werden soll</param>
+' <param name="ValueIfNull">Rückgabewert bei fehlendem Datensatz oder NULL-Feldwert (Standard: Null</param>
 ' <returns>Variant</returns>
 ' <remarks>Die SQL-Anweisung ist im Jet-SQL-Dialekt zu schreiben.</remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function LookupSQL(ByVal SqlText As String, Optional ByVal Index As Variant = 0&, _
+Public Function LookupSQL(ByVal SqlText As String, _
+                 Optional ByVal Index As Variant = 0&, _
                  Optional ByVal ValueIfNull As Variant = Null) As Variant
 
     Dim rst As DAO.Recordset
