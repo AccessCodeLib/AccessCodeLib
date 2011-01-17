@@ -23,6 +23,7 @@ Attribute VB_Exposed = False
 '  <file>data/ado/AdodbHandler.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <ref><name>ADODB</name><major>2</major><minor>1</minor><guid>{00000201-0000-0010-8000-00AA006D2EA4}</guid></ref>
+'  <test>_test/data/ado/AdodbHandlerTests.cls</test>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
