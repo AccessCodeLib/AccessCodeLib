@@ -71,9 +71,10 @@ End Sub
 
 Public Sub ConnectionString_Jet_ReturnsNullString()
    
-   Const expected As String = vbNullString
+   Dim expected As String
    Dim actual As String
    
+   expected = OdbcConnectionString
    actual = m_OdbcHandler.ConnectionString
    Assert.AreEqual expected, actual
    
