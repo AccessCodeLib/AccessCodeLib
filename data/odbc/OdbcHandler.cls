@@ -831,6 +831,7 @@ Private Function RelinkTableDef(ByVal tdf As DAO.TableDef, _
    Dim Attr As TableDefAttributeEnum
    
    If Not IsLinkedTable(tdf) Then
+      RelinkTableDef = False
       Exit Function
    End If
    
@@ -844,6 +845,8 @@ Private Function RelinkTableDef(ByVal tdf As DAO.TableDef, _
          RemoveTableDefAttribut tdf, dbAttachSavePWD
       End If
    End With
+   
+   RelinkTableDef = True
    
 End Function
 
@@ -951,10 +954,12 @@ Private Function RelinkPassThroughQueryDef(ByVal qdf As DAO.QueryDef, _
    Dim Attr As TableDefAttributeEnum
    
    If Not IsPassThroughQuery(qdf) Then
+      RelinkPassThroughQueryDef = False
       Exit Function
    End If
    
    qdf.Connect = NewConnectionString
+   RelinkPassThroughQueryDef = True
    
 End Function
 

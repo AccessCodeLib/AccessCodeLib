@@ -35,6 +35,9 @@ Private WithEvents m_OdbcHandler As OdbcHandler
 Attribute m_OdbcHandler.VB_VarHelpID = -1
 Private m_TempDbHandler As TempDbHandler
 
+Private Const TestTableName As String = "Test"
+Private Const TestTableDDL As String = "CREATE TABLE " & TestTableName & " (id counter(1,1), T varchar(255), Z int)"
+
 '--------------------------------------------------------------------
 ' AccUnit Infrastructure
 '--------------------------------------------------------------------
@@ -53,7 +56,7 @@ End Sub
 
 Public Sub Teardown()
    Set m_OdbcHandler = Nothing
-   Set m_TempDbHandler = Nothing
+   DisposeTempDb
 End Sub
 
 '--------------------------------------------------------------------
@@ -76,20 +79,58 @@ Public Sub ConnectionString_Jet_ReturnsNullString()
    
 End Sub
 
+Public Sub RelinkTable_Jet_ReturnsTrue()
+
+   Const expected As Boolean = True
+   Dim actual As Boolean
+
+   actual = m_OdbcHandler.RelinkTable(TestTableName)
+   
+   Assert.AreEqual expected, actual
+   
+End Sub
+
+
 '--------------------------------------------------------------------
 ' Test support
 '--------------------------------------------------------------------
 
 Private Sub InitTempDb()
    Set m_TempDbHandler = New TempDbHandler
-   m_TempDbHandler.CreateTable "test", "create table test (id counter(1,1), Z int)"
+   m_TempDbHandler.CreateTable TestTableName, TestTableDDL
+   LinkTestTable
 End Sub
 
 Private Sub InitOdbcHandler()
    Set m_OdbcHandler = New OdbcHandler
    m_OdbcHandler.HooksEnabled = True
    
-   'Db-Instanzen übergeben (solange kein ODBC-String benötigt wird, funktioniert das auch mit Jet-Datenbanken)
-   Set m_OdbcHandler.CurrentDb = m_TempDbHandler.CurrentDatabase
+   'Db-Instanzen übergeben (solange kein "richtiger" ODBC-String benötigt wird, funktioniert das auch mit Jet-Datenbanken)
    Set m_OdbcHandler.CurrentDbBE = m_TempDbHandler.CurrentDatabase
+   m_OdbcHandler.ConnectionString = OdbcConnectionString
+   Set m_OdbcHandler.CurrentDb = CurrentDb
+   
+End Sub
+
+Private Sub LinkTestTable()
+   
+   Dim db As DAO.Database
+   Dim tdf As DAO.TableDef
+   
+   Set db = CurrentDb
+   Set tdf = db.CreateTableDef(TestTableName)
+   tdf.SourceTableName = TestTableName
+   tdf.Connect = OdbcConnectionString
+   db.TableDefs.Append tdf
+   db.TableDefs.Refresh
+
+End Sub
+
+Private Property Get OdbcConnectionString() As String
+   OdbcConnectionString = ";Database=" & m_TempDbHandler.CurrentDatabase.Name
+End Property
+
+Private Sub DisposeTempDb()
+   CurrentDb.TableDefs.Delete TestTableName
+   Set m_TempDbHandler = Nothing
 End Sub
