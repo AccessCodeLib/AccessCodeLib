@@ -303,8 +303,8 @@ End Property
 ' <param name="appName">Anwendungsname</param>
 '**/
 '---------------------------------------------------------------------------------------
-Public Property Let ApplicationName(ByVal appName As String)
-    m_ApplicationName = appName
+Public Property Let ApplicationName(ByVal AppName As String)
+    m_ApplicationName = AppName
 End Property
 
 
@@ -340,8 +340,8 @@ End Property
 ' <param name="appName">Anwendungsname</param>
 '**/
 '---------------------------------------------------------------------------------------
-Public Property Let ApplicationFullName(ByVal appName As String)
-    m_ApplicationFullName = appName
+Public Property Let ApplicationFullName(ByVal AppName As String)
+    m_ApplicationFullName = AppName
 End Property
 
 '---------------------------------------------------------------------------------------

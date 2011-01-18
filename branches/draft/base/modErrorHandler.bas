@@ -260,29 +260,29 @@ End Function
 Public Sub ShowErrorMessage(ByVal lErrorNumber As Long, ByRef sSource As String, ByRef sErrorDescription As String)
    
    Dim strMsgBoxTitle As String
-   Dim pos As Long
-   Dim tempString As String
+   Dim Pos As Long
+   Dim TempString As String
 
 On Error Resume Next
    
    Const conLineBreakPos As Long = 50
    
-   pos = InStr(1, sSource, m_ErrorSourceDelimiterSymbol, vbBinaryCompare)
-   If pos > 1 Then
-      strMsgBoxTitle = Left$(sSource, pos - 1)
+   Pos = InStr(1, sSource, m_ErrorSourceDelimiterSymbol, vbBinaryCompare)
+   If Pos > 1 Then
+      strMsgBoxTitle = Left$(sSource, Pos - 1)
    Else
       strMsgBoxTitle = sSource
    End If
    
    If Len(sSource) > conLineBreakPos Then
-      pos = InStr(conLineBreakPos, sSource, m_ErrorSourceDelimiterSymbol)
-      If pos > 0 Then
-         Do While pos > 0
-            tempString = tempString & Left$(sSource, pos - 1) & vbNewLine
-            sSource = Mid$(sSource, pos)
-            pos = InStr(conLineBreakPos, sSource, m_ErrorSourceDelimiterSymbol)
+      Pos = InStr(conLineBreakPos, sSource, m_ErrorSourceDelimiterSymbol)
+      If Pos > 0 Then
+         Do While Pos > 0
+            TempString = TempString & Left$(sSource, Pos - 1) & vbNewLine
+            sSource = Mid$(sSource, Pos)
+            Pos = InStr(conLineBreakPos, sSource, m_ErrorSourceDelimiterSymbol)
          Loop
-         sSource = tempString & sSource
+         sSource = TempString & sSource
       End If
    End If
    
