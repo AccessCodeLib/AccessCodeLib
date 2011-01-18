@@ -8,6 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
+' AccUnit:TestClass
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' AccUnit-Testklasse für StringTools
+' </summary>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_test/text/StringToolsTests.cls</file>
 '  <license>_codelib/license.bas</license>
@@ -18,7 +28,6 @@ Attribute VB_Exposed = False
 Option Compare Text
 Option Explicit
 
-'AccUnit:TestClass
 'VBA-Inspector:Ignore
 
 '--------------------------------------------------------------------
