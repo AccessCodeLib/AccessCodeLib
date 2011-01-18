@@ -1,22 +1,20 @@
-Attribute VB_Name = "modFiles"
+Attribute VB_Name = "FileTools"
 Attribute VB_Description = "Funktionen für Dateioperationen"
 '---------------------------------------------------------------------------------------
-' Module: modFiles (Josef Pötzl, 2009-12-13)
+' Module: FileTools
 '---------------------------------------------------------------------------------------
 '/**
-' <summary>
-' Funktionen für Dateioperationen
-' </summary>
+'\author    Josef Poetzl
+'\short     Funktionen für Dateioperationen
 ' <remarks>
 ' </remarks>
 '\ingroup file
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>file/modFiles.bas</file>
+'  <file>file/FileTools.bas</file>
 '  <license>_codelib/license.bas</license>
-'  <use>base/defGlobal.bas</use>
-'  <test>_test/file/Test_modFiles.cls</test>
+'  <test>_test/file/FileToolsTests.cls</test>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -67,7 +65,7 @@ Public Function SelectFile(Optional ByVal InitialDir As String = vbNullString, _
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: SelectFolder (2009-11-11)
+' Function: SelectFolder
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -93,7 +91,6 @@ Public Function SelectFolder(Optional ByVal InitialDir As String = vbNullString,
 
 End Function
 
-
 Private Function WizHook_GetFileName( _
                            ByVal InitialDir As String, _
                            ByVal DlgTitle As String, _
@@ -102,7 +99,8 @@ Private Function WizHook_GetFileName( _
                            Optional ByVal MultiSelectEnabled As Boolean = False, _
                            Optional ByVal SplitDelimiter As String = "|", _
                            Optional ByVal ViewMode As Long = -1, _
-                           Optional ByVal SelectFolderFlag As Boolean = False) As String
+                           Optional ByVal SelectFolderFlag As Boolean = False, _
+                           Optional ByVal AppName As String) As String
 
 'Zusammenfassung der Parameter von WizHook.GetFileName: http://www.team-moeller.de/?Tipps_und_Tricks:Wizhook-Objekt:GetFileName
 'View  0: Detailansicht
@@ -118,35 +116,49 @@ Private Function WizHook_GetFileName( _
 '     32: Ordnerauswahldialog
 '     64: Wert im Parameter "View" berücksichtigen
 
-   Dim selectedFileString As String
-   Dim wizHookRetVal As Long
+   Dim SelectedFileString As String
+   Dim WizHookRetVal As Long
 
    If InStr(1, InitialDir, " ") > 0 Then
       InitialDir = """" & InitialDir & """"
    End If
 
-   Dim flags As Long
-   flags = 0
-   If MultiSelectEnabled Then flags = flags + 8
-   If SelectFolderFlag Then flags = flags + 32
+   Dim Flags As Long
+   Flags = 0
+   If MultiSelectEnabled Then Flags = Flags + 8
+   If SelectFolderFlag Then Flags = Flags + 32
 
    If ViewMode >= 0 Then
-      flags = flags + 64
+      Flags = Flags + 64
    Else
       ViewMode = 0
    End If
 
    WizHook.Key = 51488399
-   wizHookRetVal = WizHook.GetFileName( _
-                        Access.Application.hWndAccessApp, CurrentApplicationName, DlgTitle, OpenTitle, _
-                        selectedFileString, InitialDir, FilterString, 0, ViewMode, flags, True)
-   If wizHookRetVal = 0 Then
-      If MultiSelectEnabled Then selectedFileString = Replace(selectedFileString, vbTab, SplitDelimiter)
-      WizHook_GetFileName = selectedFileString
+   WizHookRetVal = WizHook.GetFileName( _
+                        Access.Application.hWndAccessApp, AppName, DlgTitle, OpenTitle, _
+                        SelectedFileString, InitialDir, FilterString, 0, ViewMode, Flags, True)
+   If WizHookRetVal = 0 Then
+      If MultiSelectEnabled Then SelectedFileString = Replace(SelectedFileString, vbTab, SplitDelimiter)
+      WizHook_GetFileName = SelectedFileString
    End If
 
 End Function
 
+'---------------------------------------------------------------------------------------
+' Function: UNCPath
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Gibt den UNC-Pfad zurück
+' </summary>
+' <param name="Path">Pfadangabe</param>
+' <param name="IgnoreErrors">Fehler von API ignorieren</param>
+' <returns>String</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 Public Function UNCPath(ByVal Path As String, Optional ByVal IgnoreErrors As Boolean = True) As String
 
   Dim UNC As String * 512
@@ -173,13 +185,12 @@ Public Function UNCPath(ByVal Path As String, Optional ByVal IgnoreErrors As Boo
 End Function
 
 '---------------------------------------------------------------------------------------
-' Property: TempPath (2009-11-11)
+' Property: TempPath
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
 ' Temp-Verzeichnis ermitteln
 ' </summary>
-' <param name="Param"></param>
 ' <returns>String</returns>
 ' <remarks>
 ' Verwendet API GetTempPathA
@@ -188,27 +199,27 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Property Get TempPath() As String
 
-   Dim strTemp As String
+   Dim TempString As String
 
-   strTemp = Space$(m_MAXPATHLEN)
-   API_GetTempPath m_MAXPATHLEN, strTemp
-   strTemp = Left$(strTemp, InStr(strTemp, Chr$(0)) - 1)
-   If Len(strTemp) = 0 Then
-      strTemp = m_DEFAULT_TEMPPATH_NoEnv
+   TempString = Space$(m_MAXPATHLEN)
+   API_GetTempPath m_MAXPATHLEN, TempString
+   TempString = Left$(TempString, InStr(TempString, Chr$(0)) - 1)
+   If Len(TempString) = 0 Then
+      TempString = m_DEFAULT_TEMPPATH_NoEnv
    End If
-   TempPath = strTemp
+   TempPath = TempString
 
 End Property
 
 '---------------------------------------------------------------------------------------
-' Function: ShortFileName (2009-11-11)
+' Function: ShortenFileName
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
 ' Dateipfad auf n Zeichen kürzen
 ' </summary>
-' <param name="vFile">Vollständiger Pfad</param>
-' <param name="lMaxLen">die gewünschte Länge</param>
+' <param name="FullFileName">Vollständiger Pfad</param>
+' <param name="MaxLen">gewünschte Länge</param>
 ' <returns>String</returns>
 ' <remarks>
 ' Hilfreich für die Anzeigen in schmalen Textfeldern \n
@@ -216,153 +227,151 @@ End Property
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function ShortFileName(ByVal vFile As Variant, Optional ByVal lMaxLen As Long = 40) As String
+Public Function ShortenFileName(ByVal FullFileName As Variant, ByVal MaxLen As Long) As String
 
-   Dim strFile As String
-   Dim strTemp As String
-   Dim lngPos As Long
+   Dim FileString As String
+   Dim Temp As String
+   Dim TrimPos As Long
 
-   If IsNull(vFile) Then
-      strFile = vbNullString
+   FileString = Nz(FullFileName, vbNullString)
+   If Len(FileString) <= MaxLen Then
+      ShortenFileName = FileString
+      Exit Function
+   End If
+
+   TrimPos = InStrRev(FileString, "\")
+   Temp = Mid$(FileString, TrimPos)
+   FileString = Left$(FileString, TrimPos - 1)
+
+   TrimPos = MaxLen - Len(Temp) - 3
+   If TrimPos < 2 Then
+      FileString = "..." & Temp
    Else
-      strFile = vFile
-   End If
-   If Len(strFile) > lMaxLen Then
-      lngPos = InStrRev(strFile, "\")
-      strTemp = Mid$(strFile, lngPos)
-      strFile = Left$(strFile, lngPos - 1)
-
-      lngPos = lMaxLen - Len(strTemp) - 3
-      If lngPos < 2 Then
-         strTemp = "..." & strTemp
-      Else
-         lngPos = lngPos \ 2
-         strTemp = Left$(strFile, lngPos) & "..." & Right$(strFile, lngPos) & strTemp
-      End If
-      strFile = strTemp
+      TrimPos = TrimPos \ 2
+      FileString = Left$(FileString, TrimPos) & "..." & Right$(FileString, TrimPos) & Temp
    End If
 
-   ShortFileName = strFile
+   ShortenFileName = FileString
 
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: FileNameWithoutPath (2009-11-11)
+' Function: FileNameWithoutPath
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' Dateinamen ohne Verzeichnis
+' Dateinamen aus vollständiger Pfadangabe extrahieren
 ' </summary>
-' <param name="vFile">Dateiname inkl. Verzeichnis</param>
+' <param name="FullPath">Dateiname inkl. Verzeichnis</param>
 ' <returns>String</returns>
 ' <remarks>
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function FileNameWithoutPath(ByVal vFile As Variant) As String
+Public Function FileNameWithoutPath(ByVal FullPath As Variant) As String
 
-   Dim sFile As String
-   Dim lngPos As Long
+   Dim Temp As String
+   Dim Pos As Long
 
-   sFile = Nz(vFile, vbNullString)
-   lngPos = InStrRev(sFile, "\")
-   If lngPos > 0 Then
-      FileNameWithoutPath = Mid$(sFile, lngPos + 1)
+   Temp = Nz(FullPath, vbNullString)
+   Pos = InStrRev(Temp, "\")
+   If Pos > 0 Then
+      FileNameWithoutPath = Mid$(Temp, Pos + 1)
    Else
-      FileNameWithoutPath = sFile
+      FileNameWithoutPath = Temp
    End If
 
 End Function
 
 
 '---------------------------------------------------------------------------------------
-' Function: CreateDirectory (2009-11-11)
+' Function: CreateDirectory
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
 ' Erstelle ein Verzeichnis inkl. aller fehlenden übergeordneten Verzeichnisse
 ' </summary>
-' <param name="spath">Zu erstellendes Verzeichnis</param>
+' <param name="FullPath">Zu erstellendes Verzeichnis</param>
 ' <returns>Boolean: True = Verzeichnis wurde erstellt</returns>
 ' <remarks>
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function CreateDirectory(ByVal sPath As String) As Boolean
+Public Function CreateDirectory(ByVal FullPath As String) As Boolean
 
-   Dim strPathBefore As String
+   Dim PathBefore As String
 
-   If Right$(sPath, 1) = "\" Then
-      sPath = Left$(sPath, Len(sPath) - 1)
+   If Right$(FullPath, 1) = "\" Then
+      FullPath = Left$(FullPath, Len(FullPath) - 1)
    End If
 
-   If Len(Dir$(sPath, vbDirectory)) > 0 Then 'Verzeichnis ist bereits vorhanden
+   If Len(Dir$(FullPath, vbDirectory)) > 0 Then 'Verzeichnis ist bereits vorhanden
       CreateDirectory = False
       Exit Function
    End If
 
-   strPathBefore = Mid$(sPath, 1, InStrRev(sPath, "\") - 1)
-   If Len(Dir$(strPathBefore, vbDirectory)) = 0 Then
-      If CreateDirectory(strPathBefore) = False Then
+   PathBefore = Mid$(FullPath, 1, InStrRev(FullPath, "\") - 1)
+   If Len(Dir$(PathBefore, vbDirectory)) = 0 Then
+      If CreateDirectory(PathBefore) = False Then
          CreateDirectory = False
          Exit Function
       End If
    End If
 
-   MkDir sPath
+   MkDir FullPath
 
    CreateDirectory = True
 
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: FileExists (2009-11-11)
+' Function: FileExists
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
 ' Prüft Existens einer Datei
 ' </summary>
-' <param name="PathName">Vollständige Pfadangabe</param>
+' <param name="FullPath">Vollständige Pfadangabe</param>
 ' <returns>Boolean</returns>
 ' <remarks>
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function FileExists(ByVal PathName As String) As Boolean
+Public Function FileExists(ByVal FullPath As String) As Boolean
 
-   Do While Right$(PathName, 1) = "\"
-      PathName = Left$(PathName, Len(PathName) - 1)
+   Do While Right$(FullPath, 1) = "\"
+      FullPath = Left$(FullPath, Len(FullPath) - 1)
    Loop
-   FileExists = (Len(Dir$(PathName, vbReadOnly Or vbHidden Or vbSystem)) > 0)
+   FileExists = (Len(Dir$(FullPath, vbReadOnly Or vbHidden Or vbSystem)) > 0)
       '6 = vbNormal or vbHidden or vbSystem
 
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: DirExists (2009-11-11)
+' Function: DirExists
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
 ' Prüft Existenz eines Verzeichnisses
 ' </summary>
-' <param name="PathName">Vollständige Pfadangabe</param>
+' <param name="FullPath">Vollständige Pfadangabe</param>
 ' <returns>Boolean</returns>
 ' <remarks>
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function DirExists(ByVal PathName As String) As Boolean
+Public Function DirExists(ByVal FullPath As String) As Boolean
 
-   If Right$(PathName, 1) <> "\" Then
-      PathName = PathName & "\"
+   If Right$(FullPath, 1) <> "\" Then
+      FullPath = FullPath & "\"
    End If
 
-   DirExists = (Dir$(PathName, vbDirectory Or vbReadOnly Or vbHidden Or vbSystem) = ".")
+   DirExists = (Dir$(FullPath, vbDirectory Or vbReadOnly Or vbHidden Or vbSystem) = ".")
 
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: GetFileUpdateDate (2009-11-11)
+' Function: GetFileUpdateDate
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -371,12 +380,13 @@ End Function
 ' <param name="FullFileName">Vollständige Pfadangabe</param>
 ' <returns>Variant</returns>
 ' <remarks>
+' Fehler von API-Funktion werden ignoriert
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
 Public Function GetFileUpdateDate(ByVal FullFileName As String) As Variant
-On Error Resume Next
    If Len(Dir$(FullFileName)) > 0 Then
+      On Error Resume Next
       GetFileUpdateDate = FileDateTime(FullFileName)
    Else
       GetFileUpdateDate = Null
@@ -385,50 +395,53 @@ End Function
 
 
 '---------------------------------------------------------------------------------------
-' Function: GetClearedStringForFileName (2009-11-11)
+' Function: ConvertStringToFileName
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
 ' Erzeugt aus einer Zeichenkette einen Dateinamen (ersetzt Sonderzeichen)
 ' </summary>
-' <param name="strName">Ausgangsstring für Dateinamen</param>
-' <param name="ReplacementSign">Zeichen als Ersatz für Sonderzeichen</param>
+' <param name="Text">Ausgangsstring für Dateinamen</param>
+' <param name="ReplaceWith">Zeichen als Ersatz für Sonderzeichen</param>
+' <param name="CharsToReplace">Zeichen die mit ReplaceWith ersetzt werden</param>
+' <param name="CharsToDelete">Zeichen die entfernt werden</param>
 ' <returns>String</returns>
 ' <remarks>
 ' Sonderzeichen: ? * " / ' : ( )
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetClearedStringForFileName(ByVal strName As String, Optional ByVal ReplacementSign As String = "_") As String
+Public Function ConvertStringToFileName(ByVal Text As String, _
+                                   Optional ByVal ReplaceWith As String = "_", _
+                                   Optional ByVal CharsToReplace As String = "/':()", _
+                                   Optional ByVal CharsToDelete As String = "?*""") As String
 
-On Error Resume Next
-
-   Dim strTemp As String
-
-   strTemp = Replace(strTemp, "?", vbNullString)
-   strTemp = Replace(strTemp, "*", vbNullString)
-   strTemp = Replace(strTemp, """", vbNullString)
-
-   strTemp = Replace(strName, "/", ReplacementSign)
-   strTemp = Replace(strTemp, "'", ReplacementSign)
-   strTemp = Replace(strTemp, ":", ReplacementSign)
-   strTemp = Replace(strTemp, "(", ReplacementSign)
-   strTemp = Replace(strTemp, ")", ReplacementSign)
-   'strTemp = Replace(strTemp, " ", ReplacementSign)
-
-   GetClearedStringForFileName = strTemp
+   Dim FileName As String
+   Dim i As Long
+   
+   FileName = Trim$(Text)
+   
+   For i = 1 To Len(CharsToDelete)
+      FileName = Replace(FileName, Mid(CharsToReplace, i, 1), vbNullString)
+   Next
+   
+   For i = 1 To Len(CharsToReplace)
+      FileName = Replace(FileName, Mid(CharsToReplace, i, 1), ReplaceWith)
+   Next
+   
+   ConvertStringToFileName = FileName
 
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: GetFullPathFromRelativPath (2009-11-11)
+' Function: GetFullPathFromRelativPath
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
 ' Erezugt aus relativer Pfadangabe und "Basisverzeichnis" eine vollständige Pfadangabe
 ' </summary>
-' <param name="sRelativPath">relativer Pfad</param>
-' <param name="sBaseFolder">Ausgangsverzeichnis</param>
+' <param name="RelativPath">relativer Pfad</param>
+' <param name="BaseDir">Ausgangsverzeichnis</param>
 ' <returns>String</returns>
 ' <remarks>
 ' Beispiel:
@@ -436,56 +449,55 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetFullPathFromRelativPath(ByVal sRelativPath As String, ByVal sBaseFolder As String) As String
+Public Function GetFullPathFromRelativPath(ByVal RelativPath As String, _
+                                           ByVal BaseDir As String) As String
 
-   Dim strPath As String
-   Dim strBase As String
-   Dim lngPos As Long
+   Dim FullPath As String
+   Dim Pos As Long
 
-   strBase = sBaseFolder
-   If Right$(strBase, 1) = "\" Then
-      strBase = Left$(strBase, Len(strBase) - 1)
+   If Right$(BaseDir, 1) = "\" Then
+      BaseDir = Left$(BaseDir, Len(BaseDir) - 1)
    End If
 
-   strPath = sRelativPath
-   If Mid$(strPath, 2, 1) = ":" Or Left$(strPath, 2) = "\\" Then ' absolut path !!!
-      GetFullPathFromRelativPath = strPath
+   FullPath = RelativPath
+   If Mid$(FullPath, 2, 1) = ":" Or Left$(FullPath, 2) = "\\" Then ' absolut path !!!
+      GetFullPathFromRelativPath = FullPath
       Exit Function
-   ElseIf Left$(strPath, 1) = "\" Then 'first dir
-      lngPos = InStr(3, strBase, "\")
-      If lngPos > 0 Then
-         strBase = Left$(strBase, lngPos - 1)
+   ElseIf Left$(FullPath, 1) = "\" Then 'first dir
+      Pos = InStr(3, BaseDir, "\")
+      If Pos > 0 Then
+         BaseDir = Left$(BaseDir, Pos - 1)
       End If
-      GetFullPathFromRelativPath = strBase & strPath
+      GetFullPathFromRelativPath = BaseDir & FullPath
       Exit Function
-   ElseIf strPath = "." Then
-      GetFullPathFromRelativPath = strBase
+   ElseIf FullPath = "." Then
+      GetFullPathFromRelativPath = BaseDir
       Exit Function
-   ElseIf Left$(strPath, 2) = ".\" Then
-      strPath = Mid$(strPath, 3)
+   ElseIf Left$(FullPath, 2) = ".\" Then
+      FullPath = Mid$(FullPath, 3)
    End If
 
-   Do While Left$(strPath, 3) = "..\"
-      strPath = Mid$(strPath, 4)
-      lngPos = InStrRev(strBase, "\")
-      If lngPos > 0 Then
-         strBase = Left$(strBase, lngPos - 1)
+   Do While Left$(FullPath, 3) = "..\"
+      FullPath = Mid$(FullPath, 4)
+      Pos = InStrRev(BaseDir, "\")
+      If Pos > 0 Then
+         BaseDir = Left$(BaseDir, Pos - 1)
       End If
    Loop
 
-   GetFullPathFromRelativPath = strBase & "\" & strPath
+   GetFullPathFromRelativPath = BaseDir & "\" & FullPath
 
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: GetRelativPathFromFullPath (2009-11-11)
+' Function: GetRelativPathFromFullPath
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
 ' Erzeugt einen relativen Pfad aus vollständiger Pfadangabe und Ausgangsverzeichnis
 ' </summary>
-' <param name="sFullPath">vollständiger Pfadangabe</param>
-' <param name="sBaseFolder">Ausgangsverzeichnis</param>
+' <param name="FullPath">vollständiger Pfadangabe</param>
+' <param name="BaseDir">Ausgangsverzeichnis</param>
 ' <param name="RelativePrefix">".\" als Kennung für relativen Pfad ergänzen</param>
 ' <returns>String</returns>
 ' <remarks>
@@ -497,129 +509,155 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetRelativPathFromFullPath( _
-                        ByVal sFullPath As String, ByVal sBaseFolder As String, _
-                        Optional ByVal EnableRelativePrefix As Boolean = False) As String
+Public Function GetRelativPathFromFullPath(ByVal FullPath As String, _
+                                           ByVal BaseDir As String, _
+                                  Optional ByVal EnableRelativePrefix As Boolean = False) As String
 
-   Dim strPath As String
-   Dim strRetPath As String
-   Dim lngPos As Long
-   Dim lngRetCounter As Long, i As Long
+   Dim RelativPath As String
+   Dim Pos As Long
+   Dim Counter As Long, i As Long
 
-   If sFullPath = sBaseFolder Then
+   If FullPath = BaseDir Then
       GetRelativPathFromFullPath = "."
       Exit Function
    End If
 
-   If Right$(sBaseFolder, 1) <> "\" Then sBaseFolder = sBaseFolder & "\"
-   If sFullPath = sBaseFolder Then
+   If Right$(BaseDir, 1) <> "\" Then BaseDir = BaseDir & "\"
+   If FullPath = BaseDir Then
       GetRelativPathFromFullPath = "."
       Exit Function
    End If
 
-   strPath = sBaseFolder
+   RelativPath = BaseDir
 
-   Do While InStr(1, sFullPath, strPath) = 0
-      lngPos = InStrRev(Left$(strPath, Len(strPath) - 1), "\")
-      strPath = Left$(strPath, lngPos)
-      lngRetCounter = lngRetCounter + 1
-      If Len(strPath) = 0 Then
-         lngRetCounter = 0
+   Do While InStr(1, FullPath, RelativPath) = 0
+      Pos = InStrRev(Left$(RelativPath, Len(RelativPath) - 1), "\")
+      RelativPath = Left$(RelativPath, Pos)
+      Counter = Counter + 1
+      If Len(RelativPath) = 0 Then
+         Counter = 0
          Exit Do
       End If
    Loop
 
-   If Len(strPath) > 0 Then
-      strRetPath = Replace(sFullPath, strPath, vbNullString)
-      For i = 1 To lngRetCounter
-         strRetPath = "..\" & strRetPath
+   If Len(RelativPath) > 0 Then
+      RelativPath = Replace(FullPath, RelativPath, vbNullString)
+      For i = 1 To Counter
+         RelativPath = "..\" & RelativPath
       Next
 
       If EnableRelativePrefix Then
-         strRetPath = ".\" & strRetPath
+         RelativPath = ".\" & RelativPath
       End If
 
    Else
-      strRetPath = sFullPath
+      RelativPath = FullPath
    End If
 
-   GetRelativPathFromFullPath = strRetPath
+   GetRelativPathFromFullPath = RelativPath
 
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: GetDirFromFilePath (2009-11-11)
+' Function: GetDirFromFullFileName
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
 ' Ermittels aus vollständer Pfadangabe einer Datei das Verzeichnis
 ' </summary>
-' <param name="sFileName">vollständer Pfadangabe</param>
+' <param name="FullFileName">vollständer Pfadangabe</param>
 ' <returns>String</returns>
 ' <remarks>
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetDirFromFilePath(ByVal sFileName As String) As String
+Public Function GetDirFromFullFileName(ByVal FullFileName As String) As String
 
-   Dim strPath As String
-   Dim lngPos As Long
+   Dim DirPath As String
+   Dim Pos As Long
 
-   strPath = sFileName
-   lngPos = InStrRev(strPath, "\")
-   If lngPos > 0 Then
-      strPath = Left$(strPath, lngPos)
+   DirPath = FullFileName
+   Pos = InStrRev(DirPath, "\")
+   If Pos > 0 Then
+      DirPath = Left$(DirPath, Pos)
    Else
-      strPath = vbNullString
+      DirPath = vbNullString
    End If
 
-   GetDirFromFilePath = strPath
+   GetDirFromFullFileName = DirPath
 
 End Function
 
-
 '---------------------------------------------------------------------------------------
-' Sub: AddToZipFile (2009-11-09)
+' Sub: AddToZipFile
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
 ' Datei an Zip-Datei anhängen.
 ' </summary>
-' <param name="Param"></param>
-' <returns></returns>
+' <param name="ZipFile">Zip-Datei</param>
+' <param name="FullFileName">Datei, die angehängt werden soll</param>
 ' <remarks>
 ' CreateObject("Shell.Application").Namespace(zipFile & "").CopyHere sFile & ""
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Sub AddToZipFile(ByVal zipFile As String, ByVal sFile As String)
+Public Sub AddToZipFile(ByVal ZipFile As String, ByVal FullFileName As String)
 
-   If Len(Dir$(zipFile)) = 0 Then
-      CreateZipFile zipFile
+   If Len(Dir$(ZipFile)) = 0 Then
+      CreateZipFile ZipFile
    End If
 
    With CreateObject("Shell.Application")
-      .Namespace(zipFile & "").CopyHere sFile & ""
+      .Namespace(ZipFile & "").CopyHere FullFileName & ""
    End With
 
 End Sub
 
-Public Function ExtractFromZipFile(ByVal zipFile As String, ByVal Destination As String) As String
+'---------------------------------------------------------------------------------------
+' Function: ExtractFromZipFile
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Datei aus Zip-Datei extrahieren
+' </summary>
+' <param name="ZipFile">Zip-Datei</param>
+' <param name="Destination">Zielverzeichnis</param>
+' <returns>String</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function ExtractFromZipFile(ByVal ZipFile As String, ByVal Destination As String) As String
 
    With CreateObject("Shell.Application")
-      .Namespace(Destination & "").CopyHere .Namespace(zipFile & "").Items
-      ExtractFromZipFile = .Namespace(zipFile & "").Items.Item(0).Name
+      .Namespace(Destination & "").CopyHere .Namespace(ZipFile & "").Items
+      ExtractFromZipFile = .Namespace(ZipFile & "").Items.Item(0).Name
    End With
 
 End Function
 
-Public Function CreateZipFile(ByVal zipFile As String, Optional DeleteExistingFile As Boolean = False) As Boolean
+'---------------------------------------------------------------------------------------
+' Function: CreateZipFile
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Erzeugt leere Zipdatei
+' </summary>
+' <param name="ZipFile">Zip-Datei</param>
+' <param name="DeleteExistingFile">Vorhandene Zip-Datei löschen</param>
+' <returns>Boolean</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function CreateZipFile(ByVal ZipFile As String, Optional DeleteExistingFile As Boolean = False) As Boolean
 
    Dim fileHandle As Long
 
-   If Len(Dir$(zipFile)) > 0 Then
+   If Len(Dir$(ZipFile)) > 0 Then
       If DeleteExistingFile Then
-         Kill zipFile
+         Kill ZipFile
       Else
          CreateZipFile = False
          Exit Function
@@ -627,10 +665,10 @@ Public Function CreateZipFile(ByVal zipFile As String, Optional DeleteExistingFi
    End If
    
    fileHandle = FreeFile
-   Open zipFile For Output As #fileHandle
+   Open ZipFile For Output As #fileHandle
    Print #fileHandle, Chr$(80) & Chr$(75) & Chr$(5) & Chr$(6) & String$(18, 0)
    Close #fileHandle
 
-   CreateZipFile = (Len(Dir$(zipFile)) > 0)
+   CreateZipFile = (Len(Dir$(ZipFile)) > 0)
 
 End Function
