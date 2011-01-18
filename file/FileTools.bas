@@ -21,7 +21,6 @@ Attribute VB_Description = "Funktionen für Dateioperationen"
 Option Compare Text
 Option Explicit
 
-
 Private Const m_SELECTBOX_File_DlgTitle As String = "Datei auswählen"
 Private Const m_SELECTBOX_Folder_DlgTitle As String = "Ordner auswählen"
 Private Const m_SELECTBOX_OpenTitle As String = "auswählen"
@@ -283,7 +282,6 @@ Public Function FileNameWithoutPath(ByVal FullPath As Variant) As String
 
 End Function
 
-
 '---------------------------------------------------------------------------------------
 ' Function: CreateDirectory
 '---------------------------------------------------------------------------------------
@@ -392,7 +390,6 @@ Public Function GetFileUpdateDate(ByVal FullFileName As String) As Variant
       GetFileUpdateDate = Null
    End If
 End Function
-
 
 '---------------------------------------------------------------------------------------
 ' Function: ConvertStringToFileName

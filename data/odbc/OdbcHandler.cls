@@ -318,7 +318,7 @@ Public Function OpenRecordsetPT(ByVal Source As String, _
    With qdf
      .Connect = Me.ConnectionString
      .ODBCTimeout = 0
-     .Sql = Source
+     .SQL = Source
      Set rst = .OpenRecordset(RecordsetType, RecordsetOptions, LockEdit)
      .Close
    End With
@@ -383,7 +383,7 @@ Public Function ExecutePT(ByVal CommandText As String, _
    With qdf
      .Connect = Me.ConnectionString
      .ODBCTimeout = 0
-     .Sql = CommandText
+     .SQL = CommandText
      .ReturnsRecords = False
      .Execute Options
      .Close
