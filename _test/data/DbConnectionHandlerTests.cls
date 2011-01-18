@@ -12,7 +12,7 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' AccUnit-Testklasse für DaoTools
+' AccUnit-Testklasse für DbConnectionHandler
 ' </summary>
 ' <remarks>
 ' </remarks>
