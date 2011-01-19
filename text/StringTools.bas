@@ -56,7 +56,6 @@ Public Function IsNullOrEmpty(ByVal ValueToTest As Variant, Optional ByVal Ignor
    
 End Function
 
-
 '---------------------------------------------------------------------------------------
 ' Function: FormatText
 '---------------------------------------------------------------------------------------
@@ -64,24 +63,65 @@ End Function
 ' <summary>
 ' Fügt in den Platzhalter des Formattextes die übergebenen Parameter ein
 ' </summary>
-' <param name="Format">Textformat mit Platzhalter ... Beispiel: "XYZ{0}, {1}"</param>
+' <param name="FormatString">Textformat mit Platzhalter ... Beispiel: "XYZ{0}, {1}"</param>
 ' <param name="Args">übergabeparameter in passender Reihenfolge</param>
 ' <returns>String</returns>
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function FormatText(ByVal Format As String, ParamArray Args() As Variant) As String
+Public Function FormatText(ByVal FormatString As String, ParamArray Args() As Variant) As String
 
    Dim Arg As Variant
    Dim temp As String
    Dim i As Long
    
-   temp = Format
+   temp = FormatString
    For Each Arg In Args
       temp = Replace(temp, "{" & i & "}", CStr(Arg))
       i = i + 1
    Next
    
    FormatText = temp
+
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: Format
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Ersetzt die VBA-Formatfunktion
+' Erweiterung: [h] bzw. [hh] für Stundenanzeige über 24
+' </summary>
+' <param name="Expression"></param>
+' <param name="FormatString">Ein gültiger benannter oder benutzerdefinierter Formatausdruck inkl. Erweiterung für Stundenanzeige über 24 (Standard-Formatanweisungen siehe VBA.Format)</param>
+' <param name="FirstDayOfWeek">Wird an VBA.Format weitergereicht</param>
+' <param name="FirstWeekOfYear">Wird an VBA.Format weitergereicht</param>
+' <returns>String</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function Format(ByVal Expression As Variant, Optional ByVal FormatString As Variant, _
+              Optional ByVal FirstDayOfWeek As VbDayOfWeek = vbSunday, _
+              Optional ByVal FirstWeekOfYear As VbFirstWeekOfYear = vbFirstJan1) As String
+
+   Dim Hours As Long
+   Dim Digits As Boolean
+   
+   If IsDate(Expression) Then
+      If InStr(1, FormatString, "[h", vbTextCompare) > 0 Then
+         Hours = Fix(Round(CDate(Expression) * 24, 1))
+         If Hours < 24 Then
+            FormatString = Replace(FormatString, "[hh]", "hh")
+            FormatString = Replace(FormatString, "[h]", "h")
+         Else
+            FormatString = Replace(FormatString, "[hh]", Format(Hours, "00"))
+            FormatString = Replace(FormatString, "[h]", Hours)
+         End If
+      End If
+   End If
+
+   Format = VBA.Format$(Expression, FormatString, FirstDayOfWeek, FirstWeekOfYear)
 
 End Function
