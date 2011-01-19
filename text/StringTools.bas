@@ -112,11 +112,11 @@ Public Function Format(ByVal Expression As Variant, Optional ByVal FormatString 
       If InStr(1, FormatString, "[h", vbTextCompare) > 0 Then
          Hours = Fix(Round(CDate(Expression) * 24, 1))
          If Hours < 24 Then
-            FormatString = Replace(FormatString, "[hh]", "hh")
-            FormatString = Replace(FormatString, "[h]", "h")
+            FormatString = Replace(FormatString, "[hh]", "hh", , , vbTextCompare)
+            FormatString = Replace(FormatString, "[h]", "h", , , vbTextCompare)
          Else
-            FormatString = Replace(FormatString, "[hh]", CStr(Hours))
-            FormatString = Replace(FormatString, "[h]", CStr(Hours))
+            FormatString = Replace(FormatString, "[hh]", CStr(Hours), , , vbTextCompare)
+            FormatString = Replace(FormatString, "[h]", CStr(Hours), , , vbTextCompare)
          End If
       End If
    End If
