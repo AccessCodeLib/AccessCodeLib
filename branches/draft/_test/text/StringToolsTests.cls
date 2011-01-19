@@ -8,16 +8,6 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' AccUnit:TestClass
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' AccUnit-Testklasse für StringTools
-' </summary>
-' <remarks>
-' </remarks>
-'**/
-'---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_test/text/StringToolsTests.cls</file>
 '  <license>_codelib/license.bas</license>
@@ -28,6 +18,7 @@ Attribute VB_Exposed = False
 Option Compare Text
 Option Explicit
 
+'AccUnit:TestClass
 'VBA-Inspector:Ignore
 
 '--------------------------------------------------------------------
@@ -50,10 +41,10 @@ Private Sub ITestFixture_AddTestCases(ByVal Tests As SimplyVBUnit.TestCaseCollec
 'AccUnit:Row(" ", False).Name = "1 Space"
 'AccUnit:Row(Null, True)
 'AccUnit:Row(1, False)
-Public Sub IsNullOrEmpty_WithoutIgnoreSpaceParameter_ReturnsTrueOrFalse(ByVal vValue As Variant, ByVal expected As Boolean)
-   Dim actual As Boolean
-   actual = StringTools.IsNullOrEmpty(vValue)
-   Assert.AreEqual expected, actual
+Public Sub IsNullOrEmpty_WithoutIgnoreSpaceParameter_ReturnsTrueOrFalse(ByVal vValue As Variant, ByVal Expected As Boolean)
+   Dim Actual As Boolean
+   Actual = StringTools.IsNullOrEmpty(vValue)
+   Assert.AreEqual Expected, Actual
 End Sub
 
 'AccUnit:Row(" ", False, False).Name = "1 Space"
@@ -65,10 +56,10 @@ End Sub
 'AccUnit:Row(Null, True, True)
 'AccUnit:Row(1, True, False)
 Public Sub IsNullOrEmpty_WithIgnoreSpaceParameter_ReturnsTrueOrFalse( _
-               ByVal vValue As Variant, ByVal IgnoreSpaces As Boolean, ByVal expected As Boolean)
-   Dim actual As Boolean
-   actual = StringTools.IsNullOrEmpty(vValue, IgnoreSpaces)
-   Assert.AreEqual expected, actual
+               ByVal vValue As Variant, ByVal IgnoreSpaces As Boolean, ByVal Expected As Boolean)
+   Dim Actual As Boolean
+   Actual = StringTools.IsNullOrEmpty(vValue, IgnoreSpaces)
+   Assert.AreEqual Expected, Actual
 End Sub
 
 
@@ -80,17 +71,32 @@ End Sub
 'AccUnit:Row("ab", "A", "ab")
 'AccUnit:Row("", "A", "")
 Public Sub FormatText_1Arg_ReturnsFormattedText( _
-               ByVal TextToFormat As String, ByVal Arg As Variant, ByVal expected As String)
-   Dim actual As String
-   actual = StringTools.FormatText(TextToFormat, Arg)
-   Assert.AreEqual expected, actual
+               ByVal TextToFormat As String, ByVal Arg As Variant, ByVal Expected As String)
+   Dim Actual As String
+   Actual = StringTools.FormatText(TextToFormat, Arg)
+   Assert.AreEqual Expected, Actual
 End Sub
 
 'AccUnit:Row("{0}{1}", "A", "B",  "AB")
 'AccUnit:Row("a{0}b{1}", "A", "B", "aAbB")
 Public Sub FormatText_2Arg_ReturnsFormattedText( _
-               ByVal TextToFormat As String, ByVal Arg1 As Variant, ByVal Arg2 As Variant, ByVal expected As String)
-   Dim actual As String
-   actual = StringTools.FormatText(TextToFormat, Arg1, Arg2)
-   Assert.AreEqual expected, actual
+               ByVal TextToFormat As String, ByVal Arg1 As Variant, ByVal Arg2 As Variant, ByVal Expected As String)
+   Dim Actual As String
+   Actual = StringTools.FormatText(TextToFormat, Arg1, Arg2)
+   Assert.AreEqual Expected, Actual
+End Sub
+
+'AccUnit:Row(#1/1/2000 15:30:45#, "hh:nn:ss", "15:30:45")
+'AccUnit:Row(#1/1/2000 15:30:45#, "dd.mm.yyyy hh:nn:ss", "01.01.2000 15:30:45")
+'AccUnit:Row(#12/31/1899 01:30:45#, "hh:nn:ss", "01:30:45")
+'AccUnit:Row(#12/31/1899 01:30:45#, "[h]:nn:ss", "25:30:45")
+'AccUnit:Row(#1/1/1900 01:30:45#, "[H]:nn:ss", "49:30:45")
+'AccUnit:Row(#12/30/1899 15:30:45#, "[H]:nn:ss", "15:30:45")
+'AccUnit:Row(#12/30/1899 01:30:45#, "[h]:nn:ss", "1:30:45")
+'AccUnit:Row(#12/30/1899 10:30:45#, "[hh]:nn:ss", "10:30:45")
+'AccUnit:Row(#12/30/1899 01:30:45#, "[hh]:nn:ss", "01:30:45")
+Public Sub Format_DateTime_FormattedDateTime(ByVal Expression As Variant, ByVal FormatString As Variant, ByVal Expected As String)
+   Dim Actual As String
+   Actual = StringTools.Format(Expression, FormatString)
+   Assert.AreEqual Expected, Actual
 End Sub
