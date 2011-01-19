@@ -107,7 +107,6 @@ Public Function Format(ByVal Expression As Variant, Optional ByVal FormatString 
               Optional ByVal FirstWeekOfYear As VbFirstWeekOfYear = vbFirstJan1) As String
 
    Dim Hours As Long
-   Dim Digits As Boolean
    
    If IsDate(Expression) Then
       If InStr(1, FormatString, "[h", vbTextCompare) > 0 Then
@@ -116,8 +115,8 @@ Public Function Format(ByVal Expression As Variant, Optional ByVal FormatString 
             FormatString = Replace(FormatString, "[hh]", "hh")
             FormatString = Replace(FormatString, "[h]", "h")
          Else
-            FormatString = Replace(FormatString, "[hh]", Format(Hours, "00"))
-            FormatString = Replace(FormatString, "[h]", Hours)
+            FormatString = Replace(FormatString, "[hh]", CStr(Hours))
+            FormatString = Replace(FormatString, "[h]", CStr(Hours))
          End If
       End If
    End If
