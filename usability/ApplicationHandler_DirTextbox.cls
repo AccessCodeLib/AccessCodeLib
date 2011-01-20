@@ -36,7 +36,7 @@ Attribute VB_Description = "Erweiterung für ApplicationHandler-Klasse: Verzeichn
 '  <file>usability/ApplicationHandler_DirTextbox.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>base/ApplicationHandler.cls</use>
-'  <use>file/modFiles.bas</use>
+'  <use>file/FileTools.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -359,7 +359,7 @@ Private Sub m_Textbox_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
    Dim matchString As String
    Dim baseFolder As String
    Dim textBoxString As String
-   Dim pos As Long
+   Dim Pos As Long
 
    baseFolder = BaseFolderPath
    textBoxString = m_Textbox.Text
@@ -383,7 +383,7 @@ Private Sub m_Textbox_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
    If KeyCode = vbKeyReturn Then
       searchString = Replace$(GetFullPathFromRelativPath(textBoxString, baseFolder), "/", "\")
       If Right$(searchString, 3) = "\.." Then
-         m_FolderPath = GetDirFromFilePath(Left$(searchString, Len(searchString) - 3))
+         m_FolderPath = FileTools.GetDirFromFullFileName(Left$(searchString, Len(searchString) - 3))
       Else
          'hier Event auslösen, dass Auswahl bestätigt wurde
          Exit Sub
@@ -444,15 +444,15 @@ Private Sub m_Textbox_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
             Else
             
                m_FolderPath = searchString
-               pos = InStr(1, m_FolderPath, "*")
-               If pos > 0 Then
-                  m_FolderPath = Left$(m_FolderPath, pos - 1)
+               Pos = InStr(1, m_FolderPath, "*")
+               If Pos > 0 Then
+                  m_FolderPath = Left$(m_FolderPath, Pos - 1)
                End If
                '
                If Len(baseFolder) > 0 Then
                   m_FolderPath = GetRelativPathFromFullPath(m_FolderPath, baseFolder)
                End If
-               m_FolderPath = GetDirFromFilePath(m_FolderPath)
+               m_FolderPath = FileTools.GetDirFromFullFileName(m_FolderPath)
             End If
             
             matchString = m_FolderPath & matchString

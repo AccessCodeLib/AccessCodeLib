@@ -31,7 +31,7 @@ Attribute VB_Description = "Erzeugt und verwaltet eine mdb/accdb für temporäre T
 Option Compare Text
 Option Explicit
 
-Private Const CLASSNAME As String = "TempDbHandler"
+Private Const ClassName As String = "TempDbHandler"
 
 Private m_DaoHandler As DaoHandler
 
@@ -431,7 +431,7 @@ Public Function CreateTable(ByVal SourceTableDefName As String, _
 
    checkCurrentDatabase
    If SourceTableDefExists(SourceTableDefName) Then 'zur Sicherheit löschen, falls unterschiedliche DDL-Anweisung
-      Err.Raise ErrorNumbers.ErrTableCanNotBeCreatedTableExists, CLASSNAME & CreateTable, "Table '" & SourceTableDefName & "' exists"
+      Err.Raise ErrorNumbers.ErrTableCanNotBeCreatedTableExists, ClassName & CreateTable, "Table '" & SourceTableDefName & "' exists"
    End If
    
    m_DaoHandler.Execute CreateTableDDL
