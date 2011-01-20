@@ -26,7 +26,7 @@ Attribute VB_Description = "Erweiterung für ApplicationHandler-Klasse: Anwendung
 '  <file>base/ApplicationHandler_AppFile.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>base/ApplicationHandler.cls</use>
-'  <use>api/winapi/modWinAPI_FileInfo.bas</use>
+'  <use>api/winapi/WinApiFileInfo.cls</use>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -185,21 +185,22 @@ Public Function SaveAppFile(ByVal sFileID As String, ByVal sFileName As String, 
 
    Dim f As Integer
    Dim binfile() As Byte
-   Dim arraySize As Long
+   Dim ArraySize As Long
    Dim strVersion As String
+   Dim FileInfo As WinApiFileInfo
    
 On Error GoTo HandleErr
 
    f = FreeFile
    Open sFileName For Binary As #f
-   arraySize = LOF(f) - 1
-   If arraySize >= 0 Then
-      ReDim binfile(arraySize)
+   ArraySize = LOF(f) - 1
+   If ArraySize >= 0 Then
+      ReDim binfile(ArraySize)
       Get #f, , binfile()
    End If
    Close #f
 
-   If arraySize < 0 Then
+   If ArraySize < 0 Then
       SaveAppFile = False
       Exit Function
    End If
@@ -214,7 +215,9 @@ On Error GoTo HandleErr
    End If
    rst.Fields("file").AppendChunk binfile
    If saveVersion Then
-      strVersion = modWinAPI_FileInfo.GetFileVersion(sFileName)
+      Set FileInfo = New WinApiFileInfo
+      strVersion = FileInfo.GetFileVersion(sFileName)
+          Set FileInfo = Nothing
       If Len(strVersion) = 0 Then
          strVersion = Format$(Nz(FileDateTime(sFileName), vbNullString), "yyyy.mm.dd")
       End If

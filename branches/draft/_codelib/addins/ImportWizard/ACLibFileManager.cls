@@ -334,13 +334,13 @@ Public Sub ImportRepositoryFiles(ByRef RepositoryPathArray() As String, _
                         Optional ByVal ImportMode As CodeLibImportMode = clim_ImportMissingItems, _
                         Optional ByVal bImportTestFiles As Boolean = False)
    
-   Dim arraySize As Long
+   Dim ArraySize As Long
    Dim i As Long
    Dim pathString As String
    Dim tempFile As Object
 
-   arraySize = UBound(RepositoryPathArray)
-   For i = LBound(RepositoryPathArray) To arraySize
+   ArraySize = UBound(RepositoryPathArray)
+   For i = LBound(RepositoryPathArray) To ArraySize
       pathString = GetRepositoryFullPath(RepositoryPathArray(i))
       Set tempFile = fso.GetFile(pathString)
       addMissingFile tempFile, ImportMode
@@ -825,9 +825,9 @@ Private Sub cleanAccessBugExport(ByVal sFile As String)
       Exit Sub
    End If
    
-   Dim pos As Long
+   Dim Pos As Long
    Dim checkString As String
-   Dim tempString As String
+   Dim TempString As String
    Dim i As Long
    Dim fileNumber As Long
 
@@ -837,8 +837,8 @@ Private Sub cleanAccessBugExport(ByVal sFile As String)
    Get fileNumber, , checkString
    Close fileNumber
    
-   tempString = Replace(checkString, "NoSaveCTIWhenDisabled =1", vbNullString)
-   If StrComp(tempString, checkString, vbBinaryCompare) = 0 Then
+   TempString = Replace(checkString, "NoSaveCTIWhenDisabled =1", vbNullString)
+   If StrComp(TempString, checkString, vbBinaryCompare) = 0 Then
       Exit Sub
    End If
    
@@ -847,7 +847,7 @@ Private Sub cleanAccessBugExport(ByVal sFile As String)
    Kill sFile
    fileNumber = FreeFile
    Open sFile For Binary Access Write As fileNumber
-      Put fileNumber, , tempString
+      Put fileNumber, , TempString
    Close fileNumber
    
    
@@ -1176,9 +1176,9 @@ Private Sub getCodeLibInfoFromFile(ByRef cli As CodeLibInfo, ByVal InputFile As 
                           Optional ByVal FindDependency As Boolean = True, _
                           Optional ByVal FindTests As Boolean = True)
    
-   Dim pos As Long
+   Dim Pos As Long
    Dim checkString As String
-   Dim tempString As String
+   Dim TempString As String
    Dim i As Long
    Dim fileNumber As Long
 
@@ -1189,17 +1189,17 @@ Private Sub getCodeLibInfoFromFile(ByRef cli As CodeLibInfo, ByVal InputFile As 
    Close fileNumber
    
    'Namen ermitteln
-   cli.Name = findSubString(checkString, SEARCHSTRING_ATTRIBUTNAME_BEGIN, SEARCHSTRING_ATTRIBUTNAME_END, pos)
+   cli.Name = findSubString(checkString, SEARCHSTRING_ATTRIBUTNAME_BEGIN, SEARCHSTRING_ATTRIBUTNAME_END, Pos)
    
    If Len(cli.Name) = 0 Then ' aus Dateinamen
       cli.Name = Left$(InputFile.Name, InStrRev(InputFile.Name, ".") - 1)
    End If
    
    'Typ bestimmen
-   If pos > 0 Then ' da SEARCHSTRING_ATTRIBUTNAME_BEGIN gefunden wurde,
+   If Pos > 0 Then ' da SEARCHSTRING_ATTRIBUTNAME_BEGIN gefunden wurde,
                    ' ist das definitiv ein Module oder eine Klasse
       cli.Type = clet_StdModule
-      If InStr(1, Left$(checkString, pos - 1), "CLASS", vbBinaryCompare) Then
+      If InStr(1, Left$(checkString, Pos - 1), "CLASS", vbBinaryCompare) Then
          cli.Type = clet_ClassModule
       End If
    Else ' nach "BEGIN FORM" bzw "BEGIN REPORT" suchen (steht immer in der 4. Zeile)
@@ -1213,18 +1213,18 @@ Private Sub getCodeLibInfoFromFile(ByRef cli As CodeLibInfo, ByVal InputFile As 
 ' *       Reicht die Erkennung über die ersten 2 Zeichen [chr(255) und chr(254)] aus?
 '**/
 
-      pos = 1
+      Pos = 1
       For i = 1 To 3
-         pos = InStr(pos, checkString, vbNewLine, vbBinaryCompare) + 1
-         If pos <= 0 Then Exit For
+         Pos = InStr(Pos, checkString, vbNewLine, vbBinaryCompare) + 1
+         If Pos <= 0 Then Exit For
       Next
-      If pos > 1 Then
-         tempString = findSubString(Mid$(checkString, pos - 1), vbNewLine, vbNewLine)
+      If Pos > 1 Then
+         TempString = findSubString(Mid$(checkString, Pos - 1), vbNewLine, vbNewLine)
       End If
       
-      If tempString = SEARCHSTRING_FORMIDENTIFER Then
+      If TempString = SEARCHSTRING_FORMIDENTIFER Then
          cli.Type = clet_Form
-      ElseIf tempString = SEARCHSTRING_REPORTIDENTIFER Then
+      ElseIf TempString = SEARCHSTRING_REPORTIDENTIFER Then
          cli.Type = clet_Report
    
       Else 'aus Dateiendung
@@ -1385,21 +1385,21 @@ Private Function findSubString(ByRef SourceString As String, _
   
 End Function
 
-Private Sub createMissingFolder(ByRef fullPath As String)
+Private Sub createMissingFolder(ByRef FullPath As String)
    
    Dim TempPath As String
 
-   If Len(Dir$(fullPath, vbDirectory)) = 0 Then
-      TempPath = getParentFolderPath(fullPath)
+   If Len(Dir$(FullPath, vbDirectory)) = 0 Then
+      TempPath = getParentFolderPath(FullPath)
       createMissingFolder TempPath
-      MkDir fullPath
+      MkDir FullPath
    End If
   
 End Sub
 
-Private Function getParentFolderPath(ByRef fullPath As String) As String
+Private Function getParentFolderPath(ByRef FullPath As String) As String
 
-   getParentFolderPath = Left$(fullPath, InStrRev(fullPath, "\", , vbTextCompare) - 1)
+   getParentFolderPath = Left$(FullPath, InStrRev(FullPath, "\", , vbTextCompare) - 1)
  
 End Function
 

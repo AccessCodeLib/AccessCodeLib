@@ -34,9 +34,9 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x000000003c492b013c492b00ddd99b70644a2b002c552b00b44a2b00384a2b00 ,
+        0x000000000c5120010c512000ddd9427134522000fc5c20008452200008522000 ,
         0x0104f0a49c00a00743ef8005010009009a0b3408000001000f00c80002000200 ,
-        0xc8000200010000002c552b00b44a2b00384a2b00d8d1932f0000000000000000 ,
+        0xc800020001000000fc5c20008452200008522000d8d1a22f0000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000001010000010000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -970,10 +970,9 @@ On Error GoTo HandleErr
    Set lb = Me.lstImportFiles
    For i = 0 To arraySize
       cli = CurrentACLibFileManager.GetCodeLibInfoFromFilePath(fileArray(i))
-      'lb.AddItem """" & cli.Name & """;""" & getLocalRepositoryPath(fileArray(i)) & """"
-      ' auf Temp-Tabelle umgestellt, damit es auch unter Ac00 läuft
       TempDb.Execute "insert into " & TEMPDB_TABNAME & " (ObjectName, LocalRepositoryPath, Description) VALUES (" & _
-                     SqlTools.FormatTextToSqlText(cli.Name) & ", " & SqlTools.FormatTextToSqlText(getLocalRepositoryPath(fileArray(i))) & ", " & SqlTools.FormatTextToSqlText(cli.Description) & ")", dbFailOnError
+                           SqlTools.TextToSqlText(cli.Name) & ", " & SqlTools.TextToSqlText(getLocalRepositoryPath(fileArray(i))) & _
+                           ", " & SqlTools.TextToSqlText(cli.Description) & ")", dbFailOnError
    Next
    
    lb.Requery
@@ -1179,7 +1178,7 @@ On Error GoTo HandleErr
    Set lb = Me.lstImportFiles
    
    For Each selectedItem In lb.ItemsSelected
-      strItemFilter = ", " & SqlTools.FormatTextToSqlText(lb.Column(1, selectedItem))
+      strItemFilter = ", " & SqlTools.TextToSqlText(lb.Column(1, selectedItem))
    Next
    
    If Len(strItemFilter) <= 2 Then
@@ -1457,7 +1456,7 @@ On Error GoTo HandleErr
          End If
       End If
       
-      SetFormIconFromFile Me, strIconFilePath
+      WinAPI.Image.SetFormIconFromFile Me, strIconFilePath
       
    End If
 
@@ -1511,7 +1510,7 @@ End Sub
 Private Sub OpenRepositoryFileInTextViewer(ByVal sRelativeFilePath As String)
    Dim fullPath As String
    fullPath = CurrentACLibFileManager.GetRepositoryFullPath(sRelativeFilePath)
-   ShellExecuteOpenFile fullPath, "open"
+   WinAPI.Shell.Execute fullPath, "open"
 End Sub
 
 Private Sub EnableCodeModuleDescription(ByVal bViewDescription As Boolean)
@@ -1538,7 +1537,7 @@ Private Sub RefreshCodeModuleDescriptionFromID(ByVal sLocalRepositoryPath As Str
 
    Dim strDescription As String
    If Len(sLocalRepositoryPath) > 0 Then
-      strDescription = Nz(m_TempDb.LookupSQL("select Description from " & TEMPDB_TABNAME & " where LocalRepositoryPath = " & SqlTools.FormatTextToSqlText(sLocalRepositoryPath)), vbNullString)
+      strDescription = Nz(m_TempDb.LookupSQL("select Description from " & TEMPDB_TABNAME & " where LocalRepositoryPath = " & SqlTools.TextToSqlText(sLocalRepositoryPath)), vbNullString)
    End If
    Me.txtCodeModuleName.Value = sName
    Me.txtCodeModuleDescription.Value = strDescription

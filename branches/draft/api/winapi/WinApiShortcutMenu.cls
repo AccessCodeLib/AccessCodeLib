@@ -26,8 +26,8 @@ Attribute VB_Description = "ShortcutMenu über Win-API"
 '<codelib>
 '  <file>api/winapi/WinApiShortcutMenu.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>api/winapi/modWinAPI_Layout.bas</use>
-'  <use>api/winapi/modWinAPI_Handles.bas</use>
+'  <use>api/winapi/WinApiLayoutTools.cls</use>
+'  <use>api/winapi/WinApiWindowTools.cls</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -179,6 +179,8 @@ Private m_ItemCnt As Long
 Private m_AccessForm As Access.Form
 Private m_MenuControl As Access.Control
 Private m_Section As Long
+Private m_WindowTools As WinApiWindowTools
+Private m_LayoutTools As WinApiLayoutTools
 
 'Public Event Selected(ByVal lMnuItemNr As Long)
 
@@ -192,6 +194,21 @@ On Error Resume Next
    Set m_MenuControl = Nothing
    Set m_AccessForm = Nothing
 End Sub
+
+Private Property Get WindowTools() As WinApiWindowTools
+   If m_WindowTools Is Nothing Then
+      Set m_WindowTools = New WinApiWindowTools
+   End If
+   Set WindowTools = m_WindowTools
+End Property
+
+Private Property Get LayoutTools() As WinApiLayoutTools
+   If m_LayoutTools Is Nothing Then
+      Set m_LayoutTools = New WinApiLayoutTools
+   End If
+   Set LayoutTools = m_LayoutTools
+End Property
+
 
 Public Property Let ControlSection(ByVal lSection As Long)
 On Error Resume Next
@@ -219,16 +236,15 @@ Public Property Set MenuControl(ByRef MnuCtl As Access.Control)
    
    Select Case m_Section
       Case 0 'Detailbereich
-         lngSectionHwnd = GetDetailSection(objParent.Hwnd)
+         lngSectionHwnd = WindowTools.GetDetailSection(objParent.Hwnd)
       Case 1 'Kopf
-         lngSectionHwnd = GetHeaderSection(objParent.Hwnd)
+         lngSectionHwnd = WindowTools.GetHeaderSection(objParent.Hwnd)
       Case 2 ' Fuß
-         lngSectionHwnd = GetFooterSection(objParent.Hwnd)
+         lngSectionHwnd = WindowTools.GetFooterSection(objParent.Hwnd)
       Case Else
-         lngSectionHwnd = GetDetailSection(objParent.Hwnd)
+         lngSectionHwnd = WindowTools.GetDetailSection(objParent.Hwnd)
    End Select
    Set objParent = Nothing
-   
    
    'DoCmd.Restore '??? wozu ???
    'Hilfsfenster am Ursprung des Detailbereichs erstellen zur Positionsbestimmung
@@ -356,12 +372,12 @@ Public Function OpenMenu(Optional ByVal x As Single = 0, Optional ByVal y As Sin
    
    If m_MenuControl Is Nothing Then
       GetWindowRect m_AccessForm.Hwnd, rcAccForm
-      ButtonLeft = GetPixelFromTwips(x) + rcAccForm.Left
-      ButtonTop = GetPixelFromTwips(y) + rcAccForm.Top
+      ButtonLeft = LayoutTools.GetPixelFromTwips(x) + rcAccForm.Left
+      ButtonTop = LayoutTools.GetPixelFromTwips(y) + rcAccForm.Top
    Else
    '- Buttom relativ zum Sektionsfenster
-      ButtonLeft = GetPixelFromTwips(m_MenuControl.Left) + GetPixelFromTwips(x)
-      ButtonTop = GetPixelFromTwips(m_MenuControl.Top) + GetPixelFromTwips(y)
+      ButtonLeft = LayoutTools.GetPixelFromTwips(m_MenuControl.Left) + LayoutTools.GetPixelFromTwips(x)
+      ButtonTop = LayoutTools.GetPixelFromTwips(m_MenuControl.Top) + LayoutTools.GetPixelFromTwips(y)
    End If
    '- Miteinander verrechnen
    Xpos = rcHelper.Left + ButtonLeft - 1
