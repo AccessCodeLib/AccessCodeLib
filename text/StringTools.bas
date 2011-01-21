@@ -115,8 +115,8 @@ Public Function Format(ByVal Expression As Variant, Optional ByVal FormatString 
             FormatString = Replace(FormatString, "[hh]", "hh", , , vbTextCompare)
             FormatString = Replace(FormatString, "[h]", "h", , , vbTextCompare)
          Else
-            FormatString = Replace(FormatString, "[hh]", CStr(Hours), , , vbTextCompare)
-            FormatString = Replace(FormatString, "[h]", CStr(Hours), , , vbTextCompare)
+            FormatString = Replace(FormatString, "[hh]", "[h]", , , vbTextCompare)
+            FormatString = Replace(FormatString, "[h]", Replace(CStr(Hours), "0", "\0"), , , vbTextCompare)
          End If
       End If
    End If
