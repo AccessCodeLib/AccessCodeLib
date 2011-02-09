@@ -7,7 +7,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'---------------------------------------------------------------------------------------
+'--------------------------------------------------------------------
+' AccUnit:TestClass
+'--------------------------------------------------------------------
 '<codelib>
 '  <file>_test/text/StringToolsTests.cls</file>
 '  <license>_codelib/license.bas</license>
@@ -18,7 +20,6 @@ Attribute VB_Exposed = False
 Option Compare Text
 Option Explicit
 
-'AccUnit:TestClass
 'VBA-Inspector:Ignore
 
 '--------------------------------------------------------------------
