@@ -1,7 +1,7 @@
 Attribute VB_Name = "DaoTools"
 Attribute VB_Description = "Hilfsfunktionen für den Umgang mit DAO"
 '---------------------------------------------------------------------------------------
-' Module: modDAO_Tools
+' Module: DaoTools
 '---------------------------------------------------------------------------------------
 '/**
 ' \author       Josef Poetzl
@@ -38,9 +38,10 @@ Option Explicit
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function TableDefExists(ByVal TableDefName As String, Optional ByRef dbs As DAO.Database = Nothing) As Boolean
+Public Function TableDefExists(ByVal TableDefName As String, _
+                      Optional ByVal dbs As DAO.Database = Nothing) As Boolean
 'Man könnte auch die TableDef-Liste durchlaufen.
-'Eine weitere Alternative wäre das Auswerten über cnn.OpenSchema(adSchemaTables, ...) ... dann werden allerdings keine verknüpften Tabellen geprüft
+'Eine weitere Alternative wäre das Auswerten über cnn.OpenSchema(adSchemaTables, ...)
    
    Dim rst As DAO.Recordset
 
