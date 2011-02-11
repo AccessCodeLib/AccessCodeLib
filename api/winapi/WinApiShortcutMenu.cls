@@ -59,6 +59,88 @@ Private Type APIMSG
    pt As POINTAPI
 End Type
 
+#If VBA7 Then
+
+'Hilfsfenster
+Private Declare PtrSafe Function CreateWindowEx _
+      Lib "USER32.DLL" _
+      Alias "CreateWindowExA" ( _
+      ByVal dwExStyle As Long, _
+      ByVal lpClassname As String, _
+      ByVal lpWindowName As String, _
+      ByVal dwStyle As Long, _
+      ByVal x As Long, _
+      ByVal y As Long, _
+      ByVal nWidth As Long, _
+      ByVal nHeight As Long, _
+      ByVal hwndParent As Long, _
+      ByVal hMenu As Long, _
+      ByVal hInstance As Long, _
+      ByRef lpParam As Any) As Long
+
+'Menü-Standardfunktionen
+Private Declare PtrSafe Function CreatePopupMenu _
+      Lib "USER32.DLL" () As Long
+
+Private Declare PtrSafe Function AppendMenu _
+      Lib "USER32.DLL" _
+      Alias "AppendMenuA" ( _
+      ByVal hMenu As Long, _
+      ByVal wFlags As Long, _
+      ByVal wIDNewItem As Long, _
+      ByVal lpNewItem As Any _
+      ) As Long
+
+Private Declare PtrSafe Function TrackPopupMenu _
+      Lib "USER32.DLL" ( _
+      ByVal hMenu As Long, _
+      ByVal wFlags As Long, _
+      ByVal x As Long, _
+      ByVal y As Long, _
+      ByVal nReserved As Long, _
+      ByVal Hwnd As Long, _
+      lprc As Any _
+      ) As Long 'lprc As RECT
+
+Private Declare PtrSafe Function DestroyMenu _
+      Lib "USER32.DLL" ( _
+         ByVal hMenu As Long _
+      ) As Long
+
+'Message-Loop
+Private Declare PtrSafe Function GetMessage _
+      Lib "USER32.DLL" _
+      Alias "GetMessageA" ( _
+      ByRef lpMsg As APIMSG, _
+      ByVal Hwnd As Long, _
+      ByVal wMsgFilterMin As Long, _
+      ByVal wMsgFilterMax As Long _
+      ) As Long
+
+Private Declare PtrSafe Function DispatchMessage _
+      Lib "USER32.DLL" _
+      Alias "DispatchMessageA" ( _
+      ByRef lpMsg As APIMSG _
+      ) As Long
+
+Private Declare PtrSafe Function TranslateMessage _
+      Lib "USER32.DLL" (ByRef lpMsg As APIMSG) As Long
+
+Private Declare PtrSafe Function GetWindowRect _
+      Lib "USER32.DLL" ( _
+         ByVal Hwnd As Long, _
+         ByRef lpRect As RECT _
+      ) As Long
+      
+Private Declare PtrSafe Function SetMenuDefaultItem _
+      Lib "user32" ( _
+         ByVal hMenu As Long, _
+         ByVal uItem As Long, _
+         ByVal fByPos As Long _
+      ) As Long
+      
+#Else
+
 'Hilfsfenster
 Private Declare Function CreateWindowEx _
       Lib "USER32.DLL" _
@@ -136,6 +218,8 @@ Private Declare Function SetMenuDefaultItem _
          ByVal uItem As Long, _
          ByVal fByPos As Long _
       ) As Long
+
+#End If
       
 'Message
 Private Const WM_COMMAND As Long = &H111

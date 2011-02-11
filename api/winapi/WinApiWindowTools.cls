@@ -38,6 +38,22 @@ Private Type POINTAPI
    y As Long
 End Type
 
+#If VBA7 Then
+
+Private Declare PtrSafe Function ClientToScreen Lib "USER32.DLL" ( _
+         ByVal Hwnd As Long, _
+         ByRef lpPoint As POINTAPI _
+      ) As Long
+
+Private Declare PtrSafe Function FindWindowEx Lib "USER32.DLL" Alias "FindWindowExA" ( _
+         ByVal hWnd1 As Long, _
+         ByVal hWnd2 As Long, _
+         ByVal lpsz1 As String, _
+         ByVal lpsz2 As String _
+      ) As Long
+
+#Else
+
 Private Declare Function ClientToScreen Lib "USER32.DLL" ( _
          ByVal Hwnd As Long, _
          ByRef lpPoint As POINTAPI _
@@ -50,6 +66,7 @@ Private Declare Function FindWindowEx Lib "USER32.DLL" Alias "FindWindowExA" ( _
          ByVal lpsz2 As String _
       ) As Long
 
+#End If
 '---------------------------------------------------------------------------------------
 ' Function: GetMDI
 '---------------------------------------------------------------------------------------

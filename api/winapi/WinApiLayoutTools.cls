@@ -28,6 +28,47 @@ Attribute VB_Exposed = False
 Option Compare Text
 Option Explicit
 
+Private Const GCL_HBRBACKGROUND As Long = -10
+Private Const RDW_INVALIDATE As Long = &H1
+Private Const RDW_ERASE As Long = &H4
+
+Private Const HWND_DESKTOP As Long = 0
+Private Const LOGPIXELSX As Long = 88
+Private Const LOGPIXELSY As Long = 90
+
+Private Const SM_CXVSCROLL As Long = 2
+
+#If VBA7 Then
+
+Private Declare PtrSafe Function CreateSolidBrush _
+      Lib "gdi32.dll" ( _
+      ByVal crColor As Long _
+      ) As Long
+
+Private Declare PtrSafe Function RedrawWindow _
+      Lib "user32" ( _
+      ByVal Hwnd As Long, _
+      lprcUpdate As Any, _
+      ByVal hrgnUpdate As Long, _
+      ByVal fuRedraw As Long _
+      ) As Long
+
+Private Declare PtrSafe Function SetClassLong _
+      Lib "USER32.DLL" _
+      Alias "SetClassLongA" ( _
+      ByVal Hwnd As Long, _
+      ByVal nIndex As Long, _
+      ByVal dwNewLong As Long _
+      ) As Long
+
+Private Declare PtrSafe Function GetSystemMetrics Lib "user32" (ByVal nIndex As Long) As Long
+
+Private Declare PtrSafe Function GetDC Lib "user32" (ByVal Hwnd As Long) As Long
+Private Declare PtrSafe Function ReleaseDC Lib "user32" (ByVal Hwnd As Long, ByVal hDC As Long) As Long
+Private Declare PtrSafe Function GetDeviceCaps Lib "gdi32" (ByVal hDC As Long, ByVal nIndex As Long) As Long
+
+#Else
+
 Private Declare Function CreateSolidBrush _
       Lib "gdi32.dll" ( _
       ByVal crColor As Long _
@@ -49,22 +90,13 @@ Private Declare Function SetClassLong _
       ByVal dwNewLong As Long _
       ) As Long
 
-Private Const GCL_HBRBACKGROUND As Long = -10
-Private Const RDW_INVALIDATE As Long = &H1
-Private Const RDW_ERASE As Long = &H4
-
-'--------------------------------------
 Private Declare Function GetSystemMetrics Lib "user32" (ByVal nIndex As Long) As Long
 
 Private Declare Function GetDC Lib "user32" (ByVal Hwnd As Long) As Long
 Private Declare Function ReleaseDC Lib "user32" (ByVal Hwnd As Long, ByVal hDC As Long) As Long
 Private Declare Function GetDeviceCaps Lib "gdi32" (ByVal hDC As Long, ByVal nIndex As Long) As Long
-Private Const HWND_DESKTOP As Long = 0
-Private Const LOGPIXELSX As Long = 88
-Private Const LOGPIXELSY As Long = 90
 
-Private Const SM_CXVSCROLL As Long = 2
-
+#End If
 
 '---------------------------------------------------------------------------------------
 ' Sub: SetBackColor (Josef Pötzl, 2010-04-19)

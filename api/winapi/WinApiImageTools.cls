@@ -35,13 +35,15 @@ Private Const WM_PARAM_ICON_SMALL As Long = 0
 Private Const IMAGE_ICON As Long = 1
 Private Const LR_LOADFROMFILE As Long = &H10
 
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" ( _
+#If VBA7 Then
+
+Private Declare PtrSafe Function SendMessage Lib "user32" Alias "SendMessageA" ( _
    ByVal Hwnd As Long, _
    ByVal wMsg As Long, _
    ByVal wParam As Long, _
    lParam As Any) As Long
 
-Private Declare Function LoadImage Lib "user32" Alias "LoadImageA" ( _
+Private Declare PtrSafe Function LoadImage Lib "user32" Alias "LoadImageA" ( _
    ByVal hInst As Long, _
    ByVal lpszName As String, _
    ByVal uType As Long, _
@@ -49,6 +51,23 @@ Private Declare Function LoadImage Lib "user32" Alias "LoadImageA" ( _
    ByVal cyDesired As Long, _
    ByVal fuLoad As Long) As Long
 
+#Else
+
+Private Declare PtrSafe Function SendMessage Lib "user32" Alias "SendMessageA" ( _
+   ByVal Hwnd As Long, _
+   ByVal wMsg As Long, _
+   ByVal wParam As Long, _
+   lParam As Any) As Long
+
+Private Declare PtrSafe Function LoadImage Lib "user32" Alias "LoadImageA" ( _
+   ByVal hInst As Long, _
+   ByVal lpszName As String, _
+   ByVal uType As Long, _
+   ByVal cxDesired As Long, _
+   ByVal cyDesired As Long, _
+   ByVal fuLoad As Long) As Long
+
+#End If
 
 '---------------------------------------------------------------------------------------
 ' Sub: SetFormIconFromFile

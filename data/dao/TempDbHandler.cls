@@ -39,16 +39,6 @@ Private Const m_conFilePrefix As String = "TDB"
 Private Const m_conFileExtension As String = vbNullString 'Dateinamenerweiterung: vbNullString ... Standard von GetTempFileNameA wird verwendet ("tmp")
 Private Const m_conMaxPathLen As Long = 255
 
-Private Declare Function GetTempPath Lib "kernel32" Alias "GetTempPathA" ( _
-         ByVal nBufferLength As Long, _
-         ByVal lpBuffer As String) As Long
-
-Private Declare Function API_GetTempFilename Lib "kernel32" Alias "GetTempFileNameA" ( _
-         ByVal lpszPath As String, _
-         ByVal lpPrefixString As String, _
-         ByVal wUnique As Long, _
-         ByVal lpTempFileName As String) As Long
-
 Private m_TempDbFile As String
 Private m_SharedMode As Boolean
 Private m_DeleteFileOnTerminiate As Boolean
@@ -60,6 +50,33 @@ Private Enum ErrorNumbers
       ErrTableCanNotBeCreatedTableExists = vbObjectError + 9001
 End Enum
          
+#If VBA7 Then
+
+Private Declare PtrSafe Function GetTempPath Lib "kernel32" Alias "GetTempPathA" ( _
+         ByVal nBufferLength As Long, _
+         ByVal lpBuffer As String) As Long
+
+Private Declare PtrSafe Function API_GetTempFilename Lib "kernel32" Alias "GetTempFileNameA" ( _
+         ByVal lpszPath As String, _
+         ByVal lpPrefixString As String, _
+         ByVal wUnique As Long, _
+         ByVal lpTempFileName As String) As Long
+
+#Else
+
+Private Declare Function GetTempPath Lib "kernel32" Alias "GetTempPathA" ( _
+         ByVal nBufferLength As Long, _
+         ByVal lpBuffer As String) As Long
+
+Private Declare Function API_GetTempFilename Lib "kernel32" Alias "GetTempFileNameA" ( _
+         ByVal lpszPath As String, _
+         ByVal lpPrefixString As String, _
+         ByVal wUnique As Long, _
+         ByVal lpTempFileName As String) As Long
+
+#End If
+
+
 '---------------------------------------------------------------------------------------
 ' Event: TempDbHandlerError (03.05.2008)
 '---------------------------------------------------------------------------------------

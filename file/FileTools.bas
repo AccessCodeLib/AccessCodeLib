@@ -28,6 +28,17 @@ Private Const m_SELECTBOX_OpenTitle As String = "auswählen"
 Private Const m_DEFAULT_TEMPPATH_NoEnv As String = "C:\"
 Private Const m_MAXPATHLEN As Long = 255
 
+#If VBA7 Then
+
+Private Declare PtrSafe Function WNetGetConnection Lib "mpr.dll" Alias "WNetGetConnectionA" ( _
+         ByVal lpszLocalName As String, ByVal lpszRemoteName As String, cbRemoteName As Long) As Long
+
+Private Declare PtrSafe Function API_GetTempPath Lib "kernel32" Alias "GetTempPathA" ( _
+         ByVal nBufferLength As Long, _
+         ByVal lpBuffer As String) As Long
+
+#Else
+
 Private Declare Function WNetGetConnection Lib "mpr.dll" Alias "WNetGetConnectionA" ( _
          ByVal lpszLocalName As String, ByVal lpszRemoteName As String, cbRemoteName As Long) As Long
 
@@ -35,6 +46,7 @@ Private Declare Function API_GetTempPath Lib "kernel32" Alias "GetTempPathA" ( _
          ByVal nBufferLength As Long, _
          ByVal lpBuffer As String) As Long
 
+#End If
 
 '---------------------------------------------------------------------------------------
 ' Function: SelectFile

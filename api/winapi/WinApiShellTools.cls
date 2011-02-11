@@ -29,23 +29,8 @@ Attribute VB_Exposed = False
 Option Compare Text
 Option Explicit
 
-Private Declare Function ShellExecuteA Lib "shell32.dll" ( _
-   ByVal Hwnd As Long, _
-   ByVal lOperation As String, _
-   ByVal lpFile As String, _
-   ByVal lpParameters As String, _
-   ByVal lpDirectory As String, _
-   ByVal nShowCmd As Long) As Long
-   
-Private Declare Function GetDesktopWindow Lib "user32" () As Long
-
 Private Const SE_ERR_NOTFOUND As Long = 2
 Private Const SE_ERR_NOASSOC  As Long = 31
-
-Private Declare Function GetSystemDirectory Lib "kernel32" Alias "GetSystemDirectoryA" ( _
-   ByVal lpBuffer As String, _
-   ByVal nSize As Long) As Long
-   
 Private Const STARTF_USESHOWWINDOW As Long = &H1
 Private Const NORMAL_PRIORITY_CLASS As Long = &H20
 
@@ -77,6 +62,54 @@ Private Type PROCESS_INFORMATION
    dwThreadID As Long
 End Type
 
+Private Const INFINITE As Long = &HFFFFFFFF ' = -1&
+Private Const WAIT_TIMEOUT As Long = &H102&
+
+#If VBA7 Then
+
+Private Declare PtrSafe Function ShellExecuteA Lib "shell32.dll" ( _
+   ByVal Hwnd As Long, _
+   ByVal lOperation As String, _
+   ByVal lpFile As String, _
+   ByVal lpParameters As String, _
+   ByVal lpDirectory As String, _
+   ByVal nShowCmd As Long) As Long
+   
+Private Declare PtrSafe Function GetDesktopWindow Lib "user32" () As Long
+
+Private Declare PtrSafe Function GetSystemDirectory Lib "kernel32" Alias "GetSystemDirectoryA" ( _
+   ByVal lpBuffer As String, _
+   ByVal nSize As Long) As Long
+
+Private Declare PtrSafe Function CreateProcess Lib "kernel32" Alias "CreateProcessA" ( _
+   ByVal lpApplicationName As String, ByVal lpCommandLine As String, _
+   ByVal lpProcessAttributes As Long, ByVal lpThreadAttributes As Long, _
+   ByVal bInheritHandles As Long, ByVal dwCreationFlags As Long, _
+   lpEnvironment As Any, ByVal lpCurrentDirectory As String, _
+   lpStartupInfo As STARTUPINFO, lpProcessInformation As PROCESS_INFORMATION) As Long
+
+Private Declare PtrSafe Function WaitForInputIdle Lib "user32" (ByVal hProcess As Long, ByVal dwMilliseconds As Long) As Long
+Private Declare PtrSafe Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As Long
+Private Declare PtrSafe Function WaitForSingleObject Lib "kernel32" (ByVal hHandle As Long, ByVal dwMilliseconds As Long) As Long
+
+Private Declare PtrSafe Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
+
+#Else
+
+Private Declare Function ShellExecuteA Lib "shell32.dll" ( _
+   ByVal Hwnd As Long, _
+   ByVal lOperation As String, _
+   ByVal lpFile As String, _
+   ByVal lpParameters As String, _
+   ByVal lpDirectory As String, _
+   ByVal nShowCmd As Long) As Long
+   
+Private Declare Function GetDesktopWindow Lib "user32" () As Long
+
+Private Declare Function GetSystemDirectory Lib "kernel32" Alias "GetSystemDirectoryA" ( _
+   ByVal lpBuffer As String, _
+   ByVal nSize As Long) As Long
+
 Private Declare Function CreateProcess Lib "kernel32" Alias "CreateProcessA" ( _
    ByVal lpApplicationName As String, ByVal lpCommandLine As String, _
    ByVal lpProcessAttributes As Long, ByVal lpThreadAttributes As Long, _
@@ -84,14 +117,13 @@ Private Declare Function CreateProcess Lib "kernel32" Alias "CreateProcessA" ( _
    lpEnvironment As Any, ByVal lpCurrentDirectory As String, _
    lpStartupInfo As STARTUPINFO, lpProcessInformation As PROCESS_INFORMATION) As Long
 
-Private Const INFINITE As Long = &HFFFFFFFF ' = -1&
-Private Const WAIT_TIMEOUT As Long = &H102&
-
 Private Declare Function WaitForInputIdle Lib "user32" (ByVal hProcess As Long, ByVal dwMilliseconds As Long) As Long
 Private Declare Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As Long
 Private Declare Function WaitForSingleObject Lib "kernel32" (ByVal hHandle As Long, ByVal dwMilliseconds As Long) As Long
 
 Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
+#End If
+
 
 '---------------------------------------------------------------------------------------
 ' Kapselungen

@@ -30,6 +30,33 @@ Attribute VB_Exposed = False
 Option Compare Text
 Option Explicit
 
+#If VBA7 Then
+
+Private Declare PtrSafe Function GetFileVersionInfoSize Lib "version.dll" Alias "GetFileVersionInfoSizeA" ( _
+  ByVal lptstrFilename As String, _
+  lpdwHandle As Long) As Long
+
+Private Declare PtrSafe Function GetFileVersionInfo Lib "version.dll" Alias "GetFileVersionInfoA" ( _
+  ByVal lptstrFilename As String, _
+  ByVal dwHandle As Long, _
+  ByVal dwLen As Long, _
+  lpData As Any _
+  ) As Long
+
+Private Declare PtrSafe Function VerQueryValue Lib "version.dll" Alias "VerQueryValueA" ( _
+  pBlock As Any, _
+  ByVal lpSubBlock As String, _
+  lplpBuffer As Any, _
+  puLen As Long _
+  ) As Long
+
+Private Declare PtrSafe Sub MoveMemory Lib "kernel32" Alias "RtlMoveMemory" ( _
+  dest As Any, _
+  ByVal Source As Long, _
+  ByVal Length As Long)
+
+#Else
+
 Private Declare Function GetFileVersionInfoSize Lib "version.dll" Alias "GetFileVersionInfoSizeA" ( _
   ByVal lptstrFilename As String, _
   lpdwHandle As Long) As Long
@@ -52,7 +79,9 @@ Private Declare Sub MoveMemory Lib "kernel32" Alias "RtlMoveMemory" ( _
   dest As Any, _
   ByVal Source As Long, _
   ByVal Length As Long)
-  
+
+#End If
+
 Private Type VS_FIXEDFILEINFO
   dwSignature As Long
   dwStrucVersion As Long

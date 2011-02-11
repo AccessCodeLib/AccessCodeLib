@@ -55,6 +55,30 @@ Public Enum ApplicationHandlerErrors
 End Enum
 
 ' API-Funktionen
+Private Const GCL_HBRBACKGROUND As Long = -10
+Private Const RDW_INVALIDATE As Long = &H1
+Private Const RDW_ERASE As Long = &H4
+Private Const SYSCOLOR_COLOR_APPWORKSPACE As Long = 12
+
+#If VBA7 Then
+
+Private Declare PtrSafe Function FindWindowEx Lib "USER32.DLL" Alias "FindWindowExA" ( _
+       ByVal hWnd1 As Long, ByVal hWnd2 As Long, _
+       ByVal lpsz1 As String, ByVal lpsz2 As String) As Long
+       
+Private Declare PtrSafe Function CreateSolidBrush Lib "gdi32.dll" (ByVal crColor As Long) As Long
+
+Private Declare PtrSafe Function SetClassLong Lib "user32" Alias "SetClassLongA" ( _
+       ByVal Hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+       
+Private Declare PtrSafe Function RedrawWindow Lib "user32" ( _
+       ByVal Hwnd As Long, lprcUpdate As Any, _
+       ByVal hrgnUpdate As Long, ByVal fuRedraw As Long) As Long
+
+Private Declare PtrSafe Function GetSysColor Lib "user32" (ByVal nIndex As Long) As Long
+
+#Else
+
 Private Declare Function FindWindowEx Lib "USER32.DLL" Alias "FindWindowExA" ( _
        ByVal hWnd1 As Long, ByVal hWnd2 As Long, _
        ByVal lpsz1 As String, ByVal lpsz2 As String) As Long
@@ -68,12 +92,9 @@ Private Declare Function RedrawWindow Lib "user32" ( _
        ByVal Hwnd As Long, lprcUpdate As Any, _
        ByVal hrgnUpdate As Long, ByVal fuRedraw As Long) As Long
 
-Private Const GCL_HBRBACKGROUND As Long = -10
-Private Const RDW_INVALIDATE As Long = &H1
-Private Const RDW_ERASE As Long = &H4
-
 Private Declare Function GetSysColor Lib "user32" (ByVal nIndex As Long) As Long
-Private Const SYSCOLOR_COLOR_APPWORKSPACE As Long = 12
+
+#End If
 
 ' Hilfskonstanten
 Private Const m_LOG_FILE As String = "log.txt"
@@ -124,7 +145,7 @@ Public Event AppFileBeforeCreateFile( _
             ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
             
 Public Event AppFileBeforeSaveFile( _
-            ByVal sFileID As String, ByVal sFileName As String, ByVal saveVersion As Boolean, _
+            ByVal sFileID As String, ByVal sFileName As String, ByVal SaveVersion As Boolean, _
             ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
             
 Public Event UpdateApplication( _
@@ -692,7 +713,7 @@ End Function
 ' </remarks>
 '/
 '---------------------------------------------------------------------------------------
-Friend Function SaveAppFile(ByVal sFileID As String, ByVal sFileName As String, Optional ByVal saveVersion As Boolean = False) As Boolean
+Friend Function SaveAppFile(ByVal sFileID As String, ByVal sFileName As String, Optional ByVal SaveVersion As Boolean = False) As Boolean
 
    Dim eventResumeMode As ApplicationHandlerResumeModes ' Rückgabewert aus Event-Schnittstelle
    Dim eventResumeMessage As Variant                    ' Nachricht, für Abbruchgrund
@@ -701,7 +722,7 @@ Friend Function SaveAppFile(ByVal sFileID As String, ByVal sFileName As String, 
    ' Event-Schnittstelle AppFileBeforeSaveFile
    '
    eventResumeMode = 0
-   RaiseEvent AppFileBeforeSaveFile(sFileID, sFileName, saveVersion, eventResumeMode, eventResumeMessage)
+   RaiseEvent AppFileBeforeSaveFile(sFileID, sFileName, SaveVersion, eventResumeMode, eventResumeMessage)
    If eventResumeMode <> 0 Then
       SaveAppFile = (eventResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Completed)
    Else
