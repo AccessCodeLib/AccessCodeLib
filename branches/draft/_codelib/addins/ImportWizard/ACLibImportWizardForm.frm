@@ -1,6 +1,6 @@
 Version =19
 VersionRequired =19
-Checksum =-17876925
+Checksum =-58816546
 Begin Form
     PopUp = NotDefault
     RecordSelectors = NotDefault
@@ -34,10 +34,10 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x000000000c5120010c512000ddd9427134522000fc5c20008452200008522000 ,
+        0x00c376106c405c0500405c05000000000000000000000000fccac52f34063a2f ,
         0x0104f0a49c00a00743ef8005010009009a0b3408000001000f00c80002000200 ,
-        0xc800020001000000fc5c20008452200008522000d8d1a22f0000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0xc800020001000033c0263905a8771a00000000000000000000110000a5f68633 ,
+        0xa8771a00a8770000000000000000000000000000000000000000000000000000 ,
         0x0000000001010000010000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -104,7 +104,7 @@ Begin Form
     PrtDevNames = Begin
         0x080021003b000100000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000005553423030 ,
-        0x3100
+        0x310000000000
     End
     OnLoad ="[Event Procedure]"
     
@@ -770,23 +770,23 @@ End Sub
 Private Sub cmdImportFiles_Click()
 
    Dim fileNameArray() As String
-   Dim arraySize As Long, i As Long
+   Dim ArraySize As Long, i As Long
    Dim lb As ListBox
    
 On Error GoTo HandleErr
 
    Set lb = Me.lstImportFiles
    
-   arraySize = lb.ListCount - 1
+   ArraySize = lb.ListCount - 1
    
-   If arraySize < 0 Then
+   If ArraySize < 0 Then
       MsgBox "Es sind keine Dateien ausgewählt.", vbInformation
       Exit Sub
    End If
    
-   ReDim fileNameArray(arraySize)
+   ReDim fileNameArray(ArraySize)
    
-   For i = 0 To arraySize
+   For i = 0 To ArraySize
       fileNameArray(i) = lb.ItemData(i)
    Next
    
@@ -912,7 +912,7 @@ Private Sub cmdSelectFile_Click()
    Dim strStartFolder As String
    Dim strFiles As String
    Dim fileArray() As String
-   Dim pos As Long
+   Dim Pos As Long
 
 On Error GoTo HandleErr
 
@@ -926,9 +926,9 @@ On Error GoTo HandleErr
    
    strStartFolder = CurrentLocalRepositoryPath & strStartFolder
    Do While Not DirExists(strStartFolder)
-      pos = InStrRev(strStartFolder, "\")
-      If pos = 0 Then Exit Do
-      strStartFolder = Left$(strStartFolder, pos - 1)
+      Pos = InStrRev(strStartFolder, "\")
+      If Pos = 0 Then Exit Do
+      strStartFolder = Left$(strStartFolder, Pos - 1)
    Loop
 
    strFiles = SelectFile(strStartFolder, , , True)
@@ -959,16 +959,16 @@ Private Sub addFiles(ByRef fileArray() As String)
    
    Dim lb As ListBox
    Dim i As Long
-   Dim arraySize As Long
+   Dim ArraySize As Long
    
    Dim cli As CodeLibInfo
    
 On Error GoTo HandleErr
 
-   arraySize = UBound(fileArray)
+   ArraySize = UBound(fileArray)
    
    Set lb = Me.lstImportFiles
-   For i = 0 To arraySize
+   For i = 0 To ArraySize
       cli = CurrentACLibFileManager.GetCodeLibInfoFromFilePath(fileArray(i))
       TempDb.Execute "insert into " & TEMPDB_TABNAME & " (ObjectName, LocalRepositoryPath, Description) VALUES (" & _
                            SqlTools.TextToSqlText(cli.Name) & ", " & SqlTools.TextToSqlText(getLocalRepositoryPath(fileArray(i))) & _
@@ -994,11 +994,11 @@ HandleErr:
    
 End Sub
 
-Private Function getLocalRepositoryPath(ByRef fullPath As String) As String
+Private Function getLocalRepositoryPath(ByRef FullPath As String) As String
 
 On Error GoTo HandleErr
 
-   getLocalRepositoryPath = Replace(GetRelativPathFromFullPath(Replace(fullPath, "/", "\"), CurrentLocalRepositoryPath, False), "\", "/")
+   getLocalRepositoryPath = Replace(GetRelativPathFromFullPath(Replace(FullPath, "/", "\"), CurrentLocalRepositoryPath, False), "\", "/")
 
 ExitHere:
 On Error Resume Next
@@ -1274,17 +1274,17 @@ HandleErr:
    
 End Sub
 
-Private Sub addFileFromFileName(ByVal fileString As String)
+Private Sub addFileFromFileName(ByVal FileString As String)
 
 On Error GoTo HandleErr
 
-   fileString = Trim$(Replace(fileString, "/", "\"))
-   If Len(fileString) > 0 Then
-      Do While Left$(fileString, 1) = "\"
-         fileString = Trim$(Mid$(fileString, 2))
-         If Len(fileString) = 0 Then Exit Sub
+   FileString = Trim$(Replace(FileString, "/", "\"))
+   If Len(FileString) > 0 Then
+      Do While Left$(FileString, 1) = "\"
+         FileString = Trim$(Mid$(FileString, 2))
+         If Len(FileString) = 0 Then Exit Sub
       Loop
-      addFile CurrentLocalRepositoryPath & fileString
+      addFile CurrentLocalRepositoryPath & FileString
    End If
 
 ExitHere:
@@ -1508,9 +1508,9 @@ Private Sub OpenSelectItemFormImportFilesListboxInTextViewer()
 End Sub
 
 Private Sub OpenRepositoryFileInTextViewer(ByVal sRelativeFilePath As String)
-   Dim fullPath As String
-   fullPath = CurrentACLibFileManager.GetRepositoryFullPath(sRelativeFilePath)
-   WinAPI.Shell.Execute fullPath, "open"
+   Dim FullPath As String
+   FullPath = CurrentACLibFileManager.GetRepositoryFullPath(sRelativeFilePath)
+   WinAPI.Shell.Execute FullPath, "open"
 End Sub
 
 Private Sub EnableCodeModuleDescription(ByVal bViewDescription As Boolean)

@@ -135,7 +135,7 @@ End Property
 Public Function CreateAppFile(ByVal sFileID As String, ByVal sFileName As String) As Boolean
 
    Dim f As Integer
-   Dim binfile() As Byte
+   Dim Binfile() As Byte
    Dim lngFieldSize As Long
    Dim rst As DAO.Recordset
    Dim fld As DAO.Field
@@ -148,13 +148,13 @@ Public Function CreateAppFile(ByVal sFileID As String, ByVal sFileName As String
       lngFieldSize = fld.FieldSize
       If lngFieldSize > 0 Then
 
-         ReDim binfile(lngFieldSize - 1)
-         binfile = fld.GetChunk(0, lngFieldSize)
+         ReDim Binfile(lngFieldSize - 1)
+         Binfile = fld.GetChunk(0, lngFieldSize)
 
         ' Datei erstellen
          f = FreeFile
          Open sFileName For Binary As #f
-         Put #f, , binfile()
+         Put #f, , Binfile()
          Close #f
 
          CreateAppFile = True
@@ -180,11 +180,11 @@ End Function
 ' </remarks>
 '/
 '---------------------------------------------------------------------------------------
-Public Function SaveAppFile(ByVal sFileID As String, ByVal sFileName As String, _
-                   Optional ByVal saveVersion As Boolean = False) As Boolean
+Public Function SaveAppFile(ByVal FileId As String, ByVal FileName As String, _
+                   Optional ByVal SaveVersion As Boolean = False) As Boolean
 
    Dim f As Integer
-   Dim binfile() As Byte
+   Dim Binfile() As Byte
    Dim ArraySize As Long
    Dim strVersion As String
    Dim FileInfo As WinApiFileInfo
@@ -192,11 +192,11 @@ Public Function SaveAppFile(ByVal sFileID As String, ByVal sFileName As String, 
 On Error GoTo HandleErr
 
    f = FreeFile
-   Open sFileName For Binary As #f
+   Open FileName For Binary As #f
    ArraySize = LOF(f) - 1
    If ArraySize >= 0 Then
-      ReDim binfile(ArraySize)
-      Get #f, , binfile()
+      ReDim Binfile(ArraySize)
+      Get #f, , Binfile()
    End If
    Close #f
 
@@ -206,20 +206,20 @@ On Error GoTo HandleErr
    End If
 
    Dim rst As DAO.Recordset
-   Set rst = CodeDb.OpenRecordset("select id, file, Version from " & m_TABLE_AppFiles & " where id='" & sFileID & "'")
+   Set rst = CodeDb.OpenRecordset("select id, file, Version from " & m_TABLE_AppFiles & " where id='" & FileId & "'")
    If rst.EOF Then
       rst.AddNew
-      rst.Fields("id") = sFileID
+      rst.Fields("id") = FileId
    Else
       rst.Edit
    End If
-   rst.Fields("file").AppendChunk binfile
-   If saveVersion Then
+   rst.Fields("file").AppendChunk Binfile
+   If SaveVersion Then
       Set FileInfo = New WinApiFileInfo
-      strVersion = FileInfo.GetFileVersion(sFileName)
+      strVersion = FileInfo.GetFileVersion(FileName)
           Set FileInfo = Nothing
       If Len(strVersion) = 0 Then
-         strVersion = Format$(Nz(FileDateTime(sFileName), vbNullString), "yyyy.mm.dd")
+         strVersion = Format$(Nz(FileDateTime(FileName), vbNullString), "yyyy.mm.dd")
       End If
       rst.Fields("version") = strVersion
    End If
@@ -285,12 +285,12 @@ End Sub
 
 ' AppFileBeforeSaveFile
 Private Sub m_ApplicationHandler_AppFileBeforeSaveFile(ByVal sFileID As String, ByVal sFileName As String, _
-                              ByVal saveVersion As Boolean, ByRef ResumeMode As ApplicationHandlerResumeModes, _
+                              ByVal SaveVersion As Boolean, ByRef ResumeMode As ApplicationHandlerResumeModes, _
                               ByRef ResumeMessage As Variant)
 
    Dim bolCompleted As Boolean
 
-   bolCompleted = SaveAppFile(sFileID, sFileName, saveVersion)
+   bolCompleted = SaveAppFile(sFileID, sFileName, SaveVersion)
    If bolCompleted Then
       ResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Completed
    Else 'Fehler rückmelden
