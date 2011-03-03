@@ -64,15 +64,15 @@ End Property
 
 Public Property Get Roles() As UserRoles
 
-   Dim tempUserRoles As UserRoles
+   Dim TempUserRoles As UserRoles
 
-   RaiseEvent GetUserRoles(tempUserRoles)
-   If tempUserRoles Is Nothing Then '... Notbehelf falls auf Ereignis nicht reagiert wurde
-      Set tempUserRoles = New UserRoles
-      Set tempUserRoles.User = Me
+   RaiseEvent GetUserRoles(TempUserRoles)
+   If TempUserRoles Is Nothing Then '... Notbehelf falls auf Ereignis nicht reagiert wurde
+      Set TempUserRoles = New UserRoles
+      Set TempUserRoles.User = Me
    End If
 
-   Set Roles = tempUserRoles
+   Set Roles = TempUserRoles
 
 End Property
 
