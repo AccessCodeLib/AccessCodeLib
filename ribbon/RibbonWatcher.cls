@@ -23,7 +23,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>ribbon/RibbonControlInfo.cls</use>
 '  <use>ribbon/ribbon_RibbonWatcher.bas</use>
-'  <ref><name>Office</name><major></major><minor></minor><guid></guid></ref>
+'  <ref><name>Office</name><major>2</major><minor>5</minor><guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</guid></ref>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
 '</codelib>
 '---------------------------------------------------------------------------------------
