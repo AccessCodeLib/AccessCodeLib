@@ -1,0 +1,19 @@
+Option Compare Database
+Option Explicit
+
+Private m_ApplicationManager As ApplicationManager
+
+Public Property Get CurrentApplication() As ApplicationManager
+   If m_ApplicationManager Is Nothing Then
+      Set m_ApplicationManager = New ApplicationManager
+   End If
+   Set CurrentApplication = m_ApplicationManager
+End Property
+
+'Versuch: CurrentUser() überschreiben - aber nicht nur einen String sondern die Instanz zurückgeben.
+'         Da aber LoginName in der Klasse als Standardwert definiert ist,
+'         wird bei Anforderung eines Werttypes der Inhalt dieser Eigenschaft geliefert.
+'         Das funktioniert allerdings nur in VBA - in einer Abfrage oder als Ausdruck führt das zu einem Fehler!
+Public Function CurrentUser() As UserHandler
+   Set CurrentUser = CurrentApplication.User
+End Function

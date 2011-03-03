@@ -1,0 +1,94 @@
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = False
+'---------------------------------------------------------------------------------------
+' Class Module: ApplicationManager
+'---------------------------------------------------------------------------------------
+'/**
+' @brief Zentrale der Anwendung
+'        Instanziert alle notwendigen Klassen (Benutzersteuerung, Rechteverwaltung, ...)
+'**/
+'---------------------------------------------------------------------------------------
+'
+Option Compare Database
+Option Explicit
+
+Private WithEvents m_User As UserHandler
+Attribute m_User.VB_VarHelpID = -1
+Private WithEvents m_LoginChecker As WinLogin
+Attribute m_LoginChecker.VB_VarHelpID = -1
+Private m_LoginFormBridge As LoginFormBridge
+Private m_UserRoles As UserRoles
+
+Private m_LoginCancelled As Boolean
+
+Public Property Get User() As UserHandler
+   If m_User Is Nothing Then
+      InitUser
+   End If
+   Set User = m_User
+End Property
+
+Private Sub InitUser()
+   Set m_User = New UserHandler
+   Set m_UserRoles = New UserRoles
+   Set m_UserRoles.User = m_User
+End Sub
+
+Public Function Login(Optional ByVal UserName As String = vbNullString) As Boolean
+
+   Dim strDefaultUser As String
+   Dim openArgString As String
+
+   If StrPtr(UserName) = 0 Then
+      UserName = User.UserName
+   End If
+
+   Login = LoginFormBridge.Login(UserName)
+
+End Function
+
+Public Property Get LoginChecker() As WinLogin
+   If m_LoginChecker Is Nothing Then
+      Set m_LoginChecker = New WinLogin
+      '... bei Bedarf Domain o. ä. einstellen
+      'm_LoginChecker.Domain = ...
+   End If
+   Set LoginChecker = m_LoginChecker
+End Property
+
+Friend Property Get LoginFormBridge() As LoginFormBridge
+   If m_LoginFormBridge Is Nothing Then
+      Set m_LoginFormBridge = New LoginFormBridge
+      Set m_LoginFormBridge.LoginChecker = LoginChecker
+   End If
+   Set LoginFormBridge = m_LoginFormBridge
+End Property
+
+
+Private Sub m_LoginChecker_LoginSuccessful(ByVal UserName As String)
+   User.UserName = UserName
+End Sub
+
+Private Sub m_User_UserBeforeChange(ByRef NewUserName As String, ByRef Cancel As Boolean)
+   
+   Dim IsCurrentWinUser As Boolean
+
+   IsCurrentWinUser = (StrComp(NewUserName, m_User.DefaultWindowsUser, vbTextCompare) = 0)
+   If IsCurrentWinUser Then
+      'Kennwort nur prüfen, falls User nicht der aktuelle Windows-User ist
+      Exit Sub
+   End If
+
+   If LoginChecker.CurrentUser = NewUserName Then
+      'Kein weitere Prüfung notwendig - die letzte Anmeldung gilt noch
+      Exit Sub
+   End If
+
+   If Not LoginFormBridge.Login(NewUserName) Then
+      Cancel = True
+   End If
+   NewUserName = LoginChecker.CurrentUser
+
+End Sub
