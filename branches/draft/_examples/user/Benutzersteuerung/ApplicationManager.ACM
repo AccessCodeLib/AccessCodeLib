@@ -39,7 +39,7 @@ End Sub
 Public Function Login(Optional ByVal UserName As String = vbNullString) As Boolean
 
    Dim strDefaultUser As String
-   Dim openArgString As String
+   Dim OpenArgString As String
 
    If StrPtr(UserName) = 0 Then
       UserName = User.UserName
