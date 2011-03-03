@@ -33,13 +33,13 @@ Private m_LoginChecker As Object 'Late binding, damit unterschiedliche Loginvari
 Private WithEvents m_LoginForm As Form_LoginForm
 Attribute m_LoginForm.VB_VarHelpID = -1
 Private m_LoginCancelled As Boolean
-Private m_Caption As Long
+Private m_Caption As String
 
-Public Property Set LoginChecker(ByRef LoginCheckerRef As Object)
+Public Property Set LoginChecker(ByVal LoginCheckerRef As Object)
    Set m_LoginChecker = LoginCheckerRef
 End Property
 
-Public Property Let Caption(ByRef FormCaption As Object)
+Public Property Let Caption(ByVal FormCaption As String)
    m_Caption = FormCaption
 End Property
 
