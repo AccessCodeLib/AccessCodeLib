@@ -43,30 +43,30 @@ Public Property Let Caption(ByVal FormCaption As String)
    m_Caption = FormCaption
 End Property
 
-Public Property Set LoginForm(ByRef FormRef As Form_LoginForm)
+Public Property Set LoginForm(ByVal FormRef As Form_LoginForm)
    Set m_LoginForm = FormRef
 End Property
 
 Public Function Login(ByVal UserName As String) As Boolean
    
-   Dim strDefaultUser As String
-   Dim openArgString As String
+   Dim DefaultUser As String
+   Dim OpenArgString As String
 
    If Len(UserName) > 0 Then
-      strDefaultUser = UserName
+      DefaultUser = UserName
    ElseIf Len(m_LoginChecker.CurrentUser) > 0 Then
-      strDefaultUser = m_LoginChecker.CurrentUser
+      DefaultUser = m_LoginChecker.CurrentUser
    Else
-      strDefaultUser = Environ("username")
+      DefaultUser = Environ("username")
    End If
    
-   openArgString = CStr(ObjPtr(Me)) & "@"
+   OpenArgString = CStr(ObjPtr(Me)) & "@"
    If Len(m_Caption) > 0 Then
-      openArgString = openArgString & m_Caption & " - "
+      OpenArgString = OpenArgString & m_Caption & " - "
    End If
-   openArgString = openArgString & "Login@" & strDefaultUser
+   OpenArgString = OpenArgString & "Login@" & DefaultUser
 
-   DoCmd.OpenForm LoginFormName, acNormal, , , acFormEdit, acDialog, openArgString
+   DoCmd.OpenForm LoginFormName, acNormal, , , acFormEdit, acDialog, OpenArgString
    '=> Im LoginFormular erfolgt Aufruf der Eigenschaft "LoginForm",
    '   damit wird Ereignisbehandlung aktiviert => m_LoginCancelled wird eingestellt
    Login = Not m_LoginCancelled
@@ -80,12 +80,12 @@ End Sub
 
 Private Sub m_LoginForm_Logon(ByVal LoginName As String, ByVal Password As String, Cancel As Boolean)
 
-   Dim bolLoginOk As Boolean
+   Dim LoginOk As Boolean
    
    m_LoginCancelled = False
    
-   bolLoginOk = m_LoginChecker.Login(LoginName, Password)
-   If Not bolLoginOk Then
+   LoginOk = m_LoginChecker.Login(LoginName, Password)
+   If Not LoginOk Then
       Cancel = True
    End If
 

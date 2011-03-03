@@ -33,6 +33,10 @@ Public Property Set User(ByVal NewUser As UserHandler)
    ReadUserRoles
 End Property
 
+Private Sub m_User_GetUserRoles(ByRef UserRolesRef As UserRoles)
+   Set UserRolesRef = Me
+End Sub
+
 Private Sub m_User_UserChanged(ByVal NewUserName As String)
    ReadUserRoles
 End Sub
