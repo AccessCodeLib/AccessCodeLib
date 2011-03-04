@@ -10,7 +10,11 @@ Attribute VB_Exposed = False
 '        Instanziert alle notwendigen Klassen (Benutzersteuerung, Rechteverwaltung, ...)
 '**/
 '---------------------------------------------------------------------------------------
-'
+'<codelib>
+'  <file>%AppFolder%/Source/ApplicationManager.cls</file>
+'  <license>_codelib/license.bas</license>
+'</codelib>
+'---------------------------------------------------------------------------------------'
 Option Compare Database
 Option Explicit
 
@@ -20,8 +24,6 @@ Private WithEvents m_LoginChecker As WinLogin
 Attribute m_LoginChecker.VB_VarHelpID = -1
 Private m_LoginFormBridge As LoginFormBridge
 Private m_UserRoles As UserRoles
-
-Private m_LoginCancelled As Boolean
 
 Public Property Get User() As UserHandler
    If m_User Is Nothing Then
@@ -38,9 +40,6 @@ End Sub
 
 Public Function Login(Optional ByVal UserName As String = vbNullString) As Boolean
 
-   Dim strDefaultUser As String
-   Dim OpenArgString As String
-
    If StrPtr(UserName) = 0 Then
       UserName = User.UserName
    End If
@@ -49,7 +48,7 @@ Public Function Login(Optional ByVal UserName As String = vbNullString) As Boole
 
 End Function
 
-Public Property Get LoginChecker() As WinLogin
+Private Property Get LoginChecker() As WinLogin
    If m_LoginChecker Is Nothing Then
       Set m_LoginChecker = New WinLogin
       '... bei Bedarf Domain o. ä. einstellen
@@ -58,10 +57,11 @@ Public Property Get LoginChecker() As WinLogin
    Set LoginChecker = m_LoginChecker
 End Property
 
-Friend Property Get LoginFormBridge() As LoginFormBridge
+Private Property Get LoginFormBridge() As LoginFormBridge
    If m_LoginFormBridge Is Nothing Then
       Set m_LoginFormBridge = New LoginFormBridge
       Set m_LoginFormBridge.LoginChecker = LoginChecker
+      m_LoginFormBridge.Caption = "Login (Windowskennung)"
    End If
    Set LoginFormBridge = m_LoginFormBridge
 End Property
