@@ -26,7 +26,7 @@ Attribute VB_Exposed = False
 Option Compare Database
 Option Explicit
 
-Const LoginFormName As String = "LoginForm"
+Private Const LoginFormName As String = "LoginForm"
 
 Private m_LoginChecker As Object 'Late binding, damit unterschiedliche Loginvarianten verwendet werden können
                                  'Schöner wäre ein Interface, damit machte ich aber schlechte Erfahrungen unter VBA (Abstürze & Co. während der Entwicklung)
@@ -51,6 +51,7 @@ Public Function Login(ByVal UserName As String) As Boolean
    
    Dim DefaultUser As String
    Dim OpenArgString As String
+   Dim Caption As String
 
    If Len(UserName) > 0 Then
       DefaultUser = UserName
@@ -62,9 +63,11 @@ Public Function Login(ByVal UserName As String) As Boolean
    
    OpenArgString = CStr(ObjPtr(Me)) & "@"
    If Len(m_Caption) > 0 Then
-      OpenArgString = OpenArgString & m_Caption & " - "
+      Caption = m_Caption
+   Else
+      Caption = "Login"
    End If
-   OpenArgString = OpenArgString & "Login@" & DefaultUser
+   OpenArgString = OpenArgString & Caption & "@" & DefaultUser
 
    DoCmd.OpenForm LoginFormName, acNormal, , , acFormEdit, acDialog, OpenArgString
    '=> Im LoginFormular erfolgt Aufruf der Eigenschaft "LoginForm",
