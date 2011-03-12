@@ -73,11 +73,19 @@ Private Enum LogonProvider
     LOGON32_PROVIDER_DEFAULT = 0
 End Enum
 
-Private Declare Function LogonUser Lib "advapi32.dll" Alias "LogonUserA" ( _
+#If VBA7 Then
+   Private Declare PtrSafe Function LogonUser Lib "advapi32.dll" Alias "LogonUserA" ( _
             ByVal lpszUsername As String, ByVal lpszDomain As String, ByVal lpszPassword As String, _
             ByVal dwLogonType As Long, ByVal dwLogonProvider As Long, phToken As Long) As Long
             
-Private Declare Function CloseHandle Lib "kernel32.dll" (ByVal hObject As Long) As Boolean
+   Private Declare PtrSafe Function CloseHandle Lib "kernel32.dll" (ByVal hObject As Long) As Boolean
+#Else
+   Private Declare Function LogonUser Lib "advapi32.dll" Alias "LogonUserA" ( _
+               ByVal lpszUsername As String, ByVal lpszDomain As String, ByVal lpszPassword As String, _
+               ByVal dwLogonType As Long, ByVal dwLogonProvider As Long, phToken As Long) As Long
+               
+   Private Declare Function CloseHandle Lib "kernel32.dll" (ByVal hObject As Long) As Boolean
+#End If
 
 Private m_UserDomain As String
 Private m_UserName As String

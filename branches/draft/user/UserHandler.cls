@@ -18,8 +18,10 @@ Attribute VB_Exposed = False
 '  <file>user/UserHandler.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>user/UserRoles.cls</use>
+'  <test>_test/user/UserHandlerTests.cls</test>
 '</codelib>
-'---------------------------------------------------------------------------------------'
+'---------------------------------------------------------------------------------------
+'
 Option Compare Database
 Option Explicit
 
