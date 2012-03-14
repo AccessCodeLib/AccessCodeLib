@@ -290,7 +290,7 @@ Private Function GetFullFilePath(ByVal FileName As String, _
       CreateDirectoryIfMissing DestinationFolder
    End If
 
-   GetFullFilePath = DestinationFolder
+   GetFullFilePath = DestinationFolder & FileName
 
 End Function
 
@@ -366,23 +366,18 @@ Friend Sub ImportFilesToTable()
    Dim DestinationFolder As String
    Dim FullFilePath As String
 
-   If rst.EOF Then
-      Err.Raise vbObjectError, "ExportFilesFromRecordset", "Missing file data"
-   End If
-
-   
-   
 On Error GoTo Err_
 
    Set rst = OpenAppFileInfoRecordset
+
    Set FileNameField = rst.Fields(m_TABLE_FIELD_FileName)
    Set DestinationFolderField = rst.Fields(m_TABLE_FIELD_DestinationFolder)
    Set FileVersionField = rst.Fields(m_TABLE_FIELD_Version)
 
    Do While Not rst.EOF
-      ImportFileToTable Nz(FileNameField, vbNullString), _
-                        Nz(DestinationFolderField, vbNullString), _
-                        Nz(FileVersionField, vbNullString)
+      ImportFileToTable Nz(FileNameField.Value, vbNullString), _
+                        Nz(DestinationFolderField.Value, vbNullString), _
+                        (Len(Nz(FileVersionField.Value, vbNullString)) > 0)
       rst.MoveNext
    Loop
    rst.Close
@@ -404,8 +399,8 @@ Private Sub ImportFileToTable(ByVal FileName As String, ByVal DestinationFolder 
 
    Dim FileNr As Integer
    Dim BinFile() As Byte
-   Dim arraySize As Long
-   Dim strVersion As String
+   Dim ArraySize As Long
+   Dim FileVersion As String
    Dim FullFilePath As String
    
 On Error GoTo HandleErr
@@ -419,14 +414,14 @@ On Error GoTo HandleErr
 
    FileNr = FreeFile
    Open FullFilePath For Binary As #FileNr
-   arraySize = LOF(FileNr) - 1
-   If arraySize >= 0 Then
-      ReDim BinFile(arraySize)
+   ArraySize = LOF(FileNr) - 1
+   If ArraySize >= 0 Then
+      ReDim BinFile(ArraySize)
       Get #FileNr, , BinFile()
    End If
    Close #FileNr
 
-   If arraySize < 0 Then
+   If ArraySize < 0 Then
       Err.Raise vbObjectError, "SaveAppFile", "Empty file (filesize = 0)"
       Exit Sub
    End If
@@ -442,11 +437,11 @@ On Error GoTo HandleErr
    End If
    rst.Fields(m_TABLE_FIELD_FileData).AppendChunk BinFile
    If SaveVersion Then
-      strVersion = GetFileVersion(FullFilePath)
-      If VBA.Len(strVersion) = 0 Then
-         strVersion = Format$(Nz(FileDateTime(FullFilePath), vbNullString), "yyyy.mm.dd")
+      FileVersion = GetFileVersion(FullFilePath)
+      If VBA.Len(FileVersion) = 0 Then
+         FileVersion = Format$(Nz(FileDateTime(FullFilePath), vbNullString), "yyyy.mm.dd")
       End If
-      rst.Fields(m_TABLE_FIELD_Version) = strVersion
+      rst.Fields(m_TABLE_FIELD_Version) = FileVersion
    End If
    rst.Update
    rst.Close
@@ -566,7 +561,7 @@ End Function
 
 Private Function OpenAppFileInfoRecordset() As DAO.Recordset
 
-   Set OpenAppFileInfoRecordset = CodeDb.OpenRecordset(m_TABLE_InfoFields_SqlString, dbOpenSnapshot + dbOpenForwardOnly, dbReadOnly)
+   Set OpenAppFileInfoRecordset = CodeDb.OpenRecordset(m_TABLE_InfoFields_SqlString, dbOpenForwardOnly, dbReadOnly)
 
 End Function
 
