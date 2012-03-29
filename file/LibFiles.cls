@@ -64,29 +64,59 @@ Private m_ReferencesUpdateAllowed As Boolean
 '---------------------------------------------------------------------------------------------------
 ' API
 '---------------------------------------------------------------------------------------------------
-Private Declare Function GetFileVersionInfoSize Lib "version.dll" Alias "GetFileVersionInfoSizeA" ( _
-  ByVal lptstrFilename As String, _
-  lpdwHandle As Long) As Long
 
-Private Declare Function GetFileVersionInfo Lib "version.dll" Alias "GetFileVersionInfoA" ( _
-  ByVal lptstrFilename As String, _
-  ByVal dwHandle As Long, _
-  ByVal dwLen As Long, _
-  ByRef lpData As Any _
-  ) As Long
+#If VBA7 Then
 
-Private Declare Function VerQueryValue Lib "version.dll" Alias "VerQueryValueA" ( _
-  pBlock As Any, _
-  ByVal lpSubBlock As String, _
-  lplpBuffer As Any, _
-  puLen As Long _
-  ) As Long
+   Private Declare PtrSafe Function GetFileVersionInfoSize Lib "version.dll" Alias "GetFileVersionInfoSizeA" ( _
+     ByVal lptstrFilename As String, _
+     lpdwHandle As Long) As Long
+   
+   Private Declare PtrSafe Function GetFileVersionInfo Lib "version.dll" Alias "GetFileVersionInfoA" ( _
+     ByVal lptstrFilename As String, _
+     ByVal dwHandle As Long, _
+     ByVal dwLen As Long, _
+     ByRef lpData As Any _
+     ) As Long
+   
+   Private Declare PtrSafe Function VerQueryValue Lib "version.dll" Alias "VerQueryValueA" ( _
+     pBlock As Any, _
+     ByVal lpSubBlock As String, _
+     lplpBuffer As Any, _
+     puLen As Long _
+     ) As Long
+   
+   Private Declare PtrSafe Sub MoveMemory Lib "kernel32" Alias "RtlMoveMemory" ( _
+     Dest As Any, _
+     ByVal Source As Long, _
+     ByVal Length As Long)
 
-Private Declare Sub MoveMemory Lib "kernel32" Alias "RtlMoveMemory" ( _
-  Dest As Any, _
-  ByVal Source As Long, _
-  ByVal Length As Long)
-  
+#Else
+
+   Private Declare Function GetFileVersionInfoSize Lib "version.dll" Alias "GetFileVersionInfoSizeA" ( _
+     ByVal lptstrFilename As String, _
+     lpdwHandle As Long) As Long
+   
+   Private Declare Function GetFileVersionInfo Lib "version.dll" Alias "GetFileVersionInfoA" ( _
+     ByVal lptstrFilename As String, _
+     ByVal dwHandle As Long, _
+     ByVal dwLen As Long, _
+     ByRef lpData As Any _
+     ) As Long
+   
+   Private Declare Function VerQueryValue Lib "version.dll" Alias "VerQueryValueA" ( _
+     pBlock As Any, _
+     ByVal lpSubBlock As String, _
+     lplpBuffer As Any, _
+     puLen As Long _
+     ) As Long
+   
+   Private Declare Sub MoveMemory Lib "kernel32" Alias "RtlMoveMemory" ( _
+     Dest As Any, _
+     ByVal Source As Long, _
+     ByVal Length As Long)
+
+#End If
+
 Private Type VS_FIXEDFILEINFO
   dwSignature As Long
   dwStrucVersion As Long
@@ -139,11 +169,11 @@ End Property
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Friend Property Let LibPath(ByVal newValue As String)
-   If VBA.Right$(newValue, 1) <> "\" Then
-      newValue = newValue & "\"
+Friend Property Let LibPath(ByVal NewValue As String)
+   If VBA.Right$(NewValue, 1) <> "\" Then
+      NewValue = NewValue & "\"
    End If
-   m_LibPath = newValue
+   m_LibPath = NewValue
 End Property
 
 Friend Sub SetLibPathAsCurrentDir(Optional ByVal CurLibPath As String = vbNullString)
