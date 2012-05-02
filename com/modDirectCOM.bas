@@ -155,6 +155,7 @@ End Type
 ' Prozedur im Internet gefunden: http://www.ppreview.net/Forum/post.asp?method=ReplyQuote&REPLY_ID=846&TOPIC_ID=570&FORUM_ID=2 \n
 ' Code angepasst
 ' </remarks>
+'  <ref><name>stdole</name><major>2</major><minor>0</minor><guid>{00020430-0000-0000-C000-000000000046}</guid></ref>
 '**/
 '---------------------------------------------------------------------------------------
 Public Function getInstance(ByVal LibraryString As String, ByVal ProgIdString As String) As stdole.IUnknown
