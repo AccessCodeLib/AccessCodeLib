@@ -18,7 +18,7 @@ Attribute VB_Description = "SQL-Hilfsfunktionen"
 '  <license>_codelib/license.bas</license>
 '  <test>_test/text/StringToolsTests.cls</test>
 '</codelib>
-'---------------------------------------------------------------------------------------
+'--------------------------------------------------------------------------------------	-
 '
 Option Compare Text
 Option Explicit
@@ -123,4 +123,44 @@ Public Function Format(ByVal Expression As Variant, Optional ByVal FormatString 
 
    Format = VBA.Format$(Expression, FormatString, FirstDayOfWeek, FirstWeekOfYear)
 
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: PadLeft
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Linksbündiges Auffüllen eines Strings
+' </summary>
+' <param name="value">String der augefüllt werden soll</param>
+' <param name="totalWidth">Gesamtlänge der resultierenen Zeichenfolge</param>
+' <param name="padChar">Zeichen mit dem aufgefüllt werden soll</param>
+' <returns>String</returns>
+' <remarks>
+' Wenn die Länge von value größer oder gleich totalWidth ist, wird das Resultat auf totalWidth Zeichen begrenzt
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function PadLeft(ByVal value As String, ByVal totalWidth As Integer, Optional ByVal padChar As String = " ") As String
+    PadLeft = Right$(String$(totalWidth, padChar) & value, totalWidth)
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: PadRight
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Rechtsbündiges Auffüllen eines Strings
+' </summary>
+' <param name="value">String der augefüllt werden soll</param>
+' <param name="totalWidth">Gesamtlänge der resultierenen Zeichenfolge</param>
+' <param name="padChar">Zeichen mit dem aufgefüllt werden soll</param>
+' <returns>String</returns>
+' <remarks>
+' Wenn die Länge von value größer oder gleich totalWidth ist, wird das Resultat auf totalWidth Zeichen begrenzt
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function PadRight(ByVal value As String, ByVal totalWidth As Integer, Optional ByVal padChar As String = " ") As String
+    PadRight = Left$(value & String$(totalWidth, padChar), totalWidth)
 End Function
