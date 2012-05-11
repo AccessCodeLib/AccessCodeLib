@@ -126,3 +126,14 @@ Public Sub PadRight_String_RightPadStringDefaultParam(ByVal Value As String, ByV
     Assert.That StringTools.PadRight(Value, totalWidth), Iz.EqualTo(Expected)
 End Sub
 
+'AccUnit:Row("abc", "b", True)
+'AccUnit:Row("abc", "B", True)
+'AccUnit:Row("abc", "", True)
+'AccUnit:Row("abc", "ABC", True)
+'AccUnit:Row("abc", "abc", True)
+'AccUnit:Row("", "", False)
+'AccUnit:Row("", "A", False)
+Public Sub Contains_String_ContainsSearchString(ByVal checkValue As String, ByVal searchValue As String, Expected As Boolean)
+    Assert.That StringTools.Contains(checkValue, searchValue), Iz.EqualTo(Expected)
+End Sub
+

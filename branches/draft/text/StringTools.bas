@@ -18,7 +18,7 @@ Attribute VB_Description = "SQL-Hilfsfunktionen"
 '  <license>_codelib/license.bas</license>
 '  <test>_test/text/StringToolsTests.cls</test>
 '</codelib>
-'--------------------------------------------------------------------------------------	-
+'---------------------------------------------------------------------------------------
 '
 Option Compare Text
 Option Explicit
@@ -164,3 +164,23 @@ End Function
 Public Function PadRight(ByVal value As String, ByVal totalWidth As Integer, Optional ByVal padChar As String = " ") As String
     PadRight = Left$(value & String$(totalWidth, padChar), totalWidth)
 End Function
+
+'---------------------------------------------------------------------------------------
+' Function: Contains
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Gibt an ob searchValue in der Zeichenfolge checkValue vorkommt.
+' </summary>
+' <param name="checkValue">Zeichenfolge die durchsucht werden soll</param>
+' <param name="searchValue">Zeichenfolge nach der gesucht werden soll</param>
+' <returns>Boolean</returns>
+' <remarks>
+' Ergibt True, wenn searchValue in checkValue enthalten ist oder searchValue den Wert vbNullString hat
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function Contains(ByVal checkValue As String, ByVal searchValue As String) As Boolean
+    Contains = InStr(1, checkValue, searchValue, vbTextCompare) > 0
+End Function
+
