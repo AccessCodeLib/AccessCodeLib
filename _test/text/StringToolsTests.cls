@@ -63,8 +63,6 @@ Public Sub IsNullOrEmpty_WithIgnoreSpaceParameter_ReturnsTrueOrFalse( _
    Assert.AreEqual Expected, Actual
 End Sub
 
-
-
 'AccUnit:Row("{0}", "A", "A")
 'AccUnit:Row("a{0}", "A", "aA")
 'AccUnit:Row("a{0}b", "A", "aAb")
@@ -103,3 +101,28 @@ Public Sub Format_DateTime_FormattedDateTime(ByVal Expression As Variant, ByVal 
    Actual = StringTools.Format(Expression, FormatString)
    Assert.AreEqual Expected, Actual
 End Sub
+
+'AccUnit:Row("Test", 4, "_", "Test")
+'AccUnit:Row("Test", 6, "_", "__Test")
+Public Sub PadLeft_String_LeftPadString(ByVal Value As String, ByVal totalWidth As Integer, ByVal padChar As String, ByVal Expected As String)
+    Assert.That StringTools.PadLeft(Value, totalWidth, padChar), Iz.EqualTo(Expected)
+End Sub
+
+'AccUnit:Row("Test", 4, "Test")
+'AccUnit:Row("Test", 6, "  Test")
+Public Sub PadLeft_String_LeftPadStringDefaultParam(ByVal Value As String, ByVal totalWidth As Integer, ByVal Expected As String)
+    Assert.That StringTools.PadLeft(Value, totalWidth), Iz.EqualTo(Expected)
+End Sub
+
+'AccUnit:Row("Test", 4, "_", "Test")
+'AccUnit:Row("Test", 6, "_", "Test__")
+Public Sub PadRight_String_RightPadString(ByVal Value As String, ByVal totalWidth As Integer, ByVal padChar As String, ByVal Expected As String)
+    Assert.That StringTools.PadRight(Value, totalWidth, padChar), Iz.EqualTo(Expected)
+End Sub
+
+'AccUnit:Row("Test", 4, "Test")
+'AccUnit:Row("Test", 6, "Test  ")
+Public Sub PadRight_String_RightPadStringDefaultParam(ByVal Value As String, ByVal totalWidth As Integer, ByVal Expected As String)
+    Assert.That StringTools.PadRight(Value, totalWidth), Iz.EqualTo(Expected)
+End Sub
+
