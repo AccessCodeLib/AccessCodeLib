@@ -142,7 +142,7 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function PadLeft(ByVal value As String, ByVal totalWidth As Integer, Optional ByVal padChar As String = " ") As String
-    PadLeft = Right$(String$(totalWidth, padChar) & value, totalWidth)
+    PadLeft = VBA.Right$(VBA.String$(totalWidth, padChar) & value, totalWidth)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -162,7 +162,7 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function PadRight(ByVal value As String, ByVal totalWidth As Integer, Optional ByVal padChar As String = " ") As String
-    PadRight = Left$(value & String$(totalWidth, padChar), totalWidth)
+    PadRight = VBA.Left$(value & VBA.String$(totalWidth, padChar), totalWidth)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -181,6 +181,42 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function Contains(ByVal checkValue As String, ByVal searchValue As String) As Boolean
-    Contains = InStr(1, checkValue, searchValue, vbTextCompare) > 0
+    Contains = VBA.InStr(1, checkValue, searchValue, vbTextCompare) > 0
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: EndsWith
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Gibt an ob die Zeichenfolge checkValue mit searchValue endet.
+' </summary>
+' <param name="checkValue">Zeichenfolge die durchsucht werden soll</param>
+' <param name="searchValue">Zeichenfolge nach der gesucht werden soll</param>
+' <returns>Boolean</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function EndsWith(ByVal checkValue As String, ByVal searchValue As String) As Boolean
+    EndsWith = VBA.Right$(checkValue, VBA.Len(searchValue)) = searchValue
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: StartsWith
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Gibt an ob die Zeichenfolge checkValue mit searchValue beginnt.
+' </summary>
+' <param name="checkValue">Zeichenfolge die durchsucht werden soll</param>
+' <param name="searchvalue">Zeichenfolge nach der gesucht werden soll</param>
+' <returns>Boolean</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function StartsWith(ByVal checkValue As String, ByVal searchValue As String) As Boolean
+    StartsWith = VBA.Left$(checkValue, VBA.Len(searchValue)) = searchValue
 End Function
 

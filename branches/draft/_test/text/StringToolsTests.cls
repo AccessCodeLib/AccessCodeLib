@@ -137,3 +137,23 @@ Public Sub Contains_String_ContainsSearchString(ByVal checkValue As String, ByVa
     Assert.That StringTools.Contains(checkValue, searchValue), Iz.EqualTo(Expected)
 End Sub
 
+'AccUnit:Row("abcd", "cd", True)
+'AccUnit:Row("abcd", "CD", True)
+'AccUnit:Row("abc", "ABC", True)
+'AccUnit:Row("abc", "abc", True)
+'AccUnit:Row("", "", True)
+'AccUnit:Row("", "A", False)
+Public Sub EndsWith_String_EndsWithSearchString(ByVal checkValue As String, ByVal searchValue As String, Expected As Boolean)
+    Assert.That StringTools.EndsWith(checkValue, searchValue), Iz.EqualTo(Expected)
+End Sub
+
+'AccUnit:Row("abcd", "ab", True)
+'AccUnit:Row("abcd", "AB", True)
+'AccUnit:Row("abc", "ABC", True)
+'AccUnit:Row("abc", "abc", True)
+'AccUnit:Row("", "", True)
+'AccUnit:Row("", "A", False)
+Public Sub EndsWith_String_StartsWithSearchString(ByVal checkValue As String, ByVal searchValue As String, Expected As Boolean)
+    Assert.That StringTools.StartsWith(checkValue, searchValue), Iz.EqualTo(Expected)
+End Sub
+
