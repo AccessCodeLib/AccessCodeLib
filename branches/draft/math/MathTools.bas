@@ -93,7 +93,7 @@ Public Function DecimalAddition(ByVal valueA As Variant, ByVal valueB As Variant
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: DecimalAddition
+' Function: DecimalSubtraction
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
