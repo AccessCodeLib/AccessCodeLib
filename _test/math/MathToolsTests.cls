@@ -70,27 +70,3 @@ Public Sub Round_Round_ToEven(number As Double, numDiggitsAfterDecimal As Long, 
     Assert.That MathTools.Round(number, numDiggitsAfterDecimal, ToEven), Iz.EqualTo(Expected)
 End Sub
 
-'/*
-' * TODO: Better Tests
-' */
-
-'AccUnit:Row(0.000000000000000000000000000000000000009, 0.000000000000000000000000000000000000009, 0.000000000000000000000000000000000000018)
-Public Sub DecimalAddition_TestInputValues(ByVal valueA As Variant, ByVal valueB As Variant, Expected As Variant)
-    Assert.That MathTools.DecimalAddition(valueA, valueB), Iz.EqualTo(Expected)
-End Sub
-
-'AccUnit:Row(0.000000000000000000000000000000000000009, 0.000000000000000000000000000000000000009, 0)
-Public Sub DecimalSubtraction_TestInputValues(ByVal valueA As Variant, ByVal valueB As Variant, Expected As Variant)
-    Assert.That MathTools.DecimalSubtraction(valueA, valueB), Iz.EqualTo(Expected)
-End Sub
-
-'AccUnit:Row(0.000000000000000000000000000000000000009, 0.000000000000000000000000000000000000081, 0)
-Public Sub DecimalMultiplication_TestInputValues(ByVal valueA As Variant, ByVal valueB As Variant, Expected As Variant)
-    Assert.That MathTools.DecimalMultiplication(valueA, valueB), Iz.EqualTo(Expected)
-End Sub
-
-'AccUnit:Row(1, 2, 0.5)
-'AccUnit:Row(0.0000000000000000000000000009, 0.0000000000000000000000000001, 9)
-Public Sub DecimalDivision_TestInputValues(ByVal valueA As Variant, ByVal valueB As Variant, Expected As Variant)
-    Assert.That MathTools.DecimalDivision(valueA, valueB), Iz.EqualTo(Expected)
-End Sub

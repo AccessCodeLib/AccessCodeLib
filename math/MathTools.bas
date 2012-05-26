@@ -15,11 +15,12 @@ Attribute VB_Description = "Mathe-Hilfsfunktionen"
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>math/MathTools.bas</file>
+'  <use>math/Decimal.bas</use>
 '  <license>_codelib/license.bas</license>
 '  <test>_test/math/MathToolsTests.cls</test>
 '</codelib>
 '---------------------------------------------------------------------------------------
-'
+
 Option Compare Text
 Option Explicit
 Option Private Module
@@ -66,104 +67,12 @@ Public Function Round(ByVal number As Variant, _
             Round = VBA.Round(number, numDigitsAfterDecimal)
             Exit Function
         Case MidpointRounding.AwayFromZero
-            Round = VBA.Sgn(number) * VBA.Int(MathTools.DecimalDivision(1, 2) + VBA.Abs(number) * 10 ^ numDigitsAfterDecimal) * 10 ^ -numDigitsAfterDecimal
+            Round = VBA.Sgn(number) * VBA.Int(Decimal.Value(0.5) + VBA.Abs(number) * 10 ^ numDigitsAfterDecimal) * 10 ^ -numDigitsAfterDecimal
             Exit Function
         Case Else
             Round = number
             Exit Function
     End Select
 End Function
-
-'---------------------------------------------------------------------------------------
-' Function: DecimalAddition
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Führt eine Addition unter Verwendung des Decimal-Datentyps durch
-' </summary>
-' <param name="valueA">1. Summand</param>
-' <param name="valueB">2. Summand</param>
-' <returns>Summe als Variant (Decimal)</returns>
-' <remarks>
-' </remarks>
-'**/
-'---------------------------------------------------------------------------------------
-Public Function DecimalAddition(ByVal valueA As Variant, ByVal valueB As Variant) As Variant
-    DecimalAddition = MathTools.DecimalValue(valueA) + MathTools.DecimalValue(valueB)
-End Function
-
-'---------------------------------------------------------------------------------------
-' Function: DecimalSubtraction
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Führt eine Subtraktion unter Verwendung des Decimal-Datentyps durch
-' </summary>
-' <param name="valueA">Minuend</param>
-' <param name="valueB">Subtrahend</param>
-' <returns>Differenz als Variant (Decimal)</returns>
-' <remarks>
-' </remarks>
-'**/
-'---------------------------------------------------------------------------------------
-Public Function DecimalSubtraction(ByVal valueA As Variant, ByVal valueB As Variant) As Variant
-    DecimalSubtraction = MathTools.DecimalValue(valueA) - MathTools.DecimalValue(valueB)
-End Function
-
-'---------------------------------------------------------------------------------------
-' Function: DecimalMultiplication
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Führt eine Multiplikation unter Verwendung des Decimal-Datentyps durch
-' </summary>
-' <param name="valueA">1. Faktor</param>
-' <param name="valueB">2. Faktor</param>
-' <returns>Produkt als Variant (Decimal)</returns>
-' <remarks>
-' </remarks>
-'**/
-'---------------------------------------------------------------------------------------
-Public Function DecimalMultiplication(ByVal valueA As Variant, ByVal valueB As Variant) As Variant
-    DecimalMultiplication = MathTools.DecimalValue(valueA) * MathTools.DecimalValue(valueB)
-End Function
-
-'---------------------------------------------------------------------------------------
-' Function: DecimalDivision
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Führt eine Division unter Verwendung des Decimal-Datentyps durch
-' </summary>
-' <param name="valueA">Dividend</param>
-' <param name="valueB">Divisor</param>
-' <returns>Quotient als Variant (Decimal)</returns>
-' <remarks>
-' </remarks>
-'**/
-'---------------------------------------------------------------------------------------
-Public Function DecimalDivision(ByVal valueA As Variant, ByVal valueB As Variant) As Variant
-    DecimalDivision = MathTools.DecimalValue(valueA) / MathTools.DecimalValue(valueB)
-End Function
-
-'---------------------------------------------------------------------------------------
-' Private Function: DecimalValue
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Führt eine Konvertierung in den Decimal-Datentyp durch
-' </summary>
-' <param name="value">Nummerischer Ausdruck</param>
-' <returns>Nummerischer Ausdruck als Variant (Decimal)</returns>
-' <remarks>
-' </remarks>
-'**/
-'---------------------------------------------------------------------------------------
-Private Function DecimalValue(ByVal value As Variant) As Variant
-    DecimalValue = VBA.Conversion.CDec(value)
-End Function
-
-
-
 
 
