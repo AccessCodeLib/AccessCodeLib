@@ -141,8 +141,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function PadLeft(ByVal value As String, ByVal totalWidth As Integer, Optional ByVal padChar As String = " ") As String
-    PadLeft = VBA.Right$(VBA.String$(totalWidth, padChar) & value, totalWidth)
+Public Function PadLeft(ByVal Value As String, ByVal totalWidth As Integer, Optional ByVal padChar As String = " ") As String
+    PadLeft = VBA.Right$(VBA.String$(totalWidth, padChar) & Value, totalWidth)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -161,8 +161,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function PadRight(ByVal value As String, ByVal totalWidth As Integer, Optional ByVal padChar As String = " ") As String
-    PadRight = VBA.Left$(value & VBA.String$(totalWidth, padChar), totalWidth)
+Public Function PadRight(ByVal Value As String, ByVal totalWidth As Integer, Optional ByVal padChar As String = " ") As String
+    PadRight = VBA.Left$(Value & VBA.String$(totalWidth, padChar), totalWidth)
 End Function
 
 '---------------------------------------------------------------------------------------
