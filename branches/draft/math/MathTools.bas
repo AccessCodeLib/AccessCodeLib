@@ -6,7 +6,7 @@ Attribute VB_Description = "Mathe-Hilfsfunktionen"
 '/**
 ' \author       Sten Schmidt
 ' <summary>
-' Mathematische Hilfsfunktionen
+' Mathematische Funktionen
 ' </summary>
 ' <remarks></remarks>
 '
@@ -58,21 +58,61 @@ End Enum
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Round(ByVal number As Variant, _
+Public Function Round(ByVal Number As Variant, _
                       Optional ByVal numDigitsAfterDecimal As Long = 0, _
                       Optional ByVal midpointRoundingType As MidpointRounding = MidpointRounding.ToEven) As Variant
                          
     Select Case midpointRoundingType
         Case MidpointRounding.ToEven
-            Round = VBA.Round(number, numDigitsAfterDecimal)
+            Round = VBA.Round(Number, numDigitsAfterDecimal)
             Exit Function
         Case MidpointRounding.AwayFromZero
-            Round = VBA.Sgn(number) * VBA.Int(Decimal.Value(0.5) + VBA.Abs(number) * 10 ^ numDigitsAfterDecimal) * 10 ^ -numDigitsAfterDecimal
+            Round = VBA.Sgn(Number) * VBA.Int(Decimal.Value(0.5) + VBA.Abs(Number) * 10 ^ numDigitsAfterDecimal) * 10 ^ -numDigitsAfterDecimal
             Exit Function
         Case Else
-            Round = number
+            Round = Number
             Exit Function
     End Select
 End Function
 
+'---------------------------------------------------------------------------------------
+' Function: Fact
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Berechnet die Fakultät einer natürlichen Zahl
+' </summary>
+' <param name="number">Nummerischer Ausdruck vom dem die Fakultät berechnet wird.</param>
+' <returns>Variant (Nummeric)</returns>
+' <remarks>
+' Im Wertebereich zwischen 0 und 27 wird das exakte Ergebnis als Decimal zurück
+' gegeben. Zwischen 28 und 170 wird die Faktutät mit verringerter Genauigkeit
+' als Double ermittelt. Bei allen übrigen Parametern wird Null zurückgegeben.
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function Fact(ByVal Number As Integer) As Variant
+    
+    Dim Result As Variant
+        Result = Null
+    Dim n As Integer
 
+    Result = 1
+    
+    Select Case Number
+        Case 0 To 27
+            For n = 1 To Number Step 1
+                Result = Decimal.Value(Result) * n
+            Next n
+        Case 28 To 170
+            For n = 1 To Number Step 1
+                Result = CDbl(Result) * n
+            Next n
+        Case Else
+            Result = Null
+    End Select
+    
+    Fact = Result
+    Set Result = Nothing
+    
+End Function
