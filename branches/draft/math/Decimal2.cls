@@ -21,6 +21,7 @@ Attribute VB_Exposed = False
 '  <use>math/Decimal.bas</use>
 '  <use>math/MathTools.bas</use>
 '  <use>text/StringTools.bas</use>
+'  <use>text/String2Factory.bas</use>
 '  <test>_test\math\Decimal2Tests.cls</test>
 '  <license>_codelib/license.bas</license>
 '</codelib>
@@ -40,9 +41,9 @@ Attribute Value.VB_UserMemId = 0
     Value = m_vvalue
 End Property
 
-Public Property Let Value(ByVal vvalue As Variant)
+Public Property Let Value(ByVal vValue As Variant)
 Attribute Value.VB_UserMemId = 0
-    m_vvalue = VBA.Conversion.CDec(vvalue)
+    m_vvalue = VBA.Conversion.CDec(vValue)
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -81,11 +82,26 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function ToString(Optional ByVal FormatString As Variant, _
+Public Function ToString(Optional ByVal FormatString As Variant = vbNullString, _
                          Optional ByVal FirstDayOfWeek As VbDayOfWeek = vbSunday, _
                          Optional ByVal FirstWeekOfYear As VbFirstWeekOfYear = vbFirstJan1) As String
                          
         ToString = StringTools.Format(m_vvalue, FormatString, FirstDayOfWeek, FirstWeekOfYear)
 End Function
 
+'---------------------------------------------------------------------------------------
+' Function: ToString2
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Gibt den aktuellen Wert als String2 zurück.
+' </summary>
+' <returns>String2</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function ToString2() As String2
+    Set ToString2 = String2Factory.Value(m_vvalue)
+End Function
 

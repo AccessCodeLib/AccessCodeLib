@@ -103,3 +103,17 @@ Public Sub ToString_ReturnsString()
     
 End Sub
 
+
+Public Sub ToString2_GetValue_AsString2()
+    
+    Dim a As New Decimal2
+        a = 1.01
+    Dim s As New String2
+        s = "1,01"
+        
+    Assert.AreEqual a.ToString2(), s
+    
+    Set a = Nothing
+    Set s = Nothing
+End Sub
+
