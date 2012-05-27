@@ -45,22 +45,47 @@ Attribute Value.VB_UserMemId = 0
     m_vvalue = VBA.Conversion.CDec(vvalue)
 End Property
 
+'---------------------------------------------------------------------------------------
+' Function: Round
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Gibt den aktuellen Wert gerundet zurück.
+' </summary>
+' <param name="numDigitsAfterDecimal">Zahl, die angibt, wie viele Stellen rechts vom Dezimalpunkt beim Runden berücksichtigt werden</param>
+' <param name="midpointRoundingType">Rundungsverfahren</param>
+' <returns>Decimal2</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 Public Function Round(Optional ByVal numDigitsAfterDecimal As Long = 0, _
                       Optional ByVal midpointRoundingType As MidpointRounding = MidpointRounding.ToEven) As Decimal2
         
         Set Round = Decimal.Value(MathTools.Round(m_vvalue, numDigitsAfterDecimal, midpointRoundingType))
 End Function
 
-Public Function ToString(Optional ByVal formatString As Variant = vbNullString, _
+'---------------------------------------------------------------------------------------
+' Function: ToString
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Gibt den aktuellen Wert als String zurück.
+' </summary>
+' <param name="FormatString">Ein gültiger benannter oder benutzerdefinierter Formatausdruck inkl. Erweiterung für Stundenanzeige über 24 (Standard-Formatanweisungen siehe VBA.Format)</param>
+' <param name="FirstDayOfWeek">Wird an VBA.Format weitergereicht</param>
+' <param name="FirstWeekOfYear">Wird an VBA.Format weitergereicht</param>
+' <returns>String</returns>
+' <remarks>
+' Optional können die verfügaren Parameter der Format-Funktion übergeben werden.
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function ToString(Optional ByVal FormatString As Variant, _
                          Optional ByVal FirstDayOfWeek As VbDayOfWeek = vbSunday, _
                          Optional ByVal FirstWeekOfYear As VbFirstWeekOfYear = vbFirstJan1) As String
                          
-    If formatString = vbNullString Then
-        ToString = VBA.Conversion.CStr(m_vvalue)
-    Else
-        ToString = StringTools.Format(m_vvalue, formatString, FirstDayOfWeek, FirstWeekOfYear)
-    End If
-    
+        ToString = StringTools.Format(m_vvalue, FormatString, FirstDayOfWeek, FirstWeekOfYear)
 End Function
 
 
