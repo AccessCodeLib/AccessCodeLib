@@ -93,12 +93,10 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Function Fact(ByVal Number As Integer) As Variant
     
-    Dim Result As Variant
-        Result = Null
     Dim n As Integer
-
-    Result = 1
-    
+    Dim Result As Variant
+        Result = 1
+        
     Select Case Number
         Case 0 To 27
             For n = 1 To Number Step 1
