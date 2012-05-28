@@ -51,6 +51,7 @@ End Sub
 
 'AccUnit:Row(1.025, "##,##0.00 €", 1.03, "1,03 €")
 'AccUnit:Row(0.025, "0.00%", 1.03, "3,00%")
-Public Sub Value_Decimal_RoundAndFormat(ByVal a As Variant, ByVal formatString As String, ByVal b As Variant, ByVal c As String)
-    Assert.That Decimal.Value(a).Round(2, AwayFromZero).ToString(formatString), Iz.EqualTo(c)
+Public Sub Value_Decimal_RoundAndFormat(ByVal a As Variant, ByVal FormatString As String, ByVal b As Variant, ByVal c As String)
+    Assert.That Decimal.Value(a).Round(2, AwayFromZero).ToString(FormatString), Iz.EqualTo(c)
 End Sub
+

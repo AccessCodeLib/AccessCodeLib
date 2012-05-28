@@ -47,7 +47,7 @@ Attribute Value.VB_UserMemId = 0
 End Property
 
 '---------------------------------------------------------------------------------------
-' Function: Round
+' Property: Round
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -60,14 +60,14 @@ End Property
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Round(Optional ByVal numDigitsAfterDecimal As Long = 0, _
+Public Property Get Round(Optional ByVal numDigitsAfterDecimal As Long = 0, _
                       Optional ByVal midpointRoundingType As MidpointRounding = MidpointRounding.ToEven) As Decimal2
         
         Set Round = Decimal.Value(MathTools.Round(m_vvalue, numDigitsAfterDecimal, midpointRoundingType))
-End Function
+End Property
 
 '---------------------------------------------------------------------------------------
-' Function: ToString
+' Property: ToString
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -82,15 +82,15 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function ToString(Optional ByVal FormatString As Variant = vbNullString, _
+Public Property Get ToString(Optional ByVal FormatString As Variant = vbNullString, _
                          Optional ByVal FirstDayOfWeek As VbDayOfWeek = vbSunday, _
                          Optional ByVal FirstWeekOfYear As VbFirstWeekOfYear = vbFirstJan1) As String
                          
         ToString = StringTools.Format(m_vvalue, FormatString, FirstDayOfWeek, FirstWeekOfYear)
-End Function
+End Property
 
 '---------------------------------------------------------------------------------------
-' Function: ToString2
+' Property: ToString2
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -101,7 +101,7 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function ToString2() As String2
+Public Property Get ToString2() As String2
     Set ToString2 = String2Factory.Value(m_vvalue)
-End Function
+End Property
 
