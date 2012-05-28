@@ -48,33 +48,49 @@ Public Property Get IsNullOrEmpty(Optional ByVal IgnoreSpaces As Boolean = False
     IsNullOrEmpty = StringTools.IsNullOrEmpty(m_vvalue, IgnoreSpaces)
 End Property
 
-Public Function ToString(Optional ByVal FormatString As Variant = vbNullString, _
+Public Property Get ToString(Optional ByVal FormatString As Variant = vbNullString, _
                          Optional ByVal FirstDayOfWeek As VbDayOfWeek = vbSunday, _
                          Optional ByVal FirstWeekOfYear As VbFirstWeekOfYear = vbFirstJan1) As String
                          
         ToString = StringTools.Format(m_vvalue, FormatString, FirstDayOfWeek, FirstWeekOfYear)
-End Function
+End Property
 
-Public Function ToString2() As String2
+Public Property Get ToString2() As String2
     Set ToString2 = String2Factory.Value(m_vvalue)
-End Function
+End Property
 
-Public Function PadLeft(ByVal totalWidth As Integer, Optional ByVal padChar As String = " ") As String2
+Public Property Get PadLeft(ByVal totalWidth As Integer, Optional ByVal padChar As String = " ") As String2
     Set PadLeft = String2Factory.Value(StringTools.PadLeft(m_vvalue, totalWidth, padChar))
-End Function
+End Property
 
-Public Function PadRight(ByVal totalWidth As Integer, Optional ByVal padChar As String = " ") As String2
+Public Property Get PadRight(ByVal totalWidth As Integer, Optional ByVal padChar As String = " ") As String2
     Set PadRight = String2Factory.Value(StringTools.PadRight(m_vvalue, totalWidth, padChar))
-End Function
+End Property
 
-Public Function Contains(ByVal searchValue As String) As Boolean
+Public Property Get Contains(ByVal searchValue As String) As Boolean
     Contains = StringTools.Contains(m_vvalue, searchValue)
-End Function
+End Property
 
-Public Function EndsWith(ByVal searchValue As String) As Boolean
+Public Property Get EndsWith(ByVal searchValue As String) As Boolean
     EndsWith = StringTools.EndsWith(m_vvalue, searchValue)
-End Function
+End Property
 
-Public Function StartsWith(ByVal searchValue As String) As Boolean
+Public Property Get StartsWith(ByVal searchValue As String) As Boolean
     StartsWith = StringTools.StartsWith(m_vvalue, searchValue)
-End Function
+End Property
+
+Public Property Get Lenght() As Decimal2
+    Set Lenght = Decimal.Value(StringTools.Lenght(m_vvalue))
+End Property
+
+Public Property Get Concat(ByVal Value As Variant) As String2
+    Set Concat = String2Factory.Value(StringTools.Concat(m_vvalue, Value))
+End Property
+
+Public Property Get Trim(Optional ByVal TrimType As TrimOption = TrimOption.TrimBoth) As String2
+    Set Trim = String2Factory.Value(StringTools.Trim(m_vvalue, TrimType))
+End Property
+
+Public Property Get Substring(ByVal startIndex As Long, Optional ByVal length As Long = 0) As String2
+    Set Substring = String2Factory.Value(StringTools.Substring(m_vvalue, startIndex, length))
+End Property

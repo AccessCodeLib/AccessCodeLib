@@ -157,3 +157,50 @@ Public Sub EndsWith_String_StartsWithSearchString(ByVal checkValue As String, By
     Assert.That StringTools.StartsWith(checkValue, searchValue), Iz.EqualTo(Expected)
 End Sub
 
+'AccUnit:Row("", 0)
+'AccUnit:Row("1234567890", 10)
+Public Sub Lenght_String_HasLenght(ByVal checkValue As String, Expected As Integer)
+    Assert.That StringTools.Lenght(checkValue), Iz.EqualTo(Expected)
+End Sub
+
+'AccUnit:Row("", "", "")
+'AccUnit:Row("A", "", "A")
+'AccUnit:Row("", "B", "B")
+'AccUnit:Row("A", "B", "AB")
+Public Sub Concat_String_ConcatedString(ByVal ValueA As String, ValueB As String, Expected As String)
+    Assert.That StringTools.Concat(ValueA, ValueB), Iz.EqualTo(Expected)
+End Sub
+
+'AccUnit:Row("", "")
+'AccUnit:Row(" ", "")
+'AccUnit:Row("  ", "")
+'AccUnit:Row(" A ", "A")
+Public Sub Trim_String_TrimedString_Both(ByVal checkValue As String, Expected As String)
+    Assert.That StringTools.Trim(checkValue, TrimBoth), Iz.EqualTo(Expected)
+End Sub
+
+'AccUnit:Row("", "")
+'AccUnit:Row(" ", "")
+'AccUnit:Row("  ", "")
+'AccUnit:Row(" A ", "A ")
+Public Sub Trim_String_TrimedString_Start(ByVal checkValue As String, Expected As String)
+    Assert.That StringTools.Trim(checkValue, TrimStart), Iz.EqualTo(Expected)
+End Sub
+
+'AccUnit:Row("", "")
+'AccUnit:Row(" ", "")
+'AccUnit:Row("  ", "")
+'AccUnit:Row(" A ", " A")
+Public Sub Trim_String_TrimedString_End(ByVal checkValue As String, Expected As String)
+    Assert.That StringTools.Trim(checkValue, TrimEnd), Iz.EqualTo(Expected)
+End Sub
+
+'AccUnit:Row("", 0,0, "")
+'AccUnit:Row("abc", 1,1, "b")
+'AccUnit:Row("abc", 2,1, "c")
+'AccUnit:Row("abc", 3,0, "")
+'AccUnit:Row("abc", 0,3, "abc")
+Public Sub Substring_String_ExpectedSubstring(ByVal Value As String, ByVal startIndex As Long, ByVal length As Long, ByVal Expected As String)
+    Assert.That StringTools.Substring(Value, startIndex, length), Iz.EqualTo(Expected)
+End Sub
+

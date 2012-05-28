@@ -129,3 +129,50 @@ End Sub
 Public Sub EndsWith_String_StartsWithSearchString(ByVal checkValue As String, ByVal searchValue As String, Expected As Boolean)
     Assert.That String2Factory.Value(checkValue).StartsWith(searchValue), Iz.EqualTo(Expected)
 End Sub
+
+'AccUnit:Row("", 0)
+'AccUnit:Row("1234567890", 10)
+Public Sub Lenght_String_HasLenght(ByVal checkValue As String, Expected As Integer)
+    Assert.That String2Factory.Value(checkValue).Lenght(), Iz.EqualTo(Expected)
+End Sub
+
+'AccUnit:Row("", "", "")
+'AccUnit:Row("A", "", "A")
+'AccUnit:Row("", "B", "B")
+'AccUnit:Row("A", "B", "AB")
+Public Sub Concat_String_ConcatedString(ByVal ValueA As String, ValueB As String, Expected As String)
+    Assert.That String2Factory.Value(ValueA).Concat(ValueB).ToString(), Iz.EqualTo(Expected)
+End Sub
+
+'AccUnit:Row("", "")
+'AccUnit:Row(" ", "")
+'AccUnit:Row("  ", "")
+'AccUnit:Row(" A ", "A")
+Public Sub Trim_String_TrimedString_Both(ByVal checkValue As String, Expected As String)
+    Assert.That String2Factory.Value(checkValue).Trim(TrimBoth).ToString(), Iz.EqualTo(Expected)
+End Sub
+
+'AccUnit:Row("", "")
+'AccUnit:Row(" ", "")
+'AccUnit:Row("  ", "")
+'AccUnit:Row(" A ", "A ")
+Public Sub Trim_String_TrimedString_Start(ByVal checkValue As String, Expected As String)
+    Assert.That String2Factory.Value(checkValue).Trim(TrimStart).ToString(), Iz.EqualTo(Expected)
+End Sub
+
+'AccUnit:Row("", "")
+'AccUnit:Row(" ", "")
+'AccUnit:Row("  ", "")
+'AccUnit:Row(" A ", " A")
+Public Sub Trim_String_TrimedString_End(ByVal checkValue As String, Expected As String)
+    Assert.That String2Factory.Value(checkValue).Trim(TrimEnd).ToString(), Iz.EqualTo(Expected)
+End Sub
+
+'AccUnit:Row("", 0,0, "")
+'AccUnit:Row("abc", 1,1, "b")
+'AccUnit:Row("abc", 2,1, "c")
+'AccUnit:Row("abc", 3,0, "")
+'AccUnit:Row("abc", 0,3, "abc")
+Public Sub Substring_String_ExpectedSubstring(ByVal Value As String, ByVal startIndex As Long, ByVal length As Long, ByVal Expected As String)
+    Assert.That String2Factory.Value(Value).Substring(startIndex, length), Iz.EqualTo(Expected)
+End Sub
