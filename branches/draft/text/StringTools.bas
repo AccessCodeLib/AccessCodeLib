@@ -25,6 +25,26 @@ Option Explicit
 Option Private Module
 
 '---------------------------------------------------------------------------------------
+' Enum: TrimOption
+'---------------------------------------------------------------------------------------
+'/**                                            '<-- Start Doxygen-Block
+' <summary>
+' Verfügbare Trim-Optionen für die Round-Funktion
+' </summary>
+' <list type="table">
+'   <item><term>TrimBoth (1)</term><description>Führende und nachgestellte Leerzeichen entfernen</description></item>
+'   <item><term>TrimStart (2)</term><description>test</description>Führende Leerzeichen aus einer Zeichenfolgenvariablen entfernen</item>
+'   <item><term>TrimEnd (3)</term><description>test</description>Nachgestellte Leerzeichen aus einer Zeichenfolgenvariablen entfernen</item>
+' </list>
+'**/                                            '<-- Ende Doxygen-Block
+'---------------------------------------------------------------------------------------
+Public Enum TrimOption
+    TrimBoth
+    TrimStart
+    TrimEnd
+End Enum
+
+'---------------------------------------------------------------------------------------
 ' Function: IsNullOrEmpty
 '---------------------------------------------------------------------------------------
 '/**
@@ -220,3 +240,92 @@ Public Function StartsWith(ByVal checkValue As String, ByVal searchValue As Stri
     StartsWith = VBA.Left$(checkValue, VBA.Len(searchValue)) = searchValue
 End Function
 
+'---------------------------------------------------------------------------------------
+' Function: Lenght
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Gibt die Anzahl von Zeichen in Value zurück
+' </summary>
+' <returns>Anzahl Zeichen von Value als Long</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function Lenght(ByVal Value As String) As Long
+    Lenght = VBA.Len(Value)
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: Concat
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Fügt der Zeichenfolge ValueA die Zeihenfolge ValueB an.
+' </summary>
+' <param name="ValueA">Zeichenfolge</param>
+' <param name="ValueB">Zeichenfolge</param>
+' <returns>ValueB angefügt an ValueA als String</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function Concat(ByVal ValueA As String, ByVal ValueB As String) As String
+    Concat = ValueA & ValueB
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: Trim
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Entfernt führende und/oder nachfolgende Leerzeichen einer Zeichenfolge.
+' Ersetzt die Funktion VBA.Trim().
+' </summary>
+' <param name="Value">Zeichenfolge</param>
+' <param name="TrimType">Trim-Optionen</param>
+' <returns>String</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function Trim(ByVal Value As String, Optional ByVal TrimType As TrimOption = TrimOption.TrimBoth) As String
+        
+    Select Case TrimType
+        Case TrimOption.TrimBoth
+            Trim = VBA.Trim$(Value)
+            Exit Function
+        Case TrimOption.TrimStart
+            Trim = VBA.LTrim$(Value)
+            Exit Function
+        Case TrimOption.TrimEnd
+            Trim = VBA.RTrim(Value)
+            Exit Function
+        Case Else
+            Trim = Value
+            Exit Function
+    End Select
+    
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: Substring
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Gibt einen Teil der Zeichenfolge Value zurück, die an der Postiion startIndex beginnt
+' und die Länge length hat.
+' </summary>
+' <param name="Value">Zeichenfolge</param>
+' <param name="startIndex">Startposition in der Zeichenfolge</param>
+' <param name="length">Anzahl Zeichen die Zurückgegeben werden sollen</param>
+' <returns>String</returns>
+' <remarks>
+' startIndex ist Nullterminiert, analog zu String.Substring() in .NET
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function Substring(ByVal Value As String, ByVal startIndex As Long, Optional ByVal length As Long = 0) As String
+    If length = 0 Then length = StringTools.Lenght(Value) - startIndex
+    Substring = VBA.Mid$(Value, startIndex + 1, length)
+End Function
