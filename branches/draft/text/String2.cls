@@ -83,8 +83,8 @@ Public Property Get Lenght() As Decimal2
     Set Lenght = Decimal2Factory.Value(StringTools.Lenght(m_vvalue))
 End Property
 
-Public Property Get Concat(ByVal Value As Variant) As String2
-    Set Concat = String2Factory.Value(StringTools.Concat(m_vvalue, Value))
+Public Property Get Append(ByVal Value As Variant) As String2
+    Set Append = String2Factory.Value(StringTools.Concat(m_vvalue, Value))
 End Property
 
 Public Property Get Trim(Optional ByVal TrimType As TrimOption = TrimOption.TrimBoth) As String2
