@@ -13,7 +13,7 @@ Attribute VB_Name = "Decimal2Factory"
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>math/Decimal.bas</file>
+'  <file>math/Decimal2Factory.bas</file>
 '  <use>math/Decimal2.cls</use>
 '  <license>_codelib/license.bas</license>
 '  <test>_test/math/DecimalTests.cls</test>

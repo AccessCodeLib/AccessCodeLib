@@ -18,7 +18,7 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>math/Decimal2.cls</file>
-'  <use>math/Decimal.bas</use>
+'  <use>math/Decimal2Factory.bas</use>
 '  <use>math/MathTools.bas</use>
 '  <use>text/StringTools.bas</use>
 '  <use>text/String2Factory.bas</use>
