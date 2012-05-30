@@ -67,7 +67,7 @@ Public Function Round(ByVal Number As Variant, _
             Round = VBA.Round(Number, numDigitsAfterDecimal)
             Exit Function
         Case MidpointRounding.AwayFromZero
-            Round = VBA.Sgn(Number) * VBA.Int(Decimal.Value(0.5) + VBA.Abs(Number) * 10 ^ numDigitsAfterDecimal) * 10 ^ -numDigitsAfterDecimal
+            Round = VBA.Sgn(Number) * VBA.Int(Decimal2Factory.Value(0.5) + VBA.Abs(Number) * 10 ^ numDigitsAfterDecimal) * 10 ^ -numDigitsAfterDecimal
             Exit Function
         Case Else
             Round = Number
@@ -100,7 +100,7 @@ Public Function Fact(ByVal Number As Integer) As Variant
     Select Case Number
         Case 0 To 27
             For n = 1 To Number Step 1
-                Result = Decimal.Value(Result) * n
+                Result = Decimal2Factory.Value(Result) * n
             Next n
         Case 28 To 170
             For n = 1 To Number Step 1

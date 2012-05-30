@@ -80,7 +80,7 @@ Public Property Get StartsWith(ByVal searchValue As String) As Boolean
 End Property
 
 Public Property Get Lenght() As Decimal2
-    Set Lenght = Decimal.Value(StringTools.Lenght(m_vvalue))
+    Set Lenght = Decimal2Factory.Value(StringTools.Lenght(m_vvalue))
 End Property
 
 Public Property Get Concat(ByVal Value As Variant) As String2
