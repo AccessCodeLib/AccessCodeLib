@@ -140,8 +140,8 @@ End Sub
 'AccUnit:Row("A", "", "A")
 'AccUnit:Row("", "B", "B")
 'AccUnit:Row("A", "B", "AB")
-Public Sub Concat_String_ConcatedString(ByVal ValueA As String, ValueB As String, Expected As String)
-    Assert.That String2Factory.Value(ValueA).Concat(ValueB).ToString(), Iz.EqualTo(Expected)
+Public Sub Concat_String_AppendString(ByVal ValueA As String, ValueB As String, Expected As String)
+    Assert.That String2Factory.Value(ValueA).Append(ValueB).ToString(), Iz.EqualTo(Expected)
 End Sub
 
 'AccUnit:Row("", "")
