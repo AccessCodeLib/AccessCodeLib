@@ -33,8 +33,8 @@ Option Private Module
 ' </summary>
 ' <list type="table">
 '   <item><term>TrimBoth (1)</term><description>Führende und nachgestellte Leerzeichen entfernen</description></item>
-'   <item><term>TrimStart (2)</term><description>test</description>Führende Leerzeichen aus einer Zeichenfolgenvariablen entfernen</item>
-'   <item><term>TrimEnd (3)</term><description>test</description>Nachgestellte Leerzeichen aus einer Zeichenfolgenvariablen entfernen</item>
+'   <item><term>TrimStart (2)</term><description>Führende Leerzeichen aus einer Zeichenfolgenvariablen entfernen</description></item>
+'   <item><term>TrimEnd (3)</term><description>Nachgestellte Leerzeichen aus einer Zeichenfolgenvariablen entfernen</description></item>
 ' </list>
 '**/                                            '<-- Ende Doxygen-Block
 '---------------------------------------------------------------------------------------
