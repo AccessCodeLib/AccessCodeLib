@@ -63,7 +63,7 @@ End Property
 Public Property Get Round(Optional ByVal numDigitsAfterDecimal As Long = 0, _
                       Optional ByVal midpointRoundingType As MidpointRounding = MidpointRounding.ToEven) As Decimal2
         
-        Set Round = Decimal.Value(MathTools.Round(m_vvalue, numDigitsAfterDecimal, midpointRoundingType))
+        Set Round = Decimal2Factory.Value(MathTools.Round(m_vvalue, numDigitsAfterDecimal, midpointRoundingType))
 End Property
 
 '---------------------------------------------------------------------------------------
