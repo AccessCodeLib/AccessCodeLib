@@ -15,7 +15,7 @@ Attribute VB_Description = "Mathe-Hilfsfunktionen"
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>math/MathTools.bas</file>
-'  <use>math/Decimal.bas</use>
+'  <use>math/Decimal2Factory.bas</use>
 '  <license>_codelib/license.bas</license>
 '  <test>_test/math/MathToolsTests.cls</test>
 '</codelib>
@@ -114,3 +114,25 @@ Public Function Fact(ByVal Number As Integer) As Variant
     Set Result = Nothing
     
 End Function
+
+Public Function DivWithNull() As Double
+On Error GoTo HandleErr
+
+    DivWithNull = 1 / 0
+    
+    
+ExitHere:
+On Error Resume Next
+   Exit Function
+
+HandleErr:
+   Select Case HandleError(Err.Number, "ExtAppFile.m_ApplicationHandler_ExtensionPropertyLookup", Err.Description, ACLibErrorHandlerMode.aclibErrRaise)
+   Case ACLibErrorResumeMode.aclibErrResume
+      Resume
+   Case ACLibErrorResumeMode.aclibErrResumeNext
+      Resume Next
+   Case Else
+      Resume ExitHere
+   End Select
+End Function
+

@@ -14,7 +14,7 @@ Attribute VB_Name = "MathConstants"
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>math/MathConstants.bas</file>
-'  <use>math/Decimal.bas</use>
+'  <use>math/Decimal2Factory.bas</use>
 '  <license>_codelib/license.bas</license>
 '</codelib>
 '---------------------------------------------------------------------------------------
