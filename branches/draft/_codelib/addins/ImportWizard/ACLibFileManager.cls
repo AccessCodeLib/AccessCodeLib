@@ -29,7 +29,7 @@ Attribute VB_Description = "Import/Export der Access-Objekte in/aus lokaler Code
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/ImportWizard/ACLibFileManager.cls</file>
-'  <description>Kümmert sich um den Import und Export der Codemodule aus dem und in das Repository</description>
+'  <description>Kuemmert sich um den Import und Export der Codemodule aus dem und in das Repository</description>
 '  <license>_codelib/license.bas</license>
 '  <use>base/ApplicationHandler.cls</use>
 '  <use>file/modFiles.bas</use>
@@ -1350,8 +1350,8 @@ Private Sub getCodeLibInfoReferences(ByRef cli As CodeLibInfo, ByRef sSourceStri
       For i = 0 To refBlockMaxIdx
          refString = refBlocks(i)
          ref(i).Name = findSubString(refString, SEARCHSTRING_REF_NAME_BEGIN, SEARCHSTRING_REF_NAME_END)
-         ref(i).Major = findSubString(refString, SEARCHSTRING_REF_MAJOR_BEGIN, SEARCHSTRING_REF_MAJOR_END)
-         ref(i).Minor = findSubString(refString, SEARCHSTRING_REF_MINOR_BEGIN, SEARCHSTRING_REF_MINOR_END)
+         ref(i).Major = Val(findSubString(refString, SEARCHSTRING_REF_MAJOR_BEGIN, SEARCHSTRING_REF_MAJOR_END))
+         ref(i).Minor = Val(findSubString(refString, SEARCHSTRING_REF_MINOR_BEGIN, SEARCHSTRING_REF_MINOR_END))
          ref(i).GUID = findSubString(refString, SEARCHSTRING_REF_GUID_BEGIN, SEARCHSTRING_REF_GUID_END)
       Next
       

@@ -53,13 +53,13 @@ Private Declare PtrSafe Function LoadImage Lib "user32" Alias "LoadImageA" ( _
 
 #Else
 
-Private Declare PtrSafe Function SendMessage Lib "user32" Alias "SendMessageA" ( _
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" ( _
    ByVal Hwnd As Long, _
    ByVal wMsg As Long, _
    ByVal wParam As Long, _
    lParam As Any) As Long
 
-Private Declare PtrSafe Function LoadImage Lib "user32" Alias "LoadImageA" ( _
+Private Declare Function LoadImage Lib "user32" Alias "LoadImageA" ( _
    ByVal hInst As Long, _
    ByVal lpszName As String, _
    ByVal uType As Long, _

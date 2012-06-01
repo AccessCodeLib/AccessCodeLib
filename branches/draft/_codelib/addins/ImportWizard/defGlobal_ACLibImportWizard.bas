@@ -208,3 +208,26 @@ HandleErr:
    End Select
    
 End Function
+
+Public Function ExportAllCodeLibModules() As Variant
+
+On Error GoTo HandleErr
+
+   CurrentACLibFileManager.ExportAllModules
+   MsgBox "Export abgeschlossen", vbInformation
+
+ExitHere:
+On Error Resume Next
+   Exit Function
+
+HandleErr:
+   Select Case HandleError(Err.Number, "ExportAllCodeLibElements", Err.Description, ACLibErrorHandlerMode.aclibErrMsgBox)
+   Case ACLibErrorResumeMode.aclibErrResume
+      Resume
+   Case ACLibErrorResumeMode.aclibErrResumeNext
+      Resume Next
+   Case Else
+      Resume ExitHere
+   End Select
+   
+End Function
