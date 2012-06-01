@@ -20,6 +20,7 @@ Attribute VB_Exposed = False
 '  <file>text/String2.cls</file>
 '  <use>text/StringTools.bas</use>
 '  <use>text/String2Factory.bas</use>
+'  <use>math/Decimal2.cls</use>
 '  <test>_test\text\StringTests.cls</test>
 '  <license>_codelib/license.bas</license>
 '</codelib>
