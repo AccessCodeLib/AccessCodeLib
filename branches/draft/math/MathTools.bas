@@ -15,7 +15,7 @@ Attribute VB_Description = "Mathe-Hilfsfunktionen"
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>math/MathTools.bas</file>
-'  <use>math/Decimal2Factory.bas</use>
+'  <use>math/Decimal2.cls</use>
 '  <license>_codelib/license.bas</license>
 '  <test>_test/math/MathToolsTests.cls</test>
 '</codelib>
@@ -67,7 +67,7 @@ Public Function Round(ByVal Number As Variant, _
             Round = VBA.Round(Number, numDigitsAfterDecimal)
             Exit Function
         Case MidpointRounding.AwayFromZero
-            Round = VBA.Sgn(Number) * VBA.Int(Decimal2Factory.Value(0.5) + VBA.Abs(Number) * 10 ^ numDigitsAfterDecimal) * 10 ^ -numDigitsAfterDecimal
+            Round = VBA.Sgn(Number) * VBA.Int(Decimal2.NewValue(0.5) + VBA.Abs(Number) * 10 ^ numDigitsAfterDecimal) * 10 ^ -numDigitsAfterDecimal
             Exit Function
         Case Else
             Round = Number
@@ -100,7 +100,7 @@ Public Function Fact(ByVal Number As Integer) As Variant
     Select Case Number
         Case 0 To 27
             For n = 1 To Number Step 1
-                Result = Decimal2Factory.Value(Result) * n
+                Result = Decimal2.NewValue(Result) * n
             Next n
         Case 28 To 170
             For n = 1 To Number Step 1

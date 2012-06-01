@@ -84,4 +84,3 @@ Public Sub Fact_Calculate_Fact(Number As Variant, Expected As Variant)
         Assert.That MathTools.Fact(Number), Iz.vbNull
     End If
 End Sub
-

@@ -204,3 +204,15 @@ Public Sub Substring_String_ExpectedSubstring(ByVal Value As String, ByVal start
     Assert.That StringTools.Substring(Value, startIndex, length), Iz.EqualTo(Expected)
 End Sub
 
+'AccUnit:Row("", "", 0, "")
+'AccUnit:Row("A", "", 0, "A")
+'AccUnit:Row("A", "", 1, "A")
+'AccUnit:Row("", "A", 0, "A")
+'AccUnit:Row(" ", "A", 1, " A")
+'AccUnit:Row(" ", "A", 0, "A ")
+'AccUnit:Row("AAAAA", "B", 0, "BAAAAA")
+'AccUnit:Row("AAAAA", "BB", 1, "ABBAAAA")
+'AccUnit:Row("AAAAA", "BB", 5, "AAAAABB")
+Public Sub InsertAt_String_StringInsertedAtExpectedPos(ByVal Value As String, ByVal insertValue As String, ByVal pos As Long, ByVal Expected As String)
+    Assert.AreEqual StringTools.InsertAt(Value, insertValue, pos), Expected
+End Sub

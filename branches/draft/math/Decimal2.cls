@@ -5,7 +5,7 @@ END
 Attribute VB_Name = "Decimal2"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
-Attribute VB_PredeclaredId = False
+Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 ' Class Module: Decimal2
@@ -18,10 +18,9 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>math/Decimal2.cls</file>
-'  <use>math/Decimal2Factory.bas</use>
 '  <use>math/MathTools.bas</use>
 '  <use>text/StringTools.bas</use>
-'  <use>text/String2Factory.bas</use>
+'  <use>text/String2.cls</use>
 '  <test>_test\math\Decimal2Tests.cls</test>
 '  <license>_codelib/license.bas</license>
 '</codelib>
@@ -35,6 +34,13 @@ Private m_vvalue As Variant
 Private Sub Class_Initialize()
     m_vvalue = VBA.Conversion.CDec(0)
 End Sub
+
+Public Property Get NewValue(ByVal vValue As Variant) As Decimal2
+    Dim newInstance As New Decimal2
+        newInstance = vValue
+    Set NewValue = newInstance
+    Set newInstance = Nothing
+End Property
 
 Public Property Get Value() As Variant
 Attribute Value.VB_UserMemId = 0
@@ -63,7 +69,7 @@ End Property
 Public Property Get Round(Optional ByVal numDigitsAfterDecimal As Long = 0, _
                       Optional ByVal midpointRoundingType As MidpointRounding = MidpointRounding.ToEven) As Decimal2
         
-        Set Round = Decimal2Factory.Value(MathTools.Round(m_vvalue, numDigitsAfterDecimal, midpointRoundingType))
+        Set Round = Decimal2.NewValue(MathTools.Round(m_vvalue, numDigitsAfterDecimal, midpointRoundingType))
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -102,6 +108,5 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get ToString2() As String2
-    Set ToString2 = String2Factory.Value(m_vvalue)
+    Set ToString2 = String2.NewValue(m_vvalue)
 End Property
-
