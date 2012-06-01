@@ -329,3 +329,22 @@ Public Function Substring(ByVal Value As String, ByVal startIndex As Long, Optio
     If length = 0 Then length = StringTools.Lenght(Value) - startIndex
     Substring = VBA.Mid$(Value, startIndex + 1, length)
 End Function
+
+'---------------------------------------------------------------------------------------
+' Function: InsertAt
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Setzt die Zeichenfolge insertValue an der Position Pos ein
+' </summary>
+' <param name="Value">Zeichenfolge</param>
+' <param name="insertValue">Zeichenfolge die eingefügt werden soll</param>
+' <param name="pos">Position an der die Zeichenfolge eingefügt werden soll</param>
+' <returns>String</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function InsertAt(ByVal Value As String, ByVal insertValue As String, ByVal pos As Long) As String
+    InsertAt = VBA.Mid$(Value, 1, pos) & insertValue & StringTools.Substring(Value, pos)
+End Function
