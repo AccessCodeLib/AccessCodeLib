@@ -748,7 +748,7 @@ On Error GoTo HandleErr
 
    Set lb = Me.lstImportFiles
    
-   ArraySize = lb.ListCount - 1
+   ArraySize = lb.ListCount
    
    If ArraySize <= 0 Then
       MsgBox "Es sind keine Dateien ausgewählt.", vbInformation
@@ -757,7 +757,7 @@ On Error GoTo HandleErr
    
    ReDim fileNameArray(ArraySize)
    
-   For i = 0 To ArraySize
+   For i = 0 To ArraySize - 1
       fileNameArray(i) = lb.ItemData(i)
    Next
    
