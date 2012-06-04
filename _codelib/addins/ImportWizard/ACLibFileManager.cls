@@ -340,7 +340,7 @@ Public Sub ImportRepositoryFiles(ByRef RepositoryPathArray() As String, _
    Dim tempFile As Object
 
    ArraySize = UBound(RepositoryPathArray)
-   For i = LBound(RepositoryPathArray) To ArraySize
+   For i = LBound(RepositoryPathArray) To ArraySize - 1
       pathString = GetRepositoryFullPath(RepositoryPathArray(i))
       Set tempFile = fso.GetFile(pathString)
       addMissingFile tempFile, ImportMode
