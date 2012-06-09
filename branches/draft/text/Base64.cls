@@ -27,11 +27,11 @@ Private m_xmlDocument As Object
 Private m_xmlNode As Object
 
 '---------------------------------------------------------------------------------------
-' Enum: DecodeOption
+' Enum: Base64ConvertOption
 '---------------------------------------------------------------------------------------
 '/**                                            '<-- Start Doxygen-Block
 ' <summary>
-' Verfügbare Optionen für Decode
+' Verfügbare Konvertierungsoptionen
 ' </summary>
 ' <list type="table">
 '   <item><term>None (1)</term><description>Keine Konvertierung</description></item>
@@ -65,6 +65,7 @@ End Property
 ' Kodiert den Eingabestring mittels Base64
 ' </summary>
 ' <param name="Value">String der kodiert werden soll</param>
+' <param name="ConvertOption">Konvertierungsoptionen</param>
 ' <returns>kodierter Base64 String</returns>
 ' <remarks>
 ' </remarks>
