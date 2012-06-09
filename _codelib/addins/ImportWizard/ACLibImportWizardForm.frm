@@ -829,18 +829,19 @@ On Error GoTo HandleErr
       .ControlSection = acDetail
       
       .AddMenuItem 11, "Alle Elemente aus der Codebibliothek importieren", , 1
-      .AddMenuItem 10, "Import", MF_POPUP, 1
+      .AddMenuItem 10, "Importieren", MF_POPUP, 1
       
       .AddMenuItem -1, "", MF_SEPARATOR
       
       .AddMenuItem 31, "Alle vorhandenen Elemente exportieren", , 2
       .AddMenuItem 32, "Alle vorhandenen Module exportieren", , 2
-      .AddMenuItem 30, "Export", MF_POPUP, 2
-      
+      .AddMenuItem 30, "Exportieren", MF_POPUP, 2
       
       .AddMenuItem -2, "", MF_SEPARATOR
-      .AddMenuItem 21, "Alle vorhandenen Elemente aktualisieren"
-      .AddMenuItem 22, "Alle vorhandenen Module aktualisieren"
+
+      .AddMenuItem 21, "Alle vorhandenen Elemente aktualisieren", , 3
+      .AddMenuItem 22, "Alle vorhandenen Module aktualisieren", , 3
+      .AddMenuItem 20, "Aktualisieren", MF_POPUP, 3
 
       
    End With
