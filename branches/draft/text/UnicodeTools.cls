@@ -186,7 +186,7 @@ Private Declare Function IsTextUnicode Lib "advapi32" (ByRef lpv As Any, ByVal i
 ' <param name="TestOption">Prüf- bzw. Testverfahren</param>
 ' <param name="RaiseErrorOnFailedTest">
 '   Legt fest ob ein Fehler generiert werden soll, wenn ein Test fehlschlägt und der
-'   Return-Wert darurch nicht eindeutig ist.</param>
+'   Return-Wert dadurch nicht eindeutig ist.</param>
 ' <returns>Boolean</returns>
 ' <remarks>
 ' Basiert auf dem WinAPI-Call 'IsTextUnicode()', siehe
