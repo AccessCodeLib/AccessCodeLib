@@ -85,6 +85,9 @@ Private Const SEARCHSTRING_REF_GUID_END   As String = "</guid>"
 Private Const SEARCHSTRING_TEST_BEGIN As String = "<test>"
 Private Const SEARCHSTRING_TEST_END   As String = "</test>"
 
+Private Const SEARCHSTRING_EXECUTE_BEGIN As String = "<execute>"
+Private Const SEARCHSTRING_EXECUTE_END As String = "</execute>"
+
 Private Const SEARCHSTRING_REPLACE_BEGIN As String = "<replace>"
 Private Const SEARCHSTRING_REPLACE_END   As String = "</replace>"
 Private Const SEARCHSTRING_ATTRIBUTNAME_BEGIN As String = "Attribute VB_Name = """
@@ -99,6 +102,8 @@ Private Const REPOSTITORY_ROOT_CODE_PrivateRoot As String = "%PrivateRoot%"
 
 Private m_ImportFileCollection As Collection
 Private m_ReplacedFilesCollection As Collection
+Private m_cli As CodeLibInfo
+
 
 #If EARLYBINDING = 1 Then
 Private m_fso As FileSystemObject
@@ -389,6 +394,13 @@ Private Sub importFilesFromImportCollection( _
       CurrentProject.Application.DoCmd.RunCommand acCmdCompileAndSaveAllModules
    End If
    
+   'Executes ausführen
+   If (0 / 1) + (Not Not m_cli.ExecuteList) Then
+      For i = 0 To UBound(m_cli.ExecuteList)
+        Eval (m_cli.ExecuteList(i))
+      Next
+   End If
+   
    'Modul-Variablen aufräumen, da Import-Vorgang an dieser Stelle abgeschlossen ist
    Set m_ImportFileCollection = Nothing
    Set m_ReplacedFilesCollection = Nothing
@@ -643,36 +655,35 @@ End Function
 Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibImportMode, _
               Optional ByVal bImportTestFiles As Boolean = False)
    
-   Dim cli As CodeLibInfo
    Dim i As Long
    Dim tempFile As Object
    Dim filePath As String
    Dim cancelImport As Integer
 
-   getCodeLibInfoFromFile cli, ImportFile, (ImportMode <> clim_ImportSelectedOnly)
+   getCodeLibInfoFromFile m_cli, ImportFile, (ImportMode <> clim_ImportSelectedOnly)
    
-   If Len(cli.RepositoryFileReplacement) > 0 Then
-      addReplacedFilePath GetRepositoryFullPath(cli.RepositoryFileReplacement)
+   If Len(m_cli.RepositoryFileReplacement) > 0 Then
+      addReplacedFilePath GetRepositoryFullPath(m_cli.RepositoryFileReplacement)
    End If
    
    'Abbruch ermöglichen
-   RaiseEvent ImportRepositoryFile(cli.Name, cli.RepositoryFile, cli.Type, cli.Dependency, ImportFile, cancelImport)
+   RaiseEvent ImportRepositoryFile(m_cli.Name, m_cli.RepositoryFile, m_cli.Type, m_cli.Dependency, ImportFile, cancelImport)
    If cancelImport Then
       Exit Sub
    End If
    
    'Lizenz (LICENSE-Block)
-   If Len(cli.LicenseFile) > 0 Then
-      filePath = GetRepositoryFullPath(cli.LicenseFile)
+   If Len(m_cli.LicenseFile) > 0 Then
+      filePath = GetRepositoryFullPath(m_cli.LicenseFile)
       Set tempFile = fso.GetFile(filePath)
       addMissingFile tempFile, clim_ImportMissingItems
    End If
    
    'Erforderliche Module (USE-Block)
    If ImportMode <> clim_ImportSelectedOnly Then
-      If (0 / 1) + (Not Not cli.Dependency) Then
-      For i = 0 To UBound(cli.Dependency)
-         filePath = GetRepositoryFullPath(cli.Dependency(i))
+      If (0 / 1) + (Not Not m_cli.Dependency) Then
+      For i = 0 To UBound(m_cli.Dependency)
+         filePath = GetRepositoryFullPath(m_cli.Dependency(i))
          If fso.FileExists(filePath) Then
             Set tempFile = fso.GetFile(filePath)
             addMissingFile tempFile, ImportMode
@@ -682,29 +693,29 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
    End If
    
    'zuerst Verweise
-   If (0 / 1) + (Not Not cli.References) Then
-      For i = 0 To UBound(cli.References)
-         addMissingReference cli.References(i)
+   If (0 / 1) + (Not Not m_cli.References) Then
+      For i = 0 To UBound(m_cli.References)
+         addMissingReference m_cli.References(i)
       Next
    End If
    
    'dann Codemodul
-   Select Case cli.Type
+   Select Case m_cli.Type
       Case CodeLibElementType.clet_ClassModule, CodeLibElementType.clet_StdModule
-         importVbComponent cli, ImportFile, ImportMode
+         importVbComponent m_cli, ImportFile, ImportMode
       Case CodeLibElementType.clet_Form
-         importAccessObject acForm, cli, ImportFile, ImportMode
+         importAccessObject acForm, m_cli, ImportFile, ImportMode
       Case CodeLibElementType.clet_Report
-         importAccessObject acReport, cli, ImportFile, ImportMode
+         importAccessObject acReport, m_cli, ImportFile, ImportMode
       Case Else
          ' eventuell Fehler auslösen?
    End Select
-   
+      
    'eventuell die Tests
    If bImportTestFiles Then
-   If (0 / 1) + (Not Not cli.TestFiles) Then
-      For i = 0 To UBound(cli.TestFiles)
-         filePath = GetRepositoryFullPath(cli.TestFiles(i))
+   If (0 / 1) + (Not Not m_cli.TestFiles) Then
+      For i = 0 To UBound(m_cli.TestFiles)
+         filePath = GetRepositoryFullPath(m_cli.TestFiles(i))
          If fso.FileExists(filePath) Then
             Set tempFile = fso.GetFile(filePath)
             addMissingFile tempFile, ImportMode
@@ -714,7 +725,7 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
    End If
    
 #If DEBUGMODE Then
-   Debug.Print ImportFile.Path; " --> "; cli.Name
+   Debug.Print ImportFile.Path; " --> "; m_cli.Name
 #End If
   
 End Sub
@@ -1256,6 +1267,7 @@ Private Sub getCodeLibInfoFromFile(ByRef cli As CodeLibInfo, ByVal InputFile As 
       getCodeLibInfoReferences cli, checkString
       If FindTests Then getCodeLibInfoTests cli, checkString
       getCodeLibInfoDescription cli, checkString
+      getCodeLibInfoExecuteList cli, checkString
    End If
 
 End Sub
@@ -1274,6 +1286,14 @@ End Sub
 
 Private Sub getCodeLibInfoDescription(ByRef cli As CodeLibInfo, ByRef sSourceString As String)
    cli.Description = Replace(findSubString(sSourceString, SEARCHSTRING_DESCRIPTION_BEGIN, SEARCHSTRING_DESCRIPTION_END), "\", "/")
+End Sub
+
+Private Sub getCodeLibInfoExecuteList(ByRef cli As CodeLibInfo, ByRef sSourceString As String)
+    Dim lst() As String
+
+    If getCodelibInfoTagStrings(sSourceString, SEARCHSTRING_EXECUTE_BEGIN, SEARCHSTRING_EXECUTE_END, lst) > 0 Then
+        cli.ExecuteList = lst
+    End If
 End Sub
 
 Private Sub getCodeLibInfoDependency(ByRef cli As CodeLibInfo, ByRef sSourceString As String)
@@ -1548,6 +1568,7 @@ Public Sub InsertCodeLibInfo(ByRef cm As Object, cli As CodeLibInfo)
    Dim lngDepCnt As Long
    Dim i As Long
    Dim strCodeLibInfo As String
+   Dim ExecuteList() As String
 
    strCodeLibInfo = _
       "'<codelib>" & vbNewLine & _
@@ -1587,6 +1608,15 @@ Public Sub InsertCodeLibInfo(ByRef cm As Object, cli As CodeLibInfo)
          strCodeLibInfo = strCodeLibInfo & "'  <test>" & clTagArray(i) & "</test>" & vbNewLine
       Next
    End If
+   
+   '<execute>-Blöcke
+   ExecuteList = cli.ExecuteList
+   If Not ((0 / 1) + (Not Not ExecuteList) = 0) Then
+      For i = LBound(ExecuteList) To UBound(ExecuteList)
+         strCodeLibInfo = strCodeLibInfo & "'  <execute>" & clTagArray(i) & "</execute>" & vbNewLine
+      Next
+   End If
+   
    
    strCodeLibInfo = strCodeLibInfo & _
       "'</codelib>" & vbNewLine
