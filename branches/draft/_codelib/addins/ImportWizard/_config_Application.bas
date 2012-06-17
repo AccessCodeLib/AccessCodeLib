@@ -23,6 +23,7 @@ Attribute VB_Name = "_config_Application"
 '  <use>data/dao/DaoTools.bas</use>
 '  <use>file/FileTools.bas</use>
 '  <use>usability/ApplicationHandler_DirTextbox.cls</use>
+'  <execute>SetupUSysRegInfo()</execute>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -173,3 +174,63 @@ HandleErr:
       Resume ExitHere
    End Select
 End Sub
+
+Public Function SetupUSysRegInfo()
+    
+    Dim Query As String
+    Dim rs As DAO.Recordset
+    Dim RegInfoTableName As String: RegInfoTableName = "USysRegInfo"
+    Dim SubKey As String: SubKey = "HKEY_CURRENT_ACCESS_PROFILE\Menu Add-Ins\ACLib Import Wizard"
+        
+    If Not DaoTools.TableDefExists(RegInfoTableName, CurrentDb()) Then
+
+        Query = "CREATE TABLE " & RegInfoTableName & " " & _
+                "([Subkey] varchar(255)," & _
+                " [Type] long," & _
+                " [ValName] varchar(255)," & _
+                " [Value] varchar(255))"
+
+        CurrentDb.Execute Query
+        
+        Application.SetHiddenAttribute acTable, RegInfoTableName, True
+        
+        Set rs = CurrentDb.OpenRecordset(RegInfoTableName)
+            
+            rs.AddNew
+            rs!SubKey = SubKey
+            rs!Type = 4
+            rs!ValName = "BitmapID"
+            rs!Value = "339"
+            rs.Update
+            
+            rs.AddNew
+            rs!SubKey = SubKey
+            rs!Type = 0
+            rs.Update
+            
+            rs.AddNew
+            rs!SubKey = SubKey
+            rs!Type = 1
+            rs!ValName = "Library"
+            rs!Value = "|ACCDIR\ACLibImportWizard.mda"
+            rs.Update
+            
+            rs.AddNew
+            rs!SubKey = SubKey
+            rs!Type = 1
+            rs!ValName = "Expression"
+            rs!Value = "=StartApplication()"
+            rs.Update
+            
+            rs.AddNew
+            rs!SubKey = SubKey
+            rs!Type = 4
+            rs!ValName = "Version"
+            rs!Value = "1"
+            rs.Update
+            
+        Set rs = Nothing
+    End If
+    
+    
+End Function
