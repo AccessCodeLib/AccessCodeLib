@@ -57,6 +57,7 @@ Public Type CodeLibInfo
    Dependency() As String
    References() As CodeLibInfoReference
    TestFiles() As String
+   ExecuteList() As String
    LicenseFile As String
    Description As String
 End Type
