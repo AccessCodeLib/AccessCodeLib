@@ -24,6 +24,7 @@ Attribute VB_Name = "_config_Application"
 '  <use>file/FileTools.bas</use>
 '  <use>usability/ApplicationHandler_DirTextbox.cls</use>
 '  <execute>SetupUSysRegInfo()</execute>
+'  <execute>SetupProjectProperties()</execute>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -40,6 +41,8 @@ Private Const m_ApplicationName As String = "ACLib Import Wizard"
 Private Const m_ApplicationFullName As String = "Access Code Library - Import Wizard"
 Private Const m_ApplicationTitle As String = m_ApplicationFullName
 Private Const m_ApplicationIconFile As String = "ACLib.ico"
+Private Const m_VbeProjectName = "ACLibImportWizard"
+Private Const m_VbeProjectDescription = "Access-Add-In für den Import von Dateien aus der Access Code Library (http://access-codelib.net)"
 
 Private Const m_DefaultErrorHandlerMode As Long = ACLibErrorHandlerMode.aclibErrMsgBox
 
@@ -231,6 +234,11 @@ Public Function SetupUSysRegInfo()
             
         Set rs = Nothing
     End If
-    
-    
+        
 End Function
+
+Public Function SetupProjectProperties()
+    defGlobal_ACLibImportWizard.CurrentACLibFileManager.CurrentVbProject.Name = m_VbeProjectName
+    defGlobal_ACLibImportWizard.CurrentACLibFileManager.CurrentVbProject.Description = m_VbeProjectDescription
+End Function
+
