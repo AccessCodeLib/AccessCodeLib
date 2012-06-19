@@ -1,8 +1,8 @@
 Attribute VB_Name = "_config_Application"
 '---------------------------------------------------------------------------------------
-' Modul: defConfig (Josef Pötzl, 2009-12-11)
+' Modul: _config_Application (Josef Pötzl, 2009-12-11)
 '---------------------------------------------------------------------------------------
-' Indiviuell gestaltete Config-Module nicht in das Repositiory laden.
+' Indiviuell gestaltetes Config-Module für das ImportWizard Add-In
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/ImportWizard/_config_Application.bas</file>
@@ -25,6 +25,7 @@ Attribute VB_Name = "_config_Application"
 '  <use>usability/ApplicationHandler_DirTextbox.cls</use>
 '  <execute>SetupUSysRegInfo()</execute>
 '  <execute>SetupProjectProperties()</execute>
+'  <execute>MsgBox("TODO: Benennen Sie die Datenbank um in: ACLibImportWizard.mda")</execute>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -32,7 +33,7 @@ Option Compare Database
 Option Explicit
 
 'Versionsnummer
-Private Const m_ApplicationVersion As String = "1.0.4" '2012-06-01
+Private Const m_ApplicationVersion As String = "1.0.5 (draft)" 'Last Release: 1.0.4. 2012-06-01
 
 #Const USE_CLASS_ApplicationHandler_AppFile = 1
 #Const USE_CLASS_ApplicationHandler_DirTextbox = 1

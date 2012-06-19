@@ -33,6 +33,7 @@ Attribute VB_Description = "Import/Export der Access-Objekte in/aus lokaler Code
 '  <license>_codelib/license.bas</license>
 '  <use>base/ApplicationHandler.cls</use>
 '  <use>file/modFiles.bas</use>
+'  <use>utils/AccessProgressBar.cls</use>
 '  <use>_codelib/addins/ImportWizard/defGlobal_ACLibImportWizard.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -376,18 +377,31 @@ Private Sub importFilesFromImportCollection( _
    If CurrentProject.AllModules.Count > 0 Then
       DoCmd.RunCommand acCmdCompileAndSaveAllModules
    End If
+    
+    maxCnt = m_ImportFileCollection.Count
+    
+    '/*
+    ' * TODO: Bestimmung der Anzahl alle Dateien (inkl. Abhängigkeiten) vor dem Import
+    ' * TODO: Umbau AccessProgressBar auf einmaligen Durchlauf (Init nur einmal)
+    ' */
    
-   maxCnt = m_ImportFileCollection.Count
-   i = 1
-   Do While i <= maxCnt
-      'Set tempFile = m_ImportFileCollection(i)
-      colItem = m_ImportFileCollection(i)
-      Set tempFile = colItem(0)
-      fileImportMode = colItem(1)
-      ImportFile tempFile, fileImportMode, bImportTestFiles
-      i = i + 1
-      maxCnt = m_ImportFileCollection.Count
-   Loop
+    i = 1
+    Do While i <= maxCnt
+        colItem = m_ImportFileCollection(i)
+        Set tempFile = colItem(0)
+        fileImportMode = colItem(1)
+        
+        AccessProgressBar.Init "Importiere " & tempFile & "...", 2, 1
+        AccessProgressBar.PerformStep
+        
+        ImportFile tempFile, fileImportMode, bImportTestFiles
+        
+        AccessProgressBar.PerformStep
+        maxCnt = m_ImportFileCollection.Count
+        i = i + 1
+    Loop
+
+
 
    If CompileAfterImport Then
       activateCurrentProject
@@ -396,9 +410,12 @@ Private Sub importFilesFromImportCollection( _
    
    'Executes ausführen
    If (0 / 1) + (Not Not m_cli.ExecuteList) Then
+      AccessProgressBar.Init "Executes ausführen...", UBound(m_cli.ExecuteList) + 1, 1
       For i = 0 To UBound(m_cli.ExecuteList)
+        AccessProgressBar.PerformStep
         Eval (m_cli.ExecuteList(i))
       Next
+      If AccessProgressBar.IsInitialized Then AccessProgressBar.Clear
    End If
    
    'Modul-Variablen aufräumen, da Import-Vorgang an dieser Stelle abgeschlossen ist
