@@ -8,6 +8,7 @@ Attribute VB_Name = "_config_Application"
 '  <file>_codelib/addins/ImportWizard/_config_Application.bas</file>
 '  <replace>base/_config_Application.bas</replace> 'dieses Modul ersetzt base/_config_Application.bas
 '  <license>_codelib/license.bas</license>
+'  <use>_codelib/addins/ImportWizard/ACLibImportWizardSetup.bas</use>
 '  <use>_codelib/addins/shared/CodeModuleReader.cls</use>
 '  <use>_codelib/addins/shared/ACLibConfiguration.cls</use>
 '  <use>_codelib/addins/ImportWizard/defGlobal_ACLibImportWizard.bas</use>
@@ -23,9 +24,6 @@ Attribute VB_Name = "_config_Application"
 '  <use>data/dao/DaoTools.bas</use>
 '  <use>file/FileTools.bas</use>
 '  <use>usability/ApplicationHandler_DirTextbox.cls</use>
-'  <execute>SetupUSysRegInfo()</execute>
-'  <execute>SetupProjectProperties()</execute>
-'  <execute>MsgBox("TODO: Benennen Sie die Datenbank um in: ACLibImportWizard.mda")</execute>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -42,11 +40,7 @@ Private Const m_ApplicationName As String = "ACLib Import Wizard"
 Private Const m_ApplicationFullName As String = "Access Code Library - Import Wizard"
 Private Const m_ApplicationTitle As String = m_ApplicationFullName
 Private Const m_ApplicationIconFile As String = "ACLib.ico"
-Private Const m_VbeProjectName = "ACLibImportWizard"
-Private Const m_VbeProjectDescription = "Access-Add-In für den Import von Dateien aus der Access Code Library (http://access-codelib.net)"
-
 Private Const m_DefaultErrorHandlerMode As Long = ACLibErrorHandlerMode.aclibErrMsgBox
-
 Private Const m_ApplicationStartFormName As String = "ACLibImportWizardForm"
 
 '---------------------------------------------------------------------------------------
@@ -178,68 +172,3 @@ HandleErr:
       Resume ExitHere
    End Select
 End Sub
-
-Public Function SetupUSysRegInfo()
-    
-    Dim Query As String
-    Dim rs As DAO.Recordset
-    Dim RegInfoTableName As String: RegInfoTableName = "USysRegInfo"
-    Dim SubKey As String: SubKey = "HKEY_CURRENT_ACCESS_PROFILE\Menu Add-Ins\ACLib Import Wizard"
-        
-    If Not DaoTools.TableDefExists(RegInfoTableName, CurrentDb()) Then
-
-        Query = "CREATE TABLE " & RegInfoTableName & " " & _
-                "([Subkey] varchar(255)," & _
-                " [Type] long," & _
-                " [ValName] varchar(255)," & _
-                " [Value] varchar(255))"
-
-        CurrentDb.Execute Query
-        
-        Application.SetHiddenAttribute acTable, RegInfoTableName, True
-        
-        Set rs = CurrentDb.OpenRecordset(RegInfoTableName)
-            
-            rs.AddNew
-            rs!SubKey = SubKey
-            rs!Type = 4
-            rs!ValName = "BitmapID"
-            rs!Value = "339"
-            rs.Update
-            
-            rs.AddNew
-            rs!SubKey = SubKey
-            rs!Type = 0
-            rs.Update
-            
-            rs.AddNew
-            rs!SubKey = SubKey
-            rs!Type = 1
-            rs!ValName = "Library"
-            rs!Value = "|ACCDIR\ACLibImportWizard.mda"
-            rs.Update
-            
-            rs.AddNew
-            rs!SubKey = SubKey
-            rs!Type = 1
-            rs!ValName = "Expression"
-            rs!Value = "=StartApplication()"
-            rs.Update
-            
-            rs.AddNew
-            rs!SubKey = SubKey
-            rs!Type = 4
-            rs!ValName = "Version"
-            rs!Value = "1"
-            rs.Update
-            
-        Set rs = Nothing
-    End If
-        
-End Function
-
-Public Function SetupProjectProperties()
-    defGlobal_ACLibImportWizard.CurrentACLibFileManager.CurrentVbProject.Name = m_VbeProjectName
-    defGlobal_ACLibImportWizard.CurrentACLibFileManager.CurrentVbProject.Description = m_VbeProjectDescription
-End Function
-
