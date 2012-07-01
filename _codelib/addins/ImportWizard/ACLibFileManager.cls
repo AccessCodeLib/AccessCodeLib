@@ -33,6 +33,7 @@ Attribute VB_Description = "Import/Export der Access-Objekte in/aus lokaler Code
 '  <license>_codelib/license.bas</license>
 '  <use>base/ApplicationHandler.cls</use>
 '  <use>file/modFiles.bas</use>
+'  <use>text/StringTools.bas</use>
 '  <use>utils/AccessProgressBar.cls</use>
 '  <use>_codelib/addins/ImportWizard/defGlobal_ACLibImportWizard.bas</use>
 '</codelib>
@@ -413,7 +414,11 @@ Private Sub importFilesFromImportCollection( _
       AccessProgressBar.Init "Executes ausführen...", UBound(m_cli.ExecuteList) + 1, 1
       For i = 0 To UBound(m_cli.ExecuteList)
         AccessProgressBar.PerformStep
-        Eval (m_cli.ExecuteList(i))
+        If StringTools.Contains(m_cli.ExecuteList(i), REPOSTITORY_ROOT_CODE_PrivateRoot) Then
+            Eval VBA.Strings.Replace(m_cli.ExecuteList(i), REPOSTITORY_ROOT_CODE_PrivateRoot, LocalRepositoryRootDirectory())
+        Else
+            Eval (m_cli.ExecuteList(i))
+        End If
       Next
       If AccessProgressBar.IsInitialized Then AccessProgressBar.Clear
    End If
