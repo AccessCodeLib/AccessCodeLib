@@ -144,6 +144,23 @@ Private Sub Class_Initialize()
    m_ReferencesUpdateAllowed = Not IsMDE
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Sub: ReInitialize
+'---------------------------------------------------------------------------------------
+'/**                                            '<-- Start Doxygen-Block
+' <summary>
+' (Re)Initialisiert die DotNetLib Integration
+' </summary>
+' <remarks>
+' Muss bei jedem Anwendungsstart ausgeführt werden
+' </remarks>
+'**/                                            '<-- Ende Doxygen-Block
+'---------------------------------------------------------------------------------------
+Public Sub ReInitialize()
+   LibFiles.CheckFiles
+   LibFiles.SetLibPathAsCurrentDir
+End Sub
+
 Friend Property Get DefaultLibPath() As String
 #If UseAssemblyDebugFolder Then
    DefaultLibPath = CodeProject.Path & "\TestComLibSource\NetComClassLibrary\NetComClassLibrary\bin\Debug\"
@@ -424,8 +441,10 @@ Err_:
 
 End Sub
 
-Private Sub ImportFileToTable(ByVal FileName As String, ByVal DestinationFolder As String, _
-               Optional ByVal SaveVersion As Boolean = False)
+Public Sub ImportFileToTable(ByVal FileName As String, ByVal DestinationFolder As String, _
+               Optional ByVal SaveVersion As Boolean = False, _
+               Optional ByVal EarlyBindingRefName As String = vbNullString, _
+               Optional ByVal ExternFilePath As String = vbNullString)
 
    Dim FileNr As Integer
    Dim BinFile() As Byte
@@ -436,6 +455,8 @@ Private Sub ImportFileToTable(ByVal FileName As String, ByVal DestinationFolder 
 On Error GoTo HandleErr
 
    FullFilePath = GetFullFilePath(FileName, DestinationFolder)
+   
+   If ExternFilePath <> vbNullString Then FullFilePath = ExternFilePath & "\" & FileName
    
    If VBA.Len(VBA.Dir$(FullFilePath)) = 0 Then
       Err.Raise vbObjectError, "SaveAppFile", "file not found"
@@ -462,6 +483,7 @@ On Error GoTo HandleErr
       rst.AddNew
       rst.Fields(m_TABLE_FIELD_FileName) = FileName
       rst.Fields(m_TABLE_FIELD_DestinationFolder) = DestinationFolder
+      If EarlyBindingRefName <> vbNullString Then rst.Fields(m_TABLE_FIELD_EarlyBindingRefName) = EarlyBindingRefName
    Else
       rst.Edit
    End If
@@ -573,7 +595,7 @@ Private Sub ExportFileFromRecordField(FileDataField As DAO.Field, FullFilePath A
 
 End Sub
 
-Private Function CreateAppFileTable() As Boolean
+Public Function CreateAppFileTable() As Boolean
    
    Const CreateTableSql = _
       "create table " & m_TABLE_AppFiles & " ( " & _
