@@ -12,7 +12,7 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '/**
 ' \author       Sten Schmidt
-' \brief        Eine erweiterter String-Datentyp
+' \brief        Ein erweiterter String-Datentyp
 ' \ingroup text
 '**/
 '---------------------------------------------------------------------------------------
