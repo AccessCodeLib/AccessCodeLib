@@ -12,7 +12,7 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '/**
 ' \author       Sten Schmidt
-' \brief        Eine erweiterter DateTime-Datentyp
+' \brief        Ein erweiterter DateTime-Datentyp
 ' \ingroup datetime
 '**/
 '---------------------------------------------------------------------------------------
