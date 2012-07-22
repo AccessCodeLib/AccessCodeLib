@@ -109,6 +109,14 @@ Public Property Get GetMonth() As Integer
     GetMonth = VBA.DateTime.DatePart("m", m_Value)
 End Property
 
+Public Property Get GetMonthName() As String
+    GetMonthName = VBA.Strings.MonthName(Me.GetMonth(), False)
+End Property
+
+Public Property Get GetMonthNameShort() As String
+    GetMonthNameShort = VBA.Strings.MonthName(Me.GetMonth(), True)
+End Property
+
 Public Property Get GetDayOfYear() As Integer
     GetDayOfYear = VBA.DateTime.DatePart("y", m_Value)
 End Property
@@ -119,6 +127,14 @@ End Property
 
 Public Property Get GetDayOfWeek() As Integer
     GetDayOfWeek = VBA.DateTime.DatePart("w", m_Value, m_FirstDayOfWeek, m_FirstWeekOfYear)
+End Property
+
+Public Property Get GetWeekDayName() As String
+    GetWeekDayName = VBA.Strings.WeekdayName(Me.GetDayOfWeek, False, m_FirstDayOfWeek)
+End Property
+
+Public Property Get GetWeekDayNameShort() As String
+    GetWeekDayNameShort = VBA.Strings.WeekdayName(Me.GetDayOfWeek, True, m_FirstDayOfWeek)
 End Property
 
 Public Property Get GetWeekOfYear() As Integer
