@@ -277,6 +277,38 @@ Public Sub NewValue_GetMonth(ByVal vValue As Variant, ByVal Expected As Integer)
     Assert.That DateTime2.NewValue(vValue).GetMonth(), Iz.EqualTo(Expected)
 End Sub
 
+'AccUnit:Row("01.01.2011", "Januar")
+'AccUnit:Row("01.02.2011", "Februar")
+'AccUnit:Row("01.03.2011", "März")
+'AccUnit:Row("01.04.2011", "April")
+'AccUnit:Row("01.05.2011", "Mai")
+'AccUnit:Row("01.06.2011", "Juni")
+'AccUnit:Row("01.07.2011", "Juli")
+'AccUnit:Row("01.08.2011", "August")
+'AccUnit:Row("01.09.2011", "September")
+'AccUnit:Row("01.10.2011", "Oktober")
+'AccUnit:Row("01.11.2011", "November")
+'AccUnit:Row("01.12.2011", "Dezember")
+Public Sub NewValue_GetMonthName(ByVal vValue As Variant, ByVal Expected As String)
+    Assert.That DateTime2.NewValue(vValue).GetMonthName, Iz.EqualTo(Expected)
+End Sub
+
+'AccUnit:Row("01.01.2011", "Jan")
+'AccUnit:Row("01.02.2011", "Feb")
+'AccUnit:Row("01.03.2011", "Mrz")
+'AccUnit:Row("01.04.2011", "Apr")
+'AccUnit:Row("01.05.2011", "Mai")
+'AccUnit:Row("01.06.2011", "Jun")
+'AccUnit:Row("01.07.2011", "Jul")
+'AccUnit:Row("01.08.2011", "Aug")
+'AccUnit:Row("01.09.2011", "Sep")
+'AccUnit:Row("01.10.2011", "Okt")
+'AccUnit:Row("01.11.2011", "Nov")
+'AccUnit:Row("01.12.2011", "Dez")
+Public Sub NewValue_GetMonthNameShort(ByVal vValue As Variant, ByVal Expected As String)
+    Assert.That DateTime2.NewValue(vValue).GetMonthNameShort, Iz.EqualTo(Expected)
+End Sub
+
 'AccUnit:Row("28.02.2011 00:59:00", 59)
 'AccUnit:Row("31.12.2011 23:59:59", 365)
 'AccUnit:Row("31.12.2012 23:59:59", 366)
@@ -300,6 +332,28 @@ End Sub
 'AccUnit:Row("08.07.2012 23:59:59", 7).Name("So")
 Public Sub NewValue_GetDayOfWeek_DefaultFirstDayOfWeekIsMonday(ByVal vValue As Variant, ByVal Expected As Integer)
     Assert.That DateTime2.NewValue(vValue).GetDayOfWeek(), Iz.EqualTo(Expected)
+End Sub
+
+'AccUnit:Row("02.07.2012 23:59:59", "Montag").Name("Mo")
+'AccUnit:Row("03.07.2012 23:59:59", "Dienstag").Name("Di")
+'AccUnit:Row("04.07.2012 23:59:59", "Mittwoch").Name("Mi")
+'AccUnit:Row("05.07.2012 23:59:59", "Donnerstag").Name("Do")
+'AccUnit:Row("06.07.2012 23:59:59", "Freitag").Name("Fr")
+'AccUnit:Row("07.07.2012 23:59:59", "Samstag").Name("Sa")
+'AccUnit:Row("08.07.2012 23:59:59", "Sonntag").Name("So")
+Public Sub NewValue_GetWeekDayName_DefaultFirstDayOfWeekIsMonday(ByVal vValue As Variant, ByVal Expected As String)
+    Assert.That DateTime2.NewValue(vValue).GetWeekDayName, Iz.EqualTo(Expected)
+End Sub
+
+'AccUnit:Row("02.07.2012 23:59:59", "Mo").Name("Mo")
+'AccUnit:Row("03.07.2012 23:59:59", "Di").Name("Di")
+'AccUnit:Row("04.07.2012 23:59:59", "Mi").Name("Mi")
+'AccUnit:Row("05.07.2012 23:59:59", "Do").Name("Do")
+'AccUnit:Row("06.07.2012 23:59:59", "Fr").Name("Fr")
+'AccUnit:Row("07.07.2012 23:59:59", "Sa").Name("Sa")
+'AccUnit:Row("08.07.2012 23:59:59", "So").Name("So")
+Public Sub NewValue_GetWeekDayNameShort_DefaultFirstDayOfWeekIsMonday(ByVal vValue As Variant, ByVal Expected As String)
+    Assert.That DateTime2.NewValue(vValue).GetWeekDayNameShort, Iz.EqualTo(Expected)
 End Sub
 
 'AccUnit:Row("01.01.2012", 52)
