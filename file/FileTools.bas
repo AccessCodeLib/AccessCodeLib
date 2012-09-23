@@ -681,3 +681,20 @@ Public Function CreateZipFile(ByVal ZipFile As String, Optional DeleteExistingFi
    CreateZipFile = (Len(Dir$(ZipFile)) > 0)
 
 End Function
+
+'---------------------------------------------------------------------------------------
+' Function: GetFileExtension
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Gibt die Dateiendung einer Datei oder eines Pfads zurück.
+' </summary>
+' <param name="filePath">Dateipfad oder Dateiname</param>
+' <returns>Dateiendung inkl. Trennzeichen</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function GetFileExtension(ByVal filePath As String) As String
+    GetFileExtension = VBA.Strings.Mid$(filePath, VBA.Strings.InStrRev(filePath, "."))
+End Function

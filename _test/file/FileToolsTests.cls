@@ -91,3 +91,11 @@ Public Sub ShortenFileName_FullPath_ReturnsShortenedPath(ByVal FileName As Strin
    Actual = FileTools.ShortenFileName(FileName, MaxLen)
    Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
+
+'AccUnit:Row("test.pdf", ".pdf").Name = ".pdf"
+'AccUnit:Row("test.PDF", ".PDF").Name = ".PDF"
+'AccUnit:Row("c:\test.accdb", ".accdb").Name = "LocalPath"
+'AccUnit:Row("\\myserver\myshare\test.ACCDB", ".ACCDB").Name = "UNC"
+Public Sub GetFileExtension_FilePath_ReturnsFileExtension(ByVal filePath As String, ByVal Expected As String)
+    Assert.That FileTools.GetFileExtension(filePath), Iz.EqualTo(Expected)
+End Sub
