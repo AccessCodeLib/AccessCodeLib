@@ -1,28 +1,21 @@
 Attribute VB_Name = "_config_Application"
 '---------------------------------------------------------------------------------------
-' Modul: _config_Application (Josef Pötzl, 2009-12-11)
+' Modul: defConfig (Josef Pötzl, 2009-12-11)
 '---------------------------------------------------------------------------------------
-' Indiviuell gestaltetes Config-Module für das ImportWizard Add-In
+' Indiviuell gestaltete Config-Module nicht in das Repositiory laden.
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/ImportWizard/_config_Application.bas</file>
 '  <replace>base/_config_Application.bas</replace> 'dieses Modul ersetzt base/_config_Application.bas
 '  <license>_codelib/license.bas</license>
-'  <use>_codelib/addins/ImportWizard/ACLibImportWizardSetup.bas</use>
-'  <use>_codelib/addins/shared/CodeModuleReader.cls</use>
-'  <use>_codelib/addins/shared/ACLibConfiguration.cls</use>
 '  <use>_codelib/addins/ImportWizard/defGlobal_ACLibImportWizard.bas</use>
-'  <use>_codelib/addins/ImportWizard/ACLibFileManager.cls</use>
-'  <use>_codelib/addins/ImportWizard/ACLibImportWizardForm.frm</use>
-'  <use>api/winapi/WinApiToolsFactory.bas</use>
-'  <use>base/_initApplication.bas</use>
 '  <use>base/modApplication.bas</use>
 '  <use>base/ApplicationHandler.cls</use>
 '  <use>base/ApplicationHandler_AppFile.cls</use>
 '  <use>base/modErrorHandler.bas</use>
-'  <use>data/SqlTools.bas</use>
-'  <use>data/dao/DaoTools.bas</use>
-'  <use>file/FileTools.bas</use>
+'  <use>_codelib/addins/shared/ACLibConfiguration.cls</use>
+'  <use>_codelib/addins/ImportWizard/ACLibFileManager.cls</use>
+'  <use>_codelib/addins/ImportWizard/ACLibImportWizardForm.frm</use>
 '  <use>usability/ApplicationHandler_DirTextbox.cls</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -31,7 +24,7 @@ Option Compare Database
 Option Explicit
 
 'Versionsnummer
-Private Const m_ApplicationVersion As String = "1.0.5 (draft)" 'Last Release: 1.0.4. 2012-06-01
+Private Const m_ApplicationVersion As String = "1.0.6" '2013-08-01
 
 #Const USE_CLASS_ApplicationHandler_AppFile = 1
 #Const USE_CLASS_ApplicationHandler_DirTextbox = 1
@@ -40,7 +33,9 @@ Private Const m_ApplicationName As String = "ACLib Import Wizard"
 Private Const m_ApplicationFullName As String = "Access Code Library - Import Wizard"
 Private Const m_ApplicationTitle As String = m_ApplicationFullName
 Private Const m_ApplicationIconFile As String = "ACLib.ico"
+
 Private Const m_DefaultErrorHandlerMode As Long = ACLibErrorHandlerMode.aclibErrMsgBox
+
 Private Const m_ApplicationStartFormName As String = "ACLibImportWizardForm"
 
 '---------------------------------------------------------------------------------------
