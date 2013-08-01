@@ -92,16 +92,16 @@ End Function
 Public Function FormatText(ByVal FormatString As String, ParamArray Args() As Variant) As String
 
    Dim Arg As Variant
-   Dim temp As String
+   Dim Temp As String
    Dim i As Long
    
-   temp = FormatString
+   Temp = FormatString
    For Each Arg In Args
-      temp = Replace(temp, "{" & i & "}", CStr(Arg))
+      Temp = Replace(Temp, "{" & i & "}", CStr(Arg))
       i = i + 1
    Next
    
-   FormatText = temp
+   FormatText = Temp
 
 End Function
 
@@ -325,9 +325,9 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Substring(ByVal Value As String, ByVal startIndex As Long, Optional ByVal length As Long = 0) As String
-    If length = 0 Then length = StringTools.Lenght(Value) - startIndex
-    Substring = VBA.Mid$(Value, startIndex + 1, length)
+Public Function Substring(ByVal Value As String, ByVal startIndex As Long, Optional ByVal Length As Long = 0) As String
+    If Length = 0 Then Length = StringTools.Lenght(Value) - startIndex
+    Substring = VBA.Mid$(Value, startIndex + 1, Length)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -345,6 +345,6 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function InsertAt(ByVal Value As String, ByVal insertValue As String, ByVal pos As Long) As String
-    InsertAt = VBA.Mid$(Value, 1, pos) & insertValue & StringTools.Substring(Value, pos)
+Public Function InsertAt(ByVal Value As String, ByVal insertValue As String, ByVal Pos As Long) As String
+    InsertAt = VBA.Mid$(Value, 1, Pos) & insertValue & StringTools.Substring(Value, Pos)
 End Function

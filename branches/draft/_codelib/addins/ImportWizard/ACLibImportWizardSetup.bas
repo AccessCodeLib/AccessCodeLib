@@ -8,9 +8,9 @@ Attribute VB_Name = "ACLibImportWizardSetup"
 ' Setup Modul für den ImportWizard
 ' </summary>
 ' <remarks>
-' Erstellt die Tabelle USysRegInfo. 
-' Fuehrt Projekteinstellungen durch. 
-' Wird nach dem Import wieder entfernt. 
+' Erstellt die Tabelle USysRegInfo.
+' Fuehrt Projekteinstellungen durch.
+' Wird nach dem Import wieder entfernt.
 ' </remarks>
 '**/
 '<codelib>
@@ -94,7 +94,7 @@ Public Function ACLibImportWizardSetup_SetupUSysRegInfo()
 End Function
 
 Public Function ACLibImportWizardSetup_SetupTodoInfo()
-	MsgBox("TODO: Benennen Sie die Datenbank um in: " & m_ACLibImportWizardAddinFileName)
+        MsgBox "TODO: Benennen Sie die Datenbank um in: " & m_ACLibImportWizardAddinFileName
 End Function
 
 Public Function ACLibImportWizardSetup_SetupProjectProperties()
@@ -108,7 +108,6 @@ Public Function ACLibImportWizardSetup_RemoveSelf()
     Dim currVbeProject As Object
     Set currVbeProject = aclibFileMgr.CurrentVbProject
 
-    currVbeProject.vbComponents.Remove currVbeProject.vbComponents(m_SetupModulName)
+    currVbeProject.VBComponents.Remove currVbeProject.VBComponents(m_SetupModulName)
 
 End Function
-
