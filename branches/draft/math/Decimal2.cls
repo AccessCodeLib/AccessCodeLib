@@ -91,7 +91,6 @@ End Property
 Public Property Get ToString(Optional ByVal FormatString As Variant = vbNullString, _
                          Optional ByVal FirstDayOfWeek As VbDayOfWeek = vbSunday, _
                          Optional ByVal FirstWeekOfYear As VbFirstWeekOfYear = vbFirstJan1) As String
-                         
         ToString = StringTools.Format(m_vvalue, FormatString, FirstDayOfWeek, FirstWeekOfYear)
 End Property
 
