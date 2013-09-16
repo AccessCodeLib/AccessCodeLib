@@ -602,7 +602,7 @@ Public Function CreateAppFileTable() As Boolean
                      m_TABLE_FIELD_FileName & " varchar(255) primary key, " & _
                      m_TABLE_FIELD_EarlyBindingRefName & " varchar(255), " & _
                      m_TABLE_FIELD_DestinationFolder & " varchar(255), " & _
-                     m_TABLE_FIELD_Version & " varchar(10), " & _
+                     m_TABLE_FIELD_Version & " varchar(20), " & _
                      m_TABLE_FIELD_FileData & " image)"
 
    CodeDb.Execute CreateTableSql, dbFailOnError
