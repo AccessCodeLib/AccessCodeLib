@@ -29,13 +29,33 @@ Option Explicit
 Private m_LibraryFile As String
 Private m_DefaultNameSpace As String
 
-Public Function CreateObject(ByVal ClassIdentifier As String) As Object
+'---------------------------------------------------------------------------------------
+' Function: CreateObject
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Erstellt eine neue Instanz einer Klasse aus einer .Net Com Dll
+' </summary>
+' <param name="ClassIdentifier">Name der Klasse ohne Namespace</param>
+' <param name="DefaultNameSpace">Namespace in dem sich die Klasse befindet</param>
+' <param name="LibraryFile">absoluter Pfad zur .Net Com Dll</param>
+' <returns>Object</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function CreateObject(ByVal ClassIdentifier As String, _
+                    Optional ByVal DefaultNameSpace As String = vbNullString, _
+                    Optional ByVal LibraryFile As String = vbNullString) As Object
 
+   If VBA.Len(DefaultNameSpace) > 0 Then Me.DefaultNameSpace = DefaultNameSpace
+   If VBA.Len(LibraryFile) > 0 Then Me.LibraryFile = LibraryFile
+   
    Dim NetRTH As mscoree.CorRuntimeHost
    Dim NetAppDomain As mscorlib.AppDomain
 
-   If InStr(1, ClassIdentifier, ".") = 0 Then
-      If Len(DefaultNameSpace) = 0 Then
+   If VBA.InStr(1, ClassIdentifier, ".") = 0 Then
+      If VBA.Len(DefaultNameSpace) = 0 Then
          Err.Raise vbObjectError, "NetComDomain.CreateObject", "Namespace muss angegeben werden!"
       End If
       ClassIdentifier = DefaultNameSpace & "." & ClassIdentifier
@@ -44,7 +64,7 @@ Public Function CreateObject(ByVal ClassIdentifier As String) As Object
    Set NetRTH = New mscoree.CorRuntimeHost
    NetRTH.Start
    NetRTH.GetDefaultDomain NetAppDomain
-
+   
    Set CreateObject = NetAppDomain.CreateInstanceFrom(LibraryFile, ClassIdentifier).Unwrap
 
    NetRTH.Stop
