@@ -179,6 +179,23 @@ Public Function Execute(ByVal sFile As String, _
 End Function
 
 '---------------------------------------------------------------------------------------
+' Function: ExecuteAsAdmin
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Befehl mit erweiterter, administrativer Berechtigung ausführen
+' </summary>
+' <param name="sFile">vollständiger Dateiname inkl. Verzeichnis</param>
+' <returns>Boolean</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function ExecuteAsAdmin(ByVal sFile As String) As Boolean
+    ExecuteAsAdmin = Me.Execute(sFile, "runas")
+End Function
+
+'---------------------------------------------------------------------------------------
 ' Function: ShellExecuteSendMail
 '---------------------------------------------------------------------------------------
 '/**
