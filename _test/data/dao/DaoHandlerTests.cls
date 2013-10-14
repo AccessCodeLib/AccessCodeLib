@@ -56,6 +56,10 @@ Private Sub ITestFixture_AddTestCases(ByVal Tests As SimplyVBUnit.TestCaseCollec
 Public Sub Setup()
    Set m_DaoHandler = New DaoHandler
    Set m_DaoHandler.CurrentDb = CurrentDb
+   
+   'DropTestQueryDef
+   'DropTestTable
+   
    CreateTestTable
    InsertRecordsInTestTable
    CreateTestQueryDef
@@ -75,21 +79,21 @@ End Sub
 
 Public Sub Execute_DeleteStatement_EmptyTable()
 
-   Const expected As Long = 0
-   Dim actual As Long
+   Const Expected As Long = 0
+   Dim Actual As Long
    
    m_DaoHandler.Execute DeleteRecordsSQL, dbFailOnError
-   actual = RecordCountInTestTable
+   Actual = RecordCountInTestTable
    
    ' Assert
-   Assert.That actual, Iz.EqualTo(expected)
+   Assert.That Actual, Iz.EqualTo(Expected)
    
 End Sub
 
 Public Sub Execute_InsertRecord_NewRecord()
 
-   Const expected As Long = 0
-   Dim actual As Long
+   Const Expected As Long = 0
+   Dim Actual As Long
    Dim SqlText As String
    Dim RecordCountBeforeInsert As Long
    
@@ -97,74 +101,178 @@ Public Sub Execute_InsertRecord_NewRecord()
    SqlText = FormatString(InsertSqlTemplate, "abc", 123)
    m_DaoHandler.Execute SqlText, dbFailOnError
    
-   actual = RecordCountInTestTable
-   Assert.That actual, Iz.GreaterThan(RecordCountBeforeInsert)
+   Actual = RecordCountInTestTable
+   Assert.That Actual, Iz.GreaterThan(RecordCountBeforeInsert)
    
 End Sub
 
 Public Sub Execute_InsertRecord_RecordsAffectedIs1()
 
-   Const expected As Long = 1
-   Dim actual As Long
+   Const Expected As Long = 1
+   Dim Actual As Long
    Dim SqlText As String
    
    SqlText = FormatString(InsertSqlTemplate, "abc", 123)
-   actual = m_DaoHandler.Execute(SqlText, dbFailOnError)
-   Assert.That actual, Iz.EqualTo(expected)
+   Actual = m_DaoHandler.Execute(SqlText, dbFailOnError)
+   Assert.That Actual, Iz.EqualTo(Expected)
+   
+End Sub
+
+Public Sub ExecuteQueryDef_0Param_CheckInsertedCount()
+   
+   Dim qdf As DAO.QueryDef
+   Dim Actual As Long
+   Const Expected As Long = 1
+   
+   Set qdf = m_DaoHandler.CurrentDb.CreateQueryDef("", FormatString(InsertSqlTemplate, "abc", 123))
+   
+   Actual = m_DaoHandler.ExecuteQueryDef(qdf)
+   
+   Assert.That Actual, Iz.EqualTo(Expected)
+   
+End Sub
+
+
+Public Sub ExecuteQueryDef_2Param_CheckInsertedCount()
+   
+   Dim qdf As DAO.QueryDef
+   Dim Actual As Long
+   Const Expected As Long = 1
+   
+   Set qdf = m_DaoHandler.CurrentDb.CreateQueryDef("", InsertParamSql)
+   
+   Actual = m_DaoHandler.ExecuteQueryDef(qdf, "abc", 123)
+   
+   Assert.That Actual, Iz.EqualTo(Expected)
+   
+End Sub
+
+Public Sub ExecuteQueryDefByName_0Param_CheckInsertedCount()
+   
+   Dim qdf As DAO.QueryDef
+   Dim Actual As Long
+   Const Expected As Long = 1
+   
+   Set qdf = m_DaoHandler.CurrentDb.QueryDefs(TestQueryDefNameInsert)
+   qdf.SQL = FormatString(InsertSqlTemplate, "abc", 123)
+   qdf.Close
+   
+   Actual = m_DaoHandler.ExecuteQueryDefByName(TestQueryDefNameInsert)
+   
+   Assert.That Actual, Iz.EqualTo(Expected)
+   
+End Sub
+
+Public Sub ExecuteQueryDefByName_2Param_CheckInsertedCount()
+   
+   Dim qdf As DAO.QueryDef
+   Dim Actual As Long
+   Const Expected As Long = 1
+   
+   Actual = m_DaoHandler.ExecuteQueryDefByName(TestQueryDefNameInsert, "abc", 123)
+   
+   Assert.That Actual, Iz.EqualTo(Expected)
    
 End Sub
 
 Public Sub ExecuteParamSql_InsertRecord_RecordsAffectedIs1()
 
-   Const expected As Long = 1
-   Dim actual As Long
+   Const Expected As Long = 1
+   Dim Actual As Long
    Dim SqlText As String
    
-   actual = m_DaoHandler.ExecuteParamSQL(InsertParamSql, "abc", 123)
-   Assert.That actual, Iz.EqualTo(expected)
+   Actual = m_DaoHandler.ExecuteParamSQL(InsertParamSql, "abc", 123)
+   Assert.That Actual, Iz.EqualTo(Expected)
    
+End Sub
+
+Public Sub ExecuteQueryDefByName_UseParamArray_CheckAffected()
+
+   Const Expected As Long = 1
+   Dim Actual As Long
+   
+   Actual = m_DaoHandler.ExecuteQueryDefByName(TestQueryDefNameInsert, "abc", 123)
+   Assert.That Actual, Iz.EqualTo(Expected)
+
+End Sub
+
+Public Sub ExecuteQueryDefByName_UseGetParamDefArray_CheckAffected()
+
+   Const Expected As Long = 1
+   Dim Actual As Long
+   
+   Actual = m_DaoHandler.ExecuteQueryDefByName(TestQueryDefNameInsert, m_DaoHandler.GetParamDefArray("abc", 123))
+   Assert.That Actual, Iz.EqualTo(Expected)
+
+End Sub
+
+Public Sub ExecuteQueryDefByName_UseGetNamedParamDefArray_CheckAffected()
+
+   Const Expected As Long = 1
+   Dim Actual As Long
+   
+   Actual = m_DaoHandler.ExecuteQueryDefByName(TestQueryDefNameInsert, m_DaoHandler.GetNamedParamDefArray("P1", "abc", "P2", 123))
+   Assert.That Actual, Iz.EqualTo(Expected)
+
 End Sub
 
 'AccUnit:Row("ID", 2, 2)
 'AccUnit:Row("T", 2, "b")
 'AccUnit:Row("Z", 2, 2)
-Public Sub OpenRecordset_FilterRecordWithID_ReturnFieldValues(ByVal FieldName As String, ByVal Id As Long, ByVal expected As Variant)
+Public Sub OpenRecordset_FilterRecordWithID_ReturnFieldValues(ByVal FieldName As String, ByVal Id As Long, ByVal Expected As Variant)
    
    
-   Dim actual As Variant
+   Dim Actual As Variant
    Dim rst As DAO.Recordset
 
    Set rst = m_DaoHandler.OpenRecordset(FormatString(SelectSqlTemplate, Id))
-   actual = rst.Fields(FieldName).Value
+   Actual = rst.Fields(FieldName).Value
    rst.Close
    
-   Assert.That actual, Iz.EqualTo(expected)
+   Assert.That Actual, Iz.EqualTo(Expected)
    
 End Sub
 
 'AccUnit:Row("ID", 2, 2)
 'AccUnit:Row("T", 2, "b")
 'AccUnit:Row("Z", 2, 2)
-Public Sub OpenRecordsetParamSQL_FilterRecordWithID_ReturnFieldValues(ByVal FieldName As String, ByVal Id As Long, ByVal expected As Variant)
+Public Sub OpenRecordsetParamSQL_FilterRecordWithID_ReturnFieldValues(ByVal FieldName As String, ByVal Id As Long, ByVal Expected As Variant)
    
    Const SelectSql As String = "Parameters [FilterId] long; select ID, T, Z from " & TestTableName & " where ID=[FilterId]"
-   Dim actual As Variant
+   Dim Actual As Variant
    Dim rst As DAO.Recordset
 
    Set rst = m_DaoHandler.OpenRecordsetParamSQL(SelectSql, dbOpenForwardOnly, dbFailOnError, dbOptimistic, Id)
-   actual = rst.Fields(FieldName).Value
+   Actual = rst.Fields(FieldName).Value
    rst.Close
    
-   Assert.That actual, Iz.EqualTo(expected)
+   Assert.That Actual, Iz.EqualTo(Expected)
    
 End Sub
 
 'AccUnit:Row("ID", 2, 2)
 'AccUnit:Row("T", 2, "b")
 'AccUnit:Row("Z", 2, 2)
-Public Sub OpenRecordsetQueryDefByName_FilterRecordWithID_ReturnFieldValues(ByVal FieldName As String, ByVal Id As Long, ByVal expected As Variant)
+Public Sub OpenRecordsetParamSQL2_FilterRecordWithID_ReturnFieldValues(ByVal FieldName As String, ByVal Id As Long, ByVal Expected As Variant)
    
-   Dim actual As Variant
+   Const SelectSql As String = "Parameters [FilterId] long; select ID, T, Z from " & TestTableName & " where ID=[FilterId]"
+   Dim Actual As Variant
+   Dim rst As DAO.Recordset
+
+   Set rst = m_DaoHandler.OpenRecordsetParamSQL2(SelectSql, Id)
+   Actual = rst.Fields(FieldName).Value
+   rst.Close
+   
+   Assert.That Actual, Iz.EqualTo(Expected)
+   
+End Sub
+
+'AccUnit:Row("ID", 2, 2)
+'AccUnit:Row("T", 2, "b")
+'AccUnit:Row("Z", 2, 2)
+Public Sub OpenRecordsetQueryDefByName_FilterRecordWithID_ReturnFieldValues(ByVal FieldName As String, ByVal Id As Long, ByVal Expected As Variant)
+   
+   Dim Actual As Variant
    Dim rst As DAO.Recordset
    
    Dim QdfParamDefs(0, 1) As Variant
@@ -173,13 +281,12 @@ Public Sub OpenRecordsetQueryDefByName_FilterRecordWithID_ReturnFieldValues(ByVa
    QdfParamDefs(0, 1) = Id
 
    Set rst = m_DaoHandler.OpenRecordsetQueryDefByName(TestQueryDefNameSelect, QdfParamDefs, dbOpenForwardOnly, dbFailOnError, dbOptimistic)
-   actual = rst.Fields(FieldName).Value
+   Actual = rst.Fields(FieldName).Value
    rst.Close
    
-   Assert.That actual, Iz.EqualTo(expected)
+   Assert.That Actual, Iz.EqualTo(Expected)
    
 End Sub
-
 
 'AccUnit:Row("ID", 2, 2)
 'AccUnit:Row("T", 2, "b")
@@ -189,13 +296,13 @@ End Sub
 'AccUnit:Row(2, 2, 2)
 Public Sub DLookupSQL_FilterRecordWithID_ReturnValuesFromFieldIndex(ByVal FieldIndex As Variant, _
                                                                     ByVal Id As Long, _
-                                                                    ByVal expected As Variant)
+                                                                    ByVal Expected As Variant)
 
    Const SelectDDLTemplate As String = "select ID, T, Z from " & TestTableName & " where ID={0}"
-   Dim actual As Variant
+   Dim Actual As Variant
    
-   actual = m_DaoHandler.LookupSQL(FormatString(SelectDDLTemplate, Id), FieldIndex)
-   Assert.That actual, Iz.EqualTo(expected)
+   Actual = m_DaoHandler.LookupSQL(FormatString(SelectDDLTemplate, Id), FieldIndex)
+   Assert.That Actual, Iz.EqualTo(Expected)
    
 End Sub
 
@@ -204,34 +311,34 @@ End Sub
 'AccUnit:Row("Z", 2, 2)
 Public Sub Lookup_FilterRecordWithID_ReturnValuesFromFieldIndex(ByVal FieldName As Variant, _
                                                                 ByVal Id As Long, _
-                                                                ByVal expected As Variant)
-   Dim actual As Variant
-   actual = m_DaoHandler.Lookup(FieldName, TestTableName, FormatString("ID={0}", Id))
-   Assert.That actual, Iz.EqualTo(expected)
+                                                                ByVal Expected As Variant)
+   Dim Actual As Variant
+   Actual = m_DaoHandler.Lookup(FieldName, TestTableName, FormatString("ID={0}", Id))
+   Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 'AccUnit:Row("=", 2, 1)
 'AccUnit:Row("=", 0, 0)
 'AccUnit:Row("<=", 2 , 2)
-Public Sub Count_FilterRecordWithID_ReturnCount(ByVal Expr As String, ByVal Id As Long, ByVal expected As Long)
-   Dim actual As Variant
-   actual = m_DaoHandler.Count("*", TestTableName, FormatString("ID{0}{1}", Expr, Id))
-   Assert.That actual, Iz.EqualTo(expected)
+Public Sub Count_FilterRecordWithID_ReturnCount(ByVal Expr As String, ByVal Id As Long, ByVal Expected As Long)
+   Dim Actual As Variant
+   Actual = m_DaoHandler.Count("*", TestTableName, FormatString("ID{0}{1}", Expr, Id))
+   Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 'AccUnit:Row("=", 2, 2)
 'AccUnit:Row("=", 0, Null)
 'AccUnit:Row("<=", 2 , 2)
 'AccUnit:Row(">=", 2 , 5)
-Public Sub Max_FilterRecordWithID_ReturnMaxZ(ByVal Expr As String, ByVal Id As Long, ByVal expected As Variant)
+Public Sub Max_FilterRecordWithID_ReturnMaxZ(ByVal Expr As String, ByVal Id As Long, ByVal Expected As Variant)
 
-   Dim actual As Variant
-   actual = m_DaoHandler.Max("Z", TestTableName, FormatString("ID{0}{1}", Expr, Id))
+   Dim Actual As Variant
+   Actual = m_DaoHandler.Max("Z", TestTableName, FormatString("ID{0}{1}", Expr, Id))
    
-   If IsNull(expected) Then
-      Assert.IsNull actual
+   If IsNull(Expected) Then
+      Assert.IsNull Actual
    Else
-      Assert.AreEqual expected, actual
+      Assert.AreEqual Expected, Actual
    End If
    
 End Sub
@@ -240,15 +347,15 @@ End Sub
 'AccUnit:Row("=", 0, Null)
 'AccUnit:Row("<=", 2 , 1)
 'AccUnit:Row(">=", 2 , 2)
-Public Sub Min_FilterRecordWithID_ReturnMinZ(ByVal Expr As String, ByVal Id As Long, ByVal expected As Variant)
+Public Sub Min_FilterRecordWithID_ReturnMinZ(ByVal Expr As String, ByVal Id As Long, ByVal Expected As Variant)
 
-   Dim actual As Variant
-   actual = m_DaoHandler.Min("Z", TestTableName, FormatString("ID{0}{1}", Expr, Id))
+   Dim Actual As Variant
+   Actual = m_DaoHandler.Min("Z", TestTableName, FormatString("ID{0}{1}", Expr, Id))
    
-   If IsNull(expected) Then
-      Assert.IsNull actual
+   If IsNull(Expected) Then
+      Assert.IsNull Actual
    Else
-      Assert.AreEqual expected, actual
+      Assert.AreEqual Expected, Actual
    End If
    
 End Sub
@@ -257,15 +364,15 @@ End Sub
 'AccUnit:Row("=", 0, Null)
 'AccUnit:Row("<=", 2 , 3)
 'AccUnit:Row(">=", 2 , 14)
-Public Sub Sum_FilterRecordWithID_ReturnSumZ(ByVal Expr As String, ByVal Id As Long, ByVal expected As Variant)
+Public Sub Sum_FilterRecordWithID_ReturnSumZ(ByVal Expr As String, ByVal Id As Long, ByVal Expected As Variant)
 
-   Dim actual As Variant
-   actual = m_DaoHandler.Sum("Z", TestTableName, FormatString("ID{0}{1}", Expr, Id))
+   Dim Actual As Variant
+   Actual = m_DaoHandler.Sum("Z", TestTableName, FormatString("ID{0}{1}", Expr, Id))
    
-   If IsNull(expected) Then
-      Assert.IsNull actual
+   If IsNull(Expected) Then
+      Assert.IsNull Actual
    Else
-      Assert.AreEqual expected, actual
+      Assert.AreEqual Expected, Actual
    End If
    
 End Sub
@@ -273,19 +380,173 @@ End Sub
 Public Sub InsertIdentityReturn_InsertNewRecord_ReturnIdentityFromNewRecord()
 
    Const NewZ As Long = 999
-   Dim actual As Long
-   Dim expected As Long
+   Dim Actual As Long
+   Dim Expected As Long
    
-   actual = m_DaoHandler.InsertIdentityReturn(FormatString(InsertSqlTemplate, "ABC", NewZ))
-   expected = Nz(DLookup("ID", TestTableName, "Z=" & NewZ), 0)
-   Assert.AreEqual expected, actual
+   Actual = m_DaoHandler.InsertIdentityReturn(FormatString(InsertSqlTemplate, "ABC", NewZ))
+   Expected = Nz(DLookup("ID", TestTableName, "Z=" & NewZ), 0)
+   Assert.AreEqual Expected, Actual
    
 End Sub
 
+Public Sub CreateParamDefArray_Use4ParamArrays_CheckArray()
+
+   Dim Actual() As Variant
+   Dim Expected(3, 1) As Variant
+   Dim i As Long
+   
+   For i = 0 To 3
+      Expected(i, 0) = i
+      Expected(i, 1) = i * 2 + 1
+   Next
+   
+   Actual = m_DaoHandler.GetParamDefArray(1, 3, 5, 7)
+   
+   Assert.AreEqual Expected, Actual
+
+End Sub
+
+'AccUnit:Row(4)
+'AccUnit:Row(1)
+'AccUnit:Row(0)
+Public Sub GetParamDefArray_UseArray_CheckArray(ByVal ParamCount As Long)
+   
+   Dim Actual() As Variant
+   Dim Expected() As Variant
+   Dim Params() As Variant
+   Dim i As Long
+   Dim ArraySize As Long
+   
+   If ParamCount = 0 Then
+      Actual = m_DaoHandler.GetParamDefArray()
+   Else
+   
+      ArraySize = ParamCount - 1
+      ReDim Expected(ArraySize, 1)
+      ReDim Params(ArraySize)
+   
+      For i = 0 To ArraySize
+         Params(i) = i * 2 + 1
+         Expected(i, 0) = i
+         Expected(i, 1) = Params(i)
+      Next
+   
+      Actual = m_DaoHandler.GetParamDefArray(Params)
+   
+   End If
+   
+   Assert.AreEqual Expected, Actual
+
+End Sub
+
+Public Sub GetNamedParamDefArray_With2ParamPairs_CheckArray()
+
+   Dim Actual() As Variant
+   Dim Expected(1, 1) As Variant
+   Dim i As Long
+   
+   For i = 0 To 1
+      Expected(i, 0) = Chr(Asc("a") + i)
+      Expected(i, 1) = i * 2 + 1
+   Next
+   
+   Actual = m_DaoHandler.GetNamedParamDefArray("a", 1, "b", 3)
+   
+   Assert.AreEqual Expected, Actual
+
+End Sub
+
+Public Sub GetNamedParamDefArray_WithWrongParamPair_ExpectedRaiseError()
+
+   Dim Actual() As Variant
+
+   Assert.Throws vbObjectError, "DaoHandler.GetNamedParamDefArray", "ParamArray muss immer Paare für Parameter-Index und Parameter-Wert enthalten."
+   Actual = m_DaoHandler.GetNamedParamDefArray("a")
+   
+End Sub
+
+Public Sub GetNamedParamDefArray_WithWrongParamPair2_ExpectedRaiseError()
+
+   Dim Actual() As Variant
+
+   Assert.Throws vbObjectError, "DaoHandler.GetNamedParamDefArray", "ParamArray muss immer Paare für Parameter-Index und Parameter-Wert enthalten."
+   Actual = m_DaoHandler.GetNamedParamDefArray("a", 1, "b")
+   
+End Sub
+
+'AccUnit:Row(0, 0, 0, 0)
+'AccUnit:Row(0, 4, 0, 0) 'dbReadOnly = 4
+'AccUnit:Row(0, 0, 4, 3001) 'dbReadOnly = 4
+'AccUnit:Row(0, 4, 1, 3001) 'dbReadOnly = 4, dbOptimisticValue = 1
+'AccUnit:Row(0, 4, 2, 3001) 'dbReadOnly = 4, dbPessimistic = 2
+'AccUnit:Row(0, 4, 3, 3001) 'dbReadOnly = 4, dbOptimistic = 3
+'AccUnit:Row(0, 4, 4, 3001) 'dbReadOnly = 4, dbReadOnly = 4
+'AccUnit:Row(0, 4, 5, 3001) 'dbReadOnly = 4, dbOptimisticBatch = 5
+Public Sub OpenRecordset_EnumValues_CheckErrNumber(ByVal RecordsetTyp As Long, ByVal RecordsetOptions As Long, LockEdit As Long, _
+                                                             ByVal ExpectedErrorNumber As Long)
+
+   Dim rst As DAO.Recordset
+   
+   If ExpectedErrorNumber <> 0 Then
+      Assert.Throws ExpectedErrorNumber
+   End If
+   
+   Set rst = m_DaoHandler.OpenRecordset("select * from " & TestTableName, RecordsetTyp, RecordsetOptions, LockEdit)
+   rst.Close
+
+End Sub
+
+'AccUnit:Row(0, 0, 0)
+'AccUnit:Row(0, 4, 0) 'dbReadOnly = 4
+'AccUnit:Row(0, 0, 4) 'dbReadOnly = 4
+'AccUnit:Row(0, 4, 1) 'dbReadOnly = 4, dbOptimisticValue = 1
+'AccUnit:Row(0, 4, 2) 'dbReadOnly = 4, dbPessimistic = 2
+'AccUnit:Row(0, 4, 3) 'dbReadOnly = 4, dbOptimistic = 3
+'AccUnit:Row(0, 4, 4) 'dbReadOnly = 4, dbOptimistic = 4
+'AccUnit:Row(0, 4, 5) 'dbReadOnly = 4, dbOptimisticBatch = 5
+Public Sub OpenRecordset_EnumValues_ErrorLikeDaoOpenRecordset(ByVal RecordsetTyp As Long, ByVal RecordsetOptions As Long, ByVal LockEdit As Long)
+
+   Dim rst As DAO.Recordset
+   Dim Actual As Boolean
+   Const Expected As Boolean = False
+   
+   Dim ExpectedErrorNumber As Long
+   
+   On Error Resume Next
+   Set rst = CurrentDb.OpenRecordset("select * from " & TestTableName, Replace0WithIsMissing(RecordsetTyp), Replace0WithIsMissing(RecordsetOptions), Replace0WithIsMissing(LockEdit))
+   
+   If Err.Number <> 0 Then
+      ExpectedErrorNumber = Err.Number
+   Else
+      rst.Close
+   End If
+   
+   On Error GoTo 0
+   
+   If ExpectedErrorNumber <> 0 Then
+      Assert.Throws ExpectedErrorNumber
+   End If
+   
+   Set rst = m_DaoHandler.OpenRecordset("select * from " & TestTableName, RecordsetTyp, RecordsetOptions, LockEdit)
+   rst.Close
+
+End Sub
 
 '--------------------------------------------------------------------
 ' Test support
 '--------------------------------------------------------------------
+
+Private Function Replace0WithIsMissing(ByVal CheckValue As Long) As Variant
+   If CheckValue = 0 Then
+      Replace0WithIsMissing = GetIsMissing()
+   Else
+      Replace0WithIsMissing = CheckValue
+   End If
+End Function
+
+Private Function GetIsMissing(Optional DoNotFillThisParam As Variant) As Variant
+   GetIsMissing = DoNotFillThisParam
+End Function
 
 Private Sub CreateTestTable()
 On Error GoTo HandleErr
@@ -301,7 +562,7 @@ HandleErr:
          DropTestTable
          Resume
       Case Else
-         Err.Raise Err.Number, "CreateTestTable:" & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
+         Err.Raise Err.Number, "CreateTestTable:" & Err.source, Err.Description, Err.HelpFile, Err.HelpContext
    End Select
 End Sub
 
