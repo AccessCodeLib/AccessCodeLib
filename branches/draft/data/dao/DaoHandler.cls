@@ -157,7 +157,7 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Function Execute(ByVal Query As String, _
-          Optional ByVal Options As DAO.RecordsetOptionEnum) As Long
+               Optional ByVal Options As DAO.RecordsetOptionEnum) As Long
 
     If (Options And dbSeeChanges) = 0 Then
         Options = Options + dbSeeChanges
@@ -176,23 +176,28 @@ End Function
 ' </summary>
 ' <param name="SqlText">SQL-Anweisung</param>
 ' <param name="ParamValues">Parmeterwerte in passender Reihenfolge</param>
+' <param name="QueryParams">
+'  Werte in passender Reihenfolge als ParamArray oder als Array <br/>
+'  oder<br/>
+'  2-dimensionales Parameter-Array (Array(n,1) ... x(n,0) = Parametername, x(n,1) = Parameterwert) ... erzeugbar mit GetParamDefArray oder GetNamedParamDefArray
+' </param>
 ' <returns>Long (Anzahl der betroffenen Datensätze)</returns>
 ' <remarks>
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
 Public Function ExecuteParamSQL(ByVal SqlText As String, _
-                           ParamArray ParamValues() As Variant) As Long
+                           ParamArray QueryParams() As Variant) As Long
  
    Dim qdf As DAO.QueryDef
 
 On Error GoTo HandleErr
    
    Set qdf = Me.CurrentDb.CreateQueryDef("", SqlText)
-   If IsMissing(ParamValues) Then
+   If IsMissing(QueryParams) Then
       ExecuteParamSQL = ExecuteQueryDef(qdf)
    Else
-      ExecuteParamSQL = ExecuteQueryDef(qdf, ParamValues)
+      ExecuteParamSQL = ExecuteQueryDef(qdf, QueryParams)
    End If
 
 On Error GoTo 0
@@ -220,26 +225,29 @@ End Function
 ' Gespeicherte Abfrage (optional mit Parametern) ausführen
 ' </summary>
 ' <param name="QueryName">Name der gespeicherten Abfrage (QueryDef)</param>
-' <param name="QueryParamDefs">2-dimensionales Parameter-Array (Array(n,1) ... x(n,0) = Parametername, x(n,1) = Parameterwert)</param>
+' <param name="QueryParams">
+'  Werte in passender Reihenfolge als ParamArray oder als Array <br/>
+'  oder<br/>
+'  2-dimensionales Parameter-Array (Array(n,1) ... x(n,0) = Parametername, x(n,1) = Parameterwert) ... erzeugbar mit GetParamDefArray oder GetNamedParamDefArray
+' </param>
 ' <returns>Long (Anzahl der betroffenen Datensätze)</returns>
 ' <remarks>
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
 Public Function ExecuteQueryDefByName(ByVal QueryName As String, _
-                                 ParamArray ParamDefArray() As Variant) As Long
+                                 ParamArray QueryParams() As Variant) As Long
    
    Dim qdf As DAO.QueryDef
-   Dim QdfParamDefs As Variant
  
 On Error GoTo HandleErr
  
    Set qdf = Me.CurrentDb.QueryDefs(QueryName)
    
-   If IsMissing(ParamDefArray) Then
+   If IsMissing(QueryParams) Then
       ExecuteQueryDefByName = ExecuteQueryDef(qdf)
    Else
-      ExecuteQueryDefByName = ExecuteQueryDef(qdf, ParamDefArray)
+      ExecuteQueryDefByName = ExecuteQueryDef(qdf, QueryParams)
    End If
 
 On Error GoTo 0
@@ -267,8 +275,10 @@ End Function
 ' Gespeicherte Abfrage (optional mit Parametern) ausführen
 ' </summary>
 ' <param name="Qdf">QueryDef-Referenz</param>
-' <param name="QueryParamDefs">
-'  2-dimensionales Parameter-Array (Array(n,1) ... x(n,0) = Parametername, x(n,1) = Parameterwert)
+' <param name="QueryParams">
+'  Werte in passender Reihenfolge als ParamArray oder als Array <br/>
+'  oder<br/>
+'  2-dimensionales Parameter-Array (Array(n,1) ... x(n,0) = Parametername, x(n,1) = Parameterwert) ... erzeugbar mit GetParamDefArray oder GetNamedParamDefArray
 ' </param>
 ' <returns>Long (Anzahl der betroffenen Datensätze)</returns>
 ' <remarks>
@@ -276,15 +286,15 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function ExecuteQueryDef(ByVal qdf As DAO.QueryDef, _
-                       ParamArray ParamDefArray() As Variant) As Long
+                       ParamArray QueryParams() As Variant) As Long
  
    Dim QdfParamDefs() As Variant
    Dim ParamDefsArraySize As Long
    Dim ParamIndex As Variant
    Dim i As Long
    
-   If Not IsMissing(ParamDefArray) Then
-      QdfParamDefs = GetParamDefArray(ParamDefArray)
+   If Not IsMissing(QueryParams) Then
+      QdfParamDefs = GetParamDefArray(QueryParams)
       FillQueryDefParameters qdf, QdfParamDefs
    End If
    
@@ -368,7 +378,11 @@ End Function
 ' <param name="RecordsetType">DAO.RecordsetTypeEnum (Standard: dbOpenDynaset)</param>
 ' <param name="RecordsetOptions">DAO.RecordsetOptionEnum (Standard: dbSeeChanges)</param>
 ' <param name="LockEdit">DAO.LockTypeEnum (Standard: dbOptimistic)</param>
-' <param name="ParamValues">Parmeterwerte in passender Reihenfolge</param>
+' <param name="QueryParams">
+'  Werte in passender Reihenfolge als ParamArray oder als Array <br/>
+'  oder<br/>
+'  2-dimensionales Parameter-Array (Array(n,1) ... x(n,0) = Parametername, x(n,1) = Parameterwert) ... erzeugbar mit GetParamDefArray oder GetNamedParamDefArray
+' </param>
 ' <returns>DAO.Recordset</returns>
 ' <remarks></remarks>
 '**/
@@ -377,12 +391,12 @@ Public Function OpenRecordsetParamSQL(ByVal ParamSqlText As String, _
                      ByVal RecordsetType As DAO.RecordsetTypeEnum, _
                      ByVal Options As DAO.RecordsetOptionEnum, _
                      ByVal LockEdit As DAO.LockTypeEnum, _
-                     ParamArray ParamValues() As Variant) As DAO.Recordset
+                     ParamArray QueryParams() As Variant) As DAO.Recordset
 
    Dim qdf As DAO.QueryDef
    Dim QdfParamDefs As Variant '
    
-   QdfParamDefs = GetParamDefArray(ParamValues)
+   QdfParamDefs = GetParamDefArray(QueryParams)
    
 On Error GoTo HandleErr
    
@@ -414,17 +428,21 @@ End Function
 ' Parameter-SQL-Anweisung öffnen (wie OpenRecordsetParamSQL, nur mit Standardwerten für RecordsetType, RecordsetOptions u. LockEdit)
 ' </summary>
 ' <param name="ParamSqlText">SQL-Anweisung mit Parameter (Parameters-Deklaration)</param>
-' <param name="ParamValues">Parmeterwerte in passender Reihenfolge</param>
+' <param name="QueryParams">
+'  Werte in passender Reihenfolge als ParamArray oder als Array <br/>
+'  oder<br/>
+'  2-dimensionales Parameter-Array (Array(n,1) ... x(n,0) = Parametername, x(n,1) = Parameterwert) ... erzeugbar mit GetParamDefArray oder GetNamedParamDefArray
+' </param>
 ' <returns>DAO.Recordset</returns>
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
 Public Function OpenRecordsetParamSQL2(ByVal ParamSqlText As String, _
-                                       ParamArray ParamValues() As Variant) As DAO.Recordset
+                                       ParamArray QueryParams() As Variant) As DAO.Recordset
 
    Set OpenRecordsetParamSQL2 = OpenRecordsetParamSQL(ParamSqlText, _
                                                       m_RecordsetTypeEnumDefault, m_RecordsetOptionEnumDefault, m_LockTypeEnumDefault, _
-                                                      ParamValues)
+                                                      QueryParams)
 
 End Function
 
@@ -493,9 +511,8 @@ Public Function GetParamDefArray(ParamArray ParamValues() As Variant) As Variant
    
 End Function
 
-
 Private Function ArrayDimensionCount(ByRef ArrayToCheck As Variant) As Integer
-' siehe http://msdn.microsoft.com/de-de/library/bb978902.aspx .. Funktioniert nciht, wenn Array in Variant eingebettet ist
+' siehe http://msdn.microsoft.com/de-de/library/bb978902.aspx .. Funktioniert nicht, wenn Array in Variant eingebettet ist
 
 '   Dim lngCnt As Integer
 '   Dim lpSADescriptor As Long, lpSafeArray As Long
@@ -518,7 +535,6 @@ Private Function ArrayDimensionCount(ByRef ArrayToCheck As Variant) As Integer
 '   End If
 '
 '   ArrayDimensionCount = lngCnt
-   
    
    Dim ArraySize As Long
    Dim DimCnt As Long
@@ -545,26 +561,6 @@ On Error GoTo 0
    ArrayDimensionCount = DimCnt
    
 End Function
-''
-'Public Function ArrayDimensionCount(ByRef vArray As Variant) As Integer
-'
-'  Dim DimCount As Integer
-'
-'  DimCount = -1
-'  If IsArray(vArray) Then
-'    Dim vPtr As Long
-'
-'    DimCount = 0
-'    vPtr = VarPtr(vArray) + 8
-'    CopyMemory vPtr, ByVal vPtr, 4
-'    CopyMemory vPtr, ByVal vPtr, 4
-'    If vPtr Then CopyMemory DimCount, ByVal vPtr, 2
-'
-'  End If
-'
-'  ArrayDimensionCount = DimCount
-'
-'End Function
 
 '---------------------------------------------------------------------------------------
 ' Function: GetNamedParamDefArray
@@ -616,7 +612,7 @@ End Function
 ' Recordset von gespeicherter Abfrage (optional mit Parametern) öffnen
 ' </summary>
 ' <param name="QueryName">Name der gespeicherten Abfrage (QueryDef)</param>
-' <param name="QueryParamDefs">2-dimensionales Parameter-Array (Array(n,1) ... x(n,0) = Parametername, x(n,1) = Parameterwert)</param>
+' <param name="QueryParams">2-dimensionales Parameter-Array (Array(n,1) ... x(n,0) = Parametername, x(n,1) = Parameterwert)</param>
 ' <param name="RecordsetType">DAO.RecordsetTypeEnum (Standard: dbOpenDynaset)</param>
 ' <param name="RecordsetOptions">DAO.RecordsetOptionEnum (Standard: dbSeeChanges)</param>
 ' <param name="LockEdit">DAO.LockTypeEnum (Standard: dbOptimistic)</param>
@@ -626,7 +622,7 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function OpenRecordsetQueryDefByName(ByVal QueryName As String, _
-                             Optional ByVal QueryParamDefs As Variant, _
+                             Optional ByVal QueryParams As Variant, _
                              Optional ByVal RecordsetType As DAO.RecordsetTypeEnum, _
                              Optional ByVal Options As DAO.RecordsetOptionEnum, _
                              Optional ByVal LockEdit As DAO.LockTypeEnum) As DAO.Recordset
@@ -637,7 +633,7 @@ Public Function OpenRecordsetQueryDefByName(ByVal QueryName As String, _
 On Error GoTo HandleErr
  
    Set qdf = Me.CurrentDb.QueryDefs(QueryName)
-   Set OpenRecordsetQueryDefByName = OpenRecordsetQueryDef(qdf, QueryParamDefs, RecordsetType, Options, LockEdit)
+   Set OpenRecordsetQueryDefByName = OpenRecordsetQueryDef(qdf, QueryParams, RecordsetType, Options, LockEdit)
 
 On Error GoTo 0
 
@@ -664,7 +660,7 @@ End Function
 ' Recordset von gespeicherter Abfrage (optional mit Parametern) öffnen
 ' </summary>
 ' <param name="Qdf">QueryDef-Referenz</param>
-' <param name="QueryParamDefs">2-dimensionales Parameter-Array (Array(n,1) ... x(n,0) = Parametername, x(n,1) = Parameterwert)</param>
+' <param name="QueryParams">2-dimensionales Parameter-Array (Array(n,1) ... x(n,0) = Parametername, x(n,1) = Parameterwert)</param>
 ' <param name="RecordsetType">DAO.RecordsetTypeEnum (Standard: dbOpenDynaset)</param>
 ' <param name="RecordsetOptions">DAO.RecordsetOptionEnum (Standard: dbSeeChanges)</param>
 ' <param name="LockEdit">DAO.LockTypeEnum (Standard: dbOptimistic)</param>
