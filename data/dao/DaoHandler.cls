@@ -56,11 +56,9 @@ Public Event ErrorMissingCurrentDb(ByVal Msg As String, ByRef NewCurrentDbRef As
 ' Init / Terminate
 ' ----------------
 '
-Private Sub Class_Initialize()
-   If Me Is DaoHandler Then
-      Set Me.CurrentDb = Application.CurrentDb
-   End If
-End Sub
+'Private Sub Class_Initialize()
+''
+'End Sub
 
 Private Sub Class_Terminate()
    Dispose
@@ -68,6 +66,9 @@ End Sub
 
 Public Sub Dispose()
    Set m_DaoDb = Nothing
+   m_RecordsetTypeEnumDefault = 0
+   m_RecordsetOptionEnumDefault = 0
+   m_LockTypeEnumDefault = 0
 End Sub
 
 '---------------------------------------------------------------------------------------
