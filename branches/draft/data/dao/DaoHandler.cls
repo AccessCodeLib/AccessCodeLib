@@ -30,7 +30,7 @@ Attribute VB_Exposed = False
 Option Compare Text
 Option Explicit
 
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (dest As Any, source As Any, ByVal bytes As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (dest As Any, Source As Any, ByVal bytes As Long)
 
 'DAO-Database
 Private m_DaoDb As DAO.Database
@@ -192,13 +192,14 @@ Public Function ExecuteParamSQL(ByVal SqlText As String, _
    Dim qdf As DAO.QueryDef
 
 On Error GoTo HandleErr
-   
-   Set qdf = Me.CurrentDb.CreateQueryDef("", SqlText)
+
    If IsMissing(QueryParams) Then
-      ExecuteParamSQL = ExecuteQueryDef(qdf)
+      Set qdf = Me.ParamQueryDefSql(SqlText)
    Else
-      ExecuteParamSQL = ExecuteQueryDef(qdf, QueryParams)
+      Set qdf = Me.ParamQueryDefSql(SqlText, QueryParams)
    End If
+   
+   ExecuteParamSQL = ExecuteQueryDef(qdf)
 
 On Error GoTo 0
 
@@ -213,7 +214,7 @@ HandleErr:
       qdf.Close
       Set qdf = Nothing
    End If
-   Err.Raise Err.Number, "ExecuteParamSQL:" & Err.source, Err.Description, Err.HelpFile, Err.HelpContext
+   Err.Raise Err.Number, "ExecuteParamSQL:" & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
  
 End Function
 
@@ -242,13 +243,13 @@ Public Function ExecuteQueryDefByName(ByVal QueryName As String, _
  
 On Error GoTo HandleErr
  
-   Set qdf = Me.CurrentDb.QueryDefs(QueryName)
-   
    If IsMissing(QueryParams) Then
-      ExecuteQueryDefByName = ExecuteQueryDef(qdf)
+      Set qdf = Me.ParamQueryDefByName(QueryName)
    Else
-      ExecuteQueryDefByName = ExecuteQueryDef(qdf, QueryParams)
+      Set qdf = Me.ParamQueryDefByName(QueryName, QueryParams)
    End If
+
+   ExecuteQueryDefByName = ExecuteQueryDef(qdf)
 
 On Error GoTo 0
 
@@ -263,16 +264,16 @@ HandleErr:
       qdf.Close
       Set qdf = Nothing
    End If
-   Err.Raise Err.Number, "ExecuteParamQdfByName:" & Err.source, Err.Description, Err.HelpFile, Err.HelpContext
+   Err.Raise Err.Number, "ExecuteParamQdfByName:" & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
  
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: ExecuteQueryDefByName
+' Function: ExecuteQueryDef
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' Gespeicherte Abfrage (optional mit Parametern) ausführen
+' QueryDef-Objekt mit Parameterwerten befüllen und anschließend ausführen
 ' </summary>
 ' <param name="Qdf">QueryDef-Referenz</param>
 ' <param name="QueryParams">
@@ -324,6 +325,73 @@ Private Sub FillQueryDefParameters(ByVal qdf As DAO.QueryDef, ByVal QdfParamDefs
 End Sub
 
 '---------------------------------------------------------------------------------------
+' Function: ParamQueryDefByName
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Gespeicherte Abfrage als QueryDef-Objekt ink. übergebenen Parameterwerten öffnen
+' </summary>
+' <param name="QueryName">QueryDef-Name</param>
+' <param name="QueryParams">
+'  Werte in passender Reihenfolge als ParamArray oder als Array <br/>
+'  oder<br/>
+'  2-dimensionales Parameter-Array (Array(n,1) ... x(n,0) = Parametername, x(n,1) = Parameterwert) ... erzeugbar mit GetParamDefArray oder GetNamedParamDefArray
+' </param>
+' <returns>DAO.QueryDef</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function ParamQueryDefByName(ByVal QueryName As String, ParamArray QueryParams() As Variant) As DAO.QueryDef
+
+   Dim qdf As DAO.QueryDef
+   Dim QdfParamDefs() As Variant
+ 
+   Set qdf = Me.CurrentDb.QueryDefs(QueryName)
+   If Not IsMissing(QueryParams) Then
+      QdfParamDefs = GetParamDefArray(QueryParams)
+      FillQueryDefParameters qdf, QdfParamDefs
+   End If
+   
+   Set ParamQueryDefByName = qdf
+
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: ParamQueryDefSql
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Temporäres QueryDef-Objekt ink. übergebenen Parameterwerten öffnen
+' </summary>
+' <param name="ParamSqlText">SQL-Anweisung für das temporäre QueryDef-Objekt</param>
+' <param name="QueryParams">
+'  Werte in passender Reihenfolge als ParamArray oder als Array <br/>
+'  oder<br/>
+'  2-dimensionales Parameter-Array (Array(n,1) ... x(n,0) = Parametername, x(n,1) = Parameterwert) ... erzeugbar mit GetParamDefArray oder GetNamedParamDefArray
+' </param>
+' <returns>DAO.QueryDef</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function ParamQueryDefSql(ByVal ParamSqlText As String, ParamArray QueryParams() As Variant) As DAO.QueryDef
+
+   Dim qdf As DAO.QueryDef
+   Dim QdfParamDefs() As Variant
+
+   Set qdf = Me.CurrentDb.CreateQueryDef("", ParamSqlText)
+   If Not IsMissing(QueryParams) Then
+      QdfParamDefs = GetParamDefArray(QueryParams)
+      FillQueryDefParameters qdf, QdfParamDefs
+   End If
+   
+   Set ParamQueryDefSql = qdf
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
 ' Function: OpenRecordset
 '---------------------------------------------------------------------------------------
 '/**
@@ -338,7 +406,7 @@ End Sub
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function OpenRecordset(ByVal source As String, _
+Public Function OpenRecordset(ByVal Source As String, _
                      Optional ByVal RecordsetType As DAO.RecordsetTypeEnum = dbOpenDynaset, _
                      Optional ByVal RecordsetOptions As DAO.RecordsetOptionEnum = DAO.RecordsetOptionEnum.dbSeeChanges, _
                      Optional ByVal LockEdit As DAO.LockTypeEnum) As DAO.Recordset
@@ -348,7 +416,7 @@ Public Function OpenRecordset(ByVal source As String, _
    End If
    
    ' Replace0WithIsMissing ... damit IsMissing für Variant-Datentyp an Original-DAO-Openrecordset wirkt
-   Set OpenRecordset = Me.CurrentDb.OpenRecordset(source, _
+   Set OpenRecordset = Me.CurrentDb.OpenRecordset(Source, _
                                                   Replace0WithIsMissing(RecordsetType), _
                                                   Replace0WithIsMissing(RecordsetOptions), _
                                                   Replace0WithIsMissing(LockEdit))
@@ -416,7 +484,7 @@ HandleErr:
       qdf.Close
       Set qdf = Nothing
    End If
-   Err.Raise Err.Number, "OpenRecordsetParamSQL:" & Err.source, Err.Description, Err.HelpFile, Err.HelpContext
+   Err.Raise Err.Number, "OpenRecordsetParamSQL:" & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
  
 End Function
 
@@ -648,7 +716,7 @@ HandleErr:
       qdf.Close
       Set qdf = Nothing
    End If
-   Err.Raise Err.Number, "OpenQueryDefRecordsetByName:" & Err.source, Err.Description, Err.HelpFile, Err.HelpContext
+   Err.Raise Err.Number, "OpenQueryDefRecordsetByName:" & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
  
 End Function
 
@@ -731,7 +799,7 @@ HandleErr:
       Set rst = Nothing
    End If
 
-   Err.Raise Err.Number, "LookupSQL:" & Err.source, Err.Description, Err.HelpFile, Err.HelpContext
+   Err.Raise Err.Number, "LookupSQL:" & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
 
 End Function
 
@@ -889,6 +957,6 @@ HandleErr:
       Set rst = Nothing
    End If
 
-   Err.Raise Err.Number, "InsertIdentityReturn:" & Err.source, Err.Description, Err.HelpFile, Err.HelpContext
+   Err.Raise Err.Number, "InsertIdentityReturn:" & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
 
 End Function

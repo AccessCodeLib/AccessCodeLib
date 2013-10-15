@@ -32,12 +32,14 @@ Private m_DaoHandler As DaoHandler
 
 Private Const TestTableName As String = "DaoHandlerTestTable"
 Private Const TestQueryDefNameSelect As String = "DaoHandlerTestQdfSelect"
+Private Const TestQueryDefNameSelect2 As String = "TestQueryDefNameSelect2"
 Private Const TestQueryDefNameInsert As String = "DaoHandlerTestQdfInsert"
 
 Private Const TestTableCreateDDL As String = "CREATE TABLE " & TestTableName & " (id counter(1,1), T varchar(255), Z int)"
 Private Const TestTableDropDDL As String = "Drop TABLE " & TestTableName
 Private Const SelectSqlTemplate As String = "select ID, T, Z from " & TestTableName & " where ID={0}"
 Private Const SelectParamSql As String = "select ID, T, Z from " & TestTableName & " where ID=[FilterId]"
+Private Const SelectParamSql2 As String = "Parameters [P1] Long, [P2] Long; select ID, T, Z from " & TestTableName & " where Z=[P1]+[P2]"
 Private Const InsertSqlTemplate As String = "Insert INTO " & TestTableName & " (T, Z) VALUES ('{0}', {1})"
 Private Const InsertParamSql As String = "Parameters [P1] text(255), [P2] Long; Insert INTO " & TestTableName & " (T, Z) VALUES ([P1], [P2])"
 Private Const DeleteRecordsSQL As String = "DELETE FROM " & TestTableName
@@ -532,6 +534,52 @@ Public Sub OpenRecordset_EnumValues_ErrorLikeDaoOpenRecordset(ByVal RecordsetTyp
 
 End Sub
 
+'AccUnit:Row(1, 2 , 3)
+'AccUnit:Row(2, 3 , 5)
+'AccUnit:Row(100, 3 , "EOF")
+Public Sub ParamQdfSql_2ParamOpenRecordset_CheckID(ByVal Param1 As Long, ByVal Param2 As String, ByVal Expected As Variant)
+' "Parameters P1 Long, P2 Long; select ID, T, Z from " & TestTableName & " where Z=[P1]+[P2]"
+   
+   Dim SqlText As String
+   Dim rst As DAO.Recordset
+
+   SqlText = SelectParamSql2
+
+   Set rst = m_DaoHandler.ParamQueryDefSql(SqlText, Param1, Param2).OpenRecordset()
+
+   Dim Actual As Variant
+
+   If rst.EOF Then
+      Actual = "EOF"
+   Else
+      Actual = rst.Fields("id")
+   End If
+
+   Assert.AreEqual Expected, Actual
+
+End Sub
+
+'AccUnit:Row(1, 2 , 3)
+'AccUnit:Row(2, 3 , 5)
+'AccUnit:Row(100, 3 , "EOF")
+Public Sub ParamQdfByName_2ParamOpenRecordset_CheckID(ByVal Param1 As Long, ByVal Param2 As String, ByVal Expected As Variant)
+' "Parameters P1 Long, P2 Long; select ID, T, Z from " & TestTableName & " where Z=[P1]+[P2]"
+   
+   Dim rst As DAO.Recordset
+   Set rst = m_DaoHandler.ParamQueryDefByName(TestQueryDefNameSelect2, Param1, Param2).OpenRecordset()
+
+   Dim Actual As Variant
+
+   If rst.EOF Then
+      Actual = "EOF"
+   Else
+      Actual = rst.Fields("id")
+   End If
+
+   Assert.AreEqual Expected, Actual
+
+End Sub
+
 '--------------------------------------------------------------------
 ' Test support
 '--------------------------------------------------------------------
@@ -562,7 +610,7 @@ HandleErr:
          DropTestTable
          Resume
       Case Else
-         Err.Raise Err.Number, "CreateTestTable:" & Err.source, Err.Description, Err.HelpFile, Err.HelpContext
+         Err.Raise Err.Number, "CreateTestTable:" & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
    End Select
 End Sub
 
@@ -637,6 +685,7 @@ Private Sub CreateTestQueryDef()
    Set db = CodeDb
    
    db.CreateQueryDef TestQueryDefNameSelect, SelectParamSql
+   db.CreateQueryDef TestQueryDefNameSelect2, SelectParamSql2
    db.CreateQueryDef TestQueryDefNameInsert, InsertParamSql
    
 End Sub
@@ -648,6 +697,7 @@ Private Sub DropTestQueryDef()
    Set db = CodeDb
    
    db.QueryDefs.Delete TestQueryDefNameSelect
+   db.QueryDefs.Delete TestQueryDefNameSelect2
    db.QueryDefs.Delete TestQueryDefNameInsert
    
 End Sub

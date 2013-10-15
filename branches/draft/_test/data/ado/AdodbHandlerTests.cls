@@ -67,8 +67,8 @@ End Sub
 
 Public Sub Execute_InsertRecord_NewRecord()
 
-   Const expected As Long = 0
-   Dim actual As Long
+   Const Expected As Long = 0
+   Dim Actual As Long
    Dim SqlText As String
    Dim RecordCountBeforeInsert As Long
    
@@ -76,15 +76,15 @@ Public Sub Execute_InsertRecord_NewRecord()
    SqlText = FormatString(InsertSQL, "abc", 123)
    m_AdodbHandler.Execute SqlText
    
-   actual = RecordCountInTestTable
-   Assert.That actual, Iz.GreaterThan(RecordCountBeforeInsert)
+   Actual = RecordCountInTestTable
+   Assert.That Actual, Iz.GreaterThan(RecordCountBeforeInsert)
    
 End Sub
 
 Public Sub Execute_InsertRecord_RecordsAffectedIs1()
 
-   Const expected As Long = 0
-   Dim actual As Long
+   Const Expected As Long = 0
+   Dim Actual As Long
    Dim SqlText As String
    Dim RecordsAffected As Long
    
@@ -97,27 +97,27 @@ End Sub
 'AccUnit:Row("ID", 2, 2)
 'AccUnit:Row("T", 2, "b")
 'AccUnit:Row("Z", 2, 2)
-Public Sub OpenRecordset_FilterWithID_ReturnFieldValues(ByVal FieldName As String, ByVal Id As Long, ByVal expected As Variant)
+Public Sub OpenRecordset_FilterWithID_ReturnFieldValues(ByVal FieldName As String, ByVal Id As Long, ByVal Expected As Variant)
    
    Const SelectSqlTemplate As String = "select ID, T, Z from " & TestTableName & " where ID={0}"
-   Dim actual As Variant
+   Dim Actual As Variant
    Dim rst As ADODB.Recordset
 
    Set rst = m_AdodbHandler.OpenRecordset(FormatString(SelectSqlTemplate, Id))
-   actual = rst.Fields(FieldName).Value
+   Actual = rst.Fields(FieldName).Value
    rst.Close
    
-   Assert.That actual, Iz.EqualTo(expected)
+   Assert.That Actual, Iz.EqualTo(Expected)
    
 End Sub
 
 'AccUnit:Row("ID", 2, 2)
 'AccUnit:Row("T", 2, "b")
 'AccUnit:Row("Z", 2, 2)
-Public Sub ExecuteCommand_FilterWithID_ReturnFieldValues(ByVal FieldName As String, ByVal Id As Long, ByVal expected As Variant)
+Public Sub ExecuteCommand_FilterWithID_ReturnFieldValues(ByVal FieldName As String, ByVal Id As Long, ByVal Expected As Variant)
    
    Const CmdText As String = "Parameters FilterId long; select ID, T, Z from " & TestTableName & " where ID=[FilterId]"
-   Dim actual As Variant
+   Dim Actual As Variant
    Dim rst As ADODB.Recordset
    Dim Params(0, 1) As Variant
    
@@ -125,10 +125,10 @@ Public Sub ExecuteCommand_FilterWithID_ReturnFieldValues(ByVal FieldName As Stri
    Params(0, 1) = Id
    
    Set rst = m_AdodbHandler.ExecuteCommand(CmdText, adCmdText, Params)
-   actual = rst.Fields(FieldName).Value
+   Actual = rst.Fields(FieldName).Value
    rst.Close
    
-   Assert.That actual, Iz.EqualTo(expected)
+   Assert.That Actual, Iz.EqualTo(Expected)
    
 End Sub
 
@@ -141,13 +141,13 @@ End Sub
 'AccUnit:Row(2, 2, 2)
 Public Sub DLookupSQL_FilterRecordWithID_ReturnValuesFromFieldIndex(ByVal FieldIndex As Variant, _
                                                                     ByVal Id As Long, _
-                                                                    ByVal expected As Variant)
+                                                                    ByVal Expected As Variant)
 
    Const SelectDDLTemplate As String = "select ID, T, Z from " & TestTableName & " where ID={0}"
-   Dim actual As Variant
+   Dim Actual As Variant
    
-   actual = m_AdodbHandler.LookupSQL(FormatString(SelectDDLTemplate, Id), FieldIndex)
-   Assert.That actual, Iz.EqualTo(expected)
+   Actual = m_AdodbHandler.LookupSQL(FormatString(SelectDDLTemplate, Id), FieldIndex)
+   Assert.That Actual, Iz.EqualTo(Expected)
    
 End Sub
 
@@ -156,34 +156,34 @@ End Sub
 'AccUnit:Row("Z", 2, 2)
 Public Sub Lookup_FilterRecordWithID_ReturnValuesFromFieldIndex(ByVal FieldName As Variant, _
                                                                 ByVal Id As Long, _
-                                                                ByVal expected As Variant)
-   Dim actual As Variant
-   actual = m_AdodbHandler.Lookup(FieldName, TestTableName, FormatString("ID={0}", Id))
-   Assert.That actual, Iz.EqualTo(expected)
+                                                                ByVal Expected As Variant)
+   Dim Actual As Variant
+   Actual = m_AdodbHandler.Lookup(FieldName, TestTableName, FormatString("ID={0}", Id))
+   Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 'AccUnit:Row("=", 2, 1)
 'AccUnit:Row("=", 0, 0)
 'AccUnit:Row("<=", 2 , 2)
-Public Sub Count_FilterRecordWithID_ReturnCount(ByVal Expr As String, ByVal Id As Long, ByVal expected As Long)
-   Dim actual As Variant
-   actual = m_AdodbHandler.Count("*", TestTableName, FormatString("ID{0}{1}", Expr, Id))
-   Assert.That actual, Iz.EqualTo(expected)
+Public Sub Count_FilterRecordWithID_ReturnCount(ByVal Expr As String, ByVal Id As Long, ByVal Expected As Long)
+   Dim Actual As Variant
+   Actual = m_AdodbHandler.Count("*", TestTableName, FormatString("ID{0}{1}", Expr, Id))
+   Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 'AccUnit:Row("=", 2, 2)
 'AccUnit:Row("=", 0, Null)
 'AccUnit:Row("<=", 2 , 2)
 'AccUnit:Row(">=", 2 , 5)
-Public Sub Max_FilterRecordWithID_ReturnMaxZ(ByVal Expr As String, ByVal Id As Long, ByVal expected As Variant)
+Public Sub Max_FilterRecordWithID_ReturnMaxZ(ByVal Expr As String, ByVal Id As Long, ByVal Expected As Variant)
 
-   Dim actual As Variant
-   actual = m_AdodbHandler.Max("Z", TestTableName, FormatString("ID{0}{1}", Expr, Id))
+   Dim Actual As Variant
+   Actual = m_AdodbHandler.Max("Z", TestTableName, FormatString("ID{0}{1}", Expr, Id))
    
-   If IsNull(expected) Then
-      Assert.IsNull actual
+   If IsNull(Expected) Then
+      Assert.IsNull Actual
    Else
-      Assert.AreEqual expected, actual
+      Assert.AreEqual Expected, Actual
    End If
    
 End Sub
@@ -192,15 +192,15 @@ End Sub
 'AccUnit:Row("=", 0, Null)
 'AccUnit:Row("<=", 2 , 1)
 'AccUnit:Row(">=", 2 , 2)
-Public Sub Min_FilterRecordWithID_ReturnMinZ(ByVal Expr As String, ByVal Id As Long, ByVal expected As Variant)
+Public Sub Min_FilterRecordWithID_ReturnMinZ(ByVal Expr As String, ByVal Id As Long, ByVal Expected As Variant)
 
-   Dim actual As Variant
-   actual = m_AdodbHandler.Min("Z", TestTableName, FormatString("ID{0}{1}", Expr, Id))
+   Dim Actual As Variant
+   Actual = m_AdodbHandler.Min("Z", TestTableName, FormatString("ID{0}{1}", Expr, Id))
    
-   If IsNull(expected) Then
-      Assert.IsNull actual
+   If IsNull(Expected) Then
+      Assert.IsNull Actual
    Else
-      Assert.AreEqual expected, actual
+      Assert.AreEqual Expected, Actual
    End If
    
 End Sub
@@ -209,15 +209,15 @@ End Sub
 'AccUnit:Row("=", 0, Null)
 'AccUnit:Row("<=", 2 , 3)
 'AccUnit:Row(">=", 2 , 14)
-Public Sub Sum_FilterRecordWithID_ReturnSumZ(ByVal Expr As String, ByVal Id As Long, ByVal expected As Variant)
+Public Sub Sum_FilterRecordWithID_ReturnSumZ(ByVal Expr As String, ByVal Id As Long, ByVal Expected As Variant)
 
-   Dim actual As Variant
-   actual = m_AdodbHandler.Sum("Z", TestTableName, FormatString("ID{0}{1}", Expr, Id))
+   Dim Actual As Variant
+   Actual = m_AdodbHandler.Sum("Z", TestTableName, FormatString("ID{0}{1}", Expr, Id))
    
-   If IsNull(expected) Then
-      Assert.IsNull actual
+   If IsNull(Expected) Then
+      Assert.IsNull Actual
    Else
-      Assert.AreEqual expected, actual
+      Assert.AreEqual Expected, Actual
    End If
    
 End Sub
@@ -225,12 +225,12 @@ End Sub
 Public Sub InsertIdentityReturn_InsertNewRecord_ReturnIdentityFromNewRecord()
 
    Const NewZ As Long = 999
-   Dim actual As Long
-   Dim expected As Long
+   Dim Actual As Long
+   Dim Expected As Long
    
-   actual = m_AdodbHandler.InsertIdentityReturn(FormatString(InsertSQL, "ABC", NewZ))
-   expected = Nz(DLookup("ID", TestTableName, "Z=" & NewZ), 0)
-   Assert.AreEqual expected, actual
+   Actual = m_AdodbHandler.InsertIdentityReturn(FormatString(InsertSQL, "ABC", NewZ))
+   Expected = Nz(DLookup("ID", TestTableName, "Z=" & NewZ), 0)
+   Assert.AreEqual Expected, Actual
    
 End Sub
 

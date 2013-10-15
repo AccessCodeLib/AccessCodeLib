@@ -63,12 +63,12 @@ End Sub
 
 Public Sub InsertIdentityReturn_HookChangeSelectString_Returns12345()
 
-   Const expected As Long = 12345
-   Dim actual As Long
+   Const Expected As Long = 12345
+   Dim Actual As Long
 
-   actual = m_OdbcHandler.InsertIdentityReturn("insert into test (Z) values (" & Str(Timer) & ")")
+   Actual = m_OdbcHandler.InsertIdentityReturn("insert into test (Z) values (" & Str(Timer) & ")")
    
-   Assert.AreEqual expected, actual
+   Assert.AreEqual Expected, Actual
 
 End Sub
 

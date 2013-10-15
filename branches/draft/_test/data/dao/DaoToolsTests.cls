@@ -46,21 +46,21 @@ Private Sub ITestFixture_AddTestCases(ByVal Tests As SimplyVBUnit.TestCaseCollec
 '--------------------------------------------------------------------
 
 Public Sub TableDefExists_UseSystemTableInCodeDb_ReturnsTrue()
-   Const expected As Boolean = True
-   Dim actual As Boolean
-   actual = DaoTools.TableDefExists("MSysObjects")
-   Assert.AreEqual expected, actual
+   Const Expected As Boolean = True
+   Dim Actual As Boolean
+   Actual = DaoTools.TableDefExists("MSysObjects")
+   Assert.AreEqual Expected, Actual
 End Sub
 
 Public Sub TableDefExists_UseMissingNameInCodeDb_ReturnsFalse()
    
-   Const expected As Boolean = False
+   Const Expected As Boolean = False
    Dim NameToTest As String
-   Dim actual As Boolean
+   Dim Actual As Boolean
    
    NameToTest = GetTableMissingNameInCodeDb
-   actual = DaoTools.TableDefExists(NameToTest)
-   Assert.AreEqual expected, actual
+   Actual = DaoTools.TableDefExists(NameToTest)
+   Assert.AreEqual Expected, Actual
    
 End Sub
 
