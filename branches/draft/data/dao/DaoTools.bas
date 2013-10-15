@@ -31,7 +31,7 @@ Option Explicit
 ' <summary>
 ' Prüft ob eine Tabelle (TableDef) vorhanden ist
 ' </summary>
-' <param name="sTableDefName">Name der Tabelle</param>
+' <param name="TableDefName">Name der Tabelle</param>
 ' <param name="dbs">DAO.Database-Referenz (falls keine angegeben wurde, wird CodeDb verwendet)</param>
 ' <returns>Boolean</returns>
 ' <remarks>
@@ -43,14 +43,57 @@ Public Function TableDefExists(ByVal TableDefName As String, _
 'Man könnte auch die TableDef-Liste durchlaufen.
 'Eine weitere Alternative wäre das Auswerten über cnn.OpenSchema(adSchemaTables, ...)
    
+   TableDefExists = CheckDatabaseObjectExists(acTable, TableDefName, dbs)
+   
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: QueryDefExists
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Prüft ob eine Abfrage (QueryDef) vorhanden ist
+' </summary>
+' <param name="QueryDefName">Name der Abfrage</param>
+' <param name="dbs">DAO.Database-Referenz (falls keine angegeben wurde, wird CodeDb verwendet)</param>
+' <returns>Boolean</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function QueryDefExists(ByVal QueryDefName As String, _
+                      Optional ByVal dbs As DAO.Database = Nothing) As Boolean
+
+   QueryDefExists = CheckDatabaseObjectExists(acQuery, QueryDefName, dbs)
+   
+End Function
+
+Private Function CheckDatabaseObjectExists(ByVal ObjType As AcObjectType, ByVal ObjName As String, _
+                      Optional ByVal dbs As DAO.Database = Nothing) As Boolean
+
    Dim rst As DAO.Recordset
+   Dim FilterString As String
+   Dim ObjectTypeFilterString As String
 
    If dbs Is Nothing Then
       Set dbs = CodeDb
    End If
-   
-   Set rst = dbs.OpenRecordset("select Name from MSysObjects where Name = '" & Replace(TableDefName, "'", "''") & "' AND Type IN (1, 4, 6)", dbOpenForwardOnly, dbReadOnly)
-   TableDefExists = Not rst.EOF
+
+   FilterString = "where Name = '" & Replace(ObjName, "'", "''") & "'"
+
+   Select Case ObjType
+      Case AcObjectType.acTable
+         ObjectTypeFilterString = "Type IN (1, 4, 6)"
+      Case AcObjectType.acQuery
+         ObjectTypeFilterString = "Type =5"
+   End Select
+
+   If Len(ObjectTypeFilterString) > 0 Then
+      FilterString = FilterString & " AND " & ObjectTypeFilterString
+   End If
+
+   Set rst = dbs.OpenRecordset("select Name from MSysObjects " & FilterString, dbOpenForwardOnly, dbReadOnly)
+   CheckDatabaseObjectExists = Not rst.EOF
    rst.Close
-   
+
 End Function

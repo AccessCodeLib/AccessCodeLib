@@ -14,11 +14,14 @@ Attribute VB_Name = "DaoHandler_Beispiele"
 '<codelib>
 '  <file>data/dao/DaoHandler_Beispiele.bas</file>
 '  <use>data/dao/DaoHandler.cls</use>
+'  <use>data/dao/DaoTools.bas</use>
+'  <execute>DaoHandler_Beispiele_InitTestTablesAndQueries()</execute>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
 Option Compare Text
 Option Explicit
+
 
 'Informationen
 '-------------
@@ -27,6 +30,9 @@ Option Explicit
 ' ... selbstinstanzierender Einsatz ist möglich, da in der DaoHandler-Klasse das Attribut VB_PredeclaredId = True gesetzt ist.
 
 
+'Allg. Konstanten
+Private Const TestTableName As String = "DaoHandlerTestTab"
+Private Const TestParamQueryDefName As String = "DaoHandlerTestParamQueryDef"
 
 
 'Beispiele
@@ -138,10 +144,88 @@ Private Sub Test_mehrere_DaoHandler_verwenden()
    For i = 1 To AnzahlInstanzen
       TempDbPath = DaoHdl(i).CurrentDb.Name
       DaoHdl(i).CurrentDb.Close
+      DaoHdl(i).Dispose
       Kill TempDbPath
    Next
 
 End Sub
+
+Private Sub Insert_mit_ID_Rueckgabe()
+   
+   Dim NewId As Long
+
+   NewId = DaoHandler.InsertIdentityReturn("insert into TestTab ( T, Z) Values ('abc', 123)")
+   Debug.Print NewId
+
+End Sub
+
+
+Private Sub Recordset_oeffnen()
+   
+   Dim rst As DAO.Recordset
+
+   Set rst = DaoHandler.OpenRecordset("select * from TestTab")
+   Debug.Print rst.Fields(0)
+   rst.Close
+
+End Sub
+
+Private Sub Recordset_aus_ParamAbfrage_oeffnen()
+   
+   Dim qdf As DAO.QueryDef
+   Dim rst As DAO.Recordset
+
+   'Standard-DAO
+   Set qdf = CurrentDb.QueryDefs("ParameterAbfrage")
+   qdf.Parameters(0).Value = 100
+   qdf.Parameters(1).Value = 23
+   Set rst = qdf.OpenRecordset(dbOpenDynaset)
+   Debug.Print rst.Fields("Z")
+   rst.Close
+
+   'Verkürzt durch DaoHandler:
+   Set qdf = DaoHandler.ParamQueryDefByName("ParameterAbfrage", 100, 23)
+   Set rst = qdf.OpenRecordset(dbOpenDynaset)
+   Debug.Print rst.Fields("Z")
+   rst.Close
+
+   'Verkürzt durch DaoHandler:
+   Set rst = DaoHandler.ParamQueryDefByName("ParameterAbfrage", 100, 23).OpenRecordset(dbOpenDynaset)
+   Debug.Print rst.Fields("Z")
+   rst.Close
+
+End Sub
+
+Private Sub Recordset_aus_TempParamAbfrage_oeffnen()
+   
+   Dim SqlString As String
+   Dim qdf As DAO.QueryDef
+   Dim rst As DAO.Recordset
+
+   SqlString = "Parameters P1 long, P2 long; Select * from TestTab where Z = [P1] + [P2]"
+
+   'Standard-DAO
+   Set qdf = CurrentDb.CreateQueryDef("")
+   qdf.SQL = "Parameters P1 long, P2 long; Select * from TestTab where Z = [P1] + [P2]"
+   qdf.Parameters(0).Value = 100
+   qdf.Parameters(1).Value = 23
+   Set rst = qdf.OpenRecordset(dbOpenDynaset)
+   Debug.Print rst.Fields("Z")
+   rst.Close
+
+   'Verkürzt durch DaoHandler:
+   Set qdf = DaoHandler.ParamQueryDefSql(SqlString, 100, 23)
+   Set rst = qdf.OpenRecordset(dbOpenDynaset)
+   Debug.Print rst.Fields("Z")
+   rst.Close
+
+   'Verkürzt durch DaoHandler:
+   Set rst = DaoHandler.ParamQueryDefSql(SqlString, 100, 23).OpenRecordset()
+   Debug.Print rst.Fields("Z")
+   rst.Close
+
+End Sub
+
 
 Private Sub Test_DLookupErsatzfunktionen_verwenden()
 'Diese Beispiel nutzt die Standardinstanz von DaoHandler
@@ -220,101 +304,39 @@ Private Sub Test_ParameterAbfragen_verwenden()
    
 End Sub
 
-Private Sub Init()
-'Abfragen und Tabellen für dieses Beispiel-Modul erzeugen
-   DaoHandler.Execute "create table TestTab (id AUTOINCREMENT Primary Key, T varchar(255), Z int)"
-   DaoHandler.CurrentDb.CreateQueryDef "ParameterAbfrage", "PARAMETERS P1 Long, P2 Long; SELECT id, T, Z From TestTab WHERE Z=([P1]+[P2])"
-   Application.RefreshDatabaseWindow
-End Sub
-
-'Beispiele:
-Private Sub Insert_mit_ID_Rueckgabe()
-   
-   Dim NewId As Long
-
-   NewId = DaoHandler.InsertIdentityReturn("insert into TestTab ( T, Z) Values ('abc', 123)")
-   Debug.Print NewId
-
-End Sub
 
 
-Private Sub Recordset_oeffnen()
-   
-   Dim rst As DAO.Recordset
 
-   Set rst = DaoHandler.OpenRecordset("select * from TestTab")
-   Debug.Print rst.Fields(0)
-   rst.Close
-
-End Sub
-
-Private Sub Recordset_aus_ParamAbfrage_oeffnen()
-   
-   Dim qdf As DAO.QueryDef
-   Dim rst As DAO.Recordset
-
-   'Standard-DAO
-   Set qdf = CurrentDb.QueryDefs("ParameterAbfrage")
-   qdf.Parameters(0).Value = 100
-   qdf.Parameters(1).Value = 23
-   Set rst = qdf.OpenRecordset(dbOpenDynaset)
-   Debug.Print rst.Fields("Z")
-   rst.Close
-
-   'Verkürzt:
-   Set qdf = DaoHandler.ParamQueryDefByName("ParameterAbfrage", 100, 23)
-   Set rst = qdf.OpenRecordset(dbOpenDynaset)
-   Debug.Print rst.Fields("Z")
-   rst.Close
-
-   'Verkürzt:
-   Set rst = DaoHandler.ParamQueryDefByName("ParameterAbfrage", 100, 23).OpenRecordset(dbOpenDynaset)
-   Debug.Print rst.Fields("Z")
-   rst.Close
-
-End Sub
-
-Private Sub Recordset_aus_TempParamAbfrage_oeffnen()
-   
-   Dim SqlString As String
-   Dim qdf As DAO.QueryDef
-   Dim rst As DAO.Recordset
-
-   SqlString = "Parameters P1 long, P2 long; Select * from TestTab where Z = [P1] + [P2]"
-
-   'Standard-DAO
-   Set qdf = CurrentDb.CreateQueryDef("")
-   qdf.Sql = "Parameters P1 long, P2 long; Select * from TestTab where Z = [P1] + [P2]"
-   qdf.Parameters(0).Value = 100
-   qdf.Parameters(1).Value = 23
-   Set rst = qdf.OpenRecordset(dbOpenDynaset)
-   Debug.Print rst.Fields("Z")
-   rst.Close
-
-   'Verkürzt:
-   Set qdf = DaoHandler.ParamQueryDefSql(SqlString, 100, 23)
-   Set rst = qdf.OpenRecordset(dbOpenDynaset)
-   Debug.Print rst.Fields("Z")
-   rst.Close
-
-   'Verkürzt:
-   Set rst = DaoHandler.ParamQueryDefSql(SqlString, 100, 23).OpenRecordset()
-   Debug.Print rst.Fields("Z")
-   rst.Close
-
-End Sub
 
 
 
 'Hilfsfunktionen für Beispiel-Code
 '---------------------------------
 
-Private Function CreateTempDb() As DAO.Database
-   
+Private Function CreateTempDb(Optional ByVal FileNameNr As Long) As DAO.Database
+'Temoräre Datenbank erstellen
+
    Dim TempDbPath As String
    Dim TempDb As DAO.Database
+   Dim FileNameSuffix  As String
+
+   FileNameSuffix = CStr(Fix(Timer))
+   If FileNameNr <> 0 Then
+      FileNameSuffix = FileNameSuffix & "_" & FileNameNr
+   End If
    
-   TempDbPath = CurrentProject.Path & "\TempDb_" & Fix(Timer) & Mid(CurrentProject.Name, InStrRev(CurrentProject.Name, "."))
+   TempDbPath = CurrentProject.Path & "\TempDb_" & FileNameSuffix & Mid(CurrentProject.Name, InStrRev(CurrentProject.Name, "."))
    Set CreateTempDb = DBEngine.CreateDatabase(TempDbPath, dbLangGeneral)
    
+End Function
+
+Public Function DaoHandler_Beispiele_InitTestTablesAndQueries()
+'Abfragen und Tabellen für dieses Beispiel-Modul erzeugen
+   If Not DaoTools.TableDefExists(TestTableName) Then
+      DaoHandler.Execute "create table " & TestTableName & " (id AUTOINCREMENT Primary Key, T varchar(255), Z int)"
+   End If
+   If Not DaoTools.QueryDefExists(TestParamQueryDefName) Then
+      DaoHandler.CurrentDb.CreateQueryDef TestParamQueryDefName, "PARAMETERS P1 Long, P2 Long; SELECT id, T, Z From " & TestTableName & " WHERE Z=([P1]+[P2])"
+   End If
+   Application.RefreshDatabaseWindow
 End Function
