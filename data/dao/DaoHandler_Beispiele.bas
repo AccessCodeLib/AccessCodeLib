@@ -27,6 +27,8 @@ Option Explicit
 ' ... selbstinstanzierender Einsatz ist möglich, da in der DaoHandler-Klasse das Attribut VB_PredeclaredId = True gesetzt ist.
 
 
+
+
 'Beispiele
 '---------
 
@@ -41,13 +43,10 @@ End Sub
 
 Private Sub Test_DaoHandler_CurrentDb_auf_temporaere_Db_einstellen()
 
-   Dim TempDbPath As String
    Dim TempDb As DAO.Database
-   
-   TempDbPath = CurrentProject.Path & "\TempDb_" & Fix(Timer) & Mid(CurrentProject.Name, InStrRev(CurrentProject.Name, "."))
-   
-   ' Datenbankdatei erstellen
-   Set TempDb = DBEngine.CreateDatabase(TempDbPath, dbLangGeneral)
+
+   ' Datenbankdatei (Temporäre Datenbank) erstellen
+   Set TempDb = CreateTempDb()
 
    'Referenz übergeben
    Set DaoHandler.CurrentDb = TempDb
@@ -56,6 +55,8 @@ Private Sub Test_DaoHandler_CurrentDb_auf_temporaere_Db_einstellen()
    DaoHandler.Dispose ' bei Bedarf alle Referenzen entfernen
    
    ' temporär erstellte Datei wieder löschen
+   Dim TempDbPath As String
+   TempDbPath = TempDb.Name
    TempDb.Close
    Kill TempDbPath
 
@@ -65,15 +66,13 @@ Private Sub Test_extra_DaoHandlerInstanz_verwenden()
 
    Dim DaoHdl As DaoHandler
 
-   Dim TempDbPath As String
    Dim i As Long
    
    'DaoHandler-Instanz erzeugen
    Set DaoHdl = New DaoHandler
    
    ' Datenbankdatei erstellen und and TempDbHandler-Instanz übergeben
-   TempDbPath = CurrentProject.Path & "\TempDb_" & Fix(Timer) & "_" & Mid(CurrentProject.Name, InStrRev(CurrentProject.Name, "."))
-   Set DaoHdl.CurrentDb = DBEngine.CreateDatabase(TempDbPath, dbLangGeneral)
+   Set DaoHdl.CurrentDb = CreateTempDb()
    
    Debug.Print "Temp-DB:"; DaoHdl.CurrentDb.Name
    
@@ -98,6 +97,8 @@ Private Sub Test_extra_DaoHandlerInstanz_verwenden()
    Set rst = Nothing
 
    'Aufräumen und DB-Dateien löschen
+   Dim TempDbPath As String
+   TempDbPath = DaoHdl.CurrentDb.Name
    DaoHdl.CurrentDb.Close
    Kill TempDbPath
    
@@ -109,14 +110,8 @@ Private Sub Test_mehrere_DaoHandler_verwenden()
 
    Dim DaoHdl(1 To AnzahlInstanzen) As DaoHandler
 
-   Dim TempDbPath As String
    Dim i As Long, j As Long
-   
-   Dim TempString As String
-   Dim FileExtension As String
-   
-   FileExtension = Mid(CurrentProject.Name, InStrRev(CurrentProject.Name, "."))
-   TempString = CurrentProject.Path & "\TempDb_" & Fix(Timer) & "_"
+   Dim TempDbPath As String
    
    For i = 1 To AnzahlInstanzen
       
@@ -124,8 +119,7 @@ Private Sub Test_mehrere_DaoHandler_verwenden()
       Set DaoHdl(i) = New DaoHandler
       
       ' Datenbankdatei erstellen und and TempDbHandler-Instanz übergeben
-      TempDbPath = TempString & i & FileExtension
-      Set DaoHdl(i).CurrentDb = DBEngine.CreateDatabase(TempDbPath, dbLangGeneral)
+      Set DaoHdl(i).CurrentDb = CreateTempDb(i)
       
       ' ein paar Test-Tabellen erzeugen (hat Auswirkung auf die unten folgende Anweisung  DaoHdl(i).Count("*", "msysobjects"))
       For j = 1 To i
@@ -146,7 +140,7 @@ Private Sub Test_mehrere_DaoHandler_verwenden()
       DaoHdl(i).CurrentDb.Close
       Kill TempDbPath
    Next
-   
+
 End Sub
 
 Private Sub Test_DLookupErsatzfunktionen_verwenden()
@@ -172,16 +166,14 @@ Private Sub Test_DLookupErsatzfunktionen_verwenden()
 End Sub
 
 Private Sub Test_ParameterAbfragen_verwenden()
-'Diese Beispiel nutzt die Standardinstanz von DaoHandler
+'Diese Beispiel nutzt die Standardinstanz von DaoHandler für temporäre Datenbank
 
-   Dim TempDbPath As String
    Dim i As Long
    
    'DaoHandler-Instanz erzeugen
    
    ' Datenbankdatei erstellen und and DbHandler-Instanz übergeben
-   TempDbPath = CurrentProject.Path & "\TempDb_" & Fix(Timer) & "_" & Mid(CurrentProject.Name, InStrRev(CurrentProject.Name, "."))
-   Set DaoHandler.CurrentDb = DBEngine.CreateDatabase(TempDbPath, dbLangGeneral)
+   Set DaoHandler.CurrentDb = CreateTempDb()
    
    ' Test-Tabelle erzeugen
    DaoHandler.Execute "create table tabTest (id AUTOINCREMENT primary key, Z int, T varchar(5))"
@@ -220,8 +212,109 @@ Private Sub Test_ParameterAbfragen_verwenden()
    
 
    'Aufräumen und DB-Dateien löschen
+   Dim TempDbPath As String
+   TempDbPath = DaoHandler.CurrentDb.Name
    DaoHandler.CurrentDb.Close
    DaoHandler.Dispose 'Damit Verweis auf DB entfernt wird
    Kill TempDbPath
    
 End Sub
+
+Private Sub Init()
+'Abfragen und Tabellen für dieses Beispiel-Modul erzeugen
+   DaoHandler.Execute "create table TestTab (id AUTOINCREMENT Primary Key, T varchar(255), Z int)"
+   DaoHandler.CurrentDb.CreateQueryDef "ParameterAbfrage", "PARAMETERS P1 Long, P2 Long; SELECT id, T, Z From TestTab WHERE Z=([P1]+[P2])"
+   Application.RefreshDatabaseWindow
+End Sub
+
+'Beispiele:
+Private Sub Insert_mit_ID_Rueckgabe()
+   
+   Dim NewId As Long
+
+   NewId = DaoHandler.InsertIdentityReturn("insert into TestTab ( T, Z) Values ('abc', 123)")
+   Debug.Print NewId
+
+End Sub
+
+
+Private Sub Recordset_oeffnen()
+   
+   Dim rst As DAO.Recordset
+
+   Set rst = DaoHandler.OpenRecordset("select * from TestTab")
+   Debug.Print rst.Fields(0)
+   rst.Close
+
+End Sub
+
+Private Sub Recordset_aus_ParamAbfrage_oeffnen()
+   
+   Dim qdf As DAO.QueryDef
+   Dim rst As DAO.Recordset
+
+   'Standard-DAO
+   Set qdf = CurrentDb.QueryDefs("ParameterAbfrage")
+   qdf.Parameters(0).Value = 100
+   qdf.Parameters(1).Value = 23
+   Set rst = qdf.OpenRecordset(dbOpenDynaset)
+   Debug.Print rst.Fields("Z")
+   rst.Close
+
+   'Verkürzt:
+   Set qdf = DaoHandler.ParamQueryDefByName("ParameterAbfrage", 100, 23)
+   Set rst = qdf.OpenRecordset(dbOpenDynaset)
+   Debug.Print rst.Fields("Z")
+   rst.Close
+
+   'Verkürzt:
+   Set rst = DaoHandler.ParamQueryDefByName("ParameterAbfrage", 100, 23).OpenRecordset(dbOpenDynaset)
+   Debug.Print rst.Fields("Z")
+   rst.Close
+
+End Sub
+
+Private Sub Recordset_aus_TempParamAbfrage_oeffnen()
+   
+   Dim SqlString As String
+   Dim qdf As DAO.QueryDef
+   Dim rst As DAO.Recordset
+
+   SqlString = "Parameters P1 long, P2 long; Select * from TestTab where Z = [P1] + [P2]"
+
+   'Standard-DAO
+   Set qdf = CurrentDb.CreateQueryDef("")
+   qdf.Sql = "Parameters P1 long, P2 long; Select * from TestTab where Z = [P1] + [P2]"
+   qdf.Parameters(0).Value = 100
+   qdf.Parameters(1).Value = 23
+   Set rst = qdf.OpenRecordset(dbOpenDynaset)
+   Debug.Print rst.Fields("Z")
+   rst.Close
+
+   'Verkürzt:
+   Set qdf = DaoHandler.ParamQueryDefSql(SqlString, 100, 23)
+   Set rst = qdf.OpenRecordset(dbOpenDynaset)
+   Debug.Print rst.Fields("Z")
+   rst.Close
+
+   'Verkürzt:
+   Set rst = DaoHandler.ParamQueryDefSql(SqlString, 100, 23).OpenRecordset()
+   Debug.Print rst.Fields("Z")
+   rst.Close
+
+End Sub
+
+
+
+'Hilfsfunktionen für Beispiel-Code
+'---------------------------------
+
+Private Function CreateTempDb() As DAO.Database
+   
+   Dim TempDbPath As String
+   Dim TempDb As DAO.Database
+   
+   TempDbPath = CurrentProject.Path & "\TempDb_" & Fix(Timer) & Mid(CurrentProject.Name, InStrRev(CurrentProject.Name, "."))
+   Set CreateTempDb = DBEngine.CreateDatabase(TempDbPath, dbLangGeneral)
+   
+End Function

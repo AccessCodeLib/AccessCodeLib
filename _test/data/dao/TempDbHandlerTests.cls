@@ -71,8 +71,8 @@ End Sub
 
 Public Sub CreateTable_TableExists_RaiseError()
 
-   Const expected As Long = 0
-   Dim actual As Long
+   Const Expected As Long = 0
+   Dim Actual As Long
    
    CreateTestTableInTempDB
    
@@ -113,20 +113,20 @@ End Sub
 'AccUnit:Row("ID", 2, 2)
 'AccUnit:Row("T", 2, "b")
 'AccUnit:Row("Z", 2, 2)
-Public Sub OpenRecordset_FilterRecordWithID_ReturnFieldValues(ByVal FieldName As String, ByVal lId As Long, ByVal expected As Variant)
+Public Sub OpenRecordset_FilterRecordWithID_ReturnFieldValues(ByVal FieldName As String, ByVal lId As Long, ByVal Expected As Variant)
    
    Const SelectDDLTemplate As String = "select ID, T, Z from " & TestTableName & " where ID={0}"
-   Dim actual As Variant
+   Dim Actual As Variant
    Dim rst As DAO.Recordset
    
    CreateTestTableInTempDB
    InsertRecordsInTestTable
    
    Set rst = m_TempDbHandler.OpenRecordset(FormatString(SelectDDLTemplate, lId))
-   actual = rst.Fields(FieldName).Value
+   Actual = rst.Fields(FieldName).Value
    rst.Close
    
-   Assert.That actual, Iz.EqualTo(expected)
+   Assert.That Actual, Iz.EqualTo(Expected)
    
 End Sub
 
@@ -136,33 +136,33 @@ End Sub
 'AccUnit:Row(0, 2, 2)
 'AccUnit:Row(1, 2, "b")
 'AccUnit:Row(2, 2, 2)
-Public Sub DLookupSQL_FilterRecordWithID_ReturnValuesFromFieldIndex(ByVal FieldIndex As Variant, ByVal lId As Long, ByVal expected As Variant)
+Public Sub DLookupSQL_FilterRecordWithID_ReturnValuesFromFieldIndex(ByVal FieldIndex As Variant, ByVal lId As Long, ByVal Expected As Variant)
 
    Const SelectDDLTemplate As String = "select ID, T, Z from " & TestTableName & " where ID={0}"
-   Dim actual As Variant
+   Dim Actual As Variant
    
    CreateTestTableInTempDB
    InsertRecordsInTestTable
    
-   actual = m_TempDbHandler.LookupSQL(FormatString(SelectDDLTemplate, lId), FieldIndex)
+   Actual = m_TempDbHandler.LookupSQL(FormatString(SelectDDLTemplate, lId), FieldIndex)
 
-   Assert.That actual, Iz.EqualTo(expected)
+   Assert.That Actual, Iz.EqualTo(Expected)
    
 End Sub
 
 Public Sub Execute_DeleteRecordsInTestTable_EmptyTestTable()
    
-   Const expected As Long = 0
-   Dim actual As Long
+   Const Expected As Long = 0
+   Dim Actual As Long
    
    CreateTestTableInTempDB
    InsertRecordsInTestTable
    
    m_TempDbHandler.Execute DeleteRecordsSQL, dbFailOnError
-   actual = RecordCountInTestTable
+   Actual = RecordCountInTestTable
    
    ' Assert
-   Assert.That actual, Iz.EqualTo(expected)
+   Assert.That Actual, Iz.EqualTo(Expected)
    
 End Sub
 
