@@ -154,8 +154,8 @@ Private Sub Insert_mit_ID_Rueckgabe()
    
    Dim NewId As Long
 
-   NewId = DaoHandler.InsertIdentityReturn("insert into TestTab ( T, Z) Values ('abc', 123)")
-   Debug.Print NewId
+   NewId = DaoHandler.InsertIdentityReturn("insert into " & TestTableName & " ( T, Z) Values ('abc', 123)")
+   Debug.Print "New ID: "; NewId
 
 End Sub
 
@@ -164,8 +164,8 @@ Private Sub Recordset_oeffnen()
    
    Dim rst As DAO.Recordset
 
-   Set rst = DaoHandler.OpenRecordset("select * from TestTab")
-   Debug.Print rst.Fields(0)
+   Set rst = DaoHandler.OpenRecordset("select * from " & TestTableName)
+   Debug.Print "erstes Feld: "; rst.Fields(0)
    rst.Close
 
 End Sub
@@ -176,7 +176,7 @@ Private Sub Recordset_aus_ParamAbfrage_oeffnen()
    Dim rst As DAO.Recordset
 
    'Standard-DAO
-   Set qdf = CurrentDb.QueryDefs("ParameterAbfrage")
+   Set qdf = CurrentDb.QueryDefs(TestParamQueryDefName)
    qdf.Parameters(0).Value = 100
    qdf.Parameters(1).Value = 23
    Set rst = qdf.OpenRecordset(dbOpenDynaset)
@@ -184,13 +184,13 @@ Private Sub Recordset_aus_ParamAbfrage_oeffnen()
    rst.Close
 
    'Verkürzt durch DaoHandler:
-   Set qdf = DaoHandler.ParamQueryDefByName("ParameterAbfrage", 100, 23)
+   Set qdf = DaoHandler.ParamQueryDefByName(TestParamQueryDefName, 100, 23)
    Set rst = qdf.OpenRecordset(dbOpenDynaset)
    Debug.Print rst.Fields("Z")
    rst.Close
 
    'Verkürzt durch DaoHandler:
-   Set rst = DaoHandler.ParamQueryDefByName("ParameterAbfrage", 100, 23).OpenRecordset(dbOpenDynaset)
+   Set rst = DaoHandler.ParamQueryDefByName(TestParamQueryDefName, 100, 23).OpenRecordset(dbOpenDynaset)
    Debug.Print rst.Fields("Z")
    rst.Close
 
@@ -202,11 +202,11 @@ Private Sub Recordset_aus_TempParamAbfrage_oeffnen()
    Dim qdf As DAO.QueryDef
    Dim rst As DAO.Recordset
 
-   SqlString = "Parameters P1 long, P2 long; Select * from TestTab where Z = [P1] + [P2]"
+   SqlString = "Parameters P1 long, P2 long; Select * from " & TestTableName & " where Z = [P1] + [P2]"
 
    'Standard-DAO
    Set qdf = CurrentDb.CreateQueryDef("")
-   qdf.SQL = "Parameters P1 long, P2 long; Select * from TestTab where Z = [P1] + [P2]"
+   qdf.SQL = SqlString
    qdf.Parameters(0).Value = 100
    qdf.Parameters(1).Value = 23
    Set rst = qdf.OpenRecordset(dbOpenDynaset)
@@ -261,26 +261,30 @@ Private Sub Test_ParameterAbfragen_verwenden()
    
    ' Test-Tabelle erzeugen
    DaoHandler.Execute "create table tabTest (id AUTOINCREMENT primary key, Z int, T varchar(5))"
-   
-   'weitere Verwendungsmöglichkeiten
-   Debug.Print DaoHandler.CurrentDb.Name
-   
    DaoHandler.Execute "insert into tabTest (T) VALUES ('Abc')"
    
    'QueryDef erstellen und verwenden
    Dim qdf As DAO.QueryDef
    Const QueryDefName As String = "qTest_Insert"
-   Set qdf = DaoHandler.CurrentDb.CreateQueryDef(QueryDefName, "Parameters [NewZ] long, [NewT] varchar(255); insert into tabTest (Z, T) VALUES ([NewZ], [NewT])")
+   Const QueryDefSQL As String = "Parameters [NewZ] long, [NewT] varchar(255); insert into tabTest (Z, T) VALUES ([NewZ], [NewT])"
+   Set qdf = DaoHandler.CurrentDb.CreateQueryDef(QueryDefName, QueryDefSQL)
+
    'Einfügen mit Array-Variante
+   ' a) 2-Dim Array
    For i = 1 To 5
       DaoHandler.ExecuteQueryDefByName QueryDefName, DaoHandler.GetNamedParamDefArray("NewZ", i, "NewT", "abc")
    Next
+   ' b) Werte in 1-Dim-Array (Reihenfolge beachten!)"
+   For i = 1 To 5
+      DaoHandler.ExecuteQueryDefByName QueryDefName, Array(i, "efg")
+   Next
+
    'Einfügen mit ParamArray-Variante
    For i = 1 To 5
       DaoHandler.ExecuteQueryDefByName QueryDefName, i, "xyz"
    Next
    
-   'Anzahl DS abfragen (muss 11 (1+5+5) sein)
+   'Anzahl DS abfragen (muss 16 (1+5+5+5) sein)
    Debug.Print "Anzahl DS in tabTest:"; DaoHandler.Count("*", "tabTest")
 
    Dim rst As DAO.Recordset
@@ -305,7 +309,64 @@ Private Sub Test_ParameterAbfragen_verwenden()
 End Sub
 
 
+Private Sub Test_TemporäreParameterAbfrage_verwenden()
+'Diese Beispiel nutzt die Standardinstanz von DaoHandler für temporäre Datenbank
 
+   Dim i As Long
+   
+   'DaoHandler-Instanz erzeugen
+   
+   ' Datenbankdatei erstellen und and DbHandler-Instanz übergeben
+   Set DaoHandler.CurrentDb = CreateTempDb()
+   
+   ' Test-Tabelle erzeugen
+   DaoHandler.Execute "create table tabTest (id AUTOINCREMENT primary key, Z int, T varchar(5))"
+   DaoHandler.Execute "insert into tabTest (T) VALUES ('Abc')"
+   
+   'Temoräer QueryDef erstellen und verwenden
+   Dim qdf As DAO.QueryDef
+   Const QueryDefSQL As String = "Parameters [NewZ] long, [NewT] varchar(255); insert into tabTest (Z, T) VALUES ([NewZ], [NewT])"
+   Set qdf = DaoHandler.ParamQueryDefSql(QueryDefSQL)
+
+   'Einfügen mit Array-Variante
+   ' a) 2-Dim Array
+   For i = 1 To 5
+      DaoHandler.ExecuteQueryDef qdf, DaoHandler.GetNamedParamDefArray("NewZ", i, "NewT", "abc")
+   Next
+   ' b) Werte in 1-Dim-Array (Reihenfolge beachten!)"
+   For i = 1 To 5
+      DaoHandler.ExecuteQueryDef qdf, Array(i, "efg")
+   Next
+
+   'Einfügen mit ParamArray-Variante
+   For i = 1 To 5
+      DaoHandler.ExecuteQueryDef qdf, i, "xyz"
+   Next
+   qdf.Close
+   
+   'Anzahl DS abfragen (muss 16 (1+5+5+5) sein)
+   Debug.Print "Anzahl DS in tabTest:"; DaoHandler.Count("*", "tabTest")
+
+   Dim rst As DAO.Recordset
+   Set rst = DaoHandler.OpenRecordset("select * from tabTest")
+   With rst
+      Do While Not .EOF
+         Debug.Print rst.Fields(0), rst.Fields(1), rst.Fields(2)
+         .MoveNext
+      Loop
+      .Close
+   End With
+   Set rst = Nothing
+   
+
+   'Aufräumen und DB-Dateien löschen
+   Dim TempDbPath As String
+   TempDbPath = DaoHandler.CurrentDb.Name
+   DaoHandler.CurrentDb.Close
+   DaoHandler.Dispose 'Damit Verweis auf DB entfernt wird
+   Kill TempDbPath
+   
+End Sub
 
 
 
