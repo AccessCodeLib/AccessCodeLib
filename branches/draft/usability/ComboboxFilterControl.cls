@@ -195,7 +195,9 @@ Private Sub CheckFilterValue(Optional ByVal FilterValue As Variant)
    With m_Combobox
       Debug.Assert Nz(.Value = .Column(m_BoundColumnIndex), True)
       If .Value <> .Column(m_BoundColumnIndex) Then
-         ' Column(x) zeigt einen Wert, obwohl .Value keinem Wert in der gebundenen Spalte entspricht
+         ' Column(x) zeigt einen Wert, obwohl .Value keinem Wert in der gebundenen Spalte entspricht.
+         ' Das tritt an dieser Stelle nur auf, wenn die Combox nicht aufgeklappt war, als Text eingeben wurde.
+         ' Aber ist .Column(x) enthält spätestens nach dem Zuklappen der Combobox einen Wert.
          Debug.Print "Value = " & .Value, "Column(" & m_BoundColumnIndex & ") = " & .Column(m_BoundColumnIndex)
          ' Wie kann man das vermeiden?
       End If

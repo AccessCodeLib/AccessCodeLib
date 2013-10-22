@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =-1108541726
+Checksum =738323870
 Begin Form
     RecordSelectors = NotDefault
     AutoCenter = NotDefault
@@ -14,10 +14,10 @@ Begin Form
     Width =14190
     DatasheetFontHeight =11
     ItemSuffix =66
-    Left =90
-    Top =405
-    Right =15630
-    Bottom =10380
+    Left =5385
+    Top =1155
+    Right =19830
+    Bottom =9930
     DatasheetGridlinesColor =0
     RecSrcDt = Begin
         0x93b6deccf34be440
@@ -31,10 +31,10 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x0019582f0400000001000000ac5a11000e000000205d1100d45a1100a38bb538 ,
+        0x00195d2f0400000001000000ac5b2f000e000000205e2f00d45b2f00a38ba538 ,
         0x010400069c00440353ef8001010009009a0b3408640001000f00580202000100 ,
-        0x58020300010041340044d2080c5d1100c444d208045b11002387982fe044d208 ,
-        0x2a87982ff4140000000000000000000000000000010000000000000001000000 ,
+        0x5802030001004134000496020c5e2f00c4049602045c2f0023879d2fe0049602 ,
+        0x2a879d2f82740000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe230000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -1517,9 +1517,10 @@ Private Sub InitCbxFilterControls()
    Set m_CbxFilterControlAuswahl = New ComboboxFilterControl
    m_CbxFilterControlAuswahl.Init Me.cbxAuswahlErweitert, SearchColumns, CurrentDb.OpenRecordset(Me.cbxAuswahl.RowSource)
    
-   ' keine Recordset übergabe => Recordset der Combobox wird verwendet, Ohne Übergabe eines SuchArrays wird in den Spalten der Datenherkunft gesucht
+   ' keine Recordset übergabe => Recordset der Combobox wird verwendet, ohne Übergabe eines SuchArrays wird in den sichtbaren Spalten der Combobox gesucht
    Set m_CbxSearchControlFiltertext = New ComboboxFilterControl
    m_CbxSearchControlFiltertext.Init Me.cbxFilterErweitert
+   
    
    'ADODB-Variante
    Dim rst As ADODB.Recordset
@@ -1527,11 +1528,11 @@ Private Sub InitCbxFilterControls()
    Set rst = New ADODB.Recordset
    rst.CursorLocation = adUseClient
    rst.Open Me.cbxFilter.RowSource, CurrentProject.Connection, adOpenDynamic, adLockOptimistic
-   'Set rst.ActiveConnection = Nothing
    
    Set m_CbxSearchControlAdodb = New ComboboxFilterControl
    m_CbxSearchControlAdodb.Init Me.cbxFilterAdodbProblem, SearchColumns, rst
    
+   'zum Test eine Standard-Combobox mit ADODB-Rs
    Set rst = New ADODB.Recordset
    rst.CursorLocation = adUseClient
    rst.Open Me.cbxFilter.RowSource, CurrentProject.Connection, adOpenDynamic, adLockOptimistic
@@ -1573,8 +1574,6 @@ Private Function GetFilterString(ByVal cbx As ComboBox) As String
    Dim FilterString As String
    Dim lngProjectID As Long
    Dim strProjectName As String
-   
-   DoEvents
    
    If IsNull(cbx.Value) Then
       GetFilterString = vbNullString
