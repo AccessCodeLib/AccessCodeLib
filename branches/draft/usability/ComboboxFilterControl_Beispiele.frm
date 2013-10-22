@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =1527530819
+Checksum =2106422269
 Begin Form
     RecordSelectors = NotDefault
     AutoCenter = NotDefault
@@ -13,10 +13,11 @@ Begin Form
     GridY =10
     Width =14190
     DatasheetFontHeight =11
-    ItemSuffix =64
-    Top =330
-    Right =15975
-    Bottom =9960
+    ItemSuffix =66
+    Left =90
+    Top =405
+    Right =15630
+    Bottom =10380
     DatasheetGridlinesColor =0
     RecSrcDt = Begin
         0x93b6deccf34be440
@@ -30,10 +31,10 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x000000000000000000000000a519772f0400000001000000485e20000e000000 ,
+        0x000000000000000000000000a5199b2f0400000001000000184a22000e000000 ,
         0x010400069c00440353ef8001010009009a0b3408640001000f00580202000100 ,
-        0x580203000100413400000000bc60200008000000c8442d02a8602000c4442d02 ,
-        0xa05e200023870000000000000000000000000000010000000000000001000000 ,
+        0x5802030001004134000000008c4c220008000000c8441e07784c2200c4441e07 ,
+        0x704a220023870000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe230000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -64,7 +65,7 @@ Begin Form
     End
     PrtDevNames = Begin
         0x080013001b000100000000000000000000000000000000000000004672656550 ,
-        0x44465850313a0000000000
+        0x44465850313a0000000000000000000000000000000000
     End
     OnLoad ="[Event Procedure]"
     AllowDatasheetView =0
@@ -80,11 +81,11 @@ Begin Form
     FitToScreen =1
     AlternateBackShade =95.0
     PrtDevModeW = Begin
-        0x00000000009621009b62f575b638530afefffffffa53f0758564aa2f7865aa2f ,
-        0x0e00000034c22100b66aaa2f2b030028001699090000000054f43f2f90169909 ,
+        0x00000000009c23009b62f5757434a096fefffffffa53f0758564ce2f7865ce2f ,
+        0x0e00000074c82300b66ace2f2b030028001646070000000054f4632f90164607 ,
         0x01040006dc00440353ef8001010009009a0b3408640001000f00580202000100 ,
-        0x5802030001004100340000000c000000e8c1210000169909fb15990900000000 ,
-        0xd0962100000099097a7da8011496210002000000909a210015e1fa7602134d01 ,
+        0x5802030001004100340000000c00000028c8230000164607fb15460700000000 ,
+        0x109d2300000046077a7dcc01549c230002000000d0a0230015e1fa7686d91a01 ,
         0xfeffffffd35d0000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe230000000000000000000000000000000000000000000000000000000000000 ,
@@ -117,7 +118,8 @@ Begin Form
     PrtDevNamesW = Begin
         0x04000f0017000100000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000460072006500650050004400460058005000 ,
-        0x31003a0000000000000000000000
+        0x31003a0000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000
     End
     
     Begin
@@ -155,8 +157,58 @@ Begin Form
             ForeShade =50.0
             GridlineShade =65.0
         End
+        Begin FormHeader
+            Height =510
+            BackColor =15849926
+            Name ="Formularkopf"
+            GUID = Begin
+                0xb37e18a4d9178a4e9a7b95ef23415b25
+            End
+            AlternateBackThemeColorIndex =1
+            AlternateBackShade =95.0
+            BackThemeColorIndex =2
+            BackTint =20.0
+            Begin
+                Begin Label
+                    OverlapFlags =85
+                    Left =120
+                    Top =75
+                    Width =6120
+                    Height =345
+                    FontSize =12
+                    FontWeight =700
+                    Name ="Bezeichnungsfeld64"
+                    Caption ="Beispiele zur Verwendung von ComboboxFilterControl"
+                    GUID = Begin
+                        0x979dd8d25ff2214ab8db82ae03efac5a
+                    End
+                    LayoutCachedLeft =120
+                    LayoutCachedTop =75
+                    LayoutCachedWidth =6240
+                    LayoutCachedHeight =420
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =6285
+                    Top =30
+                    Width =7770
+                    Height =480
+                    FontSize =9
+                    Name ="Bezeichnungsfeld65"
+                    Caption ="z. B. *acc* in den Textbereich der Combox eingeben =>\015\012Datensätze werden i"
+                        "n der Combox gefiltert angezeigt."
+                    GUID = Begin
+                        0x78e4733ad55b6e41b8d1ec01906fe0f2
+                    End
+                    LayoutCachedLeft =6285
+                    LayoutCachedTop =30
+                    LayoutCachedWidth =14055
+                    LayoutCachedHeight =510
+                End
+            End
+        End
         Begin Section
-            Height =8220
+            Height =8277
             Name ="Detailbereich"
             GUID = Begin
                 0x629d3810bb44ce468768594373f8c283
@@ -165,12 +217,13 @@ Begin Form
             AlternateBackShade =95.0
             Begin
                 Begin ComboBox
-                    OverlapFlags =215
+                    AllowAutoCorrect = NotDefault
+                    OverlapFlags =87
                     IMESentenceMode =3
                     ColumnCount =4
                     ListWidth =6237
-                    Left =3966
-                    Top =570
+                    Left =3973
+                    Top =634
                     Width =2835
                     Height =315
                     BorderColor =10921638
@@ -190,16 +243,16 @@ Begin Form
                         "stSource_tFirmen\";\"\""
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =3966
-                    LayoutCachedTop =570
-                    LayoutCachedWidth =6801
-                    LayoutCachedHeight =885
+                    LayoutCachedLeft =3973
+                    LayoutCachedTop =634
+                    LayoutCachedWidth =6808
+                    LayoutCachedHeight =949
                     ForeShade =100.0
                     Begin
                         Begin Label
                             OverlapFlags =93
-                            Left =570
-                            Top =570
+                            Left =577
+                            Top =634
                             Width =3402
                             Height =315
                             BorderColor =8355711
@@ -209,10 +262,10 @@ Begin Form
                                 0x94d900947b1bf74d958a682b26f26ff4
                             End
                             GridlineColor =10921638
-                            LayoutCachedLeft =570
-                            LayoutCachedTop =570
-                            LayoutCachedWidth =3972
-                            LayoutCachedHeight =885
+                            LayoutCachedLeft =577
+                            LayoutCachedTop =634
+                            LayoutCachedWidth =3979
+                            LayoutCachedHeight =949
                             ForeTint =100.0
                         End
                     End
@@ -222,8 +275,8 @@ Begin Form
                     IMESentenceMode =3
                     ColumnCount =4
                     ListWidth =6237
-                    Left =3969
-                    Top =3636
+                    Left =3976
+                    Top =3700
                     Width =2835
                     Height =315
                     TabIndex =14
@@ -235,25 +288,23 @@ Begin Form
                     End
                     Name ="cbxFilter"
                     RowSourceType ="Table/Query"
-                    RowSource ="SELECT TestSource_tProjekte.idProjekt, TestSource_tProjekte.ProjektNummer, TestS"
-                        "ource_tProjekte.ProjektName, TestSource_tFirmen.Firma FROM TestSource_tProjekte "
-                        "LEFT JOIN TestSource_tFirmen ON TestSource_tProjekte.fiProjektKunde = TestSource"
-                        "_tFirmen.idFirma ORDER BY TestSource_tProjekte.ProjektNummer, TestSource_tProjek"
-                        "te.ProjektName, TestSource_tFirmen.Firma;"
+                    RowSource ="SELECT P.idProjekt, P.ProjektNummer, P.ProjektName, F.Firma FROM TestSource_tPro"
+                        "jekte AS P LEFT JOIN TestSource_tFirmen AS F ON P.fiProjektKunde = F.idFirma ORD"
+                        "ER BY P.ProjektNummer, P.ProjektName, F.Firma;"
                     ColumnWidths ="0;1701;2268;2268"
                     AfterUpdate ="[Event Procedure]"
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =3969
-                    LayoutCachedTop =3636
-                    LayoutCachedWidth =6804
-                    LayoutCachedHeight =3951
+                    LayoutCachedLeft =3976
+                    LayoutCachedTop =3700
+                    LayoutCachedWidth =6811
+                    LayoutCachedHeight =4015
                     ForeShade =100.0
                     Begin
                         Begin Label
                             OverlapFlags =93
-                            Left =570
-                            Top =3630
+                            Left =577
+                            Top =3694
                             Width =3402
                             Height =315
                             BorderColor =8355711
@@ -263,10 +314,10 @@ Begin Form
                                 0xc54c5e1f612998409f31bf59840d9955
                             End
                             GridlineColor =10921638
-                            LayoutCachedLeft =570
-                            LayoutCachedTop =3630
-                            LayoutCachedWidth =3972
-                            LayoutCachedHeight =3945
+                            LayoutCachedLeft =577
+                            LayoutCachedTop =3694
+                            LayoutCachedWidth =3979
+                            LayoutCachedHeight =4009
                             ForeTint =100.0
                         End
                     End
@@ -276,42 +327,30 @@ Begin Form
                     IMESentenceMode =3
                     ColumnCount =4
                     ListWidth =6237
-                    Left =3969
-                    Top =1650
+                    Left =3976
+                    Top =1714
                     Width =2835
                     Height =315
                     TabIndex =5
                     BorderColor =10921638
-                    ColumnInfo ="\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"10\";\"60\""
                     GUID = Begin
                         0x44b9a4f06a63cf48a1a78c822667f12a
                     End
                     Name ="cbxAuswahlErweitert"
                     RowSourceType ="Table/Query"
-                    RowSource ="SELECT TestSource_tProjekte.idProjekt, TestSource_tProjekte.ProjektNummer, TestS"
-                        "ource_tProjekte.ProjektName, TestSource_tFirmen.Firma FROM TestSource_tProjekte "
-                        "LEFT JOIN TestSource_tFirmen ON TestSource_tProjekte.fiProjektKunde = TestSource"
-                        "_tFirmen.idFirma ORDER BY TestSource_tProjekte.ProjektNummer, TestSource_tProjek"
-                        "te.ProjektName, TestSource_tFirmen.Firma;"
                     ColumnWidths ="0;1701;2268;2268"
-                    BaseInfo ="\"SELECT TestSource_tProjekte.idProjekt, TestSource_tProjekte.ProjektNummer, Tes"
-                        "tSource_tProjekte.ProjektName, TestSource_tFirmen.Firma FROM TestSource_tProjekt"
-                        "e LEFT JOIN TestSource_tFirmen ON TestSource_tProjekte.fiProjektKunde = TestSour"
-                        "ce_tFirmen.idFirma ORDER BY TestSource_tProjekte.ProjektNummer, TestSource_tProj"
-                        "ekte.ProjektName, TestSource_tFirmen.Firma;\";\"TestSource_tProjekte\";\"TestSou"
-                        "rce_tFirmen\";\"\""
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =3969
-                    LayoutCachedTop =1650
-                    LayoutCachedWidth =6804
-                    LayoutCachedHeight =1965
+                    LayoutCachedLeft =3976
+                    LayoutCachedTop =1714
+                    LayoutCachedWidth =6811
+                    LayoutCachedHeight =2029
                     ForeShade =100.0
                     Begin
                         Begin Label
                             OverlapFlags =93
-                            Left =570
-                            Top =1650
+                            Left =577
+                            Top =1714
                             Width =3405
                             Height =555
                             BorderColor =8355711
@@ -321,10 +360,10 @@ Begin Form
                                 0x231f0cbe6506c047b80fce0e1b74240f
                             End
                             GridlineColor =10921638
-                            LayoutCachedLeft =570
-                            LayoutCachedTop =1650
-                            LayoutCachedWidth =3975
-                            LayoutCachedHeight =2205
+                            LayoutCachedLeft =577
+                            LayoutCachedTop =1714
+                            LayoutCachedWidth =3982
+                            LayoutCachedHeight =2269
                             ForeTint =100.0
                         End
                     End
@@ -334,8 +373,8 @@ Begin Form
                     IMESentenceMode =3
                     ColumnCount =4
                     ListWidth =6237
-                    Left =3969
-                    Top =4980
+                    Left =3976
+                    Top =5044
                     Width =2835
                     Height =315
                     TabIndex =17
@@ -349,16 +388,16 @@ Begin Form
                     ColumnWidths ="0;1701;2268;2268"
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =3969
-                    LayoutCachedTop =4980
-                    LayoutCachedWidth =6804
-                    LayoutCachedHeight =5295
+                    LayoutCachedLeft =3976
+                    LayoutCachedTop =5044
+                    LayoutCachedWidth =6811
+                    LayoutCachedHeight =5359
                     ForeShade =100.0
                     Begin
                         Begin Label
                             OverlapFlags =93
-                            Left =570
-                            Top =4980
+                            Left =577
+                            Top =5044
                             Width =3402
                             Height =315
                             BorderColor =8355711
@@ -368,18 +407,18 @@ Begin Form
                                 0x1728d104dd482d41b9b0630b9ea48c4e
                             End
                             GridlineColor =10921638
-                            LayoutCachedLeft =570
-                            LayoutCachedTop =4980
-                            LayoutCachedWidth =3972
-                            LayoutCachedHeight =5295
+                            LayoutCachedLeft =577
+                            LayoutCachedTop =5044
+                            LayoutCachedWidth =3979
+                            LayoutCachedHeight =5359
                             ForeTint =100.0
                         End
                     End
                 End
                 Begin Label
                     OverlapFlags =85
-                    Left =113
-                    Top =56
+                    Left =120
+                    Top =120
                     Width =3765
                     Height =285
                     BorderColor =8355711
@@ -389,16 +428,16 @@ Begin Form
                         0xb64d050d4af56e458d1c26bffe7a88aa
                     End
                     GridlineColor =10921638
-                    LayoutCachedLeft =113
-                    LayoutCachedTop =56
-                    LayoutCachedWidth =3878
-                    LayoutCachedHeight =341
+                    LayoutCachedLeft =120
+                    LayoutCachedTop =120
+                    LayoutCachedWidth =3885
+                    LayoutCachedHeight =405
                     ForeTint =100.0
                 End
                 Begin Label
                     OverlapFlags =85
-                    Left =170
-                    Top =2664
+                    Left =177
+                    Top =2728
                     Width =8850
                     Height =285
                     BorderColor =8355711
@@ -409,18 +448,19 @@ Begin Form
                         0xb0a58ef7e3886145aa9ff9aef6ba49bc
                     End
                     GridlineColor =10921638
-                    LayoutCachedLeft =170
-                    LayoutCachedTop =2664
-                    LayoutCachedWidth =9020
-                    LayoutCachedHeight =2949
+                    LayoutCachedLeft =177
+                    LayoutCachedTop =2728
+                    LayoutCachedWidth =9027
+                    LayoutCachedHeight =3013
                     ForeTint =100.0
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     TextAlign =1
                     IMESentenceMode =3
-                    Left =7365
-                    Top =570
+                    Left =7372
+                    Top =634
                     Width =966
                     Height =315
                     TabIndex =1
@@ -432,16 +472,16 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =7365
-                    LayoutCachedTop =570
-                    LayoutCachedWidth =8331
-                    LayoutCachedHeight =885
+                    LayoutCachedLeft =7372
+                    LayoutCachedTop =634
+                    LayoutCachedWidth =8338
+                    LayoutCachedHeight =949
                     ForeTint =100.0
                     Begin
                         Begin Label
                             OverlapFlags =85
-                            Left =7365
-                            Top =56
+                            Left =7372
+                            Top =120
                             Width =960
                             Height =315
                             BorderColor =8355711
@@ -451,19 +491,20 @@ Begin Form
                                 0x03d181557524f040a1458100c08a99dc
                             End
                             GridlineColor =10921638
-                            LayoutCachedLeft =7365
-                            LayoutCachedTop =56
-                            LayoutCachedWidth =8325
-                            LayoutCachedHeight =371
+                            LayoutCachedLeft =7372
+                            LayoutCachedTop =120
+                            LayoutCachedWidth =8332
+                            LayoutCachedHeight =435
                             ForeTint =100.0
                         End
                     End
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
-                    Left =8503
-                    Top =571
+                    Left =8510
+                    Top =635
                     Height =315
                     TabIndex =2
                     BorderColor =10921638
@@ -474,16 +515,16 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =8503
-                    LayoutCachedTop =571
-                    LayoutCachedWidth =10204
-                    LayoutCachedHeight =886
+                    LayoutCachedLeft =8510
+                    LayoutCachedTop =635
+                    LayoutCachedWidth =10211
+                    LayoutCachedHeight =950
                     ForeTint =100.0
                     Begin
                         Begin Label
                             OverlapFlags =85
-                            Left =8503
-                            Top =56
+                            Left =8510
+                            Top =120
                             Width =1695
                             Height =315
                             BorderColor =8355711
@@ -493,19 +534,20 @@ Begin Form
                                 0xc7ef45b768a482469325d8a99872cbed
                             End
                             GridlineColor =10921638
-                            LayoutCachedLeft =8503
-                            LayoutCachedTop =56
-                            LayoutCachedWidth =10198
-                            LayoutCachedHeight =371
+                            LayoutCachedLeft =8510
+                            LayoutCachedTop =120
+                            LayoutCachedWidth =10205
+                            LayoutCachedHeight =435
                             ForeTint =100.0
                         End
                     End
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
-                    Left =10374
-                    Top =571
+                    Left =10381
+                    Top =635
                     Height =315
                     TabIndex =3
                     BorderColor =10921638
@@ -516,16 +558,16 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =10374
-                    LayoutCachedTop =571
-                    LayoutCachedWidth =12075
-                    LayoutCachedHeight =886
+                    LayoutCachedLeft =10381
+                    LayoutCachedTop =635
+                    LayoutCachedWidth =12082
+                    LayoutCachedHeight =950
                     ForeTint =100.0
                     Begin
                         Begin Label
                             OverlapFlags =85
-                            Left =10374
-                            Top =56
+                            Left =10381
+                            Top =120
                             Width =1695
                             Height =315
                             BorderColor =8355711
@@ -535,19 +577,20 @@ Begin Form
                                 0x35c128727c8c614e87dbdf83bf112a4d
                             End
                             GridlineColor =10921638
-                            LayoutCachedLeft =10374
-                            LayoutCachedTop =56
-                            LayoutCachedWidth =12069
-                            LayoutCachedHeight =371
+                            LayoutCachedLeft =10381
+                            LayoutCachedTop =120
+                            LayoutCachedWidth =12076
+                            LayoutCachedHeight =435
                             ForeTint =100.0
                         End
                     End
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
-                    Left =12245
-                    Top =571
+                    Left =12252
+                    Top =635
                     Height =315
                     TabIndex =4
                     BorderColor =10921638
@@ -558,16 +601,16 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =12245
-                    LayoutCachedTop =571
-                    LayoutCachedWidth =13946
-                    LayoutCachedHeight =886
+                    LayoutCachedLeft =12252
+                    LayoutCachedTop =635
+                    LayoutCachedWidth =13953
+                    LayoutCachedHeight =950
                     ForeTint =100.0
                     Begin
                         Begin Label
                             OverlapFlags =85
-                            Left =12245
-                            Top =56
+                            Left =12252
+                            Top =120
                             Width =1695
                             Height =315
                             BorderColor =8355711
@@ -577,20 +620,21 @@ Begin Form
                                 0x6bc0b79b66b4fe4eb8a80bee3b160260
                             End
                             GridlineColor =10921638
-                            LayoutCachedLeft =12245
-                            LayoutCachedTop =56
-                            LayoutCachedWidth =13940
-                            LayoutCachedHeight =371
+                            LayoutCachedLeft =12252
+                            LayoutCachedTop =120
+                            LayoutCachedWidth =13947
+                            LayoutCachedHeight =435
                             ForeTint =100.0
                         End
                     End
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     TextAlign =1
                     IMESentenceMode =3
-                    Left =7374
-                    Top =3630
+                    Left =7381
+                    Top =3694
                     Width =951
                     Height =315
                     TabIndex =10
@@ -602,17 +646,18 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =7374
-                    LayoutCachedTop =3630
-                    LayoutCachedWidth =8325
-                    LayoutCachedHeight =3945
+                    LayoutCachedLeft =7381
+                    LayoutCachedTop =3694
+                    LayoutCachedWidth =8332
+                    LayoutCachedHeight =4009
                     ForeTint =100.0
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
-                    Left =8507
-                    Top =3630
+                    Left =8514
+                    Top =3694
                     Height =315
                     TabIndex =11
                     BorderColor =10921638
@@ -623,17 +668,18 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =8507
-                    LayoutCachedTop =3630
-                    LayoutCachedWidth =10208
-                    LayoutCachedHeight =3945
+                    LayoutCachedLeft =8514
+                    LayoutCachedTop =3694
+                    LayoutCachedWidth =10215
+                    LayoutCachedHeight =4009
                     ForeTint =100.0
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
-                    Left =10378
-                    Top =3630
+                    Left =10385
+                    Top =3694
                     Height =315
                     TabIndex =12
                     BorderColor =10921638
@@ -644,17 +690,18 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =10378
-                    LayoutCachedTop =3630
-                    LayoutCachedWidth =12079
-                    LayoutCachedHeight =3945
+                    LayoutCachedLeft =10385
+                    LayoutCachedTop =3694
+                    LayoutCachedWidth =12086
+                    LayoutCachedHeight =4009
                     ForeTint =100.0
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
-                    Left =12249
-                    Top =3630
+                    Left =12256
+                    Top =3694
                     Height =315
                     TabIndex =13
                     BorderColor =10921638
@@ -665,21 +712,22 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =12249
-                    LayoutCachedTop =3630
-                    LayoutCachedWidth =13950
-                    LayoutCachedHeight =3945
+                    LayoutCachedLeft =12256
+                    LayoutCachedTop =3694
+                    LayoutCachedWidth =13957
+                    LayoutCachedHeight =4009
                     ForeTint =100.0
                 End
                 Begin TextBox
                     Enabled = NotDefault
                     Locked = NotDefault
+                    TabStop = NotDefault
                     OldBorderStyle =0
                     OverlapFlags =85
                     TextAlign =1
                     IMESentenceMode =3
-                    Left =7374
-                    Top =3970
+                    Left =7381
+                    Top =4034
                     Width =2841
                     Height =315
                     TabIndex =15
@@ -691,16 +739,16 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =7374
-                    LayoutCachedTop =3970
-                    LayoutCachedWidth =10215
-                    LayoutCachedHeight =4285
+                    LayoutCachedLeft =7381
+                    LayoutCachedTop =4034
+                    LayoutCachedWidth =10222
+                    LayoutCachedHeight =4349
                     ForeTint =100.0
                 End
                 Begin Label
                     OverlapFlags =85
-                    Left =165
-                    Top =3000
+                    Left =172
+                    Top =3064
                     Width =8940
                     Height =480
                     FontSize =9
@@ -713,18 +761,19 @@ Begin Form
                         0xcbf4d3a99c575740a1a1eaf32db7d27d
                     End
                     GridlineColor =10921638
-                    LayoutCachedLeft =165
-                    LayoutCachedTop =3000
-                    LayoutCachedWidth =9105
-                    LayoutCachedHeight =3480
+                    LayoutCachedLeft =172
+                    LayoutCachedTop =3064
+                    LayoutCachedWidth =9112
+                    LayoutCachedHeight =3544
                     ForeTint =100.0
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     TextAlign =1
                     IMESentenceMode =3
-                    Left =7370
-                    Top =1700
+                    Left =7377
+                    Top =1764
                     Width =966
                     Height =315
                     TabIndex =6
@@ -736,17 +785,18 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =7370
-                    LayoutCachedTop =1700
-                    LayoutCachedWidth =8336
-                    LayoutCachedHeight =2015
+                    LayoutCachedLeft =7377
+                    LayoutCachedTop =1764
+                    LayoutCachedWidth =8343
+                    LayoutCachedHeight =2079
                     ForeTint =100.0
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
-                    Left =8508
-                    Top =1701
+                    Left =8515
+                    Top =1765
                     Height =315
                     TabIndex =7
                     BorderColor =10921638
@@ -757,17 +807,18 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =8508
-                    LayoutCachedTop =1701
-                    LayoutCachedWidth =10209
-                    LayoutCachedHeight =2016
+                    LayoutCachedLeft =8515
+                    LayoutCachedTop =1765
+                    LayoutCachedWidth =10216
+                    LayoutCachedHeight =2080
                     ForeTint =100.0
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
-                    Left =10379
-                    Top =1701
+                    Left =10386
+                    Top =1765
                     Height =315
                     TabIndex =8
                     BorderColor =10921638
@@ -778,17 +829,18 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =10379
-                    LayoutCachedTop =1701
-                    LayoutCachedWidth =12080
-                    LayoutCachedHeight =2016
+                    LayoutCachedLeft =10386
+                    LayoutCachedTop =1765
+                    LayoutCachedWidth =12087
+                    LayoutCachedHeight =2080
                     ForeTint =100.0
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
-                    Left =12250
-                    Top =1701
+                    Left =12257
+                    Top =1765
                     Height =315
                     TabIndex =9
                     BorderColor =10921638
@@ -799,17 +851,18 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =12250
-                    LayoutCachedTop =1701
-                    LayoutCachedWidth =13951
-                    LayoutCachedHeight =2016
+                    LayoutCachedLeft =12257
+                    LayoutCachedTop =1765
+                    LayoutCachedWidth =13958
+                    LayoutCachedHeight =2080
                     ForeTint =100.0
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
-                    Left =8724
-                    Top =4325
+                    Left =8731
+                    Top =4389
                     Width =5271
                     Height =315
                     TabIndex =16
@@ -821,15 +874,15 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =8724
-                    LayoutCachedTop =4325
-                    LayoutCachedWidth =13995
-                    LayoutCachedHeight =4640
+                    LayoutCachedLeft =8731
+                    LayoutCachedTop =4389
+                    LayoutCachedWidth =14002
+                    LayoutCachedHeight =4704
                     Begin
                         Begin Label
                             OverlapFlags =85
-                            Left =7365
-                            Top =4320
+                            Left =7372
+                            Top =4384
                             Width =1305
                             Height =315
                             BorderColor =8355711
@@ -840,19 +893,20 @@ Begin Form
                                 0x3029393688efe540b877aa4db23f3233
                             End
                             GridlineColor =10921638
-                            LayoutCachedLeft =7365
-                            LayoutCachedTop =4320
-                            LayoutCachedWidth =8670
-                            LayoutCachedHeight =4635
+                            LayoutCachedLeft =7372
+                            LayoutCachedTop =4384
+                            LayoutCachedWidth =8677
+                            LayoutCachedHeight =4699
                         End
                     End
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     TextAlign =1
                     IMESentenceMode =3
-                    Left =7369
-                    Top =4983
+                    Left =7376
+                    Top =5047
                     Width =951
                     Height =315
                     TabIndex =18
@@ -864,17 +918,18 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =7369
-                    LayoutCachedTop =4983
-                    LayoutCachedWidth =8320
-                    LayoutCachedHeight =5298
+                    LayoutCachedLeft =7376
+                    LayoutCachedTop =5047
+                    LayoutCachedWidth =8327
+                    LayoutCachedHeight =5362
                     ForeTint =100.0
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
-                    Left =8502
-                    Top =4983
+                    Left =8509
+                    Top =5047
                     Height =315
                     TabIndex =19
                     BorderColor =10921638
@@ -885,17 +940,18 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =8502
-                    LayoutCachedTop =4983
-                    LayoutCachedWidth =10203
-                    LayoutCachedHeight =5298
+                    LayoutCachedLeft =8509
+                    LayoutCachedTop =5047
+                    LayoutCachedWidth =10210
+                    LayoutCachedHeight =5362
                     ForeTint =100.0
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
-                    Left =10373
-                    Top =4983
+                    Left =10380
+                    Top =5047
                     Height =315
                     TabIndex =20
                     BorderColor =10921638
@@ -906,17 +962,18 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =10373
-                    LayoutCachedTop =4983
-                    LayoutCachedWidth =12074
-                    LayoutCachedHeight =5298
+                    LayoutCachedLeft =10380
+                    LayoutCachedTop =5047
+                    LayoutCachedWidth =12081
+                    LayoutCachedHeight =5362
                     ForeTint =100.0
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
-                    Left =12244
-                    Top =4983
+                    Left =12251
+                    Top =5047
                     Height =315
                     TabIndex =21
                     BorderColor =10921638
@@ -927,21 +984,22 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =12244
-                    LayoutCachedTop =4983
-                    LayoutCachedWidth =13945
-                    LayoutCachedHeight =5298
+                    LayoutCachedLeft =12251
+                    LayoutCachedTop =5047
+                    LayoutCachedWidth =13952
+                    LayoutCachedHeight =5362
                     ForeTint =100.0
                 End
                 Begin TextBox
                     Enabled = NotDefault
                     Locked = NotDefault
+                    TabStop = NotDefault
                     OldBorderStyle =0
                     OverlapFlags =85
                     TextAlign =1
                     IMESentenceMode =3
-                    Left =7374
-                    Top =5376
+                    Left =7381
+                    Top =5440
                     Width =2841
                     Height =315
                     TabIndex =22
@@ -953,17 +1011,18 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =7374
-                    LayoutCachedTop =5376
-                    LayoutCachedWidth =10215
-                    LayoutCachedHeight =5691
+                    LayoutCachedLeft =7381
+                    LayoutCachedTop =5440
+                    LayoutCachedWidth =10222
+                    LayoutCachedHeight =5755
                     ForeTint =100.0
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
-                    Left =8724
-                    Top =5735
+                    Left =8731
+                    Top =5799
                     Width =5271
                     Height =315
                     TabIndex =23
@@ -975,15 +1034,15 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =8724
-                    LayoutCachedTop =5735
-                    LayoutCachedWidth =13995
-                    LayoutCachedHeight =6050
+                    LayoutCachedLeft =8731
+                    LayoutCachedTop =5799
+                    LayoutCachedWidth =14002
+                    LayoutCachedHeight =6114
                     Begin
                         Begin Label
                             OverlapFlags =85
-                            Left =7365
-                            Top =5730
+                            Left =7372
+                            Top =5794
                             Width =1305
                             Height =315
                             BorderColor =8355711
@@ -994,10 +1053,10 @@ Begin Form
                                 0xdd5cdd2230ad854a8c67844097b57534
                             End
                             GridlineColor =10921638
-                            LayoutCachedLeft =7365
-                            LayoutCachedTop =5730
-                            LayoutCachedWidth =8670
-                            LayoutCachedHeight =6045
+                            LayoutCachedLeft =7372
+                            LayoutCachedTop =5794
+                            LayoutCachedWidth =8677
+                            LayoutCachedHeight =6109
                         End
                     End
                 End
@@ -1006,8 +1065,8 @@ Begin Form
                     IMESentenceMode =3
                     ColumnCount =4
                     ListWidth =6237
-                    Left =3969
-                    Top =6465
+                    Left =3976
+                    Top =6529
                     Width =2835
                     Height =315
                     TabIndex =24
@@ -1021,16 +1080,16 @@ Begin Form
                     ColumnWidths ="0;1701;2268;2268"
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =3969
-                    LayoutCachedTop =6465
-                    LayoutCachedWidth =6804
-                    LayoutCachedHeight =6780
+                    LayoutCachedLeft =3976
+                    LayoutCachedTop =6529
+                    LayoutCachedWidth =6811
+                    LayoutCachedHeight =6844
                     ForeShade =100.0
                     Begin
                         Begin Label
                             OverlapFlags =93
-                            Left =570
-                            Top =6465
+                            Left =577
+                            Top =6529
                             Width =3402
                             Height =315
                             BorderColor =8355711
@@ -1040,20 +1099,21 @@ Begin Form
                                 0xceb32631d7115546abfed65ef5eea361
                             End
                             GridlineColor =10921638
-                            LayoutCachedLeft =570
-                            LayoutCachedTop =6465
-                            LayoutCachedWidth =3972
-                            LayoutCachedHeight =6780
+                            LayoutCachedLeft =577
+                            LayoutCachedTop =6529
+                            LayoutCachedWidth =3979
+                            LayoutCachedHeight =6844
                             ForeTint =100.0
                         End
                     End
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     TextAlign =1
                     IMESentenceMode =3
-                    Left =7369
-                    Top =6468
+                    Left =7376
+                    Top =6532
                     Width =951
                     Height =315
                     TabIndex =25
@@ -1065,17 +1125,18 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =7369
-                    LayoutCachedTop =6468
-                    LayoutCachedWidth =8320
-                    LayoutCachedHeight =6783
+                    LayoutCachedLeft =7376
+                    LayoutCachedTop =6532
+                    LayoutCachedWidth =8327
+                    LayoutCachedHeight =6847
                     ForeTint =100.0
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
-                    Left =8502
-                    Top =6468
+                    Left =8509
+                    Top =6532
                     Height =315
                     TabIndex =26
                     BorderColor =10921638
@@ -1086,17 +1147,18 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =8502
-                    LayoutCachedTop =6468
-                    LayoutCachedWidth =10203
-                    LayoutCachedHeight =6783
+                    LayoutCachedLeft =8509
+                    LayoutCachedTop =6532
+                    LayoutCachedWidth =10210
+                    LayoutCachedHeight =6847
                     ForeTint =100.0
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
-                    Left =10373
-                    Top =6468
+                    Left =10380
+                    Top =6532
                     Height =315
                     TabIndex =27
                     BorderColor =10921638
@@ -1107,17 +1169,18 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =10373
-                    LayoutCachedTop =6468
-                    LayoutCachedWidth =12074
-                    LayoutCachedHeight =6783
+                    LayoutCachedLeft =10380
+                    LayoutCachedTop =6532
+                    LayoutCachedWidth =12081
+                    LayoutCachedHeight =6847
                     ForeTint =100.0
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
-                    Left =12244
-                    Top =6468
+                    Left =12251
+                    Top =6532
                     Height =315
                     TabIndex =28
                     BorderColor =10921638
@@ -1128,21 +1191,22 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =12244
-                    LayoutCachedTop =6468
-                    LayoutCachedWidth =13945
-                    LayoutCachedHeight =6783
+                    LayoutCachedLeft =12251
+                    LayoutCachedTop =6532
+                    LayoutCachedWidth =13952
+                    LayoutCachedHeight =6847
                     ForeTint =100.0
                 End
                 Begin TextBox
                     Enabled = NotDefault
                     Locked = NotDefault
+                    TabStop = NotDefault
                     OldBorderStyle =0
                     OverlapFlags =85
                     TextAlign =1
                     IMESentenceMode =3
-                    Left =7374
-                    Top =6861
+                    Left =7381
+                    Top =6925
                     Width =2841
                     Height =315
                     TabIndex =29
@@ -1154,17 +1218,18 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =7374
-                    LayoutCachedTop =6861
-                    LayoutCachedWidth =10215
-                    LayoutCachedHeight =7176
+                    LayoutCachedLeft =7381
+                    LayoutCachedTop =6925
+                    LayoutCachedWidth =10222
+                    LayoutCachedHeight =7240
                     ForeTint =100.0
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
-                    Left =8724
-                    Top =7220
+                    Left =8731
+                    Top =7284
                     Width =5271
                     Height =315
                     TabIndex =30
@@ -1176,15 +1241,15 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =8724
-                    LayoutCachedTop =7220
-                    LayoutCachedWidth =13995
-                    LayoutCachedHeight =7535
+                    LayoutCachedLeft =8731
+                    LayoutCachedTop =7284
+                    LayoutCachedWidth =14002
+                    LayoutCachedHeight =7599
                     Begin
                         Begin Label
                             OverlapFlags =85
-                            Left =7365
-                            Top =7215
+                            Left =7372
+                            Top =7279
                             Width =1305
                             Height =315
                             BorderColor =8355711
@@ -1195,17 +1260,17 @@ Begin Form
                                 0x6b8cfca2193a3f4aa5de663a128ae830
                             End
                             GridlineColor =10921638
-                            LayoutCachedLeft =7365
-                            LayoutCachedTop =7215
-                            LayoutCachedWidth =8670
-                            LayoutCachedHeight =7530
+                            LayoutCachedLeft =7372
+                            LayoutCachedTop =7279
+                            LayoutCachedWidth =8677
+                            LayoutCachedHeight =7594
                         End
                     End
                 End
                 Begin Label
                     OverlapFlags =85
-                    Left =570
-                    Top =6945
+                    Left =577
+                    Top =7009
                     Width =6705
                     Height =315
                     BorderColor =8355711
@@ -1216,15 +1281,15 @@ Begin Form
                         0xe41e601adf772c4195486779b7855363
                     End
                     GridlineColor =10921638
-                    LayoutCachedLeft =570
-                    LayoutCachedTop =6945
-                    LayoutCachedWidth =7275
-                    LayoutCachedHeight =7260
+                    LayoutCachedLeft =577
+                    LayoutCachedTop =7009
+                    LayoutCachedWidth =7282
+                    LayoutCachedHeight =7324
                 End
                 Begin Label
                     OverlapFlags =85
-                    Left =113
-                    Top =963
+                    Left =120
+                    Top =1027
                     Width =3405
                     Height =435
                     FontSize =8
@@ -1237,47 +1302,45 @@ Begin Form
                         0x11bc6e501029284fa3deef5183e75ef9
                     End
                     GridlineColor =10921638
-                    LayoutCachedLeft =113
-                    LayoutCachedTop =963
-                    LayoutCachedWidth =3518
-                    LayoutCachedHeight =1398
+                    LayoutCachedLeft =120
+                    LayoutCachedTop =1027
+                    LayoutCachedWidth =3525
+                    LayoutCachedHeight =1462
                 End
                 Begin ComboBox
+                    AutoExpand = NotDefault
+                    AllowAutoCorrect = NotDefault
                     OverlapFlags =87
                     IMESentenceMode =3
                     ColumnCount =4
                     ListWidth =6237
-                    Left =3969
-                    Top =7755
+                    Left =3976
+                    Top =7819
                     Width =2835
                     Height =315
                     TabIndex =31
                     BoundColumn =1
                     BorderColor =10921638
-                    ColumnInfo ="\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"10\";\"60\""
                     GUID = Begin
                         0x948584d674af5345872a290cc12f14fa
                     End
                     Name ="cbxFilterAdodbProblemStd"
                     RowSourceType ="Table/Query"
-                    RowSource ="SELECT TestSource_tProjekte.idProjekt, TestSource_tProjekte.ProjektNummer, TestS"
-                        "ource_tProjekte.ProjektName, TestSource_tFirmen.Firma FROM TestSource_tProjekte "
-                        "LEFT JOIN TestSource_tFirmen ON TestSource_tProjekte.fiProjektKunde = TestSource"
-                        "_tFirmen.idFirma ORDER BY TestSource_tProjekte.ProjektNummer, TestSource_tProjek"
-                        "te.ProjektName, TestSource_tFirmen.Firma;"
                     ColumnWidths ="0;1701;2268;2268"
+                    OnDblClick ="[Event Procedure]"
                     GridlineColor =10921638
+                    AllowValueListEdits =0
 
-                    LayoutCachedLeft =3969
-                    LayoutCachedTop =7755
-                    LayoutCachedWidth =6804
-                    LayoutCachedHeight =8070
+                    LayoutCachedLeft =3976
+                    LayoutCachedTop =7819
+                    LayoutCachedWidth =6811
+                    LayoutCachedHeight =8134
                     ForeShade =100.0
                     Begin
                         Begin Label
                             OverlapFlags =93
-                            Left =570
-                            Top =7755
+                            Left =577
+                            Top =7819
                             Width =3402
                             Height =315
                             BorderColor =8355711
@@ -1287,20 +1350,21 @@ Begin Form
                                 0x6d446881ef1b9f41a53d200399263d0d
                             End
                             GridlineColor =10921638
-                            LayoutCachedLeft =570
-                            LayoutCachedTop =7755
-                            LayoutCachedWidth =3972
-                            LayoutCachedHeight =8070
+                            LayoutCachedLeft =577
+                            LayoutCachedTop =7819
+                            LayoutCachedWidth =3979
+                            LayoutCachedHeight =8134
                             ForeTint =100.0
                         End
                     End
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     TextAlign =1
                     IMESentenceMode =3
-                    Left =7369
-                    Top =7758
+                    Left =7376
+                    Top =7822
                     Width =951
                     Height =315
                     TabIndex =32
@@ -1312,17 +1376,18 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =7369
-                    LayoutCachedTop =7758
-                    LayoutCachedWidth =8320
-                    LayoutCachedHeight =8073
+                    LayoutCachedLeft =7376
+                    LayoutCachedTop =7822
+                    LayoutCachedWidth =8327
+                    LayoutCachedHeight =8137
                     ForeTint =100.0
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
-                    Left =8502
-                    Top =7758
+                    Left =8509
+                    Top =7822
                     Height =315
                     TabIndex =33
                     BorderColor =10921638
@@ -1333,17 +1398,18 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =8502
-                    LayoutCachedTop =7758
-                    LayoutCachedWidth =10203
-                    LayoutCachedHeight =8073
+                    LayoutCachedLeft =8509
+                    LayoutCachedTop =7822
+                    LayoutCachedWidth =10210
+                    LayoutCachedHeight =8137
                     ForeTint =100.0
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
-                    Left =10373
-                    Top =7758
+                    Left =10380
+                    Top =7822
                     Height =315
                     TabIndex =34
                     BorderColor =10921638
@@ -1354,17 +1420,18 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =10373
-                    LayoutCachedTop =7758
-                    LayoutCachedWidth =12074
-                    LayoutCachedHeight =8073
+                    LayoutCachedLeft =10380
+                    LayoutCachedTop =7822
+                    LayoutCachedWidth =12081
+                    LayoutCachedHeight =8137
                     ForeTint =100.0
                 End
                 Begin TextBox
+                    TabStop = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
-                    Left =12244
-                    Top =7758
+                    Left =12251
+                    Top =7822
                     Height =315
                     TabIndex =35
                     BorderColor =10921638
@@ -1375,13 +1442,22 @@ Begin Form
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =12244
-                    LayoutCachedTop =7758
-                    LayoutCachedWidth =13945
-                    LayoutCachedHeight =8073
+                    LayoutCachedLeft =12251
+                    LayoutCachedTop =7822
+                    LayoutCachedWidth =13952
+                    LayoutCachedHeight =8137
                     ForeTint =100.0
                 End
             End
+        End
+        Begin FormFooter
+            Height =0
+            Name ="Formularfuß"
+            GUID = Begin
+                0x2c14c72ae8344b4fbeff104d790e17a8
+            End
+            AlternateBackThemeColorIndex =1
+            AlternateBackShade =95.0
         End
     End
 End
@@ -1413,10 +1489,15 @@ Option Compare Database
 Option Explicit
 
 Private WithEvents m_CbxFilterControlAuswahl As ComboboxFilterControl
+Attribute m_CbxFilterControlAuswahl.VB_VarHelpID = -1
 Private WithEvents m_CbxSearchControlFiltertext As ComboboxFilterControl
 Attribute m_CbxSearchControlFiltertext.VB_VarHelpID = -1
 Private WithEvents m_CbxSearchControlAdodb As ComboboxFilterControl
 Attribute m_CbxSearchControlAdodb.VB_VarHelpID = -1
+
+Private Sub cbxFilterAdodbProblemStd_DblClick(Cancel As Integer)
+   Debug.Print Me.cbxFilterAdodbProblemStd.RowSourceType
+End Sub
 
 Private Sub Form_Load()
    CheckTables 'Testtabellen prüfen und erzeugen, falls sie noch nicht vorhanden sind
@@ -1452,7 +1533,6 @@ Private Sub InitCbxFilterControls()
    rst.CursorLocation = adUseClient
    rst.Open Me.cbxFilter.RowSource, CurrentProject.Connection, adOpenDynamic, adLockOptimistic
    Set Me.cbxFilterAdodbProblemStd.Recordset = rst
-   
    
 End Sub
 

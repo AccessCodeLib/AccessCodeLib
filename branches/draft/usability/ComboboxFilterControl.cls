@@ -152,7 +152,17 @@ Private Sub CheckFilterValue(Optional ByVal FilterValue As Variant)
    If Not bolUseDataRecordset Then
       bolUseDataRecordset = FilterValueInBoundColumnData(FilterValue, Not m_Combobox.LimitToList)
    End If
-
+   
+   'Problem bei ADODB-Recordset:
+   With m_Combobox
+      Debug.Assert Nz(.Value = .Column(m_BoundColumnIndex), True)
+      If .Value <> .Column(m_BoundColumnIndex) Then
+         ' Column(x) zeigt einen Wert, obwohl .Value keinem Wert in der gebundenen Spalte entspricht
+         Debug.Print "Value = " & .Value, "Column(" & m_BoundColumnIndex & ") = " & .Column(m_BoundColumnIndex)
+         ' Wie kann man das vermeiden?
+      End If
+   End With
+   
    If bolUseDataRecordset Then
       If m_InSearchMode Then
          DeactivateSearchMode
@@ -206,13 +216,6 @@ Private Sub SetComboboxRecordset(ByRef rst As Object)
       End If
       
       Set .Recordset = rst
-      
-      'Problem bei ADODB-Recordset:
-      If .Value <> .Column(m_BoundColumnIndex) Then
-      ' Column(x) zeigt einen Wert, obwohl .Value keinem Wert in der gebundenen Spalte entspricht
-         Debug.Print "Value = " & .Value, "Column(" & m_BoundColumnIndex & ") = " & .Column(m_BoundColumnIndex)
-         Stop
-      End If
       
    End With
    
