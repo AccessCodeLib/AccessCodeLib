@@ -1,16 +1,19 @@
 Version =20
 VersionRequired =20
-Checksum =-949602665
+Checksum =1527530819
 Begin Form
+    RecordSelectors = NotDefault
+    AutoCenter = NotDefault
+    NavigationButtons = NotDefault
     DividingLines = NotDefault
-    AllowDesignChanges = NotDefault
     DefaultView =0
+    ViewsAllowed =1
     PictureAlignment =2
     DatasheetGridlinesBehavior =3
     GridY =10
     Width =14190
     DatasheetFontHeight =11
-    ItemSuffix =58
+    ItemSuffix =64
     Top =330
     Right =15975
     Bottom =9960
@@ -27,10 +30,10 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x0019e92f04000000010000001c5a27000e000000905c2700445a2700a38bd738 ,
+        0x000000000000000000000000a519772f0400000001000000485e20000e000000 ,
         0x010400069c00440353ef8001010009009a0b3408640001000f00580202000100 ,
-        0x5802030001004134009cca067c5c2700c49cca06745a270023872930e09cca06 ,
-        0x2a872930cbc50000000000000000000000000000010000000000000001000000 ,
+        0x580203000100413400000000bc60200008000000c8442d02a8602000c4442d02 ,
+        0xa05e200023870000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe230000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -61,23 +64,28 @@ Begin Form
     End
     PrtDevNames = Begin
         0x080013001b000100000000000000000000000000000000000000004672656550 ,
-        0x44465850313a00
+        0x44465850313a0000000000
     End
     OnLoad ="[Event Procedure]"
+    AllowDatasheetView =0
+    AllowPivotTableView =0
+    AllowPivotChartView =0
+    AllowPivotChartView =0
     FilterOnLoad =0
     ShowPageMargins =0
     DisplayOnSharePointSite =1
+    AllowLayoutView =0
     DatasheetAlternateBackColor =15921906
     DatasheetGridlinesColor12 =0
     FitToScreen =1
     AlternateBackShade =95.0
     PrtDevModeW = Begin
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x00000000009621009b62f575b638530afefffffffa53f0758564aa2f7865aa2f ,
+        0x0e00000034c22100b66aaa2f2b030028001699090000000054f43f2f90169909 ,
         0x01040006dc00440353ef8001010009009a0b3408640001000f00580202000100 ,
-        0x5802030001004100340000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000010000000000000001000000 ,
+        0x5802030001004100340000000c000000e8c1210000169909fb15990900000000 ,
+        0xd0962100000099097a7da8011496210002000000909a210015e1fa7602134d01 ,
+        0xfeffffffd35d0000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe230000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -109,7 +117,7 @@ Begin Form
     PrtDevNamesW = Begin
         0x04000f0017000100000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000460072006500650050004400460058005000 ,
-        0x31003a000000
+        0x31003a0000000000000000000000
     End
     
     Begin
@@ -148,12 +156,11 @@ Begin Form
             GridlineShade =65.0
         End
         Begin Section
-            Height =7700
+            Height =8220
             Name ="Detailbereich"
             GUID = Begin
                 0x629d3810bb44ce468768594373f8c283
             End
-            AutoHeight =1
             AlternateBackColor =15921906
             AlternateBackShade =95.0
             Begin
@@ -197,7 +204,7 @@ Begin Form
                             Height =315
                             BorderColor =8355711
                             Name ="Bezeichnungsfeld1"
-                            Caption ="Standard-Verhalten in Access"
+                            Caption ="Standard-Verwendung in Access"
                             GUID = Begin
                                 0x94d900947b1bf74d958a682b26f26ff4
                             End
@@ -334,17 +341,11 @@ Begin Form
                     TabIndex =17
                     BoundColumn =1
                     BorderColor =10921638
-                    ColumnInfo ="\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"10\";\"60\""
                     GUID = Begin
                         0x9563d613afb8154da810b873388b6a23
                     End
                     Name ="cbxFilterErweitert"
                     RowSourceType ="Table/Query"
-                    RowSource ="SELECT TestSource_tProjekte.idProjekt, TestSource_tProjekte.ProjektNummer, TestS"
-                        "ource_tProjekte.ProjektName, TestSource_tFirmen.Firma FROM TestSource_tProjekte "
-                        "LEFT JOIN TestSource_tFirmen ON TestSource_tProjekte.fiProjektKunde = TestSource"
-                        "_tFirmen.idFirma ORDER BY TestSource_tProjekte.ProjektNummer, TestSource_tProjek"
-                        "te.ProjektName, TestSource_tFirmen.Firma;"
                     ColumnWidths ="0;1701;2268;2268"
                     GridlineColor =10921638
 
@@ -1012,17 +1013,11 @@ Begin Form
                     TabIndex =24
                     BoundColumn =1
                     BorderColor =10921638
-                    ColumnInfo ="\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"10\";\"60\""
                     GUID = Begin
                         0xe85bef3204582344896aefd5bef6aa65
                     End
                     Name ="cbxFilterAdodbProblem"
                     RowSourceType ="Table/Query"
-                    RowSource ="SELECT TestSource_tProjekte.idProjekt, TestSource_tProjekte.ProjektNummer, TestS"
-                        "ource_tProjekte.ProjektName, TestSource_tFirmen.Firma FROM TestSource_tProjekte "
-                        "LEFT JOIN TestSource_tFirmen ON TestSource_tProjekte.fiProjektKunde = TestSource"
-                        "_tFirmen.idFirma ORDER BY TestSource_tProjekte.ProjektNummer, TestSource_tProjek"
-                        "te.ProjektName, TestSource_tFirmen.Firma;"
                     ColumnWidths ="0;1701;2268;2268"
                     GridlineColor =10921638
 
@@ -1211,20 +1206,20 @@ Begin Form
                     OverlapFlags =85
                     Left =570
                     Top =6945
-                    Width =6240
-                    Height =555
+                    Width =6705
+                    Height =315
                     BorderColor =8355711
                     ForeColor =8355711
                     Name ="Bezeichnungsfeld56"
-                    Caption =".Column(x) zeigt einen Wert an, obwohl .Value keinen Eintrag in Liste ist."
+                    Caption =".Column(x) zeigt einen Wert an, obwohl .Value kein Eintrag in Liste ist."
                     GUID = Begin
                         0xe41e601adf772c4195486779b7855363
                     End
                     GridlineColor =10921638
                     LayoutCachedLeft =570
                     LayoutCachedTop =6945
-                    LayoutCachedWidth =6810
-                    LayoutCachedHeight =7500
+                    LayoutCachedWidth =7275
+                    LayoutCachedHeight =7260
                 End
                 Begin Label
                     OverlapFlags =85
@@ -1246,6 +1241,145 @@ Begin Form
                     LayoutCachedTop =963
                     LayoutCachedWidth =3518
                     LayoutCachedHeight =1398
+                End
+                Begin ComboBox
+                    OverlapFlags =87
+                    IMESentenceMode =3
+                    ColumnCount =4
+                    ListWidth =6237
+                    Left =3969
+                    Top =7755
+                    Width =2835
+                    Height =315
+                    TabIndex =31
+                    BoundColumn =1
+                    BorderColor =10921638
+                    ColumnInfo ="\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"10\";\"60\""
+                    GUID = Begin
+                        0x948584d674af5345872a290cc12f14fa
+                    End
+                    Name ="cbxFilterAdodbProblemStd"
+                    RowSourceType ="Table/Query"
+                    RowSource ="SELECT TestSource_tProjekte.idProjekt, TestSource_tProjekte.ProjektNummer, TestS"
+                        "ource_tProjekte.ProjektName, TestSource_tFirmen.Firma FROM TestSource_tProjekte "
+                        "LEFT JOIN TestSource_tFirmen ON TestSource_tProjekte.fiProjektKunde = TestSource"
+                        "_tFirmen.idFirma ORDER BY TestSource_tProjekte.ProjektNummer, TestSource_tProjek"
+                        "te.ProjektName, TestSource_tFirmen.Firma;"
+                    ColumnWidths ="0;1701;2268;2268"
+                    GridlineColor =10921638
+
+                    LayoutCachedLeft =3969
+                    LayoutCachedTop =7755
+                    LayoutCachedWidth =6804
+                    LayoutCachedHeight =8070
+                    ForeShade =100.0
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            Left =570
+                            Top =7755
+                            Width =3402
+                            Height =315
+                            BorderColor =8355711
+                            Name ="Bezeichnungsfeld59"
+                            Caption ="... auch bei Standard-Verwendung"
+                            GUID = Begin
+                                0x6d446881ef1b9f41a53d200399263d0d
+                            End
+                            GridlineColor =10921638
+                            LayoutCachedLeft =570
+                            LayoutCachedTop =7755
+                            LayoutCachedWidth =3972
+                            LayoutCachedHeight =8070
+                            ForeTint =100.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextAlign =1
+                    IMESentenceMode =3
+                    Left =7369
+                    Top =7758
+                    Width =951
+                    Height =315
+                    TabIndex =32
+                    BorderColor =10921638
+                    Name ="Text60"
+                    ControlSource ="=[cbxFilterAdodbProblemStd].[Column](0)"
+                    GUID = Begin
+                        0x11c031d5887d7b42af9c61fe830aaf77
+                    End
+                    GridlineColor =10921638
+
+                    LayoutCachedLeft =7369
+                    LayoutCachedTop =7758
+                    LayoutCachedWidth =8320
+                    LayoutCachedHeight =8073
+                    ForeTint =100.0
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =8502
+                    Top =7758
+                    Height =315
+                    TabIndex =33
+                    BorderColor =10921638
+                    Name ="Text61"
+                    ControlSource ="=[cbxFilterAdodbProblemStd]"
+                    GUID = Begin
+                        0x43977c5dbc777a429fd17b96047da6e1
+                    End
+                    GridlineColor =10921638
+
+                    LayoutCachedLeft =8502
+                    LayoutCachedTop =7758
+                    LayoutCachedWidth =10203
+                    LayoutCachedHeight =8073
+                    ForeTint =100.0
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =10373
+                    Top =7758
+                    Height =315
+                    TabIndex =34
+                    BorderColor =10921638
+                    Name ="Text62"
+                    ControlSource ="=[cbxFilterAdodbProblemStd].[Column](2)"
+                    GUID = Begin
+                        0xf5a4ba4154f68643b0cbbc283c2c764a
+                    End
+                    GridlineColor =10921638
+
+                    LayoutCachedLeft =10373
+                    LayoutCachedTop =7758
+                    LayoutCachedWidth =12074
+                    LayoutCachedHeight =8073
+                    ForeTint =100.0
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =12244
+                    Top =7758
+                    Height =315
+                    TabIndex =35
+                    BorderColor =10921638
+                    Name ="Text63"
+                    ControlSource ="=[cbxFilterAdodbProblemStd].[Column](3)"
+                    GUID = Begin
+                        0x0498408fcc9b5e46924ae15568a7748c
+                    End
+                    GridlineColor =10921638
+
+                    LayoutCachedLeft =12244
+                    LayoutCachedTop =7758
+                    LayoutCachedWidth =13945
+                    LayoutCachedHeight =8073
+                    ForeTint =100.0
                 End
             End
         End
@@ -1300,7 +1434,7 @@ Private Sub InitCbxFilterControls()
    m_CbxFilterControlAuswahl.Init Me.cbxAuswahlErweitert, SearchColumns, CurrentDb.OpenRecordset(Me.cbxAuswahl.RowSource)
    
    Set m_CbxSearchControlFiltertext = New ComboboxFilterControl
-   m_CbxSearchControlFiltertext.Init Me.cbxFilterErweitert, SearchColumns, CurrentDb.OpenRecordset(Me.cbxAuswahl.RowSource)
+   m_CbxSearchControlFiltertext.Init Me.cbxFilterErweitert, SearchColumns, CurrentDb.OpenRecordset(Me.cbxFilter.RowSource)
    
    
    'ADODB-Variante
@@ -1308,11 +1442,16 @@ Private Sub InitCbxFilterControls()
    
    Set rst = New ADODB.Recordset
    rst.CursorLocation = adUseClient
-   rst.Open Me.cbxAuswahl.RowSource, CurrentProject.Connection, adOpenDynamic, adLockOptimistic
+   rst.Open Me.cbxFilter.RowSource, CurrentProject.Connection, adOpenDynamic, adLockOptimistic
    'Set rst.ActiveConnection = Nothing
    
    Set m_CbxSearchControlAdodb = New ComboboxFilterControl
    m_CbxSearchControlAdodb.Init Me.cbxFilterAdodbProblem, SearchColumns, rst
+   
+   Set rst = New ADODB.Recordset
+   rst.CursorLocation = adUseClient
+   rst.Open Me.cbxFilter.RowSource, CurrentProject.Connection, adOpenDynamic, adLockOptimistic
+   Set Me.cbxFilterAdodbProblemStd.Recordset = rst
    
    
 End Sub
