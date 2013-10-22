@@ -40,6 +40,7 @@ Private m_InSearchMode As Boolean
 
 Public Event Changed()
 Public Event EmptySearchRecordset(ByRef CancelSearch As Boolean)
+Public Event MissingDataRecordset(ByRef rs As Object)
 
 Public Sub Dispose()
    Set m_Combobox = Nothing
@@ -50,8 +51,8 @@ Public Sub Dispose()
 End Sub
 
 Public Sub Init(ByVal ComboboxRef As ComboBox, _
-                ByVal SearchColumns As Variant, _
-                ByVal DataRecordset As Object)
+       Optional ByVal SearchColumns As Variant, _
+       Optional ByVal DataRecordset As Object = Nothing)
 
    Const EventProcedurePropertyTag As String = "[Event Procedure]"
 
@@ -60,9 +61,7 @@ Public Sub Init(ByVal ComboboxRef As ComboBox, _
    With m_Combobox
    
       m_BoundColumnIndex = .BoundColumn - 1
-
-      Set m_DataRecordset = DataRecordset
-
+      
       If Len(.AfterUpdate) = 0 Then
          .AfterUpdate = EventProcedurePropertyTag
       End If
@@ -82,19 +81,21 @@ Public Sub Init(ByVal ComboboxRef As ComboBox, _
       If Len(.OnKeyDown) = 0 Then
          .OnKeyDown = EventProcedurePropertyTag
       End If
-
+      
    End With
 
-   m_SearchColumnArray = SearchColumns
+   If Not IsMissing(SearchColumns) Then
+      m_SearchColumnArray = SearchColumns
+   End If
+   
+   If Not DataRecordset Is Nothing Then
+      Set m_DataRecordset = DataRecordset
+   End If
 
 End Sub
 
 Private Sub m_Combobox_Enter()
-   With m_Combobox
-      If Len(.RowSource) = 0 Then
-         Set .Recordset = m_DataRecordset
-      End If
-   End With
+   CheckDataSource
 End Sub
 
 Private Sub m_Combobox_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -105,6 +106,10 @@ Private Sub m_Combobox_KeyDown(KeyCode As Integer, Shift As Integer)
          With m_Combobox
             If .LimitToList = False Or Len(.Text) = 0 Then
                .Text = m_Combobox.Text
+               If m_InSearchMode Then
+                  KeyCode = 0
+               End If
+               CheckDropDownStatus
             End If
          End With
    End Select
@@ -133,8 +138,41 @@ Private Sub m_Combobox_Exit(Cancel As Integer)
    'Ausstieg verhindern, bis der Suchmodus deaktiviert wurde
    ' (Ende Suchmodus = ein vorhandener Eintrag wurde ausgewählt oder Value ist NULL)
    If m_InSearchMode Then
-      m_Combobox.Dropdown
       Cancel = True
+      CheckDropDownStatus
+   End If
+End Sub
+
+Private Sub CheckDataSource()
+   With m_Combobox
+      If Len(.RowSource) = 0 Then
+         If m_DataRecordset Is Nothing Then
+            RaiseEvent MissingDataRecordset(m_DataRecordset)
+            If m_DataRecordset Is Nothing And Len(.RowSource) > 0 Then
+               UseRowSourceForDataRecordset
+               Exit Sub
+            End If
+         End If
+         Set .Recordset = m_DataRecordset
+      Else
+         UseRowSourceForDataRecordset
+      End If
+   End With
+End Sub
+
+Private Sub UseRowSourceForDataRecordset()
+   With m_Combobox
+      If .Recordset Is Nothing Then
+         Set m_DataRecordset = CurrentDb.OpenRecordset(.RowSource)
+      Else
+         Set m_DataRecordset = .Recordset
+      End If
+   End With
+End Sub
+
+Private Sub CheckDropDownStatus()
+   If m_InSearchMode Then
+      m_Combobox.Dropdown
    End If
 End Sub
 
@@ -215,6 +253,7 @@ Private Sub SetComboboxRecordset(ByRef rst As Object)
          End If
       End If
       
+      rst.MoveFirst
       Set .Recordset = rst
       
    End With
@@ -251,6 +290,7 @@ Private Function GetFilterRecordset(ByVal FilterValue As Variant, ByVal SearchCo
    Dim rst As Object 'DAO.Recordset oder ADODB.Recordset
    Dim FilterString As String
    Dim i As Long
+   Dim SearchColumns As Variant
    
    Set rst = m_Combobox.Recordset.Clone
    
@@ -259,8 +299,17 @@ Private Function GetFilterRecordset(ByVal FilterValue As Variant, ByVal SearchCo
       Exit Function
    End If
    
-   For i = LBound(SearchColumnArray) To UBound(SearchColumnArray)
-      FilterString = FilterString & " OR " & rst.Fields(SearchColumnArray(i)).Name & " like '" & FilterValue & "'"
+   If IsArray(SearchColumnArray) Then
+      SearchColumns = SearchColumnArray
+   Else
+      ReDim SearchColumns(rst.Fields.Count - 1)
+      For i = 0 To UBound(SearchColumns)
+         SearchColumns(i) = i
+      Next
+   End If
+   
+   For i = LBound(SearchColumns) To UBound(SearchColumns)
+      FilterString = FilterString & " OR " & rst.Fields(SearchColumns(i)).Name & " like '" & FilterValue & "'"
    Next
    If Len(FilterString) > 0 Then
       FilterString = Mid(FilterString, 5) ' " OR " abschneiden

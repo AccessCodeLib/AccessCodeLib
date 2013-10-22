@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =2106422269
+Checksum =-1108541726
 Begin Form
     RecordSelectors = NotDefault
     AutoCenter = NotDefault
@@ -31,10 +31,10 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x000000000000000000000000a5199b2f0400000001000000184a22000e000000 ,
+        0x0019582f0400000001000000ac5a11000e000000205d1100d45a1100a38bb538 ,
         0x010400069c00440353ef8001010009009a0b3408640001000f00580202000100 ,
-        0x5802030001004134000000008c4c220008000000c8441e07784c2200c4441e07 ,
-        0x704a220023870000000000000000000000000000010000000000000001000000 ,
+        0x58020300010041340044d2080c5d1100c444d208045b11002387982fe044d208 ,
+        0x2a87982ff4140000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe230000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -65,7 +65,7 @@ Begin Form
     End
     PrtDevNames = Begin
         0x080013001b000100000000000000000000000000000000000000004672656550 ,
-        0x44465850313a0000000000000000000000000000000000
+        0x44465850313a00
     End
     OnLoad ="[Event Procedure]"
     AllowDatasheetView =0
@@ -81,12 +81,12 @@ Begin Form
     FitToScreen =1
     AlternateBackShade =95.0
     PrtDevModeW = Begin
-        0x00000000009c23009b62f5757434a096fefffffffa53f0758564ce2f7865ce2f ,
-        0x0e00000074c82300b66ace2f2b030028001646070000000054f4632f90164607 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x01040006dc00440353ef8001010009009a0b3408640001000f00580202000100 ,
-        0x5802030001004100340000000c00000028c8230000164607fb15460700000000 ,
-        0x109d2300000046077a7dcc01549c230002000000d0a0230015e1fa7686d91a01 ,
-        0xfeffffffd35d0000000000000000000000000000010000000000000001000000 ,
+        0x5802030001004100340000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe230000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -118,8 +118,7 @@ Begin Form
     PrtDevNamesW = Begin
         0x04000f0017000100000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000460072006500650050004400460058005000 ,
-        0x31003a0000000000000000000000000000000000000000000000000000000000 ,
-        0x000000000000
+        0x31003a000000
     End
     
     Begin
@@ -380,11 +379,15 @@ Begin Form
                     TabIndex =17
                     BoundColumn =1
                     BorderColor =10921638
+                    ColumnInfo ="\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"10\";\"60\""
                     GUID = Begin
                         0x9563d613afb8154da810b873388b6a23
                     End
                     Name ="cbxFilterErweitert"
                     RowSourceType ="Table/Query"
+                    RowSource ="SELECT P.idProjekt, P.ProjektNummer, P.ProjektName, F.Firma FROM TestSource_tPro"
+                        "jekte AS P LEFT JOIN TestSource_tFirmen AS F ON P.fiProjektKunde = F.idFirma ORD"
+                        "ER BY P.ProjektNummer, P.ProjektName, F.Firma;"
                     ColumnWidths ="0;1701;2268;2268"
                     GridlineColor =10921638
 
@@ -1514,9 +1517,9 @@ Private Sub InitCbxFilterControls()
    Set m_CbxFilterControlAuswahl = New ComboboxFilterControl
    m_CbxFilterControlAuswahl.Init Me.cbxAuswahlErweitert, SearchColumns, CurrentDb.OpenRecordset(Me.cbxAuswahl.RowSource)
    
+   ' keine Recordset übergabe => Recordset der Combobox wird verwendet, Ohne Übergabe eines SuchArrays wird in den Spalten der Datenherkunft gesucht
    Set m_CbxSearchControlFiltertext = New ComboboxFilterControl
-   m_CbxSearchControlFiltertext.Init Me.cbxFilterErweitert, SearchColumns, CurrentDb.OpenRecordset(Me.cbxFilter.RowSource)
-   
+   m_CbxSearchControlFiltertext.Init Me.cbxFilterErweitert
    
    'ADODB-Variante
    Dim rst As ADODB.Recordset
