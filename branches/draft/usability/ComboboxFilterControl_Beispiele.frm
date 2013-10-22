@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =655614864
+Checksum =-949602665
 Begin Form
     DividingLines = NotDefault
     AllowDesignChanges = NotDefault
@@ -27,10 +27,10 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x000000000000000000000000a5190230040000000100000058242700e4e8d52f ,
+        0x0019e92f04000000010000001c5a27000e000000905c2700445a2700a38bd738 ,
         0x010400069c00440353ef8001010009009a0b3408640001000f00580202000100 ,
-        0x580203000100413400242700ba82423000000000c80cfe06b8262700c40cfe06 ,
-        0xb024270023870000000000000000000000000000010000000000000001000000 ,
+        0x5802030001004134009cca067c5c2700c49cca06745a270023872930e09cca06 ,
+        0x2a872930cbc50000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe230000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -61,7 +61,7 @@ Begin Form
     End
     PrtDevNames = Begin
         0x080013001b000100000000000000000000000000000000000000004672656550 ,
-        0x44465850313a0000000000
+        0x44465850313a00
     End
     OnLoad ="[Event Procedure]"
     FilterOnLoad =0
@@ -72,12 +72,12 @@ Begin Form
     FitToScreen =1
     AlternateBackShade =95.0
     PrtDevModeW = Begin
-        0x00000000006b28009b62f575b7d92452fefffffffa53f0758564353078653530 ,
-        0x0e00000084972800b66a35302b030028001677090000000054f4ca2f90167709 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x01040006dc00440353ef8001010009009a0b3408640001000f00580202000100 ,
-        0x5802030001004100340000000c0000003897280000167709fb15770900000000 ,
-        0x206c2800000077097a7d3301646b280002000000e06f280015e1fa7614108201 ,
-        0xfeffffffd35d0000000000000000000000000000010000000000000001000000 ,
+        0x5802030001004100340000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe230000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -109,7 +109,7 @@ Begin Form
     PrtDevNamesW = Begin
         0x04000f0017000100000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000460072006500650050004400460058005000 ,
-        0x31003a0000000000000000000000
+        0x31003a000000
     End
     
     Begin
@@ -1285,6 +1285,7 @@ Private WithEvents m_CbxSearchControlAdodb As ComboboxFilterControl
 Attribute m_CbxSearchControlAdodb.VB_VarHelpID = -1
 
 Private Sub Form_Load()
+   CheckTables 'Testtabellen prüfen und erzeugen, falls sie noch nicht vorhanden sind
    InitCbxFilterControls
 End Sub
 
@@ -1373,3 +1374,68 @@ Private Function GetFilterString(ByVal cbx As ComboBox) As String
    GetFilterString = FilterString
    
 End Function
+
+' ---- Test-Tabellen erzeugen
+Private Sub CheckTables()
+
+   Dim FirmenWerte(0, 2) As Variant
+   
+   FirmenWerte(0, 0) = "Josef Pötzl"
+   FirmenWerte(0, 1) = "Microsoft"
+   FirmenWerte(0, 2) = "Apple"
+   
+   Dim ProjektWerte(2, 4) As Variant
+   ProjektWerte(0, 0) = "AcLib-00001"
+   ProjektWerte(1, 0) = "Access Code Library"
+   ProjektWerte(2, 0) = 1
+
+   ProjektWerte(0, 1) = "UT-00001"
+   ProjektWerte(1, 1) = "AccUnit"
+   ProjektWerte(2, 1) = 1
+   
+   ProjektWerte(0, 2) = "AcLib-00002"
+   ProjektWerte(1, 2) = "AcLib Import Wizard"
+   ProjektWerte(2, 2) = 1
+   
+   ProjektWerte(0, 3) = "MS-00001"
+   ProjektWerte(1, 3) = "MS Office"
+   ProjektWerte(2, 3) = 2
+   
+   ProjektWerte(0, 4) = "AcLib-00003"
+   ProjektWerte(1, 4) = "ComboboxFilterControl"
+   ProjektWerte(2, 4) = 1
+
+
+   CheckTable "TestSource_tFirmen", "create table TestSource_tFirmen (idFirma AUTOINCREMENT PRIMARY KEY, Firma varchar(255))", FirmenWerte
+   CheckTable "TestSource_tProjekte", "create table TestSource_tProjekte (idProjekt AUTOINCREMENT PRIMARY KEY, ProjektNummer varchar(30), ProjektName varchar(255), fiProjektKunde int)", ProjektWerte
+
+   Application.RefreshDatabaseWindow
+   
+End Sub
+
+Private Sub CheckTable(ByVal TableName As String, ByVal TableDDL As String, ByVal TableValueArray As Variant)
+
+   Dim db As DAO.Database
+   Dim rst As DAO.Recordset
+   Dim TableExists As Boolean
+   
+   Set db = CurrentDb
+   Set rst = db.OpenRecordset("select Name from MSysObjects WHERE Name='" & TableName & "' AND Type IN (1, 4, 6)", dbOpenForwardOnly, dbReadOnly)
+   TableExists = Not rst.EOF
+   rst.Close
+   
+   If TableExists Then Exit Sub
+
+   db.Execute TableDDL
+   
+   Dim r As Long, c As Long
+   Set rst = db.OpenRecordset(TableName)
+   For r = 0 To UBound(TableValueArray, 2)
+      rst.AddNew
+      For c = 0 To UBound(TableValueArray, 1)
+         rst.Fields(c + 1).Value = TableValueArray(c, r)
+      Next
+      rst.Update
+   Next
+   
+End Sub
