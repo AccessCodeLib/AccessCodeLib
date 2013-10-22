@@ -79,56 +79,12 @@ Begin Form
     DatasheetAlternateBackColor =15921906
     DatasheetGridlinesColor12 =0
     FitToScreen =1
-    AlternateBackShade =95.0
-    PrtDevModeW = Begin
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x01040006dc00440353ef8001010009009a0b3408640001000f00580202000100 ,
-        0x5802030001004100340000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000010000000000000001000000 ,
-        0x0200000001000000000000000000000000000000000000000000000050524956 ,
-        0xe230000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000180000000000102710271027 ,
-        0x0000102700000000000000007000440300000000000000000000000000000000 ,
-        0x0000000000000000030000000000000000001000503403002888040000000000 ,
-        0x0000000000000100000000000000000000000000000000002401df8c03000000 ,
-        0x05000400ff000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0100000000000000000000000000000070000000534d544a0000000010006000 ,
-        0x46007200650065005000440046005f005800500000005265736f6c7574696f6e ,
-        0x00363030647069005061676553697a65004c6574746572005061676552656769 ,
-        0x6f6e000000000000000000000000000000000000000000000000000000000000
-    End
-    PrtDevNamesW = Begin
-        0x04000f0017000100000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000460072006500650050004400460058005000 ,
-        0x31003a000000
-    End
     
     Begin
         Begin Label
             BackStyle =0
             FontSize =11
             FontName ="Calibri"
-            BorderTint =50.0
-            ForeTint =50.0
-            GridlineShade =65.0
         End
         Begin TextBox
             AddColon = NotDefault
@@ -139,9 +95,6 @@ Begin Form
             FontSize =11
             FontName ="Calibri"
             AsianLineBreak =1
-            BorderShade =65.0
-            ForeTint =75.0
-            GridlineShade =65.0
         End
         Begin ComboBox
             AddColon = NotDefault
@@ -152,9 +105,6 @@ Begin Form
             FontName ="Calibri"
             AllowValueListEdits =1
             InheritValueList =1
-            BorderShade =65.0
-            ForeShade =50.0
-            GridlineShade =65.0
         End
         Begin FormHeader
             Height =510
@@ -163,10 +113,6 @@ Begin Form
             GUID = Begin
                 0xb37e18a4d9178a4e9a7b95ef23415b25
             End
-            AlternateBackThemeColorIndex =1
-            AlternateBackShade =95.0
-            BackThemeColorIndex =2
-            BackTint =20.0
             Begin
                 Begin Label
                     OverlapFlags =85
@@ -213,7 +159,6 @@ Begin Form
                 0x629d3810bb44ce468768594373f8c283
             End
             AlternateBackColor =15921906
-            AlternateBackShade =95.0
             Begin
                 Begin ComboBox
                     AllowAutoCorrect = NotDefault
@@ -246,7 +191,6 @@ Begin Form
                     LayoutCachedTop =634
                     LayoutCachedWidth =6808
                     LayoutCachedHeight =949
-                    ForeShade =100.0
                     Begin
                         Begin Label
                             OverlapFlags =93
@@ -265,7 +209,6 @@ Begin Form
                             LayoutCachedTop =634
                             LayoutCachedWidth =3979
                             LayoutCachedHeight =949
-                            ForeTint =100.0
                         End
                     End
                 End
@@ -298,7 +241,6 @@ Begin Form
                     LayoutCachedTop =3700
                     LayoutCachedWidth =6811
                     LayoutCachedHeight =4015
-                    ForeShade =100.0
                     Begin
                         Begin Label
                             OverlapFlags =93
@@ -317,7 +259,6 @@ Begin Form
                             LayoutCachedTop =3694
                             LayoutCachedWidth =3979
                             LayoutCachedHeight =4009
-                            ForeTint =100.0
                         End
                     End
                 End
@@ -344,7 +285,6 @@ Begin Form
                     LayoutCachedTop =1714
                     LayoutCachedWidth =6811
                     LayoutCachedHeight =2029
-                    ForeShade =100.0
                     Begin
                         Begin Label
                             OverlapFlags =93
@@ -363,7 +303,6 @@ Begin Form
                             LayoutCachedTop =1714
                             LayoutCachedWidth =3982
                             LayoutCachedHeight =2269
-                            ForeTint =100.0
                         End
                     End
                 End
@@ -395,7 +334,6 @@ Begin Form
                     LayoutCachedTop =5044
                     LayoutCachedWidth =6811
                     LayoutCachedHeight =5359
-                    ForeShade =100.0
                     Begin
                         Begin Label
                             OverlapFlags =93
@@ -414,7 +352,6 @@ Begin Form
                             LayoutCachedTop =5044
                             LayoutCachedWidth =3979
                             LayoutCachedHeight =5359
-                            ForeTint =100.0
                         End
                     End
                 End
@@ -435,7 +372,6 @@ Begin Form
                     LayoutCachedTop =120
                     LayoutCachedWidth =3885
                     LayoutCachedHeight =405
-                    ForeTint =100.0
                 End
                 Begin Label
                     OverlapFlags =85
@@ -455,7 +391,6 @@ Begin Form
                     LayoutCachedTop =2728
                     LayoutCachedWidth =9027
                     LayoutCachedHeight =3013
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -479,7 +414,6 @@ Begin Form
                     LayoutCachedTop =634
                     LayoutCachedWidth =8338
                     LayoutCachedHeight =949
-                    ForeTint =100.0
                     Begin
                         Begin Label
                             OverlapFlags =85
@@ -498,7 +432,6 @@ Begin Form
                             LayoutCachedTop =120
                             LayoutCachedWidth =8332
                             LayoutCachedHeight =435
-                            ForeTint =100.0
                         End
                     End
                 End
@@ -522,7 +455,6 @@ Begin Form
                     LayoutCachedTop =635
                     LayoutCachedWidth =10211
                     LayoutCachedHeight =950
-                    ForeTint =100.0
                     Begin
                         Begin Label
                             OverlapFlags =85
@@ -541,7 +473,6 @@ Begin Form
                             LayoutCachedTop =120
                             LayoutCachedWidth =10205
                             LayoutCachedHeight =435
-                            ForeTint =100.0
                         End
                     End
                 End
@@ -565,7 +496,6 @@ Begin Form
                     LayoutCachedTop =635
                     LayoutCachedWidth =12082
                     LayoutCachedHeight =950
-                    ForeTint =100.0
                     Begin
                         Begin Label
                             OverlapFlags =85
@@ -584,7 +514,6 @@ Begin Form
                             LayoutCachedTop =120
                             LayoutCachedWidth =12076
                             LayoutCachedHeight =435
-                            ForeTint =100.0
                         End
                     End
                 End
@@ -608,7 +537,6 @@ Begin Form
                     LayoutCachedTop =635
                     LayoutCachedWidth =13953
                     LayoutCachedHeight =950
-                    ForeTint =100.0
                     Begin
                         Begin Label
                             OverlapFlags =85
@@ -627,7 +555,6 @@ Begin Form
                             LayoutCachedTop =120
                             LayoutCachedWidth =13947
                             LayoutCachedHeight =435
-                            ForeTint =100.0
                         End
                     End
                 End
@@ -653,7 +580,6 @@ Begin Form
                     LayoutCachedTop =3694
                     LayoutCachedWidth =8332
                     LayoutCachedHeight =4009
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -675,7 +601,6 @@ Begin Form
                     LayoutCachedTop =3694
                     LayoutCachedWidth =10215
                     LayoutCachedHeight =4009
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -697,7 +622,6 @@ Begin Form
                     LayoutCachedTop =3694
                     LayoutCachedWidth =12086
                     LayoutCachedHeight =4009
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -719,7 +643,6 @@ Begin Form
                     LayoutCachedTop =3694
                     LayoutCachedWidth =13957
                     LayoutCachedHeight =4009
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     Enabled = NotDefault
@@ -746,7 +669,6 @@ Begin Form
                     LayoutCachedTop =4034
                     LayoutCachedWidth =10222
                     LayoutCachedHeight =4349
-                    ForeTint =100.0
                 End
                 Begin Label
                     OverlapFlags =85
@@ -768,7 +690,6 @@ Begin Form
                     LayoutCachedTop =3064
                     LayoutCachedWidth =9112
                     LayoutCachedHeight =3544
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -792,7 +713,6 @@ Begin Form
                     LayoutCachedTop =1764
                     LayoutCachedWidth =8343
                     LayoutCachedHeight =2079
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -814,7 +734,6 @@ Begin Form
                     LayoutCachedTop =1765
                     LayoutCachedWidth =10216
                     LayoutCachedHeight =2080
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -836,7 +755,6 @@ Begin Form
                     LayoutCachedTop =1765
                     LayoutCachedWidth =12087
                     LayoutCachedHeight =2080
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -858,7 +776,6 @@ Begin Form
                     LayoutCachedTop =1765
                     LayoutCachedWidth =13958
                     LayoutCachedHeight =2080
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -925,7 +842,6 @@ Begin Form
                     LayoutCachedTop =5047
                     LayoutCachedWidth =8327
                     LayoutCachedHeight =5362
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -947,7 +863,6 @@ Begin Form
                     LayoutCachedTop =5047
                     LayoutCachedWidth =10210
                     LayoutCachedHeight =5362
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -969,7 +884,6 @@ Begin Form
                     LayoutCachedTop =5047
                     LayoutCachedWidth =12081
                     LayoutCachedHeight =5362
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -991,7 +905,6 @@ Begin Form
                     LayoutCachedTop =5047
                     LayoutCachedWidth =13952
                     LayoutCachedHeight =5362
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     Enabled = NotDefault
@@ -1018,7 +931,6 @@ Begin Form
                     LayoutCachedTop =5440
                     LayoutCachedWidth =10222
                     LayoutCachedHeight =5755
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -1087,7 +999,6 @@ Begin Form
                     LayoutCachedTop =6529
                     LayoutCachedWidth =6811
                     LayoutCachedHeight =6844
-                    ForeShade =100.0
                     Begin
                         Begin Label
                             OverlapFlags =93
@@ -1106,7 +1017,6 @@ Begin Form
                             LayoutCachedTop =6529
                             LayoutCachedWidth =3979
                             LayoutCachedHeight =6844
-                            ForeTint =100.0
                         End
                     End
                 End
@@ -1132,7 +1042,6 @@ Begin Form
                     LayoutCachedTop =6532
                     LayoutCachedWidth =8327
                     LayoutCachedHeight =6847
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -1154,7 +1063,6 @@ Begin Form
                     LayoutCachedTop =6532
                     LayoutCachedWidth =10210
                     LayoutCachedHeight =6847
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -1176,7 +1084,6 @@ Begin Form
                     LayoutCachedTop =6532
                     LayoutCachedWidth =12081
                     LayoutCachedHeight =6847
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -1198,7 +1105,6 @@ Begin Form
                     LayoutCachedTop =6532
                     LayoutCachedWidth =13952
                     LayoutCachedHeight =6847
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     Enabled = NotDefault
@@ -1225,7 +1131,6 @@ Begin Form
                     LayoutCachedTop =6925
                     LayoutCachedWidth =10222
                     LayoutCachedHeight =7240
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -1338,7 +1243,6 @@ Begin Form
                     LayoutCachedTop =7819
                     LayoutCachedWidth =6811
                     LayoutCachedHeight =8134
-                    ForeShade =100.0
                     Begin
                         Begin Label
                             OverlapFlags =93
@@ -1357,7 +1261,6 @@ Begin Form
                             LayoutCachedTop =7819
                             LayoutCachedWidth =3979
                             LayoutCachedHeight =8134
-                            ForeTint =100.0
                         End
                     End
                 End
@@ -1383,7 +1286,6 @@ Begin Form
                     LayoutCachedTop =7822
                     LayoutCachedWidth =8327
                     LayoutCachedHeight =8137
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -1405,7 +1307,6 @@ Begin Form
                     LayoutCachedTop =7822
                     LayoutCachedWidth =10210
                     LayoutCachedHeight =8137
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -1427,7 +1328,6 @@ Begin Form
                     LayoutCachedTop =7822
                     LayoutCachedWidth =12081
                     LayoutCachedHeight =8137
-                    ForeTint =100.0
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -1449,7 +1349,6 @@ Begin Form
                     LayoutCachedTop =7822
                     LayoutCachedWidth =13952
                     LayoutCachedHeight =8137
-                    ForeTint =100.0
                 End
             End
         End
@@ -1459,8 +1358,6 @@ Begin Form
             GUID = Begin
                 0x2c14c72ae8344b4fbeff104d790e17a8
             End
-            AlternateBackThemeColorIndex =1
-            AlternateBackShade =95.0
         End
     End
 End
