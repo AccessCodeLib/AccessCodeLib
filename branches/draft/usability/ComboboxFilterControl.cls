@@ -38,9 +38,23 @@ Private m_SearchColumnArray As Variant
 
 Private m_InSearchMode As Boolean
 
+Private m_FilterValues As Collection
+
 Public Event Changed()
 Public Event EmptySearchRecordset(ByRef CancelSearch As Boolean)
 Public Event MissingDataRecordset(ByRef rs As Object)
+
+'Möglichkeiten für die Recordsetermittlung von außen (z. B. falls Filterkritien an eine MSSQL-SErver-Prozedur übergeben werden sollen)
+Public Event BeforeCreateSearchResultRecordset(ByVal FilterValue As Variant, ByVal FilterColumns As Variant, ByRef rs As Object)
+             ' rs = Rückgabemöglichkeit des zu verwendenden Recordsets
+
+Private Sub Class_Initialize()
+   Set m_FilterValues = New Collection
+End Sub
+
+Private Sub Class_Terminate()
+   Dispose
+End Sub
 
 Public Sub Dispose()
    Set m_Combobox = Nothing
@@ -143,6 +157,20 @@ Private Sub m_Combobox_Exit(Cancel As Integer)
    End If
 End Sub
 
+Private Property Get DataRecordset() As Object
+
+   If m_DataRecordset Is Nothing Then
+      RaiseEvent MissingDataRecordset(m_DataRecordset)
+      If m_DataRecordset Is Nothing And Len(m_Combobox.RowSource) > 0 Then
+         UseRowSourceForDataRecordset
+         Exit Sub
+      End If
+   End If
+   
+   Set DataRecordset = m_DataRecordset
+   
+End Property
+
 Private Sub CheckDataSource()
    With m_Combobox
       If Len(.RowSource) = 0 Then
@@ -227,7 +255,7 @@ Private Sub ActivateSearchMode(Optional ByVal FilterValue As Variant)
       m_SearchColumnArray = GetSearchColumnsFromCombobox
    End If
 
-   Set rst = GetFilterRecordset(FilterValue, m_SearchColumnArray)
+   Set rst = GetSeachResultRecordset(FilterValue, m_SearchColumnArray)
    If rst.EOF Then
       RaiseEvent EmptySearchRecordset(Cancel)
       If Cancel Then
@@ -247,6 +275,7 @@ End Sub
 Private Sub DeactivateSearchMode()
    m_InSearchMode = False
    SetComboboxRecordset m_DataRecordset
+   ClearFilterCollection
 End Sub
 
 Private Sub SetComboboxRecordset(ByRef rst As Object)
@@ -283,7 +312,7 @@ Private Function FilterValueInBoundColumnData(ByVal FilterValue As Variant, ByVa
    End If
    
    FilterColArray(0) = m_BoundColumnIndex
-   Set rst = GetFilterRecordset(FilterValue, FilterColArray)
+   Set rst = GetSeachResultRecordset(FilterValue, FilterColArray, False)
    If Not rst.EOF Then
       'rst.Close
       FilterValueInBoundColumnData = True
@@ -291,16 +320,28 @@ Private Function FilterValueInBoundColumnData(ByVal FilterValue As Variant, ByVa
    
 End Function
 
-Private Function GetFilterRecordset(ByVal FilterValue As Variant, ByVal SearchColumnArray As Variant) As Object 'DAO.Recordset
+Private Function GetSeachResultRecordset(ByVal FilterValue As Variant, ByVal SearchColumnArray As Variant, _
+                                Optional ByVal SaveFilterValue As Boolean = True) As Object 'DAO.Recordset
    
    Dim rst As Object 'DAO.Recordset oder ADODB.Recordset
    Dim FilterString As String
    Dim i As Long
    
+   If SaveFilterValue Then
+      AddFilterValueToFilterCollection FilterValue
+   End If
+   
+   RaiseEvent BeforeCreateSearchResultRecordset(FilterValue, SearchColumnArray, rst)
+   If Not (rst Is Nothing) Then
+   ' Abbruch, da rst von außen übergeben wurde
+      Set GetSeachResultRecordset = rst
+      Exit Function
+   End If
+
    Set rst = m_Combobox.Recordset.Clone
    
    If IsNull(FilterValue) Then
-      Set GetFilterRecordset = rst
+      Set GetSeachResultRecordset = rst
       Exit Function
    End If
    
@@ -320,9 +361,18 @@ Private Function GetFilterRecordset(ByVal FilterValue As Variant, ByVal SearchCo
       rst.Filter = FilterString
    End If
    
-   Set GetFilterRecordset = rst
+   Set GetSeachResultRecordset = rst
 
 End Function
+
+Private Sub AddFilterValueToFilterCollection(ByVal FilterValue As Variant)
+   m_FilterValues.Add FilterValue
+End Sub
+
+Private Sub ClearFilterCollection()
+   Set m_FilterValues = Nothing
+   Set m_FilterValues = New Collection
+End Sub
 
 Private Function GetSearchColumnsFromCombobox() As Variant()
    
@@ -349,3 +399,7 @@ Private Function GetSearchColumnsFromCombobox() As Variant()
    GetSearchColumnsFromCombobox = SearchColumns
    
 End Function
+
+Public Property Get FilterValues() As Collection
+   Set FilterValues = m_FilterValues
+End Property
