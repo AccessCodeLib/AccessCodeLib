@@ -220,7 +220,11 @@ Private Sub ActivateSearchMode(Optional ByVal FilterValue As Variant)
    Dim rst As Object 'DAO.Recordset oder ADODB.Recordset
 
    m_Combobox.Value = Null
-      
+
+   If Not IsArray(m_SearchColumnArray) Then
+      m_SearchColumnArray = GetSearchColumnsFromCombobox
+   End If
+
    Set rst = GetFilterRecordset(FilterValue, m_SearchColumnArray)
    If rst.EOF Then
       RaiseEvent EmptySearchRecordset(Cancel)
@@ -290,7 +294,6 @@ Private Function GetFilterRecordset(ByVal FilterValue As Variant, ByVal SearchCo
    Dim rst As Object 'DAO.Recordset oder ADODB.Recordset
    Dim FilterString As String
    Dim i As Long
-   Dim SearchColumns As Variant
    
    Set rst = m_Combobox.Recordset.Clone
    
@@ -299,17 +302,8 @@ Private Function GetFilterRecordset(ByVal FilterValue As Variant, ByVal SearchCo
       Exit Function
    End If
    
-   If IsArray(SearchColumnArray) Then
-      SearchColumns = SearchColumnArray
-   Else
-      ReDim SearchColumns(rst.Fields.Count - 1)
-      For i = 0 To UBound(SearchColumns)
-         SearchColumns(i) = i
-      Next
-   End If
-   
-   For i = LBound(SearchColumns) To UBound(SearchColumns)
-      FilterString = FilterString & " OR " & rst.Fields(SearchColumns(i)).Name & " like '" & FilterValue & "'"
+   For i = LBound(SearchColumnArray) To UBound(SearchColumnArray)
+      FilterString = FilterString & " OR " & rst.Fields(SearchColumnArray(i)).Name & " like '" & FilterValue & "'"
    Next
    If Len(FilterString) > 0 Then
       FilterString = Mid(FilterString, 5) ' " OR " abschneiden
@@ -326,4 +320,30 @@ Private Function GetFilterRecordset(ByVal FilterValue As Variant, ByVal SearchCo
    
    Set GetFilterRecordset = rst
 
+End Function
+
+Private Function GetSearchColumnsFromCombobox() As Variant()
+   
+   Dim SearchColumns() As Variant
+   Dim ColumnWidthArray() As String
+   Dim i As Long
+   Dim c As Long
+   
+   With m_Combobox
+      ColumnWidthArray = Split(.ColumnWidths, ";")
+      ReDim SearchColumns(UBound(ColumnWidthArray))
+      
+      For i = 0 To UBound(ColumnWidthArray)
+         If Val(ColumnWidthArray(i)) > 0 Then
+            SearchColumns(c) = i
+            c = c + 1
+         End If
+      Next
+      
+      ReDim Preserve SearchColumns(c - 1)
+   
+   End With
+   
+   GetSearchColumnsFromCombobox = SearchColumns
+   
 End Function
