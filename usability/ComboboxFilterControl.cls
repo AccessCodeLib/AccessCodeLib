@@ -37,6 +37,7 @@ Private m_BoundColumnIndex As Long
 Private m_SearchColumnArray As Variant
 
 Private m_InSearchMode As Boolean
+Private m_SearchRecordset As Object
 
 Private m_FilterValues As Collection
 
@@ -59,6 +60,7 @@ End Sub
 Public Sub Dispose()
    Set m_Combobox = Nothing
    Set m_DataRecordset = Nothing
+   Set m_SearchRecordset = Nothing
    m_BoundColumnIndex = 0
    m_SearchColumnArray = Array()
    m_InSearchMode = 0
@@ -113,7 +115,6 @@ Private Sub m_Combobox_Enter()
 End Sub
 
 Private Sub m_Combobox_KeyDown(KeyCode As Integer, Shift As Integer)
-
    Select Case KeyCode
       Case vbKeyReturn, vbKeyTab, vbKeyLeft, vbKeyRight
          'Damit Change-Ereignis auf jeden Fall eintritt
@@ -127,7 +128,6 @@ Private Sub m_Combobox_KeyDown(KeyCode As Integer, Shift As Integer)
             End If
          End With
    End Select
-   
 End Sub
 
 Private Sub m_Combobox_NotInList(NewData As String, Response As Integer)
@@ -138,7 +138,7 @@ End Sub
 Private Sub m_Combobox_AfterUpdate()
 
    With m_Combobox
-   
+
       CheckFilterValue .Value
       If Not m_InSearchMode Then
          RaiseEvent Changed
@@ -174,15 +174,8 @@ End Property
 Private Sub CheckDataSource()
    With m_Combobox
       If Len(.RowSource) = 0 Then
-         If m_DataRecordset Is Nothing Then
-            RaiseEvent MissingDataRecordset(m_DataRecordset)
-            If m_DataRecordset Is Nothing And Len(.RowSource) > 0 Then
-               UseRowSourceForDataRecordset
-               Exit Sub
-            End If
-         End If
-         Set .Recordset = m_DataRecordset
-      Else
+         SetComboboxDataSource DataRecordset
+      ElseIf .RowSourceType = "Table/Query" Then
          UseRowSourceForDataRecordset
       End If
    End With
@@ -219,23 +212,23 @@ Private Sub CheckFilterValue(Optional ByVal FilterValue As Variant)
       bolUseDataRecordset = FilterValueInBoundColumnData(FilterValue, Not m_Combobox.LimitToList)
    End If
    
-   'Problem bei ADODB-Recordset:
+   'Problem bei ADODB-Recordset + RowSourceType = "Table/Query":
    With m_Combobox
+      
       Debug.Assert Nz(.Value = .Column(m_BoundColumnIndex), True)
       If .Value <> .Column(m_BoundColumnIndex) Then
          ' Column(x) zeigt einen Wert, obwohl .Value keinem Wert in der gebundenen Spalte entspricht.
          ' Das tritt an dieser Stelle nur auf, wenn die Combox nicht aufgeklappt war, als Text eingeben wurde.
          ' Aber ist .Column(x) enthält spätestens nach dem Zuklappen der Combobox einen Wert.
          Debug.Print "Value = " & .Value, "Column(" & m_BoundColumnIndex & ") = " & .Column(m_BoundColumnIndex)
-         ' Wie kann man das vermeiden?
+         ' Wie kann man das vermeiden? => Problemumgehung: RowSourceType auf "Value List" einstellen.
       End If
+
    End With
    
    If bolUseDataRecordset Then
       If m_InSearchMode Then
          DeactivateSearchMode
-      Else
-      '   SetComboboxRecordset m_DataRecordset
       End If
       Exit Sub
    End If
@@ -260,40 +253,89 @@ Private Sub ActivateSearchMode(Optional ByVal FilterValue As Variant)
       RaiseEvent EmptySearchRecordset(Cancel)
       If Cancel Then
          If m_InSearchMode Then
-            Set rst = m_Combobox.Recordset
+            Set rst = m_SearchRecordset
          Else
             Set rst = m_DataRecordset
+            Set m_SearchRecordset = Nothing
          End If
       End If
+   Else
+      Set m_SearchRecordset = rst
    End If
    
    m_InSearchMode = True
-   SetComboboxRecordset rst
+   SetComboboxDataSource rst
    
 End Sub
 
 Private Sub DeactivateSearchMode()
    m_InSearchMode = False
-   SetComboboxRecordset m_DataRecordset
+   SetComboboxDataSource m_DataRecordset
+   Set m_SearchRecordset = Nothing
    ClearFilterCollection
 End Sub
 
-Private Sub SetComboboxRecordset(ByRef rst As Object)
+Private Sub SetComboboxDataSource(ByRef rst As Object)
 
    With m_Combobox
-   
-      If Not (.Recordset Is rst) Then
-         If Not (.Recordset Is m_DataRecordset) Then
-            .Recordset.Close
+
+      If .RowSourceType = "Value List" Then
+         .RowSource = GetValueListFromRecordset(rst)
+      Else
+         If .Recordset Is rst Then
+            Exit Sub
+         ElseIf Not .Recordset Is Nothing Then
+            If Not (.Recordset Is m_DataRecordset) Then
+               .Recordset.Close
+            End If
          End If
+         Set .Recordset = rst
       End If
-      
-      rst.MoveFirst
-      Set .Recordset = rst
       
    End With
    
 End Sub
+
+Private Function GetValueListFromRecordset(ByVal rst As Object) As String
+   If Not rst.BOF Then
+      rst.MoveFirst
+   End If
+
+   If TypeOf rst Is DAO.Recordset Then
+      GetValueListFromRecordset = GetValueListFromDaoRecordset(rst)
+   Else
+      GetValueListFromRecordset = rst.GetString(adClipString, , ";", ";")
+   End If
+
+End Function
+
+Private Function GetValueListFromDaoRecordset(ByVal rst As DAO.Recordset) As String
+   
+   Dim RecordValues() As Variant
+   Dim Values() As Variant
+   Dim MaxRowIndex As Long
+   Dim MaxFieldIndex As Long
+
+   rst.MoveLast
+   rst.MoveFirst
+   RecordValues = rst.GetRows(rst.RecordCount)
+
+   MaxFieldIndex = UBound(RecordValues, 1)
+   MaxRowIndex = UBound(RecordValues, 2)
+  
+   ReDim Values((MaxFieldIndex + 1) * (MaxRowIndex + 1) - 1)
+   
+   Dim c As Long, r As Long, i As Long
+   For r = 0 To MaxRowIndex
+      For c = 0 To MaxFieldIndex
+         Values(i) = RecordValues(c, r)
+         i = i + 1
+      Next
+   Next
+
+   GetValueListFromDaoRecordset = Join(Values, ";")
+
+End Function
 
 Private Function FilterValueInBoundColumnData(ByVal FilterValue As Variant, ByVal UseWildCardFilterOption As Boolean) As Boolean
 
@@ -314,7 +356,6 @@ Private Function FilterValueInBoundColumnData(ByVal FilterValue As Variant, ByVa
    FilterColArray(0) = m_BoundColumnIndex
    Set rst = GetSeachResultRecordset(FilterValue, FilterColArray, False)
    If Not rst.EOF Then
-      'rst.Close
       FilterValueInBoundColumnData = True
    End If
    
@@ -338,8 +379,14 @@ Private Function GetSeachResultRecordset(ByVal FilterValue As Variant, ByVal Sea
       Exit Function
    End If
 
-   Set rst = m_Combobox.Recordset.Clone
-   
+   If m_SearchRecordset Is Nothing Then
+      Set m_SearchRecordset = DataRecordset.Clone
+   End If
+   Set rst = m_SearchRecordset
+   If Not rst.BOF Then
+      rst.MoveFirst
+   End If
+
    If IsNull(FilterValue) Then
       Set GetSeachResultRecordset = rst
       Exit Function
