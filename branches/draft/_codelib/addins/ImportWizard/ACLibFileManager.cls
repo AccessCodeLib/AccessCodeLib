@@ -45,7 +45,7 @@ Attribute VB_Description = "Import/Export der Access-Objekte in/aus lokaler Code
 '     Grund: Type konnte nicht verwendet werden und eine extra Klasse ist (noch) zu umständlich
 '
 '---------------------------------------------------------------------------------------
-Option Compare Database
+Option Compare Text
 Option Explicit
 
 Private Const m_EXTENSION_KEY As String = "ACLibFileManager"
@@ -1164,22 +1164,18 @@ Private Sub getCodeLibInfoFromAccessObject(ByRef cli As CodeLibInfo, _
       Case AcObjectType.acModule
          vbcName = aoName
    
-      Case AcObjectType.acForm
-         DoCmd.OpenForm aoName, acDesign, , , , acHidden
-         Set tempForm = Forms(aoName)
-         If tempForm.HasModule Then
-            vbcName = "Form_" & Replace(aoName, " ", "_")
+      Case AcObjectType.acForm, AcObjectType.acReport
+         vbcName = "Form_" & Replace(aoName, " ", "_")
+         If Not CodeModuleExits(vbcName) Then
+            vbcName = vbNullString
          End If
-         DoCmd.Close acForm, aoName, acSaveNo
          
       Case AcObjectType.acReport
-         DoCmd.OpenReport aoName, acViewDesign, , , acHidden
-         Set tempReport = Reports(aoName)
-         If tempReport.HasModule Then
-            vbcName = "Report_" & Replace(aoName, " ", "_")
+         vbcName = "Report_" & Replace(aoName, " ", "_")
+         If Not CodeModuleExits(vbcName) Then
+            vbcName = vbNullString
          End If
-         DoCmd.Close acForm, aoName, acSaveNo
-         
+
       Case Else ' ... ???
       
    End Select
@@ -1197,6 +1193,20 @@ Private Sub getCodeLibInfoFromAccessObject(ByRef cli As CodeLibInfo, _
 #End If
 
 End Sub
+
+Private Function CodeModuleExits(ByVal CodeModuleName As String) As Boolean
+   
+   Dim vbc As VBComponent
+
+   For Each vbc In CurrentVbProject.VBComponents
+      Debug.Print vbc.Name, CodeModuleName
+      If vbc.Name = CodeModuleName Then
+         CodeModuleExits = True
+         Exit Function
+      End If
+   Next
+   
+End Function
 
 Public Function GetCodeLibInfoFromFilePath(ByVal filePath As String, Optional ByVal FindDependency As Boolean = True) As CodeLibInfo
    Dim cli As CodeLibInfo
