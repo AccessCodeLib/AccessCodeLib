@@ -1,0 +1,406 @@
+Version =20
+VersionRequired =20
+Checksum =1083565625
+Begin Report
+    LayoutForPrint = NotDefault
+    DividingLines = NotDefault
+    AllowDesignChanges = NotDefault
+    DefaultView =0
+    TabularCharSet =238
+    DateGrouping =1
+    GrpKeepTogether =1
+    PictureAlignment =2
+    DatasheetGridlinesBehavior =3
+    GridY =10
+    Width =11775
+    DatasheetFontHeight =11
+    ItemSuffix =17
+    Right =12030
+    Bottom =7995
+    RecSrcDt = Begin
+        0xf0dff7a12e1be440
+    End
+    GUID = Begin
+        0xfdfd62cc36857d44b419ce466e1e3874
+    End
+    DatasheetFontName ="Calibri"
+    PrtMip = Begin
+        0x3a0000003a0000003a0000003a00000000000000ff2d0000f939000001000000 ,
+        0x010000006801000000000000a10700000100000001000000
+    End
+    PrtDevMode = Begin
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x010403069c00980303ff0000010009009a0b3408640001000f00580202000100 ,
+        0x5802020000004134000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x220020017c031c00cad2f6720000000000000000000000000000000000000000 ,
+        0x0000000000000000090000000000000000000100000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x00000000000000000000000000000000000000000000000020010000534d544a ,
+        0x00000000100010017b00300046003400310033003000440044002d0031003900 ,
+        0x430037002d0037006100620036002d0039003900410031002d00390038003000 ,
+        0x4600300033004200320045004500340045007d000000496e70757442696e0046 ,
+        0x4f524d534f5552434500524553444c4c00556e69726573444c4c00496e746572 ,
+        0x6c656176696e67004f464600496d61676554797065004a5045474d6564004f72 ,
+        0x69656e746174696f6e00504f52545241495400436f6c6c617465004f46460052 ,
+        0x65736f6c7574696f6e004f7074696f6e3100506170657253697a65004c455454 ,
+        0x455200436f6c6f724d6f64650032346270700000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000001c0000005634444d ,
+        0x0100000000000000000000000000000000000000
+    End
+    PrtDevNames = Begin
+        0x0800290047000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x00000000000000504f525450524f4d50543a00
+    End
+    FilterOnLoad =0
+    DatasheetBackColor12 =16777215
+    FitToPage =1
+    DisplayOnSharePointSite =1
+    DatasheetAlternateBackColor =16053492
+    DatasheetGridlinesColor12 =15062992
+    FitToScreen =1
+    Begin
+        Begin Label
+            BackStyle =0
+            TextFontCharSet =238
+            FontSize =11
+            FontName ="Calibri"
+            LeftPadding =30
+            TopPadding =30
+            RightPadding =30
+            BottomPadding =30
+            GridlineStyleLeft =0
+            GridlineStyleTop =0
+            GridlineStyleRight =0
+            GridlineStyleBottom =0
+            GridlineWidthLeft =1
+            GridlineWidthTop =1
+            GridlineWidthRight =1
+            GridlineWidthBottom =1
+        End
+        Begin Rectangle
+            Width =850
+            Height =850
+            LeftPadding =30
+            TopPadding =30
+            RightPadding =30
+            BottomPadding =30
+            GridlineStyleLeft =0
+            GridlineStyleTop =0
+            GridlineStyleRight =0
+            GridlineStyleBottom =0
+            GridlineWidthLeft =1
+            GridlineWidthTop =1
+            GridlineWidthRight =1
+            GridlineWidthBottom =1
+        End
+        Begin Line
+            Width =1701
+            LeftPadding =30
+            TopPadding =30
+            RightPadding =30
+            BottomPadding =30
+            GridlineStyleLeft =0
+            GridlineStyleTop =0
+            GridlineStyleRight =0
+            GridlineStyleBottom =0
+            GridlineWidthLeft =1
+            GridlineWidthTop =1
+            GridlineWidthRight =1
+            GridlineWidthBottom =1
+        End
+        Begin Image
+            OldBorderStyle =0
+            SizeMode =3
+            PictureAlignment =2
+            Width =1701
+            Height =1701
+            LeftPadding =30
+            TopPadding =30
+            RightPadding =30
+            BottomPadding =30
+            GridlineStyleLeft =0
+            GridlineStyleTop =0
+            GridlineStyleRight =0
+            GridlineStyleBottom =0
+            GridlineWidthLeft =1
+            GridlineWidthTop =1
+            GridlineWidthRight =1
+            GridlineWidthBottom =1
+        End
+        Begin UnboundObjectFrame
+            OldBorderStyle =1
+            Width =4536
+            Height =2835
+            LeftPadding =30
+            TopPadding =30
+            RightPadding =30
+            BottomPadding =30
+            GridlineStyleLeft =0
+            GridlineStyleTop =0
+            GridlineStyleRight =0
+            GridlineStyleBottom =0
+            GridlineWidthLeft =1
+            GridlineWidthTop =1
+            GridlineWidthRight =1
+            GridlineWidthBottom =1
+        End
+        Begin PageHeader
+            Height =0
+            Name ="Seitenkopfbereich"
+            GUID = Begin
+                0x527f5afb94801e469eaf0951b90299d5
+            End
+            AutoHeight =1
+        End
+        Begin Section
+            KeepTogether = NotDefault
+            Height =5725
+            Name ="Detailbereich"
+            GUID = Begin
+                0x1da48eb6a663c642a4e092db7656dcab
+            End
+            Begin
+                Begin Label
+                    Left =4365
+                    Top =113
+                    Width =2835
+                    Height =1530
+                    FontSize =72
+                    Name ="Bezeichnungsfeld0"
+                    Caption ="TEST"
+                    GUID = Begin
+                        0xb26ebebe507eee40b975d1703026aec5
+                    End
+                    LayoutCachedLeft =4365
+                    LayoutCachedTop =113
+                    LayoutCachedWidth =7200
+                    LayoutCachedHeight =1643
+                End
+                Begin Line
+                    Left =225
+                    Top =1920
+                    Width =11353
+                    Name ="Linie5"
+                    GUID = Begin
+                        0xc66f7a091677634e9dc653ffeb4ef324
+                    End
+                    LayoutCachedLeft =225
+                    LayoutCachedTop =1920
+                    LayoutCachedWidth =11578
+                    LayoutCachedHeight =1920
+                End
+                Begin Line
+                    Left =225
+                    Top =2040
+                    Width =11353
+                    Name ="Linie6"
+                    GUID = Begin
+                        0x3370ee0f1374cb44877b802a782421f9
+                    End
+                    LayoutCachedLeft =225
+                    LayoutCachedTop =2040
+                    LayoutCachedWidth =11578
+                    LayoutCachedHeight =2040
+                End
+                Begin Line
+                    Left =226
+                    Top =2154
+                    Width =11353
+                    Name ="Linie7"
+                    GUID = Begin
+                        0x386f0d46a7ca0649bf72cfdfa98bf0b4
+                    End
+                    LayoutCachedLeft =226
+                    LayoutCachedTop =2154
+                    LayoutCachedWidth =11579
+                    LayoutCachedHeight =2154
+                End
+                Begin Rectangle
+                    Left =226
+                    Top =2381
+                    Width =1814
+                    Height =1360
+                    BackColor =5026082
+                    Name ="Rechteck8"
+                    GUID = Begin
+                        0xb268033aed87e847996f28c0b85c3578
+                    End
+                    LayoutCachedLeft =226
+                    LayoutCachedTop =2381
+                    LayoutCachedWidth =2040
+                    LayoutCachedHeight =3741
+                End
+                Begin Rectangle
+                    Left =1133
+                    Top =3004
+                    Width =1814
+                    Height =1360
+                    BackColor =2366701
+                    Name ="Rechteck9"
+                    GUID = Begin
+                        0xc877a6a4fe7dfd468215ae12439f4ae0
+                    End
+                    LayoutCachedLeft =1133
+                    LayoutCachedTop =3004
+                    LayoutCachedWidth =2947
+                    LayoutCachedHeight =4364
+                End
+                Begin Rectangle
+                    Left =2040
+                    Top =3627
+                    Width =1814
+                    Height =1360
+                    BackColor =8210719
+                    Name ="Rechteck10"
+                    GUID = Begin
+                        0x04b930252c72964ba576214922fe0abc
+                    End
+                    LayoutCachedLeft =2040
+                    LayoutCachedTop =3627
+                    LayoutCachedWidth =3854
+                    LayoutCachedHeight =4987
+                End
+                Begin Rectangle
+                    Left =4024
+                    Top =2381
+                    Width =1814
+                    Height =1360
+                    BackColor =5167783
+                    Name ="Rechteck11"
+                    GUID = Begin
+                        0x21c3d047ea524b4e832441667b9c9b37
+                    End
+                    LayoutCachedLeft =4024
+                    LayoutCachedTop =2381
+                    LayoutCachedWidth =5838
+                    LayoutCachedHeight =3741
+                End
+                Begin Rectangle
+                    Left =4931
+                    Top =3004
+                    Width =1814
+                    Height =1360
+                    BackColor =7961551
+                    Name ="Rechteck12"
+                    GUID = Begin
+                        0xd8c05f2bdbab2a428f8f5ad7d1cfb972
+                    End
+                    LayoutCachedLeft =4931
+                    LayoutCachedTop =3004
+                    LayoutCachedWidth =6745
+                    LayoutCachedHeight =4364
+                End
+                Begin Rectangle
+                    Left =5838
+                    Top =3627
+                    Width =1814
+                    Height =1360
+                    BackColor =11830108
+                    Name ="Rechteck13"
+                    GUID = Begin
+                        0x476455b4c27f42419bf3ecca5e354e0d
+                    End
+                    LayoutCachedLeft =5838
+                    LayoutCachedTop =3627
+                    LayoutCachedWidth =7652
+                    LayoutCachedHeight =4987
+                End
+                Begin Rectangle
+                    Left =7823
+                    Top =2381
+                    Width =1814
+                    Height =1360
+                    BackColor =14151142
+                    Name ="Rechteck14"
+                    GUID = Begin
+                        0xb322e1abb5985846beefcf9d3a23285d
+                    End
+                    LayoutCachedLeft =7823
+                    LayoutCachedTop =2381
+                    LayoutCachedWidth =9637
+                    LayoutCachedHeight =3741
+                End
+                Begin Rectangle
+                    Left =8730
+                    Top =3004
+                    Width =1814
+                    Height =1360
+                    BackColor =13816815
+                    Name ="Rechteck15"
+                    GUID = Begin
+                        0xd2e16b2dfb2a4e49a34fce32f7d02d3f
+                    End
+                    LayoutCachedLeft =8730
+                    LayoutCachedTop =3004
+                    LayoutCachedWidth =10544
+                    LayoutCachedHeight =4364
+                End
+                Begin Rectangle
+                    Left =9637
+                    Top =3627
+                    Width =1814
+                    Height =1360
+                    BackColor =15788753
+                    Name ="Rechteck16"
+                    GUID = Begin
+                        0x4fe95fcd83073248bade924420eecd96
+                    End
+                    LayoutCachedLeft =9637
+                    LayoutCachedTop =3627
+                    LayoutCachedWidth =11451
+                    LayoutCachedHeight =4987
+                End
+            End
+        End
+        Begin PageFooter
+            Height =0
+            Name ="Seitenfuﬂbereich"
+            GUID = Begin
+                0x854b1c330b5fb244990cfea7244a7c3f
+            End
+            AutoHeight =1
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+'---------------------------------------------------------------------------------------
+' Class: TestReport
+'---------------------------------------------------------------------------------------
+'/**
+' \author       Sten Schmidt
+' <summary>
+' Test-Report
+' </summary>
+' <remarks></remarks>
+'\ingroup usability
+'**/
+'---------------------------------------------------------------------------------------
+'<codelib>
+'  <file>_test/api/PdfCreator/TestReport.rpt</file>
+'</codelib>
+'---------------------------------------------------------------------------------------
+
+Option Compare Database
+Option Explicit
