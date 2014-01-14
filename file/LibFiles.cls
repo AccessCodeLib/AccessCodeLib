@@ -65,6 +65,25 @@ Private m_ReferencesUpdateAllowed As Boolean
 ' API
 '---------------------------------------------------------------------------------------------------
 
+Private Const MAX_PATH As Long = 260&
+Private Const CSIDL_FLAG_CREATE As Long = &H8000&
+Private Const CSIDL_FLAG_DONT_VERIFY As Long = &H4000&
+Private Const SHGFP_TYPE_CURRENT As Long = 0&
+
+Public Enum CSIDL_FOLDER
+   CSIDL_PERSONAL = &H5& ' Eigene Dateien
+   CSIDL_STARTUP = &H7& ' Autostart
+   CSIDL_APPDATA = &H1A& ' Anwendungsdaten
+   CSIDL_LOCAL_APPDATA = &H1C& ' Lokale Anwendungsdaten
+   CSIDL_COMMON_APPDATA = &H23& ' Anwendungsdaten (Allgemein)
+   CSIDL_WINDOWS = &H24& ' Windows
+   CSIDL_SYSTEM = &H25& ' Windows-System
+   CSIDL_PROGRAM_FILES = &H26& ' Programme
+   CSIDL_PROGRAM_FILESX86 = &H2A&
+   CSIDL_PROGRAM_FILES_COMMON = &H2B& ' Gemeinsame Dateien
+   CSIDL_PROGRAM_FILES_COMMONX86 = &H2C&
+End Enum
+
 #If VBA7 Then
 
    Private Declare PtrSafe Function GetFileVersionInfoSize Lib "version.dll" Alias "GetFileVersionInfoSizeA" ( _
@@ -90,6 +109,15 @@ Private m_ReferencesUpdateAllowed As Boolean
      ByVal Source As Long, _
      ByVal Length As Long)
 
+   Private Declare PtrSafe Function WNetGetConnection Lib "mpr.dll" Alias "WNetGetConnectionA" ( _
+         ByVal lpszLocalName As String, ByVal lpszRemoteName As String, cbRemoteName As Long) As Long
+
+   
+   Private Declare PtrSafe Function SHGetFolderPath Lib "shfolder" Alias "SHGetFolderPathA" ( _
+         ByVal hwndOwner As Long, ByVal nFolder As Long, _
+         ByVal hToken As Long, ByVal dwFlags As Long, _
+         ByVal pszPath As String) As Long
+
 #Else
 
    Private Declare Function GetFileVersionInfoSize Lib "version.dll" Alias "GetFileVersionInfoSizeA" ( _
@@ -114,8 +142,19 @@ Private m_ReferencesUpdateAllowed As Boolean
      Dest As Any, _
      ByVal Source As Long, _
      ByVal Length As Long)
+   
+   Private Declare Function WNetGetConnection Lib "mpr.dll" Alias "WNetGetConnectionA" ( _
+         ByVal lpszLocalName As String, ByVal lpszRemoteName As String, cbRemoteName As Long) As Long
+
+   Private Declare Function SHGetFolderPath Lib "shfolder" Alias "SHGetFolderPathA" ( _
+         ByVal hwndOwner As Long, ByVal nFolder As Long, _
+         ByVal hToken As Long, ByVal dwFlags As Long, _
+         ByVal pszPath As String) As Long
+
 
 #End If
+
+
 
 Private Type VS_FIXEDFILEINFO
   dwSignature As Long
@@ -139,8 +178,15 @@ Private Type FILEINFOOUT
 End Type
 '---------------------------------------------------------------------------------------------------
 
+#If UseAssemblyDebugFolder Then
+
+Private m_AssemblyDebugFolder As String
+Public Event GetAssemblyDebugFolder(ByRef AssemblyDebugFolder As String)
+
+#End If
+
 Private Sub Class_Initialize()
-   LibPath = DefaultLibPath
+   'LibPath = DefaultLibPath
    m_ReferencesUpdateAllowed = Not IsMDE
 End Sub
 
@@ -163,15 +209,50 @@ End Sub
 
 Friend Property Get DefaultLibPath() As String
 #If UseAssemblyDebugFolder Then
-   DefaultLibPath = CodeProject.Path & "\TestComLibSource\NetComClassLibrary\NetComClassLibrary\bin\Debug\"
+   If Len(AssemblyDebugFolder) > 0 Then
+      DefaultLibPath = AssemblyDebugFolder
+   Else
 #Else
-   DefaultLibPath = CodeProject.Path & "\lib\"
+      DefaultLibPath = ApplicationLibPath & "\lib\"
+#End If
+#If UseAssemblyDebugFolder Then
+   End If
 #End If
 End Property
 
-Friend Property Get LibPath() As String
-   LibPath = m_LibPath
+Private Function ApplicationLibPath() As String
+' MS.net-dlls laufen nicht in Netzwerkpfad
+
+   Dim p As String
+   p = CodeProject.Path
+   If p <> UNCPath(p) Then
+      p = GetSpecFolder(CSIDL_LOCAL_APPDATA) & "\" & ApplicationName
+   End If
+   ApplicationLibPath = p
+   
+End Function
+
+Private Function ApplicationName() As String
+   Dim s As String
+   s = Access.CodeProject.Name
+   s = VBA.Left$(s, VBA.InStrRev(s, ".") - 1)
+   ApplicationName = s
+End Function
+
+#If UseAssemblyDebugFolder Then
+   
+Friend Property Get AssemblyDebugFolder() As String
+   If Len(m_AssemblyDebugFolder) = 0 Then
+      RaiseEvent GetAssemblyDebugFolder(m_AssemblyDebugFolder)
+   End If
+   AssemblyDebugFolder = m_AssemblyDebugFolder
 End Property
+
+Friend Property Let AssemblyDebugFolder(ByVal NewValue As String)
+   m_AssemblyDebugFolder = NewValue
+End Property
+
+#End If
 
 '---------------------------------------------------------------------------------------
 ' Property: LibPath
@@ -186,6 +267,13 @@ End Property
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
+Friend Property Get LibPath() As String
+   If Len(m_LibPath) = 0 Then
+      m_LibPath = DefaultLibPath
+   End If
+   LibPath = m_LibPath
+End Property
+
 Friend Property Let LibPath(ByVal NewValue As String)
    If VBA.Right$(NewValue, 1) <> "\" Then
       NewValue = NewValue & "\"
@@ -326,7 +414,7 @@ Private Function GetFullFilePath(ByVal FileName As String, _
          Err.Raise vbObjectError, "GetFullFilePath", "Missing directory info"
       End If
    Else
-      DestinationFolder = Replace(DestinationFolder, m_TABLE_DATA_CurrentProjectPathCode, CurrentProject.Path)
+      DestinationFolder = Replace(DestinationFolder, m_TABLE_DATA_CurrentProjectPathCode, ApplicationLibPath)
    End If
 
    If VBA.Right$(DestinationFolder, 1) <> "\" Then
@@ -454,9 +542,18 @@ Public Sub ImportFileToTable(ByVal FileName As String, ByVal DestinationFolder A
    
 On Error GoTo HandleErr
 
+#If UseAssemblyDebugFolder Then
+   If Len(AssemblyDebugFolder) > 0 Then
+      FullFilePath = GetFullFilePath(FileName, AssemblyDebugFolder)
+      If ExternFilePath <> vbNullString Then FullFilePath = AssemblyDebugFolder & "\" & FileName
+   Else
+#Else
    FullFilePath = GetFullFilePath(FileName, DestinationFolder)
-   
    If ExternFilePath <> vbNullString Then FullFilePath = ExternFilePath & "\" & FileName
+#End If
+#If UseAssemblyDebugFolder Then
+   End If
+#End If
    
    If VBA.Len(VBA.Dir$(FullFilePath)) = 0 Then
       Err.Raise vbObjectError, "SaveAppFile", "file not found"
@@ -705,4 +802,57 @@ Private Function GetFileVersion(ByVal sFile As String) As String
    Else
       GetFileVersion = vbNullString
    End If
+End Function
+
+Private Function UNCPath(ByVal Path As String, Optional ByVal IgnoreErrors As Boolean = True) As String
+
+  Dim UNC As String * 512
+
+  If VBA.Len(Path) = 1 Then Path = Path & ":"
+
+  If WNetGetConnection(Left$(Path, 2), UNC, Len(UNC)) Then
+
+    ' API-Routine gibt Fehler zurück:
+    If IgnoreErrors Then
+      UNCPath = Path
+    Else
+      Err.Raise 5 ' Invalid procedure call or argument
+    End If
+
+  Else
+
+    ' Ergebnis zurückgeben:
+    UNCPath = Left$(UNC, InStr(UNC, vbNullChar) - 1) _
+            & Mid$(Path, 3)
+
+  End If
+
+End Function
+
+Public Function GetSpecFolder(ByVal lCSIDL As CSIDL_FOLDER, _
+      Optional ByVal bCreate As Boolean = False, _
+      Optional ByVal bVerify As Boolean = False) As String
+      
+   Dim sPath As String, RetVal As Long, lFlags As Long
+
+   sPath = VBA.String$(MAX_PATH, 0)
+   lFlags = lCSIDL
+   If bCreate Then lFlags = lFlags Or CSIDL_FLAG_CREATE
+   If Not bVerify Then lFlags = lFlags Or CSIDL_FLAG_DONT_VERIFY
+   RetVal = SHGetFolderPath(0, lFlags, 0, SHGFP_TYPE_CURRENT, sPath)
+   Select Case RetVal
+   Case 0
+      ' Verzeichnis gefunden
+      GetSpecFolder = VBA.Left$(sPath, InStr(1, sPath, Chr$(0)) - 1)
+   Case 1
+      ' lCSIDL ist gültig, aber das Verzeichnis existiert nicht
+      ' CSIDL_FLAG_CREATE erzeugt es automatisch
+      Err.Raise vbObjectError + 1, "GetSpecFolder", "Verzeichnis existiert nicht"
+   Case &H80070057
+      ' Ungültiges Verzeichnis
+      Err.Raise vbObjectError + 2, "GetSpecFolder", "Ungültiger Verzeichnisbezeichner (CSIDL)"
+   Case Else
+      Err.Raise vbObjectError + 999, "GetSpecFolder", "Unerwartete Rückgabe der API-Funktion SHGetFolderPath"
+   End Select
+
 End Function
