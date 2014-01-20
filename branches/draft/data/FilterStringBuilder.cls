@@ -42,6 +42,13 @@ Public Enum SqlRelationalOperators
    SQL_In = 1024
 End Enum
 
+Public Enum SqlFieldDataType
+   SQL_Boolean = 1
+   SQL_Numeric = 2
+   SQL_Text = 3
+   SQL_Date = 4
+End Enum
+
 Private Sub Class_Initialize()
    Set m_Items = New StringCollection
 End Sub
@@ -54,73 +61,49 @@ Public Property Get Self() As FilterStringBuilder
    Set Self = Me
 End Property
 
-Public Sub AddTextFilter(ByVal FieldName As String, ByVal Value As Variant, _
-                Optional ByVal RelationalOperator As SqlRelationalOperators = SQL_Equal, _
-                Optional ByVal Value2 As Variant = Null, _
-                Optional ByVal IgnoreValue As Variant = Null)
+Public Sub Add(ByVal FieldName As String, ByVal FieldDataType As SqlFieldDataType, _
+               ByVal Value As Variant, _
+      Optional ByVal RelationalOperator As SqlRelationalOperators = SQL_Equal, _
+      Optional ByVal Value2 As Variant = Null, _
+      Optional ByVal IgnoreValue As Variant = Null)
 
    If NullFilterOrEmptyFilterAdded(FieldName, Nz(Value, Value2), IgnoreValue) Then
       Exit Sub
    End If
 
-   If Len(Value) > 0 Then
-      AddFilterItem FieldName, RelationalOperator, SqlTools.TextToSqlText(Value), SqlTools.TextToSqlText(Value2)
-   End If
+   m_Items.Add "(" & BuildCriteria(FieldName, FieldDataType, RelationalOperator, Value, Value2) & ")"
 
 End Sub
 
-Public Sub AddNumericFilter(ByVal FieldName As String, ByVal Value As Variant, _
-                   Optional ByVal RelationalOperator As SqlRelationalOperators = SQL_Equal, _
-                   Optional ByVal Value2 As Variant = Null, _
-                   Optional ByVal IgnoreValue As Variant = Null)
-
-   If NullFilterOrEmptyFilterAdded(FieldName, Nz(Value, Value2), IgnoreValue) Then
-      Exit Sub
-   End If
-
-   AddFilterItem FieldName, RelationalOperator, SqlTools.NumberToSqlText(Value), SqlTools.NumberToSqlText(Value2)
-
-End Sub
-
-Public Sub AddDateFilter(ByVal FieldName As String, ByVal Value As Variant, _
-                Optional ByVal RelationalOperator As SqlRelationalOperators = SQL_Equal, _
-                Optional ByVal Value2 As Variant = Null, _
-                Optional ByVal IgnoreValue As Variant = Null)
-   
-   If NullFilterOrEmptyFilterAdded(FieldName, Nz(Value, Value2), IgnoreValue) Then
-      Exit Sub
-   End If
-
-   If Len(Value) > 0 Then
-      AddFilterItem FieldName, RelationalOperator, SqlTools.DateToSqlText(Value), SqlTools.DateToSqlText(Value2)
-   End If
-
-End Sub
-
-Private Sub AddFilterItem(ByVal FieldName As String, _
-                          ByVal RelationalOperator As SqlRelationalOperators, _
-                          ByVal FilterValueString As String, _
-                          ByVal FilterValue2String As String)
-   m_Items.Add BuildCriteria(FieldName, RelationalOperator, FilterValueString, FilterValue2String)
-End Sub
-
-Private Function BuildCriteria(ByVal FieldName As String, _
+Private Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As SqlFieldDataType, _
                                ByVal RelationalOperator As SqlRelationalOperators, _
-                               ByVal FilterValueString As String, _
-                      Optional ByVal FilterValue2String As String = vbNullString) As String
+                               ByVal FilterValue As Variant, _
+                      Optional ByVal FilterValue2 As Variant = Null) As String
 
+   Dim FilterValueString As String
+   Dim FilterValue2String As String
    Dim OperatorString As String
    Dim Criteria As String
-
+   
    If (RelationalOperator And SQL_In) = SQL_In Then
-      BuildCriteria = FieldName & " In (" & FilterValueString & ")"
+      If IsArray(FilterValue) Then
+         BuildCriteria = FieldName & " In (" & GetValueArrayString(FilterValue, FieldDataType, ",") & ")"
+      ElseIf VarType(FilterValue) = vbString Then ' Value ist bereits die Auflistung als String
+         BuildCriteria = FieldName & " In (" & FilterValue & ")"
+      Else
+         BuildCriteria = FieldName & " In (" & GetFilterValueString(FilterValue, FieldDataType) & ")"
+      End If
       Exit Function
    End If
 
+   FilterValueString = GetFilterValueString(FilterValue, FieldDataType)
+   FilterValue2String = GetFilterValueString(FilterValue2, FieldDataType)
+      
+
    If (RelationalOperator And SQL_Between) = SQL_Between Then
-      If FilterValue2String = "NULL" Then
+      If IsNull(FilterValue2) Or IsMissing(FilterValue2) Then
          RelationalOperator = SQL_GreaterThan + SQL_Equal
-      ElseIf FilterValueString = "NULL" Then
+      ElseIf IsNull(FilterValue) Then
          RelationalOperator = SQL_LessThan + SQL_Equal
          FilterValueString = FilterValue2String
       Else
@@ -156,6 +139,35 @@ Private Function BuildCriteria(ByVal FieldName As String, _
 
 End Function
 
+Private Function GetValueArrayString(ByVal Value As Variant, ByVal FieldDataType As SqlFieldDataType, ByVal Delimiter As String) As String
+   
+   Dim i As Long
+
+   With New StringCollection
+      For i = LBound(Value) To UBound(Value)
+         .Add GetFilterValueString(Value(i), FieldDataType)
+      Next
+      GetValueArrayString = .ToString(Delimiter)
+   End With
+
+End Function
+
+Private Function GetFilterValueString(ByVal Value As Variant, ByVal FieldDataType As SqlFieldDataType) As String
+
+   Select Case FieldDataType
+      Case SqlFieldDataType.SQL_Numeric
+         GetFilterValueString = SqlTools.NumberToSqlText(Value)
+      Case SqlFieldDataType.SQL_Text
+         GetFilterValueString = SqlTools.TextToSqlText(Value)
+      Case SqlFieldDataType.SQL_Date
+         GetFilterValueString = SqlTools.DateToSqlText(Value)
+      Case SqlFieldDataType.SQL_Boolean
+         GetFilterValueString = SqlTools.BooleanToSqlText(Value)
+      Case Else
+         Err.Raise vbObjectError, "FilterStringBuilder.GetFilterValueString", "SqlFieldDataType '" & FieldDataType & "' wird nicht unterstützt."
+
+   End Select
+End Function
 
 Private Function NullFilterOrEmptyFilterAdded(ByVal FieldName As String, ByVal Value As Variant, ByVal IgnoreValue As Variant) As Boolean
    
@@ -164,34 +176,17 @@ Private Function NullFilterOrEmptyFilterAdded(ByVal FieldName As String, ByVal V
          m_Items.Add FieldName & " Is Null"
       End If
       NullFilterOrEmptyFilterAdded = True
+   ElseIf IsArray(Value) Then
+      Dim a() As Variant
+      a = Value
+      If (0 / 1) + (Not Not a) = 0 Then ' leerer Array
+         NullFilterOrEmptyFilterAdded = True
+      End If
    ElseIf Value = IgnoreValue Then
       NullFilterOrEmptyFilterAdded = True
    End If
 
 End Function
-
-Public Sub AddFilterFromListboxSelectedItems( _
-                 ByVal FieldName As String, ByVal lst As ListBox, ByVal ColumnIndexToAdd As Long, _
-        Optional ByVal FieldValuePrefix As String = vbNullString)
-   
-   Dim FilterValues As String
-
-   If lst.ItemsSelected.Count = 0 Then
-      Exit Sub
-   End If
-
-   With New StringCollection
-      .AddFromArray GetSelectedListboxItemArray(lst, ColumnIndexToAdd)
-      FilterValues = .ToString(", ", FieldValuePrefix, FieldValuePrefix)
-   End With
-
-   If Len(FilterValues) = 0 Then
-      Exit Sub
-   End If
-
-   m_Items.Add FieldName & " In (" & FilterValues & ")"
-
-End Sub
 
 Public Function ToString(Optional ByVal Delimiter As String = " AND ") As String
    ToString = m_Items.ToString(Delimiter)

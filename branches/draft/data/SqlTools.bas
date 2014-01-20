@@ -1,5 +1,4 @@
 Attribute VB_Name = "SqlTools"
-Attribute VB_Description = "SQL-Hilfsfunktionen"
 '---------------------------------------------------------------------------------------
 ' Modul: SqlTools
 '---------------------------------------------------------------------------------------
@@ -33,7 +32,12 @@ End Enum
 Public Const SQL_DEFAULT_TEXTDELIMITER As String = "'"
 Public Const SQL_DEFAULT_DATEFORMAT As String = "" ' => SqlDateFormat wird verwendet.
                                                    '    Zum Deaktivieren Wert eintragen (z. B. "\#yyyy\-mm\-dd\#")
+Public Const SQL_DEFAULT_BOOLTRUESTRING As String = "" ' => SqlBooleanTrueString wird verwendet.
+                                                   '    Zum Deaktivieren Wert eintragen (z. B. "1")
+
+
 Public SqlDateFormat As String
+Public SqlBooleanTrueString As String
 
 Private Const ResultTextIfNull As String = "NULL"
 
@@ -115,7 +119,6 @@ End Function
 ' Zahl für SQL-Text aufbereiten
 ' </summary>
 ' <param name="Value">Übergabewert</param>
-' <param name="ValueIfNull">Ersatzstring bei NULL (Standard = "NULL")</param>
 ' <returns>String</returns>
 ' <remarks>
 ' Durch Str-Funktion wird . statt , verwendet.
@@ -137,5 +140,43 @@ Public Function NumberToSqlText(ByVal Value As Variant) As String
    End If
    
    NumberToSqlText = Result
+   
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: BooleanToSqlText
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Boolean für SQL-Text aufbereiten
+' </summary>
+' <param name="Value">Übergabewert</param>
+' <returns>String</returns>
+' <remarks>
+' Durch Str-Funktion wird . statt , verwendet.
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function BooleanToSqlText(ByVal Value As Variant, _
+                        Optional ByVal TrueString As String = SQL_DEFAULT_BOOLTRUESTRING) As String
+
+   Dim Result As String
+
+   If IsNull(Value) Then
+      BooleanToSqlText = ResultTextIfNull
+      Exit Function
+   End If
+
+   If Value = True Then
+      If Len(TrueString) = 0 Then
+         TrueString = SqlBooleanTrueString
+         If Len(TrueString) = 0 Then
+            Err.Raise SqlToolsErrorNumbers.ERRNR_NOCONFIG, "BooleanToSqlText", "boolean string for true is not defined"
+         End If
+      End If
+      BooleanToSqlText = TrueString
+   Else
+      BooleanToSqlText = "0"
+   End If
    
 End Function
