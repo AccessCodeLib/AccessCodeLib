@@ -23,10 +23,11 @@ Attribute VB_Exposed = False
 '  <file>data/FilterStringBuilder.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>text/StringCollection.cls</use>
+'  <use>data/SqlTools.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
-Option Compare Database
+Option Compare Text
 Option Explicit
 
 Private m_Items As StringCollection
@@ -58,7 +59,7 @@ Public Sub AddTextFilter(ByVal FieldName As String, ByVal Value As Variant, _
                 Optional ByVal Value2 As Variant = Null, _
                 Optional ByVal IgnoreValue As Variant = Null)
 
-   If NullFilterOrEmptyFilterAdded(FieldName, Value, IgnoreValue) Then
+   If NullFilterOrEmptyFilterAdded(FieldName, Nz(Value, Value2), IgnoreValue) Then
       Exit Sub
    End If
 
@@ -73,7 +74,7 @@ Public Sub AddNumericFilter(ByVal FieldName As String, ByVal Value As Variant, _
                    Optional ByVal Value2 As Variant = Null, _
                    Optional ByVal IgnoreValue As Variant = Null)
 
-   If NullFilterOrEmptyFilterAdded(FieldName, Value, IgnoreValue) Then
+   If NullFilterOrEmptyFilterAdded(FieldName, Nz(Value, Value2), IgnoreValue) Then
       Exit Sub
    End If
 
@@ -86,7 +87,7 @@ Public Sub AddDateFilter(ByVal FieldName As String, ByVal Value As Variant, _
                 Optional ByVal Value2 As Variant = Null, _
                 Optional ByVal IgnoreValue As Variant = Null)
    
-   If NullFilterOrEmptyFilterAdded(FieldName, Value, IgnoreValue) Then
+   If NullFilterOrEmptyFilterAdded(FieldName, Nz(Value, Value2), IgnoreValue) Then
       Exit Sub
    End If
 
@@ -117,8 +118,15 @@ Private Function BuildCriteria(ByVal FieldName As String, _
    End If
 
    If (RelationalOperator And SQL_Between) = SQL_Between Then
-      BuildCriteria = FieldName & " Between " & FilterValueString & " And " & FilterValue2String
-      Exit Function
+      If FilterValue2String = "NULL" Then
+         RelationalOperator = SQL_GreaterThan + SQL_Equal
+      ElseIf FilterValueString = "NULL" Then
+         RelationalOperator = SQL_LessThan + SQL_Equal
+         FilterValueString = FilterValue2String
+      Else
+         BuildCriteria = FieldName & " Between " & FilterValueString & " And " & FilterValue2String
+         Exit Function
+      End If
    End If
 
    If (RelationalOperator And SQL_Like) = SQL_Like Then
