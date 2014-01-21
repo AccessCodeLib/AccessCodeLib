@@ -99,3 +99,7 @@ End Sub
 Public Sub GetFileExtension_FilePath_ReturnsFileExtension(ByVal filePath As String, ByVal Expected As String)
     Assert.That FileTools.GetFileExtension(filePath), Iz.EqualTo(Expected)
 End Sub
+
+Public Sub FileExists_EmptyPath_ReturnsFalse()
+    Assert.IsFalse FileTools.FileExists(vbNullString)
+End Sub
