@@ -349,10 +349,11 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Function FileExists(ByVal FullPath As String) As Boolean
 
-   Do While Right$(FullPath, 1) = "\"
-      FullPath = Left$(FullPath, Len(FullPath) - 1)
+   Do While VBA.Right$(FullPath, 1) = "\"
+      FullPath = VBA.Left$(FullPath, Len(FullPath) - 1)
    Loop
-   FileExists = (Len(Dir$(FullPath, vbReadOnly Or vbHidden Or vbSystem)) > 0)
+
+   FileExists = (VBA.Len(VBA.Dir$(FullPath, vbReadOnly Or vbHidden Or vbSystem)) > 0) And (VBA.Len(FullPath) > 0)
       '6 = vbNormal or vbHidden or vbSystem
 
 End Function
