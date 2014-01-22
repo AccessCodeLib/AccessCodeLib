@@ -81,3 +81,12 @@ End Sub
 Private Sub m_EventBridge_FilterValuesChanged(ByVal FilterControlRef As FilterControl)
    RaiseEvent FilterValuesChanged
 End Sub
+
+Public Sub Clear()
+
+   Set m_EventBridge = Nothing
+   Set m_FilterControls = Nothing
+   Set m_FilterControls = New Collection
+   Set m_EventBridge = New FilterControlEventBridge
+   
+End Sub
