@@ -9,7 +9,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Attribute VB_Description = "Import/Export der Access-Objekte in/aus lokaler Code-Bibliothek"
 '---------------------------------------------------------------------------------------
-' Klassenmodul: ACLibFileManager (Josef Pötzl, 2009-12-11)
+' Klassenmodul: ACLibFileManager (Josef Pötzl)
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -119,7 +119,7 @@ Private m_LocalRepositoryRootDirectory As String   ' Lokales Root-Verzeichnis fü
 Private m_PrivateRepositoryRootDirectory As String ' Lokales Root-Verzeichnis für privaten Repository-Export
 
 ' Events
-Public Event PropertyMissingLocalRepositoryRootDirectory(ByRef newValue As String)
+Public Event PropertyMissingLocalRepositoryRootDirectory(ByRef NewValue As String)
 Public Event ImportRepositoryFile(ByVal ObjectName As String, ByVal RepositoryFile As String, _
                                   ByVal ElementType As CodeLibElementType, ByRef Dependency As Variant, _
                                   ByRef ImportFile As Object, ByRef Cancel As Integer)
@@ -700,7 +700,7 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
       Set tempFile = fso.GetFile(filePath)
       addMissingFile tempFile, clim_ImportMissingItems
    End If
-   
+
    'Erforderliche Module (USE-Block)
    If ImportMode <> clim_ImportSelectedOnly Then
       If (0 / 1) + (Not Not m_cli.Dependency) Then
@@ -951,6 +951,14 @@ Private Sub importVbComponent(ByRef cli As CodeLibInfo, ByRef ImportFile As Obje
       End If
    Next
 
+   If codeModuleExists Then   ' überprüfen, ob Typen übereinstimmen
+      If vbc.Type <> cli.Type Then
+         vbcCol.Remove vbc
+         Set vbc = Nothing
+         codeModuleExists = False
+      End If
+   End If
+
    If codeModuleExists Then ' Inhalt über CodeModule ändern, damit MS-Add-In für Quellcodeverwaltung keine Schwierigkeiten macht
       Set cm = vbc.CodeModule
       cm.DeleteLines 1, cm.CountOfLines
@@ -1196,7 +1204,11 @@ End Sub
 
 Private Function CodeModuleExits(ByVal CodeModuleName As String) As Boolean
    
+#If EARLYBINDING Then
    Dim vbc As VBComponent
+#Else
+   Dim vbc As Object
+#End If
 
    For Each vbc In CurrentVbProject.VBComponents
       Debug.Print vbc.Name, CodeModuleName

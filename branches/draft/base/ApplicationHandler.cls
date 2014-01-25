@@ -469,8 +469,8 @@ Public Function GetTransferValue(Optional ByVal vValueIfNull As Variant = Null, 
    If Not bolNoDel Then m_varTransferValue = Null
 End Function
 
-Public Sub SetTransferValue(ByVal newValue As Variant)
-   m_varTransferValue = newValue
+Public Sub SetTransferValue(ByVal NewValue As Variant)
+   m_varTransferValue = NewValue
 End Sub
 
 Public Property Get PublicPath() As String

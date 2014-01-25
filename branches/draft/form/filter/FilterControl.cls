@@ -22,7 +22,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>form/filter/FilterControl.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>data/SqlTools.bas</use>
+'  <use>data/SqlTools.cls</use>
 '  <use>form/filter/FilterControlEventBridge.cls<</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -32,6 +32,7 @@ Option Explicit
 
 Private m_EventBridge As FilterControlEventBridge
 Attribute m_EventBridge.VB_VarHelpID = -1
+Private m_SqlTool As SqlTools
 
 Private m_DataField As String
 Private m_DataType As SqlFieldDataType
@@ -129,6 +130,35 @@ Friend Property Set EventBridge(ByVal NewRef As FilterControlEventBridge)
 
 End Property
 
+
+Friend Property Get SqlTool() As SqlTools
+   If m_SqlTool Is Nothing Then
+      Set m_SqlTool = SqlTools.Clone
+   End If
+   Set SqlTool = m_SqlTool
+End Property
+
+Friend Property Set SqlTool(ByVal NewRef As SqlTools)
+   Set m_SqlTool = NewRef
+End Property
+
+Friend Sub ConfigSqlFormat(ByVal SqlDateFormat As String, _
+                           ByVal SqlBooleanTrueString As String, _
+                           ByVal SqlWildCardString As String)
+   
+   If m_SqlTool Is Nothing Then
+      Set m_SqlTool = SqlTools.NewInstance(SqlDateFormat, SqlBooleanTrueString, SqlWildCardString)
+      Exit Sub
+   End If
+
+   With SqlTool
+      .SqlDateFormat = SqlDateFormat
+      .SqlBooleanTrueString = SqlBooleanTrueString
+      .SqlWildCardString = SqlWildCardString
+   End With
+
+End Sub
+
 Private Sub RaiseFilterValueChanged()
    If m_EventBridge Is Nothing Then Exit Sub
    m_EventBridge.RaiseFilterValueChanged Me
@@ -220,9 +250,9 @@ End Property
 
 Public Property Get CriteriaString() As String
    If m_SubFilterControls Is Nothing Then
-      CriteriaString = SqlTools.BuildCriteria(m_DataField, m_DataType, m_RelationalOperator, GetControlValue(Control), GetControlValue(Control2), IgnoreValue)
+      CriteriaString = SqlTool.BuildCriteria(m_DataField, m_DataType, m_RelationalOperator, GetControlValue(Control), GetControlValue(Control2), IgnoreValue)
    Else
-      CriteriaString = SqlTools.BuildCriteria(m_DataField, m_DataType, m_RelationalOperator, GetSubControlsValues, , IgnoreValue)
+      CriteriaString = SqlTool.BuildCriteria(m_DataField, m_DataType, m_RelationalOperator, GetSubControlsValues, , IgnoreValue)
    End If
 End Property
 

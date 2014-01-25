@@ -1,9 +1,5 @@
 Attribute VB_Name = "_config_Application"
 '---------------------------------------------------------------------------------------
-' Modul: defConfig (Josef Pötzl, 2009-12-11)
-'---------------------------------------------------------------------------------------
-' Indiviuell gestaltete Config-Module nicht in das Repositiory laden.
-'---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/ImportWizard/_config_Application.bas</file>
 '  <replace>base/_config_Application.bas</replace> 'dieses Modul ersetzt base/_config_Application.bas
@@ -24,7 +20,7 @@ Option Compare Database
 Option Explicit
 
 'Versionsnummer
-Private Const m_ApplicationVersion As String = "1.0.6" '2013-08-01
+Private Const m_ApplicationVersion As String = "1.0.8" '2014-01-25
 
 #Const USE_CLASS_ApplicationHandler_AppFile = 1
 #Const USE_CLASS_ApplicationHandler_DirTextbox = 1
