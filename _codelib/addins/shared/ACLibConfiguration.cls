@@ -212,10 +212,10 @@ Public Property Get ImportTestsDefaultValue() As Boolean
 
 End Property
 
-Public Property Let ImportTestsDefaultValue(ByVal newValue As Boolean)
+Public Property Let ImportTestsDefaultValue(ByVal NewValue As Boolean)
 
-   m_ImportTestDefaultValue = Abs(newValue) + 1
-   setACLibGlobalProperty m_PROPNAME_ImportTestDefaultValue, Abs(newValue)
+   m_ImportTestDefaultValue = Abs(NewValue) + 1
+   setACLibGlobalProperty m_PROPNAME_ImportTestDefaultValue, Abs(NewValue)
 
 End Property
 
@@ -235,7 +235,7 @@ Private Function getACLibGlobalProperty(ByRef PropertyName As String) As String
 
 End Function
 
-Private Function setACLibGlobalProperty(ByRef PropertyName As String, ByRef newValue As String) As String
+Private Function setACLibGlobalProperty(ByRef PropertyName As String, ByRef NewValue As String) As String
    
    Dim rst As DAO.Recordset
    Dim strSQL As String
@@ -248,7 +248,7 @@ Private Function setACLibGlobalProperty(ByRef PropertyName As String, ByRef newV
    Else
       rst.Edit
    End If
-   rst.Fields(m_SQL_CONFIG_TABLE_FIELD_PropValue).Value = newValue
+   rst.Fields(m_SQL_CONFIG_TABLE_FIELD_PropValue).Value = NewValue
    rst.Update
    rst.Close
  

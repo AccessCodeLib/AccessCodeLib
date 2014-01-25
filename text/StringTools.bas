@@ -200,8 +200,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Contains(ByVal checkValue As String, ByVal searchValue As String) As Boolean
-    Contains = VBA.InStr(1, checkValue, searchValue, vbTextCompare) > 0
+Public Function Contains(ByVal CheckValue As String, ByVal searchValue As String) As Boolean
+    Contains = VBA.InStr(1, CheckValue, searchValue, vbTextCompare) > 0
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -218,8 +218,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function EndsWith(ByVal checkValue As String, ByVal searchValue As String) As Boolean
-    EndsWith = VBA.Right$(checkValue, VBA.Len(searchValue)) = searchValue
+Public Function EndsWith(ByVal CheckValue As String, ByVal searchValue As String) As Boolean
+    EndsWith = VBA.Right$(CheckValue, VBA.Len(searchValue)) = searchValue
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -236,8 +236,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function StartsWith(ByVal checkValue As String, ByVal searchValue As String) As Boolean
-    StartsWith = VBA.Left$(checkValue, VBA.Len(searchValue)) = searchValue
+Public Function StartsWith(ByVal CheckValue As String, ByVal searchValue As String) As Boolean
+    StartsWith = VBA.Left$(CheckValue, VBA.Len(searchValue)) = searchValue
 End Function
 
 '---------------------------------------------------------------------------------------

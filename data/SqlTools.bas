@@ -1,4 +1,5 @@
 Attribute VB_Name = "SqlTools"
+Attribute VB_Description = "SQL-Hilfsfunktionen"
 '---------------------------------------------------------------------------------------
 ' Modul: SqlTools
 '---------------------------------------------------------------------------------------
@@ -18,6 +19,7 @@ Attribute VB_Name = "SqlTools"
 '<codelib>
 '  <file>data/SqlTools.bas</file>
 '  <license>_codelib/license.bas</license>
+'  <use>text/StringCollection.cls</use>
 '  <test>_test/data/SqlToolsTests.cls</test>
 '</codelib>
 '---------------------------------------------------------------------------------------

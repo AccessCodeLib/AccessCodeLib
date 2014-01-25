@@ -23,7 +23,7 @@ Attribute VB_Exposed = False
 '  <file>data/FilterStringBuilder.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>text/StringCollection.cls</use>
-'  <use>data/SqlTools.bas</use>
+'  <use>data/SqlTools.cls</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -31,6 +31,7 @@ Option Compare Text
 Option Explicit
 
 Private m_Items As StringCollection
+Private m_SqlTool As SqlTools
 
 Private Sub Class_Initialize()
    Set m_Items = New StringCollection
@@ -50,9 +51,38 @@ Public Sub Add(ByVal FieldName As String, ByVal FieldDataType As SqlFieldDataTyp
       Optional ByVal Value2 As Variant = Null, _
       Optional ByVal IgnoreValue As Variant = Null)
 
-   AddCriteria BuildCriteria(FieldName, FieldDataType, RelationalOperator, Value, Value2, IgnoreValue)
+   AddCriteria SqlTool.BuildCriteria(FieldName, FieldDataType, RelationalOperator, Value, Value2, IgnoreValue)
 
 End Sub
+
+Friend Property Get SqlTool() As SqlTools
+   If m_SqlTool Is Nothing Then
+      Set m_SqlTool = SqlTools.Clone
+   End If
+   Set SqlTool = m_SqlTool
+End Property
+
+Friend Property Set SqlTool(ByVal NewRef As SqlTools)
+   Set m_SqlTool = NewRef
+End Property
+
+Friend Sub ConfigSqlFormat(ByVal SqlDateFormat As String, _
+                           ByVal SqlBooleanTrueString As String, _
+                           ByVal SqlWildCardString As String)
+   
+   If m_SqlTool Is Nothing Then
+      Set m_SqlTool = SqlTools.NewInstance(SqlDateFormat, SqlBooleanTrueString, SqlWildCardString)
+      Exit Sub
+   End If
+
+   With SqlTool
+      .SqlDateFormat = SqlDateFormat
+      .SqlBooleanTrueString = SqlBooleanTrueString
+      .SqlWildCardString = SqlWildCardString
+   End With
+
+End Sub
+
 
 Public Sub AddCriteria(ByVal Criteria As String)
    If Len(Criteria) = 0 Then Exit Sub
