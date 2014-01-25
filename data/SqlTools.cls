@@ -1,7 +1,15 @@
+VERSION 1.0 CLASS
+BEGIN
+  MultiUse = -1  'True
+END
 Attribute VB_Name = "SqlTools"
-Attribute VB_Description = "SQL-Hilfsfunktionen"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+'Attribute VB_PredeclaredId = True
 '---------------------------------------------------------------------------------------
-' Modul: SqlTools
+' Klasse: SqlTools
 '---------------------------------------------------------------------------------------
 '/**
 ' \author       Josef Poetzl
@@ -17,9 +25,9 @@ Attribute VB_Description = "SQL-Hilfsfunktionen"
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>data/SqlTools.bas</file>
+'  <file>data/SqlTools.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>text/StringCollection.cls</use>
+'  <replace>data/SqlTools.bas</replace>
 '  <test>_test/data/SqlToolsTests.cls</test>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -31,16 +39,16 @@ Private Enum SqlToolsErrorNumbers
    ERRNR_NOCONFIG = vbObjectError + 1
 End Enum
 
-Public Const SQL_DEFAULT_TEXTDELIMITER As String = "'"
-Public Const SQL_DEFAULT_DATEFORMAT As String = "" ' => SqlDateFormat wird verwendet.
+Private Const SQL_DEFAULT_TEXTDELIMITER As String = "'"
+Private Const SQL_DEFAULT_DATEFORMAT As String = "" ' => SqlDateFormat wird verwendet.
                                                    '    Zum Deaktivieren Wert eintragen (z. B. "\#yyyy\-mm\-dd\#")
-Public Const SQL_DEFAULT_BOOLTRUESTRING As String = "" ' => SqlBooleanTrueString wird verwendet.
+Private Const SQL_DEFAULT_BOOLTRUESTRING As String = "" ' => SqlBooleanTrueString wird verwendet.
                                                    '    Zum Deaktivieren Wert eintragen (z. B. "1")
 
-Public Const SQL_DEFAULT_WILDCARD As String = "*"
+Private Const SQL_DEFAULT_WILDCARD As String = "*"
 
-Public SqlDateFormat As String
-Public SqlBooleanTrueString As String
+Private m_SqlDateFormat As String
+Private m_SqlBooleanTrueString As String
 Private m_SqlWildCardString As String
 
 Private Const ResultTextIfNull As String = "NULL"
@@ -64,7 +72,7 @@ Public Enum SqlFieldDataType
    SQL_Date = 4
 End Enum
 
-
+' Konfiguration für den SQL-Dialekt
 Public Property Get SqlWildCardString() As String
    If Len(m_SqlWildCardString) > 0 Then
       SqlWildCardString = m_SqlWildCardString
@@ -76,6 +84,75 @@ End Property
 Public Property Let SqlWildCardString(ByVal NewValue As String)
    m_SqlWildCardString = NewValue
 End Property
+
+Public Property Get SqlDateFormat() As String
+   If Len(m_SqlDateFormat) > 0 Then
+      SqlDateFormat = m_SqlDateFormat
+   Else
+      SqlDateFormat = SQL_DEFAULT_DATEFORMAT
+   End If
+End Property
+
+Public Property Let SqlDateFormat(ByVal NewValue As String)
+   m_SqlDateFormat = NewValue
+End Property
+
+
+Public Property Get SqlBooleanTrueString() As String
+   If Len(m_SqlBooleanTrueString) > 0 Then
+      SqlBooleanTrueString = m_SqlBooleanTrueString
+   Else
+      SqlBooleanTrueString = SQL_DEFAULT_BOOLTRUESTRING
+   End If
+End Property
+
+Public Property Let SqlBooleanTrueString(ByVal NewValue As String)
+   m_SqlBooleanTrueString = NewValue
+End Property
+
+'---------------------------------------------------------------------------------------
+' Function: Clone
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Neue Instanz mit Grundeinstellungen der aktuellen Instanz erstellen.
+' </summary>
+' <returns>String</returns>
+' <remarks>
+' Beispiel: strSQL = "select ... from tabelle where Feld = " & TextToSqlText("ab'cd")
+'           => strSQL = "select ... from tabelle where Feld = 'ab''cd'"
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function Clone(Optional ByVal NewSqlDateFormat As String = SQL_DEFAULT_DATEFORMAT, _
+                      Optional ByVal NewSqlBooleanTrueString As String = SQL_DEFAULT_BOOLTRUESTRING, _
+                      Optional ByVal NewSqlWildCardString As String = SQL_DEFAULT_WILDCARD) As SqlTools
+
+
+   If Len(NewSqlDateFormat) = 0 Then NewSqlDateFormat = Me.SqlDateFormat
+   If Len(NewSqlBooleanTrueString) = 0 Then NewSqlBooleanTrueString = Me.SqlBooleanTrueString
+   If Len(NewSqlWildCardString) = 0 Then NewSqlWildCardString = Me.SqlWildCardString
+
+   Set Clone = NewInstance(NewSqlDateFormat, NewSqlBooleanTrueString, NewSqlWildCardString)
+
+End Function
+
+Public Function NewInstance(ByVal NewSqlDateFormat As String, _
+                            ByVal NewSqlBooleanTrueString As String, _
+                            ByVal NewSqlWildCardString As String) As SqlTools
+   
+   Dim NewInst As SqlTools
+
+   Set NewInst = New SqlTools
+   With NewInst
+      .SqlDateFormat = NewSqlDateFormat
+      .SqlBooleanTrueString = NewSqlBooleanTrueString
+      .SqlWildCardString = NewSqlWildCardString
+   End With
+
+   Set NewInstance = NewInst
+
+End Function
 
 
 '---------------------------------------------------------------------------------------
