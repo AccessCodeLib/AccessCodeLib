@@ -322,10 +322,27 @@ Private Sub m_ToggleButton_AfterUpdate()
 End Sub
 
 Public Sub RemoveFilterValue(Optional ByVal RaiseFilterValueChangedEvent As Boolean = True)
-   m_Control.Value = Null
-   If Not (m_FilterControl2 Is Nothing) Then
-      m_FilterControl2.RemoveFilterValue
+
+   If Not (m_Control Is Nothing) Then
+      Select Case m_Control.ControlType
+         Case acCheckBox, acToggleButton
+            m_Control.Value = False
+         Case Else
+            m_Control.Value = Null
+      End Select
    End If
+
+   If Not (m_FilterControl2 Is Nothing) Then
+      m_FilterControl2.RemoveFilterValue False
+   End If
+
+   If Not (m_SubFilterControls Is Nothing) Then
+      Dim fc As FilterControl
+      For Each fc In m_SubFilterControls
+         fc.RemoveFilterValue False
+      Next
+   End If
+
    If RaiseFilterValueChangedEvent Then
       RaiseFilterValueChanged
    End If
