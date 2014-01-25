@@ -47,6 +47,7 @@ Public Sub Add(ByVal ControlRef As Control, _
       Optional ByVal IgnoreValue As Variant = Null)
    
    With New FilterControl
+      Set .EventBridge = m_EventBridge
       Set .Control = ControlRef
       .DataField = DataFieldName
       .DataType = DataType
@@ -55,7 +56,23 @@ Public Sub Add(ByVal ControlRef As Control, _
          Set .Control2 = Control2Ref
       End If
       .IgnoreValue = IgnoreValue
+      m_FilterControls.Add .Self
+   End With
+   
+End Sub
+
+Public Sub AddMultiControlCriteria( _
+               ByVal DataFieldName As String, ByVal DataType As SqlFieldDataType, ByVal RelationalOperator As SqlRelationalOperators, _
+               ByVal IgnoreValue As Variant, _
+               ParamArray Controls() As Variant)
+   
+   With New FilterControl
       Set .EventBridge = m_EventBridge
+      .SetSubControls Controls
+      .DataField = DataFieldName
+      .DataType = DataType
+      .RelationalOperator = RelationalOperator
+      .IgnoreValue = IgnoreValue
       m_FilterControls.Add .Self
    End With
    

@@ -35,9 +35,11 @@ Public Const SQL_DEFAULT_DATEFORMAT As String = "" ' => SqlDateFormat wird verwe
 Public Const SQL_DEFAULT_BOOLTRUESTRING As String = "" ' => SqlBooleanTrueString wird verwendet.
                                                    '    Zum Deaktivieren Wert eintragen (z. B. "1")
 
+Public Const SQL_DEFAULT_WILDCARD As String = "*"
 
 Public SqlDateFormat As String
 Public SqlBooleanTrueString As String
+Private m_SqlWildCardString As String
 
 Private Const ResultTextIfNull As String = "NULL"
 
@@ -49,6 +51,8 @@ Public Enum SqlRelationalOperators
    SQL_Like = 256
    SQL_Between = 512
    SQL_In = 1024
+   SQL_Add_WildCardSuffix = 2048
+   SQL_Add_WildCardPrefix = 4096
 End Enum
 
 Public Enum SqlFieldDataType
@@ -57,6 +61,20 @@ Public Enum SqlFieldDataType
    SQL_Text = 3
    SQL_Date = 4
 End Enum
+
+
+Public Property Get SqlWildCardString() As String
+   If Len(m_SqlWildCardString) > 0 Then
+      SqlWildCardString = m_SqlWildCardString
+   Else
+      SqlWildCardString = SQL_DEFAULT_WILDCARD
+   End If
+End Property
+
+Public Property Let SqlWildCardString(ByVal NewValue As String)
+   m_SqlWildCardString = NewValue
+End Property
+
 
 '---------------------------------------------------------------------------------------
 ' Function: TextToSqlText
@@ -218,13 +236,40 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
    
    If (RelationalOperator And SQL_In) = SQL_In Then
       If IsArray(FilterValue) Then
-         BuildCriteria = FieldName & " In (" & GetValueArrayString(FilterValue, FieldDataType, ",") & ")"
+         Criteria = GetValueArrayString(FilterValue, FieldDataType, ",", IgnoreValue)
       ElseIf VarType(FilterValue) = vbString Then ' Value ist bereits die Auflistung als String
-         BuildCriteria = FieldName & " In (" & FilterValue & ")"
+         Criteria = FilterValue
       Else
-         BuildCriteria = FieldName & " In (" & GetFilterValueString(FilterValue, FieldDataType) & ")"
+         Criteria = GetFilterValueString(FilterValue, FieldDataType)
+      End If
+      If Len(Criteria) > 0 Then
+         BuildCriteria = FieldName & " In (" & Criteria & ")"
       End If
       Exit Function
+   End If
+
+   Dim itm As Variant
+   Dim ItmCriteria As String
+   If IsArray(FilterValue) Then 'Kritereien über Or verbinden
+      With New StringCollection
+         For Each itm In FilterValue
+            ItmCriteria = BuildCriteria(FieldName, FieldDataType, RelationalOperator, itm, , IgnoreValue)
+            If Len(ItmCriteria) > 0 Then
+               .Add ItmCriteria
+            End If
+         Next
+         BuildCriteria = .ToString(" Or ")
+      End With
+      Exit Function
+   End If
+
+   If (RelationalOperator And SQL_Like) = SQL_Like Then
+      If (RelationalOperator And SQL_Add_WildCardSuffix) = SQL_Add_WildCardSuffix Then
+         FilterValue = FilterValue & SqlWildCardString
+      End If
+      If (RelationalOperator And SQL_Add_WildCardPrefix) = SQL_Add_WildCardPrefix Then
+         FilterValue = SqlWildCardString & FilterValue
+      End If
    End If
 
    FilterValueString = GetFilterValueString(FilterValue, FieldDataType)
@@ -290,13 +335,18 @@ Private Function NullFilterOrEmptyFilter(ByVal FieldName As String, ByVal Value 
 
 End Function
 
-Private Function GetValueArrayString(ByVal Value As Variant, ByVal FieldDataType As SqlFieldDataType, ByVal Delimiter As String) As String
+Private Function GetValueArrayString(ByVal Value As Variant, ByVal FieldDataType As SqlFieldDataType, _
+                                     ByVal Delimiter As String, ByVal IgnoreValue As Variant) As String
    
    Dim i As Long
 
    With New StringCollection
       For i = LBound(Value) To UBound(Value)
+         If Value(i) = IgnoreValue Then
+         ElseIf IsNull(Value(i)) And IsNull(IgnoreValue) Then
+         Else
          .Add GetFilterValueString(Value(i), FieldDataType)
+         End If
       Next
       GetValueArrayString = .ToString(Delimiter)
    End With
