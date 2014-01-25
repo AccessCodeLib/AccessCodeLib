@@ -50,7 +50,7 @@ Public Sub Add(ByVal FieldName As String, ByVal FieldDataType As SqlFieldDataTyp
       Optional ByVal Value2 As Variant = Null, _
       Optional ByVal IgnoreValue As Variant = Null)
 
-   AddCriteria BuildCriteria(FieldName, FieldDataType, RelationalOperator, Value, Value2)
+   AddCriteria BuildCriteria(FieldName, FieldDataType, RelationalOperator, Value, Value2, IgnoreValue)
 
 End Sub
 

@@ -53,6 +53,7 @@ Attribute m_CheckBox.VB_VarHelpID = -1
 Private Const EventProcedurePropertyTag As String = "[Event Procedure]"
 
 Private m_FilterControl2 As FilterControl
+Private m_SubFilterControls As Collection
 
 Private Sub InitControl()
 
@@ -103,6 +104,7 @@ End Sub
 
 Friend Sub Dispose()
    Set m_EventBridge = Nothing
+   Set m_SubFilterControls = Nothing
    Set m_FilterControl2 = Nothing
    Set m_Control = Nothing
 End Sub
@@ -116,6 +118,15 @@ Friend Property Set EventBridge(ByVal NewRef As FilterControlEventBridge)
    If Not (m_FilterControl2 Is Nothing) Then
       Set m_FilterControl2.EventBridge = m_EventBridge
    End If
+
+   If m_SubFilterControls Is Nothing Then Exit Property
+   If m_SubFilterControls.Count = 0 Then Exit Property
+   
+   Dim fc As FilterControl
+   For Each fc In m_SubFilterControls
+      fc.EventBridge = m_EventBridge
+   Next
+
 End Property
 
 Private Sub RaiseFilterValueChanged()
@@ -152,6 +163,29 @@ Public Property Set Control2(ByVal NewRef As Control)
    End With
 End Property
 
+Public Property Get SubControls() As Collection
+   If m_SubFilterControls Is Nothing Then
+      Set SubControls = Nothing
+   Else
+      Set SubControls = m_SubFilterControls
+   End If
+End Property
+
+Public Sub SetSubControls(ByVal SubControlArray As Variant)
+
+   Dim ctl As Variant
+
+   Set m_SubFilterControls = New Collection
+   For Each ctl In SubControlArray
+      With New FilterControl
+         Set .Control = ctl
+         Set .EventBridge = m_EventBridge
+         m_SubFilterControls.Add .Self
+      End With
+   Next
+
+End Sub
+
 Public Property Get DataField() As String
    DataField = m_DataField
 End Property
@@ -185,8 +219,37 @@ Public Property Let IgnoreValue(ByVal NewValue As Variant)
 End Property
 
 Public Property Get CriteriaString() As String
-   CriteriaString = SqlTools.BuildCriteria(m_DataField, m_DataType, m_RelationalOperator, GetControlValue(Control), GetControlValue(Control2), IgnoreValue)
+   If m_SubFilterControls Is Nothing Then
+      CriteriaString = SqlTools.BuildCriteria(m_DataField, m_DataType, m_RelationalOperator, GetControlValue(Control), GetControlValue(Control2), IgnoreValue)
+   Else
+      CriteriaString = SqlTools.BuildCriteria(m_DataField, m_DataType, m_RelationalOperator, GetSubControlsValues, , IgnoreValue)
+   End If
 End Property
+
+Private Function GetSubControlsValues() As Variant()
+   
+   Dim fc As FilterControl
+   Dim i As Long
+   Dim Values() As Variant
+   ReDim Values(0 To (m_SubFilterControls.Count - 1))
+
+   For Each fc In m_SubFilterControls
+      Select Case fc.Control.ControlType
+         Case acCheckBox, acToggleButton
+            If fc.Control.Value = True Then
+               Values(i) = fc.Control.Tag
+            Else
+               Values(i) = m_IgnoreValue
+            End If
+         Case Else
+            Values(i) = fc.Control.Value
+      End Select
+      i = i + 1
+   Next
+
+   GetSubControlsValues = Values
+
+End Function
 
 Private Function GetControlValue(ByVal ctl As Control) As Variant
    
