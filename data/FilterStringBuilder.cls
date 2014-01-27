@@ -46,13 +46,18 @@ Public Property Get Self() As FilterStringBuilder
 End Property
 
 Public Sub Add(ByVal FieldName As String, ByVal FieldDataType As SqlFieldDataType, _
+               ByVal RelationalOperator As SqlRelationalOperators, _
                ByVal Value As Variant, _
-      Optional ByVal RelationalOperator As SqlRelationalOperators = SQL_Equal, _
       Optional ByVal Value2 As Variant = Null, _
       Optional ByVal IgnoreValue As Variant = Null)
 
    AddCriteria SqlTool.BuildCriteria(FieldName, FieldDataType, RelationalOperator, Value, Value2, IgnoreValue)
 
+End Sub
+
+Public Sub AddCriteria(ByVal Criteria As String)
+   If Len(Criteria) = 0 Then Exit Sub
+   m_Items.Add "(" & Criteria & ")"
 End Sub
 
 Friend Property Get SqlTool() As SqlTools
@@ -83,11 +88,6 @@ Friend Sub ConfigSqlFormat(ByVal SqlDateFormat As String, _
 
 End Sub
 
-
-Public Sub AddCriteria(ByVal Criteria As String)
-   If Len(Criteria) = 0 Then Exit Sub
-   m_Items.Add "(" & Criteria & ")"
-End Sub
 
 Public Function ToString(Optional ByVal Delimiter As String = " AND ") As String
    ToString = m_Items.ToString(Delimiter)

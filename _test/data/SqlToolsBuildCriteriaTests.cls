@@ -141,6 +141,7 @@ End Sub
 'AccUnit:Row(256, "a*", "b*", "c*", "F like 'a*' Or F like 'b*' Or F like 'c*'").Name("Like+*")
 'AccUnit:Row(256+2048, "a", "b", "c", "F like 'a*' Or F like 'b*' Or F like 'c*'").Name("Like+WildCardSuffix")
 'AccUnit:Row(256+2048+4096, "a", "b", "c", "F like '*a*' Or F like '*b*' Or F like '*c*'").Name("Like+WildCardSuffix+Prefix")
+'AccUnit:Row(1024, "a", "b", "c", "F In ('a','b','c')").Name("In")
 Public Sub BuildCriteria_TextValueArrayFilter( _
                            ByVal RelationalOperator As SqlRelationalOperators, _
                            ByVal FilterValue1 As Variant, ByVal FilterValue2 As Variant, ByVal FilterValue3 As Variant, _
