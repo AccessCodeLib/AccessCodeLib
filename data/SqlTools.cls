@@ -18,8 +18,7 @@ Attribute VB_Exposed = False
 ' </summary>
 ' <remarks></remarks>
 '
-' \warning Nicht vergessen: SQL_DEFAULT_TEXTDELIMITER und SQL_DEFAULT_DATEFORMAT
-'          für das DBMS anpassen oder die Parameter entsprechend einstellen.
+' \warning Nicht vergessen: Parameter für Datumsformat, Boolean und WildCard für das DBMS eintellen
 '
 ' \ingroup data
 '**/
@@ -44,12 +43,13 @@ Private Const SQL_DEFAULT_TEXTDELIMITER As String = "'"
 Private Const SQL_DEFAULT_DATEFORMAT As String = "" ' => SqlDateFormat wird verwendet.
                                                    '    Zum Deaktivieren Wert eintragen (z. B. "\#yyyy\-mm\-dd\#")
 Private Const SQL_DEFAULT_BOOLTRUESTRING As String = "" ' => SqlBooleanTrueString wird verwendet.
-                                                   '    Zum Deaktivieren Wert eintragen (z. B. "1")
+                                                   '    Zum Deaktivieren Wert eintragen (z. B. "True oder 1")
 
 Private Const SQL_DEFAULT_WILDCARD As String = "*" ' * = Standardwert,
                                                    ' benötigte Abweichungen über SqlWildCardString einstellen
 
 Private Const SqlAndConcatString As String = " And "
+Private Const SqlOrConcatString As String = " Or "
 
 Private m_SqlDateFormat As String
 Private m_SqlBooleanTrueString As String
@@ -434,11 +434,11 @@ Private Function TryBuildArrayCriteria(ByRef FieldName As String, ByVal FieldDat
    For Each itm In FilterValue
       ItmCriteria = BuildCriteria(FieldName, FieldDataType, RelationalOperator, itm, , IgnoreValue)
       If Len(ItmCriteria) > 0 Then
-         Criteria = Criteria & " Or (" & ItmCriteria & ")"
+         Criteria = Criteria & SqlOrConcatString & ItmCriteria
       End If
    Next
    If Len(Criteria) > 0 Then
-      Criteria = Mid(Criteria, 5) ' 1. Or wegschneiden
+      Criteria = Mid(Criteria, Len(SqlOrConcatString) + 1) ' 1. Or wegschneiden
    End If
 
    TryBuildArrayCriteria = True
