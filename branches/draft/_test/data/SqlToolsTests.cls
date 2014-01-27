@@ -67,11 +67,11 @@ Public Function TextToSqlText_DefaultValueIfNullArg_ReturnsSqlText( _
                      ByVal Value As Variant, _
                      ByVal Delimiter As String, _
                      ByVal WithoutLeftRightDelim As Boolean, _
-                     ByVal expected As String) As String
+                     ByVal Expected As String) As String
 
-   Dim actual As String
-   actual = SqlTools.TextToSqlText(Value, Delimiter, WithoutLeftRightDelim)
-   Assert.That actual, Iz.EqualTo(expected)
+   Dim Actual As String
+   Actual = SqlTools.TextToSqlText(Value, Delimiter, WithoutLeftRightDelim)
+   Assert.That Actual, Iz.EqualTo(Expected)
 
 End Function
 
@@ -86,10 +86,10 @@ End Function
 'AccUnit:Row(System.Convert.ToDateTime("2000-01-31"), "'yyyymmdd'", "'20000131'")
 Public Sub DateToSqlText_UseFormatArg_ReturnsSqlText(ByVal Value As Variant, _
                      ByVal FormatString As String, _
-                     ByVal expected As String)
-   Dim actual As String
-   actual = SqlTools.DateToSqlText(Value, FormatString)
-   Assert.That actual, Iz.EqualTo(expected)
+                     ByVal Expected As String)
+   Dim Actual As String
+   Actual = SqlTools.DateToSqlText(Value, FormatString)
+   Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 'AccUnit:Row(Null, "", "NULL")
@@ -98,17 +98,17 @@ End Sub
 'AccUnit:Row(System.Convert.ToDateTime("2000-01-31"), "'yyyymmdd'", "'20000131'")
 Public Sub DateToSqlText_UsePublicFormatVariable_ReturnsSqlText(ByVal Value As Variant, _
                      ByVal FormatString As String, _
-                     ByVal expected As String)
-   Dim actual As String
+                     ByVal Expected As String)
+   Dim Actual As String
    SqlTools.SqlDateFormat = FormatString
-   actual = SqlTools.DateToSqlText(Value)
-   Assert.That actual, Iz.EqualTo(expected)
+   Actual = SqlTools.DateToSqlText(Value)
+   Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 Public Sub DateToSqlText_FormatVariableNotDefined_RaiseError()
-   Dim actual As String
+   Dim Actual As String
    Assert.Throws -2147221503, "DateToSqlText"
-   actual = SqlTools.DateToSqlText(Date)
+   Actual = SqlTools.DateToSqlText(Date)
 End Sub
 
 
@@ -125,14 +125,14 @@ End Sub
 'AccUnit:Row(.123, "0.123")
 'AccUnit:Row(1E2, "100")
 'AccUnit:Row(1E-2, "0.01")
-Public Sub NumberToSqlText_UseNumbers_ReturnsSqlText(ByVal Value As Variant, ByVal expected As String)
-   Dim actual As String
-   actual = SqlTools.NumberToSqlText(Value)
-   Assert.That actual, Iz.EqualTo(expected)
+Public Sub NumberToSqlText_UseNumbers_ReturnsSqlText(ByVal Value As Variant, ByVal Expected As String)
+   Dim Actual As String
+   Actual = SqlTools.NumberToSqlText(Value)
+   Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 Public Sub NumberToSqlText_UseText_ReturnsSqlText()
-   Dim actual As String
+   Dim Actual As String
    Assert.Throws 13
-   actual = SqlTools.NumberToSqlText("abc")
+   Actual = SqlTools.NumberToSqlText("abc")
 End Sub

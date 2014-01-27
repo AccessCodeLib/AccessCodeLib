@@ -62,18 +62,19 @@ End Property
 '--------------------------------------------------------------------
 ' Tests
 '--------------------------------------------------------------------
-'TestManager.Row(2, Null, Null, Null, "", "").Name("Emtpy")
-'TestManager.Row(2, "a", Null, Null, "F = 'a'", "F = 'a'").Name("Equal")
-'TestManager.Row(2+8, "a", Null, Null, "F >= 'a'", "F >= 'a'").Name("Equal+GreaterThan")
-'TestManager.Row(2+4, "a", Null, Null, "F <= 'a'", "F <= 'a'").Name("Equal+LessThan")
-'TestManager.Row(256, "a", Null, Null, "F like 'a'", "F like 'a'").Name("Like")
-'TestManager.Row(256, "a*", Null, Null, "F like 'a*'", "F like 'a%'").Name("Like+*")
-'TestManager.Row(256+2048, "a", Null, Null, "F like 'a*'", "F like 'a%'").Name("Like+WildCardSuffix")
-'TestManager.Row(256+4096, "a", Null, Null, "F like '*a'", "F like '%a'").Name("Like+WildCardPrefix")
-'TestManager.Row(256+2048+4096, "a", Null, Null, "F like '*a*'", "F like '%a%'").Name("Like+WildCardSuffix+Prefix")
-'TestManager.Row(512, "a", "d", Null, "F Between 'a' And 'd'", "F Between 'a' And 'd'").Name("Between")
-'TestManager.Row(512, "a", Null, Null, "F >= 'a'", "F >= 'a'").Name("Between+V2=Null")
-'TestManager.Row(512, Null, "d", Null, "F <= 'd'", "F <= 'd'").Name("Between+V1=Null")
+
+'AccUnit:Row(2, Null, Null, Null, "", "").Name("Emtpy")
+'AccUnit:Row(2, "a", Null, Null, "F = 'a'", "F = 'a'").Name("Equal")
+'AccUnit:Row(2+8, "a", Null, Null, "F >= 'a'", "F >= 'a'").Name("Equal+GreaterThan")
+'AccUnit:Row(2+4, "a", Null, Null, "F <= 'a'", "F <= 'a'").Name("Equal+LessThan")
+'AccUnit:Row(256, "a", Null, Null, "F like 'a'", "F like 'a'").Name("Like")
+'AccUnit:Row(256, "a*", Null, Null, "F like 'a*'", "F like 'a%'").Name("Like+*")
+'AccUnit:Row(256+2048, "a", Null, Null, "F like 'a*'", "F like 'a%'").Name("Like+WildCardSuffix")
+'AccUnit:Row(256+4096, "a", Null, Null, "F like '*a'", "F like '%a'").Name("Like+WildCardPrefix")
+'AccUnit:Row(256+2048+4096, "a", Null, Null, "F like '*a*'", "F like '%a%'").Name("Like+WildCardSuffix+Prefix")
+'AccUnit:Row(512, "a", "d", Null, "F Between 'a' And 'd'", "F Between 'a' And 'd'").Name("Between")
+'AccUnit:Row(512, "a", Null, Null, "F >= 'a'", "F >= 'a'").Name("Between+V2=Null")
+'AccUnit:Row(512, Null, "d", Null, "F <= 'd'", "F <= 'd'").Name("Between+V1=Null")
 Public Sub BuildCriteria_TextFilter( _
                            ByVal RelationalOperator As SqlRelationalOperators, _
                            ByVal FilterValue As Variant, ByVal FilterValue2 As Variant, ByVal IgnoreValue As Variant, _
@@ -89,14 +90,14 @@ Public Sub BuildCriteria_TextFilter( _
 
 End Sub
 
-'TestManager.Row(2, Null, Null, Null, "").Name("Emtpy")
-'TestManager.Row(2, 123, Null, Null, "F = 123").Name("Equal")
-'TestManager.Row(2, 1.23, Null, Null, "F = 1.23").Name("Equal")
-'TestManager.Row(2+8, 123, Null, Null, "F >= 123").Name("Equal+GreaterThan")
-'TestManager.Row(2+4, 123, Null, Null, "F <= 123").Name("Equal+LessThan")
-'TestManager.Row(512, 123, 456, Null, "F Between 123 And 456").Name("Between")
-'TestManager.Row(512, 123, Null, Null, "F >= 123").Name("Between+V2=Null")
-'TestManager.Row(512, Null, 456, Null, "F <= 456").Name("Between+V1=Null")
+'AccUnit:Row(2, Null, Null, Null, "").Name("Emtpy")
+'AccUnit:Row(2, 123, Null, Null, "F = 123").Name("Equal")
+'AccUnit:Row(2, 1.23, Null, Null, "F = 1.23").Name("Equal")
+'AccUnit:Row(2+8, 123, Null, Null, "F >= 123").Name("Equal+GreaterThan")
+'AccUnit:Row(2+4, 123, Null, Null, "F <= 123").Name("Equal+LessThan")
+'AccUnit:Row(512, 123, 456, Null, "F Between 123 And 456").Name("Between")
+'AccUnit:Row(512, 123, Null, Null, "F >= 123").Name("Between+V2=Null")
+'AccUnit:Row(512, Null, 456, Null, "F <= 456").Name("Between+V1=Null")
 Public Sub BuildCriteria_NumericFilter( _
                            ByVal RelationalOperator As SqlRelationalOperators, _
                            ByVal FilterValue As Variant, ByVal FilterValue2 As Variant, ByVal IgnoreValue As Variant, _
@@ -112,13 +113,13 @@ Public Sub BuildCriteria_NumericFilter( _
 
 End Sub
 
-'TestManager.Row(2, Null, Null, Null, "", "").Name("Emtpy")
-'TestManager.Row(2, "2014-05-16", Null, Null, "F = #2014-05-16#", "F = '20140516'").Name("Equal")
-'TestManager.Row(2+8, "2014-05-16", Null, Null, "F >= #2014-05-16#", "F >= '20140516'").Name("Equal+GreaterThan")
-'TestManager.Row(2+4, "2014-05-16", Null, Null, "F <= #2014-05-16#", "F <= '20140516'").Name("Equal+LessThan")
-'TestManager.Row(2+4+2048, "2014-05-16", Null, Null, "F < #2014-05-17#", "F < '20140517'").Name("Equal+LessThan+WildCardSuffix")
-'TestManager.Row(512, "2014-05-16", "2014-07-18", Null, "F Between #2014-05-16# And #2014-07-18#", "F Between '20140516' And '20140718'").Name("Between+LessThan+WildCardSuffix")
-'TestManager.Row(512+2048, "2014-05-16", "2014-07-18", Null, "F >= #2014-05-16# And F < #2014-07-19#", "F >= '20140516' And F < '20140719'").Name("Between+LessThan+WildCardSuffix")
+'AccUnit:Row(2, Null, Null, Null, "", "").Name("Emtpy")
+'AccUnit:Row(2, System.Convert.ToDateTime("2014-05-16"), Null, Null, "F = #2014-05-16#", "F = '20140516'").Name("Equal")
+'AccUnit:Row(2+8, System.Convert.ToDateTime("2014-05-16"), Null, Null, "F >= #2014-05-16#", "F >= '20140516'").Name("Equal+GreaterThan")
+'AccUnit:Row(2+4, System.Convert.ToDateTime("2014-05-16"), Null, Null, "F <= #2014-05-16#", "F <= '20140516'").Name("Equal+LessThan")
+'AccUnit:Row(2+4+2048, System.Convert.ToDateTime("2014-05-16"), Null, Null, "F < #2014-05-17#", "F < '20140517'").Name("Equal+LessThan+WildCardSuffix")
+'AccUnit:Row(512, System.Convert.ToDateTime("2014-05-16"), System.Convert.ToDateTime("2014-07-18"), Null, "F Between #2014-05-16# And #2014-07-18#", "F Between '20140516' And '20140718'").Name("Between+LessThan+WildCardSuffix")
+'AccUnit:Row(512+2048, System.Convert.ToDateTime("2014-05-16"), System.Convert.ToDateTime("2014-07-18"), Null, "F >= #2014-05-16# And F < #2014-07-19#", "F >= '20140516' And F < '20140719'").Name("Between+LessThan+WildCardSuffix")
 Public Sub BuildCriteria_DateFilter( _
                            ByVal RelationalOperator As SqlRelationalOperators, _
                            ByVal FilterValue As Variant, ByVal FilterValue2 As Variant, ByVal IgnoreValue As Variant, _
@@ -131,5 +132,23 @@ Public Sub BuildCriteria_DateFilter( _
 
    Actual = TSqlTools.BuildCriteria("F", SQL_Date, RelationalOperator, FilterValue, FilterValue2, IgnoreValue)
    Assert.That Actual, Iz.EqualTo(ExpectedTSql)
+
+End Sub
+
+'AccUnit:Row(2, Null, Null, Null, "").Name("Emtpy")
+'AccUnit:Row(2, "a", "b", "c", "F = 'a' Or F = 'b' Or F = 'c'").Name("Equal")
+'AccUnit:Row(2+8, "a", "b", "c", "F >= 'a' Or F >= 'b' Or F >= 'c'").Name("Equal+GreaterThan")
+'AccUnit:Row(256, "a*", "b*", "c*", "F like 'a*' Or F like 'b*' Or F like 'c*'").Name("Like+*")
+'AccUnit:Row(256+2048, "a", "b", "c", "F like 'a*' Or F like 'b*' Or F like 'c*'").Name("Like+WildCardSuffix")
+'AccUnit:Row(256+2048+4096, "a", "b", "c", "F like '*a*' Or F like '*b*' Or F like '*c*'").Name("Like+WildCardSuffix+Prefix")
+Public Sub BuildCriteria_TextValueArrayFilter( _
+                           ByVal RelationalOperator As SqlRelationalOperators, _
+                           ByVal FilterValue1 As Variant, ByVal FilterValue2 As Variant, ByVal FilterValue3 As Variant, _
+                           ByVal Expected As String)
+
+   Dim Actual As String
+
+   Actual = DaoTools.BuildCriteria("F", SQL_Text, RelationalOperator, Array(FilterValue1, FilterValue2, FilterValue3))
+   Assert.That Actual, Iz.EqualTo(Expected)
 
 End Sub
