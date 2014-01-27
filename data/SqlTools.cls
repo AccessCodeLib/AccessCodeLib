@@ -29,6 +29,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <replace>data/SqlTools.bas</replace>
 '  <test>_test/data/SqlToolsTests.cls</test>
+'  <test>_test/data/SqlToolsBuildCriteriaTests.cls</test>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -45,7 +46,10 @@ Private Const SQL_DEFAULT_DATEFORMAT As String = "" ' => SqlDateFormat wird verw
 Private Const SQL_DEFAULT_BOOLTRUESTRING As String = "" ' => SqlBooleanTrueString wird verwendet.
                                                    '    Zum Deaktivieren Wert eintragen (z. B. "1")
 
-Private Const SQL_DEFAULT_WILDCARD As String = "*"
+Private Const SQL_DEFAULT_WILDCARD As String = "*" ' * = Standardwert,
+                                                   ' benötigte Abweichungen über SqlWildCardString einstellen
+
+Private Const SqlAndConcatString As String = " And "
 
 Private m_SqlDateFormat As String
 Private m_SqlBooleanTrueString As String
@@ -322,58 +326,29 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
    Dim FilterValue2String As String
    Dim OperatorString As String
    Dim Criteria As String
-   Dim FilterString As String
    
-   If NullFilterOrEmptyFilter(FieldName, Nz(FilterValue, FilterValue2), IgnoreValue, FilterString) Then
-      BuildCriteria = FilterString
-      Exit Function
-   End If
-   
-   If (RelationalOperator And SQL_In) = SQL_In Then
-      If IsArray(FilterValue) Then
-         Criteria = GetValueArrayString(FilterValue, FieldDataType, ",", IgnoreValue)
-      ElseIf VarType(FilterValue) = vbString Then ' Value ist bereits die Auflistung als String
-         Criteria = FilterValue
-      Else
-         Criteria = GetFilterValueString(FilterValue, FieldDataType)
-      End If
-      If Len(Criteria) > 0 Then
-         BuildCriteria = FieldName & " In (" & Criteria & ")"
-      End If
-      Exit Function
-   End If
-
-   Dim itm As Variant
-   Dim ItmCriteria As String
-   If IsArray(FilterValue) Then 'Kriterien über Or verbinden
-      For Each itm In FilterValue
-         ItmCriteria = BuildCriteria(FieldName, FieldDataType, RelationalOperator, itm, , IgnoreValue)
-         If Len(ItmCriteria) > 0 Then
-            Criteria = Criteria & " Or (" & ItmCriteria & ")"
-         End If
-      Next
-      If Len(Criteria) > 0 Then
-         Criteria = Mid(Criteria, 5) ' 1. Or wegschneiden
-      End If
+   If NullFilterOrEmptyFilter(FieldName, Nz(FilterValue, FilterValue2), IgnoreValue, Criteria) Then
       BuildCriteria = Criteria
       Exit Function
    End If
 
-   If (RelationalOperator And SQL_Between) = SQL_Between Then
-      If IsNull(FilterValue2) Or IsMissing(FilterValue2) Then
-         RelationalOperator = SQL_GreaterThan + SQL_Equal
-      ElseIf IsNull(FilterValue) Then
-         RelationalOperator = SQL_LessThan + SQL_Equal
-         FilterValue = FilterValue2
-         FilterValue2 = Null
-      ElseIf (FieldDataType And SQL_Date) = SQL_Date And (RelationalOperator And SQL_Add_WildCardSuffix) Then
-         BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue) & _
-                         " AND " & _
-                         BuildCriteria(FieldName, FieldDataType, SQL_LessThan + SQL_Equal + SQL_Add_WildCardSuffix, FilterValue2)
-         Exit Function
-      Else
-         BuildCriteria = FieldName & " Between " & GetFilterValueString(FilterValue, FieldDataType) & " And " & GetFilterValueString(FilterValue2, FieldDataType)
-         Exit Function
+   If TryBuildArrayCriteria(FieldName, FieldDataType, RelationalOperator, FilterValue, FilterValue2, IgnoreValue, Criteria) Then
+      BuildCriteria = Criteria
+      Exit Function
+   End If
+
+   If TryBuildBetweenCriteria(FieldName, FieldDataType, RelationalOperator, FilterValue, FilterValue2, IgnoreValue, Criteria) Then
+      BuildCriteria = Criteria
+      Exit Function
+   End If
+
+   If (RelationalOperator And SQL_Like) = SQL_Like Then
+      If SqlWildCardString <> "*" Then
+         If InStr(1, FilterValue, "*") > 0 Then
+            FilterValue = Replace(FilterValue, "[*]", "@@@|||STAR|||@@@")
+            FilterValue = Replace(FilterValue, "*", SqlWildCardString)
+            FilterValue = Replace(FilterValue, "@@@|||STAR|||@@@", "*")
+         End If
       End If
    End If
 
@@ -386,7 +361,7 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
                ' nichts ändern => >= DataValue  / SQL_Add_WildCardSuffix ist nicht logisch
             Else ' ganzen Tag berücksichtigen FieldName >= DateValue and FieldName < DateAdd("d", 1, FilterValue))
                BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue) & _
-                               " AND " & _
+                               SqlAndConcatString & _
                                BuildCriteria(FieldName, FieldDataType, SQL_LessThan, DateAdd("d", 1, FilterValue))
                Exit Function
             End If
@@ -399,9 +374,9 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
       End If
    End If
 
-   If (RelationalOperator And SQL_Like) = SQL_Like Then
-      If (RelationalOperator And SQL_Add_WildCardSuffix) = SQL_Add_WildCardSuffix Then
-         FilterValue = FilterValue & SqlWildCardString
+   If (RelationalOperator And SQL_Add_WildCardPrefix) = SQL_Add_WildCardPrefix Then
+      If (RelationalOperator And SQL_Like) = SQL_Like Then
+         FilterValue = SqlWildCardString & FilterValue
       End If
    End If
 
@@ -412,6 +387,21 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
       Exit Function
    End If
    
+   OperatorString = GetRelationalOperatorString(RelationalOperator)
+
+   Criteria = FieldName & " " & OperatorString & " " & FilterValueString
+   If (RelationalOperator And SQL_Not) = SQL_Not Then
+      Criteria = "Not " & Criteria
+   End If
+
+   BuildCriteria = Criteria
+
+End Function
+
+Private Function GetRelationalOperatorString(ByVal RelationalOperator As SqlRelationalOperators) As String
+
+   Dim OperatorString As String
+
    If (RelationalOperator And SQL_LessThan) = SQL_LessThan Then
       OperatorString = OperatorString & "<"
    End If
@@ -424,12 +414,90 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
       OperatorString = OperatorString & "="
    End If
 
-   Criteria = FieldName & " " & OperatorString & " " & FilterValueString
-   If (RelationalOperator And SQL_Not) = SQL_Not Then
-      Criteria = "Not " & Criteria
+   GetRelationalOperatorString = OperatorString
+
+End Function
+
+Private Function TryBuildArrayCriteria(ByRef FieldName As String, ByVal FieldDataType As SqlFieldDataType, _
+                                       ByRef RelationalOperator As SqlRelationalOperators, _
+                                       ByRef FilterValue As Variant, _
+                                       ByRef FilterValue2 As Variant, _
+                                       ByRef IgnoreValue As Variant, _
+                                       ByRef Criteria As String) As Boolean
+   Dim itm As Variant
+   Dim ItmCriteria As String
+   If Not IsArray(FilterValue) Then
+      Exit Function
    End If
 
-   BuildCriteria = Criteria
+   'Kriterien über Or verbinden
+   For Each itm In FilterValue
+      ItmCriteria = BuildCriteria(FieldName, FieldDataType, RelationalOperator, itm, , IgnoreValue)
+      If Len(ItmCriteria) > 0 Then
+         Criteria = Criteria & " Or (" & ItmCriteria & ")"
+      End If
+   Next
+   If Len(Criteria) > 0 Then
+      Criteria = Mid(Criteria, 5) ' 1. Or wegschneiden
+   End If
+
+   TryBuildArrayCriteria = True
+
+End Function
+
+Private Function TryBuildInCriteria(ByRef FieldName As String, ByVal FieldDataType As SqlFieldDataType, _
+                                    ByRef RelationalOperator As SqlRelationalOperators, _
+                                    ByRef FilterValue As Variant, _
+                                    ByRef FilterValue2 As Variant, _
+                                    ByRef IgnoreValue As Variant, _
+                                    ByRef Criteria As String) As Boolean
+
+   If (RelationalOperator And SQL_In) = 0 Then
+      Exit Function
+   End If
+
+   If IsArray(FilterValue) Then
+      Criteria = GetValueArrayString(FilterValue, FieldDataType, ",", IgnoreValue)
+   ElseIf VarType(FilterValue) = vbString Then ' Value ist bereits die Auflistung als String
+      Criteria = FilterValue
+   Else
+      Criteria = GetFilterValueString(FilterValue, FieldDataType)
+   End If
+
+   If Len(Criteria) > 0 Then
+      Criteria = FieldName & " In (" & Criteria & ")"
+   End If
+
+   TryBuildInCriteria = True
+
+End Function
+
+Private Function TryBuildBetweenCriteria(ByRef FieldName As String, ByVal FieldDataType As SqlFieldDataType, _
+                                         ByRef RelationalOperator As SqlRelationalOperators, _
+                                         ByRef FilterValue As Variant, _
+                                         ByRef FilterValue2 As Variant, _
+                                         ByRef IgnoreValue As Variant, _
+                                         ByRef Criteria As String) As Boolean
+   
+   If (RelationalOperator And SQL_Between) = SQL_Between Then
+      If IsNull(FilterValue2) Or IsMissing(FilterValue2) Or (FilterValue2 = IgnoreValue) Then
+         RelationalOperator = SQL_GreaterThan + SQL_Equal
+      ElseIf IsNull(FilterValue) Or (FilterValue = IgnoreValue) Then
+         RelationalOperator = SQL_LessThan + SQL_Equal
+         FilterValue = FilterValue2
+         FilterValue2 = IgnoreValue
+      ElseIf (FieldDataType And SQL_Date) = SQL_Date And (RelationalOperator And SQL_Add_WildCardSuffix) Then
+         Criteria = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue) & _
+                    SqlAndConcatString & _
+                    BuildCriteria(FieldName, FieldDataType, SQL_LessThan + SQL_Equal + SQL_Add_WildCardSuffix, FilterValue2)
+         TryBuildBetweenCriteria = True
+         Exit Function
+      Else
+         Criteria = FieldName & " Between " & GetFilterValueString(FilterValue, FieldDataType) & SqlAndConcatString & GetFilterValueString(FilterValue2, FieldDataType)
+         TryBuildBetweenCriteria = True
+         Exit Function
+      End If
+   End If
 
 End Function
 
