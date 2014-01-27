@@ -359,28 +359,53 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
       Exit Function
    End If
 
-   If (RelationalOperator And SQL_Like) = SQL_Like Then
-      If (RelationalOperator And SQL_Add_WildCardSuffix) = SQL_Add_WildCardSuffix Then
-         FilterValue = FilterValue & SqlWildCardString
-      End If
-      If (RelationalOperator And SQL_Add_WildCardPrefix) = SQL_Add_WildCardPrefix Then
-         FilterValue = SqlWildCardString & FilterValue
-      End If
-   End If
-
    FilterValueString = GetFilterValueString(FilterValue, FieldDataType)
-   FilterValue2String = GetFilterValueString(FilterValue2, FieldDataType)
-      
-
+   
    If (RelationalOperator And SQL_Between) = SQL_Between Then
+      FilterValue2String = GetFilterValueString(FilterValue2, FieldDataType)
+
       If IsNull(FilterValue2) Or IsMissing(FilterValue2) Then
          RelationalOperator = SQL_GreaterThan + SQL_Equal
       ElseIf IsNull(FilterValue) Then
          RelationalOperator = SQL_LessThan + SQL_Equal
          FilterValueString = FilterValue2String
+      ElseIf (FieldDataType And SQL_Date) = SQL_Date And (RelationalOperator And SQL_Add_WildCardSuffix) Then
+         BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue) & _
+                         " AND " & _
+                         BuildCriteria(FieldName, FieldDataType, SQL_LessThan + SQL_Equal + SQL_Add_WildCardSuffix, FilterValue2)
+         Exit Function
       Else
          BuildCriteria = FieldName & " Between " & FilterValueString & " And " & FilterValue2String
          Exit Function
+      End If
+   End If
+
+   If (RelationalOperator And SQL_Add_WildCardSuffix) = SQL_Add_WildCardSuffix Then
+      If (RelationalOperator And SQL_Like) = SQL_Like Then
+         FilterValue = FilterValue & SqlWildCardString
+      ElseIf (FieldDataType And SQL_Date) = SQL_Date Then
+         If (RelationalOperator And SQL_LessThan) = 0 Then ' kein < daher:  >, >= oder nur =
+            If (RelationalOperator And SQL_GreaterThan) = SQL_GreaterThan Then
+               ' nichts ändern => >= DataValue  / SQL_Add_WildCardSuffix ist nicht logisch
+            Else ' ganzen Tag berücksichtigen FieldName >= DateValue and FieldName < DateAdd("d", 1, FilterValue))
+               BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue) & _
+                               " AND " & _
+                               BuildCriteria(FieldName, FieldDataType, SQL_LessThan, DateAdd("d", 1, FilterValue))
+               Exit Function
+            End If
+         Else
+            If (RelationalOperator And SQL_Equal) = SQL_Equal Then
+               RelationalOperator = RelationalOperator - SQL_Equal
+            End If
+            FilterValue = DateAdd("d", 1, FilterValue)
+            FilterValueString = GetFilterValueString(FilterValue, FieldDataType)
+         End If
+      End If
+   End If
+
+   If (RelationalOperator And SQL_Like) = SQL_Like Then
+      If (RelationalOperator And SQL_Add_WildCardSuffix) = SQL_Add_WildCardSuffix Then
+         FilterValue = FilterValue & SqlWildCardString
       End If
    End If
 
@@ -455,13 +480,13 @@ Private Function GetFilterValueString(ByVal Value As Variant, ByVal FieldDataTyp
 
    Select Case FieldDataType
       Case SqlFieldDataType.SQL_Numeric
-         GetFilterValueString = SqlTools.NumberToSqlText(Value)
+         GetFilterValueString = NumberToSqlText(Value)
       Case SqlFieldDataType.SQL_Text
-         GetFilterValueString = SqlTools.TextToSqlText(Value)
+         GetFilterValueString = TextToSqlText(Value)
       Case SqlFieldDataType.SQL_Date
-         GetFilterValueString = SqlTools.DateToSqlText(Value)
+         GetFilterValueString = DateToSqlText(Value)
       Case SqlFieldDataType.SQL_Boolean
-         GetFilterValueString = SqlTools.BooleanToSqlText(Value)
+         GetFilterValueString = BooleanToSqlText(Value)
       Case Else
          Err.Raise vbObjectError, "FilterStringBuilder.GetFilterValueString", "SqlFieldDataType '" & FieldDataType & "' wird nicht unterstützt."
 
