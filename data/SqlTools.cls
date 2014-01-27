@@ -362,14 +362,14 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
             Else ' ganzen Tag berücksichtigen FieldName >= DateValue and FieldName < DateAdd("d", 1, FilterValue))
                BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue) & _
                                SqlAndConcatString & _
-                               BuildCriteria(FieldName, FieldDataType, SQL_LessThan, DateAdd("d", 1, FilterValue))
+                               BuildCriteria(FieldName, FieldDataType, SQL_LessThan, DateAdd("d", 1, CDate(CLng(FilterValue))))
                Exit Function
             End If
          Else
             If (RelationalOperator And SQL_Equal) = SQL_Equal Then
                RelationalOperator = RelationalOperator - SQL_Equal
             End If
-            FilterValue = DateAdd("d", 1, FilterValue)
+            FilterValue = DateAdd("d", 1, CDate(CLng(FilterValue)))
          End If
       End If
    End If
