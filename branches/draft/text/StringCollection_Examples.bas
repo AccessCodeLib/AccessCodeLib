@@ -1,6 +1,6 @@
 Attribute VB_Name = "StringCollection_Examples"
 '---------------------------------------------------------------------------------------
-' Class Module: StringCollection_Examples
+' Beispiel-Modul: StringCollection_Examples
 '---------------------------------------------------------------------------------------
 '/**
 ' \author       Josef Poetzl

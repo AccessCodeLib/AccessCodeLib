@@ -1,6 +1,6 @@
 Attribute VB_Name = "FilterStringBuilder_Examples"
 '---------------------------------------------------------------------------------------
-' Class Module: FilterStringBuilder_Examples
+' Beispiel-Modul: FilterStringBuilder_Examples
 '---------------------------------------------------------------------------------------
 '/**
 ' \author       Josef Poetzl
@@ -9,23 +9,18 @@ Attribute VB_Name = "FilterStringBuilder_Examples"
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>data\FilterStringBuilder_Examples.bas</file>
-'  <use>data\FilterStringBuilder.cls</use>
+'  <file>data/FilterStringBuilder_Examples.bas</file>
+'  <use>data/FilterStringBuilder.cls</use>
 '  <license>_codelib/license.bas</license>
 '</codelib>
 '---------------------------------------------------------------------------------------
 Option Compare Text
 Option Explicit
 
-Private Function NewFilterStringBuilder() As FilterStringBuilder
-   With New FilterStringBuilder
-      Set .SqlTool = SqlTools.NewInstance("\#yyyy-mm-dd\#", "True", "*")
-      Set NewFilterStringBuilder = .Self
-   End With
-End Function
+' --------------------------
+' Beispiele
+' --------------------------
 
-
-' Beispiele:
 Private Sub EqualFilter()
 
    With NewFilterStringBuilder
@@ -130,3 +125,15 @@ With NewFilterStringBuilder
 End With
 
 End Sub
+
+
+
+' --------------------------
+' Hilfsprozeduren
+' --------------------------
+Private Function NewFilterStringBuilder() As FilterStringBuilder
+   With New FilterStringBuilder
+      Set .SqlTool = SqlTools.NewInstance("\#yyyy-mm-dd\#", "True", "*")
+      Set NewFilterStringBuilder = .Self
+   End With
+End Function
