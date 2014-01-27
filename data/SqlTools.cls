@@ -359,23 +359,20 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
       Exit Function
    End If
 
-   FilterValueString = GetFilterValueString(FilterValue, FieldDataType)
-   
    If (RelationalOperator And SQL_Between) = SQL_Between Then
-      FilterValue2String = GetFilterValueString(FilterValue2, FieldDataType)
-
       If IsNull(FilterValue2) Or IsMissing(FilterValue2) Then
          RelationalOperator = SQL_GreaterThan + SQL_Equal
       ElseIf IsNull(FilterValue) Then
          RelationalOperator = SQL_LessThan + SQL_Equal
-         FilterValueString = FilterValue2String
+         FilterValue = FilterValue2
+         FilterValue2 = Null
       ElseIf (FieldDataType And SQL_Date) = SQL_Date And (RelationalOperator And SQL_Add_WildCardSuffix) Then
          BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue) & _
                          " AND " & _
                          BuildCriteria(FieldName, FieldDataType, SQL_LessThan + SQL_Equal + SQL_Add_WildCardSuffix, FilterValue2)
          Exit Function
       Else
-         BuildCriteria = FieldName & " Between " & FilterValueString & " And " & FilterValue2String
+         BuildCriteria = FieldName & " Between " & GetFilterValueString(FilterValue, FieldDataType) & " And " & GetFilterValueString(FilterValue2, FieldDataType)
          Exit Function
       End If
    End If
@@ -398,7 +395,6 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
                RelationalOperator = RelationalOperator - SQL_Equal
             End If
             FilterValue = DateAdd("d", 1, FilterValue)
-            FilterValueString = GetFilterValueString(FilterValue, FieldDataType)
          End If
       End If
    End If
@@ -409,12 +405,13 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
       End If
    End If
 
+   FilterValueString = GetFilterValueString(FilterValue, FieldDataType)
+
    If (RelationalOperator And SQL_Like) = SQL_Like Then
       BuildCriteria = FieldName & " like " & FilterValueString
       Exit Function
    End If
    
-
    If (RelationalOperator And SQL_LessThan) = SQL_LessThan Then
       OperatorString = OperatorString & "<"
    End If
