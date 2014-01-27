@@ -106,3 +106,23 @@ Private Sub SqlInFilter()
    End With
 
 End Sub
+
+Private Sub SqlDateTimeBetween()
+
+Dim StartDate As Date
+Dim EndDate As Date
+
+StartDate = #1/1/2014#
+EndDate = #1/31/2014#
+
+With New FilterStringBuilder
+
+   .Add "D1", SQL_Date, EndDate, SQL_LessThan + SQL_Equal + SQL_Add_WildCardSuffix
+   .Add "D2", SQL_Date, EndDate, SQL_Equal + SQL_Add_WildCardSuffix
+   .Add "D3a", SQL_Date, StartDate, SQL_Between, EndDate
+   .Add "D3b", SQL_Date, StartDate, SQL_Between + SQL_Add_WildCardSuffix, EndDate
+   Debug.Print .ToString
+
+End With
+
+End Sub
