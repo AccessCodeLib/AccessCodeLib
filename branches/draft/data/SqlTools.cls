@@ -332,6 +332,11 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
       Exit Function
    End If
 
+   If TryBuildInCriteria(FieldName, FieldDataType, RelationalOperator, FilterValue, FilterValue2, IgnoreValue, Criteria) Then
+      BuildCriteria = Criteria
+      Exit Function
+   End If
+
    If TryBuildArrayCriteria(FieldName, FieldDataType, RelationalOperator, FilterValue, FilterValue2, IgnoreValue, Criteria) Then
       BuildCriteria = Criteria
       Exit Function

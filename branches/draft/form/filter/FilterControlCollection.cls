@@ -41,8 +41,9 @@ Private Sub Class_Initialize()
    Set m_EventBridge = New FilterControlEventBridge
 End Sub
 
-Public Sub Add(ByVal ControlRef As Control, _
-               ByVal DataFieldName As String, ByVal DataType As SqlFieldDataType, ByVal RelationalOperator As SqlRelationalOperators, _
+Public Sub Add(ByVal DataFieldName As String, ByVal DataType As SqlFieldDataType, _
+               ByVal RelationalOperator As SqlRelationalOperators, _
+               ByVal ControlRef As Control, _
       Optional ByVal Control2Ref As Control = Nothing, _
       Optional ByVal IgnoreValue As Variant = Null)
    
@@ -62,7 +63,8 @@ Public Sub Add(ByVal ControlRef As Control, _
 End Sub
 
 Public Sub AddMultiControlCriteria( _
-               ByVal DataFieldName As String, ByVal DataType As SqlFieldDataType, ByVal RelationalOperator As SqlRelationalOperators, _
+               ByVal DataFieldName As String, ByVal DataType As SqlFieldDataType, _
+               ByVal RelationalOperator As SqlRelationalOperators, _
                ByVal IgnoreValue As Variant, _
                ParamArray Controls() As Variant)
    
