@@ -5,6 +5,7 @@ Attribute VB_Name = "_config_Application"
 '  <replace>base/_config_Application.bas</replace> 'dieses Modul ersetzt base/_config_Application.bas
 '  <license>_codelib/license.bas</license>
 '  <use>_codelib/addins/FilterFormWizard/defGlobal_ACLibFilterFormWizard.bas</use>
+'  <use>base/_initApplication.bas</use>
 '  <use>base/modApplication.bas</use>
 '  <use>base/ApplicationHandler.cls</use>
 '  <use>base/ApplicationHandler_AppFile.cls</use>
@@ -131,10 +132,11 @@ End Sub
 '----------------------------------------------------------------------------
 ' Hilfsfunktion zum Speichern von Dateien in die lokale AppFile-Tabelle
 '----------------------------------------------------------------------------
-Private Sub setAppFiles()
+Private Sub SetAppFiles()
 On Error GoTo HandleErr
 
    Call CurrentApplication.Extensions("AppFile").SaveAppFile("AppIcon", CodeProject.Path & "\" & m_ApplicationIconFile)
+   SaveModulesInTable
 
 ExitHere:
    Exit Sub
@@ -148,4 +150,27 @@ HandleErr:
    Case Else
       Resume ExitHere
    End Select
+End Sub
+
+Private Sub SaveModulesInTable()
+
+   Dim x As Variant
+   Dim i As Long
+   
+   x = Array("SqlTools", "StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
+   For i = 0 To UBound(x)
+      SaveCodeModulInTable acModule, x(i)
+   Next
+   
+End Sub
+
+Private Sub SaveCodeModulInTable(ByVal ObjType As AcObjectType, ByVal sModulName As String)
+   
+   Dim strFileName As String
+
+   strFileName = FileTools.GetNewTempFileName
+   Application.SaveAsText ObjType, sModulName, strFileName
+   CurrentApplication.SaveAppFile sModulName, strFileName, True
+   Kill strFileName
+   
 End Sub

@@ -13,7 +13,7 @@ Attribute VB_Exposed = False
 '/**
 ' \author       Josef Poetzl
 ' <summary>
-' Code für FilterControlManager iumportieren
+' Code für Import von FilterControlManager
 ' </summary>
 ' <remarks></remarks>
 '**/
