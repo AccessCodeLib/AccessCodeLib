@@ -22,6 +22,7 @@ Attribute VB_Exposed = False
 '  <file>_codelib/addins/FilterFormWizard/FilterControlManagerImporter.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>_codelib/addins/shared/CodeModuleWriter.cls</use>
+'  <use>_codelib/addins/shared/AppFileCodeModulTransfer.cls</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -47,7 +48,9 @@ Public Sub AddToForm(ByVal FormName As String)
 End Sub
 
 Private Function CheckRequiredCodeModules() As Boolean
-   TransferCodeModules "SqlTools", "StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager"
+   With New AppFileCodeModulTransfer
+      .TransferCodeModules "SqlTools", "StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager"
+   End With
 End Function
 
 Private Sub AddFilterControlManagerCodeToFrom(ByVal frm As Form)

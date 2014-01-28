@@ -23,6 +23,11 @@ Attribute VB_Name = "_initApplication"
 Option Compare Text
 Option Explicit
 
+
+Private Sub DateienEinstellen()
+   SaveModulesInTable
+End Sub
+
 '-------------------------
 ' Anwendungseinstellungen
 '-------------------------
@@ -64,4 +69,29 @@ End Function
 Public Sub RestoreApplicationDefaultSettings()
    On Error Resume Next
    CurrentApplication.ApplicationTitle = CurrentApplication.ApplicationFullName
+End Sub
+
+
+
+Private Sub SaveModulesInTable()
+
+   Dim x As Variant
+   Dim i As Long
+   
+   x = Array("SqlTools", "StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
+   For i = 0 To UBound(x)
+      SaveCodeModulInTable acModule, x(i)
+   Next
+   
+End Sub
+
+Private Sub SaveCodeModulInTable(ByVal ObjType As AcObjectType, ByVal sModulName As String)
+   
+   Dim strFileName As String
+
+   strFileName = FileTools.GetNewTempFileName
+   Application.SaveAsText ObjType, sModulName, strFileName
+   CurrentApplication.SaveAppFile sModulName, strFileName, True
+   Kill strFileName
+   
 End Sub

@@ -37,6 +37,12 @@ Private Declare PtrSafe Function API_GetTempPath Lib "kernel32" Alias "GetTempPa
          ByVal nBufferLength As Long, _
          ByVal lpBuffer As String) As Long
 
+Private Declare PtrSafe Function API_GetTempFilename Lib "kernel32" Alias "GetTempFileNameA" ( _
+         ByVal lpszPath As String, _
+         ByVal lpPrefixString As String, _
+         ByVal wUnique As Long, _
+         ByVal lpTempFileName As String) As Long
+
 #Else
 
 Private Declare Function WNetGetConnection Lib "mpr.dll" Alias "WNetGetConnectionA" ( _
@@ -45,6 +51,12 @@ Private Declare Function WNetGetConnection Lib "mpr.dll" Alias "WNetGetConnectio
 Private Declare Function API_GetTempPath Lib "kernel32" Alias "GetTempPathA" ( _
          ByVal nBufferLength As Long, _
          ByVal lpBuffer As String) As Long
+
+Private Declare Function API_GetTempFilename Lib "kernel32" Alias "GetTempFileNameA" ( _
+         ByVal lpszPath As String, _
+         ByVal lpPrefixString As String, _
+         ByVal wUnique As Long, _
+         ByVal lpTempFileName As String) As Long
 
 #End If
 
@@ -221,6 +233,37 @@ Public Property Get TempPath() As String
    TempPath = TempString
 
 End Property
+
+Public Function GetNewTempFileName(Optional ByVal PathToUse As String = "", _
+                         Optional ByVal FilePrefix As String = "", _
+                         Optional ByVal FileExtension As String = "") As String
+
+   Dim strTempFileName As String
+   Dim strTempPath As String
+   Dim lngRet As Long
+
+   If Len(PathToUse) = 0 Then
+      strTempPath = TempPath
+   Else
+      strTempPath = PathToUse
+   End If
+
+   strTempFileName = String$(m_MAXPATHLEN, 0)
+   lngRet = API_GetTempFilename(strTempPath, FilePrefix, 0&, strTempFileName)
+
+   strTempFileName = Left$(strTempFileName, InStr(strTempFileName, Chr$(0)) - 1)
+
+   'Datei wieder löschen, da nur Name benötigt wird
+   Call Kill(strTempFileName)
+
+   If Len(FileExtension) > 0 Then 'Fileextension umschreiben
+     strTempFileName = Left$(strTempFileName, Len(strTempFileName) - 3) & FileExtension
+   End If
+   'eigentlich müsste man hier prüfen, ob Datei vorhanden ist.
+
+   GetNewTempFileName = strTempFileName
+
+End Function
 
 '---------------------------------------------------------------------------------------
 ' Function: ShortenFileName
