@@ -7,6 +7,7 @@ Attribute VB_Name = "_config_Application"
 '  <use>_codelib/addins/FilterFormWizard/defGlobal_ACLibFilterFormWizard.bas</use>
 '  <use>base/modApplication.bas</use>
 '  <use>base/ApplicationHandler.cls</use>
+'  <use>base/ApplicationHandler_AppFile.cls</use>
 '  <use>base/modErrorHandler.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -16,6 +17,8 @@ Option Explicit
 
 'Versionsnummer
 Private Const m_ApplicationVersion As String = "0.2.0"
+
+#Const USE_CLASS_ApplicationHandler_AppFile = 1
 
 Private Const m_ApplicationName As String = "ACLib FilterForm Wizard"
 Private Const m_ApplicationFullName As String = "Access Code Library - FilterForm Wizard"
@@ -87,6 +90,9 @@ On Error GoTo HandleErr
 '----------------------------------------------------------------------------
 ' Erweiterung: AppFile
 '
+#If USE_CLASS_ApplicationHandler_AppFile = 1 Then
+   modApplication.AddApplicationHandlerExtension New ApplicationHandler_AppFile
+#End If
 
 
 '----------------------------------------------------------------------------
