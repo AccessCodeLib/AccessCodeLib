@@ -49,6 +49,8 @@ Private WithEvents m_ToggleButton As ToggleButton
 Attribute m_ToggleButton.VB_VarHelpID = -1
 Private WithEvents m_CheckBox As CheckBox
 Attribute m_CheckBox.VB_VarHelpID = -1
+Private WithEvents m_OptionGroup As OptionGroup
+Attribute m_OptionGroup.VB_VarHelpID = -1
 
 Private Const EventProcedurePropertyTag As String = "[Event Procedure]"
 
@@ -70,6 +72,8 @@ Private Sub InitControl()
          Set m_ToggleButton = m_Control
       Case acCheckBox
          Set m_CheckBox = m_Control
+      Case acOptionGroup
+         Set m_OptionGroup = m_Control
       Case Else
    
    End Select
@@ -92,6 +96,7 @@ Private Sub RemoveWithEventsControlRefs()
    Set m_ListBox = Nothing
    Set m_ToggleButton = Nothing
    Set m_CheckBox = Nothing
+   Set m_OptionGroup = Nothing
 End Sub
 
 Private Sub Class_Initialize()
@@ -237,11 +242,19 @@ Private Function GetSubControlsValues() As Variant()
 
    For Each fc In m_SubFilterControls
       Select Case fc.Control.ControlType
-         Case acCheckBox, acToggleButton
-            If fc.Control.Value = True Then
-               Values(i) = fc.Control.Tag
+         Case acCheckBox, acToggleButton, acOptionButton
+            If TypeOf fc.Control.Parent Is OptionGroup Then
+               If fc.Control.OptionValue = fc.Control.Parent.Value Then
+                  Values(i) = fc.Control.Tag
+               Else
+                  Values(i) = m_IgnoreValue
+               End If
             Else
-               Values(i) = m_IgnoreValue
+               If fc.Control.Value = True Then
+                  Values(i) = fc.Control.Tag
+               Else
+                  Values(i) = m_IgnoreValue
+               End If
             End If
          Case Else
             Values(i) = fc.Control.Value
@@ -312,6 +325,10 @@ Private Sub m_ComboBox_AfterUpdate()
 End Sub
 
 Private Sub m_ListBox_AfterUpdate()
+   RaiseFilterValueChanged
+End Sub
+
+Private Sub m_OptionGroup_AfterUpdate()
    RaiseFilterValueChanged
 End Sub
 

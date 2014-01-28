@@ -58,6 +58,7 @@ Private m_SqlWildCardString As String
 Private Const ResultTextIfNull As String = "NULL"
 
 Public Enum SqlRelationalOperators
+   [_IgnoreAll] = &H80000000
    SQL_Not = 1
    SQL_Equal = 2
    SQL_LessThan = 4
@@ -326,6 +327,10 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
    Dim FilterValue2String As String
    Dim OperatorString As String
    Dim Criteria As String
+
+   If (RelationalOperator And [_IgnoreAll]) = [_IgnoreAll] Then
+      Exit Function
+   End If
    
    If NullFilterOrEmptyFilter(FieldName, Nz(FilterValue, FilterValue2), IgnoreValue, Criteria) Then
       BuildCriteria = Criteria
