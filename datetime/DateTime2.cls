@@ -62,39 +62,39 @@ Public Property Get Add(ByVal Interval As String, ByVal Value As Integer) As Dat
 End Property
 
 Public Property Get AddYear(ByVal Value As Integer) As DateTime2
-    Set AddYear = DateTime2.NewValue(m_Value).Add("yyyy", Value)
+    Set AddYear = Me.Add("yyyy", Value)
 End Property
 
 Public Property Get AddQuarter(ByVal Value As Integer) As DateTime2
-    Set AddQuarter = DateTime2.NewValue(m_Value).Add("q", Value)
+    Set AddQuarter = Me.Add("q", Value)
 End Property
 
 Public Property Get AddMonth(ByVal Value As Integer) As DateTime2
-    Set AddMonth = DateTime2.NewValue(m_Value).Add("m", Value)
+    Set AddMonth = Me.Add("m", Value)
 End Property
 
 Public Property Get AddDayOfYear(ByVal Value As Integer) As DateTime2
-    Set AddDayOfYear = DateTime2.NewValue(m_Value).Add("y", Value)
+    Set AddDayOfYear = Me.Add("y", Value)
 End Property
 
 Public Property Get AddDay(ByVal Value As Integer) As DateTime2
-    Set AddDay = DateTime2.NewValue(m_Value).Add("d", Value)
+    Set AddDay = Me.Add("d", Value)
 End Property
 
 Public Property Get AddWeek(ByVal Value As Integer) As DateTime2
-    Set AddWeek = DateTime2.NewValue(m_Value).Add("ww", Value)
+    Set AddWeek = Me.Add("ww", Value)
 End Property
 
 Public Property Get AddHour(ByVal Value As Integer) As DateTime2
-    Set AddHour = DateTime2.NewValue(m_Value).Add("h", Value)
+    Set AddHour = Me.Add("h", Value)
 End Property
 
 Public Property Get AddMinute(ByVal Value As Integer) As DateTime2
-    Set AddMinute = DateTime2.NewValue(m_Value).Add("n", Value)
+    Set AddMinute = Me.Add("n", Value)
 End Property
 
 Public Property Get AddSecond(ByVal Value As Integer) As DateTime2
-    Set AddSecond = DateTime2.NewValue(m_Value).Add("s", Value)
+    Set AddSecond = Me.Add("s", Value)
 End Property
 
 Public Property Get GetYear() As Integer
@@ -170,27 +170,27 @@ Public Property Get FirstDayOfMonth() As DateTime2
 End Property
 
 Public Property Get FirstDayOfQuarter() As DateTime2
-    Set FirstDayOfQuarter = DateTime2.NewValue(m_Value).FirstDayOfYear().AddQuarter(Me.GetQuarter() - 1)
+    Set FirstDayOfQuarter = Me.FirstDayOfYear().AddQuarter(Me.GetQuarter() - 1)
 End Property
 
 Public Property Get FirstDayOfWeek() As DateTime2
-    Set FirstDayOfWeek = DateTime2.NewValue(m_Value).AddDay(1 - Me.GetDayOfWeek())
+    Set FirstDayOfWeek = Me.AddDay(1 - Me.GetDayOfWeek())
 End Property
 
 Public Property Get LastDayOfYear() As DateTime2
-    Set LastDayOfYear = DateTime2.NewValue(m_Value).FirstDayOfYear().AddYear(1).AddDay(-1)
+    Set LastDayOfYear = Me.FirstDayOfYear().AddYear(1).AddDay(-1)
 End Property
 
 Public Property Get LastDayOfMonth() As DateTime2
-    Set LastDayOfMonth = DateTime2.NewValue(m_Value).FirstDayOfMonth().AddMonth(1).AddDay(-1)
+    Set LastDayOfMonth = Me.FirstDayOfMonth().AddMonth(1).AddDay(-1)
 End Property
 
 Public Property Get LastDayOfQuarter() As DateTime2
-    Set LastDayOfQuarter = DateTime2.NewValue(m_Value).FirstDayOfQuarter().AddQuarter(1).AddDay(-1)
+    Set LastDayOfQuarter = Me.FirstDayOfQuarter().AddQuarter(1).AddDay(-1)
 End Property
 
 Public Property Get LastDayOfWeek() As DateTime2
-    Set LastDayOfWeek = DateTime2.NewValue(m_Value).AddDay(7 - Me.GetDayOfWeek())
+    Set LastDayOfWeek = Me.AddDay(7 - Me.GetDayOfWeek())
 End Property
 
 Public Property Get TrimTime() As DateTime2
@@ -198,7 +198,7 @@ Public Property Get TrimTime() As DateTime2
 End Property
 
 Public Property Get GetTime() As DateTime2
-    Set GetTime = DateTime2.NewValue(m_Value).TrimDate()
+    Set GetTime = Me.TrimDate()
 End Property
 
 Public Property Get TrimDate() As DateTime2
@@ -206,7 +206,7 @@ Public Property Get TrimDate() As DateTime2
 End Property
 
 Public Property Get GetDate() As DateTime2
-    Set GetDate = DateTime2.NewValue(m_Value).TrimTime()
+    Set GetDate = Me.TrimTime()
 End Property
 
 Public Property Get Now() As DateTime2
