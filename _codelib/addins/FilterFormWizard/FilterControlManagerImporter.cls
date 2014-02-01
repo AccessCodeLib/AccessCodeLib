@@ -213,6 +213,17 @@ Friend Sub AddFilterControlDefinition(ByVal DataField As String, ByVal DataType 
    
    Dim ControlArray() As String
 
+
+   If RelationalOperator Like "*SQL_In*" Then
+      If Len(Control) > 0 Then
+         If Len(Control2) > 0 Then
+            Control2 = "," & Control2
+         End If
+         Control2 = Control & Control2
+         Control = vbNullString
+      End If
+   End If
+
    If Len(Control2) > 0 Then
       CleanControlArrayString Control2
       ControlArray = Split(Control2, ",")
