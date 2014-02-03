@@ -344,10 +344,14 @@ Public Sub RemoveFilterValue(Optional ByVal RaiseFilterValueChangedEvent As Bool
 
    If Not (m_Control Is Nothing) Then
       Select Case m_Control.ControlType
-         Case acCheckBox, acToggleButton
-            m_Control.Value = False
+         Case acCheckBox, acToggleButton, acOptionButton
+            If TypeOf m_Control.Parent Is OptionGroup Then
+            Else
+               m_Control.Value = False
+            End If
+            
          Case Else
-            m_Control.Value = Null
+            m_Control.Value = IgnoreValue
       End Select
    End If
 
