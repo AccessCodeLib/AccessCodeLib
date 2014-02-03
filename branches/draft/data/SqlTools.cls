@@ -77,6 +77,11 @@ Public Enum SqlFieldDataType
    SQL_Date = 4
 End Enum
 
+Public Enum SqlLogicalOperator
+   SQL_And = 1
+   SQL_Or = 2
+End Enum
+
 ' Konfiguration für den SQL-Dialekt
 Public Property Get SqlWildCardString() As String
    If Len(m_SqlWildCardString) > 0 Then

@@ -79,14 +79,7 @@ End Property
 
 Public Function CreateFilterString() As String
    
-   Dim fc As FilterControl
-
-   With New FilterStringBuilder
-      For Each fc In FilterControls.Items
-         .AddCriteria fc.CriteriaString(SqlTool)
-      Next
-      CreateFilterString = .ToString(" AND ")
-   End With
+   CreateFilterString = FilterControls.CriteriaString(SqlTool)
 
 End Function
 
