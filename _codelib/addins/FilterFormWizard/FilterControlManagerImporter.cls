@@ -213,14 +213,16 @@ Friend Sub AddFilterControlDefinition(ByVal DataField As String, ByVal DataType 
    
    Dim ControlArray() As String
 
-
-   If RelationalOperator Like "*SQL_In*" Then
-      If Len(Control) > 0 Then
-         If Len(Control2) > 0 Then
-            Control2 = "," & Control2
+   If Len(Control2) > 0 Then
+      If Not (RelationalOperator Like "*SQL_Between*") Then
+      ' Control + Control2 werden nur bei Between benötigt => Rest: MultiFilterControlCodeLine
+         If Len(Control) > 0 Then
+            If Len(Control2) > 0 Then
+               Control2 = "," & Control2
+            End If
+            Control2 = Control & Control2
+            Control = vbNullString
          End If
-         Control2 = Control & Control2
-         Control = vbNullString
       End If
    End If
 

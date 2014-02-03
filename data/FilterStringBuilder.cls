@@ -88,7 +88,14 @@ Friend Sub ConfigSqlFormat(ByVal SqlDateFormat As String, _
 
 End Sub
 
+Public Function ToString(Optional ByVal ConcatOperator As SqlLogicalOperator = SqlLogicalOperator.SQL_And) As String
+   ToString = m_Items.ToString(GetConcatOperatorString(ConcatOperator))
+End Function
 
-Public Function ToString(Optional ByVal Delimiter As String = " AND ") As String
-   ToString = m_Items.ToString(Delimiter)
+Private Function GetConcatOperatorString(ByVal ConcatOperator As SqlLogicalOperator) As String
+   If ConcatOperator = SqlLogicalOperator.SQL_Or Then
+      GetConcatOperatorString = " Or "
+   Else
+      GetConcatOperatorString = " And "
+   End If
 End Function

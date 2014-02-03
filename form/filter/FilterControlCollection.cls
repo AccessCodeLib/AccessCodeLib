@@ -33,13 +33,34 @@ Option Explicit
 Private m_FilterControls As Collection
 Private WithEvents m_EventBridge As FilterControlEventBridge
 Attribute m_EventBridge.VB_VarHelpID = -1
+Private m_ItemConcatOperator As SqlLogicalOperator
 
 Public Event FilterValuesChanged()
 
 Private Sub Class_Initialize()
    Set m_FilterControls = New Collection
    Set m_EventBridge = New FilterControlEventBridge
+   m_ItemConcatOperator = SqlLogicalOperator.SQL_And
 End Sub
+
+Friend Property Get EventBridge() As FilterControlEventBridge
+   Set EventBridge = m_EventBridge
+End Property
+
+Friend Property Set EventBridge(ByVal NewRef As FilterControlEventBridge)
+
+   Set m_EventBridge = NewRef
+   
+   Dim fc As FilterControl
+   For Each fc In m_FilterControls
+      Set fc.EventBridge = m_EventBridge
+   Next
+
+End Property
+
+Public Property Get Self() As FilterControlCollection
+   Set Self = Me
+End Property
 
 Public Sub Add(ByVal DataFieldName As String, ByVal DataType As SqlFieldDataType, _
                ByVal RelationalOperator As SqlRelationalOperators, _
@@ -61,6 +82,25 @@ Public Sub Add(ByVal DataFieldName As String, ByVal DataType As SqlFieldDataType
    End With
    
 End Sub
+
+Public Function AddGroup(Optional ByVal ConcatOperator As SqlLogicalOperator = SqlLogicalOperator.SQL_Or) As FilterControlCollection
+   
+   With New FilterControlCollection
+      .ItemConcatOperator = ConcatOperator
+      Set .EventBridge = m_EventBridge
+      m_FilterControls.Add .Self
+      Set AddGroup = .Self
+   End With
+
+End Function
+
+Public Property Get ItemConcatOperator() As SqlLogicalOperator
+   ItemConcatOperator = m_ItemConcatOperator
+End Property
+
+Public Property Let ItemConcatOperator(ByVal NewValue As SqlLogicalOperator)
+   m_ItemConcatOperator = NewValue
+End Property
 
 Public Sub AddMultiControlCriteria( _
                ByVal DataFieldName As String, ByVal DataType As SqlFieldDataType, _
@@ -109,3 +149,17 @@ Public Sub Clear()
    Set m_EventBridge = New FilterControlEventBridge
    
 End Sub
+
+Public Function CriteriaString(ByVal SqlToolsRef As SqlTools) As String
+   
+   Dim fc As Object ' schöner wäre As FilterControl kominiert mit FilterControlCollection implements FilterControl
+                    ' .. aber Implements ist aus Erfahrung mit Vorsicht zu genießen, wenn Code/Interface in Access/VBA geändert wird.
+
+   With New FilterStringBuilder
+      For Each fc In m_FilterControls
+         .AddCriteria fc.CriteriaString(SqlToolsRef)
+      Next
+      CriteriaString = .ToString(m_ItemConcatOperator)
+   End With
+
+End Function

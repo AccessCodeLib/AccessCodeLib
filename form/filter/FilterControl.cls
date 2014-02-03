@@ -119,7 +119,9 @@ Friend Property Get EventBridge() As FilterControlEventBridge
 End Property
 
 Friend Property Set EventBridge(ByVal NewRef As FilterControlEventBridge)
+
    Set m_EventBridge = NewRef
+
    If Not (m_FilterControl2 Is Nothing) Then
       Set m_FilterControl2.EventBridge = m_EventBridge
    End If
@@ -129,7 +131,7 @@ Friend Property Set EventBridge(ByVal NewRef As FilterControlEventBridge)
    
    Dim fc As FilterControl
    For Each fc In m_SubFilterControls
-      fc.EventBridge = m_EventBridge
+      Set fc.EventBridge = m_EventBridge
    Next
 
 End Property
@@ -223,7 +225,7 @@ Public Property Let IgnoreValue(ByVal NewValue As Variant)
    m_IgnoreValue = NewValue
 End Property
 
-Public Property Get CriteriaString(ByVal SqlToolsRef As SqlTools) As String
+Public Function CriteriaString(ByVal SqlToolsRef As SqlTools) As String
    
    If m_SubFilterControls Is Nothing Then
       CriteriaString = SqlToolsRef.BuildCriteria(m_DataField, m_DataType, m_RelationalOperator, GetControlValue(Control), GetControlValue(Control2), IgnoreValue)
@@ -231,7 +233,7 @@ Public Property Get CriteriaString(ByVal SqlToolsRef As SqlTools) As String
       CriteriaString = SqlToolsRef.BuildCriteria(m_DataField, m_DataType, m_RelationalOperator, GetSubControlsValues, , IgnoreValue)
    End If
 
-End Property
+End Function
 
 Private Function GetSubControlsValues() As Variant()
    
