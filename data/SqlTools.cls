@@ -78,6 +78,7 @@ Public Enum SqlFieldDataType
 End Enum
 
 Public Enum SqlLogicalOperator
+   [_SQL_Default] = 0
    SQL_And = 1
    SQL_Or = 2
 End Enum

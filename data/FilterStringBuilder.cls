@@ -32,6 +32,7 @@ Option Explicit
 
 Private m_Items As StringCollection
 Private m_SqlTool As SqlTools
+Private m_DefaultConcatOperator As SqlLogicalOperator
 
 Private Sub Class_Initialize()
    Set m_Items = New StringCollection
@@ -39,10 +40,19 @@ End Sub
 
 Private Sub Class_Terminate()
    Set m_Items = Nothing
+   m_DefaultConcatOperator = SqlLogicalOperator.SQL_And
 End Sub
 
 Public Property Get Self() As FilterStringBuilder
    Set Self = Me
+End Property
+
+Public Property Get DefaultConcatOperator() As SqlLogicalOperator
+   DefaultConcatOperator = m_DefaultConcatOperator
+End Property
+
+Public Property Let DefaultConcatOperator(ByVal NewValue As SqlLogicalOperator)
+   m_DefaultConcatOperator = NewValue
 End Property
 
 Public Sub Add(ByVal FieldName As String, ByVal FieldDataType As SqlFieldDataType, _
@@ -88,7 +98,10 @@ Friend Sub ConfigSqlFormat(ByVal SqlDateFormat As String, _
 
 End Sub
 
-Public Function ToString(Optional ByVal ConcatOperator As SqlLogicalOperator = SqlLogicalOperator.SQL_And) As String
+Public Function ToString(Optional ByVal ConcatOperator As SqlLogicalOperator = SqlLogicalOperator.[_SQL_Default]) As String
+   If ConcatOperator = SqlLogicalOperator.[_SQL_Default] Then
+      ConcatOperator = DefaultConcatOperator
+   End If
    ToString = m_Items.ToString(GetConcatOperatorString(ConcatOperator))
 End Function
 
