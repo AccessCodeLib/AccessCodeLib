@@ -153,3 +153,18 @@ Public Sub BuildCriteria_TextValueArrayFilter( _
    Assert.That Actual, Iz.EqualTo(Expected)
 
 End Sub
+
+'AccUnit:Row(Null, "a", "b", Null, "")
+'AccUnit:Row("a", "a", "b", Null, "")
+'AccUnit:Row("x", "a", "b", Null, "F = 'x'")
+Public Sub BuildCriteria_IgnoreValueArray( _
+                           ByVal FilterValue1 As Variant, _
+                           ByVal IgnoreValue1 As Variant, ByVal IgnoreValue2 As Variant, ByVal IgnoreValue3 As Variant, _
+                           ByVal Expected As String)
+
+   Dim Actual As String
+
+   Actual = DaoTools.BuildCriteria("F", SQL_Text, SQL_Equal, FilterValue1, , Array(IgnoreValue1, IgnoreValue2, IgnoreValue3))
+   Assert.That Actual, Iz.EqualTo(Expected)
+
+End Sub

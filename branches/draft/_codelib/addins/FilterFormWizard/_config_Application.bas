@@ -17,7 +17,7 @@ Option Compare Database
 Option Explicit
 
 'Versionsnummer
-Private Const m_ApplicationVersion As String = "0.9.3"
+Private Const m_ApplicationVersion As String = "0.9.5"
 
 #Const USE_CLASS_ApplicationHandler_AppFile = 1
 
@@ -31,7 +31,7 @@ Private Const m_DefaultErrorHandlerMode As Long = ACLibErrorHandlerMode.aclibErr
 Private Const m_ApplicationStartFormName As String = "frmFilterFormWizard"
 
 '---------------------------------------------------------------------------------------
-' Sub: InitConfig (Josef Pötzl, 2009-12-11)
+' Sub: InitConfig (Josef Pötzl)
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
