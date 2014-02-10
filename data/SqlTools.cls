@@ -337,7 +337,7 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
    If (RelationalOperator And [_IgnoreAll]) = [_IgnoreAll] Then
       Exit Function
    End If
-   
+
    If NullFilterOrEmptyFilter(FieldName, Nz(FilterValue, FilterValue2), IgnoreValue, Criteria) Then
       BuildCriteria = Criteria
       Exit Function
@@ -520,21 +520,11 @@ End Function
 Private Function NullFilterOrEmptyFilter(ByVal FieldName As String, ByVal Value As Variant, ByVal IgnoreValue As Variant, _
                                          ByRef NullFilterString As String) As Boolean
    
-   Dim bolIgnoreValueIsNull As Boolean
-   
    If IsNull(Value) Then
-
-      If IsArray(IgnoreValue) Then
-         bolIgnoreValueIsNull = ArrayContainsNull(IgnoreValue)
-      Else
-         bolIgnoreValueIsNull = IsNull(IgnoreValue)
-      End If
-
-      If Not bolIgnoreValueIsNull Then
+      If Not ValueIsIgnoreValue(Value, IgnoreValue) Then
          NullFilterString = FieldName & " Is Null"
       End If
       NullFilterOrEmptyFilter = True
-
    ElseIf IsArray(Value) Then
       Dim a() As Variant
       a = Value
@@ -542,11 +532,19 @@ Private Function NullFilterOrEmptyFilter(ByVal FieldName As String, ByVal Value 
          NullFilterOrEmptyFilter = True
       End If
    Else
-      If IsArray(IgnoreValue) Then
-         NullFilterOrEmptyFilter = ArrayContains(IgnoreValue, Value)
-      ElseIf Value = IgnoreValue Then
-         NullFilterOrEmptyFilter = True
-      End If
+      NullFilterOrEmptyFilter = ValueIsIgnoreValue(Value, IgnoreValue)
+   End If
+
+End Function
+
+Private Function ValueIsIgnoreValue(ByVal Value As Variant, ByVal IgnoreValue As Variant) As Boolean
+   
+   If IsArray(IgnoreValue) Then
+      ValueIsIgnoreValue = ArrayContains(IgnoreValue, Value)
+   ElseIf IsNull(Value) Then
+      ValueIsIgnoreValue = IsNull(IgnoreValue)
+   Else
+      ValueIsIgnoreValue = (Value = IgnoreValue)
    End If
 
 End Function
@@ -594,10 +592,17 @@ Private Function GetValueArrayString(ByVal Value As Variant, ByVal FieldDataType
    Dim s As String
 
    For i = LBound(Value) To UBound(Value)
-      If Value(i) = IgnoreValue Then
-      ElseIf IsNull(Value(i)) And IsNull(IgnoreValue) Then
+      If IsArray(IgnoreValue) Then
+         If ArrayContains(IgnoreValue, Value(i)) Then
+         Else
+            s = s & Delimiter & GetFilterValueString(Value(i), FieldDataType)
+         End If
       Else
-         s = s & Delimiter & GetFilterValueString(Value(i), FieldDataType)
+         If Value(i) = IgnoreValue Then
+         ElseIf IsNull(Value(i)) And IsNull(IgnoreValue) Then
+         Else
+            s = s & Delimiter & GetFilterValueString(Value(i), FieldDataType)
+         End If
       End If
    Next
    If Len(s) > 0 And Len(Delimiter) > 0 Then
@@ -622,4 +627,5 @@ Private Function GetFilterValueString(ByVal Value As Variant, ByVal FieldDataTyp
          Err.Raise vbObjectError, "FilterStringBuilder.GetFilterValueString", "SqlFieldDataType '" & FieldDataType & "' wird nicht unterstützt."
 
    End Select
+
 End Function

@@ -49,6 +49,8 @@ Private WithEvents m_ToggleButton As ToggleButton
 Attribute m_ToggleButton.VB_VarHelpID = -1
 Private WithEvents m_CheckBox As CheckBox
 Attribute m_CheckBox.VB_VarHelpID = -1
+Private WithEvents m_OptionButton As OptionButton
+Attribute m_OptionButton.VB_VarHelpID = -1
 Private WithEvents m_OptionGroup As OptionGroup
 Attribute m_OptionGroup.VB_VarHelpID = -1
 
@@ -61,6 +63,13 @@ Private Sub InitControl()
 
    RemoveWithEventsControlRefs
 
+   If TypeOf m_Control.Parent Is OptionGroup Then
+      'Ereignisbehandlung bei Control nicht möglich => m_OptionGroup.AfterUpdate prüfen
+      Set m_OptionGroup = m_Control.Parent
+      CheckAfterUpdateEventHandler m_OptionGroup
+      Exit Sub
+   End If
+
    Select Case m_Control.ControlType
       Case acTextBox
          Set m_Textbox = m_Control
@@ -70,6 +79,8 @@ Private Sub InitControl()
          Set m_ListBox = m_Control
       Case acToggleButton
          Set m_ToggleButton = m_Control
+      Case acOptionButton
+         Set m_OptionButton = m_Control
       Case acCheckBox
          Set m_CheckBox = m_Control
       Case acOptionGroup
@@ -78,14 +89,14 @@ Private Sub InitControl()
    
    End Select
    
-   CheckAfterUpdateEventHandler
+   CheckAfterUpdateEventHandler m_Control
 
 End Sub
 
-Private Sub CheckAfterUpdateEventHandler()
+Private Sub CheckAfterUpdateEventHandler(ByVal ControlToCheck As Control)
 
-   If Len(m_Control.AfterUpdate) = 0 Then
-      m_Control.AfterUpdate = EventProcedurePropertyTag
+   If Len(ControlToCheck.AfterUpdate) = 0 Then
+      ControlToCheck.AfterUpdate = EventProcedurePropertyTag
    End If
 
 End Sub
@@ -96,6 +107,7 @@ Private Sub RemoveWithEventsControlRefs()
    Set m_ListBox = Nothing
    Set m_ToggleButton = Nothing
    Set m_CheckBox = Nothing
+   Set m_OptionButton = Nothing
    Set m_OptionGroup = Nothing
 End Sub
 
@@ -187,6 +199,7 @@ Public Sub SetSubControls(ByVal SubControlArray As Variant)
       With New FilterControl
          Set .Control = ctl
          Set .EventBridge = m_EventBridge
+         .IgnoreValue = m_IgnoreValue
          m_SubFilterControls.Add .Self
       End With
    Next
@@ -225,6 +238,14 @@ Public Property Let IgnoreValue(ByVal NewValue As Variant)
    m_IgnoreValue = NewValue
 End Property
 
+Private Function GetCheckedIgnoreValue() As Variant
+   If IsArray(m_IgnoreValue) Then
+      GetCheckedIgnoreValue = m_IgnoreValue(LBound(m_IgnoreValue))
+   Else
+      GetCheckedIgnoreValue = m_IgnoreValue
+   End If
+End Function
+
 Public Function CriteriaString(ByVal SqlToolsRef As SqlTools) As String
    
    If m_SubFilterControls Is Nothing Then
@@ -249,13 +270,13 @@ Private Function GetSubControlsValues() As Variant()
                If fc.Control.OptionValue = fc.Control.Parent.Value Then
                   Values(i) = fc.Control.Tag
                Else
-                  Values(i) = m_IgnoreValue
+                  Values(i) = GetCheckedIgnoreValue
                End If
             Else
                If fc.Control.Value = True Then
                   Values(i) = fc.Control.Tag
                Else
-                  Values(i) = m_IgnoreValue
+                  Values(i) = GetCheckedIgnoreValue
                End If
             End If
          Case Else
@@ -330,6 +351,10 @@ Private Sub m_ListBox_AfterUpdate()
    RaiseFilterValueChanged
 End Sub
 
+Private Sub m_OptionButton_AfterUpdate()
+   RaiseFilterValueChanged
+End Sub
+
 Private Sub m_OptionGroup_AfterUpdate()
    RaiseFilterValueChanged
 End Sub
@@ -345,15 +370,17 @@ End Sub
 Public Sub RemoveFilterValue(Optional ByVal RaiseFilterValueChangedEvent As Boolean = True)
 
    If Not (m_Control Is Nothing) Then
+
       Select Case m_Control.ControlType
          Case acCheckBox, acToggleButton, acOptionButton
             If TypeOf m_Control.Parent Is OptionGroup Then
+               m_Control.Parent.Value = GetCheckedIgnoreValue
             Else
                m_Control.Value = False
             End If
             
          Case Else
-            m_Control.Value = IgnoreValue
+            m_Control.Value = GetCheckedIgnoreValue
       End Select
    End If
 
