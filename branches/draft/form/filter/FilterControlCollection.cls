@@ -110,11 +110,11 @@ Public Sub AddMultiControlCriteria( _
    
    With New FilterControl
       Set .EventBridge = m_EventBridge
-      .SetSubControls Controls
       .DataField = DataFieldName
       .DataType = DataType
       .RelationalOperator = RelationalOperator
       .IgnoreValue = IgnoreValue
+      .SetSubControls Controls
       m_FilterControls.Add .Self
    End With
    
@@ -126,9 +126,13 @@ End Property
 
 Public Sub RemoveFilterValues(Optional ByVal RaiseFilterValuesChangedEvent As Boolean = True)
    
-   Dim fc As FilterControl
+   Dim fc As Object ' FilterControl oder FilterControlCollection
    For Each fc In Items
-      fc.RemoveFilterValue False
+      If TypeOf fc Is FilterControlCollection Then
+         fc.RemoveFilterValues False
+      Else
+         fc.RemoveFilterValue False
+      End If
    Next
    
    If RaiseFilterValuesChangedEvent Then

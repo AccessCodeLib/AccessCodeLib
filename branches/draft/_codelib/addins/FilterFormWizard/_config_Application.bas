@@ -17,7 +17,7 @@ Option Compare Database
 Option Explicit
 
 'Versionsnummer
-Private Const m_ApplicationVersion As String = "0.9.5"
+Private Const m_ApplicationVersion As String = "0.9.7"
 
 #Const USE_CLASS_ApplicationHandler_AppFile = 1
 
