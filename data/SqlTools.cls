@@ -520,22 +520,72 @@ End Function
 Private Function NullFilterOrEmptyFilter(ByVal FieldName As String, ByVal Value As Variant, ByVal IgnoreValue As Variant, _
                                          ByRef NullFilterString As String) As Boolean
    
+   Dim bolIgnoreValueIsNull As Boolean
+   
    If IsNull(Value) Then
-      If Not IsNull(IgnoreValue) Then
+
+      If IsArray(IgnoreValue) Then
+         bolIgnoreValueIsNull = ArrayContainsNull(IgnoreValue)
+      Else
+         bolIgnoreValueIsNull = IsNull(IgnoreValue)
+      End If
+
+      If Not bolIgnoreValueIsNull Then
          NullFilterString = FieldName & " Is Null"
       End If
       NullFilterOrEmptyFilter = True
+
    ElseIf IsArray(Value) Then
       Dim a() As Variant
       a = Value
       If (0 / 1) + (Not Not a) = 0 Then ' leerer Array
          NullFilterOrEmptyFilter = True
       End If
-   ElseIf Value = IgnoreValue Then
-      NullFilterOrEmptyFilter = True
+   Else
+      If IsArray(IgnoreValue) Then
+         NullFilterOrEmptyFilter = ArrayContains(IgnoreValue, Value)
+      ElseIf Value = IgnoreValue Then
+         NullFilterOrEmptyFilter = True
+      End If
    End If
 
 End Function
+
+Private Function ArrayContains(ByVal ArrayToCheck As Variant, ByVal SearchValue As Variant) As Boolean
+   
+   Dim i As Long
+
+   If IsNull(SearchValue) Then
+      ArrayContains = ArrayContainsNull(ArrayToCheck)
+      Exit Function
+   End If
+
+   For i = LBound(ArrayToCheck) To UBound(ArrayToCheck)
+      If ArrayToCheck(i) = SearchValue Then
+         ArrayContains = True
+         Exit Function
+      End If
+   Next
+
+   ArrayContains = False
+
+End Function
+
+Private Function ArrayContainsNull(ByVal ArrayToCheck As Variant) As Boolean
+   
+   Dim i As Long
+
+   For i = LBound(ArrayToCheck) To UBound(ArrayToCheck)
+      If IsNull(ArrayToCheck(i)) Then
+         ArrayContainsNull = True
+         Exit Function
+      End If
+   Next
+
+   ArrayContainsNull = False
+
+End Function
+
 
 Private Function GetValueArrayString(ByVal Value As Variant, ByVal FieldDataType As SqlFieldDataType, _
                                      ByVal Delimiter As String, ByVal IgnoreValue As Variant) As String
