@@ -17,7 +17,7 @@ Option Compare Database
 Option Explicit
 
 'Versionsnummer
-Private Const m_ApplicationVersion As String = "0.9.7"
+Private Const m_ApplicationVersion As String = "0.9.8"
 
 #Const USE_CLASS_ApplicationHandler_AppFile = 1
 
@@ -136,7 +136,7 @@ Private Sub SetAppFiles()
 On Error GoTo HandleErr
 
    Call CurrentApplication.Extensions("AppFile").SaveAppFile("AppIcon", CodeProject.Path & "\" & m_ApplicationIconFile)
-   SaveModulesInTable
+   SaveCodeModulesToTable
 
 ExitHere:
    Exit Sub
@@ -152,19 +152,19 @@ HandleErr:
    End Select
 End Sub
 
-Private Sub SaveModulesInTable()
+Private Sub SaveCodeModulesToTable()
 
    Dim x As Variant
    Dim i As Long
    
    x = Array("SqlTools", "StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
    For i = 0 To UBound(x)
-      SaveCodeModulInTable acModule, x(i)
+      SaveCodeModulToTable acModule, x(i)
    Next
    
 End Sub
 
-Private Sub SaveCodeModulInTable(ByVal ObjType As AcObjectType, ByVal sModulName As String)
+Private Sub SaveCodeModulToTable(ByVal ObjType As AcObjectType, ByVal sModulName As String)
    
    Dim strFileName As String
 

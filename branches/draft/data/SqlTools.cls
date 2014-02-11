@@ -338,7 +338,7 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
       Exit Function
    End If
 
-   If NullFilterOrEmptyFilter(FieldName, Nz(FilterValue, FilterValue2), IgnoreValue, Criteria) Then
+   If NullFilterOrEmptyFilter(FieldName, FieldDataType, Nz(FilterValue, FilterValue2), IgnoreValue, Criteria) Then
       BuildCriteria = Criteria
       Exit Function
    End If
@@ -496,12 +496,12 @@ Private Function TryBuildBetweenCriteria(ByRef FieldName As String, ByVal FieldD
                                          ByRef Criteria As String) As Boolean
    
    If (RelationalOperator And SQL_Between) = SQL_Between Then
-      If IsNull(FilterValue2) Or IsMissing(FilterValue2) Or (FilterValue2 = IgnoreValue) Then
+      If IsNull(FilterValue2) Or IsMissing(FilterValue2) Or ValuesAreEqual(FieldDataType, FilterValue2, IgnoreValue) Then
          RelationalOperator = SQL_GreaterThan + SQL_Equal
-      ElseIf IsNull(FilterValue) Or (FilterValue = IgnoreValue) Then
+      ElseIf IsNull(FilterValue) Or ValuesAreEqual(FieldDataType, FilterValue, IgnoreValue) Then
          RelationalOperator = SQL_LessThan + SQL_Equal
          FilterValue = FilterValue2
-         FilterValue2 = IgnoreValue
+         FilterValue2 = GetCheckedIgnoreValue(IgnoreValue)
       ElseIf (FieldDataType And SQL_Date) = SQL_Date And (RelationalOperator And SQL_Add_WildCardSuffix) Then
          Criteria = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue) & _
                     SqlAndConcatString & _
@@ -517,11 +517,21 @@ Private Function TryBuildBetweenCriteria(ByRef FieldName As String, ByVal FieldD
 
 End Function
 
-Private Function NullFilterOrEmptyFilter(ByVal FieldName As String, ByVal Value As Variant, ByVal IgnoreValue As Variant, _
+Private Function GetCheckedIgnoreValue(ByVal IgnoreValue As Variant) As Variant
+   If IsArray(IgnoreValue) Then
+      GetCheckedIgnoreValue = IgnoreValue(LBound(IgnoreValue))
+   Else
+      GetCheckedIgnoreValue = IgnoreValue
+   End If
+End Function
+
+
+Private Function NullFilterOrEmptyFilter(ByVal FieldName As String, ByVal FieldDataType As SqlFieldDataType, _
+                                         ByVal Value As Variant, ByVal IgnoreValue As Variant, _
                                          ByRef NullFilterString As String) As Boolean
    
    If IsNull(Value) Then
-      If Not ValueIsIgnoreValue(Value, IgnoreValue) Then
+      If Not ValuesAreEqual(FieldDataType, Value, IgnoreValue) Then
          NullFilterString = FieldName & " Is Null"
       End If
       NullFilterOrEmptyFilter = True
@@ -532,24 +542,37 @@ Private Function NullFilterOrEmptyFilter(ByVal FieldName As String, ByVal Value 
          NullFilterOrEmptyFilter = True
       End If
    Else
-      NullFilterOrEmptyFilter = ValueIsIgnoreValue(Value, IgnoreValue)
+      NullFilterOrEmptyFilter = ValuesAreEqual(FieldDataType, Value, IgnoreValue)
    End If
 
 End Function
 
-Private Function ValueIsIgnoreValue(ByVal Value As Variant, ByVal IgnoreValue As Variant) As Boolean
+Private Function ValuesAreEqual(ByVal FieldDataType As SqlFieldDataType, ByVal Value As Variant, ByVal Value2 As Variant) As Boolean
    
-   If IsArray(IgnoreValue) Then
-      ValueIsIgnoreValue = ArrayContains(IgnoreValue, Value)
+   If IsArray(Value2) Then
+      ValuesAreEqual = ArrayContains(FieldDataType, Value2, Value)
    ElseIf IsNull(Value) Then
-      ValueIsIgnoreValue = IsNull(IgnoreValue)
+      ValuesAreEqual = IsNull(Value2)
+   ElseIf IsNull(Value2) Then
+      ValuesAreEqual = False
    Else
-      ValueIsIgnoreValue = (Value = IgnoreValue)
+      Select Case FieldDataType
+         Case SqlFieldDataType.SQL_Text
+            ValuesAreEqual = (VBA.StrComp(Value, Value2, vbTextCompare) = 0)
+         Case SqlFieldDataType.SQL_Numeric
+            ValuesAreEqual = (CDbl(Value) = CDbl(Value2))
+         Case SqlFieldDataType.SQL_Date
+            ValuesAreEqual = (CDate(Value) = CDate(Value2))
+         Case SqlFieldDataType.SQL_Boolean
+            ValuesAreEqual = (CBool(Value) = CBool(Value2))
+         Case Else
+            ValuesAreEqual = (Value = Value2)
+      End Select
    End If
 
 End Function
 
-Private Function ArrayContains(ByVal ArrayToCheck As Variant, ByVal SearchValue As Variant) As Boolean
+Private Function ArrayContains(ByVal FieldDataType As SqlFieldDataType, ByVal ArrayToCheck As Variant, ByVal SearchValue As Variant) As Boolean
    
    Dim i As Long
 
@@ -559,7 +582,7 @@ Private Function ArrayContains(ByVal ArrayToCheck As Variant, ByVal SearchValue 
    End If
 
    For i = LBound(ArrayToCheck) To UBound(ArrayToCheck)
-      If ArrayToCheck(i) = SearchValue Then
+      If ValuesAreEqual(FieldDataType, ArrayToCheck(i), SearchValue) Then
          ArrayContains = True
          Exit Function
       End If
@@ -584,7 +607,6 @@ Private Function ArrayContainsNull(ByVal ArrayToCheck As Variant) As Boolean
 
 End Function
 
-
 Private Function GetValueArrayString(ByVal Value As Variant, ByVal FieldDataType As SqlFieldDataType, _
                                      ByVal Delimiter As String, ByVal IgnoreValue As Variant) As String
    
@@ -593,7 +615,7 @@ Private Function GetValueArrayString(ByVal Value As Variant, ByVal FieldDataType
 
    For i = LBound(Value) To UBound(Value)
       If IsArray(IgnoreValue) Then
-         If ArrayContains(IgnoreValue, Value(i)) Then
+         If ArrayContains(FieldDataType, IgnoreValue, Value(i)) Then
          Else
             s = s & Delimiter & GetFilterValueString(Value(i), FieldDataType)
          End If
