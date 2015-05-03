@@ -836,6 +836,9 @@ Private Function RelinkTableDef(ByVal tdf As DAO.TableDef, _
    End If
    
    With tdf
+   
+      If Left(.Connect, 5) <> "ODBC;" Then Exit Function
+   
       .Connect = NewConnectionString
       .RefreshLink
       
