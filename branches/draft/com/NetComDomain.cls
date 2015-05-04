@@ -55,17 +55,17 @@ Public Function CreateObject(ByVal ClassIdentifier As String, _
    Dim NetAppDomain As mscorlib.AppDomain
 
    If VBA.InStr(1, ClassIdentifier, ".") = 0 Then
-      If VBA.Len(DefaultNameSpace) = 0 Then
+      If VBA.Len(Me.DefaultNameSpace) = 0 Then
          Err.Raise vbObjectError, "NetComDomain.CreateObject", "Namespace muss angegeben werden!"
       End If
-      ClassIdentifier = DefaultNameSpace & "." & ClassIdentifier
+      ClassIdentifier = Me.DefaultNameSpace & "." & ClassIdentifier
    End If
 
    Set NetRTH = New mscoree.CorRuntimeHost
    NetRTH.Start
    NetRTH.GetDefaultDomain NetAppDomain
    
-   Set CreateObject = NetAppDomain.CreateInstanceFrom(LibraryFile, ClassIdentifier).Unwrap
+   Set CreateObject = NetAppDomain.CreateInstanceFrom(Me.LibraryFile, ClassIdentifier).Unwrap
 
    NetRTH.Stop
    Set NetAppDomain = Nothing
