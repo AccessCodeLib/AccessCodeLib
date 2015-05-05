@@ -23,7 +23,7 @@ Attribute VB_Exposed = False
 '  <file>form/filter/FilterControlCollection.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>form/filter/FilterControl.cls</use>
-'  <use>form/filter/FilterControlEventBridge.cls<</use>
+'  <use>form/filter/FilterControlEventBridge.cls</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
