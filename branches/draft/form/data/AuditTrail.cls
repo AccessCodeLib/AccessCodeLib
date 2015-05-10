@@ -27,8 +27,8 @@ Private WithEvents m_frm As Form
 Private m_Identifier As Long
 Private m_IdFieldName As String
 Private m_UserAction As String
+Private m_AuditTabExists As Boolean
 
-Private rstAuditLog As ADODB.Recordset
 Private dtmCurrentDateTime As Date
 Private strUserName As String
 
@@ -39,6 +39,13 @@ Public Property Set FormObj(ByRef FRM_ As Access.Form)
     m_frm.AfterUpdate = "[Event Procedure]"
     m_frm.OnDelete = "[Event Procedure]"
     m_frm.AfterDelConfirm = "[Event Procedure]"
+End Property
+
+Private Property Get AuditTabExists() As Boolean
+    If Not m_AuditTabExists Then
+        m_AuditTabExists = IsNull(DLookup("[Name]", "MSysObjects", "[Name] = 'tblAuditTrailLog' AND (Type = 1 Or Type = 6)")) = False
+    End If
+    AuditTabExists = m_AuditTabExists
 End Property
 
 Private Property Get UserAction() As String
@@ -56,6 +63,24 @@ End Property
 Private Property Let lastIdentifier(ByVal lastident As Long)
     m_Identifier = lastident
 End Property
+
+Private Sub Class_Initialize()
+    Dim strSQL As String
+    strSQL = "Create Table tblAuditTrailLog (" & _
+             "ID COUNTER CONSTRAINT ID PRIMARY KEY, " & _
+             "AuditTime date, " & _
+             "UserName Text, " & _
+             "FormName Text, " & _
+             "FieldName Text, " & _
+             "ActionType Text, " & _
+             "RecordID Text, " & _
+             "OldValue Text, " & _
+             "NewValue Text" & _
+             ")"
+    If Not AuditTabExists Then
+        CurrentProject.Connection.Execute strSQL
+    End If
+End Sub
 
 Private Sub Class_Terminate()
     Set m_frm = Nothing
@@ -84,32 +109,26 @@ Private Sub DataChanges()
     Dim CTL As Control
     Dim lngInsertedID As Long
 
-    Set rstAuditLog = New ADODB.Recordset
-    With rstAuditLog
-        .Open "SELECT * FROM tblAuditTrailLog", CurrentProject.Connection, adOpenDynamic, adLockOptimistic
-        dtmCurrentDateTime = Now()
-        strUserName = Environ("USERNAME")
-        Select Case UserAction
-        Case "EDIT"
-            For Each CTL In m_frm.Controls
-                If CTL.Tag = "Audit" Then
-                    If Nz(CTL.Value) <> Nz(CTL.OldValue) Then
-                        WriteEditLog CTL
-                    End If
+    dtmCurrentDateTime = Now()
+    strUserName = Environ("USERNAME")
+    Select Case UserAction
+    Case "EDIT"
+        For Each CTL In m_frm.Controls
+            If CTL.Tag = "Audit" Then
+                If Nz(CTL.Value) <> Nz(CTL.OldValue) Then
+                    WriteEditLog CTL
                 End If
-            Next CTL
-        Case Else
-            lngInsertedID = WriteNewDeleteLog(CTL)
-            If UserAction = "DELETE" Then lastIdentifier = lngInsertedID
-        End Select
-    End With
-    rstAuditLog.Close
-    Set rstAuditLog = Nothing
+            End If
+        Next CTL
+    Case Else
+        lngInsertedID = WriteNewDeleteLog
+        If UserAction = "DELETE" Then lastIdentifier = lngInsertedID
+    End Select
 End Sub
 
 Private Sub WriteEditLog(ByRef CTL_ As Access.Control)
     Dim strSQL As String
-    strSQL = "Insert into tblAuditTrailLog (DateTime, UserName, FormName, FieldName, ActionType, RecordID, OldValue, NewValue) Values (" & _
+    strSQL = "Insert into tblAuditTrailLog (AuditTime, UserName, FormName, FieldName, ActionType, RecordID, OldValue, NewValue) Values (" & _
              "'" & dtmCurrentDateTime & "', " & _
              "'" & strUserName & "', " & _
              "'" & m_frm.Name & "', " & _
@@ -117,16 +136,17 @@ Private Sub WriteEditLog(ByRef CTL_ As Access.Control)
              "'" & UserAction & "', " & _
              "'" & m_frm.Controls(m_IdFieldName).Value & "', " & _
              "'" & CTL_.OldValue & "', " & _
-             "'" & CTL_.Value & "', " & _
+             "'" & CTL_.Value & "' " & _
              ")"
     CurrentProject.Connection.Execute strSQL
+    
 End Sub
 
-Private Function WriteNewDeleteLog(ByRef CTL_ As Access.Control) As Long
+Private Function WriteNewDeleteLog() As Long
     Dim strSQL As String
     Dim rstTemp As ADODB.Recordset
-    
-    strSQL = "Insert into tblAuditTrailLog (DateTime, UserName, FormName, ActionType, RecordID) Values (" & _
+
+    strSQL = "Insert into tblAuditTrailLog (AuditTime, UserName, FormName, ActionType, RecordID) Values (" & _
              "'" & dtmCurrentDateTime & "', " & _
              "'" & strUserName & "', " & _
              "'" & m_frm.Name & "', " & _
@@ -139,16 +159,16 @@ Private Function WriteNewDeleteLog(ByRef CTL_ As Access.Control) As Long
             WriteNewDeleteLog = rstTemp(0)
         End If
     End With
-    
+
     rstTemp.Close
     Set rstTemp = Nothing
 End Function
 
 Private Sub DataRedoDelete()
-    Dim rst As ADODB.Recordset
+    Dim rstTemp As ADODB.Recordset
 
-    Set rstAuditLog = New ADODB.Recordset
-    With rstAuditLog
+    Set rstTemp = New ADODB.Recordset
+    With rstTemp
         .Open "SELECT * FROM tblAuditTrailLog", CurrentProject.Connection, adOpenDynamic, adLockOptimistic
         .Find "ID = " & lastIdentifier
         If Not .EOF Then
@@ -156,8 +176,8 @@ Private Sub DataRedoDelete()
         End If
     End With
 
-    rstAuditLog.Close
-    Set rstAuditLog = Nothing
+    rstTemp.Close
+    Set rstTemp = Nothing
 End Sub
 
 Private Function getIDField(FRM_ As Access.Form) As String
