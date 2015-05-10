@@ -9,6 +9,13 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
+' Ursprüngliches Copyright:
+' ================================================
+' Code by Martin Green Email: martin@fontstuff.com
+' Visit my Office Tips website @ www.fontstuff.com
+' YouTube tutorials www.youtube.com/martingreenvba
+' ================================================
+
 Private WithEvents m_frm As Form
 
 Private m_Identifier As Long
