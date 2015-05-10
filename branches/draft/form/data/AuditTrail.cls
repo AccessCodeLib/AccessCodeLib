@@ -1,4 +1,22 @@
+VERSION 1.0 CLASS
+BEGIN
+  MultiUse = -1  'True
+END
+Attribute VB_Name = "AuditTrail"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = False
+'---------------------------------------------------------------------------------------
+'<codelib>
+'  <file>form/data/AuditTrail.cls</file>
+'  <license>_codelib/license.bas</license>
+'  <ref><name>ADODB</name><major>2</major><minor>1</minor><guid>{00000201-0000-0010-8000-00AA006D2EA4}</guid></ref>
+'</codelib>
+'---------------------------------------------------------------------------------------
+
 Option Explicit
+Option Compare Text
 
 ' ================================================
 ' Code by Andreas Vogt Email: info@accessblog.de
