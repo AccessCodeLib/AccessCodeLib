@@ -144,6 +144,8 @@ End Sub
 
 Private Function WriteNewDeleteLog() As Long
     Dim strSQL As String
+    Dim RecordsAffected As Long
+    Dim cnn As New ADODB.Connection
     Dim rstTemp As ADODB.Recordset
 
     strSQL = "Insert into tblAuditTrailLog (AuditTime, UserName, FormName, ActionType, RecordID) Values (" & _
@@ -152,16 +154,17 @@ Private Function WriteNewDeleteLog() As Long
              "'" & m_frm.Name & "', " & _
              "'" & UserAction & "', " & _
              "'" & m_frm.Recordset.Fields(m_IdFieldName).Value & "')"
-    With CurrentProject.Connection
-        .Execute strSQL
-        If .RecordsAffected > 0 Then
-            Set rstTemp = .OpenRecordset("SELECT @@IDENTITY")
-            WriteNewDeleteLog = rstTemp(0)
-        End If
-    End With
-
+    Set cnn = CurrentProject.Connection
+    cnn.Execute strSQL, RecordsAffected
+    If RecordsAffected > 0 Then
+        Set rstTemp = cnn.Execute("SELECT @@IDENTITY")
+        WriteNewDeleteLog = rstTemp(0)
+    End If
+    
     rstTemp.Close
+    cnn.Close
     Set rstTemp = Nothing
+    Set cnn = Nothing
 End Function
 
 Private Sub DataRedoDelete()
