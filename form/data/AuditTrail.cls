@@ -43,7 +43,7 @@ End Property
 
 Private Property Get AuditTabExists() As Boolean
     If Not m_AuditTabExists Then
-        m_AuditTabExists = IsNull(DLookup("[Name]", "MSysObjects", "[Name] = 'tblAuditTrailLog' AND (Type = 1 Or Type = 6)")) = False
+        m_AuditTabExists = Not IsNull(DLookup("[Name]", "MSysObjects", "[Name] = 'tblAuditTrailLog' AND (Type = 1 Or Type = 6)"))
     End If
     AuditTabExists = m_AuditTabExists
 End Property
@@ -56,11 +56,11 @@ Private Property Let UserAction(ByVal UserAction_ As String)
     m_UserAction = UserAction_
 End Property
 
-Private Property Get lastIdentifier() As Long
-    lastIdentifier = m_Identifier
+Private Property Get LastIdentifier() As Long
+    LastIdentifier = m_Identifier
 End Property
 
-Private Property Let lastIdentifier(ByVal lastident As Long)
+Private Property Let LastIdentifier(ByVal lastident As Long)
     m_Identifier = lastident
 End Property
 
@@ -122,7 +122,7 @@ Private Sub DataChanges()
         Next CTL
     Case Else
         lngInsertedID = WriteNewDeleteLog
-        If UserAction = "DELETE" Then lastIdentifier = lngInsertedID
+        If UserAction = "DELETE" Then LastIdentifier = lngInsertedID
     End Select
 End Sub
 
@@ -159,10 +159,8 @@ Private Function WriteNewDeleteLog() As Long
     If RecordsAffected > 0 Then
         Set rstTemp = cnn.Execute("SELECT @@IDENTITY")
         WriteNewDeleteLog = rstTemp(0)
+        rstTemp.Close
     End If
-    
-    rstTemp.Close
-    cnn.Close
     Set rstTemp = Nothing
     Set cnn = Nothing
 End Function
@@ -173,13 +171,12 @@ Private Sub DataRedoDelete()
     Set rstTemp = New ADODB.Recordset
     With rstTemp
         .Open "SELECT * FROM tblAuditTrailLog", CurrentProject.Connection, adOpenDynamic, adLockOptimistic
-        .Find "ID = " & lastIdentifier
+        .Find "ID = " & LastIdentifier
         If Not .EOF Then
             .Delete
         End If
+        .Close
     End With
-
-    rstTemp.Close
     Set rstTemp = Nothing
 End Sub
 
