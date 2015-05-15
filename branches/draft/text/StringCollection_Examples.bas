@@ -4,7 +4,7 @@ Attribute VB_Name = "StringCollection_Examples"
 '---------------------------------------------------------------------------------------
 '/**
 ' \author       Josef Poetzl
-' \brief        Beispiel zur Verwendung der FilterStringBuilder-Klasse
+' \brief        Beispiel zur Verwendung der StringCollection-Klasse
 ' \ingroup text
 '**/
 '---------------------------------------------------------------------------------------
