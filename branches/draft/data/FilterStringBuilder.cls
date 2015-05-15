@@ -24,6 +24,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>text/StringCollection.cls</use>
 '  <use>data/SqlTools.cls</use>
+'  <test>_test/data/FilterStringBuilderTests.cls</test>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
