@@ -27,7 +27,7 @@ Debug.Print "EqualFilter:"
 
    With NewFilterStringBuilder
 
-      .Add "TextField", SQL_Text, SQL_Equal, "abc"
+      .Add "TextField", SQL_Text, SQL_Equal, "ab'c"
       .Add "NumericField", SQL_Numeric, SQL_Equal, 133.45
       .Add "DateField", SQL_Date, SQL_Equal, Date
       .Add "BoolField", SQL_Boolean, SQL_Equal, True
@@ -93,6 +93,7 @@ Debug.Print "LikeFilter:"
    With NewFilterStringBuilder
 
       .Add "TextField", SQL_Text, SQL_Like, "a*"
+      .Add "TextField", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix, "a"
 
       Debug.Print .ToString
 
