@@ -42,7 +42,6 @@ Private Sub ITestManagerBridge_InitTestManager(ByVal NewTestManager As AccUnit_I
 Private Function ITestManagerBridge_GetTestManager() As AccUnit_Integration.ITestManagerComInterface: Set ITestManagerBridge_GetTestManager = TestManager: End Function
 Private Sub ITestFixture_AddTestCases(ByVal Tests As SimplyVBUnit.TestCaseCollector): TestManager.AddTestCases Tests: End Sub
 
-
 Public Sub Setup()
    Set m_SqlTools = New SqlTools
 End Sub
@@ -67,14 +66,20 @@ End Property
 'AccUnit:Row(2, "a", Null, Null, "F = 'a'", "F = 'a'").Name("Equal")
 'AccUnit:Row(2+8, "a", Null, Null, "F >= 'a'", "F >= 'a'").Name("Equal+GreaterThan")
 'AccUnit:Row(2+4, "a", Null, Null, "F <= 'a'", "F <= 'a'").Name("Equal+LessThan")
-'AccUnit:Row(256, "a", Null, Null, "F like 'a'", "F like 'a'").Name("Like")
-'AccUnit:Row(256, "a*", Null, Null, "F like 'a*'", "F like 'a%'").Name("Like+*")
-'AccUnit:Row(256+2048, "a", Null, Null, "F like 'a*'", "F like 'a%'").Name("Like+WildCardSuffix")
-'AccUnit:Row(256+4096, "a", Null, Null, "F like '*a'", "F like '%a'").Name("Like+WildCardPrefix")
-'AccUnit:Row(256+2048+4096, "a", Null, Null, "F like '*a*'", "F like '%a%'").Name("Like+WildCardSuffix+Prefix")
+'AccUnit:Row(256, "a", Null, Null, "F Like 'a'", "F Like 'a'").Name("Like")
+'AccUnit:Row(256, "a*", Null, Null, "F Like 'a*'", "F Like 'a%'").Name("Like+*")
+'AccUnit:Row(256+2048, "a", Null, Null, "F Like 'a*'", "F Like 'a%'").Name("Like+WildCardSuffix")
+'AccUnit:Row(256+4096, "a", Null, Null, "F Like '*a'", "F Like '%a'").Name("Like+WildCardPrefix")
+'AccUnit:Row(256+2048+4096, "a", Null, Null, "F Like '*a*'", "F Like '%a%'").Name("Like+WildCardSuffix+Prefix")
 'AccUnit:Row(512, "a", "d", Null, "F Between 'a' And 'd'", "F Between 'a' And 'd'").Name("Between")
 'AccUnit:Row(512, "a", Null, Null, "F >= 'a'", "F >= 'a'").Name("Between+V2=Null")
 'AccUnit:Row(512, Null, "d", Null, "F <= 'd'", "F <= 'd'").Name("Between+V1=Null")
+'AccUnit:Row(1 + 256, "d", Null, Null, "F Not Like 'd'", "F Not Like 'd'").Name("not like")
+'AccUnit:Row(1 + 512, "a", "d", Null, "F < 'a' And F > 'd'", "F < 'a' And F > 'd'").Name("Not Between")
+'AccUnit:Row(1+2, "a", Null, Null, "F <> 'a'", "F <> 'a'").Name("Not Equal")
+'AccUnit:Row(1+2+4, "a", Null, Null, "F > 'a'", "F > 'a'").Name("Not <=")
+'AccUnit:Row(1+4, "a", Null, Null, "F >= 'a'", "F >= 'a'").Name("Not <")
+'AccUnit:Row(1+2+8, "a", Null, Null, "F < 'a'", "F < 'a'").Name("Not >=")
 Public Sub BuildCriteria_TextFilter( _
                            ByVal RelationalOperator As SqlRelationalOperators, _
                            ByVal FilterValue As Variant, ByVal FilterValue2 As Variant, ByVal IgnoreValue As Variant, _
@@ -138,10 +143,11 @@ End Sub
 'AccUnit:Row(2, Null, Null, Null, "").Name("Emtpy")
 'AccUnit:Row(2, "a", "b", "c", "F = 'a' Or F = 'b' Or F = 'c'").Name("Equal")
 'AccUnit:Row(2+8, "a", "b", "c", "F >= 'a' Or F >= 'b' Or F >= 'c'").Name("Equal+GreaterThan")
-'AccUnit:Row(256, "a*", "b*", "c*", "F like 'a*' Or F like 'b*' Or F like 'c*'").Name("Like+*")
-'AccUnit:Row(256+2048, "a", "b", "c", "F like 'a*' Or F like 'b*' Or F like 'c*'").Name("Like+WildCardSuffix")
-'AccUnit:Row(256+2048+4096, "a", "b", "c", "F like '*a*' Or F like '*b*' Or F like '*c*'").Name("Like+WildCardSuffix+Prefix")
+'AccUnit:Row(256, "a*", "b*", "c*", "F Like 'a*' Or F Like 'b*' Or F Like 'c*'").Name("Like+*")
+'AccUnit:Row(256+2048, "a", "b", "c", "F Like 'a*' Or F Like 'b*' Or F Like 'c*'").Name("Like+WildCardSuffix")
+'AccUnit:Row(256+2048+4096, "a", "b", "c", "F Like '*a*' Or F Like '*b*' Or F Like '*c*'").Name("Like+WildCardSuffix+Prefix")
 'AccUnit:Row(1024, "a", "b", "c", "F In ('a','b','c')").Name("In")
+'AccUnit:Row(1+1024, "a", "b", "c", "F Not In ('a','b','c')").Name("Not In")
 Public Sub BuildCriteria_TextValueArrayFilter( _
                            ByVal RelationalOperator As SqlRelationalOperators, _
                            ByVal FilterValue1 As Variant, ByVal FilterValue2 As Variant, ByVal FilterValue3 As Variant, _
@@ -165,6 +171,7 @@ Public Sub BuildCriteria_IgnoreValueArray( _
    Dim Actual As String
 
    Actual = DaoTools.BuildCriteria("F", SQL_Text, SQL_Equal, FilterValue1, , Array(IgnoreValue1, IgnoreValue2, IgnoreValue3))
+   
    Assert.That Actual, Iz.EqualTo(Expected)
 
 End Sub

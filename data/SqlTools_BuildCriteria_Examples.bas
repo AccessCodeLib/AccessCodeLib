@@ -48,10 +48,10 @@ Private Sub Filtervarianten()
 '------------------------------------------------
 ' Like
 '------------------------------------------------
-      ' F like 'abc*'
+      ' F Like 'abc*'
       Sql = .BuildCriteria("F", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix, "abc"): Debug.Print Sql
 
-      ' F like '*abc*'
+      ' F Like '*abc*'
       Sql = .BuildCriteria("F", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix + SQL_Add_WildCardPrefix, "abc"): Debug.Print Sql
 
 
@@ -73,7 +73,7 @@ Private Sub Filtervarianten()
 '------------------------------------------------
 ' Or ... mehrere Werte auf das gleiche Datenfeld
 '------------------------------------------------
-      ' F like 'a*' Or F = 'c*' Or F = 'e*'
+      ' F Like 'a*' Or F = 'c*' Or F = 'e*'
       Sql = .BuildCriteria("F", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix, Array("a", "c", "e")): Debug.Print Sql
 
       ' F = 123 Or F = 456 Or F = 789 ... Anm.: diesen Ausdruck könnte man eventuell auch als In(123,456,789) darstellen
@@ -134,7 +134,7 @@ Private Sub BetweenFilter()
 
 End Sub
 
-Private Sub SqlDateTimeBetween()
+Private Sub SqlDateTime()
 
    Dim StartDate As Date
    Dim EndDate As Date

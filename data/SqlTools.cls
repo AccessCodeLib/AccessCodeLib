@@ -40,10 +40,11 @@ Private Enum SqlToolsErrorNumbers
 End Enum
 
 Private Const SQL_DEFAULT_TEXTDELIMITER As String = "'"
-Private Const SQL_DEFAULT_DATEFORMAT As String = "" ' => SqlDateFormat wird verwendet.
-                                                   '    Zum Deaktivieren Wert eintragen (z. B. "\#yyyy\-mm\-dd\#")
+Private Const SQL_DEFAULT_DATEFORMAT As String = "" ' => SqlDateFormat-Eigenschaft verwenden.
+                                                    '    Zum Deaktivieren Wert eintragen (z. B. "\#yyyy\-mm\-dd\#"),
+                                                    '    dann wird dieser Wert als Standardeintrag verwendet.
 Private Const SQL_DEFAULT_BOOLTRUESTRING As String = "" ' => SqlBooleanTrueString wird verwendet.
-                                                   '    Zum Deaktivieren Wert eintragen (z. B. "True oder 1")
+                                                        '    Zum Deaktivieren Wert eintragen (z. B. "True oder 1")
 
 Private Const SQL_DEFAULT_WILDCARD As String = "*" ' * = Standardwert,
                                                    ' benötigte Abweichungen über SqlWildCardString einstellen
@@ -130,8 +131,6 @@ End Property
 ' </summary>
 ' <returns>String</returns>
 ' <remarks>
-' Beispiel: strSQL = "select ... from tabelle where Feld = " & TextToSqlText("ab'cd")
-'           => strSQL = "select ... from tabelle where Feld = 'ab''cd'"
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
@@ -176,11 +175,10 @@ End Function
 ' <param name="Value">Übergabewert</param>
 ' <param name="Delimiter">Begrenzungszeichen für Text-Werte. (In den meisten DBMS wird ' als Begrenzungszeichen verwendet.)</param>
 ' <param name="WithoutLeftRightDelim">Nur Begrenzungszeichnen innerhalb des Werte verdoppeln, Eingrenzung jedoch nicht setzen.</param>
-' <param name="ValueIfNull">Ersatzstring bei NULL (Standard = "NULL")</param>
 ' <returns>String</returns>
 ' <remarks>
 ' Beispiel: strSQL = "select ... from tabelle where Feld = " & TextToSqlText("ab'cd")
-'           => strSQL = "select ... from tabelle where Feld = 'ab''cd'"
+'        => strSQL = "select ... from tabelle where Feld = 'ab''cd'"
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
@@ -211,9 +209,8 @@ End Function
 ' <summary>
 ' Datumswert in String für SQL-Anweisung umwandeln, die per VBA zusammengesetzt wird.
 ' </summary>
-' <param name="vValue">Übergabewert</param>
-' <param name="sFormatString">Datumsformat (von DBMS abhängig!)</param>
-' <param name="ValueIfNull">Ersatzstring bei NULL (Standard = "NULL")</param>
+' <param name="Value">Übergabewert</param>
+' <param name="FormatString">Datumsformat (von DBMS abhängig!)</param>
 ' <returns>String</returns>
 '**/
 '---------------------------------------------------------------------------------------
@@ -278,7 +275,6 @@ End Function
 ' <param name="Value">Übergabewert</param>
 ' <returns>String</returns>
 ' <remarks>
-' Durch Str-Funktion wird . statt , verwendet.
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
@@ -317,17 +313,17 @@ End Function
 ' <param name="RelationalOperator">Vergleichsoperator (=, <=, usw.)</param>
 ' <param name="FilterValue">Filterwert (kann einzelner Wert oder auch Array mit Werten sein)</param>
 ' <param name="FilterValue2">Optionale 2. Filterwert (für Between)</param>
-' <param name="IgnoreValue">Jener Wert, für den keine Filterbedingung erzeugt werden soll.</param>
+' <param name="IgnoreValue">Jener Wert, für den keine Filterbedingung erzeugt werden soll. (Array-Übergabe von Werten möglich)</param>
 ' <returns>String</returns>
 ' <remarks>
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
 Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As SqlFieldDataType, _
-                               ByVal RelationalOperator As SqlRelationalOperators, _
-                               ByVal FilterValue As Variant, _
-                      Optional ByVal FilterValue2 As Variant = Null, _
-                      Optional ByVal IgnoreValue As Variant = Null) As String
+                              ByVal RelationalOperator As SqlRelationalOperators, _
+                              ByVal FilterValue As Variant, _
+                     Optional ByVal FilterValue2 As Variant = Null, _
+                     Optional ByVal IgnoreValue As Variant = Null) As String
 
    Dim FilterValueString As String
    Dim FilterValue2String As String
@@ -399,7 +395,11 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
    FilterValueString = GetFilterValueString(FilterValue, FieldDataType)
 
    If (RelationalOperator And SQL_Like) = SQL_Like Then
-      BuildCriteria = FieldName & " like " & FilterValueString
+      OperatorString = " Like "
+      If (RelationalOperator And SQL_Not) = SQL_Not Then
+         OperatorString = " Not" & OperatorString
+      End If
+      BuildCriteria = FieldName & OperatorString & FilterValueString
       Exit Function
    End If
    
@@ -414,9 +414,36 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
 
 End Function
 
-Private Function GetRelationalOperatorString(ByVal RelationalOperator As SqlRelationalOperators) As String
+Private Function GetRelationalOperatorString(ByRef RelationalOperator As SqlRelationalOperators) As String
 
    Dim OperatorString As String
+   Dim op As SqlRelationalOperators
+   
+   If (RelationalOperator And SQL_Not) = SQL_Not Then
+      
+      op = RelationalOperator Xor SQL_Not
+      
+      If op = SqlRelationalOperators.SQL_Equal Then ' => "=" zu "<>" .. null berücksichtigen?
+         RelationalOperator = SQL_LessThan + SQL_GreaterThan
+      ElseIf op = SQL_GreaterThan + SQL_LessThan Then ' => "<>" zu "=" .. null berücksichtigen?
+         RelationalOperator = SQL_Equal
+      Else
+         RelationalOperator = RelationalOperator Xor SQL_Not
+         If (op And SQL_Equal) = SQL_Equal Then
+            RelationalOperator = RelationalOperator Xor SQL_Equal
+         Else
+            RelationalOperator = RelationalOperator Or SQL_Equal
+         End If
+         If (op And SQL_LessThan) = SQL_LessThan Then
+            RelationalOperator = RelationalOperator Xor SQL_LessThan
+            RelationalOperator = RelationalOperator Or SQL_GreaterThan
+         End If
+         If (op And SQL_GreaterThan) = SQL_GreaterThan Then
+            RelationalOperator = RelationalOperator Xor SQL_GreaterThan
+            RelationalOperator = RelationalOperator Or SQL_LessThan
+         End If
+      End If
+   End If
 
    If (RelationalOperator And SQL_LessThan) = SQL_LessThan Then
       OperatorString = OperatorString & "<"
@@ -468,6 +495,8 @@ Private Function TryBuildInCriteria(ByRef FieldName As String, ByVal FieldDataTy
                                     ByRef IgnoreValue As Variant, _
                                     ByRef Criteria As String) As Boolean
 
+   Dim OperatorString As String
+
    If (RelationalOperator And SQL_In) = 0 Then
       Exit Function
    End If
@@ -480,8 +509,13 @@ Private Function TryBuildInCriteria(ByRef FieldName As String, ByVal FieldDataTy
       Criteria = GetFilterValueString(FilterValue, FieldDataType)
    End If
 
+   OperatorString = " In "
+   If (RelationalOperator And SQL_Not) = SQL_Not Then
+      OperatorString = " Not" & OperatorString
+   End If
+
    If Len(Criteria) > 0 Then
-      Criteria = FieldName & " In (" & Criteria & ")"
+      Criteria = FieldName & OperatorString & "(" & Criteria & ")"
    End If
 
    TryBuildInCriteria = True
@@ -495,24 +529,36 @@ Private Function TryBuildBetweenCriteria(ByRef FieldName As String, ByVal FieldD
                                          ByRef IgnoreValue As Variant, _
                                          ByRef Criteria As String) As Boolean
    
-   If (RelationalOperator And SQL_Between) = SQL_Between Then
-      If IsNull(FilterValue2) Or IsMissing(FilterValue2) Or ValuesAreEqual(FieldDataType, FilterValue2, IgnoreValue) Then
-         RelationalOperator = SQL_GreaterThan + SQL_Equal
-      ElseIf IsNull(FilterValue) Or ValuesAreEqual(FieldDataType, FilterValue, IgnoreValue) Then
-         RelationalOperator = SQL_LessThan + SQL_Equal
-         FilterValue = FilterValue2
-         FilterValue2 = GetCheckedIgnoreValue(IgnoreValue)
-      ElseIf (FieldDataType And SQL_Date) = SQL_Date And (RelationalOperator And SQL_Add_WildCardSuffix) Then
-         Criteria = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue) & _
-                    SqlAndConcatString & _
-                    BuildCriteria(FieldName, FieldDataType, SQL_LessThan + SQL_Equal + SQL_Add_WildCardSuffix, FilterValue2)
-         TryBuildBetweenCriteria = True
-         Exit Function
-      Else
-         Criteria = FieldName & " Between " & GetFilterValueString(FilterValue, FieldDataType) & SqlAndConcatString & GetFilterValueString(FilterValue2, FieldDataType)
-         TryBuildBetweenCriteria = True
-         Exit Function
-      End If
+   If (RelationalOperator And SQL_Between) = False Then
+      TryBuildBetweenCriteria = False
+      Exit Function
+   End If
+   
+   If (RelationalOperator And SQL_Not) = SQL_Not Then 'Bedingung umdrehen
+      Criteria = BuildCriteria(FieldName, FieldDataType, SQL_LessThan, FilterValue, , IgnoreValue) & _
+                 SqlAndConcatString & _
+                 BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan, FilterValue2, , IgnoreValue)
+                 ' & SqlOrConcatString & FieldName & " Is Null)"
+      TryBuildBetweenCriteria = True
+      Exit Function
+   End If
+   
+   If IsNull(FilterValue2) Or IsMissing(FilterValue2) Or ValuesAreEqual(FieldDataType, FilterValue2, IgnoreValue) Then
+      RelationalOperator = SQL_GreaterThan + SQL_Equal
+   ElseIf IsNull(FilterValue) Or ValuesAreEqual(FieldDataType, FilterValue, IgnoreValue) Then
+      RelationalOperator = SQL_LessThan + SQL_Equal
+      FilterValue = FilterValue2
+      FilterValue2 = GetCheckedIgnoreValue(IgnoreValue)
+   ElseIf (FieldDataType And SQL_Date) = SQL_Date And (RelationalOperator And SQL_Add_WildCardSuffix) Then
+      Criteria = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue) & _
+                 SqlAndConcatString & _
+                 BuildCriteria(FieldName, FieldDataType, SQL_LessThan + SQL_Equal + SQL_Add_WildCardSuffix, FilterValue2)
+      TryBuildBetweenCriteria = True
+      Exit Function
+   Else
+      Criteria = FieldName & " Between " & GetFilterValueString(FilterValue, FieldDataType) & SqlAndConcatString & GetFilterValueString(FilterValue2, FieldDataType)
+      TryBuildBetweenCriteria = True
+      Exit Function
    End If
 
 End Function
@@ -524,7 +570,6 @@ Private Function GetCheckedIgnoreValue(ByVal IgnoreValue As Variant) As Variant
       GetCheckedIgnoreValue = IgnoreValue
    End If
 End Function
-
 
 Private Function NullFilterOrEmptyFilter(ByVal FieldName As String, ByVal FieldDataType As SqlFieldDataType, _
                                          ByVal Value As Variant, ByVal IgnoreValue As Variant, _
@@ -647,7 +692,6 @@ Private Function GetFilterValueString(ByVal Value As Variant, ByVal FieldDataTyp
          GetFilterValueString = BooleanToSqlText(Value)
       Case Else
          Err.Raise vbObjectError, "FilterStringBuilder.GetFilterValueString", "SqlFieldDataType '" & FieldDataType & "' wird nicht unterstützt."
-
    End Select
 
 End Function
