@@ -183,28 +183,27 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function UNCPath(ByVal Path As String, Optional ByVal IgnoreErrors As Boolean = True) As String
-
-  Dim UNC As String * 512
-
-  If Len(Path) = 1 Then Path = Path & ":"
-
-  If WNetGetConnection(Left$(Path, 2), UNC, Len(UNC)) Then
-
-    ' API-Routine gibt Fehler zurück:
-    If IgnoreErrors Then
-      UNCPath = Path
-    Else
-      Err.Raise 5 ' Invalid procedure call or argument
-    End If
-
-  Else
-
-    ' Ergebnis zurückgeben:
-    UNCPath = Left$(UNC, InStr(UNC, vbNullChar) - 1) _
-            & Mid$(Path, 3)
-
-  End If
-
+   
+   Dim UNC As String * 512
+   
+   If Len(Path) = 1 Then Path = Path & ":"
+   
+   If WNetGetConnection(Left$(Path, 2), UNC, Len(UNC)) Then
+   
+      ' API-Routine gibt Fehler zurück:
+      If IgnoreErrors Then
+         UNCPath = Path
+      Else
+         Err.Raise 5 ' Invalid procedure call or argument
+      End If
+   
+   Else
+   
+      ' Ergebnis zurückgeben:
+      UNCPath = Left$(UNC, InStr(UNC, vbNullChar) - 1) & Mid$(Path, 3)
+   
+   End If
+   
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -358,13 +357,13 @@ Public Function CreateDirectory(ByVal FullPath As String) As Boolean
       FullPath = Left$(FullPath, Len(FullPath) - 1)
    End If
 
-   If Len(Dir$(FullPath, vbDirectory)) > 0 Then 'Verzeichnis ist bereits vorhanden
+   If DirExists(FullPath) Then 'Verzeichnis ist bereits vorhanden
       CreateDirectory = False
       Exit Function
    End If
 
    PathBefore = Mid$(FullPath, 1, InStrRev(FullPath, "\") - 1)
-   If Len(Dir$(PathBefore, vbDirectory)) = 0 Then
+   If Not DirExists(PathBefore) Then
       If CreateDirectory(PathBefore) = False Then
          CreateDirectory = False
          Exit Function
@@ -397,7 +396,7 @@ Public Function FileExists(ByVal FullPath As String) As Boolean
    Loop
 
    FileExists = (VBA.Len(VBA.Dir$(FullPath, vbReadOnly Or vbHidden Or vbSystem)) > 0) And (VBA.Len(FullPath) > 0)
-      '6 = vbNormal or vbHidden or vbSystem
+   VBA.Dir$ "\" ' Problemvermeidung: issue #109
 
 End Function
 
@@ -420,8 +419,9 @@ Public Function DirExists(ByVal FullPath As String) As Boolean
       FullPath = FullPath & "\"
    End If
 
-   DirExists = (Dir$(FullPath, vbDirectory Or vbReadOnly Or vbHidden Or vbSystem) = ".")
-
+   DirExists = (VBA.Dir$(FullPath, vbDirectory Or vbReadOnly Or vbHidden Or vbSystem) = ".")
+   VBA.Dir$ "\" ' Problemvermeidung: issue #109
+   
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -439,7 +439,7 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function GetFileUpdateDate(ByVal FullFileName As String) As Variant
-   If Len(Dir$(FullFileName)) > 0 Then
+   If FileExists(FullFileName) Then
       On Error Resume Next
       GetFileUpdateDate = FileDateTime(FullFileName)
    Else
@@ -471,17 +471,17 @@ Public Function ConvertStringToFileName(ByVal Text As String, _
 
    Dim FileName As String
    Dim i As Long
-   
+
    FileName = Trim$(Text)
-   
+
    For i = 1 To Len(CharsToDelete)
       FileName = Replace(FileName, Mid(CharsToReplace, i, 1), vbNullString)
    Next
-   
+
    For i = 1 To Len(CharsToReplace)
       FileName = Replace(FileName, Mid(CharsToReplace, i, 1), ReplaceWith)
    Next
-   
+
    ConvertStringToFileName = FileName
 
 End Function
@@ -657,7 +657,7 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Sub AddToZipFile(ByVal ZipFile As String, ByVal FullFileName As String)
 
-   If Len(Dir$(ZipFile)) = 0 Then
+   If Not FileExists(ZipFile) Then
       CreateZipFile ZipFile
    End If
 
@@ -708,7 +708,7 @@ Public Function CreateZipFile(ByVal ZipFile As String, Optional DeleteExistingFi
 
    Dim fileHandle As Long
 
-   If Len(Dir$(ZipFile)) > 0 Then
+   If FileExists(ZipFile) Then
       If DeleteExistingFile Then
          Kill ZipFile
       Else
@@ -716,13 +716,13 @@ Public Function CreateZipFile(ByVal ZipFile As String, Optional DeleteExistingFi
          Exit Function
       End If
    End If
-   
+
    fileHandle = FreeFile
    Open ZipFile For Output As #fileHandle
    Print #fileHandle, Chr$(80) & Chr$(75) & Chr$(5) & Chr$(6) & String$(18, 0)
    Close #fileHandle
 
-   CreateZipFile = (Len(Dir$(ZipFile)) > 0)
+   CreateZipFile = FileExists(ZipFile)
 
 End Function
 
@@ -739,6 +739,6 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetFileExtension(ByVal filePath As String) As String
-    GetFileExtension = VBA.Strings.Mid$(filePath, VBA.Strings.InStrRev(filePath, "."))
+Public Function GetFileExtension(ByVal FilePath As String) As String
+    GetFileExtension = VBA.Strings.Mid$(FilePath, VBA.Strings.InStrRev(FilePath, "."))
 End Function

@@ -96,10 +96,28 @@ End Sub
 'AccUnit:Row("test.PDF", ".PDF").Name = ".PDF"
 'AccUnit:Row("c:\test.accdb", ".accdb").Name = "LocalPath"
 'AccUnit:Row("\\myserver\myshare\test.ACCDB", ".ACCDB").Name = "UNC"
-Public Sub GetFileExtension_FilePath_ReturnsFileExtension(ByVal filePath As String, ByVal Expected As String)
-    Assert.That FileTools.GetFileExtension(filePath), Iz.EqualTo(Expected)
+Public Sub GetFileExtension_FilePath_ReturnsFileExtension(ByVal FilePath As String, ByVal Expected As String)
+    Assert.That FileTools.GetFileExtension(FilePath), Iz.EqualTo(Expected)
 End Sub
 
 Public Sub FileExists_EmptyPath_ReturnsFalse()
     Assert.IsFalse FileTools.FileExists(vbNullString)
+End Sub
+
+Public Sub CreateAndDeleteFolder()
+'Issue #109
+
+   Dim TestPath As String
+   Dim FSO As Object 'New Scripting.FileSystemObject
+   
+   Set FSO = CreateObject("Scripting.FileSystemObject")
+   
+   TestPath = CurrentProject.Path & "\Test_Issue109"
+
+   FileTools.CreateDirectory TestPath
+   
+   FSO.DeleteFolder TestPath, True
+   
+   Assert.IsEmpty VBA.Dir(TestPath, vbDirectory)
+
 End Sub
