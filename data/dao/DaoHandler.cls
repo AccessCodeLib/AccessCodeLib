@@ -129,6 +129,10 @@ Public Property Get CurrentDb() As DAO.Database
     Set CurrentDb = m_DaoDb
 End Property
 
+Friend Property Get CurrentDbReferenceOnly() As DAO.Database
+    Set CurrentDbReferenceOnly = m_DaoDb
+End Property
+
 '---------------------------------------------------------------------------------------
 ' Property: CurrentDb
 '---------------------------------------------------------------------------------------

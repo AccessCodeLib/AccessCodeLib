@@ -7,7 +7,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-Attribute VB_Description = "Erzeugt und verwaltet eine mdb/accdb für temporäre Tabellen"
 '---------------------------------------------------------------------------------------
 ' Klassenmodul: TempDbHandler
 '---------------------------------------------------------------------------------------
@@ -166,7 +165,9 @@ On Error Resume Next
    Set m_ClientDatabase = Nothing
 
    If Not (m_DaoHandler Is Nothing) Then
-      m_DaoHandler.CurrentDb.Close
+      If Not (m_DaoHandler.CurrentDbReferenceOnly Is Nothing) Then
+         m_DaoHandler.CurrentDbReferenceOnly.Close
+      End If
       m_DaoHandler.Dispose
       Access.DBEngine.Idle dbRefreshCache
       Set m_DaoHandler = Nothing

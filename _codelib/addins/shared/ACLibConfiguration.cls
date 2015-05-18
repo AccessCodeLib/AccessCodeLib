@@ -24,6 +24,7 @@ Attribute VB_Description = "Konfigurationseinstellungen der CodeLib verwalten"
 '  <file>_codelib/addins/shared/ACLibConfiguration.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>base/ApplicationHandler.cls</use>
+'  <use>data/SqlTools.bas</use>
 '  <use>file/modFiles.bas</use>
 '  <use>data/modSQL_Tools.bas</use>
 '  <use>data/dao/modDAO_Tools.bas</use>
@@ -34,6 +35,7 @@ Attribute VB_Description = "Konfigurationseinstellungen der CodeLib verwalten"
 Option Compare Database
 Option Explicit
 
+Private m_DaoSqlTools As SqlTools
 
 Private Const m_EXTENSION_KEY As String = "ACLibConfiguration"
 
@@ -224,7 +226,7 @@ Private Function getACLibGlobalProperty(ByRef PropertyName As String) As String
    Dim rst As DAO.Recordset
    Dim strSQL As String
 
-   strSQL = Replace(m_SQL_SELECT_PropertyValue, "[?]", SqlTools.TextToSqlText(PropertyName))
+   strSQL = Replace(m_SQL_SELECT_PropertyValue, "[?]", DaoSqlTool.TextToSqlText(PropertyName))
    Set rst = ACLibPropertyDb.OpenRecordset(strSQL)
    If Not rst.EOF Then
       getACLibGlobalProperty = Nz(rst.Fields(m_SQL_CONFIG_TABLE_FIELD_PropValue), vbNullString)
@@ -240,7 +242,7 @@ Private Function setACLibGlobalProperty(ByRef PropertyName As String, ByRef NewV
    Dim rst As DAO.Recordset
    Dim strSQL As String
 
-   strSQL = Replace(m_SQL_SELECT_PropertyValue, "[?]", SqlTools.TextToSqlText(PropertyName))
+   strSQL = Replace(m_SQL_SELECT_PropertyValue, "[?]", DaoSqlTool.TextToSqlText(PropertyName))
    Set rst = ACLibPropertyDb.OpenRecordset(strSQL)
    If rst.EOF Then
       rst.AddNew
@@ -377,3 +379,14 @@ Private Property Get ACLibConfigDatabaseFile() As String
    ACLibConfigDatabaseFile = strDbFile
 
 End Property
+
+Private Property Get DaoSqlTool()
+   If m_DaoSqlTools Is Nothing Then
+      Set m_DaoSqlTools = SqlTools.Clone("\#yyyy-mm-dd\#", "True", "*")
+   End If
+   Set DaoSqlTool = m_DaoSqlTools
+End Property
+
+Private Sub Class_Terminate()
+   Set m_DaoSqlTools = Nothing
+End Sub

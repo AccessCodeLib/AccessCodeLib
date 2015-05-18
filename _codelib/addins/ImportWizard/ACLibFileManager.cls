@@ -679,7 +679,7 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
    
    Dim i As Long
    Dim tempFile As Object
-   Dim filePath As String
+   Dim FilePath As String
    Dim cancelImport As Integer
 
    getCodeLibInfoFromFile m_cli, ImportFile, (ImportMode <> clim_ImportSelectedOnly)
@@ -696,8 +696,8 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
    
    'Lizenz (LICENSE-Block)
    If Len(m_cli.LicenseFile) > 0 Then
-      filePath = GetRepositoryFullPath(m_cli.LicenseFile)
-      Set tempFile = fso.GetFile(filePath)
+      FilePath = GetRepositoryFullPath(m_cli.LicenseFile)
+      Set tempFile = fso.GetFile(FilePath)
       addMissingFile tempFile, clim_ImportMissingItems
    End If
 
@@ -705,9 +705,9 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
    If ImportMode <> clim_ImportSelectedOnly Then
       If (0 / 1) + (Not Not m_cli.Dependency) Then
       For i = 0 To UBound(m_cli.Dependency)
-         filePath = GetRepositoryFullPath(m_cli.Dependency(i))
-         If fso.FileExists(filePath) Then
-            Set tempFile = fso.GetFile(filePath)
+         FilePath = GetRepositoryFullPath(m_cli.Dependency(i))
+         If fso.FileExists(FilePath) Then
+            Set tempFile = fso.GetFile(FilePath)
             addMissingFile tempFile, ImportMode
          End If
       Next
@@ -737,9 +737,9 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
    If bImportTestFiles Then
    If (0 / 1) + (Not Not m_cli.TestFiles) Then
       For i = 0 To UBound(m_cli.TestFiles)
-         filePath = GetRepositoryFullPath(m_cli.TestFiles(i))
-         If fso.FileExists(filePath) Then
-            Set tempFile = fso.GetFile(filePath)
+         FilePath = GetRepositoryFullPath(m_cli.TestFiles(i))
+         If fso.FileExists(FilePath) Then
+            Set tempFile = fso.GetFile(FilePath)
             addMissingFile tempFile, ImportMode
          End If
       Next
@@ -1220,9 +1220,9 @@ Private Function CodeModuleExits(ByVal CodeModuleName As String) As Boolean
    
 End Function
 
-Public Function GetCodeLibInfoFromFilePath(ByVal filePath As String, Optional ByVal FindDependency As Boolean = True) As CodeLibInfo
+Public Function GetCodeLibInfoFromFilePath(ByVal FilePath As String, Optional ByVal FindDependency As Boolean = True) As CodeLibInfo
    Dim cli As CodeLibInfo
-   getCodeLibInfoFromFile cli, fso.GetFile(filePath), FindDependency
+   getCodeLibInfoFromFile cli, fso.GetFile(FilePath), FindDependency
    GetCodeLibInfoFromFilePath = cli
 End Function
 
