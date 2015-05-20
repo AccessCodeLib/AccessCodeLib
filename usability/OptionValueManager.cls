@@ -25,35 +25,6 @@ Attribute VB_Exposed = False
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
-' Beispiel für Implementierung im Formular:
-'
-' Dim myOptions as OptionValueManager
-' Private Sub Form_Load()
-'     Set myOptions = New OptionValueManager
-'     myOptions.OptionTable = "tabOptionen"
-'     myOptions.Settings("sportjahr") = 2015
-'     Me.Text0 = myOptions.Settings("sportjahr")
-' End Sub
-
-' Private Sub Form_Unload(Cancel As Integer)
-'     Set myOptions = Nothing
-' End Sub
-
-' Private Sub cmdSet_Click()
-'     myOptions.Settings("old_sportjahr") = myOptions.Settings("sportjahr")
-'     myOptions.Settings("sportjahr") = 2017
-' End Sub
-
-' Private Sub cmdReset_Click()
-'     myOptions.Settings("sportjahr") = myOptions.Settings("old_sportjahr")
-' End Sub
-
-' Private Sub cmdView_Click()
-'     Me.Text0 = myOptions.Settings("sportjahr")
-' End Sub
-'
-'---------------------------------------------------------------------------------------
-'
 
 Option Compare Database
 Option Explicit
@@ -64,12 +35,12 @@ Private CancelFlag As Boolean
 
 Public Property Let OptionTable(ByVal NameofTable As String)
     m_OptionTable = NameofTable
-    If tableExists Then
+    If TableExists Then
         catchOptionValues
     Else
         m_OptionTable = ""
         CancelFlag = True
-        MsgBox "Tabelle für Optionen nicht gefunden!"
+        Err.Raise Err.Number, Err.Source, Err.Description
     End If
 End Property
 
@@ -81,11 +52,7 @@ Public Property Get Settings(cOption As String) As Variant
     Exit Property
 
 Settings_Err:
-    If Err.Number = 5 Then
-        MsgBox "Name des Optionsfeldes fehlerhaft!", vbInformation + vbOKOnly
-    Else
-        MsgBox Err.Description
-    End If
+    Err.Raise Err.Number, Err.Source, Err.Description
 End Property
 
 Public Property Let Settings(cOption As String, vValue As Variant)
@@ -94,63 +61,54 @@ Public Property Let Settings(cOption As String, vValue As Variant)
 
     myOption.Remove cOption
     myOption.Add vValue, cOption
-    CurrentDb.Execute "Update " & m_OptionTable & " set " & cOption & " = " & myOption.Item(cOption)
+    vValue = Replace(vValue, "'", "''")
+    CurrentDb.Execute "Update " & m_OptionTable & " set strValue = '" & vValue & "' Where strKey = '" & cOption & "'"
     Exit Property
 
 Settings_Err:
-    If Err.Number = 5 Then
-        MsgBox "Name des Optionsfeldes fehlerhaft!", vbInformation + vbOKOnly
-    Else
-        MsgBox Err.Description
-    End If
+    Err.Raise Err.Number, Err.Source, Err.Description
 End Property
 
 Private Sub catchOptionValues()
-    Dim i As Long
     Dim rst As DAO.Recordset
     Set rst = CurrentDb.OpenRecordset(m_OptionTable, dbOpenSnapshot)
 
-    With myOption
-        For i = 0 To rst.Fields.Count - 1
-            If Not isPrimaryKey(rst.Fields(i).Name) Then
-                .Add DLookup(CStr(rst.Fields(i).Name), m_OptionTable), LCase(CStr(rst.Fields(i).Name))
-            End If
-        Next i
-    End With
+    Do While Not rst.EOF
+        myOption.Add CStr(rst!strValue), CStr(rst!strKey)
+        rst.MoveNext
+    Loop
 
     rst.Close
     Set rst = Nothing
 End Sub
 
-Private Function isPrimaryKey(cField As String) As Boolean
-    Dim tdf As DAO.TableDef
-    Dim db As DAO.Database
-    Dim idx As DAO.Index
-
-    Set db = CurrentDb
-    Set tdf = db.TableDefs(m_OptionTable)
-
-    For Each idx In tdf.Indexes
-        If idx.Primary Then
-            If idx.Fields(0).Name = cField Then
-                isPrimaryKey = True
-                Exit For
-            End If
-        End If
-    Next idx
-
-    Set tdf = Nothing
-    Set db = Nothing
-End Function
-
-Private Function tableExists() As Boolean
-    tableExists = IsNull(DLookup("[Name]", "MSysObjects", "[Name] = '" & m_OptionTable & "' AND (Type = 1 Or Type = 6)")) = False
+Private Function TableExists() As Boolean
+    If m_OptionTable = "" Then m_OptionTable = "tabOptionen"
+    TableExists = IsNull(DLookup("[Name]", "MSysObjects", "[Name] = '" & m_OptionTable & "' AND (Type = 1 Or Type = 6)")) = False
 End Function
 
 Private Sub Class_Initialize()
     Set myOption = New VBA.Collection
+    SampleOptionTableCreate
+    Me.OptionTable = "tabOptionen"
 End Sub
 
 Private Sub Class_Terminate()
     Set myOption = Nothing
 End Sub
+
+Public Function SampleOptionTableCreate()
+    Dim strSQL As String
+    If Not TableExists Then
+        strSQL = "Create Table tabOptionen (id AUTOINCREMENT Primary Key, strKey varchar(50), strValue varchar(255))"
+        CurrentDb.Execute strSQL
+        CurrentDb.Execute "Insert into tabOptionen (strKey, strValue) values ('Sportjahr','2015')"
+        CurrentDb.Execute "Insert into tabOptionen (strKey, strValue) values ('SportjahrAlt','2014')"
+        CurrentDb.Execute "Insert into tabOptionen (strKey, strValue) values ('Vereinsname','SC Freiburg')"
+        CurrentDb.Execute "Insert into tabOptionen (strKey, strValue) values ('Vereinsnummer','4711')"
+        CurrentDb.Execute "Insert into tabOptionen (strKey, strValue) values ('PfadHilfedatei','c:\sbsv\help.txt')"
+        CurrentDb.Execute "Insert into tabOptionen (strKey, strValue) values ('PfadImportdatei','c:\sbsv\mitgl.dbf')"
+        CurrentDb.Execute "Insert into tabOptionen (strKey, strValue) values ('AnwendungGesperrt',0)"
+        Application.RefreshDatabaseWindow
+    End If
+End Function
