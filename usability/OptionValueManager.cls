@@ -25,14 +25,35 @@ Attribute VB_Exposed = False
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
-'Beispiel für Implementierung in Modul oder Formular:
-'  Dim myOptions as OptionValueManager
-'  Set myOptions = new OptionValueManager
-'  myOption.OptionTable = "tabOptionen"
-'  myOptions.Settings("Installationsdatum") = now()
-'  MsgBox myOptions.Settings("Installationsdatum")
-'  Set myOption = Nothing
+' Beispiel für Implementierung im Formular:
+'
+' Dim myOptions as OptionValueManager
+' Private Sub Form_Load()
+'     Set myOptions = New OptionValueManager
+'     myOptions.OptionTable = "tabOptionen"
+'     myOptions.Settings("sportjahr") = 2015
+'     Me.Text0 = myOptions.Settings("sportjahr")
+' End Sub
 
+' Private Sub Form_Unload(Cancel As Integer)
+'     Set myOptions = Nothing
+' End Sub
+
+' Private Sub cmdSet_Click()
+'     myOptions.Settings("old_sportjahr") = myOptions.Settings("sportjahr")
+'     myOptions.Settings("sportjahr") = 2017
+' End Sub
+
+' Private Sub cmdReset_Click()
+'     myOptions.Settings("sportjahr") = myOptions.Settings("old_sportjahr")
+' End Sub
+
+' Private Sub cmdView_Click()
+'     Me.Text0 = myOptions.Settings("sportjahr")
+' End Sub
+'
+'---------------------------------------------------------------------------------------
+'
 
 Option Compare Database
 Option Explicit
