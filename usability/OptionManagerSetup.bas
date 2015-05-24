@@ -1,5 +1,4 @@
 Attribute VB_Name = "OptionManagerSetup"
-Attribute VB_Name = "OptionManagerSetup"
 '---------------------------------------------------------------------------------------
 ' Modul: OptionManagerSetup
 '---------------------------------------------------------------------------------------
