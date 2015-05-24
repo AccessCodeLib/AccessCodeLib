@@ -16,7 +16,7 @@ Attribute VB_Name = "OptionManagerSetup"
 '**/
 '<codelib>
 '  <file>usability/OptionManagerSetup.bas</file>
-'
+'  <use>usability/OptionManager.cls</use>
 '  <execute>OptionManagerSetup_SetupTable()</execute>
 '  <execute>OptionManagerSetup_CreateHelperModule()</execute>
 '  <execute>OptionManagerSetup_CreateConstantandEnum()</execute>
