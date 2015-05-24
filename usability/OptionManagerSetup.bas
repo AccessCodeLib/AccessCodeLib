@@ -16,6 +16,7 @@ Attribute VB_Name = "OptionManagerSetup"
 '<codelib>
 '  <file>usability/OptionManagerSetup.bas</file>
 '  <use>usability/OptionManager.cls</use>
+'  <ref><name>VBIDE</name><major>5</major><minor>3</minor><guid>{0002E157-0000-0000-C000-000000000046}</guid></ref>
 '  <execute>OptionManagerSetup_SetupTable()</execute>
 '  <execute>OptionManagerSetup_CreateHelperModule()</execute>
 '  <execute>OptionManagerSetup_CreateConstantandEnum()</execute>
@@ -30,26 +31,27 @@ Private Const m_OptionTableName = "tabOptions"
 Private Const m_HelperModuleName = "OptionManagerHelper"
 Private Const m_SetupModuleName = "OptionManagerSetup"
 
-Private Function OptionManagerSetup_SetupTable()
+Public Function OptionManagerSetup_SetupTable()
     Dim strSQL As String
     strSQL = "Create Table " & m_OptionTableName & " (id AUTOINCREMENT Primary Key, strKey varchar(50), strValue varchar(255))"
     CurrentDb.Execute strSQL
     Application.RefreshDatabaseWindow
 End Function
 
-Private Function OptionManagerSetup_CreateHelperModule()
-    If IsNull(DLookup("[Name]", "MSysObjects", "[Name] = m_HelperModuleName AND (Type = -32761)")) = False Then Exit Sub
+Public Function OptionManagerSetup_CreateHelperModule()
+    If IsNull(DLookup("[Name]", "MSysObjects", "[Name] = '" & m_HelperModuleName & "' AND (Type = -32761)")) = False Then Exit Function
 
     With Application.VBE.ActiveVBProject.VBComponents
-        .Add vbext_ct_StdModule
-        .Name = m_HelperModuleName
+        With .Add(vbext_ct_StdModule)
+           .Name = m_HelperModuleName
+        End With
     End With
-    DoCmd.Save acModule, strModulename
+    DoCmd.Save acModule, m_HelperModuleName
     
     Application.RefreshDatabaseWindow
 End Function
 
-Private Function OptionManagerSetup_CreateConstantandEnum()
+Public Function OptionManagerSetup_CreateConstantandEnum()
     Dim CODL As Long
     
     With Application.VBE.ActiveVBProject.VBComponents(m_HelperModuleName).CodeModule
@@ -63,10 +65,11 @@ Private Function OptionManagerSetup_CreateConstantandEnum()
     End With
 End Function
 
-Private Function OptionManagerSetup_RemoveSelf()
+Public Function OptionManagerSetup_RemoveSelf()
     
     Dim currVbeProject As Object
     Set currVbeProject = Application.VBE.ActiveVBProject
 
-    currVbeProject.VBComponents.Remove currVbeProject.VBComponents(m_SetupModulName)
+    currVbeProject.VBComponents.Remove currVbeProject.VBComponents(m_SetupModuleName)
+    
 End Function

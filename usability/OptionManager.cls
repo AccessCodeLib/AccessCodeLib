@@ -34,21 +34,21 @@ Private m_OptionTable As String
 '************* Initialisierung und Terminierung der Klasse *****************
 '***************************************************************************
 Private Sub Class_Initialize()
-    m_OptionTable = "tabOptionen"
-    If Not TableExists Then
-        CreateOptionTable
-        If Not helperModuleExists Then CreateHelperModule
-    Else
-        If helperModuleExists Then
-            'check for new options
-            If hasNewOptions Then
-                CreateEnum
-            End If
+    m_OptionTable = "tabOptionen" ' Einstellung über Property wäre nett
+    'If Not TableExists Then  ' Braucht man diesen Code während der Laufzeit? (meiner Meinung ist das nur zur Entwicklungszeit notwendig)
+    '    CreateOptionTable
+    '    If Not helperModuleExists Then CreateHelperModule
+    'Else
+    '    If helperModuleExists Then
+    '        'check for new options
+    '        If hasNewOptions Then
+    '            CreateEnum
+    '        End If
             catchOptionValues
-        Else
+    '    Else
             Err.Raise 999, "OptionManager.Initialize", "HelperModul nicht vorhanden"
-        End If
-    End If
+    '    End If
+    'End If
 End Sub
 
 Private Sub Class_Terminate()
