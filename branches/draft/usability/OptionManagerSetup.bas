@@ -23,7 +23,7 @@ Attribute VB_Name = "OptionManagerSetup"
 '  <ref><name>VBIDE</name><major>5</major><minor>3</minor><guid>{0002E157-0000-0000-C000-000000000046}</guid></ref>
 '  <execute>OptionManagerSetup_SetupTable()</execute>
 '  <execute>OptionManagerSetup_CreateHelperModule()</execute>
-'  <execute>OptionManagerSetup_CreateConstantandEnum()</execute>
+'  <execute>OptionManagerSetup_CreateEnum()</execute>
 '  <execute>OptionManagerSetup_RemoveSelf()</execute>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -35,45 +35,43 @@ Private Const m_OptionTableName = "tabOptions"
 Private Const m_HelperModuleName = "OptionManagerHelper"
 Private Const m_SetupModuleName = "OptionManagerSetup"
 
-Public Function OptionManagerSetup_SetupTable()
+Private Function OptionManagerSetup_SetupTable()
     Dim strSQL As String
     strSQL = "Create Table " & m_OptionTableName & " (id AUTOINCREMENT Primary Key, strKey varchar(50), strValue varchar(255))"
     CurrentDb.Execute strSQL
     Application.RefreshDatabaseWindow
 End Function
 
-Public Function OptionManagerSetup_CreateHelperModule()
-    If IsNull(DLookup("[Name]", "MSysObjects", "[Name] = '" & m_HelperModuleName & "' AND (Type = -32761)")) = False Then Exit Function
+Private Function OptionManagerSetup_CreateHelperModule()
+    If IsNull(DLookup("[Name]", "MSysObjects", "[Name] = m_HelperModuleName AND (Type = -32761)")) = False Then Exit Function
 
     With Application.VBE.ActiveVBProject.VBComponents
-        With .Add(vbext_ct_StdModule)
-           .Name = m_HelperModuleName
-        End With
+        .Add vbext_ct_StdModule
+        .Name = m_HelperModuleName
     End With
     DoCmd.Save acModule, m_HelperModuleName
-    
+
     Application.RefreshDatabaseWindow
 End Function
 
-Public Function OptionManagerSetup_CreateConstantandEnum()
+Private Function OptionManagerSetup_CreateEnum()
     Dim CODL As Long
-    
+
     With Application.VBE.ActiveVBProject.VBComponents(m_HelperModuleName).CodeModule
         CODL = .CountOfDeclarationLines
-        
-        .InsertLines CODL + 1, "Public Const OptionManagerhelper_FieldArr = """""
-        .InsertLines CODL + 2, ""
-        .InsertLines CODL + 3, "Public Enum ltOptions"
-        .InsertLines CODL + 4, "    dummy = 0"
-        .InsertLines CODL + 5, "End Enum"
+
+        .InsertLines CODL + 1, ""
+        .InsertLines CODL + 2, "Public Enum ltOptions"
+        .InsertLines CODL + 3, "    dummy = 0"
+        .InsertLines CODL + 4, "End Enum"
     End With
+    DoCmd.Save acModule, m_HelperModuleName
 End Function
 
-Public Function OptionManagerSetup_RemoveSelf()
-    
+Private Function OptionManagerSetup_RemoveSelf()
+
     Dim currVbeProject As Object
     Set currVbeProject = Application.VBE.ActiveVBProject
 
     currVbeProject.VBComponents.Remove currVbeProject.VBComponents(m_SetupModuleName)
-    
 End Function
