@@ -62,8 +62,6 @@ Public Function OptionManagerSetup_CreateEnum()
         .InsertLines 6, "End Enum"
     End With
     DoCmd.Close acModule, m_HelperModuleName, acSaveYes
-    DoCmd.RunCommand acCmdSaveAllModules
-    Application.RefreshDatabaseWindow
 End Function
 
 Public Function OptionManagerSetup_RemoveSelf()
@@ -72,4 +70,7 @@ Public Function OptionManagerSetup_RemoveSelf()
     Set currVbeProject = Application.VBE.ActiveVBProject
 
     currVbeProject.VBComponents.Remove currVbeProject.VBComponents(m_SetupModuleName)
+
+    DoCmd.RunCommand acCmdSaveAllModules
+    Application.RefreshDatabaseWindow
 End Function
