@@ -1,7 +1,3 @@
-VERSION 1.0 CLASS
-BEGIN
-  MultiUse = -1  'True
-END
 Attribute VB_Name = "OptionManagerSetup"
 '---------------------------------------------------------------------------------------
 ' Modul: OptionManagerSetup
@@ -35,14 +31,14 @@ Private Const m_OptionTableName = "tabOptions"
 Private Const m_HelperModuleName = "OptionManagerHelper"
 Private Const m_SetupModuleName = "OptionManagerSetup"
 
-Private Function OptionManagerSetup_SetupTable()
+Public Function OptionManagerSetup_SetupTable()
     Dim strSQL As String
     strSQL = "Create Table " & m_OptionTableName & " (id AUTOINCREMENT Primary Key, strKey varchar(50), strValue varchar(255))"
     CurrentDb.Execute strSQL
     Application.RefreshDatabaseWindow
 End Function
 
-Private Function OptionManagerSetup_CreateHelperModule()
+Public Function OptionManagerSetup_CreateHelperModule()
     If IsNull(DLookup("[Name]", "MSysObjects", "[Name] = m_HelperModuleName AND (Type = -32761)")) = False Then Exit Function
 
     With Application.VBE.ActiveVBProject.VBComponents
@@ -54,7 +50,7 @@ Private Function OptionManagerSetup_CreateHelperModule()
     Application.RefreshDatabaseWindow
 End Function
 
-Private Function OptionManagerSetup_CreateEnum()
+Public Function OptionManagerSetup_CreateEnum()
     Dim CODL As Long
 
     With Application.VBE.ActiveVBProject.VBComponents(m_HelperModuleName).CodeModule
@@ -68,7 +64,7 @@ Private Function OptionManagerSetup_CreateEnum()
     DoCmd.Save acModule, m_HelperModuleName
 End Function
 
-Private Function OptionManagerSetup_RemoveSelf()
+Public Function OptionManagerSetup_RemoveSelf()
 
     Dim currVbeProject As Object
     Set currVbeProject = Application.VBE.ActiveVBProject
