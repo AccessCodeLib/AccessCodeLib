@@ -21,7 +21,6 @@ Attribute VB_Name = "OptionManagerSetup"
 '  <execute>OptionManagerSetup_CreateHelperModule()</execute>
 '  <execute>OptionManagerSetup_CreateEnum()</execute>
 '  <execute>OptionManagerSetup_RemoveSelf()</execute>
-'  <execute>OptionManagerSetup_SaveModules()</execute>
 '</codelib>
 '---------------------------------------------------------------------------------------
 
@@ -51,8 +50,6 @@ Public Function OptionManagerSetup_CreateHelperModule()
 End Function
 
 Public Function OptionManagerSetup_CreateEnum()
-    Dim CODL As Long
-
     With Application.VBE.ActiveVBProject.VBComponents(m_HelperModuleName).CodeModule
 	.DeleteLines 1, .CountOfDeclarationLines
 	.InsertLines 1, "Option Compare Database"
@@ -63,6 +60,9 @@ Public Function OptionManagerSetup_CreateEnum()
         .InsertLines 6, "End Enum"
     End With
     DoCmd.Close acModule, m_HelperModuleName, acSaveYes
+
+    DoCmd.RunCommand acCmdCompileAndSaveAllModules
+    Application.RefreshDatabaseWindow
 End Function
 
 Public Function OptionManagerSetup_RemoveSelf()
@@ -73,9 +73,3 @@ Public Function OptionManagerSetup_RemoveSelf()
     currVbeProject.VBComponents.Remove currVbeProject.VBComponents(m_SetupModuleName)
 
 End Function
-
-Public Function OptionManagerSetup_SaveModules()
-    DoCmd.RunCommand acCmdSaveAllModules
-    Application.RefreshDatabaseWindow
-End Function
-
