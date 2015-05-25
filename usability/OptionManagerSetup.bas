@@ -47,8 +47,6 @@ Public Function OptionManagerSetup_CreateHelperModule()
         End With
     End With
     DoCmd.close acModule, m_HelperModuleName
-
-    Application.RefreshDatabaseWindow
 End Function
 
 Public Function OptionManagerSetup_CreateEnum()
@@ -64,6 +62,7 @@ Public Function OptionManagerSetup_CreateEnum()
         .InsertLines 6, "End Enum"
     End With
     DoCmd.Close acModule, m_HelperModuleName, acSaveYes
+    Application.RefreshDatabaseWindow
 End Function
 
 Public Function OptionManagerSetup_RemoveSelf()
