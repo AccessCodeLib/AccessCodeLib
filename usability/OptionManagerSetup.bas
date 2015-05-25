@@ -33,7 +33,7 @@ Private Const m_SetupModuleName = "OptionManagerSetup"
 
 Public Function OptionManagerSetup_SetupTable()
     Dim strSQL As String
-    strSQL = "Create Table " & m_OptionTableName & " (id AUTOINCREMENT Primary Key, strKey varchar(50), strValue varchar(255))"
+    strSQL = "Create Table " & m_OptionTableName & " (strKey varchar(50) Primary Key, strValue varchar(255))"
     CurrentDb.Execute strSQL
     Application.RefreshDatabaseWindow
 End Function
