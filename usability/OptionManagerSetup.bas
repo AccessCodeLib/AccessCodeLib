@@ -39,11 +39,12 @@ Public Function OptionManagerSetup_SetupTable()
 End Function
 
 Public Function OptionManagerSetup_CreateHelperModule()
-    On Error Resume Next
     If IsNull(DLookup("[Name]", "MSysObjects", "[Name] = '" & m_HelperModuleName & "' AND (Type = -32761)")) = False Then Exit Function
+
     With Application.VBE.ActiveVBProject.VBComponents
-        .Add (vbext_ct_StdModule)
-        .Item(.Count).Name = m_HelperModuleName
+        With .Add(vbext_ct_StdModule)
+           .Name = m_HelperModuleName
+        End With
     End With
     DoCmd.Save acModule, m_HelperModuleName
 
@@ -51,7 +52,8 @@ Public Function OptionManagerSetup_CreateHelperModule()
 End Function
 
 Public Function OptionManagerSetup_CreateEnum()
-    On Error Resume Next
+    Dim CODL As Long
+
     With Application.VBE.ActiveVBProject.VBComponents(m_HelperModuleName).CodeModule
 	.DeleteLines 1, .CountOfDeclarationLines
 	.InsertLines 1, "Option Compare Database"
@@ -65,7 +67,6 @@ Public Function OptionManagerSetup_CreateEnum()
 End Function
 
 Public Function OptionManagerSetup_RemoveSelf()
-    On Error Resume Next
 
     Dim currVbeProject As Object
     Set currVbeProject = Application.VBE.ActiveVBProject
