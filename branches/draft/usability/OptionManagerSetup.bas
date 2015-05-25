@@ -21,6 +21,7 @@ Attribute VB_Name = "OptionManagerSetup"
 '  <execute>OptionManagerSetup_CreateHelperModule()</execute>
 '  <execute>OptionManagerSetup_CreateEnum()</execute>
 '  <execute>OptionManagerSetup_RemoveSelf()</execute>
+'  <execute>OptionManagerSetup_SaveModules()</execute>
 '</codelib>
 '---------------------------------------------------------------------------------------
 
@@ -71,6 +72,10 @@ Public Function OptionManagerSetup_RemoveSelf()
 
     currVbeProject.VBComponents.Remove currVbeProject.VBComponents(m_SetupModuleName)
 
+End Function
+
+Public Function OptionManagerSetup_SaveModules()
     DoCmd.RunCommand acCmdSaveAllModules
     Application.RefreshDatabaseWindow
 End Function
+
