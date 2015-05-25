@@ -19,6 +19,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>usability/OptionManager.cls</file>
 '  <license>_codelib/license.bas</license>
+'  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
 '</codelib>
 '---------------------------------------------------------------------------------------
 
@@ -88,22 +89,23 @@ End Property
 '********************* Prozedur zum Befüllen des Array *********************
 '***************************************************************************
 Private Sub catchOptionValues()
-    Dim i As Long
-    Dim rst As DAO.Recordset
-    
-    Set rst = CurrentDb.OpenRecordset(OptionTable, dbOpenSnapshot)
-    rst.MoveLast
-    ReDim myOptions(rst.RecordCount - 1)
-    rst.MoveFirst
-    
-    Do While Not rst.EOF
-        myOptions(i) = rst!strValue
-        i = i + 1
-        rst.MoveNext
-    Loop
 
-    rst.Close
-    Set rst = Nothing
+    Dim i As Long
+    
+    With CurrentDb.OpenRecordset(OptionTable, dbOpenSnapshot)
+       .MoveLast
+       ReDim myOptions(.RecordCount - 1)
+       .MoveFirst
+       
+       Do While Not .EOF
+           myOptions(i) = .Fields("strValue").Value
+           i = i + 1
+           .MoveNext
+       Loop
+   
+       .Close
+    End With
+
 End Sub
 
 '***************************************************************************
