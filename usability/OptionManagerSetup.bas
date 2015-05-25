@@ -40,8 +40,10 @@ End Function
 
 Public Function OptionManagerSetup_CreateHelperModule()
     If IsNull(DLookup("[Name]", "MSysObjects", "[Name] = '" & m_HelperModuleName & "' AND (Type = -32761)")) = False Then Exit Function
-
-    Application.VBE.ActiveVBProject.VBComponents.Add(vbext_ct_StdModule)
+    With Application.VBE.ActiveVBProject.VBComponents
+        .Add (vbext_ct_StdModule)
+        .Item(.Count).Name = m_HelperModuleName
+    End With
     DoCmd.Save acModule, m_HelperModuleName
 
     Application.RefreshDatabaseWindow
