@@ -26,30 +26,43 @@ Attribute VB_Exposed = False
 Option Compare Database
 Option Explicit
 
-Private m_Settings() As Variant
+Private m_Keys() As String
+Private m_Values() As Variant
 Private m_DataSource As String
 
-Private Const TableFieldEnumKey As String = "strKey"
-Private Const TableFieldValue As String = "strValue"
+Private Const EnumKeyFieldName As String = "strKey"
+Private Const ValueFieldName As String = "strValue"
+Private Const EnumName As String = "SettingKeys"
 
 '***************************************************************************
 '****** Zentrale Property Setting zum Holen und Setzen eines Wertes *******
 '***************************************************************************
-Public Property Get Setting(ByVal cOption As ltOptions) As Variant
+Public Property Get Setting(ByVal SettingIndex As SettingKeys) As Variant
 Attribute Setting.VB_UserMemId = 0
-    If (0 / 1) + (Not Not m_Settings) = 0 Then 'Array noch nicht initialisiert
+
+    If (0 / 1) + (Not Not m_Values) = 0 Then 'Array noch nicht initialisiert
         CatchOptionValues
     End If
     
-    Setting = m_Settings(cOption)
+    Setting = m_Values(SettingIndex)
     
 End Property
 
-Public Property Let Setting(ByVal cOption As ltOptions, ByVal vValue As Variant)
+Public Property Let Setting(ByVal SettingIndex As SettingKeys, ByVal vValue As Variant)
     
-    vValue = Replace(vValue, "'", "''")
-    m_Settings(cOption) = vValue
-    CurrentDb.Execute "Update " & DataSource & " set " & TableFieldValue & " = '" & vValue & "' Where " & TableFieldEnumKey & " = '" & cOption & "'"
+    If (0 / 1) + (Not Not m_Values) = 0 Then 'Array noch nicht initialisiert
+        CatchOptionValues
+    End If
+    
+    m_Values(SettingIndex) = vValue
+    
+    With CurrentDb
+        .Execute "Update " & DataSource & " set " & ValueFieldName & " = '" & Replace(vValue, "'", "''") & "' Where " & EnumKeyFieldName & " = '" & m_Keys(SettingIndex) & "'"
+        If .RecordsAffected = 0 Then 'derzeit nicht möglich, da in so einem Fall zuvor schon ein Fehler bei m_Values(cOption) ausgelöst würde
+            .Execute "Insert into " & DataSource & " (" & ValueFieldName & ", TableFieldEnumKey)" & _
+                     " Values ('" & m_Keys(SettingIndex) & "', '" & Replace(vValue, "'", "''") & "')"
+        End If
+    End With
     
 End Property
 
@@ -84,11 +97,14 @@ Private Sub CatchOptionValues()
         If Not .EOF Then
             .MoveLast
             .MoveFirst
-            ReDim m_Settings(.RecordCount - 1)
+            
+            ReDim m_Keys(1 To .RecordCount)
+            ReDim m_Settings(1 To .RecordCount)
             
             Do While Not .EOF
-                m_Settings(i) = .Fields(TableFieldValue).Value
                 i = i + 1
+                m_Keys(i) = .Fields(EnumKeyFieldName).Value
+                m_Settings(i) = .Fields(ValueFieldName).Value
                 .MoveNext
             Loop
         End If
@@ -100,7 +116,7 @@ End Sub
 '***************************************************************************
 '************ Public Sub Update zum Generieren der Enum-Werte **************
 '***************************************************************************
-Public Sub UpdateEnum()
+Friend Sub UpdateEnum()
     
     Dim EnumKeys() As String
     
@@ -122,12 +138,12 @@ Public Sub UpdateEnum()
                 .DeleteLines EnumDeclarationLine + 1, EnumEndLine - EnumDeclarationLine - 1
             Else
                 EnumDeclarationLine = .CountOfLines
-                .InsertLines EnumDeclarationLine, "Public Enum ltOptions"
+                .InsertLines EnumDeclarationLine, "Public Enum " & EnumName
                 .InsertLines EnumDeclarationLine + 1, "End Enum"
             End If
         
             For i = LBound(EnumKeys) To UBound(EnumKeys)
-                .InsertLines i + EnumDeclarationLine + 1, "    " & EnumKeys(i) & " = " & i
+                .InsertLines i + EnumDeclarationLine, "    " & EnumKeys(i) & " = " & i
             Next i
             
         End With
@@ -153,11 +169,11 @@ Private Function GetEnumKeyArray() As String()
         Else
             .MoveLast
             .MoveFirst
-            ReDim EnumKeys(.RecordCount - 1)
+            ReDim EnumKeys(1 To .RecordCount)
             Do While Not .EOF
-                EnumKeys(i) = .Fields(TableFieldEnumKey).Value
-                .MoveNext
                 i = i + 1
+                EnumKeys(i) = .Fields(EnumKeyFieldName).Value
+                .MoveNext
             Loop
         End If
         .Close
@@ -171,7 +187,7 @@ Private Function GetEnumDeclarationLine(ByVal cm As CodeModule) As Long
 
     Dim EnumStartLine As Long
 
-    If cm.Find("Public Enum ltOptions", EnumStartLine, 0, 0, 0, False, False, False) Then
+    If cm.Find("Public Enum " & EnumName, EnumStartLine, 0, 0, 0, False, False, False) Then
         GetEnumDeclarationLine = EnumStartLine
     Else
         GetEnumDeclarationLine = 0
