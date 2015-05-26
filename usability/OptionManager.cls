@@ -79,9 +79,6 @@ End Property
 Public Property Get OptionTable() As String
     If Len(m_OptionTable) = 0 Then
         m_OptionTable = OptionManagerDefaultTableName
-        If Len(m_OptionTable) = 0 Then
-            Err.Raise vbObjectError + 100, "OptionManager.OptionTable", "OptionTable not defined"
-        End If
     End If
     OptionTable = m_OptionTable
 End Property
@@ -96,8 +93,14 @@ End Property
 Private Sub CatchOptionValues()
 
     Dim i As Long
+	dim strSouce as String
+	
+	strSouce = OptionTable
+	If Len(strSouce) = 0 Then
+		Err.Raise vbObjectError + 100, "OptionManager", "OptionTable not defined"
+	End If
     
-    With CurrentDb.OpenRecordset(OptionTable, dbOpenSnapshot)
+    With CurrentDb.OpenRecordset(strSouce, dbOpenSnapshot)
         If Not .EOF Then
             .MoveLast
             .MoveFirst
