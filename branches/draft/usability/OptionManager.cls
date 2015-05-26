@@ -26,65 +26,45 @@ Attribute VB_Exposed = False
 Option Compare Database
 Option Explicit
 
-Private myOptions() As Variant
-Private m_OptionTable As String
+Private m_Settings() As Variant
+Private m_DataSource As String
 
 Private Const TableFieldEnumKey As String = "strKey"
 Private Const TableFieldValue As String = "strValue"
 
 '***************************************************************************
-'************ Public Sub Update zum Generieren der Enum-Werte **************
+'****** Zentrale Property Setting zum Holen und Setzen eines Wertes *******
 '***************************************************************************
-Friend Sub UpdateEnum()
-    CreateEnum
-End Sub
-
-'***************************************************************************
-'****** Zentrale Property Settings zum Holen und Setzen eines Wertes *******
-'***************************************************************************
-Public Property Get Settings(ByVal cOption As ltOptions) As Variant
-
-On Error GoTo Settings_Err
-    
-    If (0 / 1) + (Not Not myOptions) = 0 Then 'Array noch nicht initialisiert
+Public Property Get Setting(ByVal cOption As ltOptions) As Variant
+Attribute Setting.VB_UserMemId = 0
+    If (0 / 1) + (Not Not m_Settings) = 0 Then 'Array noch nicht initialisiert
         CatchOptionValues
     End If
     
-    Settings = myOptions(cOption)
-    
-Exit Property
-
-Settings_Err:
-    Err.Raise Err.Number, Err.Source, Err.Description
+    Setting = m_Settings(cOption)
     
 End Property
 
-Public Property Let Settings(ByVal cOption As ltOptions, ByVal vValue As Variant)
+Public Property Let Setting(ByVal cOption As ltOptions, ByVal vValue As Variant)
     
-On Error GoTo Settings_Err
-
     vValue = Replace(vValue, "'", "''")
-    myOptions(cOption) = vValue
-    CurrentDb.Execute "Update " & OptionTable & " set " & TableFieldValue & " = '" & vValue & "' Where " & TableFieldEnumKey & " = '" & cOption & "'"
-    Exit Property
-
-Settings_Err:
-    Err.Raise Err.Number, Err.Source, Err.Description
+    m_Settings(cOption) = vValue
+    CurrentDb.Execute "Update " & DataSource & " set " & TableFieldValue & " = '" & vValue & "' Where " & TableFieldEnumKey & " = '" & cOption & "'"
     
 End Property
 
-'***************************************************************************
-' Property Optiontable zum Setzen des Tabellennamens und Auslesen der Werte
-'***************************************************************************
-Public Property Get OptionTable() As String
-    If Len(m_OptionTable) = 0 Then
-        m_OptionTable = OptionManagerDefaultTableName
+'***************************************************************************************
+' Property DataSource zum Setzen des Tabellennamens und Auslesen und Speichern der Werte
+'***************************************************************************************
+Public Property Get DataSource() As String
+    If Len(m_DataSource) = 0 Then
+        m_DataSource = OptionManagerDefaultDataSource
     End If
-    OptionTable = m_OptionTable
+    DataSource = m_DataSource
 End Property
 
-Public Property Let OptionTable(ByVal cTable As String)
-    m_OptionTable = cTable
+Public Property Let DataSource(ByVal sDataSource As String)
+    m_DataSource = sDataSource
 End Property
 
 '***************************************************************************
@@ -93,21 +73,21 @@ End Property
 Private Sub CatchOptionValues()
 
     Dim i As Long
-	dim strSouce as String
-	
-	strSouce = OptionTable
-	If Len(strSouce) = 0 Then
-		Err.Raise vbObjectError + 100, "OptionManager", "OptionTable not defined"
-	End If
+    Dim strSource As String
+        
+    strSource = DataSource
+    If Len(strSource) = 0 Then
+        Err.Raise vbObjectError + 100, "OptionManager", "DataSource not defined"
+    End If
     
-    With CurrentDb.OpenRecordset(strSouce, dbOpenSnapshot)
+    With CurrentDb.OpenRecordset(strSource, dbOpenSnapshot)
         If Not .EOF Then
             .MoveLast
             .MoveFirst
-            ReDim myOptions(.RecordCount - 1)
+            ReDim m_Settings(.RecordCount - 1)
             
             Do While Not .EOF
-                myOptions(i) = .Fields(TableFieldValue).Value
+                m_Settings(i) = .Fields(TableFieldValue).Value
                 i = i + 1
                 .MoveNext
             Loop
@@ -118,15 +98,13 @@ Private Sub CatchOptionValues()
 End Sub
 
 '***************************************************************************
-'*************************** Enum-Creator-Prozedur *************************
+'************ Public Sub Update zum Generieren der Enum-Werte **************
 '***************************************************************************
-Private Sub CreateEnum()
+Public Sub UpdateEnum()
     
     Dim EnumKeys() As String
     
     Dim i As Long
-    Dim SL As Long, SC As Long, EL As Long, EC As Long
-
     Dim EnumDeclarationLine As Long
     Dim EnumEndLine As Long
     
@@ -158,11 +136,17 @@ End Sub
 
 Private Function GetEnumKeyArray() As String()
 
-    Dim strSQL As String
+    Dim RecordSource As String
     Dim EnumKeys() As String
     Dim i As Long
+    Dim strSource As String
+        
+    strSource = DataSource
+    If Len(strSource) = 0 Then
+        Err.Raise vbObjectError + 100, "OptionManager", "DataSource not defined"
+    End If
 
-    With CurrentDb.OpenRecordset(OptionTable, dbOpenSnapshot)
+    With CurrentDb.OpenRecordset(strSource, dbOpenSnapshot)
         If .RecordCount = 0 Then
             ReDim EnumKeys(0)
             EnumKeys(0) = "[_undefined]"

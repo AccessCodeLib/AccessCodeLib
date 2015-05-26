@@ -50,7 +50,7 @@ Public Function OptionManagerSetup_CreateHelperModule()
                 .InsertLines 1, "Option Compare Database" & vbNewLine & _
                                 "Option Explicit" & vbNewLine & _
                                 vbNewLine & _
-                                "Public Const OptionManagerDefaultTableName As String = ""tabOptions""" & vbNewLine & _
+                                "Public Const OptionManagerDefaultDataSource As String = ""tabOptions""" & vbNewLine & _
                                 vbNewLine & _
                                 "Public Enum ltOptions" & vbNewLine & _
                                 "    [_undefined] = 0" & vbNewLine & _
