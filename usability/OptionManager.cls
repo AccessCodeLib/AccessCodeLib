@@ -26,84 +26,90 @@ Attribute VB_Exposed = False
 Option Compare Database
 Option Explicit
 
-Private myOptions As Variant
-Private FieldNameArr As Variant
+Private myOptions() As Variant
 Private m_OptionTable As String
 
-'***************************************************************************
-'************* Initialisierung und Terminierung der Klasse *****************
-'***************************************************************************
-Private Sub Class_Initialize()
-    'nothing to do
-End Sub
-
-Private Sub Class_Terminate()
-    'nothing to do
-End Sub
+Private Const TableFieldEnumKey As String = "strKey"
+Private Const TableFieldValue As String = "strValue"
 
 '***************************************************************************
 '************ Public Sub Update zum Generieren der Enum-Werte **************
 '***************************************************************************
-Public Sub Update()
+Friend Sub UpdateEnum()
     CreateEnum
 End Sub
 
 '***************************************************************************
 '****** Zentrale Property Settings zum Holen und Setzen eines Wertes *******
 '***************************************************************************
-Public Property Get Settings(cOption As ltOptions) As Variant
-    On Error GoTo Settings_Err
+Public Property Get Settings(ByVal cOption As ltOptions) As Variant
 
+On Error GoTo Settings_Err
+    
+    If (0 / 1) + (Not Not myOptions) = 0 Then 'Array noch nicht initialisiert
+        CatchOptionValues
+    End If
+    
     Settings = myOptions(cOption)
-    Exit Property
+    
+Exit Property
 
 Settings_Err:
     Err.Raise Err.Number, Err.Source, Err.Description
+    
 End Property
 
-Public Property Let Settings(cOption As ltOptions, vValue As Variant)
-    On Error GoTo Settings_Err
+Public Property Let Settings(ByVal cOption As ltOptions, ByVal vValue As Variant)
+    
+On Error GoTo Settings_Err
 
     vValue = Replace(vValue, "'", "''")
     myOptions(cOption) = vValue
-    CurrentDb.Execute "Update " & OptionTable & " set strValue = '" & vValue & "' Where strKey = '" & cOption & "'"
+    CurrentDb.Execute "Update " & OptionTable & " set " & TableFieldValue & " = '" & vValue & "' Where " & TableFieldEnumKey & " = '" & cOption & "'"
     Exit Property
 
 Settings_Err:
     Err.Raise Err.Number, Err.Source, Err.Description
+    
 End Property
 
 '***************************************************************************
-' Property Optiontable zum setzen des Tabellennamens und auslesen der Werte
+' Property Optiontable zum Setzen des Tabellennamens und Auslesen der Werte
 '***************************************************************************
 Public Property Get OptionTable() As String
+    If Len(m_OptionTable) = 0 Then
+        m_OptionTable = OptionManagerDefaultTableName
+        If Len(m_OptionTable) = 0 Then
+            Err.Raise vbObjectError + 100, "OptionManager.OptionTable", "OptionTable not defined"
+        End If
+    End If
     OptionTable = m_OptionTable
 End Property
 
 Public Property Let OptionTable(ByVal cTable As String)
     m_OptionTable = cTable
-    catchOptionValues
 End Property
 
 '***************************************************************************
 '********************* Prozedur zum Befüllen des Array *********************
 '***************************************************************************
-Private Sub catchOptionValues()
+Private Sub CatchOptionValues()
 
     Dim i As Long
     
     With CurrentDb.OpenRecordset(OptionTable, dbOpenSnapshot)
-       .MoveLast
-       ReDim myOptions(.RecordCount - 1)
-       .MoveFirst
-       
-       Do While Not .EOF
-           myOptions(i) = .Fields("strValue").Value
-           i = i + 1
-           .MoveNext
-       Loop
-   
-       .Close
+        If Not .EOF Then
+            .MoveLast
+            .MoveFirst
+            ReDim myOptions(.RecordCount - 1)
+            
+            Do While Not .EOF
+                myOptions(i) = .Fields(TableFieldValue).Value
+                i = i + 1
+                .MoveNext
+            Loop
+        End If
+        .Close
     End With
 
 End Sub
@@ -112,40 +118,88 @@ End Sub
 '*************************** Enum-Creator-Prozedur *************************
 '***************************************************************************
 Private Sub CreateEnum()
-    Dim rst As DAO.Recordset
-    Dim strSQL As String
-    Dim strKeyArr As Variant
+    
+    Dim EnumKeys() As String
+    
     Dim i As Long
     Dim SL As Long, SC As Long, EL As Long, EC As Long
 
-    strKeyArr = ""                                               ''''''''
-    Set rst = CurrentDb.OpenRecordset(OptionTable, dbOpenSnapshot)    '
-    Do While Not rst.EOF                                                '
-        strKeyArr = strKeyArr & ";" & rst!strKey                        '
-        rst.MoveNext                                                    ' Ausdruck für Konstante zusammenbauen
-    Loop                                                                '
-    strKeyArr = Mid(strKeyArr, 2)                                       '
-    rst.Close                                                           '
-    Set rst = Nothing                                            ''''''''
+    Dim EnumDeclarationLine As Long
+    Dim EnumEndLine As Long
+    
+    EnumKeys = GetEnumKeyArray
 
-    If strKeyArr = "" Then Exit Sub
-
-    With Application.VBE.ActiveVBProject.VBComponents("OptionManagerhelper").CodeModule
-        'Deklarationsblock löschen
-        .DeleteLines 1, .CountOfDeclarationLines
+    With Application.VBE.ActiveVBProject.VBComponents("OptionManagerhelper")
+        EnumDeclarationLine = GetEnumDeclarationLine(.CodeModule)
+        If EnumDeclarationLine > 0 Then
+            EnumEndLine = GetEnumCodeEndLine(.CodeModule, EnumDeclarationLine)
+        End If
         
-        'Array aus Ausdruck erstellen
-        strKeyArr = Split(strKeyArr, ";")
-
-        'Enum einfügen
-        .InsertLines 1, "Option Explicit"
-        .InsertLines 2, ""
-        .InsertLines 3, "Public Enum ltOptions"
-
-        For i = LBound(strKeyArr) To UBound(strKeyArr)
-            .InsertLines i + 4, "    " & strKeyArr(i) & " = " & i
-        Next i
+        With .CodeModule
         
-        .InsertLines i + 5, "End Enum"
+            If EnumDeclarationLine > 0 Then
+                .DeleteLines EnumDeclarationLine + 1, EnumEndLine - EnumDeclarationLine - 1
+            Else
+                EnumDeclarationLine = .CountOfLines
+                .InsertLines EnumDeclarationLine, "Public Enum ltOptions"
+                .InsertLines EnumDeclarationLine + 1, "End Enum"
+            End If
+        
+            For i = LBound(EnumKeys) To UBound(EnumKeys)
+                .InsertLines i + EnumDeclarationLine + 1, "    " & EnumKeys(i) & " = " & i
+            Next i
+            
+        End With
     End With
 End Sub
+
+Private Function GetEnumKeyArray() As String()
+
+    Dim strSQL As String
+    Dim EnumKeys() As String
+    Dim i As Long
+
+    With CurrentDb.OpenRecordset(OptionTable, dbOpenSnapshot)
+        If .RecordCount = 0 Then
+            ReDim EnumKeys(0)
+            EnumKeys(0) = "[_undefined]"
+        Else
+            .MoveLast
+            .MoveFirst
+            ReDim EnumKeys(.RecordCount - 1)
+            Do While Not .EOF
+                EnumKeys(i) = .Fields(TableFieldEnumKey).Value
+                .MoveNext
+                i = i + 1
+            Loop
+        End If
+        .Close
+    End With
+    
+    GetEnumKeyArray = EnumKeys
+    
+End Function
+
+Private Function GetEnumDeclarationLine(ByVal cm As CodeModule) As Long
+
+    Dim EnumStartLine As Long
+
+    If cm.Find("Public Enum ltOptions", EnumStartLine, 0, 0, 0, False, False, False) Then
+        GetEnumDeclarationLine = EnumStartLine
+    Else
+        GetEnumDeclarationLine = 0
+    End If
+    
+End Function
+
+Private Function GetEnumCodeEndLine(ByVal cm As CodeModule, ByVal EnumStartLine As Long) As Long
+
+    Dim EnumEndLine As Long
+
+    If cm.Find("End Enum", EnumStartLine, 0, EnumEndLine, 0, False, False, False) Then
+        GetEnumCodeEndLine = EnumEndLine
+    Else
+        GetEnumCodeEndLine = 0
+    End If
+    
+End Function
