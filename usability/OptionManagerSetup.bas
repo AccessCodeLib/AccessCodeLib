@@ -29,12 +29,18 @@ Option Explicit
 Private Const m_OptionTableName = "tabOptions"
 Private Const m_HelperModuleName = "OptionManagerHelper"
 Private Const m_SetupModuleName = "OptionManagerSetup"
+Private Const m_EnumName = "SettingKeys"
 
 Public Function OptionManagerSetup_SetupTable()
+
     Dim strSQL As String
+    
+    If Not IsNull(DLookup("[Name]", "MSysObjects", "[Name] = '" & m_OptionTableName & "' AND (Type IN (1, 4, 5))")) Then Exit Function
+    
     strSQL = "Create Table " & m_OptionTableName & " (strKey varchar(50) Primary Key, strValue varchar(255))"
     CurrentDb.Execute strSQL
     Application.RefreshDatabaseWindow
+
 End Function
 
 Public Function OptionManagerSetup_CreateHelperModule()
@@ -50,9 +56,9 @@ Public Function OptionManagerSetup_CreateHelperModule()
                 .InsertLines 1, "Option Compare Database" & vbNewLine & _
                                 "Option Explicit" & vbNewLine & _
                                 vbNewLine & _
-                                "Public Const OptionManagerDefaultDataSource As String = ""tabOptions""" & vbNewLine & _
+                                "Public Const OptionManagerDefaultDataSource As String = """ & m_OptionTableName & """" & vbNewLine & _
                                 vbNewLine & _
-                                "Public Enum ltOptions" & vbNewLine & _
+                                "Public Enum " & m_EnumName & vbNewLine & _
                                 "    [_undefined] = 0" & vbNewLine & _
                                 "End Enum"
            
