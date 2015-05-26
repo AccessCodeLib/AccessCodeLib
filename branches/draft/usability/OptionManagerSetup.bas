@@ -19,7 +19,6 @@ Attribute VB_Name = "OptionManagerSetup"
 '  <ref><name>VBIDE</name><major>5</major><minor>3</minor><guid>{0002E157-0000-0000-C000-000000000046}</guid></ref>
 '  <execute>OptionManagerSetup_SetupTable()</execute>
 '  <execute>OptionManagerSetup_CreateHelperModule()</execute>
-'  <execute>OptionManagerSetup_CreateEnum()</execute>
 '  <execute>OptionManagerSetup_RemoveSelf()</execute>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -39,30 +38,32 @@ Public Function OptionManagerSetup_SetupTable()
 End Function
 
 Public Function OptionManagerSetup_CreateHelperModule()
-    If IsNull(DLookup("[Name]", "MSysObjects", "[Name] = '" & m_HelperModuleName & "' AND (Type = -32761)")) = False Then Exit Function
+
+    If Not IsNull(DLookup("[Name]", "MSysObjects", "[Name] = '" & m_HelperModuleName & "' AND (Type = -32761)")) Then Exit Function
 
     With Application.VBE.ActiveVBProject.VBComponents
         With .Add(vbext_ct_StdModule)
            .Name = m_HelperModuleName
+           With .CodeModule
+                .DeleteLines 1, .CountOfDeclarationLines
+           
+                .InsertLines 1, "Option Compare Database" & vbNewLine & _
+                                "Option Explicit" & vbNewLine & _
+                                vbNewLine & _
+                                "Public Const OptionManagerDefaultTableName As String = ""tabOptions""" & vbNewLine & _
+                                vbNewLine & _
+                                "Public Enum ltOptions" & vbNewLine & _
+                                "    [_undefined] = 0" & vbNewLine & _
+                                "End Enum"
+           
+           End With
         End With
     End With
-    DoCmd.close acModule, m_HelperModuleName
-End Function
-
-Public Function OptionManagerSetup_CreateEnum()
-    With Application.VBE.ActiveVBProject.VBComponents(m_HelperModuleName).CodeModule
-	.DeleteLines 1, .CountOfDeclarationLines
-	.InsertLines 1, "Option Compare Database"
-	.InsertLines 2, "Option Explicit"
-        .InsertLines 3, ""
-        .InsertLines 4, "Public Enum ltOptions"
-        .InsertLines 5, "    dummy = 0"
-        .InsertLines 6, "End Enum"
-    End With
-    DoCmd.Close acModule, m_HelperModuleName, acSaveYes
-
+    
     DoCmd.RunCommand acCmdCompileAndSaveAllModules
     Application.RefreshDatabaseWindow
+    DoCmd.Close acModule, m_HelperModuleName
+    
 End Function
 
 Public Function OptionManagerSetup_RemoveSelf()
