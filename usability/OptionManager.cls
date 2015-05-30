@@ -11,7 +11,7 @@ Attribute VB_Exposed = False
 ' Class Module: OptionManager
 '---------------------------------------------------------------------------------------
 '/**
-' \author       Andreas Vogt
+' \author       Andreas Vogt; Josef Pötzel
 ' \brief        Klasse zur Verwendung als OptionManager
 ' \ingroup utils
 '**/
@@ -29,13 +29,14 @@ Option Explicit
 Private m_Keys() As String
 Private m_Values() As Variant
 Private m_DataSource As String
+Private m_Count As Long
 
 Private Const EnumKeyFieldName As String = "strKey"
-Private Const ValueFieldName As String = "strValue"
+Private Const EnumValueFieldName As String = "strValue"
 Private Const EnumName As String = "SettingKeys"
 
 '***************************************************************************
-'****** Zentrale Property Setting zum Holen und Setzen eines Wertes *******
+'****** Zentrale Property Setting zum Holen und Setzen eines Wertes ********
 '***************************************************************************
 Public Property Get Setting(ByVal SettingIndex As SettingKeys) As Variant
 Attribute Setting.VB_UserMemId = 0
@@ -57,13 +58,36 @@ Public Property Let Setting(ByVal SettingIndex As SettingKeys, ByVal vValue As V
     m_Values(SettingIndex) = vValue
     
     With CurrentDb
-        .Execute "Update " & DataSource & " set " & ValueFieldName & " = '" & Replace(vValue, "'", "''") & "' Where " & EnumKeyFieldName & " = '" & m_Keys(SettingIndex) & "'"
+        .Execute "Update " & DataSource & " set " & EnumValueFieldName & " = '" & Replace(vValue, "'", "''") & "' Where " & EnumKeyFieldName & " = '" & m_Keys(SettingIndex) & "'"
         If .RecordsAffected = 0 Then 'derzeit nicht möglich, da in so einem Fall zuvor schon ein Fehler bei m_Values(cOption) ausgelöst würde
-            .Execute "Insert into " & DataSource & " (" & ValueFieldName & ", TableFieldEnumKey)" & _
+            .Execute "Insert into " & DataSource & " (" & EnumKeyFieldName & ", " & EnumValueFieldName & ")" & _
                      " Values ('" & m_Keys(SettingIndex) & "', '" & Replace(vValue, "'", "''") & "')"
         End If
     End With
     
+End Property
+
+'***************************************************************************
+'************** Get-Properties fuer Key-Name und Anzahl Keys ****************
+'***************************************************************************
+Public Property Get KeyName(ByVal SettingIndex As SettingKeys) As String
+
+    If (0 / 1) + (Not Not m_Values) = 0 Then
+        CatchOptionValues
+    End If
+    
+    KeyName = m_Keys(SettingIndex)
+
+End Property
+
+Public Property Get Count() As Long
+
+    If (0 / 1) + (Not Not m_Values) = 0 Then
+        CatchOptionValues
+    End If
+    
+    Count = UBound(m_Keys)
+
 End Property
 
 '***************************************************************************************
@@ -99,12 +123,12 @@ Private Sub CatchOptionValues()
             .MoveFirst
             
             ReDim m_Keys(1 To .RecordCount)
-            ReDim m_Settings(1 To .RecordCount)
+            ReDim m_Values(1 To .RecordCount)
             
             Do While Not .EOF
                 i = i + 1
                 m_Keys(i) = .Fields(EnumKeyFieldName).Value
-                m_Settings(i) = .Fields(ValueFieldName).Value
+                m_Values(i) = .Fields(EnumValueFieldName).Value
                 .MoveNext
             Loop
         End If
@@ -206,3 +230,4 @@ Private Function GetEnumCodeEndLine(ByVal cm As CodeModule, ByVal EnumStartLine 
     End If
     
 End Function
+
