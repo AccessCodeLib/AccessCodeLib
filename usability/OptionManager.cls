@@ -19,6 +19,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>usability/OptionManager.cls</file>
 '  <license>_codelib/license.bas</license>
+'  <use>usability/OptionManager_Beispiel.frm</use>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -29,7 +30,6 @@ Option Explicit
 Private m_Keys() As String
 Private m_Values() As Variant
 Private m_DataSource As String
-Private m_Count As Long
 
 Private Const EnumKeyFieldName As String = "strKey"
 Private Const EnumValueFieldName As String = "strValue"
@@ -41,41 +41,74 @@ Private Const EnumName As String = "SettingKeys"
 Public Property Get Setting(ByVal SettingIndex As SettingKeys) As Variant
 Attribute Setting.VB_UserMemId = 0
 
-    If (0 / 1) + (Not Not m_Values) = 0 Then 'Array noch nicht initialisiert
+    If (0 / 1) + (Not Not m_Values) = 0 Then    'Array noch nicht initialisiert
         CatchOptionValues
     End If
-    
+
     Setting = m_Values(SettingIndex)
-    
+
 End Property
 
 Public Property Let Setting(ByVal SettingIndex As SettingKeys, ByVal vValue As Variant)
-    
-    If (0 / 1) + (Not Not m_Values) = 0 Then 'Array noch nicht initialisiert
+
+    If (0 / 1) + (Not Not m_Values) = 0 Then    'Array noch nicht initialisiert
         CatchOptionValues
     End If
-    
+
     m_Values(SettingIndex) = vValue
-    
+
     With CurrentDb
         .Execute "Update " & DataSource & " set " & EnumValueFieldName & " = '" & Replace(vValue, "'", "''") & "' Where " & EnumKeyFieldName & " = '" & m_Keys(SettingIndex) & "'"
-        If .RecordsAffected = 0 Then 'derzeit nicht möglich, da in so einem Fall zuvor schon ein Fehler bei m_Values(cOption) ausgelöst würde
+        If .RecordsAffected = 0 Then    'derzeit nicht möglich, da in so einem Fall zuvor schon ein Fehler bei m_Values(cOption) ausgelöst würde
             .Execute "Insert into " & DataSource & " (" & EnumKeyFieldName & ", " & EnumValueFieldName & ")" & _
-                     " Values ('" & m_Keys(SettingIndex) & "', '" & Replace(vValue, "'", "''") & "')"
+                   " Values ('" & m_Keys(SettingIndex) & "', '" & Replace(vValue, "'", "''") & "')"
         End If
     End With
-    
+
 End Property
 
-'***************************************************************************
+Public Property Get SettingByName(ByVal KeyName As String) As Variant
+    Dim i As Long
+    
+    If (0 / 1) + (Not Not m_Values) = 0 Then    'Array noch nicht initialisiert
+        CatchOptionValues
+    End If
+
+    For i = LBound(m_Keys) To UBound(m_Keys)
+        If m_Keys(i) = KeyName Then
+            SettingByName = m_Values(i)
+        End If
+    Next i
+
+End Property
+
+Public Property Let SettingByName(ByVal KeyName As String, ByVal vValue As Variant)
+
+    If (0 / 1) + (Not Not m_Values) = 0 Then    'Array noch nicht initialisiert
+        CatchOptionValues
+    End If
+
+    With CurrentDb
+        If KeyNameExists(KeyName) Then
+            .Execute "Update " & DataSource & " set " & EnumValueFieldName & " = '" & Replace(vValue, "'", "''") & "' Where " & EnumKeyFieldName & " = '" & KeyName & "'"
+        Else
+            .Execute "Insert into " & DataSource & " (" & EnumKeyFieldName & ", " & EnumValueFieldName & ")" & _
+                   " Values ('" & KeyName & "', '" & Replace(vValue, "'", "''") & "')"
+        End If
+        CatchOptionValues
+    End With
+
+End Property
+
+'****************************************************************************
 '************** Get-Properties fuer Key-Name und Anzahl Keys ****************
-'***************************************************************************
+'****************************************************************************
 Public Property Get KeyName(ByVal SettingIndex As SettingKeys) As String
 
     If (0 / 1) + (Not Not m_Values) = 0 Then
         CatchOptionValues
     End If
-    
+
     KeyName = m_Keys(SettingIndex)
 
 End Property
@@ -85,7 +118,7 @@ Public Property Get Count() As Long
     If (0 / 1) + (Not Not m_Values) = 0 Then
         CatchOptionValues
     End If
-    
+
     Count = UBound(m_Keys)
 
 End Property
@@ -105,26 +138,75 @@ Public Property Let DataSource(ByVal sDataSource As String)
 End Property
 
 '***************************************************************************
-'********************* Prozedur zum Befüllen des Array *********************
+'***************************** Public Subs *********************************
+'***************************************************************************
+Friend Sub UpdateEnum()
+
+    Dim EnumKeys() As String
+
+    Dim i As Long
+    Dim EnumDeclarationLine As Long
+    Dim EnumEndLine As Long
+
+    EnumKeys = GetEnumKeyArray
+
+    With Application.VBE.ActiveVBProject.VBComponents("OptionManagerhelper")
+        EnumDeclarationLine = GetEnumDeclarationLine(.CodeModule)
+        If EnumDeclarationLine > 0 Then
+            EnumEndLine = GetEnumCodeEndLine(.CodeModule, EnumDeclarationLine)
+        End If
+
+        With .CodeModule
+
+            If EnumDeclarationLine > 0 Then
+                .DeleteLines EnumDeclarationLine + 1, EnumEndLine - EnumDeclarationLine - 1
+            Else
+                EnumDeclarationLine = .CountOfLines
+                .InsertLines EnumDeclarationLine, "Public Enum " & EnumName
+                .InsertLines EnumDeclarationLine + 1, "End Enum"
+            End If
+
+            For i = LBound(EnumKeys) To UBound(EnumKeys)
+                .InsertLines i + EnumDeclarationLine, "    " & EnumKeys(i) & " = " & i
+            Next i
+
+        End With
+    End With
+End Sub
+
+Friend Sub DeleteByName(ByVal KeyName As String)
+
+    With CurrentDb
+        If KeyNameExists(KeyName) Then
+            .Execute "Delete from " & DataSource & " Where " & EnumKeyFieldName & " = '" & KeyName & "'"
+        Else
+            Err.Raise vbObjectError + 101, "OptionManager", "Keyname does not exist"
+        End If
+    End With
+
+End Sub
+
+'***************************************************************************
+'********************** Private Class Functions ****************************
 '***************************************************************************
 Private Sub CatchOptionValues()
 
     Dim i As Long
     Dim strSource As String
-        
+
     strSource = DataSource
     If Len(strSource) = 0 Then
         Err.Raise vbObjectError + 100, "OptionManager", "DataSource not defined"
     End If
-    
+
     With CurrentDb.OpenRecordset(strSource, dbOpenSnapshot)
         If Not .EOF Then
             .MoveLast
             .MoveFirst
-            
+
             ReDim m_Keys(1 To .RecordCount)
             ReDim m_Values(1 To .RecordCount)
-            
+
             Do While Not .EOF
                 i = i + 1
                 m_Keys(i) = .Fields(EnumKeyFieldName).Value
@@ -137,50 +219,12 @@ Private Sub CatchOptionValues()
 
 End Sub
 
-'***************************************************************************
-'************ Public Sub Update zum Generieren der Enum-Werte **************
-'***************************************************************************
-Friend Sub UpdateEnum()
-    
-    Dim EnumKeys() As String
-    
-    Dim i As Long
-    Dim EnumDeclarationLine As Long
-    Dim EnumEndLine As Long
-    
-    EnumKeys = GetEnumKeyArray
-
-    With Application.VBE.ActiveVBProject.VBComponents("OptionManagerhelper")
-        EnumDeclarationLine = GetEnumDeclarationLine(.CodeModule)
-        If EnumDeclarationLine > 0 Then
-            EnumEndLine = GetEnumCodeEndLine(.CodeModule, EnumDeclarationLine)
-        End If
-        
-        With .CodeModule
-        
-            If EnumDeclarationLine > 0 Then
-                .DeleteLines EnumDeclarationLine + 1, EnumEndLine - EnumDeclarationLine - 1
-            Else
-                EnumDeclarationLine = .CountOfLines
-                .InsertLines EnumDeclarationLine, "Public Enum " & EnumName
-                .InsertLines EnumDeclarationLine + 1, "End Enum"
-            End If
-        
-            For i = LBound(EnumKeys) To UBound(EnumKeys)
-                .InsertLines i + EnumDeclarationLine, "    " & EnumKeys(i) & " = " & i
-            Next i
-            
-        End With
-    End With
-End Sub
-
 Private Function GetEnumKeyArray() As String()
 
-    Dim RecordSource As String
     Dim EnumKeys() As String
     Dim i As Long
     Dim strSource As String
-        
+
     strSource = DataSource
     If Len(strSource) = 0 Then
         Err.Raise vbObjectError + 100, "OptionManager", "DataSource not defined"
@@ -202,9 +246,9 @@ Private Function GetEnumKeyArray() As String()
         End If
         .Close
     End With
-    
+
     GetEnumKeyArray = EnumKeys
-    
+
 End Function
 
 Private Function GetEnumDeclarationLine(ByVal cm As CodeModule) As Long
@@ -216,7 +260,7 @@ Private Function GetEnumDeclarationLine(ByVal cm As CodeModule) As Long
     Else
         GetEnumDeclarationLine = 0
     End If
-    
+
 End Function
 
 Private Function GetEnumCodeEndLine(ByVal cm As CodeModule, ByVal EnumStartLine As Long) As Long
@@ -228,6 +272,17 @@ Private Function GetEnumCodeEndLine(ByVal cm As CodeModule, ByVal EnumStartLine 
     Else
         GetEnumCodeEndLine = 0
     End If
-    
+
 End Function
 
+Private Function KeyNameExists(ByVal KeyName As String) As Boolean
+    Dim rst As DAO.Recordset
+    
+    With CurrentDb
+        Set rst = .OpenRecordset("Select * From " & DataSource & " Where " & EnumKeyFieldName & " = '" & KeyName & "'", dbOpenSnapshot)
+        KeyNameExists = Not rst.EOF
+        rst.Close
+        Set rst = Nothing
+    End With
+    
+End Function
