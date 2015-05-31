@@ -37,8 +37,13 @@ Public Function OptionManagerSetup_SetupTable()
     
     If Not IsNull(DLookup("[Name]", "MSysObjects", "[Name] = '" & m_OptionTableName & "' AND (Type IN (1, 4, 5))")) Then Exit Function
     
-    strSQL = "Create Table " & m_OptionTableName & " (strKey varchar(50) Primary Key, strValue varchar(255))"
-    CurrentDb.Execute strSQL
+    With CurrentDb
+        strSQL = "Create Table " & m_OptionTableName & " (strKey varchar(50) Primary Key, strValue varchar(255))"
+        .Execute strSQL
+        .Execute "Insert into " & m_OptionTableName & " (strKey, strValue) Values ('Name', 'Vogt')"
+        .Execute "Insert into " & m_OptionTableName & " (strKey, strValue) Values ('Vorname', 'Andreas')"
+        .Execute "Insert into " & m_OptionTableName & " (strKey, strValue) Values ('Beruf','Software-Entwickler')"
+    End With
     Application.RefreshDatabaseWindow
 
 End Function
