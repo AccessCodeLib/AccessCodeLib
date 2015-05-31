@@ -108,8 +108,12 @@ Public Property Get KeyName(ByVal SettingIndex As SettingKeys) As String
     If (0 / 1) + (Not Not m_Values) = 0 Then
         CatchOptionValues
     End If
-
-    KeyName = m_Keys(SettingIndex)
+    
+    If (0 / 1) + (Not Not m_Values) = 0 Then
+        Err.Raise vbObjectError + 101, "OptionManager", "no existing Options"
+    Else
+        KeyName = m_Keys(SettingIndex)
+    End If
 
 End Property
 
@@ -119,7 +123,11 @@ Public Property Get Count() As Long
         CatchOptionValues
     End If
 
-    Count = UBound(m_Keys)
+    If (0 / 1) + (Not Not m_Values) = 0 Then
+        Err.Raise vbObjectError + 102, "OptionManager", "no existing Options"
+    Else
+        Count = UBound(m_Keys)
+    End If
 
 End Property
 
