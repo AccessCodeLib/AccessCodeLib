@@ -34,6 +34,8 @@ Private Const EnumKeyFieldName As String = "strKey"
 Private Const EnumValueFieldName As String = "strValue"
 Private Const EnumName As String = "SettingKeys"
 
+Private Declare Sub GetSafeArrayPointer Lib "msvbvm60.dll" Alias "GetMem4" (pArray() As Any, Ptr As Long)
+
 '***************************************************************************
 '****** Zentrale Property Setting zum Holen und Setzen eines Wertes ********
 '***************************************************************************
@@ -184,10 +186,20 @@ End Sub
 '***************************************************************************
 
 Private Sub CheckAndCatchOptionValues()
-    If (0 / 1) + (Not Not m_Values) = 0 Then    'Array noch nicht initialisiert
+    If Not ValueArrayIsInitialized Then
         CatchOptionValues
     End If
 End Sub
+
+Private Property Get ValueArrayIsInitialized() As Boolean
+    
+    Dim SafeArrayPointer As Long
+    GetSafeArrayPointer m_Values, SafeArrayPointer
+    
+    ValueArrayIsInitialized = (SafeArrayPointer > 0)
+
+End Property
+
 
 Private Sub CatchOptionValues()
 
