@@ -161,6 +161,9 @@ Friend Sub UpdateEnum()
                 .InsertLines EnumDeclarationLine + 1, "End Enum"
             End If
 
+            If LBound(EnumKeys) = 0 Then
+               EnumDeclarationLine = EnumDeclarationLine + 1
+            End If
             For i = LBound(EnumKeys) To UBound(EnumKeys)
                 .InsertLines i + EnumDeclarationLine, "    " & EnumKeys(i) & " = " & i
             Next i
