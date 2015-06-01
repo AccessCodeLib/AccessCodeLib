@@ -13,13 +13,12 @@ Attribute VB_Exposed = False
 '/**
 ' \author       Andreas Vogt; Josef Pötzel
 ' \brief        Klasse zur Verwendung als OptionManager
-' \ingroup utils
+' \ingroup usability
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>usability/OptionManager.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>usability/OptionManager_Beispiel.frm</use>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -41,9 +40,7 @@ Private Const EnumName As String = "SettingKeys"
 Public Property Get Setting(ByVal SettingIndex As SettingKeys) As Variant
 Attribute Setting.VB_UserMemId = 0
 
-    If (0 / 1) + (Not Not m_Values) = 0 Then    'Array noch nicht initialisiert
-        CatchOptionValues
-    End If
+    CheckAndCatchOptionValues
 
     Setting = m_Values(SettingIndex)
 
@@ -51,9 +48,7 @@ End Property
 
 Public Property Let Setting(ByVal SettingIndex As SettingKeys, ByVal vValue As Variant)
 
-    If (0 / 1) + (Not Not m_Values) = 0 Then    'Array noch nicht initialisiert
-        CatchOptionValues
-    End If
+    CheckAndCatchOptionValues
 
     m_Values(SettingIndex) = vValue
 
@@ -68,12 +63,10 @@ Public Property Let Setting(ByVal SettingIndex As SettingKeys, ByVal vValue As V
 End Property
 
 Public Property Get SettingByName(ByVal KeyName As String) As Variant
+
     Dim i As Long
     
-    If (0 / 1) + (Not Not m_Values) = 0 Then    'Array noch nicht initialisiert
-        CatchOptionValues
-    End If
-
+    CheckAndCatchOptionValues
     For i = LBound(m_Keys) To UBound(m_Keys)
         If m_Keys(i) = KeyName Then
             SettingByName = m_Values(i)
@@ -84,9 +77,7 @@ End Property
 
 Public Property Let SettingByName(ByVal KeyName As String, ByVal vValue As Variant)
 
-    If (0 / 1) + (Not Not m_Values) = 0 Then    'Array noch nicht initialisiert
-        CatchOptionValues
-    End If
+    CheckAndCatchOptionValues
 
     With CurrentDb
         If KeyNameExists(KeyName) Then
@@ -105,15 +96,9 @@ End Property
 '****************************************************************************
 Public Property Get KeyName(ByVal SettingIndex As SettingKeys) As String
 
-    If (0 / 1) + (Not Not m_Values) = 0 Then
-        CatchOptionValues
-    End If
+    CheckAndCatchOptionValues
     
-    If (0 / 1) + (Not Not m_Values) = 0 Then
-        Err.Raise vbObjectError + 101, "OptionManager", "no existing Options"
-    Else
-        KeyName = m_Keys(SettingIndex)
-    End If
+    KeyName = m_Keys(SettingIndex) ' Wenn SettingIndex nicht enthalten ist, wird von VBA Fehler ausgelöst, dass sollte ausreichen
 
 End Property
 
@@ -197,6 +182,13 @@ End Sub
 '***************************************************************************
 '********************** Private Class Functions ****************************
 '***************************************************************************
+
+Private Sub CheckAndCatchOptionValues()
+    If (0 / 1) + (Not Not m_Values) = 0 Then    'Array noch nicht initialisiert
+        CatchOptionValues
+    End If
+End Sub
+
 Private Sub CatchOptionValues()
 
     Dim i As Long
@@ -221,6 +213,12 @@ Private Sub CatchOptionValues()
                 m_Values(i) = .Fields(EnumValueFieldName).Value
                 .MoveNext
             Loop
+        Else
+           '0-Array erzeugen, da Enums nur mit 0 beginnen, wenn [_undefined] = 0 enthalten ist.
+           ReDim m_Keys(0)
+           ReDim m_Values(0)
+           m_Keys(0) = "[_undefined]"
+           m_Values(0) = Null
         End If
         .Close
     End With
