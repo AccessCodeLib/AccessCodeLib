@@ -2,27 +2,28 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "FilterControlManagerImporter"
+Attribute VB_Name = "FilterFormCodeImporter"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klasse: FilterControlManagerImporter
+' Klasse: FilterFormCodeImporter
 '---------------------------------------------------------------------------------------
 '/**
 ' \author       Josef Poetzl
 ' <summary>
-' Code für Import von FilterControlManager
+' Code für Import von FilterStringBuilder
 ' </summary>
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>_codelib/addins/FilterFormWizard/FilterControlManagerImporter.cls</file>
+'  <file>_codelib/addins/FilterFormWizard/FilterFormCodeImporter.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>_codelib/addins/shared/CodeModuleWriter.cls</use>
 '  <use>_codelib/addins/shared/AppFileCodeModulTransfer.cls</use>
+'  <use>_codelib/addins/FilterFormWizard/IFilterFormCodeBuilder.cls</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -31,13 +32,22 @@ Option Explicit
 
 Private m_FilterControlLines As StringCollection
 
+Private m_Importer As IFilterFormCodeBuilder
+
 Private Sub Class_Initialize()
    Set m_FilterControlLines = New StringCollection
 End Sub
 
-
-Friend Property Get Self() As FilterControlManagerImporter
+Friend Property Get Self() As FilterFormCodeImporter
    Set Self = Me
+End Property
+
+Public Property Get Importer() As IFilterFormCodeBuilder
+   Set Importer = m_Importer
+End Property
+
+Public Property Set Importer(ByVal NewRef As IFilterFormCodeBuilder)
+   Set m_Importer = NewRef
 End Property
 
 Friend Sub WriteToForm(ByVal FormName As String, _
@@ -53,19 +63,17 @@ Friend Sub WriteToForm(ByVal FormName As String, _
 
    DoCmd.OpenForm FormName, acDesign, , , , acWindowNormal
 
-   AddFilterControlManagerCodeToFrom Application.Forms(FormName), KindOfUseFilterMethode, UseFilterMethodeSubFormName
+   AddCodeToFrom Application.Forms(FormName), KindOfUseFilterMethode, UseFilterMethodeSubFormName
 
    DoCmd.Save acForm, FormName
 
 End Sub
 
 Private Function CheckRequiredCodeModules() As Boolean
-   With New AppFileCodeModulTransfer
-      .TransferCodeModules "SqlTools", "StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager"
-   End With
+   m_Importer.CheckRequiredCodeModules
 End Function
 
-Private Sub AddFilterControlManagerCodeToFrom(ByVal frm As Form, _
+Private Sub AddCodeToFrom(ByVal frm As Form, _
                                               ByVal KindOfUseFilterMethode As Long, _
                                               ByVal UseFilterMethodeSubFormName As String)
 
@@ -75,18 +83,28 @@ Private Sub AddFilterControlManagerCodeToFrom(ByVal frm As Form, _
    Dim cm As Object
 #End If
 
+   Dim TempCode As String
+
    CheckCodeModuleBehindForm frm
 
    With New CodeModuleWriter
 
       .Load "Form_" & frm.Name
 
-      .AddCode FilterControlManagerDeclarationCode & vbNewLine & _
-               FilterControlManagerInitalisationCode(KindOfUseFilterMethode, UseFilterMethodeSubFormName)
+      .AddCode DeclarationCode & vbNewLine & _
+               ClassInitalisationCode(KindOfUseFilterMethode, UseFilterMethodeSubFormName)
    
-      .AddCodeToEventProcedure "Load", "Form", FormLoadCode
-      .AddCodeToEventProcedure "Unload", "Form", FormUnLoadCode
-   
+      
+      TempCode = FormLoadCode
+      If Len(TempCode) > 0 Then
+         .AddCodeToEventProcedure "Load", "Form", TempCode
+      End If
+      
+      TempCode = FormUnLoadCode
+      If Len(TempCode) > 0 Then
+         .AddCodeToEventProcedure "Unload", "Form", TempCode
+      End If
+      
    End With
 
 End Sub
@@ -100,51 +118,15 @@ Private Sub CheckCodeModuleBehindForm(ByVal frm As Form)
 
 End Sub
 
-Private Property Get FilterControlManagerDeclarationCode() As String
-   FilterControlManagerDeclarationCode = _
-      "Private WithEvents m_FilterControlManager As FilterControlManager" & vbNewLine
+Private Property Get DeclarationCode() As String
+   DeclarationCode = m_Importer.DeclarationCode
 End Property
 
-Private Property Get FilterControlManagerInitalisationCode( _
+Private Property Get ClassInitalisationCode( _
                         ByVal KindOfUseFilterMethode As Long, _
                         ByVal UseFilterMethodeSubFormName As String) As String
    
-   Dim Code As String
-
-   Code = _
-      "Private Sub m_FilterControlManager_FilterStringChanged(ByVal NewFilterString As String)" & vbNewLine & _
-      "   UseFilter NewFilterString" & vbNewLine & _
-      "End Sub" & vbNewLine
-
-   Code = Code & vbNewLine & _
-      GetUseFilterMethodeCode(KindOfUseFilterMethode, UseFilterMethodeSubFormName) & vbNewLine
-
-   Code = Code & vbNewLine & _
-      "Private Sub InitFilterControlManager()" & vbNewLine & _
-      "   Set m_FilterControlManager = New FilterControlManager" & vbNewLine & _
-      "'   m_FilterControlManager.ConfigSqlFormat ""\#yyyy-mm-dd\#"", ""True"", ""*""" & vbNewLine & _
-      "   InitFilterControls" & vbNewLine & _
-      "   m_FilterControlManager.AutoFilterOn = True 'oder z. B. mittels Checkbox: = Nz(Me.cbAutoFilter.Value, False)" & vbNewLine & _
-      "End Sub" & vbNewLine
-
-   Code = Code & vbNewLine & _
-      "Private Property Get FilterControlManager() As FilterControlManager" & vbNewLine & _
-      "   If m_FilterControlManager Is Nothing Then InitFilterControlManager" & vbNewLine & _
-      "   Set FilterControlManager = m_FilterControlManager" & vbNewLine & _
-      "End Property" & vbNewLine
-
-   Code = Code & vbNewLine & _
-      "Private Sub InitFilterControls()" & vbNewLine & _
-      vbNewLine & _
-      "   With FilterControlManager.FilterControls" & vbNewLine & _
-      vbNewLine & _
-      GetFilterControlCodeLines & vbNewLine & _
-      vbNewLine & _
-      "   End With" & vbNewLine & _
-      vbNewLine & _
-      "End Sub" & vbNewLine
-
-   FilterControlManagerInitalisationCode = Code
+   ClassInitalisationCode = m_Importer.ClassInitalisationCode(GetUseFilterMethodeCode(KindOfUseFilterMethode, UseFilterMethodeSubFormName), GetFilterControlCodeLines)
 
 End Property
 
@@ -201,14 +183,14 @@ Private Function GetFilterControlCodeLines() As String
 End Function
 
 Private Property Get FormLoadCode() As String
-   FormLoadCode = "   InitFilterControlManager"
+   FormLoadCode = m_Importer.FormLoadCode
 End Property
 
 Private Property Get FormUnLoadCode() As String
-   FormUnLoadCode = "   Set m_FilterControlManager = Nothing"
+   FormUnLoadCode = m_Importer.FormUnLoadCode
 End Property
 
-Friend Sub AddFilterControlDefinition(ByVal DataField As String, ByVal DataType As String, ByVal RelationalOperator As String, _
+Public Sub AddFilterControlDefinition(ByVal DataField As String, ByVal DataType As String, ByVal RelationalOperator As String, _
                                       ByVal Control As String, ByVal Control2 As String)
    
    Dim ControlArray() As String
@@ -241,51 +223,17 @@ End Sub
 
 Private Function GetFilterControlCodeLine(ByVal DataField As String, ByVal DataType As String, ByVal RelationalOperator As String, _
                                     ByVal Control As String, ByVal Control2 As String) As String
-   
-   Dim fcLine As String
 
-   CheckControlRefCode Control
-
-   fcLine = "Add """ & DataField & """, " & DataType & ", " & RelationalOperator & ", " & Control
-   
-   If Len(Control2) > 0 Then
-      CheckControlRefCode Control2
-      fcLine = fcLine & ", " & Control2
-   End If
-
-   GetFilterControlCodeLine = fcLine
+   GetFilterControlCodeLine = m_Importer.GetFilterControlCodeLine(DataField, DataType, RelationalOperator, Control, Control2)
 
 End Function
 
 Private Function GetMultiFilterControlCodeLine(ByVal DataField As String, ByVal DataType As String, ByVal RelationalOperator As String, _
                                          ByRef ControlArray() As String) As String
 
-   Dim fcLine As String
-
-   Dim i As Long
-   For i = LBound(ControlArray) To UBound(ControlArray)
-      CheckControlRefCode ControlArray(i)
-   Next
-   
-   fcLine = "AddMultiControlCriteria """ & DataField & """, " & DataType & ", " & RelationalOperator & ", Null, " & Join(ControlArray, ", ")
-   
-   GetMultiFilterControlCodeLine = fcLine
+   GetMultiFilterControlCodeLine = m_Importer.GetMultiFilterControlCodeLine(DataField, DataType, RelationalOperator, ControlArray)
 
 End Function
-
-Private Sub CheckControlRefCode(ByRef ControlCode As String)
-
-   ControlCode = Trim(ControlCode)
-
-   If Len(ControlCode) = 0 Then
-      Exit Sub
-   End If
-
-   If InStr(1, ControlCode, ".") = 0 Then
-      ControlCode = "Me." & ControlCode
-   End If
-
-End Sub
 
 Private Sub CleanControlArrayString(ByRef CtlString As String)
    Do While InStr(1, CtlString, ", ") > 0

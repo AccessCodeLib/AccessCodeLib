@@ -1,27 +1,23 @@
 Version =20
 VersionRequired =20
-Checksum =-240786093
+Checksum =1481240875
 Begin Form
     NavigationButtons = NotDefault
     AllowDesignChanges = NotDefault
     ScrollBars =2
-    RecordLocks =2
     PictureAlignment =2
     DatasheetGridlinesBehavior =3
     GridY =10
     Width =10050
     DatasheetFontHeight =11
     ItemSuffix =21
-    Left =1320
-    Top =2925
-    Right =11640
-    Bottom =5895
+    Left =4515
+    Top =3135
+    Right =15105
+    Bottom =6360
     DatasheetGridlinesColor =15062992
     RecSrcDt = Begin
         0xc4d680b8ef58e440
-    End
-    GUID = Begin
-        0x5eccd49dfaf31641a92c9307fdfd63c4
     End
     RecordSource ="tabFilterControls"
     DatasheetFontName ="Calibri"
@@ -30,10 +26,10 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x0000000000000000a51934300400000001000000348242000e000000a8844200 ,
+        0x0072253004000000010000009c5434001800000010573400c4543400ac8df038 ,
         0x010400069c00440353ef8001010009009a0b3408640001000f00580202000100 ,
-        0x58020300010041340084420008000000c83c2c0a94844200c43c2c0a8c824200 ,
-        0x23877430e03c0000000000000000000000000000010000000000000001000000 ,
+        0x58020300010041340044e403fc563400c444e403f4543400e1884c30e044e403 ,
+        0xe8884c30ef2a0000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe230000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -64,22 +60,24 @@ Begin Form
     End
     PrtDevNames = Begin
         0x080013001b000100000000000000000000000000000000000000004672656550 ,
-        0x44465850313a00000000000000000000000000000000000000000000000000
+        0x44465850313a0000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000
     End
     FilterOnLoad =0
+    OrderByOnLoad =0
+    OrderByOnLoad =0
     DatasheetBackColor12 =-2147483643
     ShowPageMargins =0
-    DisplayOnSharePointSite =1
     DatasheetAlternateBackColor =16053492
     DatasheetGridlinesColor12 =15062992
     FitToScreen =1
     PrtDevModeW = Begin
-        0x00000000007a42005001cb0a5f695a200016cb0a7a7195757f00000078656730 ,
-        0x09000000989f4200b66a6730f5c442304bb28c55000000003d03003ec400cb0a ,
+        0x00000000008c35001ea6cc751a227f21feffffff7a71c675d5723f30c8733f30 ,
+        0x0e00000054b8350006793f301903001a4816f6050000000024f5d42f2017f605 ,
         0x01040006dc00440353ef8001010009009a0b3408640001000f00580202000100 ,
-        0x5802030001004100340000000c0000000016cb0a0016cb0afb15cb0a00000000 ,
-        0xb07a42000000cb0a7a7d6501f479420002000000707e4200f5713b7716473b05 ,
-        0xfeffffffd33c0000000000000000000000000000010000000000000001000000 ,
+        0x5802030001004100340000000c00000008b835004816f6054316f60500000000 ,
+        0xf08c35000000f605088b3d01348c350002000000b0903500051ae377c34a9c1f ,
+        0xfefffffff33c0000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe230000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -112,7 +110,8 @@ Begin Form
         0x04000f0017000100000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000460072006500650050004400460058005000 ,
         0x31003a0000000000000000000000000000000000000000000000000000000000 ,
-        0x00000000000000000000000000000000000000000000
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000
     End
     
     Begin
@@ -194,9 +193,6 @@ Begin Form
             Height =285
             BackColor =15849926
             Name ="Formularkopf"
-            GUID = Begin
-                0xaeb3d3ddd784eb439ddbdcd4a87d1943
-            End
             AlternateBackThemeColorIndex =1
             AlternateBackShade =95.0
             BackThemeColorIndex =2
@@ -213,9 +209,6 @@ Begin Form
                     Name ="Bezeichnungsfeld1"
                     Caption ="Steuerelement"
                     FontName ="Tahoma"
-                    GUID = Begin
-                        0xf8cd24d59599204492e6a26f2788788c
-                    End
                     GridlineColor =10921638
                     LayoutCachedLeft =5831
                     LayoutCachedWidth =7871
@@ -233,9 +226,6 @@ Begin Form
                     Name ="Bezeichnungsfeld4"
                     Caption ="Datenfeld"
                     FontName ="Tahoma"
-                    GUID = Begin
-                        0xc613f9bc5aec16468e902ab6255c09a1
-                    End
                     GridlineColor =10921638
                     LayoutCachedLeft =56
                     LayoutCachedWidth =2321
@@ -253,9 +243,6 @@ Begin Form
                     Name ="Bezeichnungsfeld6"
                     Caption ="Vergleichsoperator"
                     FontName ="Tahoma"
-                    GUID = Begin
-                        0xccb5fc356a5bcf4bb6bc463fb5118527
-                    End
                     GridlineColor =10921638
                     LayoutCachedLeft =3915
                     LayoutCachedWidth =5730
@@ -273,9 +260,6 @@ Begin Form
                     Name ="Bezeichnungsfeld10"
                     Caption ="Datentyp"
                     FontName ="Tahoma"
-                    GUID = Begin
-                        0xa92768ec77574d439ef7899f3e7bfcd4
-                    End
                     GridlineColor =10921638
                     LayoutCachedLeft =2437
                     LayoutCachedWidth =3817
@@ -293,9 +277,6 @@ Begin Form
                     Name ="Bezeichnungsfeld13"
                     Caption ="weitere Steuerelemente"
                     FontName ="Tahoma"
-                    GUID = Begin
-                        0xb2b03d7f5e4d854489ccafc28ef4a470
-                    End
                     GridlineColor =10921638
                     LayoutCachedLeft =7875
                     LayoutCachedWidth =10050
@@ -307,9 +288,6 @@ Begin Form
         Begin Section
             Height =680
             Name ="Detailbereich"
-            GUID = Begin
-                0xde50c605af01904baf4f096297d9d95d
-            End
             AlternateBackColor =15921906
             AlternateBackThemeColorIndex =1
             AlternateBackShade =95.0
@@ -328,9 +306,6 @@ Begin Form
                     TabIndex =1
                     BorderColor =12835293
                     ForeColor =4138256
-                    GUID = Begin
-                        0x98e0d199c15fec46bbb2cdc095f54ef9
-                    End
                     Name ="fcControl"
                     ControlSource ="Control"
                     RowSourceType ="Value List"
@@ -360,9 +335,6 @@ Begin Form
                     BorderColor =12835293
                     ForeColor =4138256
                     ColumnInfo ="\"\";\"\";\"\";\"\";\"10\";\"40\""
-                    GUID = Begin
-                        0xa2090396c1a37541bcd20ccca2ff0888
-                    End
                     Name ="fcRelationalOperator"
                     ControlSource ="RelationalOperator"
                     RowSourceType ="Table/Query"
@@ -394,9 +366,6 @@ Begin Form
                     BorderColor =12835293
                     ForeColor =4138256
                     ColumnInfo ="\"\";\"\";\"\";\"\";\"10\";\"40\""
-                    GUID = Begin
-                        0xc19ff749c8809242b4c810796f051df8
-                    End
                     Name ="fcDataType"
                     ControlSource ="DataType"
                     RowSourceType ="Table/Query"
@@ -423,9 +392,6 @@ Begin Form
                     Name ="fcRelationalOperatorNot"
                     ControlSource ="RelationalOperatorNot"
                     DefaultValue ="False"
-                    GUID = Begin
-                        0x7d13cb9097383c4aa44e99987d827318
-                    End
                     GridlineColor =10921638
 
                     LayoutCachedLeft =5944
@@ -445,9 +411,6 @@ Begin Form
                             Name ="Bezeichnungsfeld15"
                             Caption ="Not"
                             FontName ="Tahoma"
-                            GUID = Begin
-                                0xedfc28a740606f4d856be763db8c8cec
-                            End
                             GridlineColor =10921638
                             LayoutCachedLeft =5614
                             LayoutCachedTop =360
@@ -466,9 +429,6 @@ Begin Form
                     Name ="fcWildCardSuffix"
                     ControlSource ="WildCardSuffix"
                     DefaultValue ="False"
-                    GUID = Begin
-                        0x487819b2fde7ea4fb858f0a263df8e63
-                    End
                     GridlineColor =10921638
 
                     LayoutCachedLeft =4350
@@ -488,9 +448,6 @@ Begin Form
                             Name ="Bezeichnungsfeld18"
                             Caption ="xxx*"
                             FontName ="Tahoma"
-                            GUID = Begin
-                                0x63b5c5969dc15f4588c5996355e159bf
-                            End
                             GridlineColor =10921638
                             LayoutCachedLeft =3915
                             LayoutCachedTop =366
@@ -509,9 +466,6 @@ Begin Form
                     Name ="fcWildCardPrefix"
                     ControlSource ="WildCardPrefix"
                     DefaultValue ="False"
-                    GUID = Begin
-                        0xb5aacad741a9c44192e1fe36b24bc1a2
-                    End
                     GridlineColor =10921638
 
                     LayoutCachedLeft =5194
@@ -531,9 +485,6 @@ Begin Form
                             Name ="Bezeichnungsfeld20"
                             Caption ="*xxx"
                             FontName ="Tahoma"
-                            GUID = Begin
-                                0xf3c9f7097f590d4c9f2c2302b8d3a633
-                            End
                             GridlineColor =10921638
                             LayoutCachedLeft =4759
                             LayoutCachedTop =360
@@ -556,9 +507,6 @@ Begin Form
                     Name ="fcDataField"
                     ControlSource ="DataField"
                     FontName ="Tahoma"
-                    GUID = Begin
-                        0x75550214bc6f9740b088d1e7c6df04a4
-                    End
                     GridlineColor =10921638
 
                     LayoutCachedLeft =56
@@ -582,9 +530,6 @@ Begin Form
                     ControlSource ="Control2"
                     StatusBarText ="Mehrere Steuerelemente mit Komma trennen"
                     FontName ="Tahoma"
-                    GUID = Begin
-                        0x851d8fa908aee848ad6018987ef817b1
-                    End
                     GridlineColor =10921638
 
                     LayoutCachedLeft =7938
@@ -598,9 +543,6 @@ Begin Form
         Begin FormFooter
             Height =0
             Name ="Formularfuﬂ"
-            GUID = Begin
-                0xdd8b2fee1921464085b05a169c575670
-            End
             AlternateBackThemeColorIndex =1
             AlternateBackShade =95.0
             BackThemeColorIndex =1
@@ -692,7 +634,7 @@ Private Sub LoadControlsFromForm(ByVal frm As Form)
 
 End Sub
 
-Public Sub AddControlsToImporter(ByVal Importer As FilterControlManagerImporter)
+Public Sub AddControlsToImporter(ByVal Importer As Object)
    
 #If ADODB_EARLYBINDING = 1 Then
    Dim rst As ADODB.Recordset

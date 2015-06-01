@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =444773041
+Checksum =-547374262
 Begin Form
     AllowFilters = NotDefault
     RecordSelectors = NotDefault
@@ -19,11 +19,11 @@ Begin Form
     GridY =10
     Width =10828
     DatasheetFontHeight =10
-    ItemSuffix =102
-    Left =705
-    Top =960
-    Right =13290
-    Bottom =9330
+    ItemSuffix =111
+    Left =1770
+    Top =-270
+    Right =15225
+    Bottom =8310
     DatasheetGridlinesColor =12632256
     RecSrcDt = Begin
         0x668d2cd46a58e440
@@ -40,15 +40,15 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x0000000000000000a51934300400000001000000348242000e000000a8844200 ,
-        0x010400069c00440353ef8003010009009a0b3408640001000f00580202000100 ,
-        0x58020300010041340084420008000000c83c2c0a94844200c43c2c0a8c824200 ,
-        0x23877430e03c0000000000000000000000000000010000000000000001000000 ,
+        0x0000000000000000000000008356cb3804000000010000000000000000000000 ,
+        0x010400069c00640353ef8003010009009a0b3408640001000f00580202000100 ,
+        0x5802030001004134000000000c0000007c5c43009f841c30e044e3030c000000 ,
+        0x905c43000d000000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
-        0xe230000000000000000000000000000000000000000000000000000000000000 ,
+        0xe210000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000180000000000102710271027 ,
-        0x0000102700000000000000007000440300000000000000000000000000000000 ,
+        0x0000102700000000000000009000640300000000000000000000000000000000 ,
         0x0000000000000000030000000000000000001000503403002888040000000000 ,
         0x0000000000000100000000000000000000000000000000002401df8c03000000 ,
         0x05000b00ff000000000000000000000000000000000000000000000000000000 ,
@@ -67,31 +67,32 @@ Begin Form
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0100000000000000000000000000000070000000534d544a0000000010006000 ,
-        0x46007200650065005000440046005f005800500000005265736f6c7574696f6e ,
+        0x0100000000000000000000000000000090000000534d544a0000000010008000 ,
+        0x4d00530020005000750062006c0069007300680065007200200043006f006c00 ,
+        0x6f00720020005000720069006e0074006500720000005265736f6c7574696f6e ,
         0x00363030647069005061676553697a650041340050616765526567696f6e0000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000
     End
     PrtDevNames = Begin
-        0x080013001b000100000000000000000000000000000000000000004672656550 ,
-        0x44465850313a000000000000000000
+        0x080023002b000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000467265655044465850313a000000000000000000
     End
     FilterOnLoad =0
     ShowPageMargins =0
     AllowLayoutView =0
     DatasheetGridlinesColor12 =12632256
     PrtDevModeW = Begin
-        0x00000000007a42005001cb0a5f695a200016cb0a7a7195757f00000078656730 ,
-        0x09000000989f4200b66a6730f5c442304bb28c55000000003d03003ec400cb0a ,
-        0x01040006dc00440353ef8003010009009a0b3408640001000f00580202000100 ,
-        0x5802030001004100340000000c0000000016cb0a0016cb0afb15cb0a00000000 ,
-        0xb07a42000000cb0a7a7d6501f479420002000000707e4200f5713b7716473b05 ,
-        0xfeffffffd33c0000000000000000000000000000010000000000000001000000 ,
+        0x000020065001200600ff0000ae031d0050012006b42a6bdafeffffff649b4400 ,
+        0x34030000009b440050012006b42a6bda001620067a71c6757f000000c8730f30 ,
+        0x01040006dc00640353ef8003010009009a0b3408640001000f00580202000100 ,
+        0x580203000100410034000000000000007f000000b09b44003d03003ec4002006 ,
+        0x01000000814a1b300a0000000c0000000016200600162006fb15200600000000 ,
+        0x109c440000000000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
-        0xe230000000000000000000000000000000000000000000000000000000000000 ,
+        0xe210000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000180000000000102710271027 ,
-        0x0000102700000000000000007000440300000000000000000000000000000000 ,
+        0x0000102700000000000000009000640300000000000000000000000000000000 ,
         0x0000000000000000030000000000000000001000503403002888040000000000 ,
         0x0000000000000100000000000000000000000000000000002401df8c03000000 ,
         0x05000b00ff000000000000000000000000000000000000000000000000000000 ,
@@ -110,13 +111,15 @@ Begin Form
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0100000000000000000000000000000070000000534d544a0000000010006000 ,
-        0x46007200650065005000440046005f005800500000005265736f6c7574696f6e ,
+        0x0100000000000000000000000000000090000000534d544a0000000010008000 ,
+        0x4d00530020005000750062006c0069007300680065007200200043006f006c00 ,
+        0x6f00720020005000720069006e0074006500720000005265736f6c7574696f6e ,
         0x00363030647069005061676553697a650041340050616765526567696f6e0000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000
     End
     PrtDevNamesW = Begin
-        0x04000f0017000100000000000000000000000000000000000000000000000000 ,
+        0x04001f0027000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000460072006500650050004400460058005000 ,
         0x31003a00000000000000000000000000000000000000
     End
@@ -343,15 +346,15 @@ Begin Form
                 Begin CommandButton
                     Enabled = NotDefault
                     TabStop = NotDefault
-                    OverlapFlags =85
-                    Left =7313
-                    Top =5408
-                    Width =3402
+                    OverlapFlags =93
+                    Left =7425
+                    Top =5370
+                    Width =3072
                     Height =375
                     FontSize =10
                     TabIndex =4
-                    Name ="cmdAddFilterControManagerToForm"
-                    Caption ="FilterControlManager einfügen"
+                    Name ="cmdAddFilterCodeToForm"
+                    Caption ="Formular-Code einfügen"
                     OnClick ="[Event Procedure]"
                     FontName ="Verdana"
                     GUID = Begin
@@ -360,10 +363,10 @@ Begin Form
                     HorizontalAnchor =1
                     VerticalAnchor =1
 
-                    LayoutCachedLeft =7313
-                    LayoutCachedTop =5408
-                    LayoutCachedWidth =10715
-                    LayoutCachedHeight =5783
+                    LayoutCachedLeft =7425
+                    LayoutCachedTop =5370
+                    LayoutCachedWidth =10497
+                    LayoutCachedHeight =5745
                     WebImagePaddingLeft =2
                     WebImagePaddingTop =2
                     WebImagePaddingRight =1
@@ -644,7 +647,7 @@ Begin Form
                     Left =3465
                     Top =4516
                     Width =3681
-                    Height =1260
+                    Height =1304
                     TabIndex =9
                     Name ="UseFilterMethodOptions"
                     AfterUpdate ="[Event Procedure]"
@@ -658,7 +661,7 @@ Begin Form
                     LayoutCachedLeft =3465
                     LayoutCachedTop =4516
                     LayoutCachedWidth =7146
-                    LayoutCachedHeight =5776
+                    LayoutCachedHeight =5820
                     Begin
                         Begin Label
                             BackStyle =1
@@ -847,6 +850,128 @@ Begin Form
                     LayoutCachedWidth =2760
                     LayoutCachedHeight =4410
                 End
+                Begin OptionGroup
+                    Enabled = NotDefault
+                    OverlapFlags =215
+                    Left =7245
+                    Top =4515
+                    Width =3458
+                    Height =1304
+                    TabIndex =10
+                    Name ="FormCodeOptions"
+                    DefaultValue ="1"
+                    GUID = Begin
+                        0xed45349e0bb4624d802c11bd5a81e244
+                    End
+                    HorizontalAnchor =1
+                    VerticalAnchor =1
+
+                    LayoutCachedLeft =7245
+                    LayoutCachedTop =4515
+                    LayoutCachedWidth =10703
+                    LayoutCachedHeight =5819
+                    Begin
+                        Begin Label
+                            BackStyle =1
+                            OverlapFlags =215
+                            Left =7361
+                            Top =4395
+                            Width =1395
+                            Height =240
+                            BackColor =-2147483633
+                            Name ="Label104"
+                            Caption ="Filter-Variante"
+                            GUID = Begin
+                                0x4cd36eb1b18bd14090e780e9374d713e
+                            End
+                            HorizontalAnchor =1
+                            VerticalAnchor =1
+                            LayoutCachedLeft =7361
+                            LayoutCachedTop =4395
+                            LayoutCachedWidth =8756
+                            LayoutCachedHeight =4635
+                        End
+                        Begin OptionButton
+                            OverlapFlags =87
+                            Left =7395
+                            Top =4787
+                            OptionValue =1
+                            BorderColor =12835293
+                            Name ="Option105"
+                            GUID = Begin
+                                0x9360b4bcc3c8bf48a0506593b1be6c0a
+                            End
+                            GridlineColor =10921638
+                            HorizontalAnchor =1
+                            VerticalAnchor =1
+
+                            LayoutCachedLeft =7395
+                            LayoutCachedTop =4787
+                            LayoutCachedWidth =7655
+                            LayoutCachedHeight =5027
+                            Begin
+                                Begin Label
+                                    OverlapFlags =247
+                                    Left =7620
+                                    Top =4755
+                                    Width =2985
+                                    Height =240
+                                    Name ="Label106"
+                                    Caption ="FilterControlManager-Methoden"
+                                    GUID = Begin
+                                        0x96fff90c3e8c3744973d78912bd996cc
+                                    End
+                                    HorizontalAnchor =1
+                                    VerticalAnchor =1
+                                    LayoutCachedLeft =7620
+                                    LayoutCachedTop =4755
+                                    LayoutCachedWidth =10605
+                                    LayoutCachedHeight =4995
+                                End
+                            End
+                        End
+                        Begin OptionButton
+                            OverlapFlags =87
+                            Left =7395
+                            Top =5097
+                            TabIndex =1
+                            OptionValue =2
+                            BorderColor =12835293
+                            Name ="Option107"
+                            GUID = Begin
+                                0x3b9786ef86a3784a9dd3a8c5ebed31d9
+                            End
+                            GridlineColor =10921638
+                            HorizontalAnchor =1
+                            VerticalAnchor =1
+
+                            LayoutCachedLeft =7395
+                            LayoutCachedTop =5097
+                            LayoutCachedWidth =7655
+                            LayoutCachedHeight =5337
+                            Begin
+                                Begin Label
+                                    OverlapFlags =247
+                                    Left =7624
+                                    Top =5070
+                                    Width =2959
+                                    Height =240
+                                    Name ="Label108"
+                                    Caption ="FilterStringBuilder-Methoden"
+                                    GUID = Begin
+                                        0x69dd7bb4498fde4eadebb58c04022929
+                                    End
+                                    HorizontalAnchor =1
+                                    VerticalAnchor =1
+                                    LayoutCachedLeft =7624
+                                    LayoutCachedTop =5070
+                                    LayoutCachedWidth =10583
+                                    LayoutCachedHeight =5310
+                                End
+                            End
+                        End
+                    End
+                End
             End
         End
     End
@@ -939,7 +1064,7 @@ Private Sub RefreshAddFilterButtonEnableMode()
       End If
    End If
 
-   Me.cmdAddFilterControManagerToForm.Enabled = bolEnable
+   Me.cmdAddFilterCodeToForm.Enabled = bolEnable
 
 End Sub
 
@@ -1001,11 +1126,7 @@ Private Sub RefreshSubFormList()
 
 End Sub
 
-Private Sub cmdAddFilterControManagerToForm_Click()
-   AddFilterControManagerToForm
-End Sub
-
-Private Sub AddFilterControManagerToForm()
+Private Sub AddFilterCodeToForm(ByVal ImporterRef As IFilterFormCodeBuilder)
 
    Dim FormName As String
 
@@ -1014,9 +1135,15 @@ Private Sub AddFilterControManagerToForm()
       MsgBox "Bitte zuerst Formular auswählen"
       Exit Sub
    End If
-   With New FilterControlManagerImporter
+   
+   With New FilterFormCodeImporter
+   
+      Set .Importer = ImporterRef
+   
       AddControlsToImporter .Self
+      
       .WriteToForm Me.cbxFormName.Value, Nz(Me.UseFilterMethodOptions.Value, 0), Nz(Me.cbxUseFilterSubForm.Value, vbNullString)
+      
    End With
 
    CheckModules
@@ -1025,10 +1152,22 @@ Private Sub AddFilterControManagerToForm()
 
 End Sub
 
-Private Sub AddControlsToImporter(ByVal Importer As FilterControlManagerImporter)
+
+Private Sub AddControlsToImporter(ByVal Importer As Object)
    
    Me.sfrFilterControls.Form.AddControlsToImporter Importer
 
+End Sub
+
+Private Sub cmdAddFilterCodeToForm_Click()
+   
+   Select Case Me.FormCodeOptions.Value
+      Case 1
+         AddFilterCodeToForm New FilterControlManagerCodeBuilder
+      Case 2
+         AddFilterCodeToForm New FilterStringBuilderCodeBuilder
+   End Select
+   
 End Sub
 
 Private Sub Form_Current()
@@ -1109,7 +1248,7 @@ Private Sub labCopyCaption_MouseDown(Button As Integer, Shift As Integer, x As S
 
 End Sub
 
-Private Sub CheckModules()
+Private Sub CheckModules(Optional ByVal WithControlManager As Boolean = True)
    
    Dim bolCheckOK As Boolean
    
@@ -1126,9 +1265,11 @@ On Error Resume Next
       m_OpenModules = m_OpenModules + 1 + bolCheckOK
       SetModulCopyControls "CopyModulFilterStringBuilder", bolCheckOK
       
-      bolCheckOK = .CheckCodeModules("FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
-      m_OpenModules = m_OpenModules + 1 + bolCheckOK
-      SetModulCopyControls "CopyModulFilterControlManager", bolCheckOK
+      If WithControlManager Then
+         bolCheckOK = .CheckCodeModules("FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
+         m_OpenModules = m_OpenModules + 1 + bolCheckOK
+         SetModulCopyControls "CopyModulFilterControlManager", bolCheckOK
+      End If
       
       bolCheckOK = (m_OpenModules = 0)
       SetModulCopyControls "CopyModules", bolCheckOK
