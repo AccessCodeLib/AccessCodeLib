@@ -164,6 +164,35 @@ Public Function NewInstance(ByVal NewSqlDateFormat As String, _
 
 End Function
 
+'---------------------------------------------------------------------------------------
+' Function: DateToSqlText
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Werte in String für SQL-Anweisung umwandeln, die per VBA zusammengesetzt wird.
+' </summary>
+' <param name="Value">Übergabewert</param>
+' <param name="FieldDataType">Datentyp des zu konvertierenden Wertes</param>
+' <returns>String</returns>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function ConvertToSqlText(ByVal Value As Variant, _
+                                 ByVal FieldDataType As SqlFieldDataType) As String
+                     
+   Select Case FieldDataType
+      Case SqlFieldDataType.SQL_Text
+         ConvertToSqlText = TextToSqlText(Value)
+      Case SqlFieldDataType.SQL_Numeric
+         ConvertToSqlText = NumberToSqlText(Value)
+      Case SqlFieldDataType.SQL_Date
+         ConvertToSqlText = DateToSqlText(Value)
+      Case SqlFieldDataType.SQL_Boolean
+         ConvertToSqlText = BooleanToSqlText(Value)
+      Case Else
+         Err.Raise vbObjectError, "SqlTools.ConvertToSqlText", "FieldDataType '" & FieldDataType & "' not supported"
+   End Select
+   
+End Function
 
 '---------------------------------------------------------------------------------------
 ' Function: TextToSqlText
@@ -574,6 +603,18 @@ End Function
 Private Function NullFilterOrEmptyFilter(ByVal FieldName As String, ByVal FieldDataType As SqlFieldDataType, _
                                          ByVal Value As Variant, ByVal IgnoreValue As Variant, _
                                          ByRef NullFilterString As String) As Boolean
+   
+   If IsObject(IgnoreValue) Then
+   If IgnoreValue Is Nothing Then
+      If IsNull(Value) Then
+         NullFilterString = FieldName & " Is Null"
+         NullFilterOrEmptyFilter = True
+      Else
+         NullFilterOrEmptyFilter = False
+      End If
+      Exit Function
+   End If
+   End If
    
    If IsNull(Value) Then
       If Not ValuesAreEqual(FieldDataType, Value, IgnoreValue) Then
