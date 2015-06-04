@@ -177,6 +177,7 @@ Friend Sub DeleteByName(ByVal KeyName As String)
     With CurrentDb
         If KeyNameExists(KeyName) Then
             .Execute "Delete from " & DataSource & " Where " & EnumKeyFieldName & " = '" & KeyName & "'"
+            CatchOptionValues
         Else
             Err.Raise vbObjectError + 101, "OptionManager", "Keyname does not exist"
         End If
