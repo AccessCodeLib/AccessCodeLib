@@ -6,7 +6,7 @@ Attribute VB_Name = "OptionManager"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
-Attribute VB_Exposed = False
+Attribute VB_Exposed = True
 '---------------------------------------------------------------------------------------
 ' Class Module: OptionManager
 '---------------------------------------------------------------------------------------
@@ -135,7 +135,7 @@ End Property
 '***************************************************************************
 '***************************** Public Subs *********************************
 '***************************************************************************
-Friend Sub UpdateEnum()
+Public Sub UpdateEnum()
 
     Dim EnumKeys() As String
 
@@ -273,7 +273,7 @@ Private Function GetEnumKeyArray() As String()
 
 End Function
 
-Private Function GetEnumDeclarationLine(ByVal cm As CodeModule) As Long
+Private Function GetEnumDeclarationLine(ByVal cm As Object) As Long
 
     Dim EnumStartLine As Long
 
@@ -285,7 +285,7 @@ Private Function GetEnumDeclarationLine(ByVal cm As CodeModule) As Long
 
 End Function
 
-Private Function GetEnumCodeEndLine(ByVal cm As CodeModule, ByVal EnumStartLine As Long) As Long
+Private Function GetEnumCodeEndLine(ByVal cm As Object, ByVal EnumStartLine As Long) As Long
 
     Dim EnumEndLine As Long
 
