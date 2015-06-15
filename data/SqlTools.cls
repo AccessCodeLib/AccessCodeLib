@@ -7,6 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+'Attribute VB_PredeclaredId = True
 '---------------------------------------------------------------------------------------
 ' Klasse: SqlTools
 '---------------------------------------------------------------------------------------
@@ -25,6 +26,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>data/SqlTools.cls</file>
 '  <license>_codelib/license.bas</license>
+'  <replace>data/SqlTools.bas</replace>
 '  <test>_test/data/SqlToolsTests.cls</test>
 '  <test>_test/data/SqlToolsBuildCriteriaTests.cls</test>
 '</codelib>
