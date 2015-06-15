@@ -379,8 +379,6 @@ Public Sub RemoveFilterValue(Optional ByVal RaiseFilterValueChangedEvent As Bool
                m_Control.Value = False
             End If
          Case acComboBox
-            Dim cbx As ComboBox
-            Set cbx = m_Control
             If IsArray(m_Control.Value) Then
                m_Control.Value = Array() ' Auswahl in MultiValue-Combobox leeren
             ElseIf m_Control.Value = GetCheckedIgnoreValue Then
