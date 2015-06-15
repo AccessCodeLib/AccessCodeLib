@@ -87,7 +87,7 @@ Private Sub m_FilterControls_FilterValuesChanged()
    UseAutoFilterMode
 End Sub
 
-Private Property Get AutoFilterOn() As Boolean
+Public Property Get AutoFilterOn() As Boolean
    AutoFilterOn = m_AutoFilterModeOn
 End Property
 
