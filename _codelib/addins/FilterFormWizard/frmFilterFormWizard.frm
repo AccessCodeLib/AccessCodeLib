@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =-33021762
+Checksum =-978477176
 Begin Form
     AllowFilters = NotDefault
     RecordSelectors = NotDefault
@@ -39,10 +39,10 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x0044e203b157915780f24f000400000000000000000000008356915704000000 ,
+        0x0000000000000000000000008356365904000000010000000000000000000000 ,
         0x010400069c00640353ef8003010009009a0b3408640001000f00580202000100 ,
-        0x580203000100413400849257fc824400e044e203180000000c000000e8824400 ,
-        0x9f84e22fe0440000000000000000000000000000010000000000000001000000 ,
+        0x5802030001004134000000000c000000cc423d009f84fc2fe044ce030c000000 ,
+        0xe0423d000d000000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe210000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -74,19 +74,19 @@ Begin Form
     End
     PrtDevNames = Begin
         0x080023002b000100000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000467265655044465850313a0000000000
+        0x0000000000000000000000467265655044465850313a00
     End
     FilterOnLoad =0
     ShowPageMargins =0
     AllowLayoutView =0
     DatasheetGridlinesColor12 =12632256
     PrtDevModeW = Begin
-        0x0000eb050000eb055001eb0500ff00002e052c005001eb05e6efec4dfeffffff ,
-        0x5878440034030000007844005001eb05e6efec4d0016eb057a71b0767f000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x01040006dc00640353ef8003010009009a0b3408640001000f00580202000100 ,
-        0x58020300010041003400000080f24f00000000007f000000a47844003d03003e ,
-        0xc400eb0501000000814ae12f0a0000000c0000000016eb050016eb05fb15eb05 ,
-        0x0000000004790000000000000000000000000000010000000000000001000000 ,
+        0x5802030001004100340000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe210000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -120,7 +120,7 @@ Begin Form
         0x04001f0027000100000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000460072006500650050004400460058005000 ,
-        0x31003a0000000000000000000000
+        0x31003a000000
     End
     
     Begin
@@ -505,6 +505,7 @@ Begin Form
                     Overlaps =1
                 End
                 Begin Label
+                    FontUnderline = NotDefault
                     OverlapFlags =93
                     Left =120
                     Top =4410
@@ -512,9 +513,11 @@ Begin Form
                     Height =255
                     FontSize =9
                     FontWeight =700
+                    ForeColor =16737792
                     Name ="labCopyCaption"
                     Caption ="Klassen installieren:"
                     OnMouseDown ="[Event Procedure]"
+                    OnMouseMove ="[Event Procedure]"
                     ControlTipText ="nur in der Vollversion verfügbar"
                     GUID = Begin
                         0x6fdf1d4132b76c429cd92273cd9ef89b
@@ -1175,7 +1178,7 @@ Private Sub Form_Current()
    CheckModules
 End Sub
 
-Private Sub OpenReplaceModulesContextMenu(ByRef ctlMenuControl As Control, ByVal x As Single, ByVal y As Single)
+Private Sub OpenReplaceModulesContextMenu(ByRef ctlMenuControl As Control, ByVal X As Single, ByVal Y As Single)
 
    Dim mnu As WinApiShortcutMenu
    Dim lngSelectedMenuItem As Long
@@ -1192,7 +1195,7 @@ Private Sub OpenReplaceModulesContextMenu(ByRef ctlMenuControl As Control, ByVal
       
    End With
    
-   lngSelectedMenuItem = mnu.OpenMenu(x, y)
+   lngSelectedMenuItem = mnu.OpenMenu(X, Y)
    Select Case lngSelectedMenuItem
       Case 1
          ReplaceAllModules True
@@ -1241,10 +1244,10 @@ Private Sub Form_Open(Cancel As Integer)
    Me.Caption = Me.Caption & "  " & ChrW(&H25AA) & "  Version " & CurrentApplication.Version
 End Sub
 
-Private Sub labCopyCaption_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub labCopyCaption_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
    If Button = 1 Or Button = 2 Then
-      OpenReplaceModulesContextMenu Me.labCopyCaption, x, y
+      OpenReplaceModulesContextMenu Me.labCopyCaption, X, Y
    End If
 
 End Sub
@@ -1348,6 +1351,10 @@ On Error Resume Next
       SetModulCopyControls "CopyModules", True
    End If
    
+End Sub
+
+Private Sub labCopyCaption_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+   modWinApi_Mouse.MouseCursor IDC_HAND
 End Sub
 
 Private Sub UseFilterMethodOptions_AfterUpdate()

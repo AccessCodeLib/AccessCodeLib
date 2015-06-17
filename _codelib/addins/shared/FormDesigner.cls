@@ -110,10 +110,6 @@ Private Sub FindNextControlPos(ByVal ControlSection As AcSection, ByRef LeftPos 
    Dim ErrCnt As Long
    
 On Error GoTo HandleErr
-
-   If m_Form.Section(ControlSection).Height = 0 Then
-      m_Form.Section(ControlSection).Height = 1
-   End If
    
    If m_Form.Section(ControlSection).Controls.Count > 0 Then
       MinLeft = m_Form.InsideWidth

@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =-661869501
+Checksum =-251943206
 Begin Form
     NavigationButtons = NotDefault
     AllowDesignChanges = NotDefault
@@ -20,16 +20,17 @@ Begin Form
         0xc4d680b8ef58e440
     End
     RecordSource ="tabFilterControls"
+    OnCurrent ="[Event Procedure]"
     DatasheetFontName ="Calibri"
     PrtMip = Begin
         0x6801000068010000680100006801000000000000201c0000e010000001000000 ,
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x00f2740004000000000000000000000083569157040000000100000000000000 ,
+        0x0000000000000000000000008356915704000000010000000000000000000000 ,
         0x010400069c00640353ef8001010009009a0b3408640001000f00580202000100 ,
-        0x58020300010041340044c503180000000c00000030552c009f844230e044c503 ,
-        0x0c00000044550000000000000000000000000000010000000000000001000000 ,
+        0x5802030001004134000000000c000000ec5b1a009f84b42fe044dd040c000000 ,
+        0x005c1a000d000000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe210000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -61,7 +62,7 @@ Begin Form
     End
     PrtDevNames = Begin
         0x080023002b000100000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000467265655044465850313a000000000000000000
+        0x0000000000000000000000467265655044465850313a00
     End
     FilterOnLoad =0
     OrderByOnLoad =0
@@ -72,12 +73,12 @@ Begin Form
     DatasheetGridlinesColor12 =15062992
     FitToScreen =1
     PrtDevModeW = Begin
-        0x0000ca055001ca0500ff0000bc043c005001ca05a3b0117afeffffffa48f2d00 ,
-        0x1003000000902d005001ca05a3b0117a2017ca057a71b0767f000000c8733530 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x01040006dc00640353ef8001010009009a0b3408640001000f00580202000100 ,
-        0x580203000100410034000000000000007f000000f08f2d001903001ac400ca05 ,
-        0x01000000814a41300a0000000c0000002017ca052017ca051b17ca0500000000 ,
-        0x50902d0000000000000000000000000000000000010000000000000001000000 ,
+        0x5802030001004100340000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe210000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -111,7 +112,7 @@ Begin Form
         0x04001f0027000100000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000460072006500650050004400460058005000 ,
-        0x31003a00000000000000000000000000000000000000
+        0x31003a000000
     End
     
     Begin
@@ -303,7 +304,7 @@ Begin Form
                     Width =2041
                     Height =285
                     FontSize =10
-                    TabIndex =1
+                    TabIndex =3
                     BorderColor =12835293
                     ForeColor =4138256
                     ConditionalFormat = Begin
@@ -373,7 +374,7 @@ Begin Form
                     Width =1353
                     Height =285
                     FontSize =10
-                    TabIndex =4
+                    TabIndex =1
                     BoundColumn =1
                     BorderColor =12835293
                     ForeColor =4138256
@@ -399,7 +400,7 @@ Begin Form
                     OverlapFlags =85
                     Left =5465
                     Top =390
-                    TabIndex =5
+                    TabIndex =7
                     BorderColor =12835293
                     Name ="fcRelationalOperatorNot"
                     ControlSource ="RelationalOperatorNot"
@@ -435,8 +436,8 @@ Begin Form
                 Begin CheckBox
                     OverlapFlags =85
                     Left =4181
-                    Top =396
-                    TabIndex =6
+                    Top =390
+                    TabIndex =5
                     BorderColor =12835293
                     Name ="fcWildCardSuffix"
                     ControlSource ="WildCardSuffix"
@@ -444,14 +445,14 @@ Begin Form
                     GridlineColor =10921638
 
                     LayoutCachedLeft =4181
-                    LayoutCachedTop =396
+                    LayoutCachedTop =390
                     LayoutCachedWidth =4441
-                    LayoutCachedHeight =636
+                    LayoutCachedHeight =630
                     Begin
                         Begin Label
                             OverlapFlags =119
                             Left =3746
-                            Top =366
+                            Top =360
                             Width =435
                             Height =240
                             FontSize =8
@@ -462,9 +463,9 @@ Begin Form
                             FontName ="Tahoma"
                             GridlineColor =10921638
                             LayoutCachedLeft =3746
-                            LayoutCachedTop =366
+                            LayoutCachedTop =360
                             LayoutCachedWidth =4181
-                            LayoutCachedHeight =606
+                            LayoutCachedHeight =600
                             ThemeFontIndex =-1
                         End
                     End
@@ -473,7 +474,7 @@ Begin Form
                     OverlapFlags =247
                     Left =4886
                     Top =390
-                    TabIndex =7
+                    TabIndex =6
                     BorderColor =12835293
                     Name ="fcWildCardPrefix"
                     ControlSource ="WildCardPrefix"
@@ -535,7 +536,7 @@ Begin Form
                     Width =2056
                     Height =285
                     FontSize =10
-                    TabIndex =3
+                    TabIndex =4
                     BorderColor =12835293
                     ForeColor =4138256
                     Name ="fcControl2"
@@ -565,7 +566,7 @@ Begin Form
                 Begin CheckBox
                     OverlapFlags =93
                     Left =6222
-                    Top =402
+                    Top =390
                     TabIndex =8
                     BorderColor =12835293
                     Name ="cbCreateControl"
@@ -575,14 +576,14 @@ Begin Form
                     GridlineColor =10921638
 
                     LayoutCachedLeft =6222
-                    LayoutCachedTop =402
+                    LayoutCachedTop =390
                     LayoutCachedWidth =6482
-                    LayoutCachedHeight =642
+                    LayoutCachedHeight =630
                     Begin
                         Begin Label
                             OverlapFlags =255
                             Left =5831
-                            Top =372
+                            Top =360
                             Width =414
                             Height =240
                             FontSize =8
@@ -592,9 +593,9 @@ Begin Form
                             FontName ="Tahoma"
                             GridlineColor =10921638
                             LayoutCachedLeft =5831
-                            LayoutCachedTop =372
+                            LayoutCachedTop =360
                             LayoutCachedWidth =6245
-                            LayoutCachedHeight =612
+                            LayoutCachedHeight =600
                             ThemeFontIndex =-1
                             ForeThemeColorIndex =0
                             ForeTint =100.0
@@ -602,6 +603,7 @@ Begin Form
                     End
                 End
                 Begin OptionGroup
+                    TabStop = NotDefault
                     SpecialEffect =0
                     OldBorderStyle =0
                     OverlapFlags =247
@@ -884,11 +886,25 @@ Private Sub InsertFormControl(ByVal FilterFormName As String, ControlType As Str
 End Sub
 
 Private Sub cbCreateControl_AfterUpdate()
-   If Me.cbCreateControl.Value = False Then
-      Me.ogNewControlType.Value = Null
-   Else
-      Me.ogNewControlType.Value = acTextBox
-   End If
+
+   Dim CreateNewControl As Boolean
+   
+   CreateNewControl = Me.cbCreateControl.Value
+
+   With Me.ogNewControlType
+      .TabStop = .Value
+      If CreateNewControl Then
+         .Value = acTextBox
+      Else
+         .Value = Null
+      End If
+      
+   End With
+   
+End Sub
+
+Private Sub Form_Current()
+   Me.ogNewControlType.TabStop = Nz(Me.cbCreateControl.Value)
 End Sub
 
 Private Sub ogNewControlType_Enter()

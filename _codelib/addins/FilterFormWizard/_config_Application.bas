@@ -31,7 +31,7 @@ Private Const m_DefaultErrorHandlerMode As Long = ACLibErrorHandlerMode.aclibErr
 Private Const m_ApplicationStartFormName As String = "frmFilterFormWizard"
 
 '---------------------------------------------------------------------------------------
-' Sub: InitConfig (Josef Pötzl)
+' Sub: InitConfig
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -154,12 +154,12 @@ End Sub
 
 Private Sub SaveCodeModulesToTable()
 
-   Dim x As Variant
+   Dim X As Variant
    Dim i As Long
    
-   x = Array("SqlTools", "StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
-   For i = 0 To UBound(x)
-      SaveCodeModulToTable acModule, x(i)
+   X = Array("SqlTools", "StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
+   For i = 0 To UBound(X)
+      SaveCodeModulToTable acModule, X(i)
    Next
    
 End Sub
