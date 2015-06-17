@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =-14903921
+Checksum =1855070088
 Begin Form
     NavigationButtons = NotDefault
     AllowDesignChanges = NotDefault
@@ -10,11 +10,11 @@ Begin Form
     GridY =10
     Width =10050
     DatasheetFontHeight =11
-    ItemSuffix =21
-    Left =4515
-    Top =3135
-    Right =15105
-    Bottom =6360
+    ItemSuffix =33
+    Left =6615
+    Top =3735
+    Right =17205
+    Bottom =6960
     DatasheetGridlinesColor =15062992
     RecSrcDt = Begin
         0xc4d680b8ef58e440
@@ -26,15 +26,15 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x0072842f0400000001000000ec811b001800000060841b0014821b00ac8d2f38 ,
-        0x010400069c00440353ef8001010009009a0b3408640001000f00580202000100 ,
-        0x58020300010041340044ef024c841b00c444ef0244821b00e188ab2fe044ef02 ,
-        0xe888ab2fefd60000000000000000000000000000010000000000000001000000 ,
+        0x00f24a0004000000000000000000000083569157040000000100000000000000 ,
+        0x010400069c00640353ef8001010009009a0b3408640001000f00580202000100 ,
+        0x580203000100413400441603180000000c000000d05229009f84c52fe0441603 ,
+        0x0c000000e4520000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
-        0xe230000000000000000000000000000000000000000000000000000000000000 ,
+        0xe210000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000180000000000102710271027 ,
-        0x0000102700000000000000007000440300000000000000000000000000000000 ,
+        0x0000102700000000000000009000640300000000000000000000000000000000 ,
         0x0000000000000000030000000000000000001000503403002888040000000000 ,
         0x0000000000000100000000000000000000000000000000002401df8c03000000 ,
         0x05000b00ff000000000000000000000000000000000000000000000000000000 ,
@@ -53,15 +53,15 @@ Begin Form
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0100000000000000000000000000000070000000534d544a0000000010006000 ,
-        0x46007200650065005000440046005f005800500000005265736f6c7574696f6e ,
+        0x0100000000000000000000000000000090000000534d544a0000000010008000 ,
+        0x4d00530020005000750062006c0069007300680065007200200043006f006c00 ,
+        0x6f00720020005000720069006e0074006500720000005265736f6c7574696f6e ,
         0x00363030647069005061676553697a650041340050616765526567696f6e0000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000
     End
     PrtDevNames = Begin
-        0x080013001b000100000000000000000000000000000000000000004672656550 ,
-        0x44465850313a0000000000000000000000000000000000000000000000000000 ,
-        0x000000000000000000000000000000
+        0x080023002b000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000467265655044465850313a00
     End
     FilterOnLoad =0
     OrderByOnLoad =0
@@ -72,17 +72,17 @@ Begin Form
     DatasheetGridlinesColor12 =15062992
     FitToScreen =1
     PrtDevModeW = Begin
-        0x0000ffffbc791b0034030000007a1b005001e6050c8ea4380016e6057a71c675 ,
-        0x7f000000c8739e2f09000000509f1b0006799e2f64cf792f972e794d00000000 ,
-        0x01040006dc00440353ef8001010009009a0b3408640001000f00580202000100 ,
-        0x580203000100410034000000814aaa2f0a0000000c0000000016e6050016e605 ,
-        0xfb15e60500000000687a1b000000e605088b9c01ac791b0002000000287e1b00 ,
-        0x051ae37754470000000000000000000000000000010000000000000001000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x01040006dc00640353ef8001010009009a0b3408640001000f00580202000100 ,
+        0x5802030001004100340000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
-        0xe230000000000000000000000000000000000000000000000000000000000000 ,
+        0xe210000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000180000000000102710271027 ,
-        0x0000102700000000000000007000440300000000000000000000000000000000 ,
+        0x0000102700000000000000009000640300000000000000000000000000000000 ,
         0x0000000000000000030000000000000000001000503403002888040000000000 ,
         0x0000000000000100000000000000000000000000000000002401df8c03000000 ,
         0x05000b00ff000000000000000000000000000000000000000000000000000000 ,
@@ -101,17 +101,17 @@ Begin Form
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0100000000000000000000000000000070000000534d544a0000000010006000 ,
-        0x46007200650065005000440046005f005800500000005265736f6c7574696f6e ,
+        0x0100000000000000000000000000000090000000534d544a0000000010008000 ,
+        0x4d00530020005000750062006c0069007300680065007200200043006f006c00 ,
+        0x6f00720020005000720069006e0074006500720000005265736f6c7574696f6e ,
         0x00363030647069005061676553697a650041340050616765526567696f6e0000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000
     End
     PrtDevNamesW = Begin
-        0x04000f0017000100000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000460072006500650050004400460058005000 ,
-        0x31003a0000000000000000000000000000000000000000000000000000000000 ,
+        0x04001f0027000100000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x00000000000000000000000000000000000000000000
+        0x0000000000000000000000000000460072006500650050004400460058005000 ,
+        0x31003a000000
     End
     
     Begin
@@ -218,7 +218,7 @@ Begin Form
                 Begin Label
                     OverlapFlags =85
                     Left =56
-                    Width =2265
+                    Width =2157
                     Height =285
                     FontSize =10
                     BorderColor =16777215
@@ -228,13 +228,13 @@ Begin Form
                     FontName ="Tahoma"
                     GridlineColor =10921638
                     LayoutCachedLeft =56
-                    LayoutCachedWidth =2321
+                    LayoutCachedWidth =2213
                     LayoutCachedHeight =285
                     ThemeFontIndex =-1
                 End
                 Begin Label
                     OverlapFlags =85
-                    Left =3915
+                    Left =3746
                     Width =1815
                     Height =285
                     FontSize =10
@@ -244,14 +244,14 @@ Begin Form
                     Caption ="Vergleichsoperator"
                     FontName ="Tahoma"
                     GridlineColor =10921638
-                    LayoutCachedLeft =3915
-                    LayoutCachedWidth =5730
+                    LayoutCachedLeft =3746
+                    LayoutCachedWidth =5561
                     LayoutCachedHeight =285
                     ThemeFontIndex =-1
                 End
                 Begin Label
                     OverlapFlags =85
-                    Left =2437
+                    Left =2268
                     Width =1380
                     Height =285
                     FontSize =10
@@ -261,8 +261,8 @@ Begin Form
                     Caption ="Datentyp"
                     FontName ="Tahoma"
                     GridlineColor =10921638
-                    LayoutCachedLeft =2437
-                    LayoutCachedWidth =3817
+                    LayoutCachedLeft =2268
+                    LayoutCachedWidth =3648
                     LayoutCachedHeight =285
                     ThemeFontIndex =-1
                 End
@@ -286,11 +286,11 @@ Begin Form
             End
         End
         Begin Section
-            Height =680
+            Height =642
             Name ="Detailbereich"
-            AlternateBackColor =15921906
+            AlternateBackColor =16250871
             AlternateBackThemeColorIndex =1
-            AlternateBackShade =95.0
+            AlternateBackShade =97.0
             BackThemeColorIndex =1
             Begin
                 Begin ComboBox
@@ -306,6 +306,13 @@ Begin Form
                     TabIndex =1
                     BorderColor =12835293
                     ForeColor =4138256
+                    ConditionalFormat = Begin
+                        0x0100000090000000010000000100000000000000000000001700000000000000 ,
+                        0x00000000ffffff00000000000000000000000000000000000000000000000000 ,
+                        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+                        0x5b006300620043007200650061007400650043006f006e00740072006f006c00 ,
+                        0x5d003d00540072007500650000000000
+                    End
                     Name ="fcControl"
                     ControlSource ="Control"
                     RowSourceType ="Value List"
@@ -319,13 +326,18 @@ Begin Form
                     LayoutCachedWidth =7872
                     LayoutCachedHeight =314
                     ThemeFontIndex =-1
+                    ConditionalFormat14 = Begin
+                        0x01000100000001000000000000000000000000000000ffffff00160000005b00 ,
+                        0x6300620043007200650061007400650043006f006e00740072006f006c005d00 ,
+                        0x3d005400720075006500000000000000000000000000000000000000000000
+                    End
                 End
                 Begin ComboBox
                     LimitToList = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
                     ColumnCount =2
-                    Left =3915
+                    Left =3746
                     Top =29
                     Width =1803
                     Height =285
@@ -346,9 +358,9 @@ Begin Form
                     GridlineColor =10921638
                     AllowValueListEdits =0
 
-                    LayoutCachedLeft =3915
+                    LayoutCachedLeft =3746
                     LayoutCachedTop =29
-                    LayoutCachedWidth =5718
+                    LayoutCachedWidth =5549
                     LayoutCachedHeight =314
                     ThemeFontIndex =-1
                 End
@@ -356,7 +368,7 @@ Begin Form
                     OverlapFlags =85
                     IMESentenceMode =3
                     ColumnCount =2
-                    Left =2437
+                    Left =2268
                     Top =29
                     Width =1353
                     Height =285
@@ -377,15 +389,15 @@ Begin Form
                     GridlineColor =10921638
                     AllowValueListEdits =0
 
-                    LayoutCachedLeft =2437
+                    LayoutCachedLeft =2268
                     LayoutCachedTop =29
-                    LayoutCachedWidth =3790
+                    LayoutCachedWidth =3621
                     LayoutCachedHeight =314
                     ThemeFontIndex =-1
                 End
                 Begin CheckBox
                     OverlapFlags =85
-                    Left =5944
+                    Left =5465
                     Top =390
                     TabIndex =5
                     BorderColor =12835293
@@ -394,14 +406,14 @@ Begin Form
                     DefaultValue ="False"
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =5944
+                    LayoutCachedLeft =5465
                     LayoutCachedTop =390
-                    LayoutCachedWidth =6204
+                    LayoutCachedWidth =5725
                     LayoutCachedHeight =630
                     Begin
                         Begin Label
-                            OverlapFlags =119
-                            Left =5614
+                            OverlapFlags =127
+                            Left =5135
                             Top =360
                             Width =330
                             Height =240
@@ -412,9 +424,9 @@ Begin Form
                             Caption ="Not"
                             FontName ="Tahoma"
                             GridlineColor =10921638
-                            LayoutCachedLeft =5614
+                            LayoutCachedLeft =5135
                             LayoutCachedTop =360
-                            LayoutCachedWidth =5944
+                            LayoutCachedWidth =5465
                             LayoutCachedHeight =600
                             ThemeFontIndex =-1
                         End
@@ -422,7 +434,7 @@ Begin Form
                 End
                 Begin CheckBox
                     OverlapFlags =85
-                    Left =4350
+                    Left =4181
                     Top =396
                     TabIndex =6
                     BorderColor =12835293
@@ -431,14 +443,14 @@ Begin Form
                     DefaultValue ="False"
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =4350
+                    LayoutCachedLeft =4181
                     LayoutCachedTop =396
-                    LayoutCachedWidth =4610
+                    LayoutCachedWidth =4441
                     LayoutCachedHeight =636
                     Begin
                         Begin Label
                             OverlapFlags =119
-                            Left =3915
+                            Left =3746
                             Top =366
                             Width =435
                             Height =240
@@ -449,17 +461,17 @@ Begin Form
                             Caption ="xxx*"
                             FontName ="Tahoma"
                             GridlineColor =10921638
-                            LayoutCachedLeft =3915
+                            LayoutCachedLeft =3746
                             LayoutCachedTop =366
-                            LayoutCachedWidth =4350
+                            LayoutCachedWidth =4181
                             LayoutCachedHeight =606
                             ThemeFontIndex =-1
                         End
                     End
                 End
                 Begin CheckBox
-                    OverlapFlags =85
-                    Left =5194
+                    OverlapFlags =247
+                    Left =4886
                     Top =390
                     TabIndex =7
                     BorderColor =12835293
@@ -468,14 +480,14 @@ Begin Form
                     DefaultValue ="False"
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =5194
+                    LayoutCachedLeft =4886
                     LayoutCachedTop =390
-                    LayoutCachedWidth =5454
+                    LayoutCachedWidth =5146
                     LayoutCachedHeight =630
                     Begin
                         Begin Label
                             OverlapFlags =119
-                            Left =4759
+                            Left =4451
                             Top =360
                             Width =435
                             Height =240
@@ -486,9 +498,9 @@ Begin Form
                             Caption ="*xxx"
                             FontName ="Tahoma"
                             GridlineColor =10921638
-                            LayoutCachedLeft =4759
+                            LayoutCachedLeft =4451
                             LayoutCachedTop =360
-                            LayoutCachedWidth =5194
+                            LayoutCachedWidth =4886
                             LayoutCachedHeight =600
                             ThemeFontIndex =-1
                         End
@@ -499,7 +511,7 @@ Begin Form
                     IMESentenceMode =3
                     Left =56
                     Top =29
-                    Width =2268
+                    Width =2160
                     Height =285
                     FontSize =10
                     BorderColor =12835293
@@ -511,7 +523,7 @@ Begin Form
 
                     LayoutCachedLeft =56
                     LayoutCachedTop =29
-                    LayoutCachedWidth =2324
+                    LayoutCachedWidth =2216
                     LayoutCachedHeight =314
                     ThemeFontIndex =-1
                 End
@@ -530,6 +542,13 @@ Begin Form
                     ControlSource ="Control2"
                     StatusBarText ="Mehrere Steuerelemente mit Komma trennen"
                     FontName ="Tahoma"
+                    ConditionalFormat = Begin
+                        0x0100000090000000010000000100000000000000000000001700000000000000 ,
+                        0x00000000ffffff00000000000000000000000000000000000000000000000000 ,
+                        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+                        0x5b006300620043007200650061007400650043006f006e00740072006f006c00 ,
+                        0x5d003d00540072007500650000000000
+                    End
                     GridlineColor =10921638
 
                     LayoutCachedLeft =7938
@@ -537,6 +556,137 @@ Begin Form
                     LayoutCachedWidth =9994
                     LayoutCachedHeight =314
                     ThemeFontIndex =-1
+                    ConditionalFormat14 = Begin
+                        0x01000100000001000000000000000000000000000000ffffff00160000005b00 ,
+                        0x6300620043007200650061007400650043006f006e00740072006f006c005d00 ,
+                        0x3d005400720075006500000000000000000000000000000000000000000000
+                    End
+                End
+                Begin CheckBox
+                    OverlapFlags =93
+                    Left =6222
+                    Top =402
+                    TabIndex =8
+                    BorderColor =12835293
+                    Name ="cbCreateControl"
+                    ControlSource ="CreateControl"
+                    AfterUpdate ="[Event Procedure]"
+                    DefaultValue ="False"
+                    GridlineColor =10921638
+
+                    LayoutCachedLeft =6222
+                    LayoutCachedTop =402
+                    LayoutCachedWidth =6482
+                    LayoutCachedHeight =642
+                    Begin
+                        Begin Label
+                            OverlapFlags =255
+                            Left =5831
+                            Top =372
+                            Width =414
+                            Height =240
+                            FontSize =8
+                            BorderColor =16777215
+                            Name ="Bezeichnungsfeld24"
+                            Caption ="Neu"
+                            FontName ="Tahoma"
+                            GridlineColor =10921638
+                            LayoutCachedLeft =5831
+                            LayoutCachedTop =372
+                            LayoutCachedWidth =6245
+                            LayoutCachedHeight =612
+                            ThemeFontIndex =-1
+                            ForeThemeColorIndex =0
+                            ForeTint =100.0
+                        End
+                    End
+                End
+                Begin OptionGroup
+                    SpecialEffect =0
+                    OldBorderStyle =0
+                    OverlapFlags =247
+                    Left =5839
+                    Top =336
+                    Width =4137
+                    Height =300
+                    TabIndex =9
+                    BorderColor =12835293
+                    Name ="ogNewControlType"
+                    ControlSource ="ControlType"
+                    OnEnter ="[Event Procedure]"
+                    GridlineColor =10921638
+
+                    LayoutCachedLeft =5839
+                    LayoutCachedTop =336
+                    LayoutCachedWidth =9976
+                    LayoutCachedHeight =636
+                    Begin
+                        Begin OptionButton
+                            OverlapFlags =119
+                            Left =6689
+                            Top =396
+                            OptionValue =109
+                            BorderColor =12835293
+                            Name ="ogfldTextbox"
+                            GridlineColor =10921638
+
+                            LayoutCachedLeft =6689
+                            LayoutCachedTop =396
+                            LayoutCachedWidth =6949
+                            LayoutCachedHeight =636
+                            Begin
+                                Begin Label
+                                    OverlapFlags =247
+                                    Left =6919
+                                    Top =336
+                                    Width =876
+                                    Height =300
+                                    BorderColor =16777215
+                                    ForeColor =13995605
+                                    Name ="Bezeichnungsfeld30"
+                                    Caption ="TextBox"
+                                    GridlineColor =10921638
+                                    LayoutCachedLeft =6919
+                                    LayoutCachedTop =336
+                                    LayoutCachedWidth =7795
+                                    LayoutCachedHeight =636
+                                End
+                            End
+                        End
+                        Begin OptionButton
+                            OverlapFlags =119
+                            Left =7992
+                            Top =396
+                            TabIndex =1
+                            OptionValue =111
+                            BorderColor =12835293
+                            Name ="ogfldCombobox"
+                            GridlineColor =10921638
+
+                            LayoutCachedLeft =7992
+                            LayoutCachedTop =396
+                            LayoutCachedWidth =8252
+                            LayoutCachedHeight =636
+                            Begin
+                                Begin Label
+                                    OverlapFlags =247
+                                    Left =8219
+                                    Top =336
+                                    Width =1032
+                                    Height =300
+                                    BorderColor =16777215
+                                    ForeColor =13995605
+                                    Name ="Bezeichnungsfeld32"
+                                    Caption ="ComboBox"
+                                    GridlineColor =10921638
+                                    LayoutCachedLeft =8219
+                                    LayoutCachedTop =336
+                                    LayoutCachedWidth =9251
+                                    LayoutCachedHeight =636
+                                End
+                            End
+                        End
+                    End
                 End
             End
         End
@@ -568,9 +718,12 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>_codelib/addins/FilterFormWizard/frmFilterFormWizard_SF_Controls.frm</file>
 '  <license>_codelib/license.bas</license>
+'  <use>_codelib/addins/shared/FormDesigner.cls</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
+Option Compare Database
+Option Explicit
 
 #Const ADODB_EARLYBINDING = 0
 
@@ -582,13 +735,9 @@ Attribute VB_Exposed = False
    Const adLockOptimistic As Long = 3
 #End If
 
-Option Compare Database
-Option Explicit
-
 Public Sub InitFilterForm(ByVal frm As Form)
 
    InitDataSource
-
    LoadControlsFromForm frm
 
 End Sub
@@ -634,7 +783,7 @@ Private Sub LoadControlsFromForm(ByVal frm As Form)
 
 End Sub
 
-Public Sub AddControlsToImporter(ByVal Importer As Object)
+Public Sub AddControlsToImporter(ByVal Importer As Object, ByVal FilterFormName As String)
    
 #If ADODB_EARLYBINDING = 1 Then
    Dim rst As ADODB.Recordset
@@ -649,6 +798,11 @@ Public Sub AddControlsToImporter(ByVal Importer As Object)
    If rst.RecordCount = 0 Then
       Exit Sub
    End If
+   
+   Dim DataFieldName As String
+   Dim ControlName As String, ControlName2 As String
+   
+   Dim SaveForm As Boolean
 
    With rst
       Do While Not .EOF
@@ -663,16 +817,80 @@ Public Sub AddControlsToImporter(ByVal Importer As Object)
          If .Fields("RelationalOperatorNot") = True Then
             RelOp = "SQL_Not + " & RelOp
          End If
+         
+         DataFieldName = Nz(.Fields("DataField").Value, vbNullString)
 
-         Importer.AddFilterControlDefinition Nz(.Fields("DataField"), vbNullString), _
+         If .Fields("CreateControl").Value = True Then
+            InsertFormControl FilterFormName, Nz(.Fields("ControlType").Value, acTextBox), DataFieldName, RelOp, ControlName, ControlName2
+            SaveForm = True
+         Else
+            ControlName = Nz(.Fields("Control").Value, "%CONTROLNAME%")
+            ControlName2 = Nz(.Fields("Control2"), "%CONTROLNAME%")
+         End If
+
+         Importer.AddFilterControlDefinition DataFieldName, _
                                              Nz(.Fields("DataType"), vbNullString), _
                                              RelOp, _
-                                             Nz(.Fields("Control"), vbNullString), _
-                                             Nz(.Fields("Control2"), vbNullString)
+                                             ControlName, _
+                                             ControlName2
 
          .MoveNext
 
       Loop
    End With
+   
+   If SaveForm Then
+      DoCmd.Save acForm, FilterFormName
+   End If
 
+End Sub
+
+Private Sub InsertFormControl(ByVal FilterFormName As String, ControlType As String, ByVal DataFieldName As String, ByVal RelOp As String, ByRef ControlName As String, ByRef Control2Name As String)
+
+   Const DistanceBetweenControls As Long = 72
+
+   Dim ctl As Control
+   
+   Dim ControlCaption As String, Control2Caption As String
+   Dim CreateControl2 As Boolean
+
+   ControlCaption = DataFieldName
+   If StrComp(Left(DataFieldName, 1), UCase(Left(DataFieldName, 1)), vbBinaryCompare) <> 0 Then
+      DataFieldName = UCase(Left(DataFieldName, 1)) & Mid(DataFieldName, 2)
+   End If
+   ControlName = "fctl" & DataFieldName
+   
+   With New FormDesigner
+   
+      Set .Form = Forms(FilterFormName)
+      
+      If (RelOp Like "*SQL_Between*") Then
+         CreateControl2 = True
+         Control2Caption = ControlCaption & " bis"
+         Control2Name = ControlName & "Max"
+         ControlName = ControlName & "Min"
+         ControlCaption = ControlCaption & " von"
+      End If
+      
+      Set ctl = .AddControl(ControlType, ControlName, acHeader, , , , , DistanceBetweenControls, True, ControlCaption)
+      ControlName = ctl.Name
+      If CreateControl2 Then
+         Set ctl = ctl.Controls(0)
+         Control2Name = .AddControl(ControlType, Control2Name, acHeader, ctl.Left + ctl.Width + DistanceBetweenControls, ctl.Top, , , DistanceBetweenControls, True, Control2Caption).Name
+      End If
+      
+   End With
+
+End Sub
+
+Private Sub cbCreateControl_AfterUpdate()
+   If Me.cbCreateControl.Value = False Then
+      Me.ogNewControlType.Value = Null
+   Else
+      Me.ogNewControlType.Value = acTextBox
+   End If
+End Sub
+
+Private Sub ogNewControlType_Enter()
+   Me.ogNewControlType.Locked = (Me.cbCreateControl.Value = False)
 End Sub
