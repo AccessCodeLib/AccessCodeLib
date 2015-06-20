@@ -482,7 +482,7 @@ Begin Form
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x00000000
+        0x0000000000000000
     End
     OnLoad ="[Event Procedure]"
     NoSaveCTIWhenDisabled =1
@@ -781,7 +781,3 @@ End Sub
 Private Sub cmdExit_Click()
     DoCmd.Close acForm, Me.Name
 End Sub
-
-Private Function TableExists(TableName As String) As Boolean
-    TableExists = IsNull(DLookup("[Name]", "MSysObjects", "[Name] = '" & TableName & "' AND (Type = 1 Or Type = 6)")) = False
-End Function
