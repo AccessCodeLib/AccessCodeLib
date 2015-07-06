@@ -41,15 +41,14 @@ Private m_ActiveSortingControl As Control
 
 Public Event OrderByChanged(ByVal OrderByString As String)
 
+Private m_SortSymbolStrings(0 To 1) As String
+
 '--------------------------------------------------
 ' Variablen + API für Positionierung des "Sortier-Symbols"
 '
 Private m_SortSymbolLabel As Label
-Private m_SortSymbolAscChar As String
-Private m_SortSymbolDescChar As String
 Private WithEvents m_SortSymbolForm As Form
 Attribute m_SortSymbolForm.VB_VarHelpID = -1
-
 
 Private Declare Function FindWindowEx Lib "USER32.DLL" Alias "FindWindowExA" ( _
          ByVal hWnd1 As Long, _
@@ -70,14 +69,21 @@ Private Declare Function GetWindowRect Lib "user32" (ByVal Hwnd As Long, ByRef l
 ' / API
 '---------------------------------------------------
 
-
 Public Function Add(ByVal ControlRef As Control, ByVal OrderByStatement As String) As FormSortingControl
 
    With New FormSortingControl
+   
+      If Len(m_SortSymbolStrings(0)) > 0 Then
+         .SortSymbolString(False) = m_SortSymbolStrings(0)
+      End If
+      If Len(m_SortSymbolStrings(1)) > 0 Then
+         .SortSymbolString(True) = m_SortSymbolStrings(1)
+      End If
       
       Set .Control = ControlRef
       .OrderByStatement = OrderByStatement
       Set .EventBridge = m_EventBridge
+      
       Set Add = .This
       
       m_SortingControls.Add .This, ControlRef.Name
@@ -93,6 +99,10 @@ End Sub
 
 Private Sub m_EventBridge_SortingControlClick(ByVal SortingControl As FormSortingControl)
    
+   Dim LastSortingControl As Control
+   
+   Set LastSortingControl = m_ActiveSortingControl
+   
    If SortingControl.Control Is m_ActiveSortingControl Then
       m_UseDesc = Not m_UseDesc
    Else
@@ -100,23 +110,37 @@ Private Sub m_EventBridge_SortingControlClick(ByVal SortingControl As FormSortin
       Set m_ActiveSortingControl = SortingControl.Control
    End If
    
-   ChangeSortSymbol SortingControl.Control, m_UseDesc
+   ChangeSortSymbol SortingControl.Control, m_UseDesc, LastSortingControl
    
    RaiseEvent OrderByChanged(SortingControl.GetOrderByString(m_UseDesc))
    
 End Sub
 
-Private Sub ChangeSortSymbol(ByVal ControlRef As Control, ByVal SortDesc As Boolean)
+Private Sub ChangeSortSymbol(ByVal ControlRef As Control, ByVal SortDesc As Boolean, ByVal LastSortControl As Control)
    
    If Not (m_SortSymbolLabel Is Nothing) Then
       ChangeSortSymbolLabel ControlRef, SortDesc
       Exit Sub
    End If
    
-   '@TODO: Sortierkennung an Labeltext, Formatierung usw. erkennbar machen
+   'Sortierkennung an Labeltext, Formatierung usw. erkennbar machen
+   If Not (LastSortControl Is Nothing) Then
+   If Not (ControlRef Is LastSortControl) Then
+      m_SortingControls(LastSortControl.Name).RemoveSortSymbol
+   End If
+   End If
+   
+   m_SortingControls(ControlRef.Name).SetSortSymbol SortDesc
    
 End Sub
 
+Public Property Get DefaultSortSymbolString(ByVal SortDesc As Boolean) As String
+   DefaultSortSymbolString = m_SortSymbolStrings(Abs(SortDesc))
+End Property
+
+Public Property Let DefaultSortSymbolString(ByVal SortDesc As Boolean, ByVal NewString As String)
+   m_SortSymbolStrings(Abs(SortDesc)) = NewString
+End Property
 
 '-----------------------------------------------------
 ' Prozeduren für Positionierung des "Sortier-Symbols"
@@ -128,11 +152,11 @@ Public Sub InitSortSymbolLabel(ByVal SortSymbolRef As Label, SortAscChar As Stri
                Optional ByVal StartSortingcontrol As Control, Optional StartSortDesc As Boolean = False)
 
    Set m_SortSymbolLabel = SortSymbolRef
-   m_SortSymbolAscChar = SortAscChar
-   m_SortSymbolDescChar = SortDescChar
+   m_SortSymbolStrings(0) = SortAscChar
+   m_SortSymbolStrings(1) = SortDescChar
 
    If Not (StartSortingcontrol Is Nothing) Then
-      ChangeSortSymbol StartSortingcontrol, StartSortDesc
+      ChangeSortSymbol StartSortingcontrol, StartSortDesc, Nothing
    End If
    
    Set m_SortSymbolForm = m_SortSymbolLabel.Parent
@@ -151,9 +175,9 @@ Private Sub ChangeSortSymbolLabel(ByVal ControlRef As Control, ByVal SortDesc As
    SetSortSymbolPos ControlRef
    
    If SortDesc Then
-      m_SortSymbolLabel.Caption = m_SortSymbolDescChar
+      m_SortSymbolLabel.Caption = m_SortSymbolStrings(1)
    Else
-      m_SortSymbolLabel.Caption = m_SortSymbolAscChar
+      m_SortSymbolLabel.Caption = m_SortSymbolStrings(0)
    End If
    
 End Sub
