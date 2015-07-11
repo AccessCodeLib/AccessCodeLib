@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =-1636869288
+Checksum =1217078375
 Begin Form
     PopUp = NotDefault
     RecordSelectors = NotDefault
@@ -45,10 +45,10 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x00284a00da284a00102f3e01180000008c2c3e011a839d6a102f3e01242f3e01 ,
+        0x00281e01da281e01f0337e00180000006c317e001a83b465f0337e0004347e00 ,
         0x010403069c00400353ef800101000900ea0a6f08640001000f00580202000100 ,
-        0x5802030001004c657474657200000000242f3e010d0000000c2f3e01102f3e01 ,
-        0x8414b909f42c0000000000000000000000000000010000000000000001000000 ,
+        0x5802030001004c65747465720000000004347e000d000000ec337e00f0337e00 ,
+        0xeca5240ad4310000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
         0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
         0x0000000000000000050000000000070000000000000000000000000000000000 ,
@@ -80,7 +80,7 @@ Begin Form
     PrtDevNames = Begin
         0x08002c0041000100000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x006e756c3a00000000000000000000000000
+        0x006e756c3a0000000000
     End
     OnTimer ="[Event Procedure]"
     OnClick ="[Event Procedure]"
@@ -89,12 +89,12 @@ Begin Form
     AllowLayoutView =0
     DatasheetGridlinesColor12 =12632256
     PrtDevModeW = Begin
-        0x00000f004800000008a53f010a00000054a53f014dba4c0000000000714f27b8 ,
-        0xac7a3f01ecd8430008a53f01c000da0554a53f01090000002c7a3f0100000000 ,
+        0x0000ffff307f7f00e603160048000000e0a97f000a0000002caa7f004dba2001 ,
+        0x00000000194a67b9847f7f00ecd81701e0a97f01c000bd052caa7f0009000000 ,
         0x01040306dc00400353ef800101000900ea0a6f08640001000f00580202000100 ,
-        0x5802030001004c00650074007400650072000000000000000000000052030000 ,
-        0x1f000000c000da057f0000006002da050001000000000000687e3f01a0741177 ,
-        0x319e7059feff0000000000000000000000000000010000000000000001000000 ,
+        0x5802030001004c006500740074006500720000000c0000000000000000000000 ,
+        0x00000000520300001f000000c000bd057f0000006002bd050001000000000000 ,
+        0x40837f00a0740000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
         0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
         0x0000000000000000050000000000070000000000000000000000000000000000 ,
@@ -128,7 +128,7 @@ Begin Form
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x00000000000000000000000000000000000000000000000000006e0075006c00 ,
-        0x3a000000000000000000000000000000000000000000000000000000
+        0x3a0000000000000000000000
     End
     
     Begin
@@ -227,12 +227,16 @@ Attribute VB_Exposed = False
 Option Compare Text
 Option Explicit
 
+#Const DEBUG_FADEINOUT_TIMER = 0
+#Const DEBUG_FADEINOUT_TIMER_STEP = 0
+
 Private m_Self As Form
 Private m_FadeOutIsRunning As Boolean
 Private m_FadeInIsRunning As Boolean
 Private m_FadeOutTime As Long
 Private m_FadeInTransparencyTarget As Long
 Private m_CloseTimerInterval As Long
+Private m_FadeInOutStep As Long
 
 '********************************************************************************
 ' Deklarationen für Transparente Darstellung
@@ -351,6 +355,8 @@ Public Property Let Transparency(ByVal NewTransparency As Byte)
    m_Transparency = NewTransparency
    If m_Transparency > 100 Then
       m_Transparency = 100
+   ElseIf m_Transparency < 0 Then
+      m_Transparency = 0
    End If
    
    TransparencyValue = CDbl(m_Transparency) * 2.55
@@ -421,6 +427,9 @@ Private Sub Form_Timer()
       If m_FadeOutTime > 0 Then
          StartFadeOut
       Else
+#If DEBUG_FADEINOUT_TIMER Then
+   Debug.Print ObjPtr(Me), "CloseForm", Timer, Now()
+#End If
          CloseForm
       End If
    End If
@@ -429,25 +438,68 @@ End Sub
 
 Private Sub StartFadeOut()
 
+   Me.TimerInterval = 0
+
    m_FadeOutIsRunning = True
 
    If Me.Transparency >= 100 Then
+      m_FadeInOutStep = 1
       Me.TimerInterval = 1
       Exit Sub
    End If
    
-   Me.TimerInterval = m_FadeOutTime / (100 - Me.Transparency)
-   If Me.TimerInterval = 0 Then
-      Me.TimerInterval = 1
-   End If
+   
+   Me.TimerInterval = CalcFadeInFadeOutTimerInverval(m_FadeOutTime, (100 - Me.Transparency))
 
+#If DEBUG_FADEINOUT_TIMER Then
+   Debug.Print ObjPtr(Me), "StartFadeOut", Me.TimerInterval, Timer, Now()
+#End If
+      
 End Sub
+
+Private Function CalcFadeInFadeOutTimerInverval(ByVal FadeInOutTime As Long, ByVal TransparenceDiff As Long) As Long
+
+   Dim lngTimerInveral As Long
+
+   m_FadeInOutStep = Int(CDbl(TransparenceDiff) / (CDbl(FadeInOutTime) / 100#))
+   If m_FadeInOutStep = 0 Then
+      m_FadeInOutStep = 1
+   End If
+   
+   lngTimerInveral = Int(CDbl(FadeInOutTime) / (CDbl(TransparenceDiff) / CDbl(m_FadeInOutStep)))
+   If lngTimerInveral = 0 Then
+      lngTimerInveral = 1
+   End If
+   
+#If DEBUG_FADEINOUT_TIMER Then
+   Debug.Print ObjPtr(Me), "CalcFadeInFadeOutTimerInverval", FadeInOutTime, TransparenceDiff, lngTimerInveral, m_FadeInOutStep
+#End If
+   
+   CalcFadeInFadeOutTimerInverval = lngTimerInveral
+
+End Function
+
 
 Private Sub RunFadeOutStep()
 
-   Me.Transparency = Me.Transparency + 1
+   Dim NewTransparency As Long
+
+   NewTransparency = Me.Transparency + m_FadeInOutStep
+   If NewTransparency > 100 Then
+      NewTransparency = 100
+   End If
+   
+   Me.Transparency = NewTransparency
+
+#If DEBUG_FADEINOUT_TIMER_STEP Then
+   Debug.Print ObjPtr(Me), "RunFadeOutStep", m_FadeInOutStep, Timer, Now()
+#End If
    
    If Me.Transparency >= 90 Then
+#If DEBUG_FADEINOUT_TIMER Then
+      Debug.Print ObjPtr(Me), "CloseFadeOutStep", Timer, Now()
+#End If
+      
       CloseForm
    End If
 
@@ -471,30 +523,59 @@ Private Sub StartFadeIn(ByVal FadeInTime As Long, ByVal TargetTransparencyFactor
    m_FadeInIsRunning = True
    
    If m_FadeInTransparencyTarget >= 100 Then
+      m_FadeInOutStep = 1
       Me.TimerInterval = 1
+      Stop
       Exit Sub
    End If
    
-   Me.TimerInterval = FadeInTime / (100 - m_FadeInTransparencyTarget)
-   If Me.TimerInterval = 0 Then
-      Me.TimerInterval = 1
-   End If
+   Me.TimerInterval = CalcFadeInFadeOutTimerInverval(FadeInTime, 100 - m_FadeInTransparencyTarget)
+
+#If DEBUG_FADEINOUT_TIMER Then
+   Debug.Print ObjPtr(Me), "StartFadeIn", Me.TimerInterval, Timer, Now()
+#End If
 
 End Sub
 
 Private Sub RunFadeInStep()
    
-   If Me.Transparency <= m_FadeInTransparencyTarget Then
-      Me.Transparency = m_FadeInTransparencyTarget
-      Me.TimerInterval = m_CloseTimerInterval
-      m_FadeInIsRunning = False
+   Dim NewTransparency As Long
+   
+   NewTransparency = Me.Transparency - m_FadeInOutStep
+   
+   If NewTransparency <= m_FadeInTransparencyTarget Then
+      CloseFadeIn
       Exit Sub
    End If
    
-   Me.Transparency = Me.Transparency - 1
+   Me.Transparency = NewTransparency
+   
+#If DEBUG_FADEINOUT_TIMER_STEP Then
+   Debug.Print ObjPtr(Me), "RunFadeInStep", m_FadeInOutStep, Timer, Now()
+#End If
    
 End Sub
 
+Private Sub CloseFadeIn()
+   
+   Me.TimerInterval = 0
+   m_FadeInIsRunning = False
+   
+#If DEBUG_FADEINOUT_TIMER Then
+   Debug.Print ObjPtr(Me), "CloseFadeIn", Me.TimerInterval, Timer, Now()
+#End If
+      
+   Me.Transparency = m_FadeInTransparencyTarget
+   
+   Me.TimerInterval = m_CloseTimerInterval
+   
+#If DEBUG_FADEINOUT_TIMER Then
+   If m_CloseTimerInterval > 0 Then
+      Debug.Print ObjPtr(Me), "StartCloseTimer", Me.TimerInterval, Timer, Now()
+   End If
+#End If
+   
+End Sub
 
 Private Function GetTextHeight(ByVal ctl As Control) As Long
 ' = angepasster Code der Funktion fTextWidthOrHeight von Stephen Lebans
