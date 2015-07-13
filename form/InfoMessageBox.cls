@@ -37,7 +37,6 @@ Private WithEvents m_Form As Form
 Attribute m_Form.VB_VarHelpID = -1
 Private WithEvents m_Form_DetailSection As Section
 Attribute m_Form_DetailSection.VB_VarHelpID = -1
-'Private WithEvents m_TextBox As TextBox
 Private Const EventProcedureTag As String = "[Event Procedure]"
 
 #Const DEBUG_FADEINOUT_TIMER = 0
@@ -117,7 +116,7 @@ Public Sub Show(Optional ByVal NewInfoText As String = vbNullString, _
    
    
    If KeepSelfReference Then
-      Set m_Self = Me ' .. Formularinstanz halten
+      Set m_Self = Me ' .. eigene Instanz halten
    End If
    
    Me.Form.CheckWidth
@@ -162,9 +161,8 @@ Private Sub AlignText(ByVal ctl As Control)
    TextHeight = GetTextHeight(ctl)
    
    If TextHeight > ctl.Height Then
-      m_Form.InsideHeight = TextHeight + 100
+      m_Form.SetInfoTextControlHeight TextHeight + 100
       ctl.TopMargin = 50
-      ctl.Height = TextHeight + 100
    Else
       ctl.TopMargin = ((ctl.Height - TextHeight) / 2)
    End If
@@ -374,7 +372,7 @@ Private Sub RunFadeOutStep()
 
 End Sub
 
-Private Sub CloseForm()
+Public Sub CloseForm()
    Dispose
 End Sub
 

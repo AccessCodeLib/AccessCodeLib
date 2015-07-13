@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =1320398776
+Checksum =-570975562
 Begin Form
     PopUp = NotDefault
     RecordSelectors = NotDefault
@@ -25,7 +25,7 @@ Begin Form
     GridY =10
     Width =5670
     DatasheetFontHeight =12
-    ItemSuffix =1
+    ItemSuffix =2
     Left =5316
     Top =3288
     Right =14112
@@ -44,9 +44,9 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x00000000c0551c011a83b46544581c0158581c0118000000d4551c011a83b465 ,
+        0x0000000090551c011a83b46514581c0128581c0118000000a4551c011a83b465 ,
         0x010403069c00400353ef800101000900ea0a6f08640001000f00580202000100 ,
-        0x5802030001004c657474657200581c0144581c019cf59d0a28561c0143421900 ,
+        0x5802030001004c657474657200581c0114581c019cf59d0af8551c0143421900 ,
         0xb8f59d0a4a420000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
         0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
@@ -133,6 +133,22 @@ Begin Form
             BackStyle =0
             FontName ="Tahoma"
         End
+        Begin CommandButton
+            Width =1701
+            Height =283
+            FontSize =11
+            FontWeight =400
+            FontName ="Segoe UI"
+            ForeThemeColorIndex =2
+            ForeShade =50.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            BackColor =-2147483633
+            BorderLineStyle =0
+            BorderThemeColorIndex =3
+            BorderShade =90.0
+            ThemeFontIndex =1
+        End
         Begin TextBox
             FELineBreak = NotDefault
             BorderLineStyle =0
@@ -156,7 +172,7 @@ Begin Form
                 Begin TextBox
                     Enabled = NotDefault
                     Locked = NotDefault
-                    OverlapFlags =85
+                    OverlapFlags =93
                     TextAlign =2
                     BackStyle =0
                     IMESentenceMode =3
@@ -177,6 +193,37 @@ Begin Form
                     BorderShade =100.0
                     ForeShade =100.0
                     GridlineShade =100.0
+                End
+                Begin CommandButton
+                    Transparent = NotDefault
+                    Cancel = NotDefault
+                    TabStop = NotDefault
+                    OverlapFlags =247
+                    Left =5272
+                    Top =56
+                    Width =336
+                    Height =372
+                    TabIndex =1
+                    ForeColor =3484194
+                    Name ="cmdClose"
+                    Caption ="x"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Calibri"
+                    GUID = Begin
+                        0xef6925f61e2ee24590d8fc6b0d69dd89
+                    End
+                    GridlineColor =10921638
+
+                    LayoutCachedLeft =5272
+                    LayoutCachedTop =56
+                    LayoutCachedWidth =5608
+                    LayoutCachedHeight =428
+                    BorderColor =13553360
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
+                    Overlaps =1
                 End
             End
         End
@@ -209,9 +256,6 @@ Attribute VB_Exposed = False
 Option Compare Text
 Option Explicit
 
-Public Property Get InfoTextControl() As Control
-   Set InfoTextControl = Me.txtMessageText
-End Property
 
 Public Property Let InfoText(ByVal NewValue As String)
    Me.txtMessageText.Value = NewValue
@@ -223,6 +267,15 @@ Public Sub CheckWidth()
       Me.InsideWidth = Me.WindowWidth
    End If
 End Sub
+
+Public Sub SetInfoTextControlHeight(ByVal NewHeight As Long)
+   Me.InsideHeight = NewHeight
+   Me.txtMessageText.Height = NewHeight
+End Sub
+
+Public Property Get InfoTextControl() As Control
+   Set InfoTextControl = Me.txtMessageText
+End Property
 
 Public Property Get BackColor() As Long
    BackColor = Me.Section(0).BackColor
@@ -239,3 +292,8 @@ End Property
 Public Property Let ForeColor(ByVal NewValue As Long)
    Me.txtMessageText.ForeColor = NewValue
 End Property
+
+'Sicherheitsfunktion, falls andere Ereignisse nicht greifen
+Private Sub cmdClose_Click()
+   DoCmd.Close
+End Sub
