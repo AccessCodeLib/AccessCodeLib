@@ -274,6 +274,7 @@ End Property
 
 Private Sub m_Form_Close()
    RaiseEvent InfoMessageClosed
+   Dispose
 End Sub
 
 Private Sub m_Form_DetailSection_Click()
