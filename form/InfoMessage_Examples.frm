@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =1017044034
+Checksum =671341231
 Begin Form
     RecordSelectors = NotDefault
     NavigationButtons = NotDefault
@@ -14,16 +14,16 @@ Begin Form
     Width =6994
     DatasheetFontHeight =11
     ItemSuffix =1
-    Left =735
-    Top =1110
-    Right =7725
-    Bottom =7050
+    Left =720
+    Top =810
+    Right =7710
+    Bottom =6750
     DatasheetGridlinesColor =15062992
     RecSrcDt = Begin
         0x21e3b399719ae440
     End
     GUID = Begin
-        0xade9d8f5f54fcd4db3096eb056b10ffd
+        0x4aba6e5d849c804db803e0b4e3b2de40
     End
     DatasheetFontName ="Calibri"
     PrtMip = Begin
@@ -135,7 +135,7 @@ Begin Form
             Height =5952
             Name ="Detailbereich"
             GUID = Begin
-                0x684e006b0bbe7247a354a23b6c6366c8
+                0x7d65f49d36c2ca459c4c72437147022e
             End
             AutoHeight =1
             AlternateBackColor =15921906
@@ -152,7 +152,7 @@ Begin Form
                     Caption ="Beispiele zeigen"
                     OnClick ="[Event Procedure]"
                     GUID = Begin
-                        0x277d5920d3db494194bc7b6af134b22a
+                        0xef51475d9548c34ba4161a7fae1898b2
                     End
                     GridlineColor =10921638
 
@@ -176,11 +176,11 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Form: frmInfoMessage_Examples
+' Form: InfoMessage_Examples
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>form/frmInfoMessage_Examples.frm</file>
-'  <use>form/frmInfoMessage.frm</use>
+'  <file>form/InfoMessage_Examples.frm</file>
+'  <use>form/InfoMessage.cls</use>
 '  <license>_codelib/license.bas</license>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -190,32 +190,32 @@ Option Explicit
 
 Private Sub cmdStart_Click()
 
-   With New Form_frmInfoMessage
+   With New InfoMessage
       .Show "Hallo Du!", 5000, 25
    End With
 
-   With New Form_frmInfoMessage
+   With New InfoMessage
       .Move 250, Me.WindowTop + Me.WindowHeight / 2
       .BackColor = vbBlue
       .ForeColor = vbWhite
       .Show "<b>Einblenden</b> und <i>ausblenden</i>", 500, 25, 2000, 2500
    End With
 
-   With New Form_frmInfoMessage
+   With New InfoMessage
       .Move Me.WindowLeft + Me.WindowWidth * 3 / 4, Me.WindowTop
       .BackColor = vbBlack
       .ForeColor = vbWhite
       .Show "Dieses Fenster bleibt sichtbar ...<br /><br><b>... bis darauf geklickt wird</b>", 0, 50, 0, 5000
    End With
 
-   With New Form_frmInfoMessage
-      .Move Me.WindowLeft + Me.WindowWidth - .WindowWidth, Me.WindowTop + Me.WindowHeight - .WindowHeight
+   With New InfoMessage
+      .Move Me.WindowLeft + Me.WindowWidth - .Form.WindowWidth, Me.WindowTop + Me.WindowHeight - .Form.WindowHeight
       .BackColor = vbGreen
       .Show GetMessageText("MSG_Wait"), 0, 50, 0, 5000
    End With
 
    'Textbox wird vergrößert, weil Höhe nicht ausreicht:
-   With New Form_frmInfoMessage
+   With New InfoMessage
       .Move Me.WindowLeft + Me.WindowWidth / 2, Me.WindowTop + Me.WindowHeight / 4
       .Show "Zeile1<br>Zeile2<br>Zeile3<br>Zeile4<br>Zeile5<br>Zeile6<br>Zeile7<br>Zeile8<br>Zeile9<br>Zeile10", 100, 50, 6000, 0
       ' oder:
@@ -223,7 +223,7 @@ Private Sub cmdStart_Click()
    End With
 
    'Fenster schmäler stellen:
-   With New Form_frmInfoMessage
+   With New InfoMessage
       .Move 250, 250, 2600 ' <-- Breite 2600
       .BackColor = vbRed
       .Show "Diese Fenster wird langsam <u>ausgeblendet</u>", 2000, 25, 3000

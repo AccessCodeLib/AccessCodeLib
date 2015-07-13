@@ -1,200 +1,14 @@
-Version =20
-VersionRequired =20
-Checksum =-1734004787
-Begin Form
-    PopUp = NotDefault
-    RecordSelectors = NotDefault
-    MaxButton = NotDefault
-    MinButton = NotDefault
-    ControlBox = NotDefault
-    AutoCenter = NotDefault
-    NavigationButtons = NotDefault
-    AllowDeletions = NotDefault
-    CloseButton = NotDefault
-    DividingLines = NotDefault
-    AllowAdditions = NotDefault
-    AllowEdits = NotDefault
-    DefaultView =0
-    ScrollBars =0
-    ViewsAllowed =1
-    TabularFamily =220
-    BorderStyle =0
-    PictureAlignment =2
-    DatasheetGridlinesBehavior =3
-    Cycle =1
-    GridY =10
-    Width =5670
-    DatasheetFontHeight =12
-    ItemSuffix =1
-    Left =8025
-    Top =3585
-    Right =16830
-    Bottom =8985
-    DatasheetGridlinesColor =12632256
-    RecSrcDt = Begin
-        0x4ae3a063f093e240
-    End
-    GUID = Begin
-        0xa1a24e08036c384d9bcf10a2dd27312a
-    End
-    Caption ="Information"
-    OnOpen ="[Event Procedure]"
-    DatasheetFontName ="Arial"
-    PrtMip = Begin
-        0x6e0400006e0400006e0400006e04000000000000201c0000e010000001000000 ,
-        0x010000006801000000000000a10700000100000001000000
-    End
-    PrtDevMode = Begin
-        0x0000000000000000000000008356673804000000010000000000000000000000 ,
-        0x010400069c00640353ef8001010009009a0b3408640001000f00580202000100 ,
-        0x5802030001004134000000000c0000008c5a3f009f84cd2fe04419060c000000 ,
-        0xa05a3f000d000000000000000000000000000000010000000000000001000000 ,
-        0x0200000001000000000000000000000000000000000000000000000050524956 ,
-        0xe210000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000180000000000102710271027 ,
-        0x0000102700000000000000009000640300000000000000000000000000000000 ,
-        0x0000000000000000030000000000000000001000503403002888040000000000 ,
-        0x0000000000000100000000000000000000000000000000002401df8c03000000 ,
-        0x05000b00ff000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0100000000000000000000000000000090000000534d544a0000000010008000 ,
-        0x4d00530020005000750062006c0069007300680065007200200043006f006c00 ,
-        0x6f00720020005000720069006e0074006500720000005265736f6c7574696f6e ,
-        0x00363030647069005061676553697a650041340050616765526567696f6e0000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000
-    End
-    PrtDevNames = Begin
-        0x080023002b000100000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000467265655044465850313a00
-    End
-    OnTimer ="[Event Procedure]"
-    OnClick ="[Event Procedure]"
-    OnLoad ="[Event Procedure]"
-    FilterOnLoad =0
-    AllowLayoutView =0
-    DatasheetGridlinesColor12 =12632256
-    FitToScreen =255
-    PrtDevModeW = Begin
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x01040006dc00640353ef8001010009009a0b3408640001000f00580202000100 ,
-        0x5802030001004100340000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000010000000000000001000000 ,
-        0x0200000001000000000000000000000000000000000000000000000050524956 ,
-        0xe210000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000180000000000102710271027 ,
-        0x0000102700000000000000009000640300000000000000000000000000000000 ,
-        0x0000000000000000030000000000000000001000503403002888040000000000 ,
-        0x0000000000000100000000000000000000000000000000002401df8c03000000 ,
-        0x05000b00ff000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0100000000000000000000000000000090000000534d544a0000000010008000 ,
-        0x4d00530020005000750062006c0069007300680065007200200043006f006c00 ,
-        0x6f00720020005000720069006e0074006500720000005265736f6c7574696f6e ,
-        0x00363030647069005061676553697a650041340050616765526567696f6e0000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000
-    End
-    PrtDevNamesW = Begin
-        0x04001f0027000100000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000460072006500650050004400460058005000 ,
-        0x31003a000000
-    End
-    
-    Begin
-        Begin Label
-            BackStyle =0
-            FontName ="Tahoma"
-        End
-        Begin TextBox
-            FELineBreak = NotDefault
-            BorderLineStyle =0
-            Width =1701
-            LabelX =-1701
-            FontSize =11
-            FontName ="Calibri"
-            AsianLineBreak =1
-            BorderShade =90.0
-            ForeShade =50.0
-            GridlineShade =65.0
-        End
-        Begin Section
-            Height =1928
-            BackColor =-2147483624
-            Name ="Detailbereich"
-            OnClick ="[Event Procedure]"
-            GUID = Begin
-                0x6645a8925546fb40b0b25468410b9419
-            End
-            Begin
-                Begin TextBox
-                    Enabled = NotDefault
-                    Locked = NotDefault
-                    OverlapFlags =85
-                    TextAlign =2
-                    BackStyle =0
-                    IMESentenceMode =3
-                    Width =5670
-                    Height =1928
-                    FontSize =12
-                    Name ="txtMessageText"
-                    FontName ="Tahoma"
-                    OnClick ="[Event Procedure]"
-                    GUID = Begin
-                        0x261acc75317e32489c72a9120b6de8c9
-                    End
-                    TextFormat =1
-                    HorizontalAnchor =2
-                    VerticalAnchor =2
-
-                    LayoutCachedWidth =5670
-                    LayoutCachedHeight =1928
-                    BorderShade =100.0
-                    ForeShade =100.0
-                    GridlineShade =100.0
-                End
-            End
-        End
-    End
-End
-CodeBehindForm
+VERSION 1.0 CLASS
+BEGIN
+  MultiUse = -1  'True
+END
+Attribute VB_Name = "InfoMessage"
 Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = True
-Attribute VB_PredeclaredId = True
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Form: frmInfoMessage
+' Class: InfoMessage
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -202,7 +16,7 @@ Attribute VB_Exposed = False
 ' </summary>
 ' <remarks>
 ' <code>
-' With New Form_frmInfoMessage
+' With New InfoMessage
 '   .Show "Hallo Du!", 3000, 0, 3000, 6000
 ' End With
 ' </code>
@@ -210,7 +24,8 @@ Attribute VB_Exposed = False
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>form/frmInfoMessage.frm</file>
+'  <file>form/InfoMessage.cls</file>
+'  <use>form/InfoMessageForm.frm</use>
 '  <license>_codelib/license.bas</license>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -218,10 +33,17 @@ Attribute VB_Exposed = False
 Option Compare Text
 Option Explicit
 
+Private WithEvents m_Form As Form
+Attribute m_Form.VB_VarHelpID = -1
+Private WithEvents m_Form_DetailSection As Section
+Attribute m_Form_DetailSection.VB_VarHelpID = -1
+'Private WithEvents m_TextBox As TextBox
+Private Const EventProcedureTag As String = "[Event Procedure]"
+
 #Const DEBUG_FADEINOUT_TIMER = 0
 #Const DEBUG_FADEINOUT_TIMER_STEP = 0
 
-Private m_Self As Form
+Private m_Self As InfoMessage
 Private m_FadeOutIsRunning As Boolean
 Private m_FadeInIsRunning As Boolean
 Private m_FadeOutTime As Long
@@ -284,22 +106,24 @@ Private Declare Function apiReleaseDC Lib "user32" Alias "ReleaseDC" (ByVal Hwnd
 Private Declare Function apiDrawText Lib "user32" Alias "DrawTextA" (ByVal hDC As Long, ByVal lpStr As String, ByVal nCount As Long, lpRect As RECT, ByVal wFormat As Long) As Long
 '********************************************************************************
 
+Public Event InfoMessageClosed()
+
 Public Sub Show(Optional ByVal NewInfoText As String = vbNullString, _
                 Optional ByVal CloseTimer As Long = 0, _
                 Optional ByVal TransparencyFactor As Long = -1, _
                 Optional ByVal FadeOutTime As Long = 0, _
                 Optional ByVal FadeInTime As Long = 0, _
-                Optional ByVal KeepFormReference As Boolean = True)
+                Optional ByVal KeepSelfReference As Boolean = True)
    
    
-   CheckSize
-   
-   If KeepFormReference Then
+   If KeepSelfReference Then
       Set m_Self = Me ' .. Formularinstanz halten
    End If
    
+   Me.Form.CheckWidth
+   
    If Len(NewInfoText) > 0 Then
-      InfoText = NewInfoText
+      Text = NewInfoText
    End If
    
    If FadeInTime > 0 Then
@@ -311,32 +135,23 @@ Public Sub Show(Optional ByVal NewInfoText As String = vbNullString, _
    m_FadeOutTime = FadeOutTime
    m_CloseTimerInterval = CloseTimer
    
-   Me.Visible = True
+   m_Form.Visible = True
    
    If FadeInTime > 0 Then
       StartFadeIn FadeInTime, TransparencyFactor
    Else
-      Me.TimerInterval = m_CloseTimerInterval
+      m_Form.TimerInterval = m_CloseTimerInterval
    End If
    
 End Sub
 
-Private Sub CheckSize()
-
-   If Me.txtMessageText.Width > Me.WindowWidth Then
-      Me.txtMessageText.Width = Me.WindowWidth
-      Me.InsideWidth = Me.WindowWidth
-   End If
-
-End Sub
-
-Public Property Let InfoText(ByVal NewText As String)
+Public Property Let Text(ByVal NewText As String)
 
    NewText = GetCheckedHtmlRichText(NewText)
-   Me.txtMessageText.Value = NewText
+   m_Form.InfoText = NewText
    
    If Len(NewText) > 0 Then
-      AlignText Me.txtMessageText
+      AlignText m_Form.InfoTextControl
    End If
    
 End Property
@@ -347,7 +162,7 @@ Private Sub AlignText(ByVal ctl As Control)
    TextHeight = GetTextHeight(ctl)
    
    If TextHeight > ctl.Height Then
-      Me.InsideHeight = TextHeight + 100
+      m_Form.InsideHeight = TextHeight + 100
       ctl.TopMargin = 50
       ctl.Height = TextHeight + 100
    Else
@@ -362,7 +177,7 @@ Private Function GetCheckedHtmlRichText(ByVal TextToCheck As String) As String
    strText = TextToCheck
    
    If Val(Application.SysCmd(acSysCmdAccessVer)) >= 12 Then ' ab Ac2007
-   If Me.txtMessageText.Properties("TextFormat") = 1 Then ' 1 = acTextFormatHTMLRichText
+   If m_Form.InfoTextControl.Properties("TextFormat") = 1 Then ' 1 = acTextFormatHTMLRichText
       If InStr(1, strText, "<div>", vbTextCompare) = 0 Then ' normaler Text, der im RichTextformat dargestellt werden soll
          strText = "<div>" & Replace(strText, vbNewLine, "<br />") & "</div>"
       End If
@@ -373,6 +188,41 @@ Private Function GetCheckedHtmlRichText(ByVal TextToCheck As String) As String
    
 End Function
 
+Public Property Get Form() As Form
+   CheckFormRef
+   Set Form = m_Form
+End Property
+
+Public Property Set Form(ByVal NewRef As Form)
+   
+   Set m_Form = NewRef
+   Set m_Form_DetailSection = m_Form.Section(acDetail)
+   
+   If Len(m_Form.OnTimer) = 0 Then
+      m_Form.OnTimer = EventProcedureTag
+   End If
+   If Len(m_Form.OnClick) = 0 Then
+      m_Form.OnClick = EventProcedureTag
+   End If
+   If Len(m_Form.OnClose) = 0 Then
+      m_Form.OnClose = EventProcedureTag
+   End If
+   
+   If Len(m_Form_DetailSection.OnClick) = 0 Then
+      m_Form_DetailSection.OnClick = EventProcedureTag
+   End If
+   
+End Property
+
+Public Sub Move(Optional ByVal Left As Variant, Optional ByVal Top As Variant, Optional ByVal Width As Variant, Optional ByVal Height As Variant)
+   Me.Form.Move Left, Top, Width, Height
+End Sub
+
+Private Sub CheckFormRef()
+   If m_Form Is Nothing Then
+      Set Form = New Form_InfoMessageForm
+   End If
+End Sub
 
 Public Property Let Transparency(ByVal NewTransparency As Byte)
    
@@ -396,11 +246,11 @@ Public Property Let Transparency(ByVal NewTransparency As Byte)
    
    bAlpha = (255 - TransparencyValue)
    
-   ret = GetWindowLong(Me.Hwnd, (-20))
+   ret = GetWindowLong(Me.Form.Hwnd, (-20))
    ret = ret Or &H80000
-   SetWindowLong Me.Hwnd, (-20), ret
+   SetWindowLong m_Form.Hwnd, (-20), ret
                                
-   SetLayeredWindowAttributes Me.Hwnd, 0, bAlpha, &H2
+   SetLayeredWindowAttributes m_Form.Hwnd, 0, bAlpha, &H2
     
 End Property
 
@@ -409,54 +259,46 @@ Public Property Get Transparency() As Byte
 End Property
 
 Public Property Get BackColor() As Long
-   BackColor = Me.Section(0).BackColor
+   BackColor = m_Form.BackColor
 End Property
 
 Public Property Let BackColor(ByVal NewValue As Long)
-   Me.Section(0).BackColor = NewValue
+   Me.Form.BackColor = NewValue
 End Property
 
 Public Property Get ForeColor() As Long
-   ForeColor = Me.txtMessageText.ForeColor
+   ForeColor = m_Form.ForeColor
 End Property
 
 Public Property Let ForeColor(ByVal NewValue As Long)
-   Me.txtMessageText.ForeColor = NewValue
+   Me.Form.ForeColor = NewValue
 End Property
 
-Private Sub Detailbereich_Click()
+Private Sub m_Form_Close()
+   RaiseEvent InfoMessageClosed
+End Sub
+
+Private Sub m_Form_DetailSection_Click()
    CloseForm
 End Sub
 
-Private Sub Form_Click()
+Private Sub m_Form_Click()
    CloseForm
 End Sub
 
-Private Sub Form_Open(Cancel As Integer)
-   '@TODO: Openargs auswerten und Property-Werte daraus setzen
-End Sub
-
-Private Sub Form_Load()
-'  AlignText Me.txtMessageText
-End Sub
-
-Private Sub txtMessageText_Click()
-   CloseForm
-End Sub
-
-Private Sub Form_Timer()
+Private Sub m_Form_Timer()
    
    If m_FadeOutIsRunning Then
       RunFadeOutStep
    ElseIf m_FadeInIsRunning Then
       RunFadeInStep
    Else
-      Me.TimerInterval = 0
+      m_Form.TimerInterval = 0
       If m_FadeOutTime > 0 Then
          StartFadeOut
       Else
 #If DEBUG_FADEINOUT_TIMER Then
-   Debug.Print ObjPtr(Me), "CloseForm", Timer, Now()
+   Debug.Print ObjPtr(m_Form), "CloseForm", Timer, Now()
 #End If
          CloseForm
       End If
@@ -466,18 +308,17 @@ End Sub
 
 Private Sub StartFadeOut()
 
-   Me.TimerInterval = 0
+   Me.Form.TimerInterval = 0
 
    m_FadeOutIsRunning = True
 
    If Me.Transparency >= 100 Then
       m_FadeInOutStep = 1
-      Me.TimerInterval = 1
+      m_Form.TimerInterval = 1
       Exit Sub
    End If
    
-   
-   Me.TimerInterval = CalcFadeInFadeOutTimerInverval(m_FadeOutTime, (100 - Me.Transparency))
+   m_Form.TimerInterval = CalcFadeInFadeOutTimerInverval(m_FadeOutTime, (100 - Me.Transparency))
 
 #If DEBUG_FADEINOUT_TIMER Then
    Debug.Print ObjPtr(Me), "StartFadeOut", Me.TimerInterval, Timer, Now()
@@ -534,10 +375,13 @@ Private Sub RunFadeOutStep()
 End Sub
 
 Private Sub CloseForm()
-   DoCmd.Close
-   If Not (m_Self Is Nothing) Then
-      Set m_Self = Nothing
-   End If
+   Dispose
+End Sub
+
+Private Sub Dispose()
+   Set m_Form_DetailSection = Nothing
+   Set m_Form = Nothing
+   Set m_Self = Nothing
 End Sub
 
 Private Sub StartFadeIn(ByVal FadeInTime As Long, ByVal TargetTransparencyFactor As Long)
@@ -552,15 +396,15 @@ Private Sub StartFadeIn(ByVal FadeInTime As Long, ByVal TargetTransparencyFactor
    
    If m_FadeInTransparencyTarget >= 100 Then
       m_FadeInOutStep = 1
-      Me.TimerInterval = 1
+      m_Form.TimerInterval = 1
       Stop
       Exit Sub
    End If
    
-   Me.TimerInterval = CalcFadeInFadeOutTimerInverval(FadeInTime, 100 - m_FadeInTransparencyTarget)
+   m_Form.TimerInterval = CalcFadeInFadeOutTimerInverval(FadeInTime, 100 - m_FadeInTransparencyTarget)
 
 #If DEBUG_FADEINOUT_TIMER Then
-   Debug.Print ObjPtr(Me), "StartFadeIn", Me.TimerInterval, Timer, Now()
+   Debug.Print ObjPtr(Me), "StartFadeIn", m_Form.TimerInterval, Timer, Now()
 #End If
 
 End Sub
@@ -586,7 +430,7 @@ End Sub
 
 Private Sub CloseFadeIn()
    
-   Me.TimerInterval = 0
+   m_Form.TimerInterval = 0
    m_FadeInIsRunning = False
    
 #If DEBUG_FADEINOUT_TIMER Then
@@ -595,11 +439,11 @@ Private Sub CloseFadeIn()
       
    Me.Transparency = m_FadeInTransparencyTarget
    
-   Me.TimerInterval = m_CloseTimerInterval
+   m_Form.TimerInterval = m_CloseTimerInterval
    
 #If DEBUG_FADEINOUT_TIMER Then
    If m_CloseTimerInterval > 0 Then
-      Debug.Print ObjPtr(Me), "StartCloseTimer", Me.TimerInterval, Timer, Now()
+      Debug.Print ObjPtr(Me), "StartCloseTimer", m_Form.TimerInterval, Timer, Now()
    End If
 #End If
    
