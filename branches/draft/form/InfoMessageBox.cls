@@ -2,13 +2,13 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "InfoMessage"
+Attribute VB_Name = "InfoMessageBox"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class: InfoMessage
+' Class: InfoMessageBox
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -16,7 +16,7 @@ Attribute VB_Exposed = False
 ' </summary>
 ' <remarks>
 ' <code>
-' With New InfoMessage
+' With New InfoMessageBox
 '   .Show "Hallo Du!", 3000, 0, 3000, 6000
 ' End With
 ' </code>
@@ -24,8 +24,8 @@ Attribute VB_Exposed = False
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>form/InfoMessage.cls</file>
-'  <use>form/InfoMessageForm.frm</use>
+'  <file>form/InfoMessageBox.cls</file>
+'  <use>form/InfoMessageBoxForm.frm</use>
 '  <license>_codelib/license.bas</license>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ Private Const EventProcedureTag As String = "[Event Procedure]"
 #Const DEBUG_FADEINOUT_TIMER = 0
 #Const DEBUG_FADEINOUT_TIMER_STEP = 0
 
-Private m_Self As InfoMessage
+Private m_Self As InfoMessageBox
 Private m_FadeOutIsRunning As Boolean
 Private m_FadeInIsRunning As Boolean
 Private m_FadeOutTime As Long
@@ -220,7 +220,7 @@ End Sub
 
 Private Sub CheckFormRef()
    If m_Form Is Nothing Then
-      Set Form = New Form_InfoMessageForm
+      Set Form = New Form_InfoMessageBoxForm
    End If
 End Sub
 
