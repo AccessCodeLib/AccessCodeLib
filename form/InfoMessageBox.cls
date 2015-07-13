@@ -133,6 +133,9 @@ Public Sub Show(Optional ByVal NewInfoText As String = vbNullString, _
 
    m_FadeOutTime = FadeOutTime
    m_CloseTimerInterval = CloseTimer
+   If m_CloseTimerInterval = 0 And m_FadeOutTime > 0 Then
+      m_CloseTimerInterval = 1
+   End If
    
    m_Form.Visible = True
    
@@ -363,14 +366,19 @@ Private Sub RunFadeOutStep()
    Debug.Print ObjPtr(Me), "RunFadeOutStep", m_FadeInOutStep, Timer, Now()
 #End If
    
-   If Me.Transparency >= 90 Then
+   If Me.Transparency >= 99 Then
 #If DEBUG_FADEINOUT_TIMER Then
       Debug.Print ObjPtr(Me), "CloseFadeOutStep", Timer, Now()
 #End If
-      
-      CloseForm
+      CloseFadeOut
    End If
 
+End Sub
+
+Private Sub CloseFadeOut()
+   m_Form.TimerInterval = 0
+   m_FadeOutIsRunning = False
+   CloseForm
 End Sub
 
 Public Sub CloseForm()
