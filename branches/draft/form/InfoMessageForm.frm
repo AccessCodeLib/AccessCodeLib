@@ -1,40 +1,53 @@
 Version =20
 VersionRequired =20
-Checksum =1017044034
+Checksum =621775340
 Begin Form
+    PopUp = NotDefault
     RecordSelectors = NotDefault
+    MaxButton = NotDefault
+    MinButton = NotDefault
+    ControlBox = NotDefault
+    AutoCenter = NotDefault
     NavigationButtons = NotDefault
+    AllowDeletions = NotDefault
+    CloseButton = NotDefault
     DividingLines = NotDefault
-    AllowDesignChanges = NotDefault
+    AllowAdditions = NotDefault
+    AllowEdits = NotDefault
     DefaultView =0
     ScrollBars =0
+    ViewsAllowed =1
+    TabularFamily =220
+    BorderStyle =0
     PictureAlignment =2
     DatasheetGridlinesBehavior =3
+    Cycle =1
     GridY =10
-    Width =6994
-    DatasheetFontHeight =11
+    Width =5670
+    DatasheetFontHeight =12
     ItemSuffix =1
-    Left =735
-    Top =1110
-    Right =7725
-    Bottom =7050
-    DatasheetGridlinesColor =15062992
+    Left =5310
+    Top =3285
+    Right =14115
+    Bottom =8685
+    DatasheetGridlinesColor =12632256
     RecSrcDt = Begin
-        0x21e3b399719ae440
+        0x4ae3a063f093e240
     End
     GUID = Begin
-        0xade9d8f5f54fcd4db3096eb056b10ffd
+        0xe1f7e00a0bb56e49a35beff25c1846fd
     End
-    DatasheetFontName ="Calibri"
+    Caption ="Information"
+    DatasheetFontName ="Arial"
     PrtMip = Begin
-        0x6801000068010000680100006801000000000000201c0000e010000001000000 ,
+        0x6e0400006e0400006e0400006e04000000000000201c0000e010000001000000 ,
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x00e1990004000000000000000000000083563c38040000000100000000000000 ,
-        0x010400069c006403032f0000010001009a0b3408640001000f00580202000100 ,
-        0x580203000000413400940c04180000000c000000305939009f84b32fe0940c04 ,
-        0x0c00000044590000000000000000000000000000010000000000000001000000 ,
+        0x0000000000000000000000008356123804000000010000000000000000000000 ,
+        0x010400069c00640353ef8001010009009a0b3408640001000f00580202000100 ,
+        0x5802030001004134000000000c0000005c5f32009f841930e0441a040c000000 ,
+        0x705f32000d000000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe210000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -69,17 +82,14 @@ Begin Form
         0x0000000000000000000000467265655044465850313a00
     End
     FilterOnLoad =0
-    DatasheetBackColor12 =-2147483643
-    ShowPageMargins =0
-    DisplayOnSharePointSite =1
-    DatasheetAlternateBackColor =16053492
-    DatasheetGridlinesColor12 =15062992
-    FitToScreen =1
+    AllowLayoutView =0
+    DatasheetGridlinesColor12 =12632256
+    FitToScreen =255
     PrtDevModeW = Begin
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x01040006dc006403032f0000010001009a0b3408640001000f00580202000100 ,
-        0x5802030000004100340000000000000000000000000000000000000000000000 ,
+        0x01040006dc00640353ef8001010009009a0b3408640001000f00580202000100 ,
+        0x5802030001004100340000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
@@ -119,52 +129,54 @@ Begin Form
     End
     
     Begin
-        Begin CommandButton
+        Begin Label
+            BackStyle =0
+            FontName ="Tahoma"
+        End
+        Begin TextBox
+            FELineBreak = NotDefault
+            BorderLineStyle =0
             Width =1701
-            Height =283
+            LabelX =-1701
             FontSize =11
-            FontWeight =400
             FontName ="Calibri"
+            AsianLineBreak =1
+            BorderShade =90.0
             ForeShade =50.0
             GridlineShade =65.0
-            BackColor =-2147483633
-            BorderLineStyle =0
-            BorderShade =90.0
         End
         Begin Section
-            Height =5952
+            Height =1928
+            BackColor =-2147483624
             Name ="Detailbereich"
             GUID = Begin
-                0x684e006b0bbe7247a354a23b6c6366c8
+                0x7e28ea85f92ef7499413282f812b8c04
             End
-            AutoHeight =1
-            AlternateBackColor =15921906
-            AlternateBackShade =95.0
             Begin
-                Begin CommandButton
+                Begin TextBox
+                    Enabled = NotDefault
+                    Locked = NotDefault
                     OverlapFlags =85
-                    Left =453
-                    Top =283
-                    Width =2091
-                    Height =1018
-                    ForeColor =4138256
-                    Name ="cmdStart"
-                    Caption ="Beispiele zeigen"
-                    OnClick ="[Event Procedure]"
+                    TextAlign =2
+                    BackStyle =0
+                    IMESentenceMode =3
+                    Width =5670
+                    Height =1928
+                    FontSize =12
+                    Name ="txtMessageText"
+                    FontName ="Tahoma"
                     GUID = Begin
-                        0x277d5920d3db494194bc7b6af134b22a
+                        0xf0d69e5b5e218b4fa93265915b22732e
                     End
-                    GridlineColor =10921638
+                    TextFormat =1
+                    HorizontalAnchor =2
+                    VerticalAnchor =2
 
-                    LayoutCachedLeft =453
-                    LayoutCachedTop =283
-                    LayoutCachedWidth =2544
-                    LayoutCachedHeight =1301
-                    BorderColor =12835293
-                    WebImagePaddingLeft =2
-                    WebImagePaddingTop =2
-                    WebImagePaddingRight =1
-                    WebImagePaddingBottom =1
+                    LayoutCachedWidth =5670
+                    LayoutCachedHeight =1928
+                    BorderShade =100.0
+                    ForeShade =100.0
+                    GridlineShade =100.0
                 End
             End
         End
@@ -176,80 +188,54 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Form: frmInfoMessage_Examples
+' Form: InfoMessageForm
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Hilfs-Formular für InfoMessage-Klasse
+' </summary>
+' <remarks>
+' Die enthaltenen Public-Prozeduren müssen in den alternativ zu verwendenden Formularen enthalten sein.
+' (Auf Interface wurde verzichtet, da das in Access während der Entwicklung oftmals zu Problemen führt.)
+' </remarks>
+'**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>form/frmInfoMessage_Examples.frm</file>
-'  <use>form/frmInfoMessage.frm</use>
+'  <file>form/InfoMessageForm.frm</file>
 '  <license>_codelib/license.bas</license>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
-Option Compare Database
+Option Compare Text
 Option Explicit
 
-Private Sub cmdStart_Click()
+Public Property Get InfoTextControl() As Control
+   Set InfoTextControl = Me.txtMessageText
+End Property
 
-   With New Form_frmInfoMessage
-      .Show "Hallo Du!", 5000, 25
-   End With
+Public Property Let InfoText(ByVal NewValue As String)
+   Me.txtMessageText.Value = NewValue
+End Property
 
-   With New Form_frmInfoMessage
-      .Move 250, Me.WindowTop + Me.WindowHeight / 2
-      .BackColor = vbBlue
-      .ForeColor = vbWhite
-      .Show "<b>Einblenden</b> und <i>ausblenden</i>", 500, 25, 2000, 2500
-   End With
-
-   With New Form_frmInfoMessage
-      .Move Me.WindowLeft + Me.WindowWidth * 3 / 4, Me.WindowTop
-      .BackColor = vbBlack
-      .ForeColor = vbWhite
-      .Show "Dieses Fenster bleibt sichtbar ...<br /><br><b>... bis darauf geklickt wird</b>", 0, 50, 0, 5000
-   End With
-
-   With New Form_frmInfoMessage
-      .Move Me.WindowLeft + Me.WindowWidth - .WindowWidth, Me.WindowTop + Me.WindowHeight - .WindowHeight
-      .BackColor = vbGreen
-      .Show GetMessageText("MSG_Wait"), 0, 50, 0, 5000
-   End With
-
-   'Textbox wird vergrößert, weil Höhe nicht ausreicht:
-   With New Form_frmInfoMessage
-      .Move Me.WindowLeft + Me.WindowWidth / 2, Me.WindowTop + Me.WindowHeight / 4
-      .Show "Zeile1<br>Zeile2<br>Zeile3<br>Zeile4<br>Zeile5<br>Zeile6<br>Zeile7<br>Zeile8<br>Zeile9<br>Zeile10", 100, 50, 6000, 0
-      ' oder:
-      '.Show "Zeile1" & vbNewLine & "Zeile2" & vbNewLine & "Zeile3" & vbNewLine & "Zeile4" & vbNewLine & "Zeile5" & vbNewLine & "Zeile6" & vbNewLine & "Zeile7" & vbNewLine & "Zeile8", 0, 50, 0, 5000
-   End With
-
-   'Fenster schmäler stellen:
-   With New Form_frmInfoMessage
-      .Move 250, 250, 2600 ' <-- Breite 2600
-      .BackColor = vbRed
-      .Show "Diese Fenster wird langsam <u>ausgeblendet</u>", 2000, 25, 3000
-   End With
-
-End Sub
-
-Private Function GetMessageText(ByVal MsgCode As String) As String
-'Quick and diry - aber zum Zeigen reichts. ;-)
-'Besser: Enum verwenden und diesen als Parameter an Prozedur übergeben
-
-   CheckTable
-
-   GetMessageText = DLookup("MsgText", "tabMessages", "MsgCode='" & MsgCode & "'")
-   
-End Function
-
-Private Sub CheckTable()
-
-   If DCount("*", "MSysObjects", "Name='tabMessages' AND Type=1") > 0 Then
-      Exit Sub
+Public Sub CheckWidth()
+   If Me.txtMessageText.Width > Me.WindowWidth Then
+      Me.txtMessageText.Width = Me.WindowWidth
+      Me.InsideWidth = Me.WindowWidth
    End If
-   
-   With CurrentDb
-      .Execute "create table tabMessages (MsgCode varchar(30) primary key, MsgText varchar(255))"
-      .Execute "insert into tabMessages(MsgCode, MsgText) values('MSG_Wait', '<div>Bitte um etwas Geduld!</div><div><font size=2><em>Die Ausführung dauert nur noch ein paar Stunden …</em></font></div>')"
-   End With
-   
 End Sub
+
+Public Property Get BackColor() As Long
+   BackColor = Me.Section(0).BackColor
+End Property
+
+Public Property Let BackColor(ByVal NewValue As Long)
+   Me.Section(0).BackColor = NewValue
+End Property
+
+Public Property Get ForeColor() As Long
+   ForeColor = Me.txtMessageText.ForeColor
+End Property
+
+Public Property Let ForeColor(ByVal NewValue As Long)
+   Me.txtMessageText.ForeColor = NewValue
+End Property
