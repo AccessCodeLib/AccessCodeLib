@@ -1,40 +1,53 @@
 Version =20
 VersionRequired =20
-Checksum =-734574413
+Checksum =-1050600689
 Begin Form
+    PopUp = NotDefault
     RecordSelectors = NotDefault
+    MaxButton = NotDefault
+    MinButton = NotDefault
+    ControlBox = NotDefault
+    AutoCenter = NotDefault
     NavigationButtons = NotDefault
+    AllowDeletions = NotDefault
+    CloseButton = NotDefault
     DividingLines = NotDefault
-    AllowDesignChanges = NotDefault
+    AllowAdditions = NotDefault
+    AllowEdits = NotDefault
     DefaultView =0
     ScrollBars =0
+    ViewsAllowed =1
+    TabularFamily =220
+    BorderStyle =0
     PictureAlignment =2
     DatasheetGridlinesBehavior =3
+    Cycle =1
     GridY =10
-    Width =6994
-    DatasheetFontHeight =11
-    ItemSuffix =1
-    Left =300
-    Top =390
-    Right =17550
-    Bottom =9795
-    DatasheetGridlinesColor =15062992
+    Width =5670
+    DatasheetFontHeight =12
+    ItemSuffix =3
+    Left =9735
+    Top =6660
+    Right =18540
+    Bottom =12060
+    DatasheetGridlinesColor =12632256
     RecSrcDt = Begin
-        0x21e3b399719ae440
+        0x4ae3a063f093e240
     End
     GUID = Begin
-        0x4aba6e5d849c804db803e0b4e3b2de40
+        0x78b78f9d8b344946aaf8149807046e68
     End
-    DatasheetFontName ="Calibri"
+    Caption ="Information"
+    DatasheetFontName ="Arial"
     PrtMip = Begin
-        0x6801000068010000680100006801000000000000201c0000e010000001000000 ,
+        0x6e0400006e0400006e0400006e04000000000000201c0000e010000001000000 ,
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x000000000000000000000000fe18e75f04000000010000000000000000000000 ,
-        0x010400069c006403032f0000010001009a0b3408640001000f00580202000100 ,
-        0x5802030000004134000000000c0000002c5c3b00d184f32fe09438030c000000 ,
-        0x405c3b000d000000000000000000000000000000010000000000000001000000 ,
+        0x000000000000000000000000fe18216104000000010000000000000000000000 ,
+        0x010400069c00640353ef8001010009009a0b3408640001000f00580202000100 ,
+        0x5802030001004134000000000c0000006c5d3100d1845230e044d7030c000000 ,
+        0x805d31000d000000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe210000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -69,17 +82,14 @@ Begin Form
         0x0000000000000000000000467265655044465850313a00
     End
     FilterOnLoad =0
-    DatasheetBackColor12 =-2147483643
-    ShowPageMargins =0
-    DisplayOnSharePointSite =1
-    DatasheetAlternateBackColor =16053492
-    DatasheetGridlinesColor12 =15062992
-    FitToScreen =1
+    AllowLayoutView =0
+    DatasheetGridlinesColor12 =12632256
+    FitToScreen =255
     PrtDevModeW = Begin
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x01040006dc006403032f0000010001009a0b3408640001000f00580202000100 ,
-        0x5802030000004100340000000000000000000000000000000000000000000000 ,
+        0x01040006dc00640353ef8001010009009a0b3408640001000f00580202000100 ,
+        0x5802030001004100340000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
@@ -119,52 +129,130 @@ Begin Form
     End
     
     Begin
+        Begin Label
+            BackStyle =0
+            FontName ="Tahoma"
+        End
         Begin CommandButton
             Width =1701
             Height =283
             FontSize =11
             FontWeight =400
-            FontName ="Calibri"
+            FontName ="Segoe UI"
+            ForeThemeColorIndex =2
             ForeShade =50.0
+            GridlineThemeColorIndex =1
             GridlineShade =65.0
             BackColor =-2147483633
             BorderLineStyle =0
+            BorderThemeColorIndex =3
             BorderShade =90.0
+            ThemeFontIndex =1
+        End
+        Begin TextBox
+            FELineBreak = NotDefault
+            BorderLineStyle =0
+            Width =1701
+            LabelX =-1701
+            FontSize =11
+            FontName ="Calibri"
+            AsianLineBreak =1
+            BorderShade =90.0
+            ForeShade =50.0
+            GridlineShade =65.0
         End
         Begin Section
-            Height =5952
+            Height =2267
+            BackColor =-2147483626
             Name ="Detailbereich"
             GUID = Begin
-                0x7d65f49d36c2ca459c4c72437147022e
+                0x82c64632b96eff419d551e2d5a748a6b
             End
-            AutoHeight =1
-            AlternateBackColor =15921906
-            AlternateBackShade =95.0
             Begin
-                Begin CommandButton
-                    OverlapFlags =85
-                    Left =453
-                    Top =283
-                    Width =2091
-                    Height =1018
-                    ForeColor =4138256
-                    Name ="cmdStart"
-                    Caption ="Beispiele zeigen"
-                    OnClick ="[Event Procedure]"
+                Begin TextBox
+                    Enabled = NotDefault
+                    Locked = NotDefault
+                    OverlapFlags =93
+                    TextAlign =2
+                    IMESentenceMode =3
+                    Width =5670
+                    Height =1412
+                    FontSize =12
+                    Name ="txtMessageText"
+                    FontName ="Tahoma"
                     GUID = Begin
-                        0xef51475d9548c34ba4161a7fae1898b2
+                        0xf50ecee2a7e30045b4f24af666223dbb
+                    End
+                    TextFormat =1
+                    HorizontalAnchor =2
+                    VerticalAnchor =2
+
+                    LayoutCachedWidth =5670
+                    LayoutCachedHeight =1412
+                    BorderShade =100.0
+                    ForeShade =100.0
+                    GridlineShade =100.0
+                End
+                Begin CommandButton
+                    Transparent = NotDefault
+                    Cancel = NotDefault
+                    TabStop = NotDefault
+                    OverlapFlags =247
+                    TextFontFamily =0
+                    Left =5272
+                    Top =56
+                    Width =336
+                    Height =372
+                    TabIndex =1
+                    ForeColor =4138256
+                    Name ="cmdClose"
+                    Caption ="x"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Calibri"
+                    GUID = Begin
+                        0xf5143371c20a9441a57a27bf2579c23e
                     End
                     GridlineColor =10921638
 
-                    LayoutCachedLeft =453
-                    LayoutCachedTop =283
-                    LayoutCachedWidth =2544
-                    LayoutCachedHeight =1301
+                    LayoutCachedLeft =5272
+                    LayoutCachedTop =56
+                    LayoutCachedWidth =5608
+                    LayoutCachedHeight =428
                     BorderColor =12835293
                     WebImagePaddingLeft =2
                     WebImagePaddingTop =2
                     WebImagePaddingRight =1
                     WebImagePaddingBottom =1
+                    Overlaps =1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    TextFontFamily =0
+                    Left =2268
+                    Top =1584
+                    Width =1128
+                    Height =540
+                    TabIndex =2
+                    ForeColor =4138256
+                    Name ="cmdOk"
+                    Caption ="OK"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Calibri"
+                    GUID = Begin
+                        0x37b3396f90458049a4fd9415758f93a5
+                    End
+                    GridlineColor =10921638
+
+                    LayoutCachedLeft =2268
+                    LayoutCachedTop =1584
+                    LayoutCachedWidth =3396
+                    LayoutCachedHeight =2124
+                    BorderColor =12835293
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                    Overlaps =1
                 End
             End
         End
@@ -176,81 +264,75 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Form: InfoMessage_Examples
+' Form: InfoMessageForm mit Buttons
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Beispiel-Ersatz-Formular für InfoMessageBoxForm
+' </summary>
+' <remarks>
+' </remarks>
+'**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>form/InfoMessageBox_Examples.frm</file>
-'  <use>form/InfoMessageBox.cls</use>
+'  <file>form/InfoMessageBoxForm_mit_Buttons.frm</file>
 '  <license>_codelib/license.bas</license>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
-Option Compare Database
+Option Compare Text
 Option Explicit
 
-Private Sub cmdStart_Click()
+Public Property Get InfoTextControl() As Control
+   Set InfoTextControl = Me.txtMessageText
+End Property
 
-   With New InfoMessageBox
-      .Show "Hallo Du!", 5000, 25
+Public Sub SetInfoTextControlHeight(ByVal NewHeight As Long)
+   
+   Me.InsideHeight = NewHeight + Me.cmdOk.Height + 400
+   
+   With Me.txtMessageText
+      .Height = NewHeight
+      Me.cmdOk.Top = .Top + .Height + 200
    End With
-
-   With New InfoMessageBox
-      .Move 250, Me.WindowTop + Me.WindowHeight / 2
-      .BackColor = vbBlue
-      .ForeColor = vbWhite
-      .Show "<b>Einblenden</b> und <i>ausblenden</i>", 500, 25, 2000, 2500
-   End With
-
-   With New InfoMessageBox
-      Set .Form = New Form_InfoMessageBoxForm_mit_Buttons ' spezielles Formular zuweisen
-      .Move Me.WindowLeft + (Me.WindowWidth / 4) * 3, Me.WindowTop
-      .BackColor = vbBlack
-      .ForeColor = vbWhite
-      .Show "Dieses Fenster bleibt sichtbar ...<br /><br><b>... bis darauf geklickt wird</b>", 0, 50, 0, 5000
-   End With
-
-   With New InfoMessageBox
-      .Move Me.WindowLeft + Me.WindowWidth - .Form.WindowWidth, Me.WindowTop + Me.WindowHeight - .Form.WindowHeight
-      .BackColor = vbGreen
-      .Show GetMessageText("MSG_Wait"), 0, 50, 0, 5000
-   End With
-
-   'Textbox wird vergrößert, weil Höhe nicht ausreicht:
-   With New InfoMessageBox
-      .Move Me.WindowLeft + Me.WindowWidth / 2, Me.WindowTop + Me.WindowHeight / 4
-      .Show "Zeile1<br>Zeile2<br>Zeile3<br>Zeile4<br>Zeile5<br>Zeile6<br>Zeile7<br>Zeile8<br>Zeile9<br>Zeile10", 100, 50, 6000, 0
-      ' oder:
-      '.Show "Zeile1" & vbNewLine & "Zeile2" & vbNewLine & "Zeile3" & vbNewLine & "Zeile4" & vbNewLine & "Zeile5" & vbNewLine & "Zeile6" & vbNewLine & "Zeile7" & vbNewLine & "Zeile8", 0, 50, 0, 5000
-   End With
-
-   'Fenster schmäler stellen:
-   With New InfoMessageBox
-      .Move 250, 250, 2600 ' <-- Breite 2600
-      .BackColor = vbRed
-      .Show "Diese Fenster wird langsam <u>ausgeblendet</u>", 2000, 25, 3000
-   End With
-
+   
 End Sub
 
-Private Function GetMessageText(ByVal MsgCode As String) As String
-'Quick and diry - aber zum Zeigen reichts. ;-)
-'Besser: Enum verwenden und diesen als Parameter an Prozedur übergeben
+Public Property Let InfoText(ByVal NewValue As String)
+   Me.txtMessageText.Value = NewValue
+End Property
 
-   CheckTable
-
-   GetMessageText = DLookup("MsgText", "tabMessages", "MsgCode='" & MsgCode & "'")
-   
-End Function
-
-Private Sub CheckTable()
-
-   If DCount("*", "MSysObjects", "Name='tabMessages' AND Type=1") > 0 Then
-      Exit Sub
+Public Sub CheckWidth()
+   If Me.txtMessageText.Width > Me.WindowWidth Then
+      Me.txtMessageText.Width = Me.WindowWidth
+      Me.InsideWidth = Me.WindowWidth
+      Me.cmdOk.Left = (Me.InsideWidth - Me.cmdOk.Width) / 2
    End If
-   
-   With CurrentDb
-      .Execute "create table tabMessages (MsgCode varchar(30) primary key, MsgText varchar(255))"
-      .Execute "insert into tabMessages(MsgCode, MsgText) values('MSG_Wait', '<div>Bitte um etwas Geduld!</div><div><font size=2><em>Die Ausführung dauert nur noch ein paar Stunden …</em></font></div>')"
-   End With
-   
+End Sub
+
+Public Property Get BackColor() As Long
+   BackColor = Me.txtMessageText.BackColor
+End Property
+
+Public Property Let BackColor(ByVal NewValue As Long)
+   Me.txtMessageText.BackColor = NewValue
+End Property
+
+Public Property Get ForeColor() As Long
+   ForeColor = Me.txtMessageText.ForeColor
+End Property
+
+Public Property Let ForeColor(ByVal NewValue As Long)
+   Me.txtMessageText.ForeColor = NewValue
+End Property
+
+Private Sub cmdOk_Click()
+   MsgBox "ok"
+   DoCmd.Close
+End Sub
+
+'Sicherheitsfunktion, falls andere Ereignisse nicht greifen
+' (in Button ist Cancel-Prop gesetzt)
+Private Sub cmdClose_Click()
+   DoCmd.Close
 End Sub
