@@ -810,7 +810,7 @@ Private Function UNCPath(ByVal Path As String, Optional ByVal IgnoreErrors As Bo
 
   If VBA.Len(Path) = 1 Then Path = Path & ":"
 
-  If WNetGetConnection(Left$(Path, 2), UNC, Len(UNC)) Then
+  If WNetGetConnection(VBA.Left$(Path, 2), UNC, VBA.Len(UNC)) Then
 
     ' API-Routine gibt Fehler zurück:
     If IgnoreErrors Then
@@ -822,8 +822,8 @@ Private Function UNCPath(ByVal Path As String, Optional ByVal IgnoreErrors As Bo
   Else
 
     ' Ergebnis zurückgeben:
-    UNCPath = Left$(UNC, InStr(UNC, vbNullChar) - 1) _
-            & Mid$(Path, 3)
+    UNCPath = VBA.Left$(UNC, VBA.InStr(UNC, vbNullChar) - 1) _
+            & VBA.Mid$(Path, 3)
 
   End If
 
