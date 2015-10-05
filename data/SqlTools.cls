@@ -421,7 +421,7 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
       End If
    End If
 
-   FilterValueString = GetFilterValueString(FilterValue, FieldDataType)
+   FilterValueString = ConvertToSqlText(FilterValue, FieldDataType)
 
    If (RelationalOperator And SQL_Like) = SQL_Like Then
       OperatorString = " Like "
@@ -535,7 +535,7 @@ Private Function TryBuildInCriteria(ByRef FieldName As String, ByVal FieldDataTy
    ElseIf VarType(FilterValue) = vbString Then ' Value ist bereits die Auflistung als String
       Criteria = FilterValue
    Else
-      Criteria = GetFilterValueString(FilterValue, FieldDataType)
+      Criteria = ConvertToSqlText(FilterValue, FieldDataType)
    End If
 
    OperatorString = " In "
@@ -585,7 +585,7 @@ Private Function TryBuildBetweenCriteria(ByRef FieldName As String, ByVal FieldD
       TryBuildBetweenCriteria = True
       Exit Function
    Else
-      Criteria = FieldName & " Between " & GetFilterValueString(FilterValue, FieldDataType) & SqlAndConcatString & GetFilterValueString(FilterValue2, FieldDataType)
+      Criteria = FieldName & " Between " & ConvertToSqlText(FilterValue, FieldDataType) & SqlAndConcatString & ConvertToSqlText(FilterValue2, FieldDataType)
       TryBuildBetweenCriteria = True
       Exit Function
    End If
@@ -703,13 +703,13 @@ Private Function GetValueArrayString(ByVal Value As Variant, ByVal FieldDataType
       If IsArray(IgnoreValue) Then
          If ArrayContains(FieldDataType, IgnoreValue, Value(i)) Then
          Else
-            s = s & Delimiter & GetFilterValueString(Value(i), FieldDataType)
+            s = s & Delimiter & ConvertToSqlText(Value(i), FieldDataType)
          End If
       Else
          If Value(i) = IgnoreValue Then
          ElseIf IsNull(Value(i)) And IsNull(IgnoreValue) Then
          Else
-            s = s & Delimiter & GetFilterValueString(Value(i), FieldDataType)
+            s = s & Delimiter & ConvertToSqlText(Value(i), FieldDataType)
          End If
       End If
    Next
@@ -717,22 +717,5 @@ Private Function GetValueArrayString(ByVal Value As Variant, ByVal FieldDataType
       s = Mid(s, Len(Delimiter) + 1)
    End If
    GetValueArrayString = s
-
-End Function
-
-Private Function GetFilterValueString(ByVal Value As Variant, ByVal FieldDataType As SqlFieldDataType) As String
-
-   Select Case FieldDataType
-      Case SqlFieldDataType.SQL_Numeric
-         GetFilterValueString = NumberToSqlText(Value)
-      Case SqlFieldDataType.SQL_Text
-         GetFilterValueString = TextToSqlText(Value)
-      Case SqlFieldDataType.SQL_Date
-         GetFilterValueString = DateToSqlText(Value)
-      Case SqlFieldDataType.SQL_Boolean
-         GetFilterValueString = BooleanToSqlText(Value)
-      Case Else
-         Err.Raise vbObjectError, "FilterStringBuilder.GetFilterValueString", "SqlFieldDataType '" & FieldDataType & "' wird nicht unterstützt."
-   End Select
 
 End Function
