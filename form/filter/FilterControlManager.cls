@@ -36,6 +36,7 @@ Attribute m_FilterControls.VB_VarHelpID = -1
 Private m_AutoFilterModeOn As Boolean
 
 Public Event FilterStringChanged(ByVal NewFilterString As String)
+Public Event FilterValuesChanged()
 
 Private Sub Class_Initialize()
    Set m_FilterControls = New FilterControlCollection
@@ -84,6 +85,7 @@ Public Function CreateFilterString() As String
 End Function
 
 Private Sub m_FilterControls_FilterValuesChanged()
+   RaiseEvent FilterValuesChanged
    UseAutoFilterMode
 End Sub
 
@@ -96,7 +98,7 @@ Public Property Let AutoFilterOn(ByVal NewValue As Boolean)
    UseAutoFilterMode
 End Property
 
-Private Sub UseAutoFilterMode()
+Public Sub UseAutoFilterMode()
    If m_AutoFilterModeOn Then
       UseFilter
    End If
@@ -111,9 +113,9 @@ Public Sub UseFilter()
    
 End Sub
 
-Public Sub RemoveFilter()
+Public Sub RemoveFilter(Optional ByVal NewFilterString As String = vbNullString)
    
    FilterControls.RemoveFilterValues False
-   RaiseEvent FilterStringChanged(vbNullString)
+   RaiseEvent FilterStringChanged(NewFilterString)
    
 End Sub
