@@ -82,18 +82,19 @@ End Sub
 
 Public Function ToString(Optional ByVal Delimiter As String = ", ", _
                          Optional ByVal ItemPrefix As String = vbNullString, _
-                         Optional ByVal ItemSuffix As String = vbNullString) As String
+                         Optional ByVal ItemSuffix As String = vbNullString, _
+                         Optional ByVal IgnoreEmptyValue As Boolean = False) As String
    
    Dim s As String
 
-   s = VBA.Join(ToStringArray(), ItemSuffix & Delimiter & ItemPrefix)
+   s = VBA.Join(ToStringArray(IgnoreEmptyValue), ItemSuffix & Delimiter & ItemPrefix)
    If Len(s) > 0 Then s = ItemPrefix & s & ItemSuffix
 
    ToString = s
 
 End Function
 
-Public Function ToStringArray() As String()
+Public Function ToStringArray(Optional ByVal IgnoreEmptyValue As Boolean = False) As String()
 
    Dim arrItems() As String
    Dim MaxArrayIndex As Long
@@ -105,6 +106,11 @@ Public Function ToStringArray() As String()
       ToStringArray = arrItems
       Exit Function
    End If
+   
+   If IgnoreEmptyValue Then
+      ToStringArray = GetArrayWithoutEmptyValues()
+      Exit Function
+   End If
 
    ReDim arrItems(0 To MaxArrayIndex)
    For i = 0 To MaxArrayIndex
@@ -112,5 +118,42 @@ Public Function ToStringArray() As String()
    Next
 
    ToStringArray = arrItems
+
+End Function
+
+Private Function GetArrayWithoutEmptyValues() As String()
+
+   Dim arrItems() As String
+   Dim MaxArrayIndex As Long
+   Dim ItemIndex As Long
+   Dim varItm As Variant
+
+   MaxArrayIndex = m_Items.Count - 1
+
+   If MaxArrayIndex < 0 Then
+      GetArrayWithoutEmptyValues = arrItems
+      Exit Function
+   End If
+
+   ReDim arrItems(0 To MaxArrayIndex)
+   ItemIndex = -1
+   For Each varItm In m_Items
+      If Len(varItm) > 0 Then
+         ItemIndex = ItemIndex + 1
+         arrItems(ItemIndex) = varItm
+      End If
+   Next
+   
+   If ItemIndex = -1 Then
+      Erase arrItems
+      GetArrayWithoutEmptyValues = arrItems
+      Exit Function
+   End If
+   
+   If ItemIndex < (m_Items.Count - 1) Then
+      ReDim Preserve arrItems(0 To ItemIndex)
+   End If
+   
+   GetArrayWithoutEmptyValues = arrItems
 
 End Function
