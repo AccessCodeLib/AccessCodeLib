@@ -17,7 +17,7 @@ Option Compare Database
 Option Explicit
 
 'Versionsnummer
-Private Const m_ApplicationVersion As String = "1.2.0" '2015-06-17 / SVN-Rev 333
+Private Const m_ApplicationVersion As String = "1.3.0" '2015-10-10 / SVN-Rev 356
 
 #Const USE_CLASS_ApplicationHandler_AppFile = 1
 
@@ -31,7 +31,7 @@ Private Const m_DefaultErrorHandlerMode As Long = ACLibErrorHandlerMode.aclibErr
 Private Const m_ApplicationStartFormName As String = "frmFilterFormWizard"
 
 '---------------------------------------------------------------------------------------
-' Sub: InitConfig
+' Sub: InitConfig (Josef Pötzl)
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>

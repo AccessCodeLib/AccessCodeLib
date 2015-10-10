@@ -41,7 +41,14 @@ End Property
 
 Public Property Get ClassInitalisationCode( _
                         ByVal UseFilterMethodeCode As String, _
-                        ByVal FilterControlCodeLines As String) As String
+                        ByVal FilterControlCodeLines As String, _
+                        ByVal FilterControlNames As StringCollection, _
+               Optional ByVal SqlDateFormat As String = "\#yyyy-mm-dd hh:nn:ss\#", _
+               Optional ByVal SqlBooleanTrueString As String = "True", _
+               Optional ByVal SqlWildCardString As String = "*", _
+               Optional ByVal UseFilterCtlName As String, _
+               Optional ByVal RemoveFilterCtlName As String, _
+               Optional ByVal AutoFilterCtlName As String) As String
 '
 End Property
 
@@ -52,6 +59,22 @@ End Property
 Public Property Get FormUnLoadCode() As String
 '
 End Property
+
+Public Property Get UseFilterCtlCode() As String
+'
+End Property
+
+Public Property Get RemoveFilterCtlCode() As String
+'
+End Property
+
+Public Function AutoFilterCtlCode(Optional ByVal AutoFilterCtlName As String = vbNullString) As String
+'
+End Function
+
+Public Function FilterControlValueChangedEventFunction(Optional ByVal UseFilterCtlName As String = vbNullString, Optional ByVal AutoFilterCtlName As String = vbNullString) As String
+'
+End Function
 
 Public Function GetFilterControlCodeLine(ByVal DataField As String, ByVal DataType As String, ByVal RelationalOperator As String, _
                                     ByVal Control As String, ByVal Control2 As String) As String
