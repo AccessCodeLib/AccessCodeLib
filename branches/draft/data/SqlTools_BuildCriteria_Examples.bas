@@ -10,7 +10,7 @@ Attribute VB_Name = "SqlTools_BuildCriteria_Examples"
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>data/SqlTools_BuildCriteria_Examples.bas</file>
-'  <use>ata/SqlTools.cls</use>
+'  <use>data/SqlTools.cls</use>
 '  <license>_codelib/license.bas</license>
 '</codelib>
 '---------------------------------------------------------------------------------------
