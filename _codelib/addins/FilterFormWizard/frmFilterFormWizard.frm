@@ -1367,7 +1367,7 @@ Private Sub Form_Current()
    CheckModules
 End Sub
 
-Private Sub OpenReplaceModulesContextMenu(ByRef ctlMenuControl As Control, ByVal X As Single, ByVal Y As Single)
+Private Sub OpenReplaceModulesContextMenu(ByRef ctlMenuControl As Control, ByVal x As Single, ByVal y As Single)
 
    Dim mnu As WinApiShortcutMenu
    Dim lngSelectedMenuItem As Long
@@ -1384,7 +1384,7 @@ Private Sub OpenReplaceModulesContextMenu(ByRef ctlMenuControl As Control, ByVal
       
    End With
    
-   lngSelectedMenuItem = mnu.OpenMenu(X, Y)
+   lngSelectedMenuItem = mnu.OpenMenu(x, y)
    Select Case lngSelectedMenuItem
       Case 1
          ReplaceAllModules True
@@ -1433,10 +1433,10 @@ Private Sub Form_Open(Cancel As Integer)
    Me.Caption = Me.Caption & "  " & ChrW(&H25AA) & "  Version " & CurrentApplication.Version
 End Sub
 
-Private Sub labCopyCaption_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub labCopyCaption_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
    If Button = 1 Or Button = 2 Then
-      OpenReplaceModulesContextMenu Me.labCopyCaption, X, Y
+      OpenReplaceModulesContextMenu Me.labCopyCaption, x, y
    End If
 
 End Sub
@@ -1542,7 +1542,7 @@ On Error Resume Next
    
 End Sub
 
-Private Sub labCopyCaption_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub labCopyCaption_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
    modWinApi_Mouse.MouseCursor IDC_HAND
 End Sub
 

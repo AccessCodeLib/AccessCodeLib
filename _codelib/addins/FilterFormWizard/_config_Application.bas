@@ -154,12 +154,12 @@ End Sub
 
 Private Sub SaveCodeModulesToTable()
 
-   Dim X As Variant
+   Dim x As Variant
    Dim i As Long
    
-   X = Array("SqlTools", "StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
-   For i = 0 To UBound(X)
-      SaveCodeModulToTable acModule, X(i)
+   x = Array("SqlTools", "StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
+   For i = 0 To UBound(x)
+      SaveCodeModulToTable acModule, x(i)
    Next
    
 End Sub
