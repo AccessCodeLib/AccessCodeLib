@@ -175,3 +175,19 @@ Public Sub BuildCriteria_IgnoreValueArray( _
    Assert.That Actual, Iz.EqualTo(Expected)
 
 End Sub
+
+'AccUnit:Row(Null, "a", "b", "a", "b", Null, "")
+'AccUnit:Row(Null, "a", "b", "a", "b", "c", "F Is Null")
+'AccUnit:Row(Null, "a", "b", "x", "y", "z", "F Is Null Or F In ('a','b')")
+Public Sub BuildCriteria_InAndIgnoreValueArray( _
+                           ByVal FilterValue1 As Variant, ByVal FilterValue2 As Variant, ByVal FilterValue3 As Variant, _
+                           ByVal IgnoreValue1 As Variant, ByVal IgnoreValue2 As Variant, ByVal IgnoreValue3 As Variant, _
+                           ByVal Expected As String)
+
+   Dim Actual As String
+
+   Actual = DaoTools.BuildCriteria("F", SQL_Text, SQL_In, Array(FilterValue1, FilterValue2, FilterValue3), , Array(IgnoreValue1, IgnoreValue2, IgnoreValue3))
+   
+   Assert.That Actual, Iz.EqualTo(Expected)
+
+End Sub
