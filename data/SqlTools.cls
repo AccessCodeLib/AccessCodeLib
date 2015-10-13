@@ -250,6 +250,10 @@ Public Function DateToSqlText(ByVal Value As Variant, _
       DateToSqlText = ResultTextIfNull
       Exit Function
    End If
+   
+   If Not IsDate(Value) Then
+      Err.Raise vbObjectError, "SqlTools.DateToSqlText", "Der Wert '" & Value & "' vom Parameter Value ist kein Datumswert!"
+   End If
 
    If Len(FormatString) = 0 Then
       FormatString = SqlDateFormat
@@ -525,17 +529,18 @@ Private Function TryBuildInCriteria(ByRef FieldName As String, ByVal FieldDataTy
                                     ByRef Criteria As String) As Boolean
 
    Dim OperatorString As String
+   Dim FilterValueString As String
 
    If (RelationalOperator And SQL_In) = 0 Then
       Exit Function
    End If
 
    If IsArray(FilterValue) Then
-      Criteria = GetValueArrayString(FilterValue, FieldDataType, ",", IgnoreValue)
+      FilterValueString = GetValueArrayString(FilterValue, FieldDataType, ",", IgnoreValue)
    ElseIf VarType(FilterValue) = vbString Then ' Value ist bereits die Auflistung als String
-      Criteria = FilterValue
+      FilterValueString = FilterValue
    Else
-      Criteria = ConvertToSqlText(FilterValue, FieldDataType)
+      FilterValueString = ConvertToSqlText(FilterValue, FieldDataType)
    End If
 
    OperatorString = " In "
@@ -543,8 +548,17 @@ Private Function TryBuildInCriteria(ByRef FieldName As String, ByVal FieldDataTy
       OperatorString = " Not" & OperatorString
    End If
 
-   If Len(Criteria) > 0 Then
-      Criteria = FieldName & OperatorString & "(" & Criteria & ")"
+   If Len(FilterValueString) > 0 Then
+   
+      If RemoveNullFromInValueString(FilterValueString) Then
+         Criteria = FieldName & " Is Null"
+         If Len(FilterValueString) > 0 Then
+            Criteria = Criteria & " Or " & FieldName & OperatorString & "(" & FilterValueString & ")"
+         End If
+      Else
+         Criteria = FieldName & OperatorString & "(" & FilterValueString & ")"
+      End If
+    
    End If
 
    TryBuildInCriteria = True
@@ -717,5 +731,29 @@ Private Function GetValueArrayString(ByVal Value As Variant, ByVal FieldDataType
       s = Mid(s, Len(Delimiter) + 1)
    End If
    GetValueArrayString = s
+
+End Function
+
+Private Function RemoveNullFromInValueString(ByRef ValueString) As Boolean
+
+   Const NullCheckString As String = ",Null,"
+   Dim TestString As String
+   
+   TestString = "," & ValueString & ","
+
+   If Not (InStr(1, TestString, NullCheckString) > 0) Then
+      RemoveNullFromInValueString = False
+      Exit Function
+   End If
+   
+   TestString = Replace(TestString, NullCheckString, ",")
+   
+   If Len(TestString) > 1 Then
+      ValueString = Mid(TestString, 2, Len(TestString) - 2)
+   Else
+      ValueString = vbNullString
+   End If
+   
+   RemoveNullFromInValueString = True
 
 End Function
