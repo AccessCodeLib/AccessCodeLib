@@ -734,7 +734,7 @@ Private Function GetValueArrayString(ByVal Value As Variant, ByVal FieldDataType
 
 End Function
 
-Private Function RemoveNullFromInValueString(ByRef ValueString) As Boolean
+Private Function RemoveNullFromInValueString(ByRef ValueString As String) As Boolean
 
    Const NullCheckString As String = ",Null,"
    Dim TestString As String
