@@ -17,7 +17,7 @@ Option Compare Database
 Option Explicit
 
 'Versionsnummer
-Private Const m_ApplicationVersion As String = "1.3.0" '2015-10-10 / SVN-Rev 356
+Private Const m_ApplicationVersion As String = "1.3.1 (SVN-Rev. 360)" '2015-10-14
 
 #Const USE_CLASS_ApplicationHandler_AppFile = 1
 
