@@ -116,7 +116,7 @@ Private Function GetConcatOperatorString(ByVal ConcatOperator As SqlLogicalOpera
    End If
 End Function
 
-Public Property Get ConditionGroups() As Collection
+Private Property Get ConditionGroups() As Collection
    If m_ConditionGroups Is Nothing Then
       Set m_ConditionGroups = New Collection
    End If
@@ -131,7 +131,7 @@ Public Function NewConditionGroup(ByVal ConcatOperator As SqlLogicalOperator) As
    Set NewBuilder.SqlTool = m_SqlTool
    NewBuilder.DefaultConcatOperator = ConcatOperator
    
-   Me.ConditionGroups.Add NewBuilder
+   ConditionGroups.Add NewBuilder
    
    Set NewConditionGroup = NewBuilder
    
