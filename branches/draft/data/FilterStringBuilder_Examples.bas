@@ -135,12 +135,36 @@ With NewFilterStringBuilder
    .Add "D2b", SQL_Date, SQL_Equal + SQL_Add_WildCardSuffix, EndDate
    .Add "D3a", SQL_Date, SQL_Between, StartDate, EndDate
    .Add "D3b", SQL_Date, SQL_Between + SQL_Add_WildCardSuffix, StartDate, EndDate
-   Debug.Print .ToString(" AND " & vbNewLine)
+   Debug.Print .ToString(SQL_And)
 
 End With
 
 End Sub
 
+Private Sub ConditionGroups()
+
+   With New FilterStringBuilder
+
+      Set .SqlTool = SqlTools.NewInstance("\#yyyy-mm-dd\#", "True", "*")
+
+      .Add "F1", SQL_Numeric, SQL_Equal, 1
+      
+      With .NewConditionGroup(SQL_Or)
+         .Add "F2a", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix, "a"
+         .Add "F2b", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix, "a"
+         .Add "F2c", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix, "a"
+      End With
+      With .NewConditionGroup(SQL_Or)
+         .Add "F3a", SQL_Boolean, SQL_Equal, True
+         .Add "F3b", SQL_Boolean, SQL_Equal, True
+         .Add "F3c", SQL_Boolean, SQL_Equal, True
+      End With
+
+      Debug.Print .ToString(SQL_And)
+
+   End With
+
+End Sub
 
 
 ' --------------------------

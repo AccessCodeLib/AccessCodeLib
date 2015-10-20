@@ -83,7 +83,7 @@ Public Sub AddCriteria_AddConString_CheckSqlText()
 
 End Sub
 
-Public Sub ConfigSqlFormat_StateUnderTest_ExpectedBehaviour()
+Public Sub ConfigSqlFormat_DAO_CheckFormats()
    
    Const TestDateFormat As String = "\#YYYY-mm-DD\#"
    Const TestBooleanString As String = "T"
@@ -99,4 +99,36 @@ Public Sub ConfigSqlFormat_StateUnderTest_ExpectedBehaviour()
 
    End With
    
+End Sub
+
+
+Public Sub ConditionGroups_AddOrGroups_CheckSqlText()
+
+   Const Expected As String = "((F1 = 1)) And ((F2a Like 'a*') Or (F2b Like 'a*') Or (F2c Like 'a*')) And ((F3a = True) Or (F3b = True) Or (F3c = True))"
+   
+   Dim Actual As String
+
+   With New FilterStringBuilder
+
+      Set .SqlTool = SqlTools.NewInstance("\#yyyy-mm-dd\#", "True", "*")
+
+      .Add "F1", SQL_Numeric, SQL_Equal, 1
+      
+      With .NewConditionGroup(SQL_Or)
+         .Add "F2a", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix, "a"
+         .Add "F2b", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix, "a"
+         .Add "F2c", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix, "a"
+      End With
+      With .NewConditionGroup(SQL_Or)
+         .Add "F3a", SQL_Boolean, SQL_Equal, True
+         .Add "F3b", SQL_Boolean, SQL_Equal, True
+         .Add "F3c", SQL_Boolean, SQL_Equal, True
+      End With
+
+      Actual = .ToString()
+
+   End With
+   
+   Assert.That Actual, Iz.EqualTo(Expected)
+
 End Sub

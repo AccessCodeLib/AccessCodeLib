@@ -35,6 +35,8 @@ Private m_Items As StringCollection
 Private m_SqlTool As SqlTools
 Private m_DefaultConcatOperator As SqlLogicalOperator
 
+Private m_ConditionGroups As Collection
+
 Private Sub Class_Initialize()
    Set m_Items = New StringCollection
 End Sub
@@ -103,7 +105,7 @@ Public Function ToString(Optional ByVal ConcatOperator As SqlLogicalOperator = S
    If ConcatOperator = SqlLogicalOperator.[_SQL_Default] Then
       ConcatOperator = DefaultConcatOperator
    End If
-   ToString = m_Items.ToString(GetConcatOperatorString(ConcatOperator))
+   ToString = AppendFilterGroupsString(m_Items.ToString(GetConcatOperatorString(ConcatOperator)), ConcatOperator)
 End Function
 
 Private Function GetConcatOperatorString(ByVal ConcatOperator As SqlLogicalOperator) As String
@@ -112,4 +114,53 @@ Private Function GetConcatOperatorString(ByVal ConcatOperator As SqlLogicalOpera
    Else
       GetConcatOperatorString = " And "
    End If
+End Function
+
+Public Property Get ConditionGroups() As Collection
+   If m_ConditionGroups Is Nothing Then
+      Set m_ConditionGroups = New Collection
+   End If
+   Set ConditionGroups = m_ConditionGroups
+End Property
+
+Public Function NewConditionGroup(ByVal ConcatOperator As SqlLogicalOperator) As FilterStringBuilder
+
+   Dim NewBuilder As FilterStringBuilder
+   
+   Set NewBuilder = New FilterStringBuilder
+   Set NewBuilder.SqlTool = m_SqlTool
+   NewBuilder.DefaultConcatOperator = ConcatOperator
+   
+   Me.ConditionGroups.Add NewBuilder
+   
+   Set NewConditionGroup = NewBuilder
+   
+End Function
+
+Private Function AppendFilterGroupsString(ByVal BaseFilterString As String, ByVal ConcatOperator As SqlLogicalOperator) As String
+   
+   If m_ConditionGroups Is Nothing Then
+      AppendFilterGroupsString = BaseFilterString
+      Exit Function
+   End If
+   
+   If m_ConditionGroups.Count = 0 Then
+      AppendFilterGroupsString = BaseFilterString
+      Exit Function
+   End If
+   
+   Dim FSB As FilterStringBuilder
+   
+   With New StringCollection
+   
+      .Add BaseFilterString
+   
+      For Each FSB In m_ConditionGroups
+         .Add FSB.ToString()
+      Next
+      
+      AppendFilterGroupsString = .ToString(GetConcatOperatorString(ConcatOperator), "(", ")", True)
+      
+   End With
+   
 End Function
