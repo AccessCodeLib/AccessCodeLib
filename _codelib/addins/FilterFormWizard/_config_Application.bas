@@ -9,6 +9,7 @@ Attribute VB_Name = "_config_Application"
 '  <use>base/modApplication.bas</use>
 '  <use>base/ApplicationHandler.cls</use>
 '  <use>base/ApplicationHandler_AppFile.cls</use>
+'  <use>_codelib/addins/shared/AppFileCodeModulTransfer.cls</use>
 '  <use>base/modErrorHandler.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -17,14 +18,20 @@ Option Compare Database
 Option Explicit
 
 'Versionsnummer
-Private Const m_ApplicationVersion As String = "1.3.2 (SVN-Rev. 365)" '2015-10-20
+Private Const m_ApplicationVersion As String = "1.3.2" '2015-11-08
+Private Const m_ApplicationCodeModulsSvnRev As Long = 365
 
 #Const USE_CLASS_ApplicationHandler_AppFile = 1
+#Const USE_CLASS_ApplicationHandler_Version = 1
 
 Private Const m_ApplicationName As String = "ACLib FilterForm Wizard"
 Private Const m_ApplicationFullName As String = "Access Code Library - FilterForm Wizard"
 Private Const m_ApplicationTitle As String = m_ApplicationFullName
 Private Const m_ApplicationIconFile As String = "ACLib.ico"
+
+Public Const DownLoadSource As String = "http://wiki.access-codelib.net/ACLib-FilterForm-Wizard"
+Private Const m_Application_DownloadFolder As String = "http://access-codelib.net/download/addins/"
+Private Const m_Application_DownloadVersionXmlFile As String = m_Application_DownloadFolder & "ACLibFilterFormWizard.xml"
 
 Private Const m_DefaultErrorHandlerMode As Long = ACLibErrorHandlerMode.aclibErrMsgBox
 
@@ -97,6 +104,19 @@ On Error GoTo HandleErr
 
 
 '----------------------------------------------------------------------------
+' Erweiterung: AppFile
+'
+#If USE_CLASS_ApplicationHandler_Version = 1 Then
+   Dim AppHdlVersion As ApplicationHandler_Version
+   
+   Set AppHdlVersion = New ApplicationHandler_Version
+   modApplication.AddApplicationHandlerExtension AppHdlVersion
+   AppHdlVersion.XmlVersionCheckFile = m_Application_DownloadVersionXmlFile
+   
+#End If
+
+
+'----------------------------------------------------------------------------
 ' Erweiterungen für Add-In laden
 '
 
@@ -154,23 +174,23 @@ End Sub
 
 Private Sub SaveCodeModulesToTable()
 
-   Dim x As Variant
+   Dim X As Variant
    Dim i As Long
    
-   x = Array("SqlTools", "StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
-   For i = 0 To UBound(x)
-      SaveCodeModulToTable acModule, x(i)
+   X = Array("SqlTools", "StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
+   For i = 0 To UBound(X)
+      SaveCodeModulToTable acModule, X(i), m_ApplicationCodeModulsSvnRev
    Next
    
 End Sub
 
-Private Sub SaveCodeModulToTable(ByVal ObjType As AcObjectType, ByVal sModulName As String)
+Private Sub SaveCodeModulToTable(ByVal ObjType As AcObjectType, ByVal sModulName As String, ByVal SvnRev As Long)
    
    Dim strFileName As String
 
    strFileName = FileTools.GetNewTempFileName
    Application.SaveAsText ObjType, sModulName, strFileName
-   CurrentApplication.SaveAppFile sModulName, strFileName, True
+   CurrentApplication.SaveAppFile sModulName, strFileName, True, "SvnRev", SvnRev
    Kill strFileName
    
 End Sub

@@ -181,7 +181,8 @@ End Function
 '/
 '---------------------------------------------------------------------------------------
 Public Function SaveAppFile(ByVal FileId As String, ByVal FileName As String, _
-                   Optional ByVal SaveVersion As Boolean = False) As Boolean
+                   Optional ByVal SaveVersion As Boolean = False, _
+                   Optional ByVal ExtFieldName As String, Optional ByVal ExtFieldValue As Variant) As Boolean
 
    Dim f As Integer
    Dim Binfile() As Byte
@@ -206,7 +207,7 @@ On Error GoTo HandleErr
    End If
 
    Dim rst As DAO.Recordset
-   Set rst = CodeDb.OpenRecordset("select id, file, Version from " & m_TABLE_AppFiles & " where id='" & FileId & "'")
+   Set rst = CodeDb.OpenRecordset("select * from " & m_TABLE_AppFiles & " where id='" & FileId & "'")
    If rst.EOF Then
       rst.AddNew
       rst.Fields("id") = FileId
@@ -223,6 +224,11 @@ On Error GoTo HandleErr
       End If
       rst.Fields("version") = strVersion
    End If
+   
+   If Len(ExtFieldName) > 0 Then
+      rst.Fields(ExtFieldName).Value = ExtFieldValue
+   End If
+   
    rst.Update
    rst.Close
    Set rst = Nothing
@@ -286,11 +292,12 @@ End Sub
 ' AppFileBeforeSaveFile
 Private Sub m_ApplicationHandler_AppFileBeforeSaveFile(ByVal sFileID As String, ByVal sFileName As String, _
                               ByVal SaveVersion As Boolean, ByRef ResumeMode As ApplicationHandlerResumeModes, _
-                              ByRef ResumeMessage As Variant)
+                              ByRef ResumeMessage As Variant, _
+                              ByVal ExtFieldName As String, ByVal ExtFieldValue As Variant)
 
    Dim bolCompleted As Boolean
 
-   bolCompleted = SaveAppFile(sFileID, sFileName, SaveVersion)
+   bolCompleted = SaveAppFile(sFileID, sFileName, SaveVersion, ExtFieldName, ExtFieldValue)
    If bolCompleted Then
       ResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Completed
    Else 'Fehler rückmelden
