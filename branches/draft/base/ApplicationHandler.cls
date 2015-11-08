@@ -146,12 +146,16 @@ Public Event AppFileBeforeCreateFile( _
             
 Public Event AppFileBeforeSaveFile( _
             ByVal sFileID As String, ByVal sFileName As String, ByVal SaveVersion As Boolean, _
-            ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
+            ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant, _
+            ByVal ExtFieldName As String, ByVal ExtFieldValue As Variant)
             
 Public Event UpdateApplication( _
             ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
 
 Public Event CheckUpdate( _
+            ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
+
+Public Event NewVersionExists( _
             ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
 
 Public Event BeforeOpenStartForm( _
@@ -713,7 +717,8 @@ End Function
 ' </remarks>
 '/
 '---------------------------------------------------------------------------------------
-Friend Function SaveAppFile(ByVal sFileID As String, ByVal sFileName As String, Optional ByVal SaveVersion As Boolean = False) As Boolean
+Friend Function SaveAppFile(ByVal sFileID As String, ByVal sFileName As String, Optional ByVal SaveVersion As Boolean = False, _
+            Optional ByVal ExtFieldName As String, Optional ByVal ExtFieldValue As Variant) As Boolean
 
    Dim eventResumeMode As ApplicationHandlerResumeModes ' Rückgabewert aus Event-Schnittstelle
    Dim eventResumeMessage As Variant                    ' Nachricht, für Abbruchgrund
@@ -722,7 +727,7 @@ Friend Function SaveAppFile(ByVal sFileID As String, ByVal sFileName As String, 
    ' Event-Schnittstelle AppFileBeforeSaveFile
    '
    eventResumeMode = 0
-   RaiseEvent AppFileBeforeSaveFile(sFileID, sFileName, SaveVersion, eventResumeMode, eventResumeMessage)
+   RaiseEvent AppFileBeforeSaveFile(sFileID, sFileName, SaveVersion, eventResumeMode, eventResumeMessage, ExtFieldName, ExtFieldValue)
    If eventResumeMode <> 0 Then
       SaveAppFile = (eventResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Completed)
    Else
@@ -731,6 +736,7 @@ Friend Function SaveAppFile(ByVal sFileID As String, ByVal sFileName As String, 
    End If
 
 End Function
+
 
 Public Property Get Extensions(ByVal ExtensionKey As String) As Object
 'Anm.: auf Auflistungs-Klasse verzichtet .. der Code ist zwar nicht so elegant, dafür ist eine kaum verwendete Klasse weniger
@@ -829,3 +835,14 @@ Public Sub CallExtensionProcedure(ByVal Key As String, ByVal ProcedureName As St
    RaiseEvent ExtensionProcedureCall(Key, ProcedureName, ResumeMode, ResumeMessage, params)
   
 End Sub
+
+Public Function NewerAppVersionExists() As Boolean
+
+   Dim ResumeMode As ApplicationHandlerResumeModes
+   Dim ResumeMessage As Boolean
+   
+   RaiseEvent NewVersionExists(ResumeMode, ResumeMessage)
+
+   NewerAppVersionExists = ResumeMessage
+
+End Function

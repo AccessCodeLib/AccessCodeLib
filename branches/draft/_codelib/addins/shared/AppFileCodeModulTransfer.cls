@@ -21,7 +21,6 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>_codelib/addins/shared/AppFileCodeModulTransfer.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>base/ApplicationHandler_AppFile.cls</use>
 '  <use>_codelib/addins/shared/CodeModuleWriter.cls</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -112,7 +111,8 @@ Public Function CheckCodeModule(ByVal sModulName As String, _
 
 End Function
 
-Private Sub TransferCodeModul(ByRef targetProject As Access.CurrentProject, ByVal ObjType As AcObjectType, ByVal sModulName As String)
+Private Sub TransferCodeModul(ByVal targetProject As Access.CurrentProject, _
+                              ByVal ObjType As AcObjectType, ByVal sModulName As String)
 
    Dim strFileName As String
    
