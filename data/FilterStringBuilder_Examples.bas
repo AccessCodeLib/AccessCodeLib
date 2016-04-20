@@ -94,7 +94,7 @@ Debug.Print "LikeFilter:"
 
       .Add "TextField", SQL_Text, SQL_Like, "a*"
       .Add "TextField", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix, "a"
-
+      
       Debug.Print .ToString
 
    End With
@@ -166,6 +166,33 @@ Private Sub ConditionGroups()
 
 End Sub
 
+Private Sub SubSelectCriteria()
+
+   With New FilterStringBuilder
+   
+      With .AddSubSelectCriteria("fiXyz", SQL_In + SQL_Not, "Select idXyz From Tabelle", True, SQL_Or)
+         .Add "x", SQL_Numeric, SQL_Equal, 4
+         .Add "y", SQL_Numeric, SQL_Equal, 5
+      End With
+      Debug.Print .ToString
+      
+   End With
+
+End Sub
+
+Private Sub ExistsCriteria()
+
+   With New FilterStringBuilder
+   
+      With .AddExistsCriteria("Select * From Tabelle")
+         .AddCriteria "idXyz = T2.fiXyz"
+         .Add "x", SQL_Numeric, SQL_Equal, 4
+      End With
+      Debug.Print .ToString
+      
+   End With
+
+End Sub
 
 ' --------------------------
 ' Hilfsprozeduren

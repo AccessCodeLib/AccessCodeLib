@@ -447,10 +447,20 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
 
 End Function
 
-Private Function GetRelationalOperatorString(ByRef RelationalOperator As SqlRelationalOperators) As String
+Friend Function GetRelationalOperatorString(ByRef RelationalOperator As SqlRelationalOperators) As String
 
    Dim OperatorString As String
    Dim op As SqlRelationalOperators
+   
+   If (RelationalOperator And SQL_In) = SQL_In Then
+      OperatorString = OperatorString & "In"
+      If (RelationalOperator And SQL_Not) = SQL_Not Then
+         OperatorString = "Not " & OperatorString
+      End If
+      GetRelationalOperatorString = OperatorString
+      Exit Function
+   End If
+   
    
    If (RelationalOperator And SQL_Not) = SQL_Not Then
       
