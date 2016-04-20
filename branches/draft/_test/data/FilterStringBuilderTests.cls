@@ -132,3 +132,79 @@ Public Sub ConditionGroups_AddOrGroups_CheckSqlText()
    Assert.That Actual, Iz.EqualTo(Expected)
 
 End Sub
+
+Public Sub AddSubSelectCriteria_WithSubSelectCond_CheckSqlText()
+
+   Const Expected As String = "((F1 = 1)) And (fiXyz In (Select idXyz From TabXyz Where (F2a Like 'a*') Or (F2b Like 'b*')))"
+   
+   Dim Actual As String
+
+   With New FilterStringBuilder
+
+      Set .SqlTool = SqlTools.NewInstance("\#yyyy-mm-dd\#", "True", "*")
+
+      .Add "F1", SQL_Numeric, SQL_Equal, 1
+      
+      With .AddSubSelectCriteria("fiXyz", SQL_In, "Select idXyz From TabXyz", , SQL_Or)
+         .Add "F2a", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix, "a"
+         .Add "F2b", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix, "b"
+      End With
+
+      Actual = .ToString()
+
+   End With
+   
+   Assert.That Actual, Iz.EqualTo(Expected)
+
+End Sub
+
+Public Sub AddSubSelectCriteria_IgnoreEmptySubFilter_CheckSqlText()
+
+   Const Expected As String = "((F1 = 1))"
+   
+   Dim Actual As String
+
+   With New FilterStringBuilder
+
+      Set .SqlTool = SqlTools.NewInstance("\#yyyy-mm-dd\#", "True", "*")
+
+      .Add "F1", SQL_Numeric, SQL_Equal, 1
+      
+      With .AddSubSelectCriteria("fiXyz", SQL_In, "Select idXyz From TabXyz", True, SQL_Or)
+         .Add "F2a", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix, Null
+         .Add "F2b", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix, Null
+      End With
+
+      Actual = .ToString()
+
+   End With
+   
+   Assert.That Actual, Iz.EqualTo(Expected)
+
+End Sub
+
+Public Sub AddExistsCriteria_withSubSelectCond_CheckSqlText()
+
+   Const Expected As String = "((F1 = 1)) And (Exists (Select * From TabXyz Where (idXyz = T.fiXyz) And (F2a Like 'a*') And (F2b Like 'b*')))"
+   
+   Dim Actual As String
+
+   With New FilterStringBuilder
+
+      Set .SqlTool = SqlTools.NewInstance("\#yyyy-mm-dd\#", "True", "*")
+
+      .Add "F1", SQL_Numeric, SQL_Equal, 1
+      
+      With .AddExistsCriteria("Select * From TabXyz")
+         .AddCriteria "idXyz = T.fiXyz"
+         .Add "F2a", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix, "a"
+         .Add "F2b", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix, "b"
+      End With
+
+      Actual = .ToString()
+
+   End With
+   
+   Assert.That Actual, Iz.EqualTo(Expected)
+
+End Sub

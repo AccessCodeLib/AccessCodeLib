@@ -37,6 +37,11 @@ Private m_DefaultConcatOperator As SqlLogicalOperator
 
 Private m_ConditionGroups As Collection
 
+Private m_SqlPrefix As String
+Private m_SqlSuffix As String
+Private m_ConditionPrefix As String
+Private m_IgnoreSqlPreSuffixIfEmptyFilter As Boolean
+
 Private Sub Class_Initialize()
    Set m_Items = New StringCollection
 End Sub
@@ -102,10 +107,30 @@ Friend Sub ConfigSqlFormat(ByVal SqlDateFormat As String, _
 End Sub
 
 Public Function ToString(Optional ByVal ConcatOperator As SqlLogicalOperator = SqlLogicalOperator.[_SQL_Default]) As String
+   
+   Dim FilterString As String
+   Dim ItemsFilterString As String
+   
    If ConcatOperator = SqlLogicalOperator.[_SQL_Default] Then
       ConcatOperator = DefaultConcatOperator
    End If
-   ToString = AppendFilterGroupsString(m_Items.ToString(GetConcatOperatorString(ConcatOperator)), ConcatOperator)
+   
+   FilterString = m_Items.ToString(GetConcatOperatorString(ConcatOperator))
+   If Len(FilterString) > 0 Then
+      FilterString = m_ConditionPrefix & FilterString
+   End If
+   
+   FilterString = AppendFilterGroupsString(FilterString, ConcatOperator)
+   
+   If m_IgnoreSqlPreSuffixIfEmptyFilter Then
+   If Len(FilterString) = 0 Then
+      ToString = vbNullString
+      Exit Function
+   End If
+   End If
+   
+   ToString = m_SqlPrefix & FilterString & m_SqlSuffix
+   
 End Function
 
 Private Function GetConcatOperatorString(ByVal ConcatOperator As SqlLogicalOperator) As String
@@ -164,3 +189,62 @@ Private Function AppendFilterGroupsString(ByVal BaseFilterString As String, ByVa
    End With
    
 End Function
+
+Public Function AddSubSelectCriteria( _
+               ByVal FieldName As String, _
+               ByVal RelationalOperator As SqlRelationalOperators, _
+               ByVal SelectFromText As String, _
+               Optional ByVal IgnoreIfSubSelectHasNoCriteria As Boolean = False, _
+               Optional ByVal SubSelectConcatOperator As SqlLogicalOperator = SqlLogicalOperator.SQL_And _
+      ) As FilterStringBuilder
+
+   Dim NewBuilder As FilterStringBuilder
+   
+   Set NewBuilder = New FilterStringBuilder
+   NewBuilder.DefaultConcatOperator = SubSelectConcatOperator
+   Set NewBuilder.SqlTool = m_SqlTool
+   
+   NewBuilder.ConfigSqlStatement SqlPrefix:=FieldName & " " & SqlTools.GetRelationalOperatorString(RelationalOperator) & " (" & SelectFromText, _
+                                 SqlSuffix:=")", ConditionPrefix:=" Where ", IgnoreSqlPreSuffixIfEmptyFilter:=IgnoreIfSubSelectHasNoCriteria
+   
+   ConditionGroups.Add NewBuilder
+   
+   Set AddSubSelectCriteria = NewBuilder
+   
+End Function
+
+Public Function AddExistsCriteria( _
+                        ByVal SelectFromText As String, _
+               Optional ByVal IgnoreIfExistsStatementHasNoCriteria As Boolean = False, _
+               Optional ByVal SubSelectConcatOperator As SqlLogicalOperator = SqlLogicalOperator.SQL_And, _
+               Optional ByVal UseNotExists As Boolean = False _
+      ) As FilterStringBuilder
+
+   Dim NewBuilder As FilterStringBuilder
+   Dim ExistsSqlPrefix As String
+   
+   Set NewBuilder = New FilterStringBuilder
+   NewBuilder.DefaultConcatOperator = SubSelectConcatOperator
+   Set NewBuilder.SqlTool = m_SqlTool
+   
+   ExistsSqlPrefix = "Exists ("
+   If UseNotExists Then ExistsSqlPrefix = "Not " & ExistsSqlPrefix
+   
+   NewBuilder.ConfigSqlStatement SqlPrefix:=ExistsSqlPrefix & SelectFromText, _
+                                 SqlSuffix:=")", ConditionPrefix:=" Where ", IgnoreSqlPreSuffixIfEmptyFilter:=IgnoreIfExistsStatementHasNoCriteria
+   
+   ConditionGroups.Add NewBuilder
+   
+   Set AddExistsCriteria = NewBuilder
+   
+End Function
+
+Friend Sub ConfigSqlStatement(ByVal SqlPrefix As String, ByVal SqlSuffix As String, _
+                              ByVal ConditionPrefix As String, _
+                     Optional ByVal IgnoreSqlPreSuffixIfEmptyFilter As Boolean = False)
+   m_SqlPrefix = SqlPrefix
+   m_SqlSuffix = SqlSuffix
+   m_ConditionPrefix = ConditionPrefix
+   m_IgnoreSqlPreSuffixIfEmptyFilter = IgnoreSqlPreSuffixIfEmptyFilter
+
+End Sub
