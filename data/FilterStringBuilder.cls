@@ -110,17 +110,17 @@ Public Function ToString(Optional ByVal ConcatOperator As SqlLogicalOperator = S
    
    Dim FilterString As String
    Dim ItemsFilterString As String
+   Dim Cond
    
    If ConcatOperator = SqlLogicalOperator.[_SQL_Default] Then
       ConcatOperator = DefaultConcatOperator
    End If
    
    FilterString = m_Items.ToString(GetConcatOperatorString(ConcatOperator))
+   FilterString = AppendFilterGroupsString(FilterString, ConcatOperator)
    If Len(FilterString) > 0 Then
       FilterString = m_ConditionPrefix & FilterString
    End If
-   
-   FilterString = AppendFilterGroupsString(FilterString, ConcatOperator)
    
    If m_IgnoreSqlPreSuffixIfEmptyFilter Then
    If Len(FilterString) = 0 Then
