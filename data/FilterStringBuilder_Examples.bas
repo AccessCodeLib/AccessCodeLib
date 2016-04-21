@@ -180,6 +180,28 @@ Private Sub SubSelectCriteria()
 
 End Sub
 
+Private Sub SubSelectCriteriaMitConditionGroup()
+
+   With New FilterStringBuilder
+   
+      .Add "a", SQL_Numeric, SQL_Equal, 123
+   
+      With .AddSubSelectCriteria("fiXyz", SQL_In + SQL_Not, "Select idXyz From Tabelle", False, SQL_And)
+         .Add "b", SQL_Text, SQL_Equal, "xyz"
+         With .NewConditionGroup(SQL_Or)
+            .Add "x", SQL_Numeric, SQL_Equal, 4
+            .Add "y", SQL_Numeric, SQL_Equal, 5
+         End With
+      End With
+      Debug.Print .ToString
+      
+   End With
+
+End Sub
+
+
+
+
 Private Sub ExistsCriteria()
 
    With New FilterStringBuilder
