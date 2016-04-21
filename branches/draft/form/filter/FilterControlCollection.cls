@@ -24,6 +24,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>form/filter/FilterControl.cls</use>
 '  <use>form/filter/FilterControlEventBridge.cls</use>
+'  <use>data/SqlTools.cls</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -34,6 +35,11 @@ Private m_FilterControls As Collection
 Private WithEvents m_EventBridge As FilterControlEventBridge
 Attribute m_EventBridge.VB_VarHelpID = -1
 Private m_ItemConcatOperator As SqlLogicalOperator
+
+Private m_SqlPrefix As String
+Private m_SqlSuffix As String
+Private m_ConditionPrefix As String
+Private m_IgnoreSqlPreSuffixIfEmptyFilter As Boolean
 
 Public Event FilterValuesChanged()
 
@@ -160,6 +166,7 @@ Public Function CriteriaString(ByVal SqlToolsRef As SqlTools) As String
                     ' .. aber Implements ist aus Erfahrung mit Vorsicht zu genieﬂen, wenn Code/Interface in Access/VBA ge‰ndert wird.
 
    With New FilterStringBuilder
+      .ConfigSqlStatement m_SqlPrefix, m_SqlSuffix, m_ConditionPrefix, m_IgnoreSqlPreSuffixIfEmptyFilter
       For Each fc In m_FilterControls
          .AddCriteria fc.CriteriaString(SqlToolsRef)
       Next
@@ -167,3 +174,58 @@ Public Function CriteriaString(ByVal SqlToolsRef As SqlTools) As String
    End With
 
 End Function
+
+Public Function AddSubSelectCriteria( _
+               ByVal FieldName As String, _
+               ByVal RelationalOperator As SqlRelationalOperators, _
+               ByVal SelectFromText As String, _
+               Optional ByVal IgnoreIfSubSelectHasNoCriteria As Boolean = False, _
+               Optional ByVal SubSelectConcatOperator As SqlLogicalOperator = SqlLogicalOperator.SQL_And _
+      ) As FilterControlCollection
+      
+   With New FilterControlCollection
+      .ItemConcatOperator = SubSelectConcatOperator
+      .ConfigSqlStatement SqlPrefix:=FieldName & " " & SqlTools.GetRelationalOperatorString(RelationalOperator) & " (" & SelectFromText, _
+                          SqlSuffix:=")", ConditionPrefix:=" Where ", IgnoreSqlPreSuffixIfEmptyFilter:=IgnoreIfSubSelectHasNoCriteria
+      
+      Set .EventBridge = m_EventBridge
+      m_FilterControls.Add .Self
+      Set AddSubSelectCriteria = .Self
+   End With
+   
+End Function
+
+Public Function AddExistsCriteria( _
+                        ByVal SelectFromText As String, _
+               Optional ByVal IgnoreIfExistsStatementHasNoCriteria As Boolean = False, _
+               Optional ByVal SubSelectConcatOperator As SqlLogicalOperator = SqlLogicalOperator.SQL_And, _
+               Optional ByVal UseNotExists As Boolean = False _
+      ) As FilterControlCollection
+
+   Dim ExistsSqlPrefix As String
+   
+   ExistsSqlPrefix = "Exists ("
+   If UseNotExists Then ExistsSqlPrefix = "Not " & ExistsSqlPrefix
+
+   With New FilterControlCollection
+      .ItemConcatOperator = SubSelectConcatOperator
+      .ConfigSqlStatement SqlPrefix:=ExistsSqlPrefix & SelectFromText, _
+                          SqlSuffix:=")", ConditionPrefix:=" Where ", IgnoreSqlPreSuffixIfEmptyFilter:=IgnoreIfExistsStatementHasNoCriteria
+      
+      Set .EventBridge = m_EventBridge
+      m_FilterControls.Add .Self
+      Set AddExistsCriteria = .Self
+   End With
+
+End Function
+
+Friend Sub ConfigSqlStatement(ByVal SqlPrefix As String, ByVal SqlSuffix As String, _
+                              ByVal ConditionPrefix As String, _
+                     Optional ByVal IgnoreSqlPreSuffixIfEmptyFilter As Boolean = False)
+   
+   m_SqlPrefix = SqlPrefix
+   m_SqlSuffix = SqlSuffix
+   m_ConditionPrefix = ConditionPrefix
+   m_IgnoreSqlPreSuffixIfEmptyFilter = IgnoreSqlPreSuffixIfEmptyFilter
+
+End Sub
