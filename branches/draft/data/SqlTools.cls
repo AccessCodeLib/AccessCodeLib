@@ -56,7 +56,7 @@ Private m_SqlDateFormat As String
 Private m_SqlBooleanTrueString As String
 Private m_SqlWildCardString As String
 
-Private Const ResultTextIfNull As String = "NULL"
+Private Const ResultTextIfNull As String = "Null"
 
 Public Enum SqlRelationalOperators
    [_IgnoreAll] = &H80000000
@@ -69,6 +69,7 @@ Public Enum SqlRelationalOperators
    SQL_In = 1024
    SQL_Add_WildCardSuffix = 2048
    SQL_Add_WildCardPrefix = 4096
+   SQL_SplitValueToArray = 8192
 End Enum
 
 Public Enum SqlFieldDataType
@@ -366,10 +367,15 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
    If (RelationalOperator And [_IgnoreAll]) = [_IgnoreAll] Then
       Exit Function
    End If
-
+   
    If NullFilterOrEmptyFilter(FieldName, FieldDataType, Nz(FilterValue, FilterValue2), IgnoreValue, Criteria) Then
       BuildCriteria = Criteria
       Exit Function
+   End If
+
+   If (RelationalOperator And SQL_SplitValueToArray) = SQL_SplitValueToArray Then
+      FilterValue = Split(CharTrim(FilterValue, ";"), ";")
+      RelationalOperator = RelationalOperator Xor SQL_SplitValueToArray
    End If
 
    If TryBuildInCriteria(FieldName, FieldDataType, RelationalOperator, FilterValue, FilterValue2, IgnoreValue, Criteria) Then
@@ -444,6 +450,24 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
    End If
 
    BuildCriteria = Criteria
+
+End Function
+
+Private Function CharTrim(ByVal ValueToTrim As String, ByVal TrimChar As String) As String
+
+   Dim TrimString As String
+   
+   TrimString = " " & TrimChar
+   Do While InStr(1, ValueToTrim, TrimString)
+      ValueToTrim = Replace(ValueToTrim, TrimString, TrimChar)
+   Loop
+   
+   TrimString = TrimChar & " "
+   Do While InStr(1, ValueToTrim, TrimString)
+      ValueToTrim = Replace(ValueToTrim, TrimString, TrimChar)
+   Loop
+   
+   CharTrim = ValueToTrim
 
 End Function
 

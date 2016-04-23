@@ -191,3 +191,48 @@ Public Sub BuildCriteria_InAndIgnoreValueArray( _
    Assert.That Actual, Iz.EqualTo(Expected)
 
 End Sub
+
+'AccUnit:Row("a ;b; c", "F In ('a','b','c')")
+'AccUnit:Row("a", "F In ('a')")
+'AccUnit:Row(Null, "")
+'AccUnit:Row("", "")
+Public Sub BuildCriteria_InAndSplitValueToArray( _
+                           ByVal FilterValue As Variant, _
+                           ByVal Expected As String)
+
+   Dim Actual As String
+
+   Actual = DaoTools.BuildCriteria("F", SQL_Text, SQL_In + SQL_SplitValueToArray, FilterValue)
+   
+   Assert.That Actual, Iz.EqualTo(Expected)
+
+End Sub
+
+'AccUnit:Row("a ;b; c", "F Like 'a*' Or F Like 'b*' Or F Like 'c*'")
+'AccUnit:Row("a", "F Like 'a*'")
+'AccUnit:Row(Null, "")
+'AccUnit:Row("", "")
+Public Sub BuildCriteria_LikeAndSplitValueToArray( _
+                           ByVal FilterValue As Variant, _
+                           ByVal Expected As String)
+
+   Dim Actual As String
+
+   Actual = DaoTools.BuildCriteria("F", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix + SQL_SplitValueToArray, FilterValue)
+   
+   Assert.That Actual, Iz.EqualTo(Expected)
+
+End Sub
+
+'AccUnit:Row("1,2 ;2; 3", "F = 1.2 Or F = 2 Or F = 3")
+Public Sub BuildCriteria_EqualNumericAndSplitValueToArray( _
+                           ByVal FilterValue As Variant, _
+                           ByVal Expected As String)
+
+   Dim Actual As String
+
+   Actual = DaoTools.BuildCriteria("F", SQL_Numeric, SQL_Equal + SQL_SplitValueToArray, FilterValue)
+   
+   Assert.That Actual, Iz.EqualTo(Expected)
+
+End Sub
