@@ -236,3 +236,16 @@ Public Sub BuildCriteria_EqualNumericAndSplitValueToArray( _
    Assert.That Actual, Iz.EqualTo(Expected)
 
 End Sub
+
+'AccUnit:Row("1;2;3", "F = 1 Or F = 2 Or F = 3")
+Public Sub BuildCriteria_EqualNumericStringArray_VbaSplit( _
+                           ByVal FilterValue As Variant, _
+                           ByVal Expected As String)
+
+   Dim Actual As String
+
+   Actual = DaoTools.BuildCriteria("F", SQL_Numeric, SQL_Equal, Split(FilterValue, ";"))
+   
+   Assert.That Actual, Iz.EqualTo(Expected)
+
+End Sub

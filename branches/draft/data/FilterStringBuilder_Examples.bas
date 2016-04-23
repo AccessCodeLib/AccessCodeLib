@@ -199,9 +199,6 @@ Private Sub SubSelectCriteriaMitConditionGroup()
 
 End Sub
 
-
-
-
 Private Sub ExistsCriteria()
 
    With New FilterStringBuilder
@@ -213,6 +210,20 @@ Private Sub ExistsCriteria()
       Debug.Print .ToString
       
    End With
+
+End Sub
+
+Private Sub SplitValueToArray()
+
+With New FilterStringBuilder
+
+   .Add "X", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix, Array("a", "b", "c")
+   .Add "Y", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix, Split("a;b;c", ";")
+   .Add "Z", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix + SQL_SplitValueToArray, "a;b;c"
+   
+   Debug.Print .ToString
+   
+End With
 
 End Sub
 

@@ -671,9 +671,22 @@ Private Function NullFilterOrEmptyFilter(ByVal FieldName As String, ByVal FieldD
       NullFilterOrEmptyFilter = True
    ElseIf IsArray(Value) Then
       Dim a() As Variant
+On Error Resume Next
       a = Value
-      If (0 / 1) + (Not Not a) = 0 Then ' leerer Array
+      If Err.Number = 0 Then
+      If (0 / 1) + (Not Not a) = 0 Then
          NullFilterOrEmptyFilter = True
+         Exit Function
+      End If
+      Else
+         Err.Clear
+         Dim ArraySize As Long
+         ArraySize = UBound(Value)
+         If Err.Number <> 0 Then
+            Err.Clear
+            NullFilterOrEmptyFilter = True
+            Exit Function
+         End If
       End If
    Else
       NullFilterOrEmptyFilter = ValuesAreEqual(FieldDataType, Value, IgnoreValue)
