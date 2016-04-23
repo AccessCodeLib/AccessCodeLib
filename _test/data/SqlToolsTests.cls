@@ -62,7 +62,7 @@ End Sub
 'AccUnit:Row("abcdefg", "'", True, "abcdefg")
 'AccUnit:Row("abc'defg", "'", False, "'abc''defg'")
 'AccUnit:Row("abc""defg", "'", False, "'abc""defg'")
-'AccUnit:Row(Null, "'", False, "NULL")
+'AccUnit:Row(Null, "'", False, "Null")
 Public Function TextToSqlText_DefaultValueIfNullArg_ReturnsSqlText( _
                      ByVal Value As Variant, _
                      ByVal Delimiter As String, _
@@ -80,7 +80,7 @@ End Function
 ' DateToSqlText
 '
 
-'AccUnit:Row(Null, "", "NULL")
+'AccUnit:Row(Null, "", "Null")
 'AccUnit:Row(System.Convert.ToDateTime("2000-01-31"), "\#yyyy-mm-dd\#", "#2000-01-31#")
 'AccUnit:Row(System.Convert.ToDateTime("2000-01-31"), "\#mm\/dd\/yyyy\#", "#01/31/2000#")
 'AccUnit:Row(System.Convert.ToDateTime("2000-01-31"), "'yyyymmdd'", "'20000131'")
@@ -92,7 +92,7 @@ Public Sub DateToSqlText_UseFormatArg_ReturnsSqlText(ByVal Value As Variant, _
    Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
-'AccUnit:Row(Null, "", "NULL")
+'AccUnit:Row(Null, "", "Null")
 'AccUnit:Row(System.Convert.ToDateTime("2000-01-31"), "\#yyyy-mm-dd\#", "#2000-01-31#")
 'AccUnit:Row(System.Convert.ToDateTime("2000-01-31"), "\#mm\/dd\/yyyy\#", "#01/31/2000#")
 'AccUnit:Row(System.Convert.ToDateTime("2000-01-31"), "'yyyymmdd'", "'20000131'")
@@ -116,7 +116,7 @@ End Sub
 ' NumberToSqlText
 '
 
-'AccUnit:Row(Null, "NULL")
+'AccUnit:Row(Null, "Null")
 'AccUnit:Row(0, "0")
 'AccUnit:Row(000, "0")
 'AccUnit:Row(12345, "12345")
