@@ -106,7 +106,8 @@ Friend Sub ConfigSqlFormat(ByVal SqlDateFormat As String, _
 
 End Sub
 
-Public Function ToString(Optional ByVal ConcatOperator As SqlLogicalOperator = SqlLogicalOperator.[_SQL_Default]) As String
+Public Function ToString(Optional ByVal ConcatOperator As SqlLogicalOperator = SqlLogicalOperator.[_SQL_Default], _
+                         Optional ByVal IgnoreDuplicateFilters As Boolean = False) As String
    
    Dim FilterString As String
    Dim ItemsFilterString As String
@@ -116,7 +117,7 @@ Public Function ToString(Optional ByVal ConcatOperator As SqlLogicalOperator = S
       ConcatOperator = DefaultConcatOperator
    End If
    
-   FilterString = m_Items.ToString(GetConcatOperatorString(ConcatOperator))
+   FilterString = m_Items.ToString(GetConcatOperatorString(ConcatOperator), , , , IgnoreDuplicateFilters)
    FilterString = AppendFilterGroupsString(FilterString, ConcatOperator)
    If Len(FilterString) > 0 Then
       FilterString = m_ConditionPrefix & FilterString
@@ -162,7 +163,8 @@ Public Function NewConditionGroup(ByVal ConcatOperator As SqlLogicalOperator) As
    
 End Function
 
-Private Function AppendFilterGroupsString(ByVal BaseFilterString As String, ByVal ConcatOperator As SqlLogicalOperator) As String
+Private Function AppendFilterGroupsString(ByVal BaseFilterString As String, ByVal ConcatOperator As SqlLogicalOperator, _
+                                 Optional ByVal IgnoreDuplicateFilters As Boolean = False) As String
    
    If m_ConditionGroups Is Nothing Then
       AppendFilterGroupsString = BaseFilterString
@@ -184,7 +186,7 @@ Private Function AppendFilterGroupsString(ByVal BaseFilterString As String, ByVa
          .Add FSB.ToString()
       Next
       
-      AppendFilterGroupsString = .ToString(GetConcatOperatorString(ConcatOperator), "(", ")", True)
+      AppendFilterGroupsString = .ToString(GetConcatOperatorString(ConcatOperator), "(", ")", True, IgnoreDuplicateFilters)
       
    End With
    
