@@ -83,18 +83,20 @@ End Sub
 Public Function ToString(Optional ByVal Delimiter As String = ", ", _
                          Optional ByVal ItemPrefix As String = vbNullString, _
                          Optional ByVal ItemSuffix As String = vbNullString, _
-                         Optional ByVal IgnoreEmptyValue As Boolean = False) As String
+                         Optional ByVal IgnoreEmptyValue As Boolean = False, _
+                         Optional ByVal IgnoreDuplicateValues As Boolean = False) As String
    
    Dim s As String
 
-   s = VBA.Join(ToStringArray(IgnoreEmptyValue), ItemSuffix & Delimiter & ItemPrefix)
+   s = VBA.Join(ToStringArray(IgnoreEmptyValue, IgnoreDuplicateValues), ItemSuffix & Delimiter & ItemPrefix)
    If Len(s) > 0 Then s = ItemPrefix & s & ItemSuffix
 
    ToString = s
 
 End Function
 
-Public Function ToStringArray(Optional ByVal IgnoreEmptyValue As Boolean = False) As String()
+Public Function ToStringArray(Optional ByVal IgnoreEmptyValue As Boolean = False, _
+                              Optional ByVal IgnoreDuplicateValues As Boolean = False) As String()
 
    Dim arrItems() As String
    Dim MaxArrayIndex As Long
@@ -108,7 +110,11 @@ Public Function ToStringArray(Optional ByVal IgnoreEmptyValue As Boolean = False
    End If
    
    If IgnoreEmptyValue Then
-      ToStringArray = GetArrayWithoutEmptyValues()
+      If IgnoreDuplicateValues Then
+         ToStringArray = RemoveDuplicateValues(GetArrayWithoutEmptyValues())
+      Else
+         ToStringArray = GetArrayWithoutEmptyValues()
+      End If
       Exit Function
    End If
 
@@ -117,8 +123,12 @@ Public Function ToStringArray(Optional ByVal IgnoreEmptyValue As Boolean = False
       arrItems(i) = m_Items.Item(i + 1)
    Next
 
-   ToStringArray = arrItems
-
+   If IgnoreDuplicateValues Then
+      ToStringArray = RemoveDuplicateValues(arrItems)
+   Else
+      ToStringArray = arrItems
+   End If
+   
 End Function
 
 Private Function GetArrayWithoutEmptyValues() As String()
@@ -156,4 +166,54 @@ Private Function GetArrayWithoutEmptyValues() As String()
    
    GetArrayWithoutEmptyValues = arrItems
 
+End Function
+
+Private Function RemoveDuplicateValues(ByRef ArrayToCheck() As String) As String()
+
+   Dim arrItems() As String
+   Dim MaxArrayIndex As Long
+   Dim ItemIndex As Long
+   Dim varItm As Variant
+
+   MaxArrayIndex = UBound(ArrayToCheck)
+
+   If MaxArrayIndex = 0 Then
+      RemoveDuplicateValues = ArrayToCheck
+      Exit Function
+   End If
+   
+   ReDim arrItems(MaxArrayIndex)
+   
+   ItemIndex = -1
+   For Each varItm In ArrayToCheck
+      If Not ValueExistsInArray(arrItems, varItm, ItemIndex) Then
+         ItemIndex = ItemIndex + 1
+         arrItems(ItemIndex) = varItm
+         Debug.Print varItm
+      End If
+   Next
+   
+   If ItemIndex < (m_Items.Count - 1) Then
+      ReDim Preserve arrItems(0 To ItemIndex)
+   End If
+   
+   RemoveDuplicateValues = arrItems
+   
+End Function
+
+Private Function ValueExistsInArray(ByRef ArrayToCheck() As String, ByVal ValueToCheck As String, ByVal CheckUntilArrayIndex As Long) As Boolean
+   
+   Dim i As Long
+   
+   If CheckUntilArrayIndex < 0 Then
+      Exit Function
+   End If
+   
+   For i = LBound(ArrayToCheck) To CheckUntilArrayIndex
+      If StrComp(ArrayToCheck(i), ValueToCheck, vbBinaryCompare) = 0 Then
+         ValueExistsInArray = True
+         Exit Function
+      End If
+   Next
+   
 End Function
