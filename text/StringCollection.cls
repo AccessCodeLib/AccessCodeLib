@@ -22,6 +22,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>text/StringCollection.cls</file>
 '  <license>_codelib/license.bas</license>
+'  <test>_test/text/StringCollectionTests.cls</test>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -189,7 +190,6 @@ Private Function RemoveDuplicateValues(ByRef ArrayToCheck() As String) As String
       If Not ValueExistsInArray(arrItems, varItm, ItemIndex) Then
          ItemIndex = ItemIndex + 1
          arrItems(ItemIndex) = varItm
-         Debug.Print varItm
       End If
    Next
    

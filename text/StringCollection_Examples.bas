@@ -88,3 +88,19 @@ Private Sub Werte_anfuegen_löschen_und_per_For_Schleife_rueckwärts_durchlaufen()
     End With
 
 End Sub
+
+Private Sub Keine_doppelten_Werte_ausgeben()
+
+   With New StringCollection
+   
+      .Add "a"
+      .Add "b"
+      .Add "b"
+      .Add "c"
+      .Add "a"
+   
+      Debug.Print .ToString(", ", , , , True)
+   
+   End With
+
+End Sub
