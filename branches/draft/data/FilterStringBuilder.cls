@@ -42,6 +42,8 @@ Private m_SqlSuffix As String
 Private m_ConditionPrefix As String
 Private m_IgnoreSqlPreSuffixIfEmptyFilter As Boolean
 
+Private Const WhereReplacementText As String = "[WhereStatement]"
+
 Private Sub Class_Initialize()
    Set m_Items = New StringCollection
 End Sub
@@ -197,18 +199,34 @@ Public Function AddSubSelectCriteria( _
                ByVal RelationalOperator As SqlRelationalOperators, _
                ByVal SelectFromText As String, _
                Optional ByVal IgnoreIfSubSelectHasNoCriteria As Boolean = False, _
+               Optional ByVal UseWhereReplacementTextInFromText As Boolean = False, _
                Optional ByVal SubSelectConcatOperator As SqlLogicalOperator = SqlLogicalOperator.SQL_And _
       ) As FilterStringBuilder
 
    Dim NewBuilder As FilterStringBuilder
+   Dim SqlPrefix As String
+   Dim SqlSuffix As String
+   Dim WhereReplacementPos As Long
+   
+   SqlPrefix = FieldName & " " & SqlTools.GetRelationalOperatorString(RelationalOperator) & " ("
+   SqlSuffix = ")"
+   If UseWhereReplacementTextInFromText Then
+      WhereReplacementPos = InStr(1, SelectFromText, WhereReplacementText, vbTextCompare)
+   End If
+   
+   If WhereReplacementPos > 0 Then
+      SqlPrefix = SqlPrefix & Trim$(Left(SelectFromText, WhereReplacementPos - 1))
+      SqlSuffix = " " & Trim$(Mid$(SelectFromText, WhereReplacementPos + Len(WhereReplacementText) + 1)) & SqlSuffix
+   Else
+      SqlPrefix = SqlPrefix & SelectFromText
+   End If
    
    Set NewBuilder = New FilterStringBuilder
    NewBuilder.DefaultConcatOperator = SubSelectConcatOperator
    Set NewBuilder.SqlTool = m_SqlTool
    
-   NewBuilder.ConfigSqlStatement SqlPrefix:=FieldName & " " & SqlTools.GetRelationalOperatorString(RelationalOperator) & " (" & SelectFromText, _
-                                 SqlSuffix:=")", ConditionPrefix:=" Where ", IgnoreSqlPreSuffixIfEmptyFilter:=IgnoreIfSubSelectHasNoCriteria
-   
+   NewBuilder.ConfigSqlStatement SqlPrefix:=SqlPrefix, SqlSuffix:=SqlSuffix, _
+                                 ConditionPrefix:=" Where ", IgnoreSqlPreSuffixIfEmptyFilter:=IgnoreIfSubSelectHasNoCriteria
    ConditionGroups.Add NewBuilder
    
    Set AddSubSelectCriteria = NewBuilder
