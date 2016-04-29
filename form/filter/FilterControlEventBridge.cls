@@ -30,7 +30,12 @@ Option Compare Database
 Option Explicit
 
 Public Event FilterValuesChanged(ByVal FilterControlRef As FilterControl)
+Public Event FilterValueRequest(ByVal FilterValueCode As String, ByRef FilterValue As String)
 
 Friend Sub RaiseFilterValueChanged(ByVal FilterControlRef As FilterControl)
    RaiseEvent FilterValuesChanged(FilterControlRef)
+End Sub
+
+Friend Sub RaiseFilterValueRequest(ByVal FilterValueCode As String, ByRef FilterValue As String)
+   RaiseEvent FilterValueRequest(FilterValueCode, FilterValue)
 End Sub

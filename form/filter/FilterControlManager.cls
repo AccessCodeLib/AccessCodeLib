@@ -37,6 +37,7 @@ Private m_AutoFilterModeOn As Boolean
 
 Public Event FilterStringChanged(ByVal NewFilterString As String)
 Public Event FilterValuesChanged()
+Public Event FilterValueRequest(ByVal FilterValueCode As String, ByRef FilterValue As String)
 
 Private Sub Class_Initialize()
    Set m_FilterControls = New FilterControlCollection
@@ -83,6 +84,10 @@ Public Function CreateFilterString() As String
    CreateFilterString = FilterControls.CriteriaString(SqlTool)
 
 End Function
+
+Private Sub m_FilterControls_FilterValueRequest(ByVal FilterValueCode As String, ByRef FilterValue As String)
+   RaiseEvent FilterValueRequest(FilterValueCode, FilterValue)
+End Sub
 
 Private Sub m_FilterControls_FilterValuesChanged()
    RaiseEvent FilterValuesChanged

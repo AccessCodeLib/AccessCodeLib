@@ -44,6 +44,7 @@ Private m_IgnoreSqlPreSuffixIfEmptyFilter As Boolean
 Private Const WhereReplacementText As String = "[WhereStatement]"
 
 Public Event FilterValuesChanged()
+Public Event FilterValueRequest(ByVal FilterValueCode As String, ByRef FilterValue As String)
 
 Private Sub Class_Initialize()
    Set m_FilterControls = New Collection
@@ -149,6 +150,10 @@ Public Sub RemoveFilterValues(Optional ByVal RaiseFilterValuesChangedEvent As Bo
    
 End Sub
 
+Private Sub m_EventBridge_FilterValueRequest(ByVal FilterValueCode As String, FilterValue As String)
+   RaiseEvent FilterValueRequest(FilterValueCode, FilterValue)
+End Sub
+
 Private Sub m_EventBridge_FilterValuesChanged(ByVal FilterControlRef As FilterControl)
    RaiseEvent FilterValuesChanged
 End Sub
@@ -168,12 +173,60 @@ Public Function CriteriaString(ByVal SqlToolsRef As SqlTools) As String
                     ' .. aber Implements ist aus Erfahrung mit Vorsicht zu genieﬂen, wenn Code/Interface in Access/VBA ge‰ndert wird.
 
    With New FilterStringBuilder
-      .ConfigSqlStatement m_SqlPrefix, m_SqlSuffix, m_ConditionPrefix, m_IgnoreSqlPreSuffixIfEmptyFilter
+      .ConfigSqlStatement InsertEventValues(m_SqlPrefix), InsertEventValues(m_SqlSuffix), m_ConditionPrefix, m_IgnoreSqlPreSuffixIfEmptyFilter
       For Each fc In m_FilterControls
          .AddCriteria fc.CriteriaString(SqlToolsRef)
       Next
       CriteriaString = .ToString(m_ItemConcatOperator)
    End With
+
+End Function
+
+Private Function InsertEventValues(ByVal StringToCheck As String) As String
+
+   Dim CheckStringArray() As String
+   
+   If Len(StringToCheck) = 0 Then
+      Exit Function
+   End If
+   
+   CheckStringArray = Split(StringToCheck, "[EventValue(", , vbTextCompare)
+   
+   Dim i As Long
+   Dim ArraySize As Long
+   
+   ArraySize = UBound(CheckStringArray)
+   
+   If ArraySize = 0 Then
+      InsertEventValues = StringToCheck
+      Exit Function
+   End If
+   
+   Dim FilterValueCode As String
+   Dim FilterValue As String
+   Dim Pos As String
+   Dim TempString As String
+   
+   For i = 1 To ArraySize
+   
+      Pos = InStr(1, CheckStringArray(i), ")")
+      FilterValueCode = Left(CheckStringArray(i), Pos - 1)
+      
+      Pos = InStr(Pos, CheckStringArray(i), "]")
+      
+      TempString = Mid(CheckStringArray(i), Pos + 1)
+      
+      FilterValue = "Null"
+      RaiseEvent FilterValueRequest(FilterValueCode, FilterValue)
+      If FilterValue = "Null" Then
+         m_EventBridge.RaiseFilterValueRequest FilterValueCode, FilterValue
+      End If
+      
+      CheckStringArray(i) = FilterValue & TempString
+      
+   Next
+   
+   InsertEventValues = Join(CheckStringArray, vbNullString)
 
 End Function
 
