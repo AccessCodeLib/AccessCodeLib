@@ -301,7 +301,7 @@ Public Function ShortenFileName(ByVal FullFileName As Variant, ByVal MaxLen As L
       FileString = "..." & Temp
    Else
       TrimPos = TrimPos \ 2
-      FileString = Left$(FileString, TrimPos) & "..." & Right$(FileString, TrimPos) & Temp
+      FileString = Left$(FileString, TrimPos) & "..." & right$(FileString, TrimPos) & Temp
    End If
 
    ShortenFileName = FileString
@@ -353,7 +353,7 @@ Public Function CreateDirectory(ByVal FullPath As String) As Boolean
 
    Dim PathBefore As String
 
-   If Right$(FullPath, 1) = "\" Then
+   If right$(FullPath, 1) = "\" Then
       FullPath = Left$(FullPath, Len(FullPath) - 1)
    End If
 
@@ -391,7 +391,7 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Function FileExists(ByVal FullPath As String) As Boolean
 
-   Do While VBA.Right$(FullPath, 1) = "\"
+   Do While VBA.right$(FullPath, 1) = "\"
       FullPath = VBA.Left$(FullPath, Len(FullPath) - 1)
    Loop
 
@@ -415,7 +415,7 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Function DirExists(ByVal FullPath As String) As Boolean
 
-   If Right$(FullPath, 1) <> "\" Then
+   If right$(FullPath, 1) <> "\" Then
       FullPath = FullPath & "\"
    End If
 
@@ -508,7 +508,7 @@ Public Function GetFullPathFromRelativPath(ByVal RelativPath As String, _
    Dim FullPath As String
    Dim Pos As Long
 
-   If Right$(BaseDir, 1) = "\" Then
+   If right$(BaseDir, 1) = "\" Then
       BaseDir = Left$(BaseDir, Len(BaseDir) - 1)
    End If
 
@@ -575,7 +575,7 @@ Public Function GetRelativPathFromFullPath(ByVal FullPath As String, _
       Exit Function
    End If
 
-   If Right$(BaseDir, 1) <> "\" Then BaseDir = BaseDir & "\"
+   If right$(BaseDir, 1) <> "\" Then BaseDir = BaseDir & "\"
    If FullPath = BaseDir Then
       GetRelativPathFromFullPath = "."
       Exit Function
