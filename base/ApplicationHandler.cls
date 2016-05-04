@@ -62,7 +62,7 @@ Private Const SYSCOLOR_COLOR_APPWORKSPACE As Long = 12
 
 #If VBA7 Then
 
-Private Declare PtrSafe Function FindWindowEx Lib "USER32.DLL" Alias "FindWindowExA" ( _
+Private Declare PtrSafe Function FindWindowEx Lib "user32.dll" Alias "FindWindowExA" ( _
        ByVal hWnd1 As Long, ByVal hWnd2 As Long, _
        ByVal lpsz1 As String, ByVal lpsz2 As String) As Long
        
@@ -79,7 +79,7 @@ Private Declare PtrSafe Function GetSysColor Lib "user32" (ByVal nIndex As Long)
 
 #Else
 
-Private Declare Function FindWindowEx Lib "USER32.DLL" Alias "FindWindowExA" ( _
+Private Declare Function FindWindowEx Lib "user32.dll" Alias "FindWindowExA" ( _
        ByVal hWnd1 As Long, ByVal hWnd2 As Long, _
        ByVal lpsz1 As String, ByVal lpsz2 As String) As Long
        
@@ -138,7 +138,7 @@ Public Event ExtensionPropertyLookup(ByVal Key As String, ByVal PropertyName As 
 
 Public Event ExtensionProcedureCall(ByVal Key As String, ByVal ProcedureName As String, _
             ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant, _
-            ByRef params() As Variant)
+            ByRef Params() As Variant)
 
 Public Event AppFileBeforeCreateFile( _
             ByVal sFileID As String, ByVal sFileName As String, _
@@ -539,26 +539,26 @@ Friend Property Let StartUpMenuBar(ByVal MenuBarName As String)
    End If
 End Property
 
-Public Sub SetApplicationProperty(ByVal propName As String, ByVal PropValue As Variant, Optional ByVal PropType As Long = dbText)
-   setAppDbProperty propName, PropType, PropValue
+Public Sub SetApplicationProperty(ByVal PropName As String, ByVal PropValue As Variant, Optional ByVal PropType As Long = dbText)
+   setAppDbProperty PropName, PropType, PropValue
 End Sub
 
-Private Sub setAppDbProperty(ByVal propName As String, ByVal PropType As Long, ByVal PropValue As Variant)
+Private Sub setAppDbProperty(ByVal PropName As String, ByVal PropType As Long, ByVal PropValue As Variant)
    
    Dim db As DAO.Database
    Dim propCol As DAO.Properties
    
    Set db = AppDb
    Set propCol = db.Properties
-   If dbPropertyExists(propCol, propName) Then
+   If dbPropertyExists(propCol, PropName) Then
       If Len(PropValue) = 0 Or IsNull(PropValue) Then
-         db.Properties.Delete propName
+         db.Properties.Delete PropName
       Else
-         db.Properties(propName) = PropValue
+         db.Properties(PropName) = PropValue
       End If
    Else
       If Len(PropValue) > 0 Then
-         db.Properties.Append db.CreateProperty(propName, PropType, PropValue)
+         db.Properties.Append db.CreateProperty(PropName, PropType, PropValue)
       End If
    End If
 
@@ -830,9 +830,9 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Sub CallExtensionProcedure(ByVal Key As String, ByVal ProcedureName As String, _
             ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant, _
-            ByRef params() As Variant)
+            ByRef Params() As Variant)
             
-   RaiseEvent ExtensionProcedureCall(Key, ProcedureName, ResumeMode, ResumeMessage, params)
+   RaiseEvent ExtensionProcedureCall(Key, ProcedureName, ResumeMode, ResumeMessage, Params)
   
 End Sub
 

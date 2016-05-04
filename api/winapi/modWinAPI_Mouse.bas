@@ -1,6 +1,6 @@
 Attribute VB_Name = "modWinApi_Mouse"
 '---------------------------------------------------------------------------------------
-' Module: modWinApi_Mouse (Josef Pötzl, 2010-03-13)
+' Module: modWinApi_Mouse
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -37,11 +37,16 @@ Public Enum IDC_MouseCursor
    IDC_NO = 32648&
 End Enum
 
-Private Declare Function LoadCursorBynum Lib "user32" Alias "LoadCursorA" (ByVal hInstance As Long, ByVal lpCursorName As Long) As Long
-Private Declare Function SetCursor Lib "user32" (ByVal hCursor As Long) As Long
+#If VBA7 Then
+   Private Declare PtrSafe Function LoadCursorBynum Lib "user32" Alias "LoadCursorA" (ByVal hInstance As Long, ByVal lpCursorName As Long) As Long
+   Private Declare PtrSafe Function SetCursor Lib "user32" (ByVal hCursor As Long) As Long
+#Else
+   Private Declare Function LoadCursorBynum Lib "user32" Alias "LoadCursorA" (ByVal hInstance As Long, ByVal lpCursorName As Long) As Long
+   Private Declare Function SetCursor Lib "user32" (ByVal hCursor As Long) As Long
+#End If
 
 '---------------------------------------------------------------------------------------
-' Sub: MouseCursor (2009-11-11)
+' Sub: MouseCursor
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
