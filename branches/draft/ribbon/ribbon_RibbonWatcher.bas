@@ -14,6 +14,7 @@ Attribute VB_Name = "ribbon_RibbonWatcher"
 '  <file>ribbon/ribbon_RibbonWatcher.bas</file>
 '  <license>_codelib/license.bas</license>
 '  <use>ribbon/RibbonWatcher.cls</use>
+'  <ref><name>Office</name><major>2</major><minor>4</minor><guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</guid></ref>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -63,132 +64,56 @@ Public Sub RibbonWatcherCallBack_GetImages(ByRef rc As IRibbonControl, _
 End Sub
 
 Public Sub RibbonWatcherCallBack_GetVisible(ByRef rc As IRibbonControl, _
-                                            ByRef visible As Variant)
+                                            ByRef Visible As Variant)
 
-   visible = CurrentRibbonWatcher.GetRibbonControlVisible(rc)
+   Visible = CurrentRibbonWatcher.GetRibbonControlVisible(rc)
 
 End Sub
 
 Public Sub RibbonWatcherCallBack_GetGroupVisible(ByRef rc As IRibbonControl, _
-                                                 ByRef visible As Variant)
+                                                 ByRef Visible As Variant)
 
-   visible = True
+   Visible = CurrentRibbonWatcher.GetRibbonGroupVisible(rc)
 
 End Sub
 
-'Public Sub RibbonWatcherCallBack_DropDown_OnAction( _
-'                      ByRef rc As IRibbonControl, _
-'                      ByRef selectedId As String, _
-'                      ByRef selectedIndex As Integer)
-'
-'
-'   Select Case rc.Id
-'      Case "xxx"
-'
-'      Case Else
-'         MsgBox rc.Id
-'
-'   End Select
-'
-'End Sub
-'
-'Public Sub RibbonWatcherCallBack_DropDown_GetSelectedItemIndex( _
-'                           ByRef rc As IRibbonControl, _
-'                           ByRef Index As Variant)
-'
-'   ' Callback getSelectedItemIndex
-'
-'   Select Case rc.Id
-'      Case "xxx"
-'         'Index = xxx + 1
-'      Case Else
-'
-'   End Select
-'
-'
-'End Sub
-'
-'Public Sub RibbonWatcherCallBack_DropDown_GetItemCount( _
-'                     ByRef rc As IRibbonControl, _
-'                     ByRef Count As Variant)
-'
-'
-'   Select Case rc.Id
-'      Case "xxx"
-'         'Count = xxx + 1
-'      Case Else
-'         MsgBox "DropDown_GetItemCount: " & rc.Id
-'   End Select
-'
-'
-'End Sub
-'
-'Public Sub RibbonWatcherCallBack_DropDown_GetItemLabel(rc As IRibbonControl, _
-'                     Index As Integer, _
-'                     ByRef Label As Variant)
-'
-'
-'   Select Case rc.Id
-'      Case "xxx"
-'         If Index < 1 Then
-'            Label = "xxx"
-'         Else
-'            'label = xxx(Index - 1).xxx
-'         End If
-'      Case Else
-'         MsgBox "DropDown_GetItemLabel: " & rc.Id
-'   End Select
-'
-'
-'End Sub
-'
-'Public Sub RibbonWatcherCallBack_DropDown_GetItemScreentip(rc As IRibbonControl, _
-'                        Index As Integer, _
-'                        ByRef screentip As Variant)
-'
-'   Select Case rc.Id
-'      Case "xxx"
-'         If Index < 0 Then
-'            screentip = "N/A"
-'         Else
-'            'screentip = xxx(Index - 1).xxx
-'         End If
-'      Case Else
-'         MsgBox "DropDown_GetItemScreentip: " & rc.Id
-'   End Select
-'
-'
-'End Sub
-'
-'Public Sub RibbonWatcherCallBack_DropDown_GetItemSupertip(rc As IRibbonControl, _
-'                       Index As Integer, _
-'                       ByRef supertip As Variant)
-'
-'   Select Case rc.Id
-'      Case "xxx"
-'         'supertip = xxx(Index - 1).xxx
-'      Case Else
-'         MsgBox "DropDown_GetItemSupertip: " & rc.Id
-'   End Select
-'
-'
-'End Sub
-'
-'Public Sub RibbonWatcherCallBack_EditBox_getText(rc As IRibbonControl, ByRef text)
-'
-'   Select Case rc.Id
-'      Case "TEST123"
-'
-'   End Select
-'
-'End Sub
-'
-'Public Sub RibbonWatcherCallBack_EditBox_onChange(rc As IRibbonControl, _
-'                                    strText As String)
-'
-'    Select Case rc.Id
-'        Case "TEST123"
-'
-'    End Select
-'
-'End Sub
+Public Sub RibbonWatcherCallBack_EditBox_getText(ByRef rc As IRibbonControl, ByRef Text As Variant)
+   CurrentRibbonWatcher.RaiseEditBoxGetText rc, Text
+End Sub
+
+Public Sub RibbonWatcherCallBack_EditBox_onChange(ByRef rc As IRibbonControl, ByRef Text As Variant)
+    CurrentRibbonWatcher.RaiseEditBoxOnChange rc, Text
+End Sub
+
+
+Sub RibbonWatcherCallBack_DropDown_getItemCount(ByRef rc As IRibbonControl, _
+                                                ByRef Count)
+    CurrentRibbonWatcher.RaiseDropDownGetItemCount rc, Count
+End Sub
+
+Sub RibbonWatcherCallBack_DropDown_getItemID(ByRef rc As IRibbonControl, _
+                                             ByRef Index As Integer, _
+                                             ByRef ItemId)
+    CurrentRibbonWatcher.RaiseDropDownGetItemID rc, Index, ItemId
+End Sub
+
+Sub RibbonWatcherCallBack_DropDown_getItemLabel(rc As IRibbonControl, _
+                           Index As Integer, _
+                           ByRef Label)
+    CurrentRibbonWatcher.RaiseDropDownGetItemLabel rc, Index, Label
+End Sub
+
+Sub RibbonWatcherCallBack_DropDown_onAction(ByRef rc As IRibbonControl, _
+                                            ByRef selectedId As String, _
+                                            ByRef selectedIndex As Integer)
+    CurrentRibbonWatcher.RaiseDropDownOnAction rc, selectedId, selectedIndex
+End Sub
+
+Public Sub RibbonWatcherCallBack_DropDown_getSelectedItemID(ByRef rc As IRibbonControl, ByRef ItemId)
+   CurrentRibbonWatcher.RaiseDropDownGetSelectedItemID rc, ItemId
+End Sub
+
+Public Sub RibbonWatcherCallBack_DropDown_getSelectedItemIndex(ByRef rc As IRibbonControl, ByRef Index)
+   Index = 0
+   CurrentRibbonWatcher.RaiseDropDownGetSelectedItemIndex rc, Index
+End Sub
