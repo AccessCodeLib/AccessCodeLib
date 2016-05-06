@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: RibbonWatcher (Josef Pötzl, 2010-04-10)
+' Class Module: RibbonWatcher (Josef Pötzl)
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -23,7 +23,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>ribbon/RibbonControlInfo.cls</use>
 '  <use>ribbon/ribbon_RibbonWatcher.bas</use>
-'  <ref><name>Office</name><major>2</major><minor>5</minor><guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</guid></ref>
+'  <ref><name>Office</name><major>2</major><minor>4</minor><guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</guid></ref>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -56,13 +56,32 @@ Private m_EventGroupCollection As Collection
 Public Event RibbonTabChanged(ByVal RibbonTabID As String)
 Public Event SaveRibbonControlAction(ByVal RibbonControlId As String, ByRef Cancel As Boolean)
 
+Public Event GetVisible(ByVal rc As IRibbonControl, ByRef Visible As Boolean)
+Public Event OnAction(ByVal rc As IRibbonControl)
+
+Public Event EditBoxOnChange(ByVal rc As IRibbonControl, ByRef strText As Variant)
+Public Event EditBoxGetText(ByVal rc As IRibbonControl, ByRef Text)
+
+Public Event DropDownGetItemCount(ByVal rc As IRibbonControl, ByRef Count)
+Public Event DropDownGetItemId(ByVal Control As IRibbonControl, ByRef Index As Integer, ByRef ItemId)
+Public Event DropDownGetItemLabel(ByVal Control As IRibbonControl, ByRef Index As Integer, ByRef Label)
+Public Event DropDownGetSelectedItemID(ByVal rc As IRibbonControl, ByRef selectedId)
+Public Event DropDownGetSelectedItemIndex(ByVal rc As IRibbonControl, ByRef selectedIndex As Variant)
+Public Event DropDownOnAction(ByVal rc As IRibbonControl, ByRef selectedId As String, ByRef selectedIndex As Variant)
+
+#If VBA7 Then
+   Private Declare PtrSafe Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpDest As Any, lpSource As Any, ByVal nCount As Long)
+#Else
+   Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (lpDest As Any, lpSource As Any, ByVal nCount As Long)
+#End If
+
 Private Sub Class_Initialize()
 
    Set m_EventGroupCollection = New Collection
 
    'Standardwerte einstellen:
    InitRibbonGroupLayout
-   
+
 End Sub
 
 Public Sub InitRibbonGroupLayout(Optional ByVal lLargeButtonCount As Long = m_DEFAULT_LargeButtonCount, _
@@ -122,10 +141,10 @@ On Error GoTo HandleErr
          .Label = Nz(rst.Fields("rcLabel"), "---")
          .OnAction = Nz(rst.Fields("rcOnAction"), vbNullString)
          .ImageMso = Nz(rst.Fields("rcImageMso"), vbNullString)
-         .visible = True
+         .Visible = True
          
-         If .ID <> strID Then
-            .ID = strID
+         If .Id <> strID Then
+            .Id = strID
             RefreshRibbonWatcherControl currentArrayCnt
          End If
    
@@ -182,8 +201,8 @@ Public Property Get User() As Variant 'Variant, damit Text oder Zahl möglich wir
    User = m_User
 End Property
 
-Public Property Let User(ByVal newValue As Variant)
-   m_User = newValue
+Public Property Let User(ByVal NewValue As Variant)
+   m_User = NewValue
 End Property
 
 Public Property Get DaoDatabase() As DAO.Database
@@ -196,8 +215,8 @@ Public Property Get DaoDatabase() As DAO.Database
    Set DaoDatabase = m_DaoDatabase
 End Property
 
-Public Property Set DaoDatabase(newRef As DAO.Database)
-   Set m_DaoDatabase = newRef
+Public Property Set DaoDatabase(NewRef As DAO.Database)
+   Set m_DaoDatabase = NewRef
 End Property
 
 Public Sub Refresh()
@@ -210,7 +229,7 @@ Public Sub Refresh()
    
 End Sub
 
-Public Property Let UsedRibbonItemXml(ByVal xmlString As String)
+Public Property Let UsedRibbonItemXml(ByVal XmlString As String)
    
    Dim strID As String
    Dim strImageMso As String
@@ -219,27 +238,27 @@ Public Property Let UsedRibbonItemXml(ByVal xmlString As String)
    
    Dim lngPos As Long
    
-   If Len(xmlString) = 0 Then
+   If Len(XmlString) = 0 Then
       Exit Property
    End If
    
-   Do While InStr(1, xmlString, "  ") > 0
-      xmlString = Replace(xmlString, "  ", " ")
+   Do While InStr(1, XmlString, "  ") > 0
+      XmlString = Replace(XmlString, "  ", " ")
    Loop
    
-   xmlString = Replace(xmlString, "= """, "=""")
-   xmlString = Replace(xmlString, """ =", """=")
+   XmlString = Replace(XmlString, "= """, "=""")
+   XmlString = Replace(XmlString, """ =", """=")
    
-   strID = getXmlTagValue(xmlString, "id")
+   strID = getXmlTagValue(XmlString, "id")
    If StrPtr(strID) = 0 Then
       Exit Property
    End If
  
-   strLabel = getXmlTagValue(xmlString, "label")
-   strOnAction = getXmlTagValue(xmlString, "onAction")
-   strImageMso = getXmlTagValue(xmlString, "imageMso")
+   strLabel = getXmlTagValue(XmlString, "label")
+   strOnAction = getXmlTagValue(XmlString, "onAction")
+   strImageMso = getXmlTagValue(XmlString, "imageMso")
    
-   saveRibbonClick strID, strLabel, strOnAction, strImageMso
+   SaveRibbonClick strID, strLabel, strOnAction, strImageMso
    
 End Property
 
@@ -258,7 +277,7 @@ Private Function getXmlTagValue(ByVal SourceString As String, TagName As String)
    
 End Function
 
-Private Sub saveRibbonClick(ByRef rcID As String, rcLabel As String, rcOnAction As String, rcImageMso As String)
+Private Sub SaveRibbonClick(ByRef rcID As String, rcLabel As String, rcOnAction As String, rcImageMso As String)
    
    Dim db As DAO.Database
    Dim qdf As DAO.QueryDef
@@ -327,16 +346,35 @@ HandleErr:
    
 End Sub
 
+
 Public Property Get RibbonUI() As IRibbonUI
+   If m_RibbonUI Is Nothing Then
+      If Application.TempVars("RibbonUI").Value > 0 Then
+         GetRibbonFromPointer Application.TempVars("RibbonUI").Value
+      End If
+   End If
    Set RibbonUI = m_RibbonUI
 End Property
 
-Public Property Set RibbonUI(newRef As IRibbonUI)
-   Set m_RibbonUI = newRef
+Private Sub GetRibbonFromPointer(ByVal RibbonPtr As Long)
+
+   Dim tmpObj As IRibbonUI
+
+   CopyMemory tmpObj, RibbonPtr, 4
+   Set m_RibbonUI = tmpObj
+   CopyMemory tmpObj, 0&, 4
+
+End Sub
+
+Public Property Set RibbonUI(ByVal NewRef As IRibbonUI)
+   Set m_RibbonUI = NewRef
+   Application.TempVars("RibbonUI").Value = ObjPtr(m_RibbonUI) ' Adresse speichern, falls Laufzeitfehler m_RibbonUI leert
 End Property
 
+
 Public Property Get RibbonXml(Optional ByVal TabXmlBefore As String, Optional TabXmlAfter As String, _
-                              Optional ByVal ActivateTabChangeEvents As Boolean = False) As String
+                              Optional ByVal ActivateTabChangeEvents As Boolean = False, _
+                              Optional ByVal StartFromScratch As Boolean = False) As String
 
    Dim strRibbonXml As String
    Dim arrRibbonTabs As Variant
@@ -346,9 +384,16 @@ Public Property Get RibbonXml(Optional ByVal TabXmlBefore As String, Optional Ta
    Dim tempTabStringEnd As String
    Dim tempString As String
    Dim tempTabID As String
+   
+   Dim StartFromScratchString As String
+   If StartFromScratch Then
+      StartFromScratchString = "true"
+   Else
+      StartFromScratchString = "false"
+   End If
 
    strRibbonXml = "<customUI xmlns=""http://schemas.microsoft.com/office/2006/01/customui"" onLoad=""RibbonWatcherCallBack_OnLoad"">" & vbNewLine & _
-               "<ribbon startFromScratch=""false""><tabs>" & vbNewLine & _
+               "<ribbon startFromScratch=""" & StartFromScratchString & """><tabs>" & vbNewLine & _
                TabXmlBefore & vbNewLine & _
                RibbonTabXml & vbNewLine & _
                TabXmlAfter & vbNewLine & _
@@ -362,20 +407,22 @@ Public Property Get RibbonXml(Optional ByVal TabXmlBefore As String, Optional Ta
          tempTabID = Left(tempTabID, InStr(1, tempTabID, """", vbTextCompare) - 1)
 
          pos = InStr(1, arrRibbonTabs(i), "<group ", vbTextCompare)
-         tempTabStringStart = Left(arrRibbonTabs(i), pos + 6)
-         tempString = Mid(arrRibbonTabs(i), pos + 7)
          
-         pos = InStr(1, tempString, "</group>", vbTextCompare)
-         tempTabStringEnd = Mid(tempString, pos)
-         tempString = Left(tempString, pos - 1) '=> alles innerhalb der ersten Group
-
-         tempString = tempString & "<button id=""RWEC" & tempTabID & """ tag=""" & tempTabID & """ label=""xxx"" onAction=""RibbonWatcherCallBack_OnAction"" getVisible=""RibbonWatcherCallBack_GetVisible"" />"
-         
-         tempString = tempTabStringStart & tempString & tempTabStringEnd
-         
-         arrRibbonTabs(i) = tempString & "</tab>"
-         
-         'arrRibbonTabs(i) = arrRibbonTabs(i) & "<group id=""RibbonWatcherEventGroup" & i & """ tag=""" & strTabID & """ getLabel=""RibbonWatcherCallBack_GetGroupLabel"" getVisible=""RibbonWatcherCallBack_GetGroupVisible""></group></tab>"
+         If pos > 0 Then
+            tempTabStringStart = Left(arrRibbonTabs(i), pos + 6)
+            tempString = Mid(arrRibbonTabs(i), pos + 7)
+            
+            pos = InStr(1, tempString, "</group>", vbTextCompare)
+            tempTabStringEnd = Mid(tempString, pos)
+            tempString = Left(tempString, pos - 1) '=> alles innerhalb der ersten Group
+   
+            tempString = tempString & "<button id=""RWEC" & tempTabID & """ tag=""" & tempTabID & """ label=""xxx"" onAction=""RibbonWatcherCallBack_OnAction"" getVisible=""RibbonWatcherCallBack_GetVisible"" />"
+            
+            tempString = tempTabStringStart & tempString & tempTabStringEnd
+            
+            arrRibbonTabs(i) = tempString & "</tab>"
+         End If
+      
       Next
       strRibbonXml = Join(arrRibbonTabs, "")
    End If
@@ -398,7 +445,6 @@ Public Property Get RibbonGroupXml(Optional ByVal sGroupName As String = "Zuletz
    Dim strGroupXml As String
    
    strGroupXml = "<group id=""RibbonWatcherGroup"" label=""" & sGroupName & """ getVisible=""RibbonWatcherCallBack_GetGroupVisible"">" & vbNewLine
-   'strGroupXml = "<group id=""RibbonWatcherGroup"" getLabel=""RibbonWatcherCallBack_GetGroupLabel"" getVisible=""RibbonWatcherCallBack_GetGroupVisible"">" & vbNewLine
    
    For i = 1 To m_LargeButtonCount
       strGroupXml = strGroupXml & getRibbonControlXml("RWC" & i, "large") & vbNewLine
@@ -411,63 +457,84 @@ Public Property Get RibbonGroupXml(Optional ByVal sGroupName As String = "Zuletz
    For i = 1 To m_NormalButtonCount
       strGroupXml = strGroupXml & getRibbonControlXml("RWC" & m_LargeButtonCount + i, "normal") & vbNewLine
    Next
-   
-   '/**
-   ' * @todo Combobox anfügen
-   '**/
-   
+
    RibbonGroupXml = strGroupXml & "</group>"
    
 End Property
 
-Private Function getRibbonControlXml(sID As String, sSize As String) As String
+Private Function getRibbonControlXml(ByVal sID As String, ByVal sSize As String) As String
    getRibbonControlXml = "<button id=""" & sID & """ size=""" & sSize & """ getLabel=""RibbonWatcherCallBack_GetLabel"" onAction=""RibbonWatcherCallBack_OnAction"" getImage=""RibbonWatcherCallBack_GetImages"" getVisible=""RibbonWatcherCallBack_GetVisible"" />"
 End Function
 
-Public Function GetRibbonControlLabel(rc As IRibbonControl) As Variant
-   GetRibbonControlLabel = GetLabel(Val(Mid(rc.ID, 4)))
+Public Function GetRibbonControlLabel(ByVal rc As IRibbonControl) As Variant
+   GetRibbonControlLabel = GetLabel(Val(Mid(rc.Id, 4)))
 End Function
 
-Public Function GetLabel(rwcNr As Long) As String
+Public Function GetLabel(ByVal rwcNr As Long) As String
    If rwcNr > 0 Then
       If Not m_ribbonControlInfoArrayFilled Then fillRibbonInfoArray
       GetLabel = ribbonControlInfoArray(rwcNr).Label
    End If
 End Function
 
-Public Function GetRibbonControlImage(rc As IRibbonControl) As Variant
-   GetRibbonControlImage = GetImage(Val(Mid(rc.ID, 4)))
+Public Function GetRibbonControlImage(ByVal rc As IRibbonControl) As Variant
+   GetRibbonControlImage = GetImage(Val(Mid(rc.Id, 4)))
 End Function
 
-Public Function GetImage(rwcNr As Long) As Variant
+Public Function GetImage(ByVal rwcNr As Long) As Variant
    If rwcNr > 0 Then
       If Not m_ribbonControlInfoArrayFilled Then fillRibbonInfoArray
       GetImage = ribbonControlInfoArray(rwcNr).ImageMso
    End If
 End Function
 
-Public Function GetRibbonControlVisible(rc As IRibbonControl) As Variant
+Public Function GetRibbonGroupVisible(ByVal rc As IRibbonControl) As Boolean
+' @TODO: Add property
 
-   If Left(rc.ID, 4) = "RWEC" Then
-      setActivatedEventControl rc
-      GetRibbonControlVisible = False
-   Else
-      GetRibbonControlVisible = GetVisible(Val(Mid(rc.ID, 4)))
-   End If
+   GetRibbonGroupVisible = True
 
 End Function
 
-Public Function GetVisible(rwcNr As Long) As Boolean
+Public Function GetRibbonControlVisible(ByVal rc As IRibbonControl) As Boolean
+
+   Dim bVisible As Boolean
+
+   If Left(rc.Id, 4) = "RWEC" Then
+      setActivatedEventControl rc
+      bVisible = False
+   ElseIf Left(rc.Id, 3) = "RWC" Then
+      bVisible = GetRibbonWatcherControlVisible(Val(Mid(rc.Id, 4)))
+   Else
+      RaiseGetVisible rc, bVisible
+   End If
+   
+   GetRibbonControlVisible = bVisible
+
+End Function
+
+Public Sub RaiseGetVisible(ByVal rc As IRibbonControl, ByRef Visible As Boolean)
+   RaiseEvent GetVisible(rc, Visible)
+End Sub
+
+Public Function GetRibbonWatcherControlVisible(ByVal rwcNr As Long) As Boolean
    If rwcNr > 0 Then
       If Not m_ribbonControlInfoArrayFilled Then fillRibbonInfoArray
-      GetVisible = ribbonControlInfoArray(rwcNr).visible
+      GetRibbonWatcherControlVisible = ribbonControlInfoArray(rwcNr).Visible
    End If
 End Function
 
-Public Sub CallRibbonControlOnAction(rc As IRibbonControl)
+Public Sub CallRibbonControlOnAction(ByVal rc As IRibbonControl)
 
-   CallOnAction Val(Mid(rc.ID, 4))
+   If Left(rc.Id, 3) = "RWC" Then
+      CallOnAction Val(Mid(rc.Id, 4))
+   Else
+      RaiseOnAction rc
+   End If
 
+End Sub
+
+Public Sub RaiseOnAction(ByVal rc As IRibbonControl)
+   RaiseEvent OnAction(rc)
 End Sub
 
 Public Sub CallOnAction(rwcNr As Long)
@@ -523,27 +590,70 @@ Public Sub CallOnAction(rwcNr As Long)
    
 End Sub
 
-Private Function getIsMissing(Optional X As Variant) As Variant
-   getIsMissing = X
+Private Function getIsMissing(Optional x As Variant) As Variant
+   getIsMissing = x
 End Function
 
-Private Sub setActivatedEventControl(rc As IRibbonControl)
+Private Sub setActivatedEventControl(ByVal rc As IRibbonControl)
    
    Dim Item As IRibbonControl
    Dim bolItemExits As Boolean
    
    For Each Item In m_EventGroupCollection
-      If Item.ID = rc.ID Then
+      If Item.Id = rc.Id Then
          bolItemExits = True
       Else
-         Me.RibbonUI.InvalidateControl Item.ID
+         Me.RibbonUI.InvalidateControl Item.Id
       End If
    Next
    
    If Not bolItemExits Then
-      m_EventGroupCollection.Add rc, rc.ID
+      m_EventGroupCollection.Add rc, rc.Id
    End If
    
    RaiseEvent RibbonTabChanged(rc.Tag)
    
+End Sub
+
+' EditBox
+Public Sub RaiseEditBoxOnChange(ByVal rc As IRibbonControl, ByRef Text As Variant)
+   RaiseEvent EditBoxOnChange(rc, Text)
+End Sub
+
+Public Sub RaiseEditBoxGetText(ByVal rc As IRibbonControl, ByRef Text As Variant)
+   RaiseEvent EditBoxGetText(rc, Text)
+End Sub
+
+'DropDown
+Public Sub RaiseDropDownGetItemCount(ByVal rc As IRibbonControl, _
+                                     ByRef Count)
+   RaiseEvent DropDownGetItemCount(rc, Count)
+End Sub
+
+Public Sub RaiseDropDownGetItemID(ByVal rc As IRibbonControl, _
+                                  ByRef Index As Integer, _
+                                  ByRef ItemId)
+   RaiseEvent DropDownGetItemId(rc, Index, ItemId)
+End Sub
+
+Public Sub RaiseDropDownGetItemLabel(ByVal rc As IRibbonControl, _
+                                     ByRef Index As Integer, _
+                                     ByRef Label)
+   RaiseEvent DropDownGetItemLabel(rc, Index, Label)
+End Sub
+
+Public Sub RaiseDropDownGetSelectedItemID(ByVal rc As IRibbonControl, _
+                                          ByRef selectedId)
+   RaiseEvent DropDownGetSelectedItemID(rc, selectedId)
+End Sub
+
+Public Sub RaiseDropDownGetSelectedItemIndex(ByVal rc As IRibbonControl, _
+                                             ByRef selectedIndex As Variant)
+   RaiseEvent DropDownGetSelectedItemIndex(rc, selectedIndex)
+End Sub
+
+Public Sub RaiseDropDownOnAction(ByVal rc As IRibbonControl, _
+                                 ByRef selectedId As String, _
+                                 ByRef selectedIndex As Integer)
+   RaiseEvent DropDownOnAction(rc, selectedId, selectedIndex)
 End Sub

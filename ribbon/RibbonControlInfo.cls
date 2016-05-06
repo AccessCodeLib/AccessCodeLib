@@ -22,6 +22,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>ribbon/RibbonControlInfo.cls</file>
 '  <license>_codelib/license.bas</license>
+'  <ref><name>Office</name><major>2</major><minor>4</minor><guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</guid></ref>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -30,19 +31,19 @@ Option Explicit
 
 Implements IRibbonControl
 
-Public ID As String
+Public Id As String
 Public Tag As String
 Public Label As String
 Public OnAction As String
 Public ImageMso As String
-Public visible As Boolean
+Public Visible As Boolean
 
 Private Property Get IRibbonControl_Context() As Object
    Set IRibbonControl_Context = Nothing
 End Property
 
 Private Property Get IRibbonControl_Id() As String
-   IRibbonControl_Id = Me.ID
+   IRibbonControl_Id = Me.Id
 End Property
 
 Private Property Get IRibbonControl_Tag() As String
