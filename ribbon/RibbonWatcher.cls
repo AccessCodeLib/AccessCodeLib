@@ -94,11 +94,11 @@ Public Sub InitRibbonGroupLayout(Optional ByVal lLargeButtonCount As Long = m_DE
    m_RibbonControlInfoArraySize = m_LargeButtonCount + m_NormalButtonCount + m_ComboboxItemCount
    
    'Array initialisieren
-   initRibbonControlInfoArray m_RibbonControlInfoArraySize
+   InitRibbonControlInfoArray m_RibbonControlInfoArraySize
    
 End Sub
 
-Private Sub initRibbonControlInfoArray(ByVal lArraySize As Long)
+Private Sub InitRibbonControlInfoArray(ByVal lArraySize As Long)
    Dim i As Long
    ReDim ribbonControlInfoArray(1 To lArraySize)
    For i = 1 To lArraySize
@@ -107,7 +107,7 @@ Private Sub initRibbonControlInfoArray(ByVal lArraySize As Long)
    m_ribbonControlInfoArrayFilled = False
 End Sub
 
-Private Sub fillRibbonInfoArray()
+Private Sub FillRibbonInfoArray()
 
    Dim db As DAO.Database
    Dim qdf As DAO.QueryDef
@@ -161,7 +161,7 @@ ExitHere:
 
 HandleErr:
    If Err.Number = 3078 Then 'Tabelle nicht gefunden
-      If createUserRibbonClickLogTable() Then Resume
+      If CreateUserRibbonClickLogTable() Then Resume
    End If
    
    Err.Raise Err.Number, "fillRibbonInfoArray->" & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
@@ -169,7 +169,7 @@ HandleErr:
    
 End Sub
 
-Private Function createUserRibbonClickLogTable() As Boolean
+Private Function CreateUserRibbonClickLogTable() As Boolean
 
    Dim strSQL As String
    
@@ -180,7 +180,7 @@ Private Function createUserRibbonClickLogTable() As Boolean
    strSQL = "CREATE INDEX IX_Sort ON usysUserRibbonClicks (UserId asc, clicks asc)"
    DaoDatabase.Execute strSQL, dbFailOnError
    
-   createUserRibbonClickLogTable = True
+   CreateUserRibbonClickLogTable = True
 
 End Function
 
@@ -221,7 +221,7 @@ End Property
 
 Public Sub Refresh()
    
-   fillRibbonInfoArray
+   FillRibbonInfoArray
    
    If Not (m_RibbonUI Is Nothing) Then
       m_RibbonUI.Invalidate
@@ -249,31 +249,31 @@ Public Property Let UsedRibbonItemXml(ByVal XmlString As String)
    XmlString = Replace(XmlString, "= """, "=""")
    XmlString = Replace(XmlString, """ =", """=")
    
-   strID = getXmlTagValue(XmlString, "id")
+   strID = GetXmlTagValue(XmlString, "id")
    If StrPtr(strID) = 0 Then
       Exit Property
    End If
  
-   strLabel = getXmlTagValue(XmlString, "label")
-   strOnAction = getXmlTagValue(XmlString, "onAction")
-   strImageMso = getXmlTagValue(XmlString, "imageMso")
+   strLabel = GetXmlTagValue(XmlString, "label")
+   strOnAction = GetXmlTagValue(XmlString, "onAction")
+   strImageMso = GetXmlTagValue(XmlString, "imageMso")
    
    SaveRibbonClick strID, strLabel, strOnAction, strImageMso
    
 End Property
 
-Private Function getXmlTagValue(ByVal SourceString As String, TagName As String) As String
+Private Function GetXmlTagValue(ByVal SourceString As String, TagName As String) As String
 
    Dim lngStartPos As Long
    
    lngStartPos = InStr(1, SourceString, TagName & "=""")
    If lngStartPos = 0 Then
-      getXmlTagValue = vbNullString
+      GetXmlTagValue = vbNullString
       Exit Function
    End If
    
    lngStartPos = lngStartPos + Len(TagName) + 2
-   getXmlTagValue = Mid(SourceString, lngStartPos, InStr(lngStartPos, SourceString, """") - lngStartPos)
+   GetXmlTagValue = Mid(SourceString, lngStartPos, InStr(lngStartPos, SourceString, """") - lngStartPos)
    
 End Function
 
@@ -331,14 +331,14 @@ On Error GoTo HandleErr
       qdf.Execute dbFailOnError
    End If
    
-   fillRibbonInfoArray
+   FillRibbonInfoArray
    
 ExitHere:
    Exit Sub
 
 HandleErr:
    If Err.Number = 3078 Then 'Tabelle nicht gefunden
-      If createUserRibbonClickLogTable() Then Resume
+      If CreateUserRibbonClickLogTable() Then Resume
    End If
    
    Err.Raise Err.Number, "saveRibbonClick->" & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
@@ -371,10 +371,10 @@ Public Property Set RibbonUI(ByVal NewRef As IRibbonUI)
    Application.TempVars("RibbonUI").Value = ObjPtr(m_RibbonUI) ' Adresse speichern, falls Laufzeitfehler m_RibbonUI leert
 End Property
 
-
-Public Property Get RibbonXml(Optional ByVal TabXmlBefore As String, Optional TabXmlAfter As String, _
+Public Function RibbonXml(Optional ByVal TabXmlBefore As String, Optional TabXmlAfter As String, _
                               Optional ByVal ActivateTabChangeEvents As Boolean = False, _
-                              Optional ByVal StartFromScratch As Boolean = False) As String
+                              Optional ByVal StartFromScratch As Boolean = False, _
+                              Optional ByVal RibbonWatcherTabLabel As String = "Zuletzt verwendet") As String
 
    Dim strRibbonXml As String
    Dim arrRibbonTabs As Variant
@@ -395,7 +395,7 @@ Public Property Get RibbonXml(Optional ByVal TabXmlBefore As String, Optional Ta
    strRibbonXml = "<customUI xmlns=""http://schemas.microsoft.com/office/2006/01/customui"" onLoad=""RibbonWatcherCallBack_OnLoad"">" & vbNewLine & _
                "<ribbon startFromScratch=""" & StartFromScratchString & """><tabs>" & vbNewLine & _
                TabXmlBefore & vbNewLine & _
-               RibbonTabXml & vbNewLine & _
+               RibbonTabXml(RibbonWatcherTabLabel) & vbNewLine & _
                TabXmlAfter & vbNewLine & _
                "</tabs></ribbon></customUI>"
                
@@ -429,25 +429,25 @@ Public Property Get RibbonXml(Optional ByVal TabXmlBefore As String, Optional Ta
 
    RibbonXml = strRibbonXml
                
-End Property
+End Function
 
-Public Property Get RibbonTabXml(Optional ByVal sTabName As String = "Zuletzt verwendet") As String
+Public Function RibbonTabXml(Optional ByVal TabLabel As String = "Zuletzt verwendet") As String
 
-   RibbonTabXml = "<tab id=""RibbonWatcherTab"" label=""" & sTabName & """>" & vbNewLine & _
+   RibbonTabXml = "<tab id=""RibbonWatcherTab"" label=""" & TabLabel & """>" & vbNewLine & _
                   RibbonGroupXml & vbNewLine & _
                   "</tab>"
    
-End Property
+End Function
 
-Public Property Get RibbonGroupXml(Optional ByVal sGroupName As String = "Zuletzt verwendet") As String
+Public Function RibbonGroupXml(Optional ByVal GroupLabel As String = "Zuletzt verwendet") As String
    
    Dim i As Long
    Dim strGroupXml As String
    
-   strGroupXml = "<group id=""RibbonWatcherGroup"" label=""" & sGroupName & """ getVisible=""RibbonWatcherCallBack_GetGroupVisible"">" & vbNewLine
+   strGroupXml = "<group id=""RibbonWatcherGroup"" label=""" & GroupLabel & """ getVisible=""RibbonWatcherCallBack_GetGroupVisible"">" & vbNewLine
    
    For i = 1 To m_LargeButtonCount
-      strGroupXml = strGroupXml & getRibbonControlXml("RWC" & i, "large") & vbNewLine
+      strGroupXml = strGroupXml & GetRibbonControlXml("RWC" & i, "large") & vbNewLine
    Next
    
    If m_LargeButtonCount > 0 And m_NormalButtonCount > 0 Then
@@ -455,15 +455,15 @@ Public Property Get RibbonGroupXml(Optional ByVal sGroupName As String = "Zuletz
    End If
    
    For i = 1 To m_NormalButtonCount
-      strGroupXml = strGroupXml & getRibbonControlXml("RWC" & m_LargeButtonCount + i, "normal") & vbNewLine
+      strGroupXml = strGroupXml & GetRibbonControlXml("RWC" & m_LargeButtonCount + i, "normal") & vbNewLine
    Next
 
    RibbonGroupXml = strGroupXml & "</group>"
    
-End Property
+End Function
 
-Private Function getRibbonControlXml(ByVal sID As String, ByVal sSize As String) As String
-   getRibbonControlXml = "<button id=""" & sID & """ size=""" & sSize & """ getLabel=""RibbonWatcherCallBack_GetLabel"" onAction=""RibbonWatcherCallBack_OnAction"" getImage=""RibbonWatcherCallBack_GetImages"" getVisible=""RibbonWatcherCallBack_GetVisible"" />"
+Private Function GetRibbonControlXml(ByVal sID As String, ByVal sSize As String) As String
+   GetRibbonControlXml = "<button id=""" & sID & """ size=""" & sSize & """ getLabel=""RibbonWatcherCallBack_GetLabel"" onAction=""RibbonWatcherCallBack_OnAction"" getImage=""RibbonWatcherCallBack_GetImages"" getVisible=""RibbonWatcherCallBack_GetVisible"" />"
 End Function
 
 Public Function GetRibbonControlLabel(ByVal rc As IRibbonControl) As Variant
@@ -472,7 +472,7 @@ End Function
 
 Public Function GetLabel(ByVal rwcNr As Long) As String
    If rwcNr > 0 Then
-      If Not m_ribbonControlInfoArrayFilled Then fillRibbonInfoArray
+      If Not m_ribbonControlInfoArrayFilled Then FillRibbonInfoArray
       GetLabel = ribbonControlInfoArray(rwcNr).Label
    End If
 End Function
@@ -483,7 +483,7 @@ End Function
 
 Public Function GetImage(ByVal rwcNr As Long) As Variant
    If rwcNr > 0 Then
-      If Not m_ribbonControlInfoArrayFilled Then fillRibbonInfoArray
+      If Not m_ribbonControlInfoArrayFilled Then FillRibbonInfoArray
       GetImage = ribbonControlInfoArray(rwcNr).ImageMso
    End If
 End Function
@@ -500,7 +500,7 @@ Public Function GetRibbonControlVisible(ByVal rc As IRibbonControl) As Boolean
    Dim bVisible As Boolean
 
    If Left(rc.Id, 4) = "RWEC" Then
-      setActivatedEventControl rc
+      SetActivatedEventControl rc
       bVisible = False
    ElseIf Left(rc.Id, 3) = "RWC" Then
       bVisible = GetRibbonWatcherControlVisible(Val(Mid(rc.Id, 4)))
@@ -518,7 +518,7 @@ End Sub
 
 Public Function GetRibbonWatcherControlVisible(ByVal rwcNr As Long) As Boolean
    If rwcNr > 0 Then
-      If Not m_ribbonControlInfoArrayFilled Then fillRibbonInfoArray
+      If Not m_ribbonControlInfoArrayFilled Then FillRibbonInfoArray
       GetRibbonWatcherControlVisible = ribbonControlInfoArray(rwcNr).Visible
    End If
 End Function
@@ -548,10 +548,10 @@ Public Sub CallOnAction(rwcNr As Long)
    Dim lngPos As Long
    Dim i As Long
    
-   If Not m_ribbonControlInfoArrayFilled Then fillRibbonInfoArray
+   If Not m_ribbonControlInfoArrayFilled Then FillRibbonInfoArray
    
    For i = 0 To 29
-      params(i) = getIsMissing()
+      params(i) = GetIsMissing()
    Next
    
    strOnAction = ribbonControlInfoArray(rwcNr).OnAction
@@ -590,11 +590,11 @@ Public Sub CallOnAction(rwcNr As Long)
    
 End Sub
 
-Private Function getIsMissing(Optional x As Variant) As Variant
-   getIsMissing = x
+Private Function GetIsMissing(Optional x As Variant) As Variant
+   GetIsMissing = x
 End Function
 
-Private Sub setActivatedEventControl(ByVal rc As IRibbonControl)
+Private Sub SetActivatedEventControl(ByVal rc As IRibbonControl)
    
    Dim Item As IRibbonControl
    Dim bolItemExits As Boolean
