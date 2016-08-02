@@ -83,6 +83,7 @@ Public Enum SqlLogicalOperator
    [_SQL_Default] = 0
    SQL_And = 1
    SQL_Or = 2
+   SQL_CommaSeparator = 3
 End Enum
 
 ' Konfiguration für den SQL-Dialekt

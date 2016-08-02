@@ -137,11 +137,18 @@ Public Function ToString(Optional ByVal ConcatOperator As SqlLogicalOperator = S
 End Function
 
 Private Function GetConcatOperatorString(ByVal ConcatOperator As SqlLogicalOperator) As String
-   If ConcatOperator = SqlLogicalOperator.SQL_Or Then
-      GetConcatOperatorString = " Or "
-   Else
-      GetConcatOperatorString = " And "
-   End If
+
+   Select Case ConcatOperator
+      Case SqlLogicalOperator.SQL_And
+         GetConcatOperatorString = " And "
+      Case SqlLogicalOperator.SQL_Or
+         GetConcatOperatorString = " Or "
+      Case SqlLogicalOperator.SQL_CommaSeparator
+         GetConcatOperatorString = ", "
+      Case Else
+         
+   End Select
+ 
 End Function
 
 Private Property Get ConditionGroups() As Collection
