@@ -114,7 +114,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 Public Sub DisposeCurrentApplicationHandler()
 
-   Dim lngCheckCnt As Long, maxCnt As Long
+   Dim lngCheckCnt As Long, MaxCnt As Long
 
 On Error Resume Next
    
@@ -123,8 +123,8 @@ On Error Resume Next
    End If
 
    If Not (m_Extension Is Nothing) Then
-      maxCnt = m_Extension.Count * 2 'nur zur Sicherheit falls wider Erwarten m_Extension.Remove eine Endlosschleife bringen würde
-      Do While m_Extension.Count > 0 Or lngCheckCnt > maxCnt
+      MaxCnt = m_Extension.Count * 2 'nur zur Sicherheit falls wider Erwarten m_Extension.Remove eine Endlosschleife bringen würde
+      Do While m_Extension.Count > 0 Or lngCheckCnt > MaxCnt
          m_Extension.Remove 1
          lngCheckCnt = lngCheckCnt + 1
       Loop
