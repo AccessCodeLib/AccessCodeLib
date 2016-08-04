@@ -112,9 +112,7 @@ Public Function ToString(Optional ByVal ConcatOperator As SqlLogicalOperator = S
                          Optional ByVal IgnoreDuplicateFilters As Boolean = False) As String
    
    Dim FilterString As String
-   Dim ItemsFilterString As String
-   Dim Cond
-   
+
    If ConcatOperator = SqlLogicalOperator.[_SQL_Default] Then
       ConcatOperator = DefaultConcatOperator
    End If

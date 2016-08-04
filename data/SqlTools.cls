@@ -316,8 +316,6 @@ End Function
 Public Function BooleanToSqlText(ByVal Value As Variant, _
                         Optional ByVal TrueString As String = SQL_DEFAULT_BOOLTRUESTRING) As String
 
-   Dim Result As String
-
    If IsNull(Value) Then
       BooleanToSqlText = ResultTextIfNull
       Exit Function
@@ -361,7 +359,6 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
                      Optional ByVal IgnoreValue As Variant = Null) As String
 
    Dim FilterValueString As String
-   Dim FilterValue2String As String
    Dim OperatorString As String
    Dim Criteria As String
 
@@ -379,12 +376,12 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
       RelationalOperator = RelationalOperator Xor SQL_SplitValueToArray
    End If
 
-   If TryBuildInCriteria(FieldName, FieldDataType, RelationalOperator, FilterValue, FilterValue2, IgnoreValue, Criteria) Then
+   If TryBuildInCriteria(FieldName, FieldDataType, RelationalOperator, FilterValue, IgnoreValue, Criteria) Then
       BuildCriteria = Criteria
       Exit Function
    End If
 
-   If TryBuildArrayCriteria(FieldName, FieldDataType, RelationalOperator, FilterValue, FilterValue2, IgnoreValue, Criteria) Then
+   If TryBuildArrayCriteria(FieldName, FieldDataType, RelationalOperator, FilterValue, IgnoreValue, Criteria) Then
       BuildCriteria = Criteria
       Exit Function
    End If
@@ -532,11 +529,11 @@ End Function
 Private Function TryBuildArrayCriteria(ByRef FieldName As String, ByVal FieldDataType As SqlFieldDataType, _
                                        ByRef RelationalOperator As SqlRelationalOperators, _
                                        ByRef FilterValue As Variant, _
-                                       ByRef FilterValue2 As Variant, _
                                        ByRef IgnoreValue As Variant, _
                                        ByRef Criteria As String) As Boolean
    Dim itm As Variant
    Dim ItmCriteria As String
+   
    If Not IsArray(FilterValue) Then
       Exit Function
    End If
@@ -559,7 +556,6 @@ End Function
 Private Function TryBuildInCriteria(ByRef FieldName As String, ByVal FieldDataType As SqlFieldDataType, _
                                     ByRef RelationalOperator As SqlRelationalOperators, _
                                     ByRef FilterValue As Variant, _
-                                    ByRef FilterValue2 As Variant, _
                                     ByRef IgnoreValue As Variant, _
                                     ByRef Criteria As String) As Boolean
 
