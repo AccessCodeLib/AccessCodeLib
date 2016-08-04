@@ -299,9 +299,6 @@ Public Function ExecuteQueryDef(ByVal qdf As DAO.QueryDef, _
                        ParamArray QueryParams() As Variant) As Long
  
    Dim QdfParamDefs() As Variant
-   Dim ParamDefsArraySize As Long
-   Dim ParamIndex As Variant
-   Dim i As Long
    
    If Not IsMissing(QueryParams) Then
       QdfParamDefs = GetParamDefArray(QueryParams)
@@ -705,8 +702,7 @@ Public Function OpenRecordsetQueryDefByName(ByVal QueryName As String, _
                              Optional ByVal LockEdit As DAO.LockTypeEnum) As DAO.Recordset
 
    Dim qdf As DAO.QueryDef
-   Dim i As Long
- 
+
 On Error GoTo HandleErr
  
    Set qdf = Me.CurrentDb.QueryDefs(QueryName)
@@ -752,10 +748,6 @@ Public Function OpenRecordsetQueryDef(ByVal qdf As DAO.QueryDef, _
                              Optional ByVal Options As DAO.RecordsetOptionEnum, _
                              Optional ByVal LockEdit As DAO.LockTypeEnum) As DAO.Recordset
  
-   Dim ParamDefsArraySize As Long
-   Dim ParamIndex As Variant
-   Dim i As Long
-   
    If Not IsMissing(QdfParamDefs) Then
       FillQueryDefParameters qdf, QdfParamDefs
    End If

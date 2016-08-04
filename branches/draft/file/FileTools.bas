@@ -739,6 +739,6 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetFileExtension(ByVal FilePath As String) As String
-    GetFileExtension = VBA.Strings.Mid$(FilePath, VBA.Strings.InStrRev(FilePath, "."))
+Public Function GetFileExtension(ByVal FilePath As String, Optional WithDotBeforeExtension As Boolean = True) As String
+    GetFileExtension = VBA.Strings.Mid$(FilePath, VBA.Strings.InStrRev(FilePath, ".") + (1 - Abs(WithDotBeforeExtension)))
 End Function

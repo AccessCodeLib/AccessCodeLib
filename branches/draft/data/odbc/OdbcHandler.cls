@@ -778,7 +778,7 @@ Private Sub RelinkTablesWorker(ByVal NewConnectionString As String, _
    
    For Each tdf In dbs.TableDefs
    
-      If RelinkTableDef(tdf, Me.ConnectionString, SavePWD) Then
+      If RelinkTableDef(tdf, NewConnectionString, SavePWD) Then
          RelinkedTableCounter = RelinkedTableCounter + 1
          If EventPeriod > 0 Then
             If RelinkedTableCounter Mod EventPeriod = 0 Then
@@ -827,8 +827,6 @@ End Function
 Private Function RelinkTableDef(ByVal tdf As DAO.TableDef, _
                                 ByVal NewConnectionString As String, _
                                 ByVal SavePWD As String) As Boolean
-   
-   Dim Attr As TableDefAttributeEnum
    
    If Not IsLinkedTable(tdf) Then
       RelinkTableDef = False
@@ -954,8 +952,6 @@ End Function
 Private Function RelinkPassThroughQueryDef(ByVal qdf As DAO.QueryDef, _
                                            ByVal NewConnectionString As String) As Boolean
    
-   Dim Attr As TableDefAttributeEnum
-   
    If Not IsPassThroughQuery(qdf) Then
       RelinkPassThroughQueryDef = False
       Exit Function
@@ -1029,9 +1025,7 @@ Public Function DeleteOdbcTableDefs(Optional ByVal EventPeriod As Long = 0) As L
    Dim LastDbObjectName As String
 
    Set dbs = Me.CurrentDb
-   
-   Dim bDelete As Boolean
-   
+      
    dbs.TableDefs.Refresh
    tdfCount = dbs.TableDefs.Count - 1
    For i = tdfCount To 0 Step -1

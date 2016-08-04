@@ -149,10 +149,11 @@ End Sub
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' Datei aus usys_AppFiles extrahieren
+' Version überprüfen
 ' </summary>
-' <param name="Param"></param>
-' <returns>Boolean</returns>
+' <param name="NewVersion"></param>
+' <param name="VersionRemarks"></param>
+' <returns>AppVersionState</returns>
 ' <remarks>
 ' </remarks>
 '**/
@@ -161,8 +162,6 @@ Public Function CheckVersion(Optional ByRef NewVersion As Variant, Optional ByRe
 
    Dim DownloadVersion As String
    Dim DownloadVersionRemarks As String
-   Dim DownloadVersionNumbers() As Long
-   Dim CurrentVersionNumbers() As Long
    
    DownloadVersion = GetVersionFromDownloadSource(XmlVersionCheckFile, DownloadVersionRemarks)
    
