@@ -46,11 +46,11 @@ Private Const WhereReplacementText As String = "[WhereStatement]"
 
 Private Sub Class_Initialize()
    Set m_Items = New StringCollection
+   m_DefaultConcatOperator = SqlLogicalOperator.SQL_And
 End Sub
 
 Private Sub Class_Terminate()
    Set m_Items = Nothing
-   m_DefaultConcatOperator = SqlLogicalOperator.SQL_And
 End Sub
 
 Public Property Get Self() As FilterStringBuilder
