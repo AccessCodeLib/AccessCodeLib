@@ -215,7 +215,7 @@ Private Sub CheckFilterValue(Optional ByVal FilterValue As Variant)
    'Problem bei ADODB-Recordset + RowSourceType = "Table/Query":
    With m_Combobox
       
-      Debug.Assert Nz(.Value = .Column(m_BoundColumnIndex), True)
+'      Debug.Assert Nz(.Value = .Column(m_BoundColumnIndex), True)
       If .Value <> .Column(m_BoundColumnIndex) Then
          ' Column(x) zeigt einen Wert, obwohl .Value keinem Wert in der gebundenen Spalte entspricht.
          ' Das tritt an dieser Stelle nur auf, wenn die Combox nicht aufgeklappt war, als Text eingeben wurde.
@@ -304,7 +304,7 @@ Private Function GetValueListFromRecordset(ByVal rst As Object) As String
    If TypeOf rst Is DAO.Recordset Then
       GetValueListFromRecordset = GetValueListFromDaoRecordset(rst)
    Else
-      GetValueListFromRecordset = rst.GetString(adClipString, , ";", ";")
+      GetValueListFromRecordset = rst.GetString(2, , ";", ";") 'adClipString = 2
    End If
 
 End Function
