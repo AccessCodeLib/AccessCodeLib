@@ -667,11 +667,11 @@ Private Function NullFilterOrEmptyFilter(ByVal FieldName As String, ByVal FieldD
       End If
       NullFilterOrEmptyFilter = True
    ElseIf IsArray(Value) Then
-      Dim a() As Variant
+      Dim CheckArray() As Variant
 On Error Resume Next
-      a = Value
+      CheckArray = Value
       If Err.Number = 0 Then
-      If (0 / 1) + (Not Not a) = 0 Then
+      If (0 / 1) + (Not Not CheckArray) = 0 Then
          NullFilterOrEmptyFilter = True
          Exit Function
       End If

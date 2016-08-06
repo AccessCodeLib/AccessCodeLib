@@ -99,14 +99,14 @@ End Function
 Public Function ToStringArray(Optional ByVal IgnoreEmptyValue As Boolean = False, _
                               Optional ByVal IgnoreDuplicateValues As Boolean = False) As String()
 
-   Dim arrItems() As String
+   Dim ItemArray() As String
    Dim MaxArrayIndex As Long
    Dim i As Long
 
    MaxArrayIndex = m_Items.Count - 1
 
    If MaxArrayIndex < 0 Then
-      ToStringArray = arrItems
+      ToStringArray = ItemArray
       Exit Function
    End If
    
@@ -119,22 +119,22 @@ Public Function ToStringArray(Optional ByVal IgnoreEmptyValue As Boolean = False
       Exit Function
    End If
 
-   ReDim arrItems(0 To MaxArrayIndex)
+   ReDim ItemArray(0 To MaxArrayIndex)
    For i = 0 To MaxArrayIndex
-      arrItems(i) = m_Items.Item(i + 1)
+      ItemArray(i) = m_Items.Item(i + 1)
    Next
 
    If IgnoreDuplicateValues Then
-      ToStringArray = RemoveDuplicateValues(arrItems)
+      ToStringArray = RemoveDuplicateValues(ItemArray)
    Else
-      ToStringArray = arrItems
+      ToStringArray = ItemArray
    End If
    
 End Function
 
 Private Function GetArrayWithoutEmptyValues() As String()
 
-   Dim arrItems() As String
+   Dim ItemArray() As String
    Dim MaxArrayIndex As Long
    Dim ItemIndex As Long
    Dim varItm As Variant
@@ -142,36 +142,36 @@ Private Function GetArrayWithoutEmptyValues() As String()
    MaxArrayIndex = m_Items.Count - 1
 
    If MaxArrayIndex < 0 Then
-      GetArrayWithoutEmptyValues = arrItems
+      GetArrayWithoutEmptyValues = ItemArray
       Exit Function
    End If
 
-   ReDim arrItems(0 To MaxArrayIndex)
+   ReDim ItemArray(0 To MaxArrayIndex)
    ItemIndex = -1
    For Each varItm In m_Items
       If Len(varItm) > 0 Then
          ItemIndex = ItemIndex + 1
-         arrItems(ItemIndex) = varItm
+         ItemArray(ItemIndex) = varItm
       End If
    Next
    
    If ItemIndex = -1 Then
-      Erase arrItems
-      GetArrayWithoutEmptyValues = arrItems
+      Erase ItemArray
+      GetArrayWithoutEmptyValues = ItemArray
       Exit Function
    End If
    
    If ItemIndex < (m_Items.Count - 1) Then
-      ReDim Preserve arrItems(0 To ItemIndex)
+      ReDim Preserve ItemArray(0 To ItemIndex)
    End If
    
-   GetArrayWithoutEmptyValues = arrItems
+   GetArrayWithoutEmptyValues = ItemArray
 
 End Function
 
 Private Function RemoveDuplicateValues(ByRef ArrayToCheck() As String) As String()
 
-   Dim arrItems() As String
+   Dim ItemArray() As String
    Dim MaxArrayIndex As Long
    Dim ItemIndex As Long
    Dim varItm As Variant
@@ -183,21 +183,21 @@ Private Function RemoveDuplicateValues(ByRef ArrayToCheck() As String) As String
       Exit Function
    End If
    
-   ReDim arrItems(MaxArrayIndex)
+   ReDim ItemArray(MaxArrayIndex)
    
    ItemIndex = -1
    For Each varItm In ArrayToCheck
-      If Not ValueExistsInArray(arrItems, varItm, ItemIndex) Then
+      If Not ValueExistsInArray(ItemArray, varItm, ItemIndex) Then
          ItemIndex = ItemIndex + 1
-         arrItems(ItemIndex) = varItm
+         ItemArray(ItemIndex) = varItm
       End If
    Next
    
    If ItemIndex < (m_Items.Count - 1) Then
-      ReDim Preserve arrItems(0 To ItemIndex)
+      ReDim Preserve ItemArray(0 To ItemIndex)
    End If
    
-   RemoveDuplicateValues = arrItems
+   RemoveDuplicateValues = ItemArray
    
 End Function
 
