@@ -38,11 +38,11 @@ Public Enum IDC_MouseCursor
 End Enum
 
 #If VBA7 Then
-   Private Declare PtrSafe Function LoadCursorBynum Lib "user32" Alias "LoadCursorA" (ByVal hInstance As Long, ByVal lpCursorName As Long) As Long
-   Private Declare PtrSafe Function SetCursor Lib "user32" (ByVal hCursor As Long) As Long
+   Private Declare PtrSafe Function LoadCursorBynum Lib "user32" Alias "LoadCursorA" (ByVal Instance As Long, ByVal LpCursorName As Long) As Long
+   Private Declare PtrSafe Function SetCursor Lib "user32" (ByVal Cursor As Long) As Long
 #Else
-   Private Declare Function LoadCursorBynum Lib "user32" Alias "LoadCursorA" (ByVal hInstance As Long, ByVal lpCursorName As Long) As Long
-   Private Declare Function SetCursor Lib "user32" (ByVal hCursor As Long) As Long
+   Private Declare Function LoadCursorBynum Lib "user32" Alias "LoadCursorA" (ByVal Instance As Long, ByVal LpCursorName As Long) As Long
+   Private Declare Function SetCursor Lib "user32" (ByVal Cursor As Long) As Long
 #End If
 
 '---------------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ End Enum
 '**/
 '---------------------------------------------------------------------------------------
 Public Sub MouseCursor(ByVal CursorType As IDC_MouseCursor)
-  Dim lngRet As Long
-  lngRet = LoadCursorBynum(0&, CursorType)
-  lngRet = SetCursor(lngRet)
+  Dim Ret As Long
+  Ret = LoadCursorBynum(0&, CursorType)
+  Ret = SetCursor(Ret)
 End Sub

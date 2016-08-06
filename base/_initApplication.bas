@@ -43,7 +43,7 @@ Option Explicit
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function StartApplication(Optional ByRef param As Variant) As Boolean
+Public Function StartApplication(Optional ByRef StartParam As Variant) As Boolean
 
 On Error GoTo HandleErr
 

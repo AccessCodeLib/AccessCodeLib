@@ -42,59 +42,59 @@ Private Const SM_CXVSCROLL As Long = 2
 
 Private Declare PtrSafe Function CreateSolidBrush _
       Lib "gdi32.dll" ( _
-      ByVal crColor As Long _
+      ByVal CrColor As Long _
       ) As Long
 
 Private Declare PtrSafe Function RedrawWindow _
       Lib "user32" ( _
       ByVal Hwnd As Long, _
-      lprcUpdate As Any, _
-      ByVal hrgnUpdate As Long, _
-      ByVal fuRedraw As Long _
+      LprcUpdate As Any, _
+      ByVal HrgnUpdate As Long, _
+      ByVal FuRedraw As Long _
       ) As Long
 
 Private Declare PtrSafe Function SetClassLong _
-      Lib "USER32.DLL" _
+      Lib "user32.dll" _
       Alias "SetClassLongA" ( _
       ByVal Hwnd As Long, _
-      ByVal nIndex As Long, _
-      ByVal dwNewLong As Long _
+      ByVal NIndex As Long, _
+      ByVal DwNewLong As Long _
       ) As Long
 
-Private Declare PtrSafe Function GetSystemMetrics Lib "user32" (ByVal nIndex As Long) As Long
+Private Declare PtrSafe Function GetSystemMetrics Lib "user32" (ByVal Index As Long) As Long
 
 Private Declare PtrSafe Function GetDC Lib "user32" (ByVal Hwnd As Long) As Long
-Private Declare PtrSafe Function ReleaseDC Lib "user32" (ByVal Hwnd As Long, ByVal hDC As Long) As Long
-Private Declare PtrSafe Function GetDeviceCaps Lib "gdi32" (ByVal hDC As Long, ByVal nIndex As Long) As Long
+Private Declare PtrSafe Function ReleaseDC Lib "user32" (ByVal Hwnd As Long, ByVal DC As Long) As Long
+Private Declare PtrSafe Function GetDeviceCaps Lib "gdi32" (ByVal DC As Long, ByVal Index As Long) As Long
 
 #Else
 
 Private Declare Function CreateSolidBrush _
       Lib "gdi32.dll" ( _
-      ByVal crColor As Long _
+      ByVal CrColor As Long _
       ) As Long
 
 Private Declare Function RedrawWindow _
       Lib "user32" ( _
       ByVal Hwnd As Long, _
-      lprcUpdate As Any, _
-      ByVal hrgnUpdate As Long, _
-      ByVal fuRedraw As Long _
+      LprcUpdate As Any, _
+      ByVal HrgnUpdate As Long, _
+      ByVal FuRedraw As Long _
       ) As Long
 
 Private Declare Function SetClassLong _
-      Lib "USER32.DLL" _
+      Lib "user32.dll" _
       Alias "SetClassLongA" ( _
       ByVal Hwnd As Long, _
-      ByVal nIndex As Long, _
-      ByVal dwNewLong As Long _
+      ByVal NIndex As Long, _
+      ByVal DwNewLong As Long _
       ) As Long
 
-Private Declare Function GetSystemMetrics Lib "user32" (ByVal nIndex As Long) As Long
+Private Declare Function GetSystemMetrics Lib "user32" (ByVal Index As Long) As Long
 
 Private Declare Function GetDC Lib "user32" (ByVal Hwnd As Long) As Long
-Private Declare Function ReleaseDC Lib "user32" (ByVal Hwnd As Long, ByVal hDC As Long) As Long
-Private Declare Function GetDeviceCaps Lib "gdi32" (ByVal hDC As Long, ByVal nIndex As Long) As Long
+Private Declare Function ReleaseDC Lib "user32" (ByVal Hwnd As Long, ByVal DC As Long) As Long
+Private Declare Function GetDeviceCaps Lib "gdi32" (ByVal DC As Long, ByVal Index As Long) As Long
 
 #End If
 
@@ -140,10 +140,10 @@ End Sub
 '**/
 '---------------------------------------------------------------------------------------
 Public Function TwipsPerPixelX() As Single
-   Dim lngDC As Long
-   lngDC = GetDC(HWND_DESKTOP)
-   TwipsPerPixelX = 1440& / GetDeviceCaps(lngDC, LOGPIXELSX)
-   ReleaseDC HWND_DESKTOP, lngDC
+   Dim DC As Long
+   DC = GetDC(HWND_DESKTOP)
+   TwipsPerPixelX = 1440& / GetDeviceCaps(DC, LOGPIXELSX)
+   ReleaseDC HWND_DESKTOP, DC
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -160,10 +160,10 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function TwipsPerPixelY() As Single
-   Dim lngDC As Long
-   lngDC = GetDC(HWND_DESKTOP)
-   TwipsPerPixelY = 1440& / GetDeviceCaps(lngDC, LOGPIXELSY)
-   ReleaseDC HWND_DESKTOP, lngDC
+   Dim DC As Long
+   DC = GetDC(HWND_DESKTOP)
+   TwipsPerPixelY = 1440& / GetDeviceCaps(DC, LOGPIXELSY)
+   ReleaseDC HWND_DESKTOP, DC
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -197,8 +197,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetTwipsFromPixel(ByVal pixel As Long) As Long
-   GetTwipsFromPixel = TwipsPerPixelX * pixel
+Public Function GetTwipsFromPixel(ByVal Pixel As Long) As Long
+   GetTwipsFromPixel = TwipsPerPixelX * Pixel
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -215,6 +215,6 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetPixelFromTwips(ByVal twips As Long) As Long
-        GetPixelFromTwips = twips / TwipsPerPixelX
+Public Function GetPixelFromTwips(ByVal Twips As Long) As Long
+        GetPixelFromTwips = Twips / TwipsPerPixelX
 End Function

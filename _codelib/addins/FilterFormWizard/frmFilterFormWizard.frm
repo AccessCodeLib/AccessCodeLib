@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =-1059863271
+Checksum =-1258511272
 Begin Form
     AllowFilters = NotDefault
     RecordSelectors = NotDefault
@@ -40,11 +40,18 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x000000000000000000000000f044b42f1407272f200000000000000000000000 ,
-        0x0104f0a49c00a00753ef8003010009009a0b3408640001000f00580202000200 ,
-        0x580203000100000078d1f533806247030c000000c0b8e0020040490300000000 ,
-        0x64d4de3390720000000000000000000000000000000000000000000000000000 ,
-        0x0000000001010000010000000000000000000000000000000000000000000000 ,
+        0x000fff000000000000000000000000007cdcb101e0189601200000000c000000 ,
+        0x010403069c00740353ef800301000900ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c657474657200df1e01c2df1e01483f3471e816471a0c53ee00 ,
+        0xbff9ffff4c550000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000000000000000000000000000000000000000000050524956 ,
+        0xe210000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000180000000000102710271027 ,
+        0x0000102700000000000000008000740300000000000000000000000000000000 ,
+        0x0000000000000000010000000000000000001000503403002888040000000000 ,
+        0x000000000000010000000000000000000000000000000000c029e70d03000000 ,
+        0x00000000ff000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -53,36 +60,6 @@ Begin Form
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x010000000100000009000000b30d0000b0090000020000000100000001000000 ,
-        0x9dffffff02000000020000000100000000000000010100000200000002000000 ,
-        0x0300000005000000000000000000000001000000010100000101000000000000 ,
-        0x0000000000000000000000000000000001000000000000000100000000000000 ,
-        0x0100000001000000000000000200000002000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000002000000 ,
-        0x0100000008000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000100000001000000010000009dffffff01000000 ,
-        0x0101000009000000000000000000000000000000284e4f4e4529000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x000000000000000000000000000000000000000000000000a005000000000000 ,
-        0xc2010000c2010000900100000000000030000022417269616c00000000000000 ,
-        0x0000000000000000000000000000000000000000000000003200000000000000 ,
-        0x0000000000000000284e4f4e4529000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x000000000000000000000000a005000000000000c2010000c201000090010000 ,
-        0x0000000030000022417269616c00000000000000000000000000000000000000 ,
-        0x0000000000000000000000003200000000000000000000000000000000000000 ,
-        0xf0a497bc4c65786d61726b20533330302d533430302053657269657300000000 ,
-        0x0000000038010000f0a497bc9dff580200000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000080000 ,
-        0x0100000000000000ffff00000000000000000000000000000000630000000000 ,
-        0x0100010001000100000002000100f802f6047008e01000000000000001000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -90,40 +67,36 @@ Begin Form
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x00000000536f6674776172655c4c65786d61726b496e6b6a6574000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0100000000000000000000000000000070000000534d544a0000000010006000 ,
+        0x46007200650065005000440046005f0080000000534d544a0000000010007000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000010001000100010000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000001000100 ,
-        0x0100010000000000000000000000000000000000000001009dff04009dffffff ,
-        0xfefffcff00000000000000000000000001005802040058022c01580258020000 ,
-        0x0000000000000000000001005802040058022c015802c0120000000000000000 ,
-        0x00000000010058020400580258025802b0040000000000000000000000000100 ,
-        0x060004000600010002000500000000000000000000000000f0a497bc
+        0x00000000000000000000000000000000
     End
     PrtDevNames = Begin
-        0x0800210042000100000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x000055534230303500000000000000000000000000
+        0x080023002b000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000467265655044465850313a00
     End
     FilterOnLoad =0
     ShowPageMargins =0
     AllowLayoutView =0
     DatasheetGridlinesColor12 =12632256
     PrtDevModeW = Begin
-        0x00000000a0f57f00000000009005910dacf57f002c752d00f0752d004cba1a07 ,
-        0x0000000094561038000000000000000000000000f044b42f0100000000000000 ,
-        0x0104f0a4dc00a00753ef8003010009009a0b3408640001000f00580202000200 ,
-        0x580203000100000030982d00bde4322fcc752d00d0752d0004000000ee13f88a ,
-        0x0018480300184803c5e6322f00000000e4121b2f040000000400000000000000 ,
-        0x00000000da970000000000000000000000000000000000000000000000000000 ,
-        0x0000000001010000010000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x01040306dc00740353ef800301000900ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c00650074007400650072000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000000000000000000000000000000000000000000050524956 ,
+        0xe210000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000180000000000102710271027 ,
+        0x0000102700000000000000008000740300000000000000000000000000000000 ,
+        0x0000000000000000010000000000000000001000503403002888040000000000 ,
+        0x000000000000010000000000000000000000000000000000c029e70d03000000 ,
+        0x00000000ff000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -132,36 +105,6 @@ Begin Form
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x010000000100000009000000b30d0000b0090000020000000100000001000000 ,
-        0x9dffffff02000000020000000100000000000000010100000200000002000000 ,
-        0x0300000005000000000000000000000001000000010100000101000000000000 ,
-        0x0000000000000000000000000000000001000000000000000100000000000000 ,
-        0x0100000001000000000000000200000002000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000002000000 ,
-        0x0100000008000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000100000001000000010000009dffffff01000000 ,
-        0x0101000009000000000000000000000000000000284e4f4e4529000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x000000000000000000000000000000000000000000000000a005000000000000 ,
-        0xc2010000c2010000900100000000000030000022417269616c00000000000000 ,
-        0x0000000000000000000000000000000000000000000000003200000000000000 ,
-        0x0000000000000000284e4f4e4529000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x000000000000000000000000a005000000000000c2010000c201000090010000 ,
-        0x0000000030000022417269616c00000000000000000000000000000000000000 ,
-        0x0000000000000000000000003200000000000000000000000000000000000000 ,
-        0xf0a497bc4c65786d61726b20533330302d533430302053657269657300000000 ,
-        0x0000000038010000f0a497bc9dff580200000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000080000 ,
-        0x0100000000000000ffff00000000000000000000000000000000630000000000 ,
-        0x0100010001000100000002000100f802f6047008e01000000000000001000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -169,30 +112,18 @@ Begin Form
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x00000000536f6674776172655c4c65786d61726b496e6b6a6574000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0100000000000000000000000000000070000000534d544a0000000010006000 ,
+        0x46007200650065005000440046005f0080000000534d544a0000000010007000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000010001000100010000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000001000100 ,
-        0x0100010000000000000000000000000000000000000001009dff04009dffffff ,
-        0xfefffcff00000000000000000000000001005802040058022c01580258020000 ,
-        0x0000000000000000000001005802040058022c015802c0120000000000000000 ,
-        0x00000000010058020400580258025802b0040000000000000000000000000100 ,
-        0x060004000600010002000500000000000000000000000000f0a497bc
+        0x00000000000000000000000000000000
     End
     PrtDevNamesW = Begin
-        0x04001d003e000100000000000000000000000000000000000000000000000000 ,
+        0x04001f0027000100000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000055005300 ,
-        0x4200300030003500000000000000000000000000000000000000000000000000 ,
-        0x0000
+        0x0000000000000000000000000000460072006500650050004400460058005000 ,
+        0x31003a000000
     End
     
     Begin
@@ -438,10 +369,10 @@ Begin Form
                     LayoutCachedTop =5475
                     LayoutCachedWidth =10497
                     LayoutCachedHeight =5850
-                    WebImagePaddingLeft =2
-                    WebImagePaddingTop =2
-                    WebImagePaddingRight =1
-                    WebImagePaddingBottom =1
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
                     Overlaps =1
                 End
                 Begin Label
@@ -518,10 +449,10 @@ Begin Form
                     LayoutCachedTop =5081
                     LayoutCachedWidth =2676
                     LayoutCachedHeight =5376
-                    WebImagePaddingLeft =2
-                    WebImagePaddingTop =2
-                    WebImagePaddingRight =1
-                    WebImagePaddingBottom =1
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
                     Overlaps =1
                 End
                 Begin CommandButton
@@ -544,10 +475,10 @@ Begin Form
                     LayoutCachedTop =4721
                     LayoutCachedWidth =2676
                     LayoutCachedHeight =5016
-                    WebImagePaddingLeft =2
-                    WebImagePaddingTop =2
-                    WebImagePaddingRight =1
-                    WebImagePaddingBottom =1
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
                     Overlaps =1
                 End
                 Begin CommandButton
@@ -570,10 +501,10 @@ Begin Form
                     LayoutCachedTop =5441
                     LayoutCachedWidth =2676
                     LayoutCachedHeight =5736
-                    WebImagePaddingLeft =2
-                    WebImagePaddingTop =2
-                    WebImagePaddingRight =1
-                    WebImagePaddingBottom =1
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
                     Overlaps =1
                 End
                 Begin Label
@@ -619,10 +550,10 @@ Begin Form
                     LayoutCachedTop =4376
                     LayoutCachedWidth =2676
                     LayoutCachedHeight =4671
-                    WebImagePaddingLeft =2
-                    WebImagePaddingTop =2
-                    WebImagePaddingRight =1
-                    WebImagePaddingBottom =1
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
                     Overlaps =1
                 End
                 Begin ComboBox
@@ -761,7 +692,7 @@ Begin Form
                             Left =3615
                             Top =4893
                             OptionValue =0
-                            BorderColor =12835293
+                            BorderColor =13553360
                             Name ="Option93"
                             GUID = Begin
                                 0x2ed9a0b87581e9459437795c1ea4f08f
@@ -801,7 +732,7 @@ Begin Form
                             Top =5203
                             TabIndex =1
                             OptionValue =1
-                            BorderColor =12835293
+                            BorderColor =13553360
                             Name ="Option95"
                             GUID = Begin
                                 0x918bf012f5ab6a4a82b18d8d78de17cb
@@ -841,7 +772,7 @@ Begin Form
                             Top =5546
                             TabIndex =2
                             OptionValue =2
-                            BorderColor =12835293
+                            BorderColor =13553360
                             Name ="Option97"
                             GUID = Begin
                                 0x03d2ddc59a72074694568a25b639186a
@@ -969,7 +900,7 @@ Begin Form
                             Left =7395
                             Top =4892
                             OptionValue =1
-                            BorderColor =12835293
+                            BorderColor =13553360
                             Name ="Option105"
                             GUID = Begin
                                 0x9360b4bcc3c8bf48a0506593b1be6c0a
@@ -1009,7 +940,7 @@ Begin Form
                             Top =5202
                             TabIndex =1
                             OptionValue =2
-                            BorderColor =12835293
+                            BorderColor =13553360
                             Name ="Option107"
                             GUID = Begin
                                 0x3b9786ef86a3784a9dd3a8c5ebed31d9
@@ -1279,7 +1210,7 @@ Option Explicit
 Private m_OpenModules As Long
 Private m_CodeModulImporter As AppFileCodeModulTransfer
 
-Private Const m_SubFormUseFilterOption As Long = 2
+Private Const SubFormUseFilterOption As Long = 2
 
 'Datenquellen für Formular (je nachdem ob Formular für FE-Verbindung bzw. Vorlage verwendet wird):
 Private Property Get SourceDb() As DAO.Database
@@ -1311,7 +1242,7 @@ Private Sub cbxFormName_AfterUpdate()
    
    Me.UseFilterMethodOptions.Enabled = FormSelected
    With Me.cbxUseFilterSubForm
-      .Enabled = FormSelected And (Me.UseFilterMethodOptions = m_SubFormUseFilterOption)
+      .Enabled = FormSelected And (Me.UseFilterMethodOptions = SubFormUseFilterOption)
       .Value = Null
    End With
    
@@ -1332,17 +1263,17 @@ End Sub
 
 Private Sub RefreshAddFilterButtonEnableMode()
    
-   Dim bolEnable As Boolean
+   Dim EnableBtn As Boolean
 
-   bolEnable = (Len(Nz(Me.cbxFormName.Value, vbNullString)) > 0)
+   EnableBtn = (Len(Nz(Me.cbxFormName.Value, vbNullString)) > 0)
    
-   If bolEnable Then
+   If EnableBtn Then
       If Me.UseFilterMethodOptions.Value = 2 Then
-         bolEnable = (Len(Nz(Me.cbxUseFilterSubForm.Value, vbNullString)) > 0)
+         EnableBtn = (Len(Nz(Me.cbxUseFilterSubForm.Value, vbNullString)) > 0)
       End If
    End If
 
-   Me.cmdAddFilterCodeToForm.Enabled = bolEnable
+   Me.cmdAddFilterCodeToForm.Enabled = EnableBtn
 
 End Sub
 
@@ -1460,25 +1391,25 @@ Private Sub Form_Current()
    CheckModules
 End Sub
 
-Private Sub OpenReplaceModulesContextMenu(ByRef ctlMenuControl As Control, ByVal X As Single, ByVal Y As Single)
+Private Sub OpenReplaceModulesContextMenu(ByRef MenuControlRef As Control, ByVal X As Single, ByVal Y As Single)
 
    Dim mnu As WinApiShortcutMenu
-   Dim lngSelectedMenuItem As Long
+   Dim SelectedMenuItem As Long
 
    Set mnu = New WinApiShortcutMenu
       
    With mnu
       .ControlSection = acDetail
       Set .AccessForm = Me
-      Set .MenuControl = ctlMenuControl
+      Set .MenuControl = MenuControlRef
       
       .AddMenuItem 1, "Alle Codemodule erneuern (vorhandene Module werden überschrieben)"
       .AddMenuItem 2, "Alle Codemodule außer 'SqlTools' erneuern (SqlTools bleibt unverändert)"
       
    End With
    
-   lngSelectedMenuItem = mnu.OpenMenu(X, Y)
-   Select Case lngSelectedMenuItem
+   SelectedMenuItem = mnu.OpenMenu(X, Y)
+   Select Case SelectedMenuItem
       Case 1
          ReplaceAllModules True
       Case 2
@@ -1491,21 +1422,21 @@ Private Sub OpenReplaceModulesContextMenu(ByRef ctlMenuControl As Control, ByVal
 
 End Sub
 
-Private Sub ReplaceAllModules(Optional ByVal bolWithSqlTools As Boolean = False)
+Private Sub ReplaceAllModules(Optional ByVal WithSqlTools As Boolean = False)
    
-   Dim bolReplaced As Boolean
+   Dim ModulesReplaced As Boolean
 
 On Error Resume Next
    
    With CodeModulImporter
-      If bolWithSqlTools Then
-         bolReplaced = .ReplaceCodeModules("SqlTools", "StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
+      If WithSqlTools Then
+         ModulesReplaced = .ReplaceCodeModules("SqlTools", "StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
       Else
-         bolReplaced = .ReplaceCodeModules("StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
+         ModulesReplaced = .ReplaceCodeModules("StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
       End If
    End With
 
-   If bolReplaced Then
+   If ModulesReplaced Then
    
       SetModulCopyControls "CopyModulSqlTools", True
       SetModulCopyControls "CopyModulFilterStringBuilder", True
@@ -1522,7 +1453,7 @@ On Error Resume Next
    
 End Sub
 
-Private Sub Form_Open(Cancel As Integer)
+Private Sub Form_Open(ByRef Cancel As Integer)
    Me.Caption = Me.Caption & "  " & ChrW(&H25AA) & "  Version " & CurrentApplication.Version & " (SVN-Rev. " & SvnRev & ")"
 End Sub
 
@@ -1539,13 +1470,13 @@ Private Sub labCheckVersion_Click()
    
 End Sub
 
-Private Sub labCheckVersion_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub labCheckVersion_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
    If Me.labCheckVersion.Tag <> "VersionUptodate" Then
       modWinApi_Mouse.MouseCursor IDC_HAND
    End If
 End Sub
 
-Private Sub labCopyCaption_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub labCopyCaption_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
 
    If Button = 1 Or Button = 2 Then
       OpenReplaceModulesContextMenu Me.labCopyCaption, X, Y
@@ -1555,29 +1486,29 @@ End Sub
 
 Private Sub CheckModules(Optional ByVal WithControlManager As Boolean = True)
    
-   Dim bolCheckOK As Boolean
+   Dim CheckOk As Boolean
    
 On Error Resume Next
    
    m_OpenModules = 0
 
    With CodeModulImporter
-      bolCheckOK = .CheckCodeModules("SqlTools")
-      m_OpenModules = m_OpenModules + 1 + bolCheckOK
-      SetModulCopyControls "CopyModulSqlTools", bolCheckOK
+      CheckOk = .CheckCodeModules("SqlTools")
+      m_OpenModules = m_OpenModules + 1 + CheckOk
+      SetModulCopyControls "CopyModulSqlTools", CheckOk
       
-      bolCheckOK = .CheckCodeModules("StringCollection", "FilterStringBuilder")
-      m_OpenModules = m_OpenModules + 1 + bolCheckOK
-      SetModulCopyControls "CopyModulFilterStringBuilder", bolCheckOK
+      CheckOk = .CheckCodeModules("StringCollection", "FilterStringBuilder")
+      m_OpenModules = m_OpenModules + 1 + CheckOk
+      SetModulCopyControls "CopyModulFilterStringBuilder", CheckOk
       
       If WithControlManager Then
-         bolCheckOK = .CheckCodeModules("FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
-         m_OpenModules = m_OpenModules + 1 + bolCheckOK
-         SetModulCopyControls "CopyModulFilterControlManager", bolCheckOK
+         CheckOk = .CheckCodeModules("FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
+         m_OpenModules = m_OpenModules + 1 + CheckOk
+         SetModulCopyControls "CopyModulFilterControlManager", CheckOk
       End If
       
-      bolCheckOK = (m_OpenModules = 0)
-      SetModulCopyControls "CopyModules", bolCheckOK
+      CheckOk = (m_OpenModules = 0)
+      SetModulCopyControls "CopyModules", CheckOk
    End With
    
 End Sub
@@ -1627,41 +1558,41 @@ Private Sub cmdCopyModules_Click()
 
 End Sub
 
-Private Sub SetModulCopyControls(ByVal sModulCode As String, ByVal bExists As Boolean)
+Private Sub SetModulCopyControls(ByVal ModulCodeName As String, ByVal Exists As Boolean)
    
-   Dim sCaption As String
-   Dim lBorderStyle As Long
+   Dim ModuleCodeCaption As String
+   Dim BorderStyle As Long
    
 On Error Resume Next
    
-   If bExists Then Me.sysFirst.SetFocus
-   Me.Controls("cmd" & sModulCode).Enabled = Not bExists
-   If bExists Then
-      sCaption = "b"
-      lBorderStyle = 0
+   If Exists Then Me.sysFirst.SetFocus
+   Me.Controls("cmd" & ModulCodeName).Enabled = Not Exists
+   If Exists Then
+      ModuleCodeCaption = "b"
+      BorderStyle = 0
    Else
-      sCaption = vbNullString
-      lBorderStyle = 1
+      ModuleCodeCaption = vbNullString
+      BorderStyle = 1
    End If
-   With Me.Controls("lab" & sModulCode)
-      .Caption = sCaption
-      .BorderStyle = lBorderStyle
+   With Me.Controls("lab" & ModulCodeName)
+      .Caption = ModuleCodeCaption
+      .BorderStyle = BorderStyle
    End With
  
-   If sModulCode <> "CopyModules" And m_OpenModules = 0 Then
+   If ModulCodeName <> "CopyModules" And m_OpenModules = 0 Then
       SetModulCopyControls "CopyModules", True
    End If
    
 End Sub
 
-Private Sub labCopyCaption_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub labCopyCaption_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
    modWinApi_Mouse.MouseCursor IDC_HAND
 End Sub
 
 Private Sub UseFilterMethodOptions_AfterUpdate()
 
    With Me.cbxUseFilterSubForm
-      .Enabled = (Me.UseFilterMethodOptions = m_SubFormUseFilterOption)
+      .Enabled = (Me.UseFilterMethodOptions = SubFormUseFilterOption)
       If .Enabled = False Then .Value = Null
    End With
 
@@ -1700,9 +1631,11 @@ Private Sub LoadControlsFromForm(ByVal FormRef As Form)
 
 End Sub
 
-Private Sub ClearFilterCtlCombobox(ByVal cbx As ComboBox)
-   cbx.RowSource = vbNullString
-   cbx.Value = Null
+Private Sub ClearFilterCtlCombobox(ByVal CbxRef As ComboBox)
+   With CbxRef
+      .RowSource = vbNullString
+      .Value = Null
+   End With
 End Sub
 
 Private Sub SetNewVersionInfo()
@@ -1740,5 +1673,5 @@ Private Sub SetNewVersionInfo()
 End Sub
 
 Private Sub OpenDownloadSource()
-   Application.FollowHyperlink DownLoadSource, , True, False
+   Application.FollowHyperlink DownloadSource, , True, False
 End Sub

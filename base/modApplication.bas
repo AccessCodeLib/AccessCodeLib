@@ -63,9 +63,9 @@ End Property
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Sub AddApplicationHandlerExtension(ByRef objRef As Object)
-   Set objRef.ApplicationHandlerRef = CurrentApplication
-   m_Extension.Add objRef, objRef.ExtensionKey
+Public Sub AddApplicationHandlerExtension(ByRef ObjRef As Object)
+   Set ObjRef.ApplicationHandlerRef = CurrentApplication
+   m_Extension.Add ObjRef, ObjRef.ExtensionKey
 End Sub
 
 
@@ -114,7 +114,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 Public Sub DisposeCurrentApplicationHandler()
 
-   Dim lngCheckCnt As Long, MaxCnt As Long
+   Dim CheckCnt As Long, MaxCnt As Long
 
 On Error Resume Next
    
@@ -124,9 +124,9 @@ On Error Resume Next
 
    If Not (m_Extension Is Nothing) Then
       MaxCnt = m_Extension.Count * 2 'nur zur Sicherheit falls wider Erwarten m_Extension.Remove eine Endlosschleife bringen würde
-      Do While m_Extension.Count > 0 Or lngCheckCnt > MaxCnt
+      Do While m_Extension.Count > 0 Or CheckCnt > MaxCnt
          m_Extension.Remove 1
-         lngCheckCnt = lngCheckCnt + 1
+         CheckCnt = CheckCnt + 1
       Loop
       Set m_Extension = Nothing
    End If

@@ -34,13 +34,13 @@ Attribute VB_Description = "Erweiterung für ApplicationHandler-Klasse: Anwendung
 Option Compare Database
 Option Explicit
 
-Private Const m_EXTENSION_KEY As String = "AppFile"
+Private Const EXTENSION_KEY As String = "AppFile"
 
-Private Const m_EXTENSION_PROPERTY_AppFileTableName As String = "AppFileTableName"
-Private Const m_TABLE_AppFiles As String = "usys_AppFiles"
-Private Const m_TABLE_FIELD_id As String = "id"
-Private Const m_TABLE_FIELD_version As String = "version"
-Private Const m_TABLE_FIELD_file As String = "file"
+Private Const EXTENSION_PROPERTY_APPFILETABLENAME As String = "AppFileTableName"
+Private Const TABLE_APPFILES As String = "usys_AppFiles"
+Private Const TABLE_FIELD_ID As String = "id"
+Private Const TABLE_FIELD_VERSION As String = "version"
+Private Const TABLE_FIELD_FILE As String = "file"
 
 
 '---------------------------------------------------------------------------------------
@@ -50,12 +50,12 @@ Private Const m_TABLE_FIELD_file As String = "file"
 Private WithEvents m_ApplicationHandler As ApplicationHandler
 Attribute m_ApplicationHandler.VB_VarHelpID = -1
 
-Public Property Set ApplicationHandlerRef(ByRef objRef As ApplicationHandler)
-   Set m_ApplicationHandler = objRef
+Public Property Set ApplicationHandlerRef(ByRef ObjRef As ApplicationHandler)
+   Set m_ApplicationHandler = ObjRef
 End Property
 
 Public Property Get ExtensionKey() As String
-   ExtensionKey = m_EXTENSION_KEY
+   ExtensionKey = EXTENSION_KEY
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -63,23 +63,23 @@ End Property
 '---------------------------------------------------------------------------------------
 
 ' CheckExtension
-Private Sub m_ApplicationHandler_CheckExtension(ByVal sExtensionKey As String, ByRef exists As Boolean)
-   If sExtensionKey = m_EXTENSION_KEY Then exists = True
+Private Sub m_ApplicationHandler_CheckExtension(ByVal ExtensionKeyToCheck As String, ByRef Exists As Boolean)
+   If ExtensionKeyToCheck = EXTENSION_KEY Then Exists = True
 End Sub
 
 ' ExtensionLookup
-Private Sub m_ApplicationHandler_ExtensionLookup(ByVal sExtensionKey As String, ByRef ExtensionReference As Object)
-   If sExtensionKey = m_EXTENSION_KEY Then
+Private Sub m_ApplicationHandler_ExtensionLookup(ByVal ExtensionKeyToCheck As String, ByRef ExtensionReference As Object)
+   If ExtensionKeyToCheck = EXTENSION_KEY Then
       Set ExtensionReference = Me
    End If
 End Sub
 
 'ExtensionPropertyLookup
 Private Sub m_ApplicationHandler_ExtensionPropertyLookup( _
-                     ByVal sExtensionKey As String, ByVal PropertyName As String, _
+                     ByVal ExtensionKeyToCheck As String, ByVal PropertyName As String, _
                      ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
 
-   If sExtensionKey = m_EXTENSION_KEY Then
+   If ExtensionKeyToCheck = EXTENSION_KEY Then
       getExtensionPropertyLookup PropertyName, ResumeMode, ResumeMessage
    End If
 
@@ -105,8 +105,8 @@ Private Sub getExtensionPropertyLookup(ByVal PropertyName As String, _
    ResumeMode = AppResumeMode_Completed
 
    Select Case PropertyName
-      Case m_EXTENSION_PROPERTY_AppFileTableName
-         ResumeMessage = m_TABLE_AppFiles
+      Case EXTENSION_PROPERTY_APPFILETABLENAME
+         ResumeMessage = TABLE_APPFILES
          
       Case Else 'Property wurde nicht erkannt
          ResumeMode = AppResumeMode_Error
@@ -116,7 +116,7 @@ Private Sub getExtensionPropertyLookup(ByVal PropertyName As String, _
 End Sub
 
 Public Property Get AppFileTableName() As String
-   AppFileTableName = m_TABLE_AppFiles
+   AppFileTableName = TABLE_APPFILES
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -132,28 +132,28 @@ End Property
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function CreateAppFile(ByVal sFileID As String, ByVal sFileName As String) As Boolean
+Public Function CreateAppFile(ByVal FileID As String, ByVal FileName As String) As Boolean
 
    Dim f As Integer
    Dim Binfile() As Byte
-   Dim lngFieldSize As Long
+   Dim FieldSize As Long
    Dim rst As DAO.Recordset
    Dim fld As DAO.Field
 
-   Set rst = CodeDb.OpenRecordset("select file from " & m_TABLE_AppFiles & " where id='" & sFileID & "'")
+   Set rst = CodeDb.OpenRecordset("select file from " & TABLE_APPFILES & " where id='" & FileID & "'")
    If rst.EOF Then
       CreateAppFile = False
    Else
       Set fld = rst.Fields(0)
-      lngFieldSize = fld.FieldSize
-      If lngFieldSize > 0 Then
+      FieldSize = fld.FieldSize
+      If FieldSize > 0 Then
 
-         ReDim Binfile(lngFieldSize - 1)
-         Binfile = fld.GetChunk(0, lngFieldSize)
+         ReDim Binfile(FieldSize - 1)
+         Binfile = fld.GetChunk(0, FieldSize)
 
         ' Datei erstellen
          f = FreeFile
-         Open sFileName For Binary As #f
+         Open FileName For Binary As #f
          Put #f, , Binfile()
          Close #f
 
@@ -180,14 +180,14 @@ End Function
 ' </remarks>
 '/
 '---------------------------------------------------------------------------------------
-Public Function SaveAppFile(ByVal FileId As String, ByVal FileName As String, _
+Public Function SaveAppFile(ByVal FileID As String, ByVal FileName As String, _
                    Optional ByVal SaveVersion As Boolean = False, _
                    Optional ByVal ExtFieldName As String, Optional ByVal ExtFieldValue As Variant) As Boolean
 
    Dim f As Integer
    Dim Binfile() As Byte
    Dim ArraySize As Long
-   Dim strVersion As String
+   Dim Version As String
    Dim FileInfo As WinApiFileInfo
    
 On Error GoTo HandleErr
@@ -207,22 +207,22 @@ On Error GoTo HandleErr
    End If
 
    Dim rst As DAO.Recordset
-   Set rst = CodeDb.OpenRecordset("select * from " & m_TABLE_AppFiles & " where id='" & FileId & "'")
+   Set rst = CodeDb.OpenRecordset("select * from " & TABLE_APPFILES & " where id='" & FileID & "'")
    If rst.EOF Then
       rst.AddNew
-      rst.Fields("id") = FileId
+      rst.Fields("id") = FileID
    Else
       rst.Edit
    End If
    rst.Fields("file").AppendChunk Binfile
    If SaveVersion Then
       Set FileInfo = New WinApiFileInfo
-      strVersion = FileInfo.GetFileVersion(FileName)
+      Version = FileInfo.GetFileVersion(FileName)
           Set FileInfo = Nothing
-      If Len(strVersion) = 0 Then
-         strVersion = Format$(Nz(FileDateTime(FileName), vbNullString), "yyyy.mm.dd")
+      If Len(Version) = 0 Then
+         Version = Format$(Nz(FileDateTime(FileName), vbNullString), "yyyy.mm.dd")
       End If
-      rst.Fields("version") = strVersion
+      rst.Fields("version") = Version
    End If
    
    If Len(ExtFieldName) > 0 Then
@@ -239,32 +239,31 @@ ExitHere:
    Exit Function
    
 HandleErr:
-   Dim tabCreateErrCnt As Long
-   Dim lngErrNumber As Long, strErrDescription As String
+   Dim TabCreateErrCnt As Long
+   Dim ErrNumber As Long, ErrDescription As String
 
-   lngErrNumber = Err.Number
-   strErrDescription = Err.Description
+   ErrNumber = Err.Number
+   ErrDescription = Err.Description
 
-   If lngErrNumber = 3078 And tabCreateErrCnt = 0 Then
-      tabCreateErrCnt = 1
-      lngErrNumber = lngErrNumber
+   If ErrNumber = 3078 And TabCreateErrCnt = 0 Then
+      TabCreateErrCnt = 1
       Err.Clear
       If createAppFileTable Then
          Resume
       End If
    End If
 
-   Err.Raise lngErrNumber, "ExtAppFile.SaveAppFile", strErrDescription
+   Err.Raise ErrNumber, "ExtAppFile.SaveAppFile", ErrDescription
 
 End Function
 
 Private Function createAppFileTable() As Boolean
    
-   Dim strSQL As String
+   Dim CreateTableSql As String
 
-   strSQL = "create table " & m_TABLE_AppFiles & " ( " & m_TABLE_FIELD_id & " varchar(20) primary key, " & _
-             m_TABLE_FIELD_version & " varchar(10), " & m_TABLE_FIELD_file & " image)"
-   CodeDb.Execute strSQL, dbFailOnError
+   CreateTableSql = "create table " & TABLE_APPFILES & " ( " & TABLE_FIELD_ID & " varchar(20) primary key, " & _
+                    TABLE_FIELD_VERSION & " varchar(10), " & TABLE_FIELD_FILE & " image)"
+   CodeDb.Execute CreateTableSql, dbFailOnError
 
    createAppFileTable = (Err.Number = 0)
 
@@ -275,13 +274,13 @@ End Function
 ' Ereignisbehandlung von m_ApplicationHandler
 '
 ' AppFileBeforeCreateFile
-Private Sub m_ApplicationHandler_AppFileBeforeCreateFile(ByVal sFileID As String, ByVal sFileName As String, _
+Private Sub m_ApplicationHandler_AppFileBeforeCreateFile(ByVal FileID As String, ByVal FileName As String, _
                               ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
 
-   Dim bolCompleted As Boolean
+   Dim Completed As Boolean
 
-   bolCompleted = CreateAppFile(sFileID, sFileName)
-   If bolCompleted Then
+   Completed = CreateAppFile(FileID, FileName)
+   If Completed Then
       ResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Completed
    Else 'Fehler rückmelden
       ResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Error
@@ -290,15 +289,15 @@ Private Sub m_ApplicationHandler_AppFileBeforeCreateFile(ByVal sFileID As String
 End Sub
 
 ' AppFileBeforeSaveFile
-Private Sub m_ApplicationHandler_AppFileBeforeSaveFile(ByVal sFileID As String, ByVal sFileName As String, _
+Private Sub m_ApplicationHandler_AppFileBeforeSaveFile(ByVal FileID As String, ByVal FileName As String, _
                               ByVal SaveVersion As Boolean, ByRef ResumeMode As ApplicationHandlerResumeModes, _
                               ByRef ResumeMessage As Variant, _
                               ByVal ExtFieldName As String, ByVal ExtFieldValue As Variant)
 
-   Dim bolCompleted As Boolean
+   Dim Completed As Boolean
 
-   bolCompleted = SaveAppFile(sFileID, sFileName, SaveVersion, ExtFieldName, ExtFieldValue)
-   If bolCompleted Then
+   Completed = SaveAppFile(FileID, FileName, SaveVersion, ExtFieldName, ExtFieldValue)
+   If Completed Then
       ResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Completed
    Else 'Fehler rückmelden
       ResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Error

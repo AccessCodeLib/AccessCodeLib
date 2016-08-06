@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =-105444137
+Checksum =1634650413
 Begin Form
     NavigationButtons = NotDefault
     AllowDesignChanges = NotDefault
@@ -11,10 +11,10 @@ Begin Form
     Width =10050
     DatasheetFontHeight =11
     ItemSuffix =33
-    Left =615
-    Top =2025
-    Right =10935
-    Bottom =4995
+    Left =4632
+    Top =3096
+    Right =14964
+    Bottom =6072
     DatasheetGridlinesColor =15062992
     RecSrcDt = Begin
         0xc4d680b8ef58e440
@@ -27,10 +27,10 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x001c4803b8151138a0f57f000400000000000000000000004315113804000000 ,
+        0x0054ee00705be90c6c5be90c8c54ee004054ee0022a98c01000000003c181a01 ,
         0x010400069c00640353ef8001010009009a0b3408640001000f00580202000100 ,
-        0x5802030001004134005413381c842d00e01c4803180000000c00000008842d00 ,
-        0x7b869a2fe01c0000000000000000000000000000010000000000000001000000 ,
+        0x58020300010041340057e90c8454ee004c54ee00ee3c1a01682e2001d4393471 ,
+        0x4455ee00380b0000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe210000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -63,7 +63,7 @@ Begin Form
     PrtDevNames = Begin
         0x080023002b000100000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000467265655044465850313a00000000000000000000 ,
-        0x000000000000000000000000000000
+        0x0000000000000000000000000000000000000000000000
     End
     FilterOnLoad =0
     OrderByOnLoad =0
@@ -74,12 +74,12 @@ Begin Form
     DatasheetGridlinesColor12 =15062992
     FitToScreen =1
     PrtDevModeW = Begin
-        0x00009b0500009b0550019b0500ff0000f404270050019b05e02953fffeffffff ,
-        0x78792d003403000000792d0050019b05e02953ff00169b05827185757f000000 ,
+        0x000000005815b20b611500004000000084ba9401ee2d5d01000000001a00000c ,
+        0x000100000000000000000000f4d8ef00c000b20b7f000000d88c9d0149030000 ,
         0x01040006dc00640353ef8001010009009a0b3408640001000f00580202000100 ,
-        0x580203000100410034000000a0f57f00000000007f000000c4792d003d03003e ,
-        0xc4009b0501000000474c992f0a0000000c00000000169b0500169b05fb159b05 ,
-        0x00000000247a0000000000000000000000000000010000000000000001000000 ,
+        0x5802030001004100340000004800000018afef00cb0101770900000008020000 ,
+        0xc000b20bc000b20b010000007f000000000000000000b20b5015b20bfeffffff ,
+        0x7f00000041000000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe210000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -114,7 +114,8 @@ Begin Form
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000460072006500650050004400460058005000 ,
         0x31003a0000000000000000000000000000000000000000000000000000000000 ,
-        0x00000000000000000000000000000000000000000000
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000
     End
     
     Begin
@@ -194,7 +195,7 @@ Begin Form
         End
         Begin FormHeader
             Height =285
-            BackColor =15849926
+            BackColor =15064278
             Name ="Formularkopf"
             AlternateBackThemeColorIndex =1
             AlternateBackShade =95.0
@@ -208,7 +209,7 @@ Begin Form
                     Height =285
                     FontSize =10
                     BorderColor =16777215
-                    ForeColor =13995605
+                    ForeColor =11573124
                     Name ="Bezeichnungsfeld1"
                     Caption ="Steuerelement"
                     FontName ="Tahoma"
@@ -225,7 +226,7 @@ Begin Form
                     Height =285
                     FontSize =10
                     BorderColor =16777215
-                    ForeColor =13995605
+                    ForeColor =11573124
                     Name ="Bezeichnungsfeld4"
                     Caption ="Datenfeld"
                     FontName ="Tahoma"
@@ -242,7 +243,7 @@ Begin Form
                     Height =285
                     FontSize =10
                     BorderColor =16777215
-                    ForeColor =13995605
+                    ForeColor =11573124
                     Name ="Bezeichnungsfeld6"
                     Caption ="Vergleichsoperator"
                     FontName ="Tahoma"
@@ -259,7 +260,7 @@ Begin Form
                     Height =285
                     FontSize =10
                     BorderColor =16777215
-                    ForeColor =13995605
+                    ForeColor =11573124
                     Name ="Bezeichnungsfeld10"
                     Caption ="Datentyp"
                     FontName ="Tahoma"
@@ -276,7 +277,7 @@ Begin Form
                     Height =285
                     FontSize =10
                     BorderColor =16777215
-                    ForeColor =13995605
+                    ForeColor =11573124
                     Name ="Bezeichnungsfeld13"
                     Caption ="weitere Steuerelemente"
                     FontName ="Tahoma"
@@ -307,8 +308,8 @@ Begin Form
                     Height =285
                     FontSize =10
                     TabIndex =3
-                    BorderColor =12835293
-                    ForeColor =4138256
+                    BorderColor =13553360
+                    ForeColor =3484194
                     ConditionalFormat = Begin
                         0x0100000090000000010000000100000000000000000000001700000000000000 ,
                         0x00000000ffffff00000000000000000000000000000000000000000000000000 ,
@@ -347,8 +348,8 @@ Begin Form
                     FontSize =10
                     TabIndex =2
                     BoundColumn =1
-                    BorderColor =12835293
-                    ForeColor =4138256
+                    BorderColor =13553360
+                    ForeColor =3484194
                     ColumnInfo ="\"\";\"\";\"\";\"\";\"10\";\"40\""
                     Name ="fcRelationalOperator"
                     ControlSource ="RelationalOperator"
@@ -378,8 +379,8 @@ Begin Form
                     FontSize =10
                     TabIndex =1
                     BoundColumn =1
-                    BorderColor =12835293
-                    ForeColor =4138256
+                    BorderColor =13553360
+                    ForeColor =3484194
                     ColumnInfo ="\"\";\"\";\"\";\"\";\"10\";\"40\""
                     Name ="fcDataType"
                     ControlSource ="DataType"
@@ -403,7 +404,7 @@ Begin Form
                     Left =5465
                     Top =390
                     TabIndex =7
-                    BorderColor =12835293
+                    BorderColor =13553360
                     Name ="fcRelationalOperatorNot"
                     ControlSource ="RelationalOperatorNot"
                     DefaultValue ="False"
@@ -422,7 +423,7 @@ Begin Form
                             Height =240
                             FontSize =8
                             BorderColor =16777215
-                            ForeColor =13995605
+                            ForeColor =11573124
                             Name ="Bezeichnungsfeld15"
                             Caption ="Not"
                             FontName ="Tahoma"
@@ -440,7 +441,7 @@ Begin Form
                     Left =4181
                     Top =390
                     TabIndex =5
-                    BorderColor =12835293
+                    BorderColor =13553360
                     Name ="fcWildCardSuffix"
                     ControlSource ="WildCardSuffix"
                     DefaultValue ="False"
@@ -459,7 +460,7 @@ Begin Form
                             Height =240
                             FontSize =8
                             BorderColor =16777215
-                            ForeColor =13995605
+                            ForeColor =11573124
                             Name ="Bezeichnungsfeld18"
                             Caption ="xxx*"
                             FontName ="Tahoma"
@@ -477,7 +478,7 @@ Begin Form
                     Left =4886
                     Top =390
                     TabIndex =6
-                    BorderColor =12835293
+                    BorderColor =13553360
                     Name ="fcWildCardPrefix"
                     ControlSource ="WildCardPrefix"
                     DefaultValue ="False"
@@ -496,7 +497,7 @@ Begin Form
                             Height =240
                             FontSize =8
                             BorderColor =16777215
-                            ForeColor =13995605
+                            ForeColor =11573124
                             Name ="Bezeichnungsfeld20"
                             Caption ="*xxx"
                             FontName ="Tahoma"
@@ -517,8 +518,8 @@ Begin Form
                     Width =2160
                     Height =285
                     FontSize =10
-                    BorderColor =12835293
-                    ForeColor =4138256
+                    BorderColor =13553360
+                    ForeColor =3484194
                     Name ="fcDataField"
                     ControlSource ="DataField"
                     FontName ="Tahoma"
@@ -539,8 +540,8 @@ Begin Form
                     Height =285
                     FontSize =10
                     TabIndex =4
-                    BorderColor =12835293
-                    ForeColor =4138256
+                    BorderColor =13553360
+                    ForeColor =3484194
                     Name ="fcControl2"
                     ControlSource ="Control2"
                     StatusBarText ="Mehrere Steuerelemente mit Komma trennen"
@@ -570,7 +571,7 @@ Begin Form
                     Left =6222
                     Top =390
                     TabIndex =8
-                    BorderColor =12835293
+                    BorderColor =13553360
                     Name ="cbCreateControl"
                     ControlSource ="CreateControl"
                     AfterUpdate ="[Event Procedure]"
@@ -614,7 +615,7 @@ Begin Form
                     Width =4137
                     Height =300
                     TabIndex =9
-                    BorderColor =12835293
+                    BorderColor =13553360
                     Name ="ogNewControlType"
                     ControlSource ="ControlType"
                     OnEnter ="[Event Procedure]"
@@ -630,7 +631,7 @@ Begin Form
                             Left =6689
                             Top =396
                             OptionValue =109
-                            BorderColor =12835293
+                            BorderColor =13553360
                             Name ="ogfldTextbox"
                             GridlineColor =10921638
 
@@ -646,7 +647,7 @@ Begin Form
                                     Width =876
                                     Height =300
                                     BorderColor =16777215
-                                    ForeColor =13995605
+                                    ForeColor =11573124
                                     Name ="Bezeichnungsfeld30"
                                     Caption ="TextBox"
                                     GridlineColor =10921638
@@ -663,7 +664,7 @@ Begin Form
                             Top =396
                             TabIndex =1
                             OptionValue =111
-                            BorderColor =12835293
+                            BorderColor =13553360
                             Name ="ogfldCombobox"
                             GridlineColor =10921638
 
@@ -679,7 +680,7 @@ Begin Form
                                     Width =1032
                                     Height =300
                                     BorderColor =16777215
-                                    ForeColor =13995605
+                                    ForeColor =11573124
                                     Name ="Bezeichnungsfeld32"
                                     Caption ="ComboBox"
                                     GridlineColor =10921638
@@ -739,10 +740,10 @@ Option Explicit
    Const adLockOptimistic As Long = 3
 #End If
 
-Public Sub InitFilterForm(ByVal frm As Form)
+Public Sub InitFilterForm(ByVal FrmRef As Form)
 
    InitDataSource
-   LoadControlsFromForm frm
+   LoadControlsFromForm FrmRef
 
 End Sub
 
@@ -763,17 +764,17 @@ Private Sub InitDataSource()
 
 End Sub
 
-Private Sub LoadControlsFromForm(ByVal frm As Form)
+Private Sub LoadControlsFromForm(ByVal FrmRef As Form)
 
    Dim ctl As Control
 
    Me.fcControl.RowSource = vbNullString
 
-   If frm Is Nothing Then
+   If FrmRef Is Nothing Then
       Exit Sub
    End If
 
-   For Each ctl In frm.Controls
+   For Each ctl In FrmRef.Controls
       Select Case ctl.ControlType
          Case AcControlType.acTextBox, AcControlType.acComboBox, _
               AcControlType.acCheckBox, AcControlType.acListBox, _
@@ -849,7 +850,7 @@ Public Sub AddControlsToImporter(ByVal Importer As FilterFormCodeImporter, ByVal
 
 End Sub
 
-Private Sub InsertFormControl(ByVal FilterFormName As String, ControlType As String, ByVal DataFieldName As String, ByVal RelOp As String, ByRef ControlName As String, ByRef Control2Name As String)
+Private Sub InsertFormControl(ByVal FilterFormName As String, ByRef ControlType As String, ByVal DataFieldName As String, ByVal RelOp As String, ByRef ControlName As String, ByRef Control2Name As String)
 
    Const DistanceBetweenControls As Long = 72
 
