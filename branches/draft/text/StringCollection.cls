@@ -73,10 +73,10 @@ End Sub
 Public Sub AddFromCollection(ByVal CollectionRef As Object, Optional ByVal ItemStringFormat As String = vbNullString)
 'Object, damit alle Collections mit Enumarable- u. Item(index)-Interface durchlaufen werden können
 
-   Dim varItm As Variant
+   Dim itm As Variant
 
-   For Each varItm In CollectionRef
-      m_Items.Add Format(varItm, ItemStringFormat)
+   For Each itm In CollectionRef
+      m_Items.Add Format(itm, ItemStringFormat)
    Next
 
 End Sub
@@ -137,7 +137,7 @@ Private Function GetArrayWithoutEmptyValues() As String()
    Dim ItemArray() As String
    Dim MaxArrayIndex As Long
    Dim ItemIndex As Long
-   Dim varItm As Variant
+   Dim itm As Variant
 
    MaxArrayIndex = m_Items.Count - 1
 
@@ -148,10 +148,10 @@ Private Function GetArrayWithoutEmptyValues() As String()
 
    ReDim ItemArray(0 To MaxArrayIndex)
    ItemIndex = -1
-   For Each varItm In m_Items
-      If Len(varItm) > 0 Then
+   For Each itm In m_Items
+      If Len(itm) > 0 Then
          ItemIndex = ItemIndex + 1
-         ItemArray(ItemIndex) = varItm
+         ItemArray(ItemIndex) = itm
       End If
    Next
    
@@ -174,7 +174,7 @@ Private Function RemoveDuplicateValues(ByRef ArrayToCheck() As String) As String
    Dim ItemArray() As String
    Dim MaxArrayIndex As Long
    Dim ItemIndex As Long
-   Dim varItm As Variant
+   Dim ArrayItem As Variant
 
    MaxArrayIndex = UBound(ArrayToCheck)
 
@@ -186,10 +186,10 @@ Private Function RemoveDuplicateValues(ByRef ArrayToCheck() As String) As String
    ReDim ItemArray(MaxArrayIndex)
    
    ItemIndex = -1
-   For Each varItm In ArrayToCheck
-      If Not ValueExistsInArray(ItemArray, varItm, ItemIndex) Then
+   For Each ArrayItem In ArrayToCheck
+      If Not ValueExistsInArray(ItemArray, ArrayItem, ItemIndex) Then
          ItemIndex = ItemIndex + 1
-         ItemArray(ItemIndex) = varItm
+         ItemArray(ItemIndex) = ArrayItem
       End If
    Next
    
