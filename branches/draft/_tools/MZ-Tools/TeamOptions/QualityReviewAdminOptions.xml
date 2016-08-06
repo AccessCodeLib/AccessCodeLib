@@ -300,6 +300,11 @@
                   <DisplayedValue>col</DisplayedValue>
                   <InternalValue>col</InternalValue>
                 </Value>
+                <Value>
+                  <TypeFullName>System.String</TypeFullName>
+                  <DisplayedValue>itm</DisplayedValue>
+                  <InternalValue>itm</InternalValue>
+                </Value>
               </MultipleValues>
             </PropertyValue>
           </WhenCondition>
