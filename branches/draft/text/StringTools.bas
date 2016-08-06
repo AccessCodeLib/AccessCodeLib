@@ -161,8 +161,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function PadLeft(ByVal Value As String, ByVal totalWidth As Integer, Optional ByVal padChar As String = " ") As String
-    PadLeft = VBA.Right$(VBA.String$(totalWidth, padChar) & Value, totalWidth)
+Public Function PadLeft(ByVal Value As String, ByVal TotalWidth As Integer, Optional ByVal PadChar As String = " ") As String
+    PadLeft = VBA.Right$(VBA.String$(TotalWidth, PadChar) & Value, TotalWidth)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -181,8 +181,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function PadRight(ByVal Value As String, ByVal totalWidth As Integer, Optional ByVal padChar As String = " ") As String
-    PadRight = VBA.Left$(Value & VBA.String$(totalWidth, padChar), totalWidth)
+Public Function PadRight(ByVal Value As String, ByVal TotalWidth As Integer, Optional ByVal PadChar As String = " ") As String
+    PadRight = VBA.Left$(Value & VBA.String$(TotalWidth, PadChar), TotalWidth)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -209,10 +209,10 @@ End Function
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' Gibt an ob die Zeichenfolge checkValue mit searchValue endet.
+' Gibt an ob die Zeichenfolge CheckValue mit SearchValue endet.
 ' </summary>
-' <param name="checkValue">Zeichenfolge die durchsucht werden soll</param>
-' <param name="searchValue">Zeichenfolge nach der gesucht werden soll</param>
+' <param name="CheckValue">Zeichenfolge die durchsucht werden soll</param>
+' <param name="SearchValue">Zeichenfolge nach der gesucht werden soll</param>
 ' <returns>Boolean</returns>
 ' <remarks>
 ' </remarks>
@@ -227,10 +227,10 @@ End Function
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' Gibt an ob die Zeichenfolge checkValue mit searchValue beginnt.
+' Gibt an ob die Zeichenfolge CheckValue mit SearchValue beginnt.
 ' </summary>
-' <param name="checkValue">Zeichenfolge die durchsucht werden soll</param>
-' <param name="searchvalue">Zeichenfolge nach der gesucht werden soll</param>
+' <param name="CheckValue">Zeichenfolge die durchsucht werden soll</param>
+' <param name="Searchvalue">Zeichenfolge nach der gesucht werden soll</param>
 ' <returns>Boolean</returns>
 ' <remarks>
 ' </remarks>
@@ -325,9 +325,9 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Substring(ByVal Value As String, ByVal startIndex As Long, Optional ByVal Length As Long = 0) As String
-    If Length = 0 Then Length = StringTools.Lenght(Value) - startIndex
-    Substring = VBA.Mid$(Value, startIndex + 1, Length)
+Public Function Substring(ByVal Value As String, ByVal StartIndex As Long, Optional ByVal Length As Long = 0) As String
+    If Length = 0 Then Length = StringTools.Lenght(Value) - StartIndex
+    Substring = VBA.Mid$(Value, StartIndex + 1, Length)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -345,6 +345,6 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function InsertAt(ByVal Value As String, ByVal insertValue As String, ByVal Pos As Long) As String
-    InsertAt = VBA.Mid$(Value, 1, Pos) & insertValue & StringTools.Substring(Value, Pos)
+Public Function InsertAt(ByVal Value As String, ByVal InsertValue As String, ByVal Pos As Long) As String
+    InsertAt = VBA.Mid$(Value, 1, Pos) & InsertValue & StringTools.Substring(Value, Pos)
 End Function

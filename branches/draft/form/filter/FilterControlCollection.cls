@@ -150,7 +150,7 @@ Public Sub RemoveFilterValues(Optional ByVal RaiseFilterValuesChangedEvent As Bo
    
 End Sub
 
-Private Sub m_EventBridge_FilterValueRequest(ByVal FilterValueCode As String, FilterValue As String)
+Private Sub m_EventBridge_FilterValueRequest(ByVal FilterValueCode As String, ByRef FilterValue As String)
    RaiseEvent FilterValueRequest(FilterValueCode, FilterValue)
 End Sub
 

@@ -289,53 +289,53 @@ Private Function GetSubControlsValues() As Variant()
 
 End Function
 
-Private Function GetControlValue(ByVal ctl As Control) As Variant
+Private Function GetControlValue(ByVal ControlRef As Control) As Variant
    
-   If ctl Is Nothing Then
+   If ControlRef Is Nothing Then
       GetControlValue = Null
       Exit Function
    End If
    
-   If TypeOf ctl Is ListBox Then
-      GetControlValue = GetListBoxFilterValue(ctl)
+   If TypeOf ControlRef Is ListBox Then
+      GetControlValue = GetListBoxFilterValue(ControlRef)
       Exit Function
    End If
 
-   GetControlValue = ctl.Value
+   GetControlValue = ControlRef.Value
    
 End Function
 
-Private Function GetListBoxFilterValue(ByVal lb As ListBox) As Variant
+Private Function GetListBoxFilterValue(ByVal ListBoxRef As ListBox) As Variant
    
-   If lb.MultiSelect > 0 Then
-      GetListBoxFilterValue = GetSelectedListboxItemArray(lb, lb.BoundColumn - 1)
+   If ListBoxRef.MultiSelect > 0 Then
+      GetListBoxFilterValue = GetSelectedListboxItemArray(ListBoxRef, ListBoxRef.BoundColumn - 1)
    Else
-      GetListBoxFilterValue = lb.Value
+      GetListBoxFilterValue = ListBoxRef.Value
    End If
    
 End Function
 
-Private Function GetSelectedListboxItemArray(ByVal lst As ListBox, ByVal ColumnIndex As Long) As Variant()
+Private Function GetSelectedListboxItemArray(ByVal ListBoxRef As ListBox, ByVal ColumnIndex As Long) As Variant()
    
-   Dim arrItems() As Variant
+   Dim ItemArray() As Variant
    Dim MaxArrIndex As Long
    Dim SelectedItems As [_ItemsSelected]
 
-   Set SelectedItems = lst.ItemsSelected
+   Set SelectedItems = ListBoxRef.ItemsSelected
    MaxArrIndex = SelectedItems.Count - 1
    If MaxArrIndex < 0 Then
-      GetSelectedListboxItemArray = arrItems
+      GetSelectedListboxItemArray = ItemArray
       Exit Function
    End If
 
-   ReDim arrItems(MaxArrIndex)
+   ReDim ItemArray(MaxArrIndex)
    Dim i As Long
 
    For i = 0 To MaxArrIndex
-      arrItems(i) = lst.Column(ColumnIndex, SelectedItems.Item(i))
+      ItemArray(i) = ListBoxRef.Column(ColumnIndex, SelectedItems.Item(i))
    Next
 
-   GetSelectedListboxItemArray = arrItems
+   GetSelectedListboxItemArray = ItemArray
 
 End Function
 
