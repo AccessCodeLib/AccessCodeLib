@@ -46,10 +46,10 @@ End Sub
 
 Private Sub Werte_anfuegen_löschen_und_per_For_Each_Schleife_durchlaufen()
 
-    Dim coll As StringCollection
-    Set coll = New StringCollection
+    Dim col As StringCollection
+    Set col = New StringCollection
     
-    With coll
+    With col
         .Add "row 1"
         .Add "row 2"
         .Add "row 3"
@@ -58,13 +58,13 @@ Private Sub Werte_anfuegen_löschen_und_per_For_Each_Schleife_durchlaufen()
         .Items.Remove 4
     End With
     
-    Dim varItm As Variant
+    Dim ColItm As Variant
 
-    For Each varItm In coll.Items
-        Debug.Print varItm
+    For Each ColItm In col.Items
+        Debug.Print ColItm
     Next
 
-    Set coll = Nothing
+    Set col = Nothing
 
 End Sub
 
