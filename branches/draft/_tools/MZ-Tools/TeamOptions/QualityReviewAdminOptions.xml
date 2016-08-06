@@ -1,0 +1,778 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Options>
+  <ReviewsToExecuteOnBuild>
+    <Review>MZTools.DeadCodeReview</Review>
+  </ReviewsToExecuteOnBuild>
+  <AccessKeysReviewAdminOptions>
+    <ReviewMissingAccessKeys>1</ReviewMissingAccessKeys>
+    <ReviewDuplicatedAccessKeys>1</ReviewDuplicatedAccessKeys>
+  </AccessKeysReviewAdminOptions>
+  <CodeElementHeadersReviewAdminOptions>
+    <CodeElementHeadersToReview>202804</CodeElementHeadersToReview>
+  </CodeElementHeadersReviewAdminOptions>
+  <CodeElementsOrderReviewAdminOptions />
+  <DeadCodeReviewAdminOptions>
+    <TreatPublicMethodsAsDeadCodeIfUnusedInSolution>0</TreatPublicMethodsAsDeadCodeIfUnusedInSolution>
+  </DeadCodeReviewAdminOptions>
+  <LineIndentingReviewAdminOptions />
+  <NomenclatureRulesReviewAdminOptions>
+    <AllowedAcronyms />
+    <NomenclatureRules>
+      <NomenclatureRule>
+        <Active>1</Active>
+        <ID />
+        <Description>Forms must start with 'Frm' prefix</Description>
+        <Kind>FormProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>All</WhenConditionsOperator>
+        <WhenConditions />
+        <Explanation />
+        <HowToFix />
+        <Type>1</Type>
+        <Prefix1>Frm</Prefix1>
+        <Prefix2 />
+        <Case>Pascal</Case>
+        <Suffix1 />
+        <Suffix2 />
+      </NomenclatureRule>
+      <NomenclatureRule>
+        <Active>1</Active>
+        <ID />
+        <Description>Klasse in Pascal-Schreibweise</Description>
+        <Kind>ClassProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>All</WhenConditionsOperator>
+        <WhenConditions>
+          <WhenCondition>
+            <Object>FileProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>Type</PropertyDisplayedName>
+            <PropertyInternalName>Type</PropertyInternalName>
+            <PropertyKind>SingleEnum</PropertyKind>
+            <Operator>OneOfSelectedValues</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName />
+                <DisplayedValue />
+                <InternalValue />
+              </SingleValue>
+              <MultipleValues>
+                <Value>
+                  <TypeFullName>System.String</TypeFullName>
+                  <DisplayedValue>Class</DisplayedValue>
+                  <InternalValue>2</InternalValue>
+                </Value>
+              </MultipleValues>
+            </PropertyValue>
+          </WhenCondition>
+        </WhenConditions>
+        <Explanation />
+        <HowToFix />
+        <Type>1</Type>
+        <Prefix1 />
+        <Prefix2 />
+        <Case>Pascal</Case>
+        <Suffix1 />
+        <Suffix2 />
+      </NomenclatureRule>
+      <NomenclatureRule>
+        <Active>1</Active>
+        <ID />
+        <Description>Class constants must be all upper case or Pascal case</Description>
+        <Kind>ClassConstantProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>None</WhenConditionsOperator>
+        <WhenConditions>
+          <WhenCondition>
+            <Object>ClassConstantProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>(Name)</PropertyDisplayedName>
+            <PropertyInternalName>Name</PropertyInternalName>
+            <PropertyKind>String</PropertyKind>
+            <Operator>Matching</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName>System.String</TypeFullName>
+                <DisplayedValue>\b[A-Z_]+\b</DisplayedValue>
+                <InternalValue>\b[A-Z_]+\b</InternalValue>
+              </SingleValue>
+              <MultipleValues />
+            </PropertyValue>
+          </WhenCondition>
+        </WhenConditions>
+        <Explanation />
+        <HowToFix />
+        <Type>1</Type>
+        <Prefix1 />
+        <Prefix2 />
+        <Case>Pascal</Case>
+        <Suffix1 />
+        <Suffix2 />
+      </NomenclatureRule>
+      <NomenclatureRule>
+        <Active>1</Active>
+        <ID />
+        <Description>Class fields must start with "m_" and Pascal case</Description>
+        <Kind>ClassFieldProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>None</WhenConditionsOperator>
+        <WhenConditions>
+          <WhenCondition>
+            <Object>FileProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>(Name)</PropertyDisplayedName>
+            <PropertyInternalName>Name</PropertyInternalName>
+            <PropertyKind>String</PropertyKind>
+            <Operator>EndingWith</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName>System.String</TypeFullName>
+                <DisplayedValue>Tests</DisplayedValue>
+                <InternalValue>Tests</InternalValue>
+              </SingleValue>
+              <MultipleValues />
+            </PropertyValue>
+          </WhenCondition>
+        </WhenConditions>
+        <Explanation />
+        <HowToFix />
+        <Type>1</Type>
+        <Prefix1>m_</Prefix1>
+        <Prefix2 />
+        <Case>Pascal</Case>
+        <Suffix1 />
+        <Suffix2 />
+      </NomenclatureRule>
+      <NomenclatureRule>
+        <Active>1</Active>
+        <ID />
+        <Description>Module constants must be all upper case or pascal case</Description>
+        <Kind>ModuleConstantProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>None</WhenConditionsOperator>
+        <WhenConditions>
+          <WhenCondition>
+            <Object>ModuleConstantProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>(Name)</PropertyDisplayedName>
+            <PropertyInternalName>Name</PropertyInternalName>
+            <PropertyKind>String</PropertyKind>
+            <Operator>Matching</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName>System.String</TypeFullName>
+                <DisplayedValue>\b[A-Z_]+\b</DisplayedValue>
+                <InternalValue>\b[A-Z_]+\b</InternalValue>
+              </SingleValue>
+              <MultipleValues />
+            </PropertyValue>
+          </WhenCondition>
+        </WhenConditions>
+        <Explanation />
+        <HowToFix />
+        <Type>1</Type>
+        <Prefix1 />
+        <Prefix2 />
+        <Case>Pascal</Case>
+        <Suffix1 />
+        <Suffix2 />
+      </NomenclatureRule>
+      <NomenclatureRule>
+        <Active>1</Active>
+        <ID />
+        <Description>Module fields must start with "m_" and Pascal case</Description>
+        <Kind>ModuleFieldProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>All</WhenConditionsOperator>
+        <WhenConditions />
+        <Explanation />
+        <HowToFix />
+        <Type>1</Type>
+        <Prefix1>m_</Prefix1>
+        <Prefix2 />
+        <Case>Pascal</Case>
+        <Suffix1 />
+        <Suffix2 />
+      </NomenclatureRule>
+      <NomenclatureRule>
+        <Active>1</Active>
+        <ID />
+        <Description>Method constants must be all upper case or pascal case</Description>
+        <Kind>MethodConstantProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>None</WhenConditionsOperator>
+        <WhenConditions>
+          <WhenCondition>
+            <Object>MethodConstantProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>(Name)</PropertyDisplayedName>
+            <PropertyInternalName>Name</PropertyInternalName>
+            <PropertyKind>String</PropertyKind>
+            <Operator>Matching</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName>System.String</TypeFullName>
+                <DisplayedValue>\b[A-Z_]+\b</DisplayedValue>
+                <InternalValue>\b[A-Z_]+\b</InternalValue>
+              </SingleValue>
+              <MultipleValues />
+            </PropertyValue>
+          </WhenCondition>
+        </WhenConditions>
+        <Explanation />
+        <HowToFix />
+        <Type>1</Type>
+        <Prefix1 />
+        <Prefix2 />
+        <Case>Pascal</Case>
+        <Suffix1 />
+        <Suffix2 />
+      </NomenclatureRule>
+      <NomenclatureRule>
+        <Active>1</Active>
+        <ID />
+        <Description>Method variables must use Pascal case</Description>
+        <Kind>MethodVariableProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>None</WhenConditionsOperator>
+        <WhenConditions>
+          <WhenCondition>
+            <Object>MethodVariableProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>NameLength</PropertyDisplayedName>
+            <PropertyInternalName>NameLength</PropertyInternalName>
+            <PropertyKind>Integer</PropertyKind>
+            <Operator>LessOrEqualThan</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName>System.Int32</TypeFullName>
+                <DisplayedValue>2</DisplayedValue>
+                <InternalValue>2</InternalValue>
+              </SingleValue>
+              <MultipleValues />
+            </PropertyValue>
+          </WhenCondition>
+          <WhenCondition>
+            <Object>FileProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>(Name)</PropertyDisplayedName>
+            <PropertyInternalName>Name</PropertyInternalName>
+            <PropertyKind>String</PropertyKind>
+            <Operator>EndingWith</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName>System.String</TypeFullName>
+                <DisplayedValue>Tests</DisplayedValue>
+                <InternalValue>Tests</InternalValue>
+              </SingleValue>
+              <MultipleValues />
+            </PropertyValue>
+          </WhenCondition>
+          <WhenCondition>
+            <Object>MethodVariableProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>(Name)</PropertyDisplayedName>
+            <PropertyInternalName>Name</PropertyInternalName>
+            <PropertyKind>String</PropertyKind>
+            <Operator>Equal</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName />
+                <DisplayedValue />
+                <InternalValue />
+              </SingleValue>
+              <MultipleValues>
+                <Value>
+                  <TypeFullName>System.String</TypeFullName>
+                  <DisplayedValue>ctl</DisplayedValue>
+                  <InternalValue>ctl</InternalValue>
+                </Value>
+                <Value>
+                  <TypeFullName>System.String</TypeFullName>
+                  <DisplayedValue>col</DisplayedValue>
+                  <InternalValue>col</InternalValue>
+                </Value>
+              </MultipleValues>
+            </PropertyValue>
+          </WhenCondition>
+          <WhenCondition>
+            <Object>MethodVariableProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>(Name)</PropertyDisplayedName>
+            <PropertyInternalName>Name</PropertyInternalName>
+            <PropertyKind>String</PropertyKind>
+            <Operator>Matching</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName>System.String</TypeFullName>
+                <DisplayedValue>\b[A-Z][A-Z][A-Z]</DisplayedValue>
+                <InternalValue>\b[A-Z][A-Z][A-Z]</InternalValue>
+              </SingleValue>
+              <MultipleValues />
+            </PropertyValue>
+          </WhenCondition>
+        </WhenConditions>
+        <Explanation />
+        <HowToFix />
+        <Type>1</Type>
+        <Prefix1 />
+        <Prefix2 />
+        <Case>Pascal</Case>
+        <Suffix1 />
+        <Suffix2 />
+      </NomenclatureRule>
+      <NomenclatureRule>
+        <Active>1</Active>
+        <ID />
+        <Description>ByVal parameters must use Pascal case</Description>
+        <Kind>ParameterProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>None</WhenConditionsOperator>
+        <WhenConditions>
+          <WhenCondition>
+            <Object>ParameterProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>(Name)</PropertyDisplayedName>
+            <PropertyInternalName>Name</PropertyInternalName>
+            <PropertyKind>String</PropertyKind>
+            <Operator>Matching</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName>System.String</TypeFullName>
+                <DisplayedValue>\b[A-Z].+TSql.*</DisplayedValue>
+                <InternalValue>\b[A-Z].+TSql.*</InternalValue>
+              </SingleValue>
+              <MultipleValues />
+            </PropertyValue>
+          </WhenCondition>
+        </WhenConditions>
+        <Explanation />
+        <HowToFix />
+        <Type>1</Type>
+        <Prefix1 />
+        <Prefix2 />
+        <Case>Pascal</Case>
+        <Suffix1 />
+        <Suffix2 />
+      </NomenclatureRule>
+    </NomenclatureRules>
+  </NomenclatureRulesReviewAdminOptions>
+  <ProgrammingRulesReviewAdminOptions>
+    <ProgrammingRules>
+      <ProgrammingRule>
+        <Active>1</Active>
+        <ID />
+        <Description>ActiveX projects must have compatible OLE server</Description>
+        <Kind>ProjectProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>All</WhenConditionsOperator>
+        <WhenConditions>
+          <WhenCondition>
+            <Object>ProjectProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>Type</PropertyDisplayedName>
+            <PropertyInternalName>Type</PropertyInternalName>
+            <PropertyKind>SingleEnum</PropertyKind>
+            <Operator>OneOfSelectedValues</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName />
+                <DisplayedValue />
+                <InternalValue />
+              </SingleValue>
+              <MultipleValues>
+                <Value>
+                  <TypeFullName>System.String</TypeFullName>
+                  <DisplayedValue>ActiveX Exe</DisplayedValue>
+                  <InternalValue>4</InternalValue>
+                </Value>
+                <Value>
+                  <TypeFullName>System.String</TypeFullName>
+                  <DisplayedValue>ActiveX Dll</DisplayedValue>
+                  <InternalValue>3</InternalValue>
+                </Value>
+                <Value>
+                  <TypeFullName>System.String</TypeFullName>
+                  <DisplayedValue>ActiveX Control</DisplayedValue>
+                  <InternalValue>5</InternalValue>
+                </Value>
+              </MultipleValues>
+            </PropertyValue>
+          </WhenCondition>
+        </WhenConditions>
+        <Explanation>- Right-click the project in Project Explorer and select the Properties menu
+- Go to the Component tab
+- Select the Binary Compatibility radio button and fill the textbox
+
+
+</Explanation>
+        <HowToFix />
+        <Type>1</Type>
+        <ObjectPropertiesCondition>
+          <PropertyDisplayedName>CompatibleOleServer</PropertyDisplayedName>
+          <PropertyInternalName>CompatibleOleServer</PropertyInternalName>
+          <PropertyKind>String</PropertyKind>
+          <Operator>NotEqual</Operator>
+          <PropertyValue>
+            <SingleValue>
+              <TypeFullName>System.String</TypeFullName>
+              <DisplayedValue />
+              <InternalValue />
+            </SingleValue>
+            <MultipleValues />
+          </PropertyValue>
+        </ObjectPropertiesCondition>
+      </ProgrammingRule>
+      <ProgrammingRule>
+        <Active>1</Active>
+        <ID />
+        <Description>Projects must have the Description field filled</Description>
+        <Kind>ProjectProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>All</WhenConditionsOperator>
+        <WhenConditions />
+        <Explanation>- Right-click the project in Project Explorer and select the Properties menu
+- Go to the General tab
+- Fill the Project Description field
+
+</Explanation>
+        <HowToFix />
+        <Type>1</Type>
+        <ObjectPropertiesCondition>
+          <PropertyDisplayedName>Description</PropertyDisplayedName>
+          <PropertyInternalName>Description</PropertyInternalName>
+          <PropertyKind>String</PropertyKind>
+          <Operator>NotEqual</Operator>
+          <PropertyValue>
+            <SingleValue>
+              <TypeFullName>System.String</TypeFullName>
+              <DisplayedValue />
+              <InternalValue />
+            </SingleValue>
+            <MultipleValues />
+          </PropertyValue>
+        </ObjectPropertiesCondition>
+      </ProgrammingRule>
+      <ProgrammingRule>
+        <Active>1</Active>
+        <ID />
+        <Description>Classes cannot have more than 1000 lines of code</Description>
+        <Kind>ClassProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>All</WhenConditionsOperator>
+        <WhenConditions />
+        <Explanation />
+        <HowToFix />
+        <Type>1</Type>
+        <ObjectPropertiesCondition>
+          <PropertyDisplayedName>CodeLineCount</PropertyDisplayedName>
+          <PropertyInternalName>CodeLineCount</PropertyInternalName>
+          <PropertyKind>Integer</PropertyKind>
+          <Operator>LessOrEqualThan</Operator>
+          <PropertyValue>
+            <SingleValue>
+              <TypeFullName>System.Int32</TypeFullName>
+              <DisplayedValue>1000</DisplayedValue>
+              <InternalValue>1000</InternalValue>
+            </SingleValue>
+            <MultipleValues />
+          </PropertyValue>
+        </ObjectPropertiesCondition>
+      </ProgrammingRule>
+      <ProgrammingRule>
+        <Active>1</Active>
+        <ID />
+        <Description>Classes must contain Option Explicit</Description>
+        <Kind>ClassProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>All</WhenConditionsOperator>
+        <WhenConditions>
+          <WhenCondition>
+            <Object>FileProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>CodeLineCount</PropertyDisplayedName>
+            <PropertyInternalName>CodeLineCount</PropertyInternalName>
+            <PropertyKind>Integer</PropertyKind>
+            <Operator>GreaterThan</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName>System.Int32</TypeFullName>
+                <DisplayedValue>1</DisplayedValue>
+                <InternalValue>1</InternalValue>
+              </SingleValue>
+              <MultipleValues />
+            </PropertyValue>
+          </WhenCondition>
+        </WhenConditions>
+        <Explanation />
+        <HowToFix />
+        <Type>1</Type>
+        <ObjectPropertiesCondition>
+          <PropertyDisplayedName>Code</PropertyDisplayedName>
+          <PropertyInternalName>Code</PropertyInternalName>
+          <PropertyKind>String</PropertyKind>
+          <Operator>Containing</Operator>
+          <PropertyValue>
+            <SingleValue>
+              <TypeFullName>System.String</TypeFullName>
+              <DisplayedValue>Option Explicit</DisplayedValue>
+              <InternalValue>Option Explicit</InternalValue>
+            </SingleValue>
+            <MultipleValues />
+          </PropertyValue>
+        </ObjectPropertiesCondition>
+      </ProgrammingRule>
+      <ProgrammingRule>
+        <Active>1</Active>
+        <ID />
+        <Description>Class fields cannot be declared with the Dim keyword</Description>
+        <Kind>ClassFieldProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>All</WhenConditionsOperator>
+        <WhenConditions />
+        <Explanation />
+        <HowToFix />
+        <Type>1</Type>
+        <ObjectPropertiesCondition>
+          <PropertyDisplayedName>Declaration</PropertyDisplayedName>
+          <PropertyInternalName>Declaration</PropertyInternalName>
+          <PropertyKind>String</PropertyKind>
+          <Operator>NotStartingWith</Operator>
+          <PropertyValue>
+            <SingleValue>
+              <TypeFullName>System.String</TypeFullName>
+              <DisplayedValue>Dim</DisplayedValue>
+              <InternalValue>Dim</InternalValue>
+            </SingleValue>
+            <MultipleValues />
+          </PropertyValue>
+        </ObjectPropertiesCondition>
+      </ProgrammingRule>
+      <ProgrammingRule>
+        <Active>1</Active>
+        <ID />
+        <Description>Classes must contain Option Explicit</Description>
+        <Kind>ModuleProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>All</WhenConditionsOperator>
+        <WhenConditions />
+        <Explanation />
+        <HowToFix />
+        <Type>1</Type>
+        <ObjectPropertiesCondition>
+          <PropertyDisplayedName>Code</PropertyDisplayedName>
+          <PropertyInternalName>Code</PropertyInternalName>
+          <PropertyKind>String</PropertyKind>
+          <Operator>Containing</Operator>
+          <PropertyValue>
+            <SingleValue>
+              <TypeFullName>System.String</TypeFullName>
+              <DisplayedValue>Option Explicit</DisplayedValue>
+              <InternalValue>Option Explicit</InternalValue>
+            </SingleValue>
+            <MultipleValues />
+          </PropertyValue>
+        </ObjectPropertiesCondition>
+      </ProgrammingRule>
+      <ProgrammingRule>
+        <Active>1</Active>
+        <ID />
+        <Description>Modules cannot have more than 1000 lines of code</Description>
+        <Kind>ModuleProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>All</WhenConditionsOperator>
+        <WhenConditions />
+        <Explanation />
+        <HowToFix />
+        <Type>1</Type>
+        <ObjectPropertiesCondition>
+          <PropertyDisplayedName>CodeLineCount</PropertyDisplayedName>
+          <PropertyInternalName>CodeLineCount</PropertyInternalName>
+          <PropertyKind>Integer</PropertyKind>
+          <Operator>LessOrEqualThan</Operator>
+          <PropertyValue>
+            <SingleValue>
+              <TypeFullName>System.Int32</TypeFullName>
+              <DisplayedValue>1000</DisplayedValue>
+              <InternalValue>1000</InternalValue>
+            </SingleValue>
+            <MultipleValues />
+          </PropertyValue>
+        </ObjectPropertiesCondition>
+      </ProgrammingRule>
+      <ProgrammingRule>
+        <Active>1</Active>
+        <ID />
+        <Description>Enum items names cannot start with the name of the parent enum</Description>
+        <Kind>EnumItemProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>All</WhenConditionsOperator>
+        <WhenConditions />
+        <Explanation />
+        <HowToFix />
+        <Type>1</Type>
+        <ObjectPropertiesCondition>
+          <PropertyDisplayedName>(Name)</PropertyDisplayedName>
+          <PropertyInternalName>Name</PropertyInternalName>
+          <PropertyKind>String</PropertyKind>
+          <Operator>NotStartingWith</Operator>
+          <PropertyValue>
+            <SingleValue>
+              <TypeFullName>System.String</TypeFullName>
+              <DisplayedValue>$P[PARENT_CODE_ELEMENT_NAME]</DisplayedValue>
+              <InternalValue>$P[PARENT_CODE_ELEMENT_NAME]</InternalValue>
+            </SingleValue>
+            <MultipleValues />
+          </PropertyValue>
+        </ObjectPropertiesCondition>
+      </ProgrammingRule>
+      <ProgrammingRule>
+        <Active>1</Active>
+        <ID />
+        <Description>Method variables cannot be a single letter</Description>
+        <Kind>MethodVariableProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>None</WhenConditionsOperator>
+        <WhenConditions>
+          <WhenCondition>
+            <Object>MethodVariableProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>(Name)</PropertyDisplayedName>
+            <PropertyInternalName>Name</PropertyInternalName>
+            <PropertyKind>String</PropertyKind>
+            <Operator>Equal</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName />
+                <DisplayedValue />
+                <InternalValue />
+              </SingleValue>
+              <MultipleValues>
+                <Value>
+                  <TypeFullName>System.String</TypeFullName>
+                  <DisplayedValue>i</DisplayedValue>
+                  <InternalValue>i</InternalValue>
+                </Value>
+                <Value>
+                  <TypeFullName>System.String</TypeFullName>
+                  <DisplayedValue>k</DisplayedValue>
+                  <InternalValue>k</InternalValue>
+                </Value>
+                <Value>
+                  <TypeFullName>System.String</TypeFullName>
+                  <DisplayedValue>s</DisplayedValue>
+                  <InternalValue>s</InternalValue>
+                </Value>
+                <Value>
+                  <TypeFullName>System.String</TypeFullName>
+                  <DisplayedValue>n</DisplayedValue>
+                  <InternalValue>n</InternalValue>
+                </Value>
+                <Value>
+                  <TypeFullName>System.String</TypeFullName>
+                  <DisplayedValue>m</DisplayedValue>
+                  <InternalValue>m</InternalValue>
+                </Value>
+              </MultipleValues>
+            </PropertyValue>
+          </WhenCondition>
+        </WhenConditions>
+        <Explanation />
+        <HowToFix />
+        <Type>1</Type>
+        <ObjectPropertiesCondition>
+          <PropertyDisplayedName>NameLength</PropertyDisplayedName>
+          <PropertyInternalName>NameLength</PropertyInternalName>
+          <PropertyKind>Integer</PropertyKind>
+          <Operator>GreaterThan</Operator>
+          <PropertyValue>
+            <SingleValue>
+              <TypeFullName>System.Int32</TypeFullName>
+              <DisplayedValue>1</DisplayedValue>
+              <InternalValue>1</InternalValue>
+            </SingleValue>
+            <MultipleValues />
+          </PropertyValue>
+        </ObjectPropertiesCondition>
+      </ProgrammingRule>
+      <ProgrammingRule>
+        <Active>1</Active>
+        <ID />
+        <Description>ByVal oder ByRef verwenden</Description>
+        <Kind>ParameterProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>All</WhenConditionsOperator>
+        <WhenConditions />
+        <Explanation />
+        <HowToFix />
+        <Type>1</Type>
+        <ObjectPropertiesCondition>
+          <PropertyDisplayedName>Declaration</PropertyDisplayedName>
+          <PropertyInternalName>Declaration</PropertyInternalName>
+          <PropertyKind>String</PropertyKind>
+          <Operator>StartingWith</Operator>
+          <PropertyValue>
+            <SingleValue>
+              <TypeFullName />
+              <DisplayedValue />
+              <InternalValue />
+            </SingleValue>
+            <MultipleValues>
+              <Value>
+                <TypeFullName>System.String</TypeFullName>
+                <DisplayedValue>ByRef</DisplayedValue>
+                <InternalValue>ByRef</InternalValue>
+              </Value>
+              <Value>
+                <TypeFullName>System.String</TypeFullName>
+                <DisplayedValue>ByVal</DisplayedValue>
+                <InternalValue>ByVal</InternalValue>
+              </Value>
+              <Value>
+                <TypeFullName>System.String</TypeFullName>
+                <DisplayedValue>ParamArray</DisplayedValue>
+                <InternalValue>ParamArray</InternalValue>
+              </Value>
+              <Value>
+                <TypeFullName>System.String</TypeFullName>
+                <DisplayedValue>Optional ByVal</DisplayedValue>
+                <InternalValue>Optional ByVal</InternalValue>
+              </Value>
+              <Value>
+                <TypeFullName>System.String</TypeFullName>
+                <DisplayedValue>Optional ByRef</DisplayedValue>
+                <InternalValue>Optional ByRef</InternalValue>
+              </Value>
+            </MultipleValues>
+          </PropertyValue>
+        </ObjectPropertiesCondition>
+      </ProgrammingRule>
+    </ProgrammingRules>
+  </ProgrammingRulesReviewAdminOptions>
+  <SpellCheckerAdminOptions>
+    <LanguageId>1033</LanguageId>
+    <SpellCheckControlTextProperty>1</SpellCheckControlTextProperty>
+    <SpellCheckMessageBoxes>1</SpellCheckMessageBoxes>
+    <SpellCheckDescriptionAttribute>0</SpellCheckDescriptionAttribute>
+  </SpellCheckerAdminOptions>
+  <TabIndexReviewAdminOptions />
+</Options>
