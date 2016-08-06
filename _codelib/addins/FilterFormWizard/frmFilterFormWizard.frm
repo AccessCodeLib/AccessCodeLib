@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =-1539093016
+Checksum =-1059863271
 Begin Form
     AllowFilters = NotDefault
     RecordSelectors = NotDefault
@@ -40,10 +40,10 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000f044b42f1407272f200000000000000000000000 ,
         0x0104f0a49c00a00753ef8003010009009a0b3408640001000f00580202000200 ,
-        0x5802030001000000000000000000000000000000000000e0fe3f000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x580203000100000078d1f533806247030c000000c0b8e0020040490300000000 ,
+        0x64d4de3390720000000000000000000000000000000000000000000000000000 ,
         0x0000000001010000010000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -110,19 +110,19 @@ Begin Form
     PrtDevNames = Begin
         0x0800210042000100000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000555342303035000000000000000000
+        0x000055534230303500000000000000000000000000
     End
     FilterOnLoad =0
     ShowPageMargins =0
     AllowLayoutView =0
     DatasheetGridlinesColor12 =12632256
     PrtDevModeW = Begin
-        0x0000eb7184f4a901d0067d0c04d7a00052168675b4a9a901101686755e168675 ,
-        0x6027c30cd0067d0c94db20010000000000a00000000000002208100000a00000 ,
+        0x00000000a0f57f00000000009005910dacf57f002c752d00f0752d004cba1a07 ,
+        0x0000000094561038000000000000000000000000f044b42f0100000000000000 ,
         0x0104f0a4dc00a00753ef8003010009009a0b3408640001000f00580202000200 ,
-        0x58020300010000001075d50100000000b4a9a90190a3541b78a3541baca3541b ,
-        0x78a3541b7000000008000000d4aea90101000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x580203000100000030982d00bde4322fcc752d00d0752d0004000000ee13f88a ,
+        0x0018480300184803c5e6322f00000000e4121b2f040000000400000000000000 ,
+        0x00000000da970000000000000000000000000000000000000000000000000000 ,
         0x0000000001010000010000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -191,7 +191,8 @@ Begin Form
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000055005300 ,
-        0x4200300030003500000000000000000000000000000000000000
+        0x4200300030003500000000000000000000000000000000000000000000000000 ,
+        0x0000
     End
     
     Begin
@@ -437,10 +438,10 @@ Begin Form
                     LayoutCachedTop =5475
                     LayoutCachedWidth =10497
                     LayoutCachedHeight =5850
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin Label
@@ -517,10 +518,10 @@ Begin Form
                     LayoutCachedTop =5081
                     LayoutCachedWidth =2676
                     LayoutCachedHeight =5376
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin CommandButton
@@ -543,10 +544,10 @@ Begin Form
                     LayoutCachedTop =4721
                     LayoutCachedWidth =2676
                     LayoutCachedHeight =5016
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin CommandButton
@@ -569,10 +570,10 @@ Begin Form
                     LayoutCachedTop =5441
                     LayoutCachedWidth =2676
                     LayoutCachedHeight =5736
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin Label
@@ -618,10 +619,10 @@ Begin Form
                     LayoutCachedTop =4376
                     LayoutCachedWidth =2676
                     LayoutCachedHeight =4671
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin ComboBox
@@ -760,7 +761,7 @@ Begin Form
                             Left =3615
                             Top =4893
                             OptionValue =0
-                            BorderColor =13553360
+                            BorderColor =12835293
                             Name ="Option93"
                             GUID = Begin
                                 0x2ed9a0b87581e9459437795c1ea4f08f
@@ -800,7 +801,7 @@ Begin Form
                             Top =5203
                             TabIndex =1
                             OptionValue =1
-                            BorderColor =13553360
+                            BorderColor =12835293
                             Name ="Option95"
                             GUID = Begin
                                 0x918bf012f5ab6a4a82b18d8d78de17cb
@@ -840,7 +841,7 @@ Begin Form
                             Top =5546
                             TabIndex =2
                             OptionValue =2
-                            BorderColor =13553360
+                            BorderColor =12835293
                             Name ="Option97"
                             GUID = Begin
                                 0x03d2ddc59a72074694568a25b639186a
@@ -968,7 +969,7 @@ Begin Form
                             Left =7395
                             Top =4892
                             OptionValue =1
-                            BorderColor =13553360
+                            BorderColor =12835293
                             Name ="Option105"
                             GUID = Begin
                                 0x9360b4bcc3c8bf48a0506593b1be6c0a
@@ -1008,7 +1009,7 @@ Begin Form
                             Top =5202
                             TabIndex =1
                             OptionValue =2
-                            BorderColor =13553360
+                            BorderColor =12835293
                             Name ="Option107"
                             GUID = Begin
                                 0x3b9786ef86a3784a9dd3a8c5ebed31d9
