@@ -181,33 +181,33 @@ End Function
 Private Function IFilterFormCodeBuilder_GetFilterControlCodeLine(ByVal DataField As String, ByVal DataType As String, ByVal RelationalOperator As String, _
                                     ByVal Control As String, ByVal Control2 As String) As String
    
-   Dim fcLine As String
+   Dim FcLine As String
 
    CheckControlRefCode Control
 
-   fcLine = "Add """ & DataField & """, " & DataType & ", " & RelationalOperator & ", " & Control
+   FcLine = "Add """ & DataField & """, " & DataType & ", " & RelationalOperator & ", " & Control
    
    If Len(Control2) > 0 Then
       CheckControlRefCode Control2
-      fcLine = fcLine & ", " & Control2
+      FcLine = FcLine & ", " & Control2
    End If
 
-   IFilterFormCodeBuilder_GetFilterControlCodeLine = fcLine
+   IFilterFormCodeBuilder_GetFilterControlCodeLine = FcLine
 
 End Function
 
 Private Function IFilterFormCodeBuilder_GetMultiFilterControlCodeLine(ByVal DataField As String, ByVal DataType As String, ByVal RelationalOperator As String, _
                                          ByRef ControlArray() As String) As String
 
-   Dim fcLine As String
+   Dim FcLine As String
 
    Dim i As Long
    For i = LBound(ControlArray) To UBound(ControlArray)
       CheckControlRefCode ControlArray(i)
    Next
    
-   fcLine = "Add """ & DataField & """, " & DataType & ", , " & RelationalOperator & ", Array(" & Join(ControlArray, ", ") & "), , Null"
-   IFilterFormCodeBuilder_GetMultiFilterControlCodeLine = fcLine
+   FcLine = "Add """ & DataField & """, " & DataType & ", , " & RelationalOperator & ", Array(" & Join(ControlArray, ", ") & "), , Null"
+   IFilterFormCodeBuilder_GetMultiFilterControlCodeLine = FcLine
 
 End Function
 

@@ -21,12 +21,12 @@ Attribute VB_Description = "Funktionen für Dateioperationen"
 Option Compare Text
 Option Explicit
 
-Private Const m_SELECTBOX_File_DlgTitle As String = "Datei auswählen"
-Private Const m_SELECTBOX_Folder_DlgTitle As String = "Ordner auswählen"
-Private Const m_SELECTBOX_OpenTitle As String = "auswählen"
+Private Const SELECTBOX_FILE_DIALOG_TITLE As String = "Datei auswählen"
+Private Const SELECTBOX_FOLDER_DIALOG_TITLE As String = "Ordner auswählen"
+Private Const SELECTBOX_OPENTITLE As String = "auswählen"
 
-Private Const m_DEFAULT_TEMPPATH_NoEnv As String = "C:\"
-Private Const m_MAXPATHLEN As Long = 255
+Private Const DEFAULT_TEMPPATH_NOENV As String = "C:\"
+Private Const PATHLEN_MAX As Long = 255
 
 #If VBA7 Then
 
@@ -78,12 +78,12 @@ Private Declare Function API_GetTempFilename Lib "kernel32" Alias "GetTempFileNa
 '**/
 '---------------------------------------------------------------------------------------
 Public Function SelectFile(Optional ByVal InitialDir As String = vbNullString, _
-                           Optional ByVal DlgTitle As String = m_SELECTBOX_File_DlgTitle, _
+                           Optional ByVal DlgTitle As String = SELECTBOX_FILE_DIALOG_TITLE, _
                            Optional ByVal FilterString As String = "Alle Dateien (*.*)", _
                            Optional ByVal MultiSelectEnabled As Boolean = False, _
                            Optional ByVal ViewMode As Long = -1) As String
 
-    SelectFile = WizHook_GetFileName(InitialDir, DlgTitle, m_SELECTBOX_OpenTitle, FilterString, MultiSelectEnabled, , ViewMode, False)
+    SelectFile = WizHook_GetFileName(InitialDir, DlgTitle, SELECTBOX_OPENTITLE, FilterString, MultiSelectEnabled, , ViewMode, False)
 
 End Function
 
@@ -105,12 +105,12 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function SelectFolder(Optional ByVal InitialDir As String = vbNullString, _
-                             Optional ByVal DlgTitle As String = m_SELECTBOX_Folder_DlgTitle, _
+                             Optional ByVal DlgTitle As String = SELECTBOX_FOLDER_DIALOG_TITLE, _
                              Optional ByVal FilterString As String = "*", _
                              Optional ByVal MultiSelectEnabled As Boolean = False, _
                              Optional ByVal ViewMode As Long = -1) As String
 
-   SelectFolder = WizHook_GetFileName(InitialDir, DlgTitle, m_SELECTBOX_OpenTitle, FilterString, MultiSelectEnabled, , ViewMode, True)
+   SelectFolder = WizHook_GetFileName(InitialDir, DlgTitle, SELECTBOX_OPENTITLE, FilterString, MultiSelectEnabled, , ViewMode, True)
 
 End Function
 
@@ -223,11 +223,11 @@ Public Property Get TempPath() As String
 
    Dim TempString As String
 
-   TempString = Space$(m_MAXPATHLEN)
-   API_GetTempPath m_MAXPATHLEN, TempString
+   TempString = Space$(PATHLEN_MAX)
+   API_GetTempPath PATHLEN_MAX, TempString
    TempString = Left$(TempString, InStr(TempString, Chr$(0)) - 1)
    If Len(TempString) = 0 Then
-      TempString = m_DEFAULT_TEMPPATH_NoEnv
+      TempString = DEFAULT_TEMPPATH_NOENV
    End If
    TempPath = TempString
 
@@ -237,30 +237,26 @@ Public Function GetNewTempFileName(Optional ByVal PathToUse As String = "", _
                          Optional ByVal FilePrefix As String = "", _
                          Optional ByVal FileExtension As String = "") As String
 
-   Dim strTempFileName As String
-   Dim strTempPath As String
-   Dim lngRet As Long
-
+   Dim NewTempFileName As String
+   
    If Len(PathToUse) = 0 Then
-      strTempPath = TempPath
-   Else
-      strTempPath = PathToUse
+      PathToUse = TempPath
    End If
 
-   strTempFileName = String$(m_MAXPATHLEN, 0)
-   lngRet = API_GetTempFilename(strTempPath, FilePrefix, 0&, strTempFileName)
+   NewTempFileName = String$(PATHLEN_MAX, 0)
+   Call API_GetTempFilename(PathToUse, FilePrefix, 0&, NewTempFileName)
 
-   strTempFileName = Left$(strTempFileName, InStr(strTempFileName, Chr$(0)) - 1)
+   NewTempFileName = Left$(NewTempFileName, InStr(NewTempFileName, Chr$(0)) - 1)
 
    'Datei wieder löschen, da nur Name benötigt wird
-   Call Kill(strTempFileName)
+   Call Kill(NewTempFileName)
 
    If Len(FileExtension) > 0 Then 'Fileextension umschreiben
-     strTempFileName = Left$(strTempFileName, Len(strTempFileName) - 3) & FileExtension
+     NewTempFileName = Left$(NewTempFileName, Len(NewTempFileName) - 3) & FileExtension
    End If
    'eigentlich müsste man hier prüfen, ob Datei vorhanden ist.
-
-   GetNewTempFileName = strTempFileName
+   
+   GetNewTempFileName = NewTempFileName
 
 End Function
 
@@ -704,9 +700,9 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function CreateZipFile(ByVal ZipFile As String, Optional DeleteExistingFile As Boolean = False) As Boolean
+Public Function CreateZipFile(ByVal ZipFile As String, Optional ByRef DeleteExistingFile As Boolean = False) As Boolean
 
-   Dim fileHandle As Long
+   Dim FileHandle As Long
 
    If FileExists(ZipFile) Then
       If DeleteExistingFile Then
@@ -717,10 +713,10 @@ Public Function CreateZipFile(ByVal ZipFile As String, Optional DeleteExistingFi
       End If
    End If
 
-   fileHandle = FreeFile
-   Open ZipFile For Output As #fileHandle
-   Print #fileHandle, Chr$(80) & Chr$(75) & Chr$(5) & Chr$(6) & String$(18, 0)
-   Close #fileHandle
+   FileHandle = FreeFile
+   Open ZipFile For Output As #FileHandle
+   Print #FileHandle, Chr$(80) & Chr$(75) & Chr$(5) & Chr$(6) & String$(18, 0)
+   Close #FileHandle
 
    CreateZipFile = FileExists(ZipFile)
 
@@ -739,6 +735,6 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetFileExtension(ByVal FilePath As String, Optional WithDotBeforeExtension As Boolean = True) As String
+Public Function GetFileExtension(ByVal FilePath As String, Optional ByVal WithDotBeforeExtension As Boolean = True) As String
     GetFileExtension = VBA.Strings.Mid$(FilePath, VBA.Strings.InStrRev(FilePath, ".") + (1 - Abs(WithDotBeforeExtension)))
 End Function

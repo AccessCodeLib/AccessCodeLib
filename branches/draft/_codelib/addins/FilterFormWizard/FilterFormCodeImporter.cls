@@ -84,7 +84,7 @@ Private Function CheckRequiredCodeModules() As Boolean
    m_Importer.CheckRequiredCodeModules
 End Function
 
-Private Sub AddCodeToForm(ByVal frm As Form, _
+Private Sub AddCodeToForm(ByVal FrmRef As Form, _
                           ByVal KindOfUseFilterMethode As Long, _
                           ByVal UseFilterMethodeSubFormName As String, _
                           ByVal SqlDateFormat As String, _
@@ -102,11 +102,11 @@ Private Sub AddCodeToForm(ByVal frm As Form, _
 
    Dim TempCode As String
 
-   CheckCodeModuleBehindForm frm
+   CheckCodeModuleBehindForm FrmRef
 
    With New CodeModuleWriter
 
-      .Load "Form_" & frm.Name
+      .Load "Form_" & FrmRef.Name
       
       TempCode = DeclarationCode
       If Len(TempCode) > 0 Then
@@ -154,18 +154,18 @@ Private Sub AddCodeToForm(ByVal frm As Form, _
       TempCode = FilterControlValueChangedEventFunction(UseFilterCtlName, AutoFilterCtlName)
       If Len(TempCode) > 0 Then
          .AddCode TempCode
-         InsertFilterControlValueChangedEventFunction frm
+         InsertFilterControlValueChangedEventFunction FrmRef
       End If
       
    End With
 
 End Sub
 
-Private Sub CheckCodeModuleBehindForm(ByVal frm As Form)
+Private Sub CheckCodeModuleBehindForm(ByVal FrmRef As Form)
 
-   If Not frm.HasModule Then
-      frm.HasModule = True
-      DoCmd.Save acForm, frm.Name
+   If Not FrmRef.HasModule Then
+      FrmRef.HasModule = True
+      DoCmd.Save acForm, FrmRef.Name
    End If
 
 End Sub
@@ -291,11 +291,11 @@ End Property
 
 Private Sub InsertFilterControlValueChangedEventFunction(ByVal FormRef As Form)
    
-   Dim fcltName As Variant
+   Dim FcltName As Variant
    Dim ctl As Control
 
-   For Each fcltName In m_FilterControlNames.Items
-      Set ctl = FormRef.Controls(fcltName)
+   For Each FcltName In m_FilterControlNames.Items
+      Set ctl = FormRef.Controls(FcltName)
       If Len(ctl.AfterUpdate) = 0 Then
          ctl.AfterUpdate = "=FilterControlValueChanged()"
       End If

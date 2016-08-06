@@ -37,7 +37,7 @@ Public Enum AppVersionState
    VerState_Newer = -1
 End Enum
 
-Private Const m_EXTENSION_KEY As String = "AppVersion"
+Private Const EXTENSION_KEY As String = "AppVersion"
 
 Private m_XmlVersionCheckFile As String
 
@@ -48,12 +48,12 @@ Private m_XmlVersionCheckFile As String
 Private WithEvents m_ApplicationHandler As ApplicationHandler
 Attribute m_ApplicationHandler.VB_VarHelpID = -1
 
-Public Property Set ApplicationHandlerRef(ByRef objRef As ApplicationHandler)
-   Set m_ApplicationHandler = objRef
+Public Property Set ApplicationHandlerRef(ByRef ObjRef As ApplicationHandler)
+   Set m_ApplicationHandler = ObjRef
 End Property
 
 Public Property Get ExtensionKey() As String
-   ExtensionKey = m_EXTENSION_KEY
+   ExtensionKey = EXTENSION_KEY
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -61,21 +61,21 @@ End Property
 '---------------------------------------------------------------------------------------
 
 ' CheckExtension
-Private Sub m_ApplicationHandler_CheckExtension(ByVal sExtensionKey As String, ByRef exists As Boolean)
-   If sExtensionKey = m_EXTENSION_KEY Then exists = True
+Private Sub m_ApplicationHandler_CheckExtension(ByVal ExtensionKeyToCheck As String, ByRef Exists As Boolean)
+   If ExtensionKeyToCheck = EXTENSION_KEY Then Exists = True
 End Sub
 
 ' ExtensionLookup
-Private Sub m_ApplicationHandler_ExtensionLookup(ByVal sExtensionKey As String, ByRef ExtensionReference As Object)
-   If sExtensionKey = m_EXTENSION_KEY Then
+Private Sub m_ApplicationHandler_ExtensionLookup(ByVal ExtensionKeyToCheck As String, ByRef ExtensionReference As Object)
+   If ExtensionKeyToCheck = EXTENSION_KEY Then
       Set ExtensionReference = Me
    End If
 End Sub
 
-Private Sub m_ApplicationHandler_ExtensionProcedureCall(ByVal sExtensionKey As String, ByVal ProcedureName As String, _
-                     ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant, ProcParams() As Variant)
+Private Sub m_ApplicationHandler_ExtensionProcedureCall(ByVal ExtensionKeyToCheck As String, ByVal ProcedureName As String, _
+                     ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant, ByRef ProcParams() As Variant)
 
-   If sExtensionKey <> m_EXTENSION_KEY Then
+   If ExtensionKeyToCheck <> EXTENSION_KEY Then
       Exit Sub
    End If
    
@@ -102,10 +102,10 @@ End Sub
 
 'ExtensionPropertyLookup
 Private Sub m_ApplicationHandler_ExtensionPropertyLookup( _
-                     ByVal sExtensionKey As String, ByVal PropertyName As String, _
+                     ByVal ExtensionKeyToCheck As String, ByVal PropertyName As String, _
                      ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
 
-   If sExtensionKey = m_EXTENSION_KEY Then
+   If ExtensionKeyToCheck = EXTENSION_KEY Then
       getExtensionPropertyLookup PropertyName, ResumeMode, ResumeMessage
    End If
 
@@ -185,18 +185,18 @@ Public Property Let XmlVersionCheckFile(ByVal NewValue As String)
    m_XmlVersionCheckFile = NewValue
 End Property
 
-Private Function GetVersionFromDownloadSource(ByVal xmlFile As String, ByRef VersionRemarks As String) As String
+Private Function GetVersionFromDownloadSource(ByVal XmlFile As String, ByRef VersionRemarks As String) As String
 
-   Dim xmlDoc As Object ' MSXML2.DOMDocument60
+   Dim XmlDoc As Object ' MSXML2.DOMDocument60
    
-   Set xmlDoc = CreateObject("MSXML.DOMDocument") 'New MSXML2.DOMDocument60
-   xmlDoc.async = False
-   If Not xmlDoc.Load(xmlFile) Then
-      Err.Raise xmlDoc.parseError.errorCode, , xmlDoc.parseError.reason
+   Set XmlDoc = CreateObject("MSXML.DOMDocument") 'New MSXML2.DOMDocument60
+   XmlDoc.async = False
+   If Not XmlDoc.Load(XmlFile) Then
+      Err.Raise XmlDoc.parseError.errorCode, , XmlDoc.parseError.reason
    End If
    
-   GetVersionFromDownloadSource = xmlDoc.getElementsByTagName("version").Item(0).Text
-   VersionRemarks = xmlDoc.getElementsByTagName("remarks").Item(0).Text
+   GetVersionFromDownloadSource = XmlDoc.getElementsByTagName("version").Item(0).Text
+   VersionRemarks = XmlDoc.getElementsByTagName("remarks").Item(0).Text
 
 End Function
 

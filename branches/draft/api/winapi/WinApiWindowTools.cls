@@ -40,30 +40,30 @@ End Type
 
 #If VBA7 Then
 
-Private Declare PtrSafe Function ClientToScreen Lib "USER32.DLL" ( _
+Private Declare PtrSafe Function ClientToScreen Lib "user32.dll" ( _
          ByVal Hwnd As Long, _
          ByRef lpPoint As POINTAPI _
       ) As Long
 
-Private Declare PtrSafe Function FindWindowEx Lib "USER32.DLL" Alias "FindWindowExA" ( _
-         ByVal hWnd1 As Long, _
-         ByVal hWnd2 As Long, _
-         ByVal lpsz1 As String, _
-         ByVal lpsz2 As String _
+Private Declare PtrSafe Function FindWindowEx Lib "user32.dll" Alias "FindWindowExA" ( _
+         ByVal HWnd1 As Long, _
+         ByVal HWnd2 As Long, _
+         ByVal Lpsz1 As String, _
+         ByVal Lpsz2 As String _
       ) As Long
 
 #Else
 
-Private Declare Function ClientToScreen Lib "USER32.DLL" ( _
+Private Declare Function ClientToScreen Lib "user32.dll" ( _
          ByVal Hwnd As Long, _
          ByRef lpPoint As POINTAPI _
       ) As Long
 
-Private Declare Function FindWindowEx Lib "USER32.DLL" Alias "FindWindowExA" ( _
-         ByVal hWnd1 As Long, _
-         ByVal hWnd2 As Long, _
-         ByVal lpsz1 As String, _
-         ByVal lpsz2 As String _
+Private Declare Function FindWindowEx Lib "user32.dll" Alias "FindWindowExA" ( _
+         ByVal HWnd1 As Long, _
+         ByVal HWnd2 As Long, _
+         ByVal Lpsz1 As String, _
+         ByVal Lpsz2 As String _
       ) As Long
 
 #End If
@@ -99,10 +99,10 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetHeaderSection(ByVal fHwnd As Long) As Long
+Public Function GetHeaderSection(ByVal Hwnd As Long) As Long
    Dim h As Long
    'Erstes "OFormsub"-Kindfenster des Formulares (fhwnd) ermitteln
-   h = FindWindowEx(fHwnd, 0&, "OformSub", vbNullString)
+   h = FindWindowEx(Hwnd, 0&, "OformSub", vbNullString)
    GetHeaderSection = h
 End Function
 
@@ -119,12 +119,12 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetDetailSection(ByVal fHwnd As Long) As Long
+Public Function GetDetailSection(ByVal Hwnd As Long) As Long
    Dim h As Long
    'Erstes "OFormsub"-Kindfenster des Formulares (fhwnd) ermitteln, beginnend
    'nach dem Kopfbereich
-   h = GetHeaderSection(fHwnd)
-   h = FindWindowEx(fHwnd, h, "OformSub", vbNullString)
+   h = GetHeaderSection(Hwnd)
+   h = FindWindowEx(Hwnd, h, "OformSub", vbNullString)
    GetDetailSection = h
 End Function
 
@@ -141,12 +141,12 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetFooterSection(ByVal fHwnd As Long) As Long
+Public Function GetFooterSection(ByVal Hwnd As Long) As Long
    Dim h As Long
    'Erstes "OFormsub"-Kindfenster des Formulares (fhwnd) ermitteln, beginnend
    'nach dem Detailbereich
-   h = GetDetailSection(fHwnd)
-   h = FindWindowEx(fHwnd, h, "OformSub", vbNullString)
+   h = GetDetailSection(Hwnd)
+   h = FindWindowEx(Hwnd, h, "OformSub", vbNullString)
    GetFooterSection = h
 End Function
 
@@ -166,7 +166,7 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetControl(ByRef frm As Access.Form, ByVal sHwnd As Long, ByVal sClassName As String, ByVal ControlName As String) As Long
+Public Function GetControl(ByRef FrmRef As Access.Form, ByVal Hwnd As Long, ByVal ClassName As String, ByVal ControlName As String) As Long
 
    'Ermittelt den Handle eines beliebigen Controls
 
@@ -198,7 +198,7 @@ On Error Resume Next
 
    Do
       'Erstes (h=0)/nächstes (h<>0) Control auf dem Sektionsfenster ermitteln
-      h = FindWindowEx(sHwnd, h, sClassName, vbNullString)
+      h = FindWindowEx(Hwnd, h, ClassName, vbNullString)
 
       'Bildschirmkoordinaten dieses Controls ermitteln
       'dafür die Punktkoordinaten aus dem letzten Durchlauf zurücksetzen, sonst wird addiert!
@@ -207,7 +207,7 @@ On Error Resume Next
       ClientToScreen h, pt
 
       'Objekt bei den Koordinaten ermitteln
-      Set obj = frm.accHitTest(pt.X, pt.Y)
+      Set obj = FrmRef.accHitTest(pt.X, pt.Y)
 
       'Wenn Objektname = Tabname Ausstieg aus der Schleife
       If obj.Name = ControlName Then

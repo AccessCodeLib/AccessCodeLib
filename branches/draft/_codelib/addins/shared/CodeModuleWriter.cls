@@ -171,9 +171,9 @@ Friend Property Get CurrentVbProject() As Object
 #End If
 
 #If EARLYBINDING Then
-   Dim proj As VBProject
+   Dim Proj As VBProject
 #Else
-   Dim proj As Object
+   Dim Proj As Object
 #End If
    Dim strCurrentDbName As String
 
@@ -183,9 +183,9 @@ Friend Property Get CurrentVbProject() As Object
       strCurrentDbName = UNCPath(CurrentDb.Name)
       If m_CurrentVbProject.FileName <> strCurrentDbName Then
          Set m_CurrentVbProject = Nothing
-         For Each proj In VBE.VBProjects
-            If proj.FileName = strCurrentDbName Then
-               Set m_CurrentVbProject = proj
+         For Each Proj In VBE.VBProjects
+            If Proj.FileName = strCurrentDbName Then
+               Set m_CurrentVbProject = Proj
                Exit For
             End If
          Next

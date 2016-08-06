@@ -45,7 +45,7 @@ End Enum
 
 
 ' Integrierte Erweiterungen
-Private Const EXTENSION_KEY_AppFile As String = "AppFile"
+Private Const EXTENSION_KEY_APPFILE As String = "AppFile"
 
 ' Fehlerkennungen
 Private Const ERR_CLASS_ID As Long = 1000
@@ -63,59 +63,59 @@ Private Const SYSCOLOR_COLOR_APPWORKSPACE As Long = 12
 #If VBA7 Then
 
 Private Declare PtrSafe Function FindWindowEx Lib "user32.dll" Alias "FindWindowExA" ( _
-       ByVal hWnd1 As Long, ByVal hWnd2 As Long, _
-       ByVal lpsz1 As String, ByVal lpsz2 As String) As Long
+       ByVal HWnd1 As Long, ByVal HWnd2 As Long, _
+       ByVal Lpsz1 As String, ByVal Lpsz2 As String) As Long
        
-Private Declare PtrSafe Function CreateSolidBrush Lib "gdi32.dll" (ByVal crColor As Long) As Long
+Private Declare PtrSafe Function CreateSolidBrush Lib "gdi32.dll" (ByVal CrColor As Long) As Long
 
 Private Declare PtrSafe Function SetClassLong Lib "user32" Alias "SetClassLongA" ( _
-       ByVal Hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+       ByVal Hwnd As Long, ByVal NIndex As Long, ByVal DwNewLong As Long) As Long
        
 Private Declare PtrSafe Function RedrawWindow Lib "user32" ( _
-       ByVal Hwnd As Long, lprcUpdate As Any, _
-       ByVal hrgnUpdate As Long, ByVal fuRedraw As Long) As Long
+       ByVal Hwnd As Long, LprcUpdate As Any, _
+       ByVal HrgnUpdate As Long, ByVal FuRedraw As Long) As Long
 
-Private Declare PtrSafe Function GetSysColor Lib "user32" (ByVal nIndex As Long) As Long
+Private Declare PtrSafe Function GetSysColor Lib "user32" (ByVal NumIndex As Long) As Long
 
 #Else
 
 Private Declare Function FindWindowEx Lib "user32.dll" Alias "FindWindowExA" ( _
-       ByVal hWnd1 As Long, ByVal hWnd2 As Long, _
-       ByVal lpsz1 As String, ByVal lpsz2 As String) As Long
+       ByVal HWnd1 As Long, ByVal HWnd2 As Long, _
+       ByVal Lpsz1 As String, ByVal Lpsz2 As String) As Long
        
-Private Declare Function CreateSolidBrush Lib "gdi32.dll" (ByVal crColor As Long) As Long
+Private Declare Function CreateSolidBrush Lib "gdi32.dll" (ByVal CrColor As Long) As Long
 
 Private Declare Function SetClassLong Lib "user32" Alias "SetClassLongA" ( _
-       ByVal Hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+       ByVal Hwnd As Long, ByVal NIndex As Long, ByVal DwNewLong As Long) As Long
        
 Private Declare Function RedrawWindow Lib "user32" ( _
-       ByVal Hwnd As Long, lprcUpdate As Any, _
-       ByVal hrgnUpdate As Long, ByVal fuRedraw As Long) As Long
+       ByVal Hwnd As Long, LprcUpdate As Any, _
+       ByVal HrgnUpdate As Long, ByVal FuRedraw As Long) As Long
 
-Private Declare Function GetSysColor Lib "user32" (ByVal nIndex As Long) As Long
+Private Declare Function GetSysColor Lib "user32" (ByVal Index As Long) As Long
 
 #End If
 
 ' Hilfskonstanten
-Private Const m_LOG_FILE As String = "log.txt"
+Private Const LOG_FILE As String = "log.txt"
 
-Private Const m_DBPROPNAME_AppTitle As String = "AppTitle"
-Private Const m_DBPROPNAME_AppIcon As String = "AppIcon"
-Private Const m_DBPROPNAME_UseAppIconForFrmRpt As String = "UseAppIconForFrmRpt"
-Private Const m_DBPROPNAME_StartUpForm As String = "StartUpForm"
-Private Const m_DBPROPNAME_StartUpMenuBar As String = "StartUpMenuBar"
+Private Const DBPROPNAME_APPTITLE As String = "AppTitle"
+Private Const DBPROPNAME_APPICON As String = "AppIcon"
+Private Const DBPROPNAME_USE_APPICON_FOR_FRMRPT As String = "UseAppIconForFrmRpt"
+Private Const DBPROPNAME_STARTUPFORM As String = "StartUpForm"
+Private Const DBPROPNAME_STARTUPMENUBAR As String = "StartUpMenuBar"
 
 
 'Hilfsvariablen
-Private m_AppDb As DAO.Database           ' Ersatz für CurrentDb bzw. CodeDb, siehe Prop: AppDb
+Private m_AppDb As DAO.Database              ' Ersatz für CurrentDb bzw. CodeDb, siehe Prop: AppDb
 
-Private m_ApplicationName As String       'Zwischenspeicher für Anwendungsnamen (kurz)
-Private m_ApplicationFullName As String   'Zwischenspeicher für Anwendungsnamen (lang)
+Private m_ApplicationName As String          ' Zwischenspeicher für Anwendungsnamen (kurz)
+Private m_ApplicationFullName As String      ' Zwischenspeicher für Anwendungsnamen (lang)
 
-Private m_ApplicationVersion As String    'anzuzeigende Versionnummer
+Private m_APPLICATIONVERSION As String       ' anzuzeigende Versionnummer
 
-Private m_varTransferValue As Variant
-Private m_PublicPath As String            ' Standardverzeichnis für Dateiexplorer
+Private m_TransferValue As Variant
+Private m_PublicPath As String               ' Standardverzeichnis für Dateiexplorer
 
 Private m_ApplicationStartFormName As String ' Formular das in Start-Methode geöffnet wird
 
@@ -127,7 +127,7 @@ Private m_TracingEnabled As Boolean
 Public Event BeforeDispose(ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
 Public Event AfterDispose(ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
 
-Public Event CheckExtension(ByVal Key As String, ByRef exists As Boolean)
+Public Event CheckExtension(ByVal Key As String, ByRef Exists As Boolean)
 
 Public Event ExtensionLookup(ByVal Key As String, ByRef ExtensionReference As Object)
 
@@ -186,15 +186,15 @@ End Sub
 
 Public Sub Dispose(Optional ByRef ResumeMode As ApplicationHandlerResumeModes, Optional ByRef ResumeMessage As Variant)
    
-   Dim tempResumeMode As ApplicationHandlerResumeModes
-   Dim tempResumeMessage As Variant
+   Dim TempResumeMode As ApplicationHandlerResumeModes
+   Dim TempResumeMessage As Variant
    
 On Error Resume Next
    
-   RaiseEvent BeforeDispose(tempResumeMode, tempResumeMessage)
-   If tempResumeMode = AppResumeMode_Cancel Then
-      ResumeMode = tempResumeMode
-      ResumeMessage = tempResumeMessage
+   RaiseEvent BeforeDispose(TempResumeMode, TempResumeMessage)
+   If TempResumeMode = AppResumeMode_Cancel Then
+      ResumeMode = TempResumeMode
+      ResumeMessage = TempResumeMessage
       Exit Sub
    End If
    
@@ -202,10 +202,10 @@ On Error Resume Next
    
    m_Disposed = True
    
-   RaiseEvent AfterDispose(tempResumeMode, tempResumeMessage)
+   RaiseEvent AfterDispose(TempResumeMode, TempResumeMessage)
    
    ResumeMode = AppResumeMode_Completed
-   ResumeMessage = tempResumeMessage
+   ResumeMessage = TempResumeMessage
    
 End Sub
 
@@ -225,26 +225,26 @@ End Sub
 '---------------------------------------------------------------------------------------
 Public Function Start(Optional ByRef ResumeMessage As Variant) As Boolean
    
-   Dim currentStartFormName As String
-   Dim eventResumeMode As ApplicationHandlerResumeModes
-   Dim eventResumeMessage As Variant
+   Dim CurrentStartFormName As String
+   Dim EventResumeMode As ApplicationHandlerResumeModes
+   Dim EventResumeMessage As Variant
    
    'Evente-Schnittstelle für Anwendungsstart
    ' ... ermöglicht z. B. das Durchführen eines Login-Vorgangs
-   RaiseEvent BeforeStartApplication(eventResumeMode, eventResumeMessage)
-   Select Case eventResumeMode
+   RaiseEvent BeforeStartApplication(EventResumeMode, EventResumeMessage)
+   Select Case EventResumeMode
       Case ApplicationHandlerResumeModes.AppResumeMode_Cancel
          'Start abbrechen
-         ResumeMessage = eventResumeMessage
+         ResumeMessage = EventResumeMessage
          Start = False
          Exit Function
       Case ApplicationHandlerResumeModes.AppResumeMode_Completed
          'Startprozedur wurde von Erweiterung übernommen
-         Start = eventResumeMessage
+         Start = EventResumeMessage
          Exit Function
       Case ApplicationHandlerResumeModes.AppResumeMode_Error
          'Mit Fehlermeldung abbrechen
-         Err.Raise vbObjectError, "BeforeStartApplication", eventResumeMessage
+         Err.Raise vbObjectError, "BeforeStartApplication", EventResumeMessage
          Exit Function
       Case Else
          'weitermachen
@@ -262,28 +262,28 @@ Public Function Start(Optional ByRef ResumeMessage As Variant) As Boolean
    'Evente-Schnittstelle für Startformular
    '... ermöglich das Ändern des Startformulars durch ERweiterungen
    '    z. B. falls ein benutzerspezifisches Formulare geöffnet werden soll
-   eventResumeMode = 0
-   eventResumeMessage = Empty
-   RaiseEvent BeforeOpenStartForm(eventResumeMode, eventResumeMessage)
-   Select Case eventResumeMode
+   EventResumeMode = 0
+   EventResumeMessage = Empty
+   RaiseEvent BeforeOpenStartForm(EventResumeMode, EventResumeMessage)
+   Select Case EventResumeMode
       Case ApplicationHandlerResumeModes.AppResumeMode_Cancel
          'Startform nicht öffnen
-         currentStartFormName = vbNullString
+         CurrentStartFormName = vbNullString
       Case ApplicationHandlerResumeModes.AppResumeMode_Completed
          'Name des StartFormulars wurde übertragen
-         currentStartFormName = Nz(eventResumeMessage, vbNullString)
+         CurrentStartFormName = Nz(EventResumeMessage, vbNullString)
       Case Else
-         currentStartFormName = Me.ApplicationStartFormName
+         CurrentStartFormName = Me.ApplicationStartFormName
    End Select
    
-   If Len(currentStartFormName) > 0 Then
-      DoCmd.OpenForm currentStartFormName
+   If Len(CurrentStartFormName) > 0 Then
+      DoCmd.OpenForm CurrentStartFormName
    End If
 
    'Benachrichtigung über erfolgten Anwendungsstart
-   eventResumeMode = 0
-   eventResumeMessage = Empty
-   RaiseEvent AfterStartApplication(eventResumeMode, eventResumeMessage)
+   EventResumeMode = 0
+   EventResumeMessage = Empty
+   RaiseEvent AfterStartApplication(EventResumeMode, EventResumeMessage)
 
    Start = True
 
@@ -386,14 +386,14 @@ End Property
 '---------------------------------------------------------------------------------------
 Public Property Get Version() As String
 
-   If Len(m_ApplicationVersion) = 0 Then ' ... aus Properties lesen?
+   If Len(m_APPLICATIONVERSION) = 0 Then ' ... aus Properties lesen?
 '/**
 ' @todo Versionskennung aus DB-Eigenschaften bzw. aus den Dateieigenschaften lesen
 '**/
-      m_ApplicationVersion = ""
+      m_APPLICATIONVERSION = ""
    End If
    
-   Version = m_ApplicationVersion
+   Version = m_APPLICATIONVERSION
    
 End Property
 
@@ -407,8 +407,8 @@ End Property
 ' <param name="appName">Anwendungsname</param>
 '**/
 '---------------------------------------------------------------------------------------
-Public Property Let Version(ByVal appVersion As String)
-    m_ApplicationVersion = appVersion
+Public Property Let Version(ByVal AppVersion As String)
+    m_APPLICATIONVERSION = AppVersion
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -464,25 +464,25 @@ Public Property Get AppDb() As DAO.Database
    Set AppDb = m_AppDb
 End Property
 
-Friend Property Set AppDb(ByRef db As DAO.Database)
-   Set m_AppDb = db
+Friend Property Set AppDb(ByVal DbRef As DAO.Database)
+   Set m_AppDb = DbRef
 End Property
 
-Public Function GetTransferValue(Optional ByVal vValueIfNull As Variant = Null, Optional ByVal bolNoDel As Boolean = False) As Variant
-   GetTransferValue = Nz(m_varTransferValue, vValueIfNull)
-   If Not bolNoDel Then m_varTransferValue = Null
+Public Function GetTransferValue(Optional ByVal ValueIfNull As Variant = Null, Optional ByVal NoDel As Boolean = False) As Variant
+   GetTransferValue = Nz(m_TransferValue, ValueIfNull)
+   If Not NoDel Then m_TransferValue = Null
 End Function
 
 Public Sub SetTransferValue(ByVal NewValue As Variant)
-   m_varTransferValue = NewValue
+   m_TransferValue = NewValue
 End Sub
 
 Public Property Get PublicPath() As String
    PublicPath = m_PublicPath
 End Property
 
-Friend Property Let PublicPath(ByVal sPublicPath As String)
-   m_PublicPath = sPublicPath
+Friend Property Let PublicPath(ByVal NewPublicPath As String)
+   m_PublicPath = NewPublicPath
 End Property
 
 Public Property Get ApplicationTitle() As String
@@ -491,32 +491,32 @@ End Property
 
 Friend Property Let ApplicationTitle(ByVal AppTitle As String)
    If Len(AppTitle) > 0 Then
-      setAppDbProperty m_DBPROPNAME_AppTitle, dbText, AppTitle
+      setAppDbProperty DBPROPNAME_APPTITLE, dbText, AppTitle
    Else
-      deleteAppDbProperty m_DBPROPNAME_AppTitle
+      deleteAppDbProperty DBPROPNAME_APPTITLE
    End If
    Access.Application.RefreshTitleBar
 End Property
 
 Friend Sub SetAppIcon(ByVal AppIconFile As String, Optional ByVal UseAppIconForFrmRpt As Boolean = True)
 
-   Dim bolCheck As Boolean
+   Dim CheckVar As Boolean
 
    If Len(Dir$(AppIconFile)) > 0 Then
-      setAppDbProperty m_DBPROPNAME_AppIcon, dbText, AppIconFile
-      setAppDbProperty m_DBPROPNAME_UseAppIconForFrmRpt, dbBoolean, UseAppIconForFrmRpt
+      setAppDbProperty DBPROPNAME_APPICON, dbText, AppIconFile
+      setAppDbProperty DBPROPNAME_USE_APPICON_FOR_FRMRPT, dbBoolean, UseAppIconForFrmRpt
    Else
       '1. Prüfen ob AppFile-Erweiterung vorhanden ist
-      RaiseEvent CheckExtension(EXTENSION_KEY_AppFile, bolCheck)
-      If bolCheck Then
-         bolCheck = CreateAppFile("AppIcon", AppIconFile)
+      RaiseEvent CheckExtension(EXTENSION_KEY_APPFILE, CheckVar)
+      If CheckVar Then
+         CheckVar = CreateAppFile("AppIcon", AppIconFile)
       End If
       '2. Properties einstellen
-      If bolCheck Then
-         setAppDbProperty m_DBPROPNAME_AppIcon, dbText, AppIconFile
-         setAppDbProperty m_DBPROPNAME_UseAppIconForFrmRpt, dbBoolean, UseAppIconForFrmRpt
+      If CheckVar Then
+         setAppDbProperty DBPROPNAME_APPICON, dbText, AppIconFile
+         setAppDbProperty DBPROPNAME_USE_APPICON_FOR_FRMRPT, dbBoolean, UseAppIconForFrmRpt
       Else
-         deleteAppDbProperty m_DBPROPNAME_AppIcon
+         deleteAppDbProperty DBPROPNAME_APPICON
       End If
    End If
    Application.RefreshTitleBar
@@ -525,17 +525,17 @@ End Sub
 
 Friend Property Let StartUpForm(ByVal StartUpFormName As String)
    If Len(StartUpFormName) > 0 Then
-      setAppDbProperty m_DBPROPNAME_StartUpForm, dbText, "Form." & StartUpFormName
+      setAppDbProperty DBPROPNAME_STARTUPFORM, dbText, "Form." & StartUpFormName
    Else
-      deleteAppDbProperty m_DBPROPNAME_StartUpForm
+      deleteAppDbProperty DBPROPNAME_STARTUPFORM
    End If
 End Property
 
 Friend Property Let StartUpMenuBar(ByVal MenuBarName As String)
    If Len(MenuBarName) > 0 Then
-      setAppDbProperty m_DBPROPNAME_StartUpMenuBar, dbText, MenuBarName
+      setAppDbProperty DBPROPNAME_STARTUPMENUBAR, dbText, MenuBarName
    Else
-      deleteAppDbProperty m_DBPROPNAME_StartUpMenuBar
+      deleteAppDbProperty DBPROPNAME_STARTUPMENUBAR
    End If
 End Property
 
@@ -546,11 +546,11 @@ End Sub
 Private Sub setAppDbProperty(ByVal PropName As String, ByVal PropType As Long, ByVal PropValue As Variant)
    
    Dim db As DAO.Database
-   Dim propCol As DAO.Properties
+   Dim PropCol As DAO.Properties
    
    Set db = AppDb
-   Set propCol = db.Properties
-   If dbPropertyExists(propCol, PropName) Then
+   Set PropCol = db.Properties
+   If dbPropertyExists(PropCol, PropName) Then
       If Len(PropValue) = 0 Or IsNull(PropValue) Then
          db.Properties.Delete PropName
       Else
@@ -564,26 +564,26 @@ Private Sub setAppDbProperty(ByVal PropName As String, ByVal PropType As Long, B
 
 End Sub
 
-Private Sub deleteAppDbProperty(ByVal sPropName As String)
+Private Sub deleteAppDbProperty(ByVal PropName As String)
    
    Dim db As DAO.Database
-   Dim propCol As DAO.Properties
+   Dim PropCol As DAO.Properties
 
    Set db = AppDb
-   Set propCol = db.Properties
+   Set PropCol = db.Properties
    
-   If dbPropertyExists(propCol, sPropName) Then
-      propCol.Delete sPropName
+   If dbPropertyExists(PropCol, PropName) Then
+      PropCol.Delete PropName
    End If
 
 End Sub
 
-Private Function dbPropertyExists(ByRef propCol As DAO.Properties, ByVal sPropName As String) As Boolean
+Private Function dbPropertyExists(ByRef PropCol As DAO.Properties, ByVal PropName As String) As Boolean
    
-   Dim prop As DAO.Property
+   Dim Prop As DAO.Property
 
-   For Each prop In propCol
-      If prop.Name = sPropName Then
+   For Each Prop In PropCol
+      If Prop.Name = PropName Then
          dbPropertyExists = True
          Exit For
       End If
@@ -593,27 +593,27 @@ End Function
 
 Public Sub WriteApplicationLogEntry(ByVal Msg As String)
 
-   Dim strLogFile As String
-   Dim lfileNo As Long
+   Dim LogFile As String
+   Dim FileNo As Long
 
-   strLogFile = CurrentProject.Path & "\" & m_LOG_FILE
+   LogFile = CurrentProject.Path & "\" & LOG_FILE
    
-   lfileNo = FreeFile
-   Open strLogFile For Append As lfileNo
-   Print #lfileNo, Msg
-   Close #lfileNo
+   FileNo = FreeFile
+   Open LogFile For Append As FileNo
+   Print #FileNo, Msg
+   Close #FileNo
 
 End Sub
 
 Public Sub WriteLog(ByVal Msg As String, _
-           Optional LogType As ApplicationHandlerLogType, _
+           Optional ByRef LogType As ApplicationHandlerLogType, _
            Optional ByVal Args As Variant, _
            Optional ByVal WriteToFileIfNoEventResponse As Boolean = True)
 
    Dim ResumeMode As ApplicationHandlerResumeModes
-   Dim eventResumeMessage As Variant
+   Dim EventResumeMessage As Variant
 
-   RaiseEvent NewAppLog(LogType, Msg, Args, ResumeMode, eventResumeMessage)
+   RaiseEvent NewAppLog(LogType, Msg, Args, ResumeMode, EventResumeMessage)
    
    If ResumeMode = 0 And WriteToFileIfNoEventResponse Then
       'niemand hat reagiert bzw. einen Abbruch gemeldet => WriteApplicationLogEntry
@@ -626,7 +626,7 @@ Public Sub WriteLog(ByVal Msg As String, _
 
 End Sub
 
-Private Function getLogTypeString(Optional LogType As ApplicationHandlerLogType) As String
+Private Function getLogTypeString(Optional ByRef LogType As ApplicationHandlerLogType) As String
    Select Case LogType
       Case ApplicationHandlerLogType.AppLogType_Error
          getLogTypeString = "Error"
@@ -682,19 +682,19 @@ End Property
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function CreateAppFile(ByVal sFileID As String, ByVal sFileName As String) As Boolean
+Public Function CreateAppFile(ByVal FileID As String, ByVal FileName As String) As Boolean
 
-   Dim eventResumeMode As ApplicationHandlerResumeModes ' Rückgabewert aus Event-Schnittstelle
-   Dim eventResumeMessage As Variant                    ' Nachricht, für Abbruchgrund (wird derzeit noch nicht genutzt)
+   Dim EventResumeMode As ApplicationHandlerResumeModes ' Rückgabewert aus Event-Schnittstelle
+   Dim EventResumeMessage As Variant                    ' Nachricht, für Abbruchgrund (wird derzeit noch nicht genutzt)
 
    '---------------------------------------------------
    ' Schnittstelle für andere Klassen .. damit wird es möglich,
    ' dass die Erstellung der Datei eine andere Klasse übernimmt
    '
-   eventResumeMode = 0
-   RaiseEvent AppFileBeforeCreateFile(sFileID, sFileName, eventResumeMode, eventResumeMessage)
-   If eventResumeMode <> 0 Then
-      CreateAppFile = (eventResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Completed)
+   EventResumeMode = 0
+   RaiseEvent AppFileBeforeCreateFile(FileID, FileName, EventResumeMode, EventResumeMessage)
+   If EventResumeMode <> 0 Then
+      CreateAppFile = (EventResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Completed)
    Else
       Err.Raise ApplicationHandlerErrors.AppErr_EventInterfaceMissing, _
                 "CreateAppFile", "Auf das AppFileBeforeCreateFile-Ereignis wurde nicht reagiert"
@@ -717,19 +717,19 @@ End Function
 ' </remarks>
 '/
 '---------------------------------------------------------------------------------------
-Friend Function SaveAppFile(ByVal sFileID As String, ByVal sFileName As String, Optional ByVal SaveVersion As Boolean = False, _
+Friend Function SaveAppFile(ByVal FileID As String, ByVal FileName As String, Optional ByVal SaveVersion As Boolean = False, _
             Optional ByVal ExtFieldName As String, Optional ByVal ExtFieldValue As Variant) As Boolean
 
-   Dim eventResumeMode As ApplicationHandlerResumeModes ' Rückgabewert aus Event-Schnittstelle
-   Dim eventResumeMessage As Variant                    ' Nachricht, für Abbruchgrund
+   Dim EventResumeMode As ApplicationHandlerResumeModes ' Rückgabewert aus Event-Schnittstelle
+   Dim EventResumeMessage As Variant                    ' Nachricht, für Abbruchgrund
 
    '---------------------------------------------------
    ' Event-Schnittstelle AppFileBeforeSaveFile
    '
-   eventResumeMode = 0
-   RaiseEvent AppFileBeforeSaveFile(sFileID, sFileName, SaveVersion, eventResumeMode, eventResumeMessage, ExtFieldName, ExtFieldValue)
-   If eventResumeMode <> 0 Then
-      SaveAppFile = (eventResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Completed)
+   EventResumeMode = 0
+   RaiseEvent AppFileBeforeSaveFile(FileID, FileName, SaveVersion, EventResumeMode, EventResumeMessage, ExtFieldName, ExtFieldValue)
+   If EventResumeMode <> 0 Then
+      SaveAppFile = (EventResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Completed)
    Else
       Err.Raise ApplicationHandlerErrors.AppErr_EventInterfaceMissing, _
                 "CreateAppFile", "Auf das AppFileBeforeSaveFile-Ereignis wurde nicht reagiert"
@@ -745,32 +745,32 @@ Public Property Get Extensions(ByVal ExtensionKey As String) As Object
 ' * @todo sollte man eine Schnittstelle statt Late binding verwenden?
 '**/
 
-   Dim extRef As Object
+   Dim ExtRef As Object
 
-   RaiseEvent ExtensionLookup(ExtensionKey, extRef)
-   Set Extensions = extRef
+   RaiseEvent ExtensionLookup(ExtensionKey, ExtRef)
+   Set Extensions = ExtRef
 
 End Property
 
 Public Function GetExtensionInstance(ByVal ExtensionKey As String, Optional ByVal InstanceKey As String = vbNullString) As Object
 
-   Dim extRef As Object
+   Dim ExtRef As Object
 
-   RaiseEvent ExtensionInstance(ExtensionKey, InstanceKey, extRef)
-   Set GetExtensionInstance = extRef
+   RaiseEvent ExtensionInstance(ExtensionKey, InstanceKey, ExtRef)
+   Set GetExtensionInstance = ExtRef
    
 End Function
 
 Public Function GetExtensionProperty(ByVal ExtensionKey As String, ByVal PropertyName As String, _
                             Optional ByVal ValueIfMissing As Variant = Empty) As Variant
    
-   Dim eventResumeMode As ApplicationHandlerResumeModes
-   Dim eventResumeMessage As Variant
+   Dim EventResumeMode As ApplicationHandlerResumeModes
+   Dim EventResumeMessage As Variant
 
-   RaiseEvent ExtensionPropertyLookup(ExtensionKey, PropertyName, eventResumeMode, eventResumeMessage)
+   RaiseEvent ExtensionPropertyLookup(ExtensionKey, PropertyName, EventResumeMode, EventResumeMessage)
    
-   If eventResumeMode = AppResumeMode_Completed Then
-      GetExtensionProperty = eventResumeMessage
+   If EventResumeMode = AppResumeMode_Completed Then
+      GetExtensionProperty = EventResumeMessage
    Else
       GetExtensionProperty = ValueIfMissing
    End If
@@ -784,12 +784,12 @@ Public Function UpdateApplication() As Boolean
 ' => Ausgelager an Erweiterung: damit wird die Verwendugn flexibler
 '    und jeder kann sich aussuchen nach welcher Update-Methode vorgegangen werden soll
 
-   Dim eventResumeMode As ApplicationHandlerResumeModes
-   Dim eventResumeMessage As Variant
+   Dim EventResumeMode As ApplicationHandlerResumeModes
+   Dim EventResumeMessage As Variant
 
-   RaiseEvent UpdateApplication(eventResumeMode, eventResumeMessage)
-   If eventResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Completed Then
-      UpdateApplication = eventResumeMessage
+   RaiseEvent UpdateApplication(EventResumeMode, EventResumeMessage)
+   If EventResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Completed Then
+      UpdateApplication = EventResumeMessage
    Else
       UpdateApplication = False
    End If
@@ -799,12 +799,12 @@ End Function
 Private Function checkVersionUpdate() As Boolean
 ' True = Update erforderlich
    
-   Dim eventResumeMode As ApplicationHandlerResumeModes
-   Dim eventResumeMessage As Variant
+   Dim EventResumeMode As ApplicationHandlerResumeModes
+   Dim EventResumeMessage As Variant
 
-   RaiseEvent CheckUpdate(eventResumeMode, eventResumeMessage)
-   If eventResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Completed Then
-      checkVersionUpdate = eventResumeMessage
+   RaiseEvent CheckUpdate(EventResumeMode, EventResumeMessage)
+   If EventResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Completed Then
+      checkVersionUpdate = EventResumeMessage
    Else
       checkVersionUpdate = False
    End If

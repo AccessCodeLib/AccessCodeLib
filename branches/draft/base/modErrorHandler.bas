@@ -82,10 +82,10 @@ Public Enum ACLibErrorNumbers
 End Enum
 
 'Voreinstellungen:
-Private Const m_conDefaultErrorHandlerMode As Long = ACLibErrorHandlerMode.[_aclibErr_default]
-Private Const m_conDefaultErrorResumeMode As Long = ACLibErrorResumeMode.aclibErrExit
+Private Const DEFAULT_ERRORHANDLERMODE As Long = ACLibErrorHandlerMode.[_aclibErr_default]
+Private Const DEFAULT_ERRORRESUMEMODE As Long = ACLibErrorResumeMode.aclibErrExit
 
-Private Const m_ErrorSourceDelimiterSymbol As String = "->"
+Private Const ERRORSOURCE_DELIMITERSYMBOL As String = "->"
 
 
 'Hilfsvariablen
@@ -116,9 +116,9 @@ End Property
 ' <param name="errMode">ACLibErrorHandlerMode</param>
 '**/
 '---------------------------------------------------------------------------------------
-Public Property Let DefaultErrorHandlerMode(ByVal errMode As ACLibErrorHandlerMode)
+Public Property Let DefaultErrorHandlerMode(ByVal ErrMode As ACLibErrorHandlerMode)
 On Error Resume Next
-    m_DefaultErrorHandlerMode = errMode
+    m_DefaultErrorHandlerMode = ErrMode
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -193,148 +193,148 @@ End Property
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function HandleError(ByVal lErrorNumber As Long, ByVal sSource As String, _
-                   Optional ByVal sErrDescription As String, _
-                   Optional ByVal lErrHandlerMode As ACLibErrorHandlerMode = m_conDefaultErrorHandlerMode _
+Public Function HandleError(ByVal ErrNumber As Long, ByVal ErrSource As String, _
+                   Optional ByVal ErrDescription As String, _
+                   Optional ByVal ErrHandlerMode As ACLibErrorHandlerMode = DEFAULT_ERRORHANDLERMODE _
             ) As ACLibErrorResumeMode
 'hier wäre auch das Aktivieren eine anderen ErrorHandlers möglich (z. B. ErrorHandler-Klasse)
 
-   If lErrHandlerMode = ACLibErrorHandlerMode.[_aclibErr_default] Then
-      lErrHandlerMode = m_DefaultErrorHandlerMode
+   If ErrHandlerMode = ACLibErrorHandlerMode.[_aclibErr_default] Then
+      ErrHandlerMode = m_DefaultErrorHandlerMode
    End If
    
-   HandleError = procHandleError(lErrorNumber, sSource, sErrDescription, lErrHandlerMode)
+   HandleError = procHandleError(ErrNumber, ErrSource, ErrDescription, ErrHandlerMode)
 
 End Function
 
-Private Function procHandleError(ByRef lErrorNumber As Long, ByRef sSource As String, _
-                                 ByRef sErrDescription As String, _
-                                 ByVal lErrHandlerMode As ACLibErrorHandlerMode _
+Private Function procHandleError(ByRef ErrNumber As Long, ByRef ErrSource As String, _
+                                 ByRef ErrDescription As String, _
+                                 ByVal ErrHandlerMode As ACLibErrorHandlerMode _
              ) As ACLibErrorResumeMode
 
-   Dim strSource As String
-   Dim strErrDescription As String
-   Dim strErrSource As String
+   Dim NewErrSource As String
+   Dim NewErrDescription As String
+   Dim CurrentErrSource As String
    
-   strErrDescription = Err.Description
-   strErrSource = Err.Source
+   NewErrDescription = Err.Description
+   CurrentErrSource = Err.Source
    
 On Error Resume Next
    
-   strSource = sSource
-   If Len(strSource) = 0 Then
-      strSource = strErrSource
-   ElseIf strErrSource <> getApplicationVbProjectName Then
-      strSource = strSource & m_ErrorSourceDelimiterSymbol & strErrSource
+   NewErrSource = ErrSource
+   If Len(NewErrSource) = 0 Then
+      NewErrSource = CurrentErrSource
+   ElseIf CurrentErrSource <> GetApplicationVbProjectName Then
+      NewErrSource = NewErrSource & ERRORSOURCE_DELIMITERSYMBOL & CurrentErrSource
    End If
    
-   If Len(sErrDescription) > 0 Then
-      strErrDescription = sErrDescription
+   If Len(ErrDescription) > 0 Then
+      NewErrDescription = ErrDescription
    End If
    
    'Ausgabe in Datei
-   If (lErrHandlerMode And ACLibErrorHandlerMode.aclibErrFile) Then
-      printToFile lErrorNumber, strSource, strErrDescription
-      lErrHandlerMode = lErrHandlerMode - ACLibErrorHandlerMode.aclibErrFile
+   If (ErrHandlerMode And ACLibErrorHandlerMode.aclibErrFile) Then
+      printToFile ErrNumber, NewErrSource, NewErrDescription
+      ErrHandlerMode = ErrHandlerMode - ACLibErrorHandlerMode.aclibErrFile
    End If
 
    'Fehlerbehandlung
    Err.Clear
 On Error GoTo 0
-   Select Case lErrHandlerMode
+   Select Case ErrHandlerMode
       Case ACLibErrorHandlerMode.aclibErrRaise 'Weitergabe an Anwendung
-         Err.Raise lErrorNumber, strSource, strErrDescription
+         Err.Raise ErrNumber, NewErrSource, NewErrDescription
       Case ACLibErrorHandlerMode.aclibErrMsgBox  'Msgbox
-         ShowErrorMessage lErrorNumber, strSource, strErrDescription
+         ShowErrorMessage ErrNumber, NewErrSource, NewErrDescription
       Case ACLibErrorHandlerMode.aclibErrIgnore  'Fehlermeldung übergehen
          '
       Case Else '(sollte eigentlich nie eintreten) .. an Anwendung weitergeben
-         Err.Raise lErrorNumber, strSource, strErrDescription
+         Err.Raise ErrNumber, NewErrSource, NewErrDescription
    End Select
 
    'return resume mode
-   procHandleError = m_conDefaultErrorResumeMode ' Das würde erst bei einer Klasse etwas bringen
+   procHandleError = DEFAULT_ERRORRESUMEMODE ' Das würde erst bei einer Klasse etwas bringen
 
 End Function
 
-Public Sub ShowErrorMessage(ByVal lErrorNumber As Long, ByRef sSource As String, ByRef sErrorDescription As String)
+Public Sub ShowErrorMessage(ByVal ErrNumber As Long, ByRef ErrSource As String, ByRef ErrDescription As String)
    
-   Dim strMsgBoxTitle As String
+   Dim ErrMsgBoxTitle As String
    Dim Pos As Long
    Dim TempString As String
 
 On Error Resume Next
    
-   Const conLineBreakPos As Long = 50
+   Const LineBreakPos As Long = 50
    
-   Pos = InStr(1, sSource, m_ErrorSourceDelimiterSymbol, vbBinaryCompare)
+   Pos = InStr(1, ErrSource, ERRORSOURCE_DELIMITERSYMBOL, vbBinaryCompare)
    If Pos > 1 Then
-      strMsgBoxTitle = Left$(sSource, Pos - 1)
+      ErrMsgBoxTitle = Left$(ErrSource, Pos - 1)
    Else
-      strMsgBoxTitle = sSource
+      ErrMsgBoxTitle = ErrSource
    End If
    
-   If Len(sSource) > conLineBreakPos Then
-      Pos = InStr(conLineBreakPos, sSource, m_ErrorSourceDelimiterSymbol)
+   If Len(ErrSource) > LineBreakPos Then
+      Pos = InStr(LineBreakPos, ErrSource, ERRORSOURCE_DELIMITERSYMBOL)
       If Pos > 0 Then
          Do While Pos > 0
-            TempString = TempString & Left$(sSource, Pos - 1) & vbNewLine
-            sSource = Mid$(sSource, Pos)
-            Pos = InStr(conLineBreakPos, sSource, m_ErrorSourceDelimiterSymbol)
+            TempString = TempString & Left$(ErrSource, Pos - 1) & vbNewLine
+            ErrSource = Mid$(ErrSource, Pos)
+            Pos = InStr(LineBreakPos, ErrSource, ERRORSOURCE_DELIMITERSYMBOL)
          Loop
-         sSource = TempString & sSource
+         ErrSource = TempString & ErrSource
       End If
    End If
    
-   VBA.MsgBox "Error " & lErrorNumber & ": " & vbNewLine & sErrorDescription & vbNewLine & vbNewLine & "(" & sSource & ")", _
-         vbCritical + vbSystemModal + vbMsgBoxSetForeground, strMsgBoxTitle
+   VBA.MsgBox "Error " & ErrNumber & ": " & vbNewLine & ErrDescription & vbNewLine & vbNewLine & "(" & ErrSource & ")", _
+         vbCritical + vbSystemModal + vbMsgBoxSetForeground, ErrMsgBoxTitle
 
 End Sub
 
-Private Sub printToFile(ByRef lErrorNumber As Long, ByRef sSource As String, _
-                        ByRef sErrDescription As String)
+Private Sub printToFile(ByRef ErrNumber As Long, ByRef ErrSource As String, _
+                        ByRef ErrDescription As String)
     
-   Dim strFileSource As String
-   Dim iFile As Long
-   Dim bolWriteToFile As Boolean
+   Dim FileSource As String
+   Dim f As Long
+   Dim WriteToFile As Boolean
    Dim PathToErrLogFile As String
    
 On Error Resume Next
    
-   bolWriteToFile = True
+   WriteToFile = True
    
-   strFileSource = "[" & sSource & "]"
+   FileSource = "[" & ErrSource & "]"
    PathToErrLogFile = ErrorHandlerLogFile
    If Len(PathToErrLogFile) = 0 Then
       PathToErrLogFile = CurrentProject.Path & "\Error.log"
    End If
-   iFile = FreeFile
-   Open PathToErrLogFile For Append As #iFile
-      Print #iFile, Format$(Now(), _
-            "yyyy-mm-tt hh:nn:ss "); strFileSource; _
-            " Error "; CStr(lErrorNumber); ": "; sErrDescription
-   Close #iFile
+   f = FreeFile
+   Open PathToErrLogFile For Append As #f
+      Print #f, Format$(Now(), _
+            "yyyy-mm-tt hh:nn:ss "); FileSource; _
+            " Error "; CStr(ErrNumber); ": "; ErrDescription
+   Close #f
    
 End Sub
 
-Private Function getApplicationVbProjectName() As String
+Private Function GetApplicationVbProjectName() As String
    
-   Dim strVbProjectName As String
-   Dim strDbFile As String
+   Dim VbProjectName As String
+   Dim DbFile As String
    Dim vbp As Object
    
 On Error Resume Next
    
-   strVbProjectName = Access.VBE.ActiveVBProject.Name
-   strDbFile = CurrentDb.Name 'Auf UNCPath verzichtet, damit dieses Modul unabhängig bleibt
-   If Access.VBE.ActiveVBProject.FileName <> strDbFile Then
+   VbProjectName = Access.VBE.ActiveVBProject.Name
+   DbFile = CurrentDb.Name 'Auf UNCPath verzichtet, damit dieses Modul unabhängig bleibt
+   If Access.VBE.ActiveVBProject.FileName <> DbFile Then
       For Each vbp In Access.VBE.VBProjects
-         If vbp.FileName = strDbFile Then
-            strVbProjectName = vbp.Name
+         If vbp.FileName = DbFile Then
+            VbProjectName = vbp.Name
          End If
       Next
    End If
     
-   getApplicationVbProjectName = strVbProjectName
+   GetApplicationVbProjectName = VbProjectName
    
 End Function

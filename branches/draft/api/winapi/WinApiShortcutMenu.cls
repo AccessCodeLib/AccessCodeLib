@@ -63,7 +63,7 @@ End Type
 
 'Hilfsfenster
 Private Declare PtrSafe Function CreateWindowEx _
-      Lib "USER32.DLL" _
+      Lib "user32.dll" _
       Alias "CreateWindowExA" ( _
       ByVal dwExStyle As Long, _
       ByVal lpClassname As String, _
@@ -80,10 +80,10 @@ Private Declare PtrSafe Function CreateWindowEx _
 
 'Menü-Standardfunktionen
 Private Declare PtrSafe Function CreatePopupMenu _
-      Lib "USER32.DLL" () As Long
+      Lib "user32.dll" () As Long
 
 Private Declare PtrSafe Function AppendMenu _
-      Lib "USER32.DLL" _
+      Lib "user32.dll" _
       Alias "AppendMenuA" ( _
       ByVal hMenu As Long, _
       ByVal wFlags As Long, _
@@ -92,7 +92,7 @@ Private Declare PtrSafe Function AppendMenu _
       ) As Long
 
 Private Declare PtrSafe Function TrackPopupMenu _
-      Lib "USER32.DLL" ( _
+      Lib "user32.dll" ( _
       ByVal hMenu As Long, _
       ByVal wFlags As Long, _
       ByVal X As Long, _
@@ -103,13 +103,13 @@ Private Declare PtrSafe Function TrackPopupMenu _
       ) As Long 'lprc As RECT
 
 Private Declare PtrSafe Function DestroyMenu _
-      Lib "USER32.DLL" ( _
+      Lib "user32.dll" ( _
          ByVal hMenu As Long _
       ) As Long
 
 'Message-Loop
 Private Declare PtrSafe Function GetMessage _
-      Lib "USER32.DLL" _
+      Lib "user32.dll" _
       Alias "GetMessageA" ( _
       ByRef lpMsg As APIMSG, _
       ByVal Hwnd As Long, _
@@ -118,16 +118,16 @@ Private Declare PtrSafe Function GetMessage _
       ) As Long
 
 Private Declare PtrSafe Function DispatchMessage _
-      Lib "USER32.DLL" _
+      Lib "user32.dll" _
       Alias "DispatchMessageA" ( _
       ByRef lpMsg As APIMSG _
       ) As Long
 
 Private Declare PtrSafe Function TranslateMessage _
-      Lib "USER32.DLL" (ByRef lpMsg As APIMSG) As Long
+      Lib "user32.dll" (ByRef lpMsg As APIMSG) As Long
 
 Private Declare PtrSafe Function GetWindowRect _
-      Lib "USER32.DLL" ( _
+      Lib "user32.dll" ( _
          ByVal Hwnd As Long, _
          ByRef lpRect As RECT _
       ) As Long
@@ -143,7 +143,7 @@ Private Declare PtrSafe Function SetMenuDefaultItem _
 
 'Hilfsfenster
 Private Declare Function CreateWindowEx _
-      Lib "USER32.DLL" _
+      Lib "user32.dll" _
       Alias "CreateWindowExA" ( _
       ByVal dwExStyle As Long, _
       ByVal lpClassname As String, _
@@ -160,10 +160,10 @@ Private Declare Function CreateWindowEx _
 
 'Menü-Standardfunktionen
 Private Declare Function CreatePopupMenu _
-      Lib "USER32.DLL" () As Long
+      Lib "user32.dll" () As Long
 
 Private Declare Function AppendMenu _
-      Lib "USER32.DLL" _
+      Lib "user32.dll" _
       Alias "AppendMenuA" ( _
       ByVal hMenu As Long, _
       ByVal wFlags As Long, _
@@ -172,7 +172,7 @@ Private Declare Function AppendMenu _
       ) As Long
 
 Private Declare Function TrackPopupMenu _
-      Lib "USER32.DLL" ( _
+      Lib "user32.dll" ( _
       ByVal hMenu As Long, _
       ByVal wFlags As Long, _
       ByVal X As Long, _
@@ -183,13 +183,13 @@ Private Declare Function TrackPopupMenu _
       ) As Long 'lprc As RECT
 
 Private Declare Function DestroyMenu _
-      Lib "USER32.DLL" ( _
+      Lib "user32.dll" ( _
          ByVal hMenu As Long _
       ) As Long
 
 'Message-Loop
 Private Declare Function GetMessage _
-      Lib "USER32.DLL" _
+      Lib "user32.dll" _
       Alias "GetMessageA" ( _
       ByRef lpMsg As APIMSG, _
       ByVal Hwnd As Long, _
@@ -198,16 +198,16 @@ Private Declare Function GetMessage _
       ) As Long
 
 Private Declare Function DispatchMessage _
-      Lib "USER32.DLL" _
+      Lib "user32.dll" _
       Alias "DispatchMessageA" ( _
       ByRef lpMsg As APIMSG _
       ) As Long
 
 Private Declare Function TranslateMessage _
-      Lib "USER32.DLL" (ByRef lpMsg As APIMSG) As Long
+      Lib "user32.dll" (ByRef lpMsg As APIMSG) As Long
 
 Private Declare Function GetWindowRect _
-      Lib "USER32.DLL" ( _
+      Lib "user32.dll" ( _
          ByVal Hwnd As Long, _
          ByRef lpRect As RECT _
       ) As Long
@@ -246,7 +246,7 @@ Private Const TPM_BOTTOMALIGN As Long = &H20&
 'Hilfsfenster
 Private Const WS_CHILD As Long = &H40000000
 
-Private Helper As Long 'Hilfsfenster-Handle
+Private m_Helper As Long 'Hilfsfenster-Handle
 
 '---- Ergänzung
 
@@ -294,9 +294,9 @@ Private Property Get LayoutTools() As WinApiLayoutTools
 End Property
 
 
-Public Property Let ControlSection(ByVal lSection As Long)
+Public Property Let ControlSection(ByVal SectionIndex As Long)
 On Error Resume Next
-   m_Section = lSection
+   m_Section = SectionIndex
 End Property
 
 Public Property Get MenuControl() As Access.Control
@@ -306,35 +306,35 @@ End Property
 Public Property Set MenuControl(ByRef MnuCtl As Access.Control)
    
    Dim lngSectionHwnd As Long
-   Dim objParent As Object
+   Dim ParentObj As Object
 
    Set m_MenuControl = MnuCtl
    
-   Set objParent = m_MenuControl.Parent
-   If TypeOf objParent Is Access.Page Then
-      Set objParent = objParent.Parent.Parent
+   Set ParentObj = m_MenuControl.Parent
+   If TypeOf ParentObj Is Access.Page Then
+      Set ParentObj = ParentObj.Parent.Parent
    End If
    If m_AccessForm Is Nothing Then
-      Set m_AccessForm = objParent
+      Set m_AccessForm = ParentObj
    End If
    
    Select Case m_Section
       Case 0 'Detailbereich
-         lngSectionHwnd = WindowTools.GetDetailSection(objParent.Hwnd)
+         lngSectionHwnd = WindowTools.GetDetailSection(ParentObj.Hwnd)
       Case 1 'Kopf
-         lngSectionHwnd = WindowTools.GetHeaderSection(objParent.Hwnd)
+         lngSectionHwnd = WindowTools.GetHeaderSection(ParentObj.Hwnd)
       Case 2 ' Fuß
-         lngSectionHwnd = WindowTools.GetFooterSection(objParent.Hwnd)
+         lngSectionHwnd = WindowTools.GetFooterSection(ParentObj.Hwnd)
       Case Else
-         lngSectionHwnd = WindowTools.GetDetailSection(objParent.Hwnd)
+         lngSectionHwnd = WindowTools.GetDetailSection(ParentObj.Hwnd)
    End Select
-   Set objParent = Nothing
+   Set ParentObj = Nothing
    
    'DoCmd.Restore '??? wozu ???
    'Hilfsfenster am Ursprung des Detailbereichs erstellen zur Positionsbestimmung
    'wenn das Formular gescrollt wird
    
-   Helper = CreateWindowEx(0, _
+   m_Helper = CreateWindowEx(0, _
                      "Static", _
                      "Helper", _
                      WS_CHILD, _
@@ -353,8 +353,8 @@ Public Property Get AccessForm() As Access.Form
    Set AccessForm = m_AccessForm
 End Property
 
-Public Property Set AccessForm(ByRef frm As Access.Form)
-   Set m_AccessForm = frm
+Public Property Set AccessForm(ByRef FrmRef As Access.Form)
+   Set m_AccessForm = FrmRef
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -372,20 +372,20 @@ End Property
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Sub AddMenuItem(ByVal lMenuItemNumber As Long, ByVal sItemText As String, _
-              Optional ByVal lItemType As MenuItemStyle = MF_STRING, _
-              Optional ByVal lSubMenu As Long = 0, _
-              Optional ByVal bDefaultItem As Boolean = False)
+Public Sub AddMenuItem(ByVal MenuItemNumber As Long, ByVal ItemText As String, _
+              Optional ByVal ItemType As MenuItemStyle = MF_STRING, _
+              Optional ByVal SubMenu As Long = 0, _
+              Optional ByVal DefaultItem As Boolean = False)
               
    m_ItemCnt = m_ItemCnt + 1
    ReDim Preserve m_MenuItems(m_ItemCnt)
    
    With m_MenuItems(m_ItemCnt)
-      .ItemNumber = lMenuItemNumber
-      .ItemText = sItemText
-      .ItemType = lItemType
-      .SubMenu = lSubMenu
-      .DefaultItem = bDefaultItem
+      .ItemNumber = MenuItemNumber
+      .ItemText = ItemText
+      .ItemType = ItemType
+      .SubMenu = SubMenu
+      .DefaultItem = DefaultItem
    End With
 
 End Sub
@@ -407,17 +407,17 @@ End Sub
 Public Function OpenMenu(Optional ByVal X As Single = 0, Optional ByVal Y As Single = 0) As Long
 
    Dim MenuHwnd As Long
-   Dim tmpHwnd As Long
+   Dim TmpHwnd As Long
    
-   Dim rcHelper As RECT
+   Dim RcHelper As RECT
    Dim ButtonLeft As Long
    Dim ButtonTop As Long
    Dim Xpos As Long
    Dim Ypos As Long
    Dim Message As APIMSG
  
-   Dim objParent As Object
-   Dim rcAccForm As RECT
+   Dim ParentObj As Object
+   Dim AccFormRect As RECT
 
    'Sonst wird bei ENTER nix angezeigt:
    DoEvents
@@ -431,14 +431,14 @@ Public Function OpenMenu(Optional ByVal X As Single = 0, Optional ByVal Y As Sin
    For i = 1 To m_ItemCnt
       With m_MenuItems(i)
          If .SubMenu > 0 Then
-            If tmpHwnd = 0 Then
-               tmpHwnd = CreatePopupMenu
+            If TmpHwnd = 0 Then
+               TmpHwnd = CreatePopupMenu
             End If
             If .ItemType And MF_POPUP = MF_POPUP Then
-               AppendMenu MenuHwnd, MF_STRING Or MF_POPUP, tmpHwnd, .ItemText
-               tmpHwnd = 0
+               AppendMenu MenuHwnd, MF_STRING Or MF_POPUP, TmpHwnd, .ItemText
+               TmpHwnd = 0
             Else
-               AppendMenu tmpHwnd, .ItemType, .ItemNumber, .ItemText
+               AppendMenu TmpHwnd, .ItemType, .ItemNumber, .ItemText
             End If
          Else
             AppendMenu MenuHwnd, .ItemType, .ItemNumber, .ItemText
@@ -452,34 +452,34 @@ Public Function OpenMenu(Optional ByVal X As Single = 0, Optional ByVal Y As Sin
 
    'Position ermitteln
    '- Hilfsfenster (~Sektionsfenster) absolut
-   GetWindowRect Helper, rcHelper
+   GetWindowRect m_Helper, RcHelper
    
    If m_MenuControl Is Nothing Then
-      GetWindowRect m_AccessForm.Hwnd, rcAccForm
-      ButtonLeft = LayoutTools.GetPixelFromTwips(X) + rcAccForm.Left
-      ButtonTop = LayoutTools.GetPixelFromTwips(Y) + rcAccForm.Top
+      GetWindowRect m_AccessForm.Hwnd, AccFormRect
+      ButtonLeft = LayoutTools.GetPixelFromTwips(X) + AccFormRect.Left
+      ButtonTop = LayoutTools.GetPixelFromTwips(Y) + AccFormRect.Top
    Else
    '- Buttom relativ zum Sektionsfenster
       ButtonLeft = LayoutTools.GetPixelFromTwips(m_MenuControl.Left) + LayoutTools.GetPixelFromTwips(X)
       ButtonTop = LayoutTools.GetPixelFromTwips(m_MenuControl.Top) + LayoutTools.GetPixelFromTwips(Y)
    End If
    '- Miteinander verrechnen
-   Xpos = rcHelper.Left + ButtonLeft - 1
-   Ypos = rcHelper.Top + ButtonTop
+   Xpos = RcHelper.Left + ButtonLeft - 1
+   Ypos = RcHelper.Top + ButtonTop
    
    'Menü anzeigen
    
    If m_MenuControl Is Nothing Then
-      Set objParent = m_AccessForm
+      Set ParentObj = m_AccessForm
    Else
-      Set objParent = m_MenuControl.Parent
-      If TypeOf objParent Is Access.Page Then
-         Set objParent = objParent.Parent.Parent
+      Set ParentObj = m_MenuControl.Parent
+      If TypeOf ParentObj Is Access.Page Then
+         Set ParentObj = ParentObj.Parent.Parent
       End If
    End If
    
    TrackPopupMenu MenuHwnd, TPM_BOTTOMALIGN, Xpos, Ypos, _
-               ByVal 0&, objParent.Hwnd, ByVal 0&
+               ByVal 0&, ParentObj.Hwnd, ByVal 0&
    
    'Message-Loop (Obacht: für normale Formulare Application.hWndAccessApp, für POPUPS Me.hwnd)
    
@@ -490,9 +490,9 @@ Public Function OpenMenu(Optional ByVal X As Single = 0, Optional ByVal Y As Sin
       Hwnd = Application.hWndAccessApp
    End If
    
-   Dim repeatGetMessage As Boolean
+   Dim RepeatGetMessage As Boolean
    Do 'Sicherheitsschliefe, falls es Probleme mit Windows-Message gibt. (WM_MOUSELEAVE)
-      repeatGetMessage = False
+      RepeatGetMessage = False
       GetMessage Message, Hwnd, ByVal 0&, ByVal 0&
       TranslateMessage Message
       DispatchMessage Message
@@ -501,11 +501,11 @@ Public Function OpenMenu(Optional ByVal X As Single = 0, Optional ByVal Y As Sin
       If Message.Message = WM_COMMAND Then
          OpenMenu = Message.wParam
       ElseIf Message.Message = WM_MOUSELEAVE Then
-         repeatGetMessage = True
+         RepeatGetMessage = True
       Else
          OpenMenu = 0
       End If
-   Loop While repeatGetMessage
+   Loop While RepeatGetMessage
    
    'Menü zerstören
    DestroyMenu MenuHwnd

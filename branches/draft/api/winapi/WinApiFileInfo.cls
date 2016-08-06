@@ -103,44 +103,44 @@ Private Type FILEINFOOUT
   ProductVersion As String
 End Type
 
-Private Function GetVersion(ByVal sPath As String, _
-                            ByRef FInfo As FILEINFOOUT) As Boolean
+Private Function GetVersion(ByVal FilePath As String, _
+                            ByRef GetFileInfo As FILEINFOOUT) As Boolean
 
-  Dim lRet As Long, lSize As Long, lHandle As Long
-  Dim lVerBufLen As Long, lVerPointer As Long
+  Dim Ret As Long, Size As Long, Handle As Long
+  Dim VerBufLen As Long, VerPointer As Long
   Dim FileInfo As VS_FIXEDFILEINFO
-  Dim sBuffer() As Byte
+  Dim BufferString() As Byte
 
-  lSize = GetFileVersionInfoSize(sPath, lHandle)
-  If lSize = 0 Then
+  Size = GetFileVersionInfoSize(FilePath, Handle)
+  If Size = 0 Then
     GetVersion = False
     Exit Function
   End If
   
-  ReDim sBuffer(lSize)
-  lRet = GetFileVersionInfo(sPath, 0&, lSize, sBuffer(0))
-  If lSize = 0 Then
+  ReDim sBuffer(Size)
+  Ret = GetFileVersionInfo(FilePath, 0&, Size, BufferString(0))
+  If Ret = 0 Then
     GetVersion = False
     Exit Function
   End If
   
-  lRet = VerQueryValue(sBuffer(0), "\", lVerPointer, lVerBufLen)
-  If lSize = 0 Then
+  Ret = VerQueryValue(BufferString(0), "\", VerPointer, VerBufLen)
+  If Ret = 0 Then
     GetVersion = False
     Exit Function
   End If
   
-  Call MoveMemory(FileInfo, lVerPointer, Len(FileInfo))
+  Call MoveMemory(FileInfo, VerPointer, Len(FileInfo))
   
   With FileInfo
   
-    FInfo.FileVersion = _
+    GetFileInfo.FileVersion = _
       Trim$(Str$((.dwFileVersionMS And &HFFFF0000) \ &H10000)) & "." & _
       Trim$(Str$(.dwFileVersionMS And &HFFFF&)) & "." & _
       Trim$(Str$((.dwFileVersionLS And &HFFFF0000) \ &H10000)) & "." & _
       Trim$(Str$(.dwFileVersionLS And &HFFFF&))
     
-    FInfo.ProductVersion = _
+    GetFileInfo.ProductVersion = _
       Trim$(Str$((.dwProductVersionMS And &HFFFF0000) \ &H10000)) & "." & _
       Trim$(Str$(.dwProductVersionMS And &HFFFF&)) & "." & _
       Trim$(Str$((.dwProductVersionLS And &HFFFF0000) \ &H10000)) & "." & _
@@ -166,10 +166,10 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetFileVersion(ByVal sFile As String) As String
-   Dim verInfo As FILEINFOOUT
-   If GetVersion(sFile, verInfo) Then
-      GetFileVersion = verInfo.FileVersion
+Public Function GetFileVersion(ByVal FilePath As String) As String
+   Dim VerInfo As FILEINFOOUT
+   If GetVersion(FilePath, VerInfo) Then
+      GetFileVersion = VerInfo.FileVersion
    Else
       GetFileVersion = vbNullString
    End If

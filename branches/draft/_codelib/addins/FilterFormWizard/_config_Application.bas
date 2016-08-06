@@ -18,24 +18,24 @@ Option Compare Database
 Option Explicit
 
 'Versionsnummer
-Private Const m_ApplicationVersion As String = "1.3.4" '2016-04-26
-Private Const m_ApplicationCodeModulsSvnRev As Long = 365
+Private Const APPLICATION_VERSION As String = "1.3.5" '2016-08-06
+Private Const APPLICATION_CODEMODULES_SVNREV As Long = 365
 
-#Const USE_CLASS_ApplicationHandler_AppFile = 1
-#Const USE_CLASS_ApplicationHandler_Version = 1
+#Const USE_CLASS_APPLICATIONHANDLER_APPFILE = 1
+#Const USE_CLASS_APPLICATIONHANDLER_VERSION = 1
 
-Private Const m_ApplicationName As String = "ACLib FilterForm Wizard"
-Private Const m_ApplicationFullName As String = "Access Code Library - FilterForm Wizard"
-Private Const m_ApplicationTitle As String = m_ApplicationFullName
-Private Const m_ApplicationIconFile As String = "ACLib.ico"
+Private Const APPLICATION_NAME As String = "ACLib FilterForm Wizard"
+Private Const APPLICATION_FULLNAME As String = "Access Code Library - FilterForm Wizard"
+Private Const APPLICATION_TITLE As String = APPLICATION_FULLNAME
+Private Const APPLICATION_ICONFILE As String = "ACLib.ico"
 
-Public Const DownLoadSource As String = "http://wiki.access-codelib.net/ACLib-FilterForm-Wizard"
-Private Const m_Application_DownloadFolder As String = "http://access-codelib.net/download/addins/"
-Private Const m_Application_DownloadVersionXmlFile As String = m_Application_DownloadFolder & "ACLibFilterFormWizard.xml"
+Public Const DownloadSource As String = "http://wiki.access-codelib.net/ACLib-FilterForm-Wizard"
+Private Const APPLICATION_DOWNLOAD_FOLDER As String = "http://access-codelib.net/download/addins/"
+Private Const APPLICATION_DOWNLOAD_VERSIONXMLFILE As String = APPLICATION_DOWNLOAD_FOLDER & "ACLibFilterFormWizard.xml"
 
-Private Const m_DefaultErrorHandlerMode As Long = ACLibErrorHandlerMode.aclibErrMsgBox
+Private Const DefaultErrorHandlerMode As Long = ACLibErrorHandlerMode.aclibErrMsgBox
 
-Private Const m_ApplicationStartFormName As String = "frmFilterFormWizard"
+Private Const ApplicationStartFormName As String = "frmFilterFormWizard"
 
 '---------------------------------------------------------------------------------------
 ' Sub: InitConfig (Josef Pötzl)
@@ -50,7 +50,7 @@ Private Const m_ApplicationStartFormName As String = "frmFilterFormWizard"
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Sub InitConfig(Optional ByRef oCurrentAppHandler As ApplicationHandler = Nothing)
+Public Sub InitConfig(Optional ByRef CurrentAppHandlerRef As ApplicationHandler = Nothing)
 
 On Error GoTo HandleErr
 
@@ -58,7 +58,7 @@ On Error GoTo HandleErr
 ' Fehlerbehandlung
 '
 
-   modErrorHandler.DefaultErrorHandlerMode = m_DefaultErrorHandlerMode
+   modErrorHandler.DefaultErrorHandlerMode = DefaultErrorHandlerMode
 
    
 '----------------------------------------------------------------------------
@@ -70,26 +70,26 @@ On Error GoTo HandleErr
 '----------------------------------------------------------------------------
 ' Anwendungsinstanz einstellen
 '
-   If oCurrentAppHandler Is Nothing Then
-      Set oCurrentAppHandler = CurrentApplication
+   If CurrentAppHandlerRef Is Nothing Then
+      Set CurrentAppHandlerRef = CurrentApplication
    End If
 
-   With oCurrentAppHandler
+   With CurrentAppHandlerRef
    
       'Zur Sicherheit AccDb einstellen
       Set .AppDb = CodeDb 'muss auf CodeDb zeigen,
                           'da diese Anwendung als Add-In verwendet wird
    
       'Anwendungsname
-      .ApplicationName = m_ApplicationName
-      .ApplicationFullName = m_ApplicationFullName
-      .ApplicationTitle = m_ApplicationTitle
+      .ApplicationName = APPLICATION_NAME
+      .ApplicationFullName = APPLICATION_FULLNAME
+      .ApplicationTitle = APPLICATION_TITLE
       
       'Version
-      .Version = m_ApplicationVersion
+      .Version = APPLICATION_VERSION
       
       ' Formular, das am Ende von CurrentApplication.Start aufgerufen wird
-      .ApplicationStartFormName = m_ApplicationStartFormName
+      .ApplicationStartFormName = ApplicationStartFormName
    
     
    End With
@@ -98,7 +98,7 @@ On Error GoTo HandleErr
 '----------------------------------------------------------------------------
 ' Erweiterung: AppFile
 '
-#If USE_CLASS_ApplicationHandler_AppFile = 1 Then
+#If USE_CLASS_APPLICATIONHANDLER_APPFILE = 1 Then
    modApplication.AddApplicationHandlerExtension New ApplicationHandler_AppFile
 #End If
 
@@ -106,12 +106,12 @@ On Error GoTo HandleErr
 '----------------------------------------------------------------------------
 ' Erweiterung: AppFile
 '
-#If USE_CLASS_ApplicationHandler_Version = 1 Then
+#If USE_CLASS_APPLICATIONHANDLER_VERSION = 1 Then
    Dim AppHdlVersion As ApplicationHandler_Version
    
    Set AppHdlVersion = New ApplicationHandler_Version
    modApplication.AddApplicationHandlerExtension AppHdlVersion
-   AppHdlVersion.XmlVersionCheckFile = m_Application_DownloadVersionXmlFile
+   AppHdlVersion.XmlVersionCheckFile = APPLICATION_DOWNLOAD_VERSIONXMLFILE
    
 #End If
 
@@ -155,7 +155,7 @@ End Sub
 Private Sub SetAppFiles()
 On Error GoTo HandleErr
 
-   Call CurrentApplication.Extensions("AppFile").SaveAppFile("AppIcon", CodeProject.Path & "\" & m_ApplicationIconFile)
+   Call CurrentApplication.Extensions("AppFile").SaveAppFile("AppIcon", CodeProject.Path & "\" & APPLICATION_ICONFILE)
    SaveCodeModulesToTable
 
 ExitHere:
@@ -174,23 +174,23 @@ End Sub
 
 Private Sub SaveCodeModulesToTable()
 
-   Dim X As Variant
+   Dim CodeModuleArray As Variant
    Dim i As Long
    
-   X = Array("SqlTools", "StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
-   For i = 0 To UBound(X)
-      SaveCodeModulToTable acModule, X(i), m_ApplicationCodeModulsSvnRev
+   CodeModuleArray = Array("SqlTools", "StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
+   For i = 0 To UBound(CodeModuleArray)
+      SaveCodeModulToTable acModule, CodeModuleArray(i), APPLICATION_CODEMODULES_SVNREV
    Next
    
 End Sub
 
-Private Sub SaveCodeModulToTable(ByVal ObjType As AcObjectType, ByVal sModulName As String, ByVal SvnRev As Long)
+Private Sub SaveCodeModulToTable(ByVal ObjType As AcObjectType, ByVal ModulName As String, ByVal SvnRev As Long)
    
-   Dim strFileName As String
+   Dim FileName As String
 
-   strFileName = FileTools.GetNewTempFileName
-   Application.SaveAsText ObjType, sModulName, strFileName
-   CurrentApplication.SaveAppFile sModulName, strFileName, True, "SvnRev", SvnRev
-   Kill strFileName
+   FileName = FileTools.GetNewTempFileName
+   Application.SaveAsText ObjType, ModulName, FileName
+   CurrentApplication.SaveAppFile ModulName, FileName, True, "SvnRev", SvnRev
+   Kill FileName
    
 End Sub
