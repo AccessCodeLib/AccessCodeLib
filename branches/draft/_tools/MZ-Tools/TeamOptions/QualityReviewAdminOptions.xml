@@ -137,6 +137,22 @@
               <MultipleValues />
             </PropertyValue>
           </WhenCondition>
+          <WhenCondition>
+            <Object>ClassFieldProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>(Name)</PropertyDisplayedName>
+            <PropertyInternalName>Name</PropertyInternalName>
+            <PropertyKind>String</PropertyKind>
+            <Operator>Matching</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName>System.String</TypeFullName>
+                <DisplayedValue>\bm_[A-Z_]+(MDI)*[A-Z_]*</DisplayedValue>
+                <InternalValue>\bm_[A-Z_]+(MDI)*[A-Z_]*</InternalValue>
+              </SingleValue>
+              <MultipleValues />
+            </PropertyValue>
+          </WhenCondition>
         </WhenConditions>
         <Explanation />
         <HowToFix />
@@ -203,6 +219,73 @@
       <NomenclatureRule>
         <Active>1</Active>
         <ID />
+        <Description>Methodenname in Pascal case (außer Event handler und Declare)</Description>
+        <Kind>MethodProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>None</WhenConditionsOperator>
+        <WhenConditions>
+          <WhenCondition>
+            <Object>MethodProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>Declaration</PropertyDisplayedName>
+            <PropertyInternalName>Declaration</PropertyInternalName>
+            <PropertyKind>String</PropertyKind>
+            <Operator>Matching</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName>System.String</TypeFullName>
+                <DisplayedValue>\bPrivate\s+(Sub|Function|Property (Get|Let|Set))\s+[A-Z][A-Za-z0-9]*_.*[A-Z].*</DisplayedValue>
+                <InternalValue>\bPrivate\s+(Sub|Function|Property (Get|Let|Set))\s+[A-Z][A-Za-z0-9]*_.*[A-Z].*</InternalValue>
+              </SingleValue>
+              <MultipleValues />
+            </PropertyValue>
+          </WhenCondition>
+          <WhenCondition>
+            <Object>MethodProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>(Name)</PropertyDisplayedName>
+            <PropertyInternalName>Name</PropertyInternalName>
+            <PropertyKind>String</PropertyKind>
+            <Operator>Matching</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName>System.String</TypeFullName>
+                <DisplayedValue>\b[A-Z][A-Za-z0-9]*(MDI)[A-Za-z0-9]*\b</DisplayedValue>
+                <InternalValue>\b[A-Z][A-Za-z0-9]*(MDI)[A-Za-z0-9]*\b</InternalValue>
+              </SingleValue>
+              <MultipleValues />
+            </PropertyValue>
+          </WhenCondition>
+          <WhenCondition>
+            <Object>MethodProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>Declaration</PropertyDisplayedName>
+            <PropertyInternalName>Declaration</PropertyInternalName>
+            <PropertyKind>String</PropertyKind>
+            <Operator>Matching</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName>System.String</TypeFullName>
+                <DisplayedValue>Declare (PtrSafe )*(Function|Sub)</DisplayedValue>
+                <InternalValue>Declare (PtrSafe )*(Function|Sub)</InternalValue>
+              </SingleValue>
+              <MultipleValues />
+            </PropertyValue>
+          </WhenCondition>
+        </WhenConditions>
+        <Explanation />
+        <HowToFix />
+        <Type>1</Type>
+        <Prefix1 />
+        <Prefix2 />
+        <Case>Pascal</Case>
+        <Suffix1 />
+        <Suffix2 />
+      </NomenclatureRule>
+      <NomenclatureRule>
+        <Active>1</Active>
+        <ID />
         <Description>Method constants must be all upper case or pascal case</Description>
         <Kind>MethodConstantProperties</Kind>
         <AssemblyFullName />
@@ -254,8 +337,8 @@
             <PropertyValue>
               <SingleValue>
                 <TypeFullName>System.Int32</TypeFullName>
-                <DisplayedValue>2</DisplayedValue>
-                <InternalValue>2</InternalValue>
+                <DisplayedValue>3</DisplayedValue>
+                <InternalValue>3</InternalValue>
               </SingleValue>
               <MultipleValues />
             </PropertyValue>
@@ -272,54 +355,6 @@
                 <TypeFullName>System.String</TypeFullName>
                 <DisplayedValue>Tests</DisplayedValue>
                 <InternalValue>Tests</InternalValue>
-              </SingleValue>
-              <MultipleValues />
-            </PropertyValue>
-          </WhenCondition>
-          <WhenCondition>
-            <Object>MethodVariableProperties</Object>
-            <ControlTypeFullName />
-            <PropertyDisplayedName>(Name)</PropertyDisplayedName>
-            <PropertyInternalName>Name</PropertyInternalName>
-            <PropertyKind>String</PropertyKind>
-            <Operator>Equal</Operator>
-            <PropertyValue>
-              <SingleValue>
-                <TypeFullName />
-                <DisplayedValue />
-                <InternalValue />
-              </SingleValue>
-              <MultipleValues>
-                <Value>
-                  <TypeFullName>System.String</TypeFullName>
-                  <DisplayedValue>ctl</DisplayedValue>
-                  <InternalValue>ctl</InternalValue>
-                </Value>
-                <Value>
-                  <TypeFullName>System.String</TypeFullName>
-                  <DisplayedValue>col</DisplayedValue>
-                  <InternalValue>col</InternalValue>
-                </Value>
-                <Value>
-                  <TypeFullName>System.String</TypeFullName>
-                  <DisplayedValue>itm</DisplayedValue>
-                  <InternalValue>itm</InternalValue>
-                </Value>
-              </MultipleValues>
-            </PropertyValue>
-          </WhenCondition>
-          <WhenCondition>
-            <Object>MethodVariableProperties</Object>
-            <ControlTypeFullName />
-            <PropertyDisplayedName>(Name)</PropertyDisplayedName>
-            <PropertyInternalName>Name</PropertyInternalName>
-            <PropertyKind>String</PropertyKind>
-            <Operator>Matching</Operator>
-            <PropertyValue>
-              <SingleValue>
-                <TypeFullName>System.String</TypeFullName>
-                <DisplayedValue>\b[A-Z][A-Z][A-Z]</DisplayedValue>
-                <InternalValue>\b[A-Z][A-Z][A-Z]</InternalValue>
               </SingleValue>
               <MultipleValues />
             </PropertyValue>
@@ -353,8 +388,24 @@
             <PropertyValue>
               <SingleValue>
                 <TypeFullName>System.String</TypeFullName>
-                <DisplayedValue>\b[A-Z].+TSql.*</DisplayedValue>
-                <InternalValue>\b[A-Z].+TSql.*</InternalValue>
+                <DisplayedValue>\b[A-Z].+(TSql|ID).*</DisplayedValue>
+                <InternalValue>\b[A-Z].+(TSql|ID).*</InternalValue>
+              </SingleValue>
+              <MultipleValues />
+            </PropertyValue>
+          </WhenCondition>
+          <WhenCondition>
+            <Object>ParameterProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>NameLength</PropertyDisplayedName>
+            <PropertyInternalName>NameLength</PropertyInternalName>
+            <PropertyKind>Integer</PropertyKind>
+            <Operator>LessOrEqualThan</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName>System.Int32</TypeFullName>
+                <DisplayedValue>2</DisplayedValue>
+                <InternalValue>2</InternalValue>
               </SingleValue>
               <MultipleValues />
             </PropertyValue>
@@ -695,6 +746,16 @@
                   <TypeFullName>System.String</TypeFullName>
                   <DisplayedValue>m</DisplayedValue>
                   <InternalValue>m</InternalValue>
+                </Value>
+                <Value>
+                  <TypeFullName>System.String</TypeFullName>
+                  <DisplayedValue>f</DisplayedValue>
+                  <InternalValue>f</InternalValue>
+                </Value>
+                <Value>
+                  <TypeFullName>System.String</TypeFullName>
+                  <DisplayedValue>h</DisplayedValue>
+                  <InternalValue>h</InternalValue>
                 </Value>
               </MultipleValues>
             </PropertyValue>
