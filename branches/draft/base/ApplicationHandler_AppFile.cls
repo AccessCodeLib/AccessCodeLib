@@ -80,7 +80,7 @@ Private Sub m_ApplicationHandler_ExtensionPropertyLookup( _
                      ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
 
    If ExtensionKeyToCheck = EXTENSION_KEY Then
-      getExtensionPropertyLookup PropertyName, ResumeMode, ResumeMessage
+      GetExtensionPropertyLookup PropertyName, ResumeMode, ResumeMessage
    End If
 
 End Sub
@@ -98,7 +98,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 
-Private Sub getExtensionPropertyLookup(ByVal PropertyName As String, _
+Private Sub GetExtensionPropertyLookup(ByVal PropertyName As String, _
                                        ByRef ResumeMode As ApplicationHandlerResumeModes, _
                                        ByRef ResumeMessage As Variant)
 
@@ -248,7 +248,7 @@ HandleErr:
    If ErrNumber = 3078 And TabCreateErrCnt = 0 Then
       TabCreateErrCnt = 1
       Err.Clear
-      If createAppFileTable Then
+      If CreateAppFileTable Then
          Resume
       End If
    End If
@@ -257,7 +257,7 @@ HandleErr:
 
 End Function
 
-Private Function createAppFileTable() As Boolean
+Private Function CreateAppFileTable() As Boolean
    
    Dim CreateTableSql As String
 
@@ -265,7 +265,7 @@ Private Function createAppFileTable() As Boolean
                     TABLE_FIELD_VERSION & " varchar(10), " & TABLE_FIELD_FILE & " image)"
    CodeDb.Execute CreateTableSql, dbFailOnError
 
-   createAppFileTable = (Err.Number = 0)
+   CreateAppFileTable = (Err.Number = 0)
 
 End Function
 

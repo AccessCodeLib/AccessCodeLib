@@ -203,11 +203,11 @@ Public Function HandleError(ByVal ErrNumber As Long, ByVal ErrSource As String, 
       ErrHandlerMode = m_DefaultErrorHandlerMode
    End If
    
-   HandleError = procHandleError(ErrNumber, ErrSource, ErrDescription, ErrHandlerMode)
+   HandleError = ProcHandleError(ErrNumber, ErrSource, ErrDescription, ErrHandlerMode)
 
 End Function
 
-Private Function procHandleError(ByRef ErrNumber As Long, ByRef ErrSource As String, _
+Private Function ProcHandleError(ByRef ErrNumber As Long, ByRef ErrSource As String, _
                                  ByRef ErrDescription As String, _
                                  ByVal ErrHandlerMode As ACLibErrorHandlerMode _
              ) As ACLibErrorResumeMode
@@ -234,7 +234,7 @@ On Error Resume Next
    
    'Ausgabe in Datei
    If (ErrHandlerMode And ACLibErrorHandlerMode.aclibErrFile) Then
-      printToFile ErrNumber, NewErrSource, NewErrDescription
+      PrintToFile ErrNumber, NewErrSource, NewErrDescription
       ErrHandlerMode = ErrHandlerMode - ACLibErrorHandlerMode.aclibErrFile
    End If
 
@@ -253,7 +253,7 @@ On Error GoTo 0
    End Select
 
    'return resume mode
-   procHandleError = DEFAULT_ERRORRESUMEMODE ' Das würde erst bei einer Klasse etwas bringen
+   ProcHandleError = DEFAULT_ERRORRESUMEMODE ' Das würde erst bei einer Klasse etwas bringen
 
 End Function
 
@@ -291,7 +291,7 @@ On Error Resume Next
 
 End Sub
 
-Private Sub printToFile(ByRef ErrNumber As Long, ByRef ErrSource As String, _
+Private Sub PrintToFile(ByRef ErrNumber As Long, ByRef ErrSource As String, _
                         ByRef ErrDescription As String)
     
    Dim FileSource As String

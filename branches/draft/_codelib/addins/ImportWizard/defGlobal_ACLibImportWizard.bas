@@ -24,8 +24,8 @@ Option Compare Database
 Option Explicit
 
 ' Integrierte Erweiterungen
-Private Const EXTENSION_KEY_ACLibFilemanager As String = "ACLibFileManager"
-Private Const EXTENSION_KEY_ACLibConfiguration As String = "ACLibConfiguration"
+Private Const EXTENSION_KEY_ACLIBFILEMANAGER As String = "ACLibFileManager"
+Private Const EXTENSION_KEY_ACLIBCONFIGURATION As String = "ACLibConfiguration"
 
 
 Public Enum CodeLibElementType  'angelehnt an Enum vbext_ComponentType
@@ -70,7 +70,7 @@ Public Property Get CurrentACLibFileManager() As ACLibFileManager
 
 On Error GoTo HandleErr
 
-   Set CurrentACLibFileManager = CurrentApplication.Extensions(EXTENSION_KEY_ACLibFilemanager)
+   Set CurrentACLibFileManager = CurrentApplication.Extensions(EXTENSION_KEY_ACLIBFILEMANAGER)
 
 ExitHere:
 On Error Resume Next
@@ -92,7 +92,7 @@ Public Property Get CurrentACLibConfiguration() As ACLibConfiguration
 
 On Error GoTo HandleErr
 
-   Set CurrentACLibConfiguration = CurrentApplication.Extensions(EXTENSION_KEY_ACLibConfiguration)
+   Set CurrentACLibConfiguration = CurrentApplication.Extensions(EXTENSION_KEY_ACLIBCONFIGURATION)
 
 ExitHere:
 On Error Resume Next

@@ -20,19 +20,19 @@ Option Compare Database
 Option Explicit
 
 'Versionsnummer
-Private Const m_ApplicationVersion As String = "1.0.9" '2015-05-18
+Private Const APPLICATION_VERSION As String = "1.0.10" '2015-06-15
 
 #Const USE_CLASS_ApplicationHandler_AppFile = 1
 #Const USE_CLASS_ApplicationHandler_DirTextbox = 1
 
-Private Const m_ApplicationName As String = "ACLib Import Wizard"
-Private Const m_ApplicationFullName As String = "Access Code Library - Import Wizard"
-Private Const m_ApplicationTitle As String = m_ApplicationFullName
-Private Const m_ApplicationIconFile As String = "ACLib.ico"
+Private Const APPLICATION_NAME As String = "ACLib Import Wizard"
+Private Const APPLICATION_FULLNAME As String = "Access Code Library - Import Wizard"
+Private Const APPLICATION_TITLE As String = APPLICATION_FULLNAME
+Private Const APPLICATION_ICONFILE As String = "ACLib.ico"
 
-Private Const m_DefaultErrorHandlerMode As Long = ACLibErrorHandlerMode.aclibErrMsgBox
+Private Const DEFAULT_ERRORHANDLERMODE As Long = ACLibErrorHandlerMode.aclibErrMsgBox
 
-Private Const m_ApplicationStartFormName As String = "ACLibImportWizardForm"
+Private Const APPLICATION_STARTFORMNAME As String = "ACLibImportWizardForm"
 
 '---------------------------------------------------------------------------------------
 ' Sub: InitConfig (Josef Pötzl, 2009-12-11)
@@ -47,7 +47,7 @@ Private Const m_ApplicationStartFormName As String = "ACLibImportWizardForm"
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Sub InitConfig(Optional ByRef oCurrentAppHandler As ApplicationHandler = Nothing)
+Public Sub InitConfig(Optional ByRef CurrentAppHandlerRef As ApplicationHandler = Nothing)
 
 On Error GoTo HandleErr
 
@@ -55,41 +55,39 @@ On Error GoTo HandleErr
 ' Fehlerbehandlung
 '
 
-   modErrorHandler.DefaultErrorHandlerMode = m_DefaultErrorHandlerMode
+   modErrorHandler.DefaultErrorHandlerMode = DEFAULT_ERRORHANDLERMODE
 
    
 '----------------------------------------------------------------------------
 ' Globale Variablen einstellen
 '
-   defGlobal_ACLibImportWizard.ACLibIconFileName = m_ApplicationIconFile
+   defGlobal_ACLibImportWizard.ACLibIconFileName = APPLICATION_ICONFILE
 
 '----------------------------------------------------------------------------
 ' Anwendungsinstanz einstellen
 '
-   If oCurrentAppHandler Is Nothing Then
-      Set oCurrentAppHandler = CurrentApplication
+   If CurrentAppHandlerRef Is Nothing Then
+      Set CurrentAppHandlerRef = CurrentApplication
    End If
 
-   With oCurrentAppHandler
+   With CurrentAppHandlerRef
    
       'Zur Sicherheit AccDb einstellen
       Set .AppDb = CodeDb 'muss auf CodeDb zeigen,
                           'da diese Anwendung als Add-In verwendet wird
    
       'Anwendungsname
-      .ApplicationName = m_ApplicationName
-      .ApplicationFullName = m_ApplicationFullName
-      .ApplicationTitle = m_ApplicationTitle
+      .ApplicationName = APPLICATION_NAME
+      .ApplicationFullName = APPLICATION_FULLNAME
+      .ApplicationTitle = APPLICATION_TITLE
       
       'Version
-      .Version = m_ApplicationVersion
+      .Version = APPLICATION_VERSION
       
       ' Formular, das am Ende von CurrentApplication.Start aufgerufen wird
-      .ApplicationStartFormName = m_ApplicationStartFormName
+      .ApplicationStartFormName = APPLICATION_STARTFORMNAME
    
-    
    End With
-
    
 '----------------------------------------------------------------------------
 ' Erweiterung: AppFile
@@ -145,21 +143,8 @@ End Sub
 '----------------------------------------------------------------------------
 ' Hilfsfunktion zum Speichern von Dateien in die lokale AppFile-Tabelle
 '----------------------------------------------------------------------------
-Private Sub setAppFiles()
-On Error GoTo HandleErr
+Private Sub SetAppFiles()
 
-   Call CurrentApplication.Extensions("AppFile").SaveAppFile("AppIcon", CodeProject.Path & "\" & m_ApplicationIconFile)
+   Call CurrentApplication.Extensions("AppFile").SaveAppFile("AppIcon", CodeProject.Path & "\" & APPLICATION_ICONFILE)
 
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "setAppFiles", Err.Description, ACLibErrorHandlerMode.aclibErrMsgBox)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
 End Sub

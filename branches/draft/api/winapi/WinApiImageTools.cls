@@ -83,18 +83,18 @@ Private Declare Function LoadImage Lib "user32" Alias "LoadImageA" ( _
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Sub SetFormIconFromFile(ByRef formRef As Access.Form, ByVal IconFilePath As String)
+Public Sub SetFormIconFromFile(ByRef FormRef As Access.Form, ByVal IconFilePath As String)
    
 On Error Resume Next ' ... Fehlermeldung würde bei dieser "unwichtigen" Funktion nur stören
   
    Const ICONPIXELSIZE As Long = 16
    
-   Dim imageHandle As Long
+   Dim ImageHandle As Long
    
-   imageHandle = LoadImage(0, IconFilePath, IMAGE_ICON, _
+   ImageHandle = LoadImage(0, IconFilePath, IMAGE_ICON, _
                            ICONPIXELSIZE, ICONPIXELSIZE, LR_LOADFROMFILE)
-   If imageHandle <> 0 Then
-      SendMessage formRef.Hwnd, WM_MSG_SETICON, WM_PARAM_ICON_SMALL, ByVal imageHandle
+   If ImageHandle <> 0 Then
+      SendMessage FormRef.Hwnd, WM_MSG_SETICON, WM_PARAM_ICON_SMALL, ByVal ImageHandle
    End If
    
 End Sub

@@ -182,7 +182,7 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function UNCPath(ByVal Path As String, Optional ByVal IgnoreErrors As Boolean = True) As String
+Public Function UncPath(ByVal Path As String, Optional ByVal IgnoreErrors As Boolean = True) As String
    
    Dim UNC As String * 512
    
@@ -192,7 +192,7 @@ Public Function UNCPath(ByVal Path As String, Optional ByVal IgnoreErrors As Boo
    
       ' API-Routine gibt Fehler zurück:
       If IgnoreErrors Then
-         UNCPath = Path
+         UncPath = Path
       Else
          Err.Raise 5 ' Invalid procedure call or argument
       End If
@@ -200,7 +200,7 @@ Public Function UNCPath(ByVal Path As String, Optional ByVal IgnoreErrors As Boo
    Else
    
       ' Ergebnis zurückgeben:
-      UNCPath = Left$(UNC, InStr(UNC, vbNullChar) - 1) & Mid$(Path, 3)
+      UncPath = Left$(UNC, InStr(UNC, vbNullChar) - 1) & Mid$(Path, 3)
    
    End If
    

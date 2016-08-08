@@ -39,11 +39,11 @@ Option Explicit
 '**/
 '---------------------------------------------------------------------------------------
 Public Function TableDefExists(ByVal TableDefName As String, _
-                      Optional ByVal dbs As DAO.Database = Nothing) As Boolean
+                      Optional ByVal DbRef As DAO.Database = Nothing) As Boolean
 'Man könnte auch die TableDef-Liste durchlaufen.
 'Eine weitere Alternative wäre das Auswerten über cnn.OpenSchema(adSchemaTables, ...)
    
-   TableDefExists = CheckDatabaseObjectExists(acTable, TableDefName, dbs)
+   TableDefExists = CheckDatabaseObjectExists(acTable, TableDefName, DbRef)
    
 End Function
 
@@ -62,21 +62,21 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function QueryDefExists(ByVal QueryDefName As String, _
-                      Optional ByVal dbs As DAO.Database = Nothing) As Boolean
+                      Optional ByVal DbRef As DAO.Database = Nothing) As Boolean
 
-   QueryDefExists = CheckDatabaseObjectExists(acQuery, QueryDefName, dbs)
+   QueryDefExists = CheckDatabaseObjectExists(acQuery, QueryDefName, DbRef)
    
 End Function
 
 Private Function CheckDatabaseObjectExists(ByVal ObjType As AcObjectType, ByVal ObjName As String, _
-                      Optional ByVal dbs As DAO.Database = Nothing) As Boolean
+                      Optional ByVal DbRef As DAO.Database = Nothing) As Boolean
 
    Dim rst As DAO.Recordset
    Dim FilterString As String
    Dim ObjectTypeFilterString As String
 
-   If dbs Is Nothing Then
-      Set dbs = CodeDb
+   If DbRef Is Nothing Then
+      Set DbRef = CodeDb
    End If
 
    FilterString = "where Name = '" & Replace(ObjName, "'", "''") & "'"
@@ -92,7 +92,7 @@ Private Function CheckDatabaseObjectExists(ByVal ObjType As AcObjectType, ByVal 
       FilterString = FilterString & " AND " & ObjectTypeFilterString
    End If
 
-   Set rst = dbs.OpenRecordset("select Name from MSysObjects " & FilterString, dbOpenForwardOnly, dbReadOnly)
+   Set rst = DbRef.OpenRecordset("select Name from MSysObjects " & FilterString, dbOpenForwardOnly, dbReadOnly)
    CheckDatabaseObjectExists = Not rst.EOF
    rst.Close
 

@@ -100,7 +100,7 @@ Attribute VB_Description = "Erweiterung für ApplicationHandler-Klasse: Verzeichn
 Option Compare Database
 Option Explicit
 
-Private Const m_EXTENSION_KEY As String = "DirTextbox"
+Private Const EXTENSION_KEY As String = "DirTextbox"
 
 Private m_InstanceCollection As Collection
 Private m_InstanceKey As String
@@ -122,15 +122,15 @@ Private m_BaseFolderPath As String
 Private WithEvents m_ApplicationHandler As ApplicationHandler
 Attribute m_ApplicationHandler.VB_VarHelpID = -1
 
-Public Property Set ApplicationHandlerRef(ByRef objRef As ApplicationHandler)
-   Set m_ApplicationHandler = objRef
+Public Property Set ApplicationHandlerRef(ByRef ObjRef As ApplicationHandler)
+   Set m_ApplicationHandler = ObjRef
 End Property
 
 Public Property Get ExtensionKey() As String
-   ExtensionKey = m_EXTENSION_KEY
+   ExtensionKey = EXTENSION_KEY
 End Property
 
-Private Sub m_AccessForm_Unload(Cancel As Integer)
+Private Sub m_AccessForm_Unload(ByRef Cancel As Integer)
 On Error Resume Next
    'Referenzen entfernen
    Set m_Textbox = Nothing
@@ -143,56 +143,56 @@ End Sub
 '---------------------------------------------------------------------------------------
 
 ' CheckExtension
-Private Sub m_ApplicationHandler_CheckExtension(ByVal Key As String, ByRef exists As Boolean)
-   If Key = m_EXTENSION_KEY Then exists = True
+Private Sub m_ApplicationHandler_CheckExtension(ByVal Key As String, ByRef Exists As Boolean)
+   If Key = EXTENSION_KEY Then Exists = True
 End Sub
 
 ' ExtensionLookup
 Private Sub m_ApplicationHandler_ExtensionLookup(ByVal Key As String, ByRef ExtensionReference As Object)
-   If Key = m_EXTENSION_KEY Then
+   If Key = EXTENSION_KEY Then
       Set ExtensionReference = Me
    End If
 End Sub
 
 'ExtensionNewInstance
-Private Sub m_ApplicationHandler_ExtensionInstance(ByVal sExtensionKey As String, ByVal sInstanceKey As String, ByRef ExtensionReference As Object)
-   If sExtensionKey = m_EXTENSION_KEY Then
-      getInstance sInstanceKey, ExtensionReference
+Private Sub m_ApplicationHandler_ExtensionInstance(ByVal ExtensionKeyToCheck As String, ByVal InstanceKey As String, ByRef ExtensionReference As Object)
+   If ExtensionKeyToCheck = EXTENSION_KEY Then
+      GetInstance InstanceKey, ExtensionReference
    End If
 End Sub
 
-Private Sub getInstance(ByVal sInstanceKey As String, ByRef ExtensionReference As Object)
+Private Sub GetInstance(ByVal Key As String, ByRef ExtensionReference As Object)
    
-   Dim instanceRef As ApplicationHandler_DirTextbox
-   Dim tempRef As ApplicationHandler_DirTextbox
+   Dim InstanceRef As ApplicationHandler_DirTextbox
+   Dim TempRef As ApplicationHandler_DirTextbox
    Dim col As Collection
    Dim i As Long
 
    Set col = InstanceCollection
    
-   If Len(sInstanceKey) = 0 Then
-      sInstanceKey = m_EXTENSION_KEY & "." & ObjPtr(Me)
+   If Len(Key) = 0 Then
+      Key = EXTENSION_KEY & "." & ObjPtr(Me)
    End If
    
    'Nach vorhandenem InstanceKey suchen und gleichzeitig aufräumen
    For i = col.Count To 1 Step -1
-      Set tempRef = col(i)
-      If tempRef.Textbox Is Nothing And Len(tempRef.InstanceKey) = 0 Then ' Col-Eintrag kann entfernt werden
+      Set TempRef = col(i)
+      If TempRef.Textbox Is Nothing And Len(TempRef.InstanceKey) = 0 Then ' Col-Eintrag kann entfernt werden
          col.Remove i
-      ElseIf tempRef.InstanceKey = sInstanceKey Then
-         Set instanceRef = tempRef
+      ElseIf TempRef.InstanceKey = Key Then
+         Set InstanceRef = TempRef
          Exit For
       End If
    Next
    
    'Bei Bedarf neu anlegen
-   If instanceRef Is Nothing Then
-      Set instanceRef = New ApplicationHandler_DirTextbox
-      instanceRef.InstanceKey = sInstanceKey
-      col.Add instanceRef, sInstanceKey
+   If InstanceRef Is Nothing Then
+      Set InstanceRef = New ApplicationHandler_DirTextbox
+      InstanceRef.InstanceKey = Key
+      col.Add InstanceRef, Key
    End If
    
-   Set ExtensionReference = instanceRef
+   Set ExtensionReference = InstanceRef
 
 End Sub
 
@@ -207,8 +207,8 @@ Friend Property Get InstanceKey() As String
    InstanceKey = m_InstanceKey
 End Property
 
-Friend Property Let InstanceKey(ByVal sKey As String)
-   m_InstanceKey = sKey
+Friend Property Let InstanceKey(ByVal Key As String)
+   m_InstanceKey = Key
 End Property
 
 
@@ -216,8 +216,8 @@ End Property
 Private Sub m_ApplicationHandler_ExtensionPropertyLookup( _
                      ByVal Key As String, ByVal PropertyName As String, _
                      ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
-   If Key = m_EXTENSION_KEY Then
-      getExtensionPropertyLookup PropertyName, ResumeMode, ResumeMessage
+   If Key = EXTENSION_KEY Then
+      GetExtensionPropertyLookup PropertyName, ResumeMode, ResumeMessage
    End If
 End Sub
 
@@ -232,15 +232,14 @@ End Sub
 ' Ergänzungen für Ereiterung: ApplicationHandler_DirTextbox
 '---------------------------------------------------------------------------------------
 '
-Private Sub getExtensionPropertyLookup(ByVal PropertyName As String, ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
+Private Sub GetExtensionPropertyLookup(ByVal PropertyName As String, ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
 
    ResumeMode = AppResumeMode_Completed
    Select Case PropertyName
       'case ...
           
       Case Else 'Property wurde nicht erkannt
-         ResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Error
-                 
+         ResumeMessage = "Property '" & PropertyName & "' is not supported"
    End Select
 
 End Sub
@@ -274,8 +273,8 @@ End Property
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Property Let BaseFolderPath(ByVal newPath As String)
-   m_BaseFolderPath = newPath
+Public Property Let BaseFolderPath(ByVal NewPath As String)
+   m_BaseFolderPath = NewPath
    If Len(m_BaseFolderPath) > 0 Then
       If Right$(m_BaseFolderPath, 1) <> "\" Then
          m_BaseFolderPath = m_BaseFolderPath & "\"
@@ -283,7 +282,7 @@ Public Property Let BaseFolderPath(ByVal newPath As String)
    End If
 End Property
 
-Private Sub initNewFileSearch()
+Private Sub InitNewFileSearch()
 'Zwischenspeicher löschen
    m_TabMode = False
    m_FolderPath = vbNullString
@@ -315,13 +314,13 @@ End Property
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Property Set Textbox(ByVal ref As Access.Textbox)
+Public Property Set Textbox(ByVal NewRef As Access.Textbox)
    
    Dim parentObject As Object
 
    Set m_Textbox = Nothing
    
-   Set m_Textbox = ref
+   Set m_Textbox = NewRef
    With m_Textbox
       Set parentObject = m_Textbox.Parent
       If Not (TypeOf parentObject Is Access.Form) Then
@@ -344,7 +343,7 @@ Public Property Set Textbox(ByVal ref As Access.Textbox)
       End If
    End With
    
-   initNewFileSearch
+   InitNewFileSearch
 
 End Property
 
@@ -355,25 +354,25 @@ Private Sub m_Textbox_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
 ' * @todo Code aufräumen
 '**/
 
-   Static searchString As String
-   Dim matchString As String
-   Dim baseFolder As String
-   Dim textBoxString As String
+   Static SearchString As String
+   Dim MatchString As String
+   Dim BaseFolder As String
+   Dim TextBoxString As String
    Dim Pos As Long
 
-   baseFolder = BaseFolderPath
-   textBoxString = m_Textbox.Text
+   BaseFolder = BaseFolderPath
+   TextBoxString = m_Textbox.Text
    
    ' "\" abfangen und prüfen, ob der Einsatz sinnvoll/möglich ist
    If Shift > 0 And KeyCode = 219 Then
-      searchString = GetFullPathFromRelativPath(textBoxString, baseFolder)
-      If Right$(searchString, 1) = ":" Then
+      SearchString = GetFullPathFromRelativPath(TextBoxString, BaseFolder)
+      If Right$(SearchString, 1) = ":" Then
          Exit Sub
       End If
-      If InStr(1, searchString, "*") = 0 Then
-         If Len(Dir$(searchString)) > 0 Then 'Das kann kein Verzeichnis sein, da bereits Datei erreicht ist
+      If InStr(1, SearchString, "*") = 0 Then
+         If Len(Dir$(SearchString)) > 0 Then 'Das kann kein Verzeichnis sein, da bereits Datei erreicht ist
             KeyCode = vbKeyEnd
-         ElseIf Len(Dir$(searchString, vbDirectory)) = 0 Then
+         ElseIf Len(Dir$(SearchString, vbDirectory)) = 0 Then
             KeyCode = vbKeyEnd
          End If
       End If
@@ -381,9 +380,9 @@ Private Sub m_Textbox_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
    End If
    
    If KeyCode = vbKeyReturn Then
-      searchString = Replace$(GetFullPathFromRelativPath(textBoxString, baseFolder), "/", "\")
-      If Right$(searchString, 3) = "\.." Then
-         m_FolderPath = FileTools.GetDirFromFullFileName(Left$(searchString, Len(searchString) - 3))
+      SearchString = Replace$(GetFullPathFromRelativPath(TextBoxString, BaseFolder), "/", "\")
+      If Right$(SearchString, 3) = "\.." Then
+         m_FolderPath = FileTools.GetDirFromFullFileName(Left$(SearchString, Len(SearchString) - 3))
       Else
          'hier Event auslösen, dass Auswahl bestätigt wurde
          Exit Sub
@@ -392,8 +391,8 @@ Private Sub m_Textbox_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
       If Len(m_FolderPath) > 0 Then
          m_FolderPath = m_FolderPath & ".."
       End If
-      If Len(baseFolder) > 0 Then
-         m_FolderPath = GetRelativPathFromFullPath(m_FolderPath, baseFolder)
+      If Len(BaseFolder) > 0 Then
+         m_FolderPath = GetRelativPathFromFullPath(m_FolderPath, BaseFolder)
       End If
       
       m_Textbox.Text = m_FolderPath
@@ -402,14 +401,14 @@ Private Sub m_Textbox_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
    ElseIf KeyCode = vbKeyTab And Shift = 0 Then
       If m_TabMode Then
       
-         matchString = Dir$(, vbDirectory)
-         Do While Left$(matchString, 1) = "." ' eins weiter
-            matchString = Dir$(, vbDirectory)
+         MatchString = Dir$(, vbDirectory)
+         Do While Left$(MatchString, 1) = "." ' eins weiter
+            MatchString = Dir$(, vbDirectory)
          Loop
-         If Len(matchString) = 0 Then 'wieder von vorne anfangen
-            matchString = Dir$(searchString, vbDirectory)
-            Do While matchString = "." ' eins weiter
-               matchString = Dir$(, vbDirectory)
+         If Len(MatchString) = 0 Then 'wieder von vorne anfangen
+            MatchString = Dir$(SearchString, vbDirectory)
+            Do While MatchString = "." ' eins weiter
+               MatchString = Dir$(, vbDirectory)
             Loop
          End If
          m_Textbox.SetFocus
@@ -417,47 +416,47 @@ Private Sub m_Textbox_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
          If Right$(m_FolderPath, 2) = ".." Then
             m_FolderPath = Left$(m_FolderPath, Len(m_FolderPath) - 2)
          End If
-         m_Textbox.Text = m_FolderPath & matchString
+         m_Textbox.Text = m_FolderPath & MatchString
          KeyCode = vbKeyEnd
       Else
-         searchString = Replace(GetFullPathFromRelativPath(textBoxString, baseFolder), "/", "\")
-         If Len(searchString) = 2 And Right$(searchString, 1) = ":" Then
-            searchString = searchString & "\"
+         SearchString = Replace(GetFullPathFromRelativPath(TextBoxString, BaseFolder), "/", "\")
+         If Len(SearchString) = 2 And Right$(SearchString, 1) = ":" Then
+            SearchString = SearchString & "\"
          End If
-         If Right$(searchString, 1) = "\" Then
-            searchString = searchString & "*"
+         If Right$(SearchString, 1) = "\" Then
+            SearchString = SearchString & "*"
          End If
          
-         matchString = Dir$(searchString, vbDirectory)
-         If Len(matchString) = 0 Then ' "*" anhängen
-            If Right$(searchString, 1) <> "*" Then
-               searchString = searchString & "*"
+         MatchString = Dir$(SearchString, vbDirectory)
+         If Len(MatchString) = 0 Then ' "*" anhängen
+            If Right$(SearchString, 1) <> "*" Then
+               SearchString = SearchString & "*"
             End If
-            matchString = Dir$(searchString, vbDirectory)
+            MatchString = Dir$(SearchString, vbDirectory)
          End If
          
-         If Len(matchString) > 0 Then
+         If Len(MatchString) > 0 Then
          
-            If matchString = "." Then 'Verzeichnis, Suchstring hat mit "\" geendet
-               m_FolderPath = textBoxString
-               matchString = ""
+            If MatchString = "." Then 'Verzeichnis, Suchstring hat mit "\" geendet
+               m_FolderPath = TextBoxString
+               MatchString = ""
             Else
             
-               m_FolderPath = searchString
+               m_FolderPath = SearchString
                Pos = InStr(1, m_FolderPath, "*")
                If Pos > 0 Then
                   m_FolderPath = Left$(m_FolderPath, Pos - 1)
                End If
                '
-               If Len(baseFolder) > 0 Then
-                  m_FolderPath = GetRelativPathFromFullPath(m_FolderPath, baseFolder)
+               If Len(BaseFolder) > 0 Then
+                  m_FolderPath = GetRelativPathFromFullPath(m_FolderPath, BaseFolder)
                End If
                m_FolderPath = FileTools.GetDirFromFullFileName(m_FolderPath)
             End If
             
-            matchString = m_FolderPath & matchString
+            MatchString = m_FolderPath & MatchString
             
-            m_Textbox.Text = matchString
+            m_Textbox.Text = MatchString
             
          End If
          m_TabMode = True

@@ -34,9 +34,9 @@ Private Const ClassName As String = "TempDbHandler"
 
 Private m_DaoHandler As DaoHandler
 
-Private Const m_conFilePrefix As String = "TDB"
-Private Const m_conFileExtension As String = vbNullString 'Dateinamenerweiterung: vbNullString ... Standard von GetTempFileNameA wird verwendet ("tmp")
-Private Const m_conMaxPathLen As Long = 255
+Private Const FILE_PREFIX As String = "TDB"
+Private Const FILE_EXTENSION As String = vbNullString 'Dateinamenerweiterung: vbNullString ... Standard von GetTempFileNameA wird verwendet ("tmp")
+Private Const MAX_PATH_LEN As Long = 255
 
 Private m_TempDbFile As String
 Private m_SharedMode As Boolean
@@ -74,28 +74,6 @@ Private Declare Function API_GetTempFilename Lib "kernel32" Alias "GetTempFileNa
          ByVal lpTempFileName As String) As Long
 
 #End If
-
-
-'---------------------------------------------------------------------------------------
-' Event: TempDbHandlerError (03.05.2008)
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Ereignis für Fehlermeldungen
-' </summary>
-' <param name="ErrMsg">Fehlermeldung</param>
-' <param name="ErrNumber">Fehlernummer</param>
-' <param name="Response">ACLibErrorResumeMode-Wert</param>
-' <remarks>Ermöglich die Behebung des Fehlers bzw. die Behandlung des Fehlers im Frontend</remarks>
-'**/
-Public Event TempDbHandlerError(ByVal ErrMsg As String, ByVal ErrNumber As Long, ByRef Response As TempDbErrorResumeMode)
-
-Public Enum TempDbErrorResumeMode
-   aclibTempDbErrExit = 0       'Abbruch
-   aclibTempDbErrResume = 1     'Resume, Problem wurde (von außen) behoben
-   aclibTempDbErrResumeNext = 2 'Resume next, im Code weiterarbeiten
-End Enum
-
 
 '---------------------------------------------------------------------------------------
 ' Event: ErrorMissingDbConnection (24.02.2008)
@@ -149,7 +127,7 @@ On Error Resume Next
    'aktuelle TempDb löschen
    If m_DeleteFileOnTerminiate Then DeleteCurrentDatabase
 
-   clearObjectReferences
+   ClearObjectReferences
    
    m_TempDbFile = vbNullString
    
@@ -158,7 +136,7 @@ On Error Resume Next
    
 End Sub
 
-Private Sub clearObjectReferences()
+Private Sub ClearObjectReferences()
 
 On Error Resume Next
 
@@ -210,8 +188,8 @@ End Property
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Property Set ClientDatabase(ByRef db As DAO.Database)
-   Set m_ClientDatabase = db
+Public Property Set ClientDatabase(ByRef Db As DAO.Database)
+   Set m_ClientDatabase = Db
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -226,7 +204,7 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get CurrentDatabase() As DAO.Database
-   checkCurrentDatabase
+   CheckCurrentDatabase
    Set CurrentDatabase = m_DaoHandler.CurrentDb
 End Property
 
@@ -252,16 +230,16 @@ On Error Resume Next
 End Sub
 
 
-Private Sub checkCurrentDatabase()
+Private Sub CheckCurrentDatabase()
 
-   Dim strFile As String
+   Dim FilePath As String
    
 On Error Resume Next
 
    If m_DaoHandler.CurrentDb Is Nothing Then
       If Len(m_TempDbFile) > 0 And Len(Dir$(m_TempDbFile)) > 0 Then
          Set m_DaoHandler.CurrentDb = Access.DBEngine.OpenDatabase(m_TempDbFile, Not m_SharedMode, False)
-         strFile = m_DaoHandler.CurrentDb.Name 'Zugriff testen
+         FilePath = m_DaoHandler.CurrentDb.Name 'Zugriff testen
          If Err.Number <> 0 Then
             Err.Clear
             Me.CreateDatabase
@@ -271,12 +249,12 @@ On Error Resume Next
       End If
    Else
       Err.Clear
-      strFile = m_DaoHandler.CurrentDb.Name 'Zugriff testen
+      FilePath = m_DaoHandler.CurrentDb.Name 'Zugriff testen
       If Err.Number <> 0 Then
          Err.Clear
          If Len(m_TempDbFile) > 0 And Len(Dir$(m_TempDbFile)) > 0 Then
             Set m_DaoHandler.CurrentDb = Access.DBEngine.OpenDatabase(m_TempDbFile, Not m_SharedMode, False)
-            strFile = m_DaoHandler.CurrentDb.Name 'Zugriff testen
+            FilePath = m_DaoHandler.CurrentDb.Name 'Zugriff testen
             If Err.Number <> 0 Then
                Err.Clear
                Me.CreateDatabase
@@ -305,7 +283,7 @@ End Sub
 Public Function CreateDatabase(Optional ByVal OpenSharedMode As Boolean = False, _
                                Optional ByVal DeleteFileOnTerminate As Boolean = True) As DAO.Database
 
-   m_TempDbFile = getTempFileName(, m_conFilePrefix, m_conFileExtension)
+   m_TempDbFile = GetTempFileName(, FILE_PREFIX, FILE_EXTENSION)
    
    If CurrentDb.Version = "4.0" Then
       'Set m_tempDb = Access.DBEngine.CreateDatabase(m_TempDbFile, dbLangGeneral, dbVersion40)
@@ -365,23 +343,23 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Sub DeleteCurrentDatabase()
 
-   Dim strFile As String
+   Dim DbFile As String
    
 On Error Resume Next ' Da hier eine Fehlermeldung nutzlos ist.
    
    If Not (m_DaoHandler.CurrentDb Is Nothing) Then
-      strFile = m_DaoHandler.CurrentDb.Name
+      DbFile = m_DaoHandler.CurrentDb.Name
       m_DaoHandler.CurrentDb.Close
       Access.DBEngine.Idle dbRefreshCache
       DoEvents
       Set m_DaoHandler.CurrentDb = Nothing
    Else
-      strFile = m_TempDbFile
+      DbFile = m_TempDbFile
    End If
    
-   If Len(strFile) > 0 Then
+   If Len(DbFile) > 0 Then
       'Falls Datei noch im Zugriff ist, kann es sein, dass sie nicht gelöscht werden kann
-      Kill strFile
+      Kill DbFile
    End If
    
    m_TempDbFile = vbNullString
@@ -403,12 +381,12 @@ End Sub
 '**/
 '---------------------------------------------------------------------------------------
 Public Function CheckTable(ByVal SourceTableDefName As String, _
-              Optional ByVal CreateTableDDL As String, _
+              Optional ByVal CreateTableSql As String, _
               Optional ByVal LinkedTableDefName As String) As Boolean
 
    If Not SourceTableDefExists(SourceTableDefName) Then
-      If Len(CreateTableDDL) > 0 Then
-         CheckTable = Me.CreateTable(SourceTableDefName, CreateTableDDL, LinkedTableDefName)
+      If Len(CreateTableSql) > 0 Then
+         CheckTable = Me.CreateTable(SourceTableDefName, CreateTableSql, LinkedTableDefName)
       Else
          CheckTable = False
       End If
@@ -417,9 +395,9 @@ Public Function CheckTable(ByVal SourceTableDefName As String, _
    
    If Len(LinkedTableDefName) > 0 Then
       If LinkedTableDefExists(LinkedTableDefName) Then
-         reconnectTempTable LinkedTableDefName, SourceTableDefName
+         ReconnectTempTable LinkedTableDefName, SourceTableDefName
       Else
-         connectTempTable LinkedTableDefName, SourceTableDefName
+         ConnectTempTable LinkedTableDefName, SourceTableDefName
       End If
    End If
    
@@ -443,22 +421,22 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function CreateTable(ByVal SourceTableDefName As String, _
-                            ByVal CreateTableDDL As String, _
+                            ByVal CreateTableSql As String, _
                    Optional ByVal LinkedTableDefName As String = vbNullString _
                      ) As Boolean
 
-   checkCurrentDatabase
+   CheckCurrentDatabase
    If SourceTableDefExists(SourceTableDefName) Then 'zur Sicherheit löschen, falls unterschiedliche DDL-Anweisung
       Err.Raise ErrorNumbers.ErrTableCanNotBeCreatedTableExists, ClassName & CreateTable, "Table '" & SourceTableDefName & "' exists"
    End If
    
-   m_DaoHandler.Execute CreateTableDDL
+   m_DaoHandler.Execute CreateTableSql
    
    If Len(LinkedTableDefName) > 0 Then
       If LinkedTableDefExists(LinkedTableDefName) Then
-         reconnectTempTable LinkedTableDefName, SourceTableDefName
+         ReconnectTempTable LinkedTableDefName, SourceTableDefName
       Else
-         connectTempTable LinkedTableDefName, SourceTableDefName
+         ConnectTempTable LinkedTableDefName, SourceTableDefName
       End If
    End If
    
@@ -483,11 +461,11 @@ Public Function DropTable(ByVal SourceTableDefName As String, _
              Optional ByVal LinkedTableDefName As String = vbNullString) As Boolean
                      
    If Len(LinkedTableDefName) > 0 Then
-      dropLinkedTableDef LinkedTableDefName
+      DropLinkedTableDef LinkedTableDefName
    End If
    
    If Len(SourceTableDefName) > 0 Then
-      dropSourceTable SourceTableDefName
+      DropSourceTable SourceTableDefName
    End If
    
    DropTable = True
@@ -506,26 +484,26 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Sub DropLinkedTableDefs()
 
-   Dim strFile As String
-   Dim db As DAO.Database
+   Dim DbFile As String
+   Dim Db As DAO.Database
    Dim tdf As DAO.TableDef
-   Dim tdfCnt As Long, i As Long
+   Dim TdfCnt As Long, i As Long
 
    If Not (m_DaoHandler.CurrentDb Is Nothing) Then
-      checkCurrentDatabase
-      strFile = m_DaoHandler.CurrentDb.Name
+      CheckCurrentDatabase
+      DbFile = m_DaoHandler.CurrentDb.Name
    Else
-      strFile = m_TempDbFile
+      DbFile = m_TempDbFile
    End If
    
-   If Len(strFile) = 0 Then Exit Sub
+   If Len(DbFile) = 0 Then Exit Sub
    
-   Set db = ClientDatabase
-   With db
-      tdfCnt = .TableDefs.Count
-      For i = (tdfCnt - 1) To 0 Step -1
+   Set Db = ClientDatabase
+   With Db
+      TdfCnt = .TableDefs.Count
+      For i = (TdfCnt - 1) To 0 Step -1
          Set tdf = .TableDefs(i)
-         If tdf.Connect = ";Database=" & strFile Then
+         If tdf.Connect = ";Database=" & DbFile Then
             .TableDefs.Delete tdf.Name
          End If
       Next
@@ -547,15 +525,15 @@ End Sub
 '---------------------------------------------------------------------------------------
 Public Property Get LinkedTableDefExists(ByVal TableDefName As String) As Boolean
    
-   Dim db As DAO.Database
+   Dim Db As DAO.Database
    Dim tdf As DAO.TableDef
    
-   Set db = ClientDatabase
-   db.TableDefs.Refresh 'zur Sicherheit, falls im FE Tab gelöscht wurde
+   Set Db = ClientDatabase
+   Db.TableDefs.Refresh 'zur Sicherheit, falls im FE Tab gelöscht wurde
    
    LinkedTableDefExists = False
    
-   For Each tdf In db.TableDefs
+   For Each tdf In Db.TableDefs
       If tdf.Name = TableDefName Then
          LinkedTableDefExists = True
          Exit For
@@ -594,7 +572,7 @@ Public Property Get SourceTableDefExists(ByVal TableDefName As String) As Boolea
 
 End Property
 
-Private Sub dropLinkedTableDef(ByVal TdfName As String)
+Private Sub DropLinkedTableDef(ByVal TdfName As String)
 
 On Error Resume Next '... damit muss nicht unbedingt auf Existenz geprüft werden
    ClientDatabase.TableDefs.Refresh
@@ -602,7 +580,7 @@ On Error Resume Next '... damit muss nicht unbedingt auf Existenz geprüft werden
 
 End Sub
 
-Private Sub dropSourceTable(ByVal SourceTableDefName As String)
+Private Sub DropSourceTable(ByVal SourceTableDefName As String)
 
 On Error GoTo HandleErr
 
@@ -622,14 +600,14 @@ HandleErr:
    
 End Sub
 
-Private Sub reconnectTempTable(ByVal LinkedTableDefName As String, ByVal SourceTableDefName As String)
+Private Sub ReconnectTempTable(ByVal LinkedTableDefName As String, ByVal SourceTableDefName As String)
 
-   dropLinkedTableDef LinkedTableDefName
-   connectTempTable LinkedTableDefName, SourceTableDefName
+   DropLinkedTableDef LinkedTableDefName
+   ConnectTempTable LinkedTableDefName, SourceTableDefName
  
 End Sub
 
-Private Sub connectTempTable(ByVal LinkedTableDefName As String, ByVal SourceTableDefName As String)
+Private Sub ConnectTempTable(ByVal LinkedTableDefName As String, ByVal SourceTableDefName As String)
    
    Dim dbs As DAO.Database
    Dim tdf As DAO.TableDef
@@ -648,35 +626,34 @@ Private Sub connectTempTable(ByVal LinkedTableDefName As String, ByVal SourceTab
 
 End Sub
 
-Private Function getTempFileName(Optional ByRef sTempPath As String = "", _
+Private Function GetTempFileName(Optional ByRef TempPath As String = "", _
                          Optional ByRef FilePrefix As String = "", _
                          Optional ByRef FileExtension As String = "") As String
 
-   Dim strTempFileName As String
-   Dim strTempPath As String
-   Dim lngRet As Long
+   Dim TempFileName As String
+   Dim TempFilePath As String
 
-   If Len(sTempPath) = 0 Then
-      strTempFileName = String$(m_conMaxPathLen, 0)
-      lngRet = GetTempPath(m_conMaxPathLen, strTempFileName)
-      strTempFileName = Left$(strTempFileName, InStr(strTempFileName, Chr$(0)) - 1)
-      strTempPath = strTempFileName
+   If Len(TempPath) = 0 Then
+      TempFileName = String$(MAX_PATH_LEN, 0)
+      GetTempPath MAX_PATH_LEN, TempFileName
+      TempFileName = Left$(TempFileName, InStr(TempFileName, Chr$(0)) - 1)
+      TempFilePath = TempFileName
    Else
-      strTempPath = sTempPath
+      TempFilePath = TempPath
    End If
    
-   strTempFileName = String$(m_conMaxPathLen, 0)
-   lngRet = API_GetTempFilename(strTempPath, FilePrefix, 0&, strTempFileName)
+   TempFileName = String$(MAX_PATH_LEN, 0)
+   API_GetTempFilename TempFilePath, FilePrefix, 0&, TempFileName
    
-   strTempFileName = Left$(strTempFileName, InStr(strTempFileName, Chr$(0)) - 1)
+   TempFileName = Left$(TempFileName, InStr(TempFileName, Chr$(0)) - 1)
    
    'Datei wieder löschen, da nur Name benötigt wird
-   Call Kill(strTempFileName)
+   Call Kill(TempFileName)
    
    If Len(FileExtension) > 0 Then 'Fileextension umschreiben
-     strTempFileName = Left$(strTempFileName, Len(strTempFileName) - 3) & FileExtension
+     TempFileName = Left$(TempFileName, Len(TempFileName) - 3) & FileExtension
    End If
-   getTempFileName = strTempFileName
+   GetTempFileName = TempFileName
 
 End Function
 
@@ -734,7 +711,7 @@ End Function
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function LookupSQL(ByVal SqlText As String, Optional ByVal Index As Variant = 0&, _
+Public Function LookupSql(ByVal SqlText As String, Optional ByVal Index As Variant = 0&, _
                  Optional ByVal ValueIfNull As Variant = Null) As Variant
-   LookupSQL = m_DaoHandler.LookupSQL(SqlText, Index, ValueIfNull)
+   LookupSql = m_DaoHandler.LookupSql(SqlText, Index, ValueIfNull)
 End Function

@@ -51,7 +51,7 @@ Private Declare PtrSafe Function VerQueryValue Lib "version.dll" Alias "VerQuery
   ) As Long
 
 Private Declare PtrSafe Sub MoveMemory Lib "kernel32" Alias "RtlMoveMemory" ( _
-  dest As Any, _
+  Dest As Any, _
   ByVal Source As Long, _
   ByVal Length As Long)
 
@@ -76,7 +76,7 @@ Private Declare Function VerQueryValue Lib "version.dll" Alias "VerQueryValueA" 
   ) As Long
 
 Private Declare Sub MoveMemory Lib "kernel32" Alias "RtlMoveMemory" ( _
-  dest As Any, _
+  Dest As Any, _
   ByVal Source As Long, _
   ByVal Length As Long)
 

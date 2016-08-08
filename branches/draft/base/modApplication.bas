@@ -44,7 +44,7 @@ Private m_Extension As Collection
 '---------------------------------------------------------------------------------------
 Public Property Get CurrentApplication() As ApplicationHandler
    If m_ApplicationHandler Is Nothing Then
-      initApplication
+      InitApplication
    End If
    Set CurrentApplication = m_ApplicationHandler
 End Property
@@ -87,7 +87,7 @@ Public Sub TraceLog(ByRef Msg As String, ParamArray Args() As Variant)
 End Sub
 
 
-Private Sub initApplication()
+Private Sub InitApplication()
 
    ' Hauptinstanz erzeugen
    Set m_ApplicationHandler = New ApplicationHandler

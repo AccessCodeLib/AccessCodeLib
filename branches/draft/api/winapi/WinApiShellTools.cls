@@ -34,7 +34,7 @@ Private Const SE_ERR_NOASSOC  As Long = 31
 Private Const STARTF_USESHOWWINDOW As Long = &H1
 Private Const NORMAL_PRIORITY_CLASS As Long = &H20
 
-Private Type STARTUPINFO
+Private Type StartUpInfo
    cb As Long
    lpReserved As String
    lpDesktop As String
@@ -55,7 +55,7 @@ Private Type STARTUPINFO
    hStdError As Long
 End Type
 
-Private Type PROCESS_INFORMATION
+Private Type ProcessInformation
    hProcess As Long
    hThread As Long
    dwProcessID As Long
@@ -70,7 +70,7 @@ Private Const WAIT_TIMEOUT As Long = &H102&
 Private Declare PtrSafe Function ShellExecuteA Lib "shell32.dll" ( _
    ByVal Hwnd As Long, _
    ByVal lOperation As String, _
-   ByVal lpFile As String, _
+   ByVal LpFile As String, _
    ByVal lpParameters As String, _
    ByVal lpDirectory As String, _
    ByVal nShowCmd As Long) As Long
@@ -86,20 +86,20 @@ Private Declare PtrSafe Function CreateProcess Lib "kernel32" Alias "CreateProce
    ByVal lpProcessAttributes As Long, ByVal lpThreadAttributes As Long, _
    ByVal bInheritHandles As Long, ByVal dwCreationFlags As Long, _
    lpEnvironment As Any, ByVal lpCurrentDirectory As String, _
-   lpStartupInfo As STARTUPINFO, lpProcessInformation As PROCESS_INFORMATION) As Long
+   lpStartupInfo As StartUpInfo, lpProcessInformation As ProcessInformation) As Long
 
-Private Declare PtrSafe Function WaitForInputIdle Lib "user32" (ByVal hProcess As Long, ByVal dwMilliseconds As Long) As Long
-Private Declare PtrSafe Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As Long
-Private Declare PtrSafe Function WaitForSingleObject Lib "kernel32" (ByVal hHandle As Long, ByVal dwMilliseconds As Long) As Long
+Private Declare PtrSafe Function WaitForInputIdle Lib "user32" (ByVal Process As Long, ByVal DwMilliseconds As Long) As Long
+Private Declare PtrSafe Function CloseHandle Lib "kernel32" (ByVal Object As Long) As Long
+Private Declare PtrSafe Function WaitForSingleObject Lib "kernel32" (ByVal Handle As Long, ByVal DwMilliseconds As Long) As Long
 
-Private Declare PtrSafe Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
+Private Declare PtrSafe Sub Sleep Lib "kernel32" (ByVal DwMilliseconds As Long)
 
 #Else
 
 Private Declare Function ShellExecuteA Lib "shell32.dll" ( _
    ByVal Hwnd As Long, _
    ByVal lOperation As String, _
-   ByVal lpFile As String, _
+   ByVal LpFile As String, _
    ByVal lpParameters As String, _
    ByVal lpDirectory As String, _
    ByVal nShowCmd As Long) As Long
@@ -115,13 +115,13 @@ Private Declare Function CreateProcess Lib "kernel32" Alias "CreateProcessA" ( _
    ByVal lpProcessAttributes As Long, ByVal lpThreadAttributes As Long, _
    ByVal bInheritHandles As Long, ByVal dwCreationFlags As Long, _
    lpEnvironment As Any, ByVal lpCurrentDirectory As String, _
-   lpStartupInfo As STARTUPINFO, lpProcessInformation As PROCESS_INFORMATION) As Long
+   lpStartupInfo As StartUpInfo, lpProcessInformation As ProcessInformation) As Long
 
-Private Declare Function WaitForInputIdle Lib "user32" (ByVal hProcess As Long, ByVal dwMilliseconds As Long) As Long
-Private Declare Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As Long
-Private Declare Function WaitForSingleObject Lib "kernel32" (ByVal hHandle As Long, ByVal dwMilliseconds As Long) As Long
+Private Declare Function WaitForInputIdle Lib "user32" (ByVal Process As Long, ByVal DwMilliseconds As Long) As Long
+Private Declare Function CloseHandle Lib "kernel32" (ByVal Object As Long) As Long
+Private Declare Function WaitForSingleObject Lib "kernel32" (ByVal Handle As Long, ByVal DwMilliseconds As Long) As Long
 
-Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
+Private Declare Sub Sleep Lib "kernel32" (ByVal DwMilliseconds As Long)
 #End If
 
 
@@ -143,35 +143,35 @@ Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Execute(ByVal sFile As String, _
-               Optional ByVal sAPIOperation As String = vbNullString) As Boolean
+Public Function Execute(ByVal FilePath As String, _
+               Optional ByVal ApiOperation As String = vbNullString) As Boolean
 
-   Dim lRet As Long
-   Dim sDirectory As String
-   Dim lngDeskWin As Long
+   Dim Ret As Long
+   Dim Directory As String
+   Dim DeskWin As Long
    
-   If sFile = vbNullString Then
+   If Len(FilePath) = 0 Then
       Execute = False
       Exit Function
    Else
-      lngDeskWin = GetDesktopWindow()
-      lRet = ShellExecuteA(lngDeskWin, sAPIOperation, sFile, vbNullString, vbNullString, vbNormalFocus)
+      DeskWin = GetDesktopWindow()
+      Ret = ShellExecuteA(DeskWin, ApiOperation, FilePath, vbNullString, vbNullString, vbNormalFocus)
    End If
    
-   If lRet = SE_ERR_NOTFOUND Then
+   If Ret = SE_ERR_NOTFOUND Then
       'Datei nicht gefunden
       MsgBox "Datei nicht gefunden" & vbNewLine & vbNewLine & _
-            sFile
+             FilePath
       Execute = False
       Exit Function
-   ElseIf lRet = SE_ERR_NOASSOC Then
+   ElseIf Ret = SE_ERR_NOASSOC Then
       'Wenn die Dateierweiterung noch nicht bekannt ist...
       'wird der "Öffnen mit..."-Dialog angezeigt.
-      sDirectory = Space$(260)
-      lRet = GetSystemDirectory(sDirectory, Len(sDirectory))
-      sDirectory = Left$(sDirectory, lRet)
-      Call ShellExecuteA(lngDeskWin, vbNullString, "RUNDLL32.EXE", "shell32.dll, OpenAs_RunDLL " & _
-         sFile, sDirectory, vbNormalFocus)
+      Directory = Space$(260)
+      Ret = GetSystemDirectory(Directory, Len(Directory))
+      Directory = Left$(Directory, Ret)
+      Call ShellExecuteA(DeskWin, vbNullString, "RUNDLL32.EXE", "shell32.dll, OpenAs_RunDLL " & _
+         FilePath, Directory, vbNormalFocus)
    End If
    
    Execute = True
@@ -191,8 +191,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function ExecuteAsAdmin(ByVal sFile As String) As Boolean
-    ExecuteAsAdmin = Me.Execute(sFile, "runas")
+Public Function ExecuteAsAdmin(ByVal File As String) As Boolean
+    ExecuteAsAdmin = Me.Execute(File, "runas")
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -210,38 +210,38 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function ShellExecuteSendMail(ByVal sTo As String, _
-                                     ByVal sSubject As String, _
-                                     ByVal sBody As String) As Boolean
+Public Function ShellExecuteSendMail(ByVal SendTo As String, _
+                                     ByVal Subject As String, _
+                                     ByVal Body As String) As Boolean
 
-   Dim lRet As Long
-   Dim strLpFile As String
+   Dim Ret As Long
+   Dim LpFile As String
    
-   If Len(sTo) = 0 Then
+   If Len(SendTo) = 0 Then
       ShellExecuteSendMail = False
       Exit Function
    End If
    
-   If sSubject > vbNullString Then
-      strLpFile = "subject=" & sSubject
+   If Subject > vbNullString Then
+      LpFile = "subject=" & Subject
    End If
-   If sBody > vbNullString Then
-      If strLpFile > vbNullString Then
-         strLpFile = strLpFile & "&body=" & sBody
+   If Body > vbNullString Then
+      If LpFile > vbNullString Then
+         LpFile = LpFile & "&body=" & Body
       Else
-         strLpFile = "body=" & sBody
+         LpFile = "body=" & Body
       End If
    End If
-   If strLpFile > vbNullString Then
-       strLpFile = "mailto:" & sTo & "?" & strLpFile
+   If LpFile > vbNullString Then
+       LpFile = "mailto:" & SendTo & "?" & LpFile
    Else
-      strLpFile = "mailto:" & sTo
+      LpFile = "mailto:" & SendTo
    End If
 
    
    
-   lRet = ShellExecuteA(GetDesktopWindow(), "open", strLpFile, vbNullString, vbNullString, vbNormalFocus)
-   ShellExecuteSendMail = (lRet <> 0)
+   Ret = ShellExecuteA(GetDesktopWindow(), "open", LpFile, vbNullString, vbNullString, vbNormalFocus)
+   ShellExecuteSendMail = (Ret <> 0)
 
 End Function
 
@@ -261,36 +261,34 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function LaunchAppSynchronous(ByVal strExecutablePathAndName As String, _
-                     Optional ByVal sParam As String = vbNullString, _
-                     Optional ByVal lShowCommand As Long = vbNormalFocus) As Boolean
+Public Function LaunchAppSynchronous(ByVal ExecutablePathAndName As String, _
+                     Optional ByVal Param As String = vbNullString, _
+                     Optional ByVal ShowCommand As Long = vbNormalFocus) As Boolean
    
    'http://planetsourcecode.com/vb/scripts/ShowCode.asp?txtCodeId=3716&lngWId=1
 
-   Dim lngResponse As Long
-   Dim typStartUpInfo As STARTUPINFO
-   Dim typProcessInfo As PROCESS_INFORMATION
+   Dim Response As Long
+   Dim StartUpInf As StartUpInfo
+   Dim ProcInfo As ProcessInformation
 
    LaunchAppSynchronous = False
 
-   With typStartUpInfo
-      .cb = Len(typStartUpInfo)
+   With StartUpInf
+      .cb = Len(StartUpInf)
       .lpReserved = vbNullString
       .lpDesktop = vbNullString
       .lpTitle = vbNullString
       .dwFlags = STARTF_USESHOWWINDOW
-      .wShowWindow = lShowCommand
+      .wShowWindow = ShowCommand
    End With
 
-   'Launch the application by creating a ne
-   '    w process
-   lngResponse = CreateProcess(vbNullString, strExecutablePathAndName & " " & sParam, 0, 0, True, NORMAL_PRIORITY_CLASS, ByVal 0&, vbNullString, typStartUpInfo, typProcessInfo)
+   'Launch the application by creating a new process
+   Response = CreateProcess(vbNullString, ExecutablePathAndName & " " & Param, 0, 0, True, NORMAL_PRIORITY_CLASS, ByVal 0&, vbNullString, StartUpInf, ProcInfo)
 
 
-   If lngResponse Then
-      'Wait for the application to terminate b
-      '    efore moving on
-      Call WaitForTermination(typProcessInfo)
+   If Response Then
+      'Wait for the application to terminate before moving on
+      Call WaitForTermination(ProcInfo)
       LaunchAppSynchronous = True
    Else
       LaunchAppSynchronous = False
@@ -298,24 +296,20 @@ Public Function LaunchAppSynchronous(ByVal strExecutablePathAndName As String, _
 
 End Function
 
-Private Sub WaitForTermination(ByRef typProcessInfo As PROCESS_INFORMATION)
-   'This wait routine allows other applicat
-   '    ion events
-   'to be processed while waiting for the p
-   '    rocess to
-   'complete.
+Private Sub WaitForTermination(ByRef ProcessInfo As ProcessInformation)
+   'This wait routine allows other application events
+   'to be processed while waiting for the process to complete.
    
-   Dim lngResponse As Long
+   Dim Response As Long
    'Let the process initialize
-   Call WaitForInputIdle(typProcessInfo.hProcess, INFINITE)
-   'We don't need the thread handle so get
-   '    rid of it
-   Call CloseHandle(typProcessInfo.hThread)
+   Call WaitForInputIdle(ProcessInfo.hProcess, INFINITE)
+   'We don't need the thread handle so get rid of it
+   Call CloseHandle(ProcessInfo.hThread)
    'Wait for the application to end
 
    Do
-      lngResponse = WaitForSingleObject(typProcessInfo.hProcess, 0)
-      If lngResponse <> WAIT_TIMEOUT Then
+      Response = WaitForSingleObject(ProcessInfo.hProcess, 0)
+      If Response <> WAIT_TIMEOUT Then
          'No timeout, app is terminated
          Exit Do
       End If
@@ -323,6 +317,6 @@ Private Sub WaitForTermination(ByRef typProcessInfo As PROCESS_INFORMATION)
       Loop While True
 
       'Kill the last handle of the process
-      Call CloseHandle(typProcessInfo.hProcess)
+      Call CloseHandle(ProcessInfo.hProcess)
 
 End Sub

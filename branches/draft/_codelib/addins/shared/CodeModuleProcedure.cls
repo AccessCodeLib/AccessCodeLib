@@ -31,62 +31,62 @@ Option Explicit
 Public Name As String
 
 #If EARLYBINDING Then
-   Public ProcVBComponent As VBIDE.VBComponent
-   Public procKind As vbext_ProcKind
+   Public ProcVbComponent As VBIDE.VBComponent
+   Public ProcKind As vbext_ProcKind
 #Else
-   Public ProcVBComponent As Object
-   Public procKind As Long
+   Public ProcVbComponent As Object
+   Public ProcKind As Long
 #End If
 
 
-Public Function SearchStrings(Optional ByVal onlyWithModulePrefix As Boolean = False) As String()
+Public Function SearchStrings(Optional ByVal OnlyWithModulePrefix As Boolean = False) As String()
 
-   Dim searchStringArray() As String
-   Dim modulName As String
+   Dim SearchStringArray() As String
+   Dim ModulName As String
    Dim i As Long
-   Dim maxCnt As Long
+   Dim MaxCnt As Long
    
-   modulName = ProcVBComponent.Name
-   If ProcVBComponent.Type = vbext_ct_Document Then
+   ModulName = ProcVbComponent.Name
+   If ProcVbComponent.Type = vbext_ct_Document Then
       'eigentlich nicht notwendig, da Klassen nicht nach Procs durchsucht werden müssen
-      If modulName Like "Form_" Then
-         modulName = Mid(modulName, 6)
-      ElseIf modulName Like "Report_" Then
-         modulName = Mid(modulName, 8)
+      If ModulName Like "Form_" Then
+         ModulName = Mid(ModulName, 6)
+      ElseIf ModulName Like "Report_" Then
+         ModulName = Mid(ModulName, 8)
       End If
    End If
    
 #If USEREGEX = 1 Then
-   ReDim searchStringArray(0)
-   If onlyWithModulePrefix Then
-      searchStringArray(0) = "(\n| )" & modulName & "\." & Me.Name & "( |\.|,|:|\(|\n)"
+   ReDim SearchStringArray(0)
+   If OnlyWithModulePrefix Then
+      SearchStringArray(0) = "(\n| )" & ModulName & "\." & Me.Name & "( |\.|,|:|\(|\n)"
    Else
-      searchStringArray(0) = "(\n| )(" & modulName & "\.|)" & Me.Name & "( |\.|,|:|\(|\n)"
+      SearchStringArray(0) = "(\n| )(" & ModulName & "\.|)" & Me.Name & "( |\.|,|:|\(|\n)"
    End If
 #Else
 
-   If onlyWithModulePrefix Then
-      ReDim searchStringArray(5)
+   If OnlyWithModulePrefix Then
+      ReDim SearchStringArray(5)
    Else
-      ReDim searchStringArray(11)
+      ReDim SearchStringArray(11)
    End If
 
-   searchStringArray(0) = " " & Me.Name & " "
-   searchStringArray(1) = " " & Me.Name & "[.,:(]" 'für like-Suche ist das so in Ordnung
-   searchStringArray(2) = " " & Me.Name & vbNewLine
-   maxCnt = 2
+   SearchStringArray(0) = " " & Me.Name & " "
+   SearchStringArray(1) = " " & Me.Name & "[.,:(]" 'für like-Suche ist das so in Ordnung
+   SearchStringArray(2) = " " & Me.Name & vbNewLine
+   MaxCnt = 2
 
-   For i = 0 To maxCnt
-      searchStringArray(i + (maxCnt + 1) * (1 + onlyWithModulePrefix)) = " " & modulName & "." & Mid(searchStringArray(i), 2)
+   For i = 0 To MaxCnt
+      SearchStringArray(i + (MaxCnt + 1) * (1 + OnlyWithModulePrefix)) = " " & ModulName & "." & Mid(SearchStringArray(i), 2)
    Next
-   maxCnt = maxCnt + (maxCnt + 1) * (1 + onlyWithModulePrefix)
+   MaxCnt = MaxCnt + (MaxCnt + 1) * (1 + OnlyWithModulePrefix)
 
-   For i = 0 To maxCnt
-      searchStringArray(i + maxCnt + 1) = vbNewLine & Mid(searchStringArray(i), 2)
+   For i = 0 To MaxCnt
+      SearchStringArray(i + MaxCnt + 1) = vbNewLine & Mid(SearchStringArray(i), 2)
    Next
 
 #End If
 
-   SearchStrings = searchStringArray
+   SearchStrings = SearchStringArray
 
 End Function

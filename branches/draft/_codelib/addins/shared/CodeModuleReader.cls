@@ -61,8 +61,8 @@ Private m_HeaderItemCollection As Collection
 Private m_RequiredModules As Collection
 Private m_RequiredModulesChecked As Boolean
 
-Private Const ERRNUMBER_CheckDependency_notrun As Long = vbObjectError + 5001
-Private Const ERRDESCRIPTION_CheckDependency_notrun As String = "CheckDependency wurde noch nicht ausgeführt"
+Private Const ERRNUMBER_CHECKDEPENDENCY_NOTRUN As Long = vbObjectError + 5001
+Private Const ERRDESCRIPTION_CHECKDEPENDENCY_NOTRUN As String = "CheckDependency wurde noch nicht ausgeführt"
 
 
 '---------------------------------------------------------------------------------------
@@ -99,12 +99,12 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 #If EARLYBINDING Then
-Public Property Set CodeModule(cm As VBIDE.CodeModule)
+Public Property Set CodeModule(ByRef NewRef As VBIDE.CodeModule)
 #Else
-Public Property Set CodeModule(cm As Object)
+Public Property Set CodeModule(ByRef NewRef As Object)
 #End If
 
-   Set m_CodeModule = cm
+   Set m_CodeModule = NewRef
 
 End Property
 
@@ -122,11 +122,11 @@ End Property
 '---------------------------------------------------------------------------------------
 Public Function Copy() As CodeModuleReader
 
-   Dim newReader As CodeModuleReader
+   Dim NewReader As CodeModuleReader
 
-   Set newReader = New CodeModuleReader
-   Set newReader.CodeModule = Me.CodeModule
-   Set Copy = newReader
+   Set NewReader = New CodeModuleReader
+   Set NewReader.CodeModule = Me.CodeModule
+   Set Copy = NewReader
 
 End Function
 
@@ -165,7 +165,7 @@ End Property
 Public Property Get RequiredModules() As Collection
 
    If Not m_RequiredModulesChecked Then
-      Err.Raise ERRNUMBER_CheckDependency_notrun, "RequiredModules", ERRDESCRIPTION_CheckDependency_notrun
+      Err.Raise ERRNUMBER_CHECKDEPENDENCY_NOTRUN, "RequiredModules", ERRDESCRIPTION_CHECKDEPENDENCY_NOTRUN
    End If
 
    Set RequiredModules = m_RequiredModules
@@ -187,15 +187,15 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 #If EARLYBINDING Then
-Public Function CheckDependency(Optional ByVal vbp As VBIDE.VBProject = Nothing, _
-                                Optional ByRef oModulReaderCollection As Collection = Nothing) As Long
+Public Function CheckDependency(Optional ByVal VbpRef As VBIDE.VBProject = Nothing, _
+                                Optional ByRef ModulReaderCollection As Collection = Nothing) As Long
 #Else
-Public Function CheckDependency(Optional ByVal vbp As Object = Nothing, _
-                                Optional ByRef oModulReaderCollection As Collection = Nothing) As Long
+Public Function CheckDependency(Optional ByVal VbpRef As Object = Nothing, _
+                                Optional ByRef ModulReaderCollection As Collection = Nothing) As Long
 #End If
 
-   Dim checkCollection As Collection
-   Dim bolAddModule As Boolean
+   Dim CheckCollection As Collection
+   Dim AddModule As Boolean
 
 #If EARLYBINDING Then
    Dim vbc As VBIDE.VBComponent
@@ -203,65 +203,64 @@ Public Function CheckDependency(Optional ByVal vbp As Object = Nothing, _
    Dim vbc As Object
 #End If
 
-   Dim tempModuleReader As CodeModuleReader
-   Dim newModuleReader As CodeModuleReader
-   Dim tempProc As CodeModuleProcedure
-   Dim tempHeaderItem As CodeModuleHeaderItem
+   Dim TempModuleReader As CodeModuleReader
+   Dim TempProc As CodeModuleProcedure
+   Dim TempHeaderItem As CodeModuleHeaderItem
 
    Set m_RequiredModules = Nothing
    Set m_RequiredModules = New Collection
    
-   If oModulReaderCollection Is Nothing Then
+   If ModulReaderCollection Is Nothing Then
    
-      Set oModulReaderCollection = New Collection
+      Set ModulReaderCollection = New Collection
       
-      If vbp Is Nothing Then
-         Set vbp = CurrentVbProject
+      If VbpRef Is Nothing Then
+         Set VbpRef = CurrentVbProject
       End If
 
-      For Each vbc In vbp.VBComponents
-         Set tempModuleReader = New CodeModuleReader
-         Set tempModuleReader.CodeModule = vbc.CodeModule
-         oModulReaderCollection.Add tempModuleReader, tempModuleReader.Name
+      For Each vbc In VbpRef.VBComponents
+         Set TempModuleReader = New CodeModuleReader
+         Set TempModuleReader.CodeModule = vbc.CodeModule
+         ModulReaderCollection.Add TempModuleReader, TempModuleReader.Name
       Next
 
    End If
    
-   For Each tempModuleReader In oModulReaderCollection
-      If Not (tempModuleReader.Name = Me.Name) Then
-         bolAddModule = False
+   For Each TempModuleReader In ModulReaderCollection
+      If Not (TempModuleReader.Name = Me.Name) Then
+         AddModule = False
       
          'Bei einem Standard-Modul müssen die Prozeduren und die Modul-Konstanten/Variablen geprüft werden
-         If tempModuleReader.CodeModule.Parent.Type = vbext_ComponentType.vbext_ct_StdModule Then
-            Set checkCollection = tempModuleReader.Procedures
-            For Each tempProc In checkCollection
-               If Me.ProcedureUsed(tempProc) Then
-                  bolAddModule = True
+         If TempModuleReader.CodeModule.Parent.Type = vbext_ComponentType.vbext_ct_StdModule Then
+            Set CheckCollection = TempModuleReader.Procedures
+            For Each TempProc In CheckCollection
+               If Me.ProcedureUsed(TempProc) Then
+                  AddModule = True
                   Exit For
                End If
             Next
             
-            If Not bolAddModule Then ' Variablen, Konstanten, ... prüfen
-               Set checkCollection = tempModuleReader.HeaderItems
-               For Each tempHeaderItem In checkCollection
-                  If Me.HeaderItemUsed(tempHeaderItem) Then
-                     bolAddModule = True
+            If Not AddModule Then ' Variablen, Konstanten, ... prüfen
+               Set CheckCollection = TempModuleReader.HeaderItems
+               For Each TempHeaderItem In CheckCollection
+                  If Me.HeaderItemUsed(TempHeaderItem) Then
+                     AddModule = True
                      Exit For
                   End If
                Next
             End If
             
          Else 'bei Klassen reicht es aus, die Verwendung der Klasse zu prüfen
-            If Me.ClassUsed(tempModuleReader.CodeModule.Parent.Name) Then
-               bolAddModule = True
+            If Me.ClassUsed(TempModuleReader.CodeModule.Parent.Name) Then
+               AddModule = True
             End If
             
-            If Not bolAddModule Then ' bei Klassen nur Enums prüfen
-               Set checkCollection = tempModuleReader.HeaderItems
-               For Each tempHeaderItem In checkCollection
-                  If tempHeaderItem.ItemType = CodeModuleHeaderItemType.CodeModuleHeaderItemType_Enum Then
-                     If Me.HeaderItemUsed(tempHeaderItem) Then
-                        bolAddModule = True
+            If Not AddModule Then ' bei Klassen nur Enums prüfen
+               Set CheckCollection = TempModuleReader.HeaderItems
+               For Each TempHeaderItem In CheckCollection
+                  If TempHeaderItem.ItemType = CodeModuleHeaderItemType.CodeModuleHeaderItemType_Enum Then
+                     If Me.HeaderItemUsed(TempHeaderItem) Then
+                        AddModule = True
                         Exit For
                      End If
                   End If
@@ -270,8 +269,8 @@ Public Function CheckDependency(Optional ByVal vbp As Object = Nothing, _
             
          End If
          
-         If bolAddModule Then
-            m_RequiredModules.Add tempModuleReader.Copy, tempModuleReader.Name
+         If AddModule Then
+            m_RequiredModules.Add TempModuleReader.Copy, TempModuleReader.Name
             'kann hier ein Zirkelbezug entstehen, wenn tempModuleReader-Referenz gespeichert wird?
             ' => zur Sicherheit Kopie übergeben
          End If
@@ -300,32 +299,32 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Function ClassUsed(ByVal ClassName As String) As Boolean
    
-   Dim strSearchString(5) As String
+   Dim SearchString(5) As String
    Dim i As Long
-   Dim bolUsed As Boolean
-   Dim lngMaxCnt As Long
+   Dim IsUsed As Boolean
+   Dim MaxCnt As Long
 
-   strSearchString(0) = " As " & Trim$(ClassName) & vbNewLine
-   strSearchString(1) = " As " & Trim$(ClassName) & ","
-   strSearchString(2) = " As " & Trim$(ClassName) & " "
+   SearchString(0) = " As " & Trim$(ClassName) & vbNewLine
+   SearchString(1) = " As " & Trim$(ClassName) & ","
+   SearchString(2) = " As " & Trim$(ClassName) & " "
    
-   lngMaxCnt = 2
-   For i = 0 To lngMaxCnt
-      strSearchString(lngMaxCnt + 1 + i) = " New " & Mid(strSearchString(i), 5)
+   MaxCnt = 2
+   For i = 0 To MaxCnt
+      SearchString(MaxCnt + 1 + i) = " New " & Mid(SearchString(i), 5)
    Next
    
    If StrPtr(m_CodeModuleText) = 0 Then
       m_CodeModuleText = PlainCodeText
    End If
    
-   For i = LBound(strSearchString) To UBound(strSearchString)
-      If m_CodeModuleText Like "*" & strSearchString(i) & "*" Then
-         bolUsed = True
+   For i = LBound(SearchString) To UBound(SearchString)
+      If m_CodeModuleText Like "*" & SearchString(i) & "*" Then
+         IsUsed = True
          Exit For
       End If
    Next
    
-   ClassUsed = bolUsed
+   ClassUsed = IsUsed
 
 End Function
 
@@ -342,49 +341,49 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function ProcedureUsed(ByRef cmp As CodeModuleProcedure) As Boolean
+Public Function ProcedureUsed(ByRef CodeModuleProc As CodeModuleProcedure) As Boolean
    
-   Dim searchStringArray() As String
+   Dim SearchStringArray() As String
    Dim i As Long
-   Dim bolUsed As Boolean
-   Dim proc As CodeModuleProcedure
-   Dim bolOnlyWithModulePrefix As Boolean
+   Dim IsUsed As Boolean
+   Dim Proc As CodeModuleProcedure
+   Dim OnlyWithModulePrefix As Boolean
 
    'bei Überlappung von internen Prozedurnamen mit der zu prüfenden,
    'gilt nur bei der Kombination modulname.prozedur eine Übereinstimmung als Treffer
-   For Each proc In Me.Procedures(True, True)
-      If proc.Name = cmp.Name Then
-         bolOnlyWithModulePrefix = True
+   For Each Proc In Me.Procedures(True, True)
+      If Proc.Name = CodeModuleProc.Name Then
+         OnlyWithModulePrefix = True
          Exit For
       End If
    Next
 
-   searchStringArray = cmp.SearchStrings(bolOnlyWithModulePrefix)
+   SearchStringArray = CodeModuleProc.SearchStrings(OnlyWithModulePrefix)
    
    If StrPtr(m_CodeModuleText) = 0 Then
       m_CodeModuleText = PlainCodeText
    End If
    
    'Text durchsuchen
-   For i = LBound(searchStringArray) To UBound(searchStringArray)
+   For i = LBound(SearchStringArray) To UBound(SearchStringArray)
 #If USEREGEX = 1 Then
       With RegEx
-         .Pattern = searchStringArray(i)
+         .Pattern = SearchStringArray(i)
          .Global = False
-         bolUsed = .test(m_CodeModuleText)
-         If bolUsed Then
+         IsUsed = .test(m_CodeModuleText)
+         If IsUsed Then
             Exit For
          End If
       End With
 #Else
-      If m_CodeModuleText Like "*" & searchStringArray(i) & "*" Then
-         bolUsed = True
+      If m_CodeModuleText Like "*" & SearchStringArray(i) & "*" Then
+         IsUsed = True
          Exit For
       End If
 #End If
    Next
    
-   ProcedureUsed = bolUsed
+   ProcedureUsed = IsUsed
 
 End Function
 
@@ -401,40 +400,40 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function HeaderItemUsed(ByRef hdrItm As CodeModuleHeaderItem) As Boolean
+Public Function HeaderItemUsed(ByRef HdrItm As CodeModuleHeaderItem) As Boolean
    
-   Dim searchStringArray() As String
+   Dim SearchStringArray() As String
    Dim i As Long
-   Dim bolUsed As Boolean
+   Dim IsUsed As Boolean
    
    '/**
    ' * @bug Wenn sich eine Public-Variable mit einer interner (private Variable im Kopf oder in einer Proc)
    ' *      des zu durchsuchenden Codemoduls überlagert, wird die Public-Variable als Treffer angesehen
    '**/
 
-   searchStringArray = hdrItm.SearchStrings
+   SearchStringArray = HdrItm.SearchStrings
    
    If StrPtr(m_CodeModuleText) = 0 Then
       m_CodeModuleText = PlainCodeText
    End If
    
-   For i = LBound(searchStringArray) To UBound(searchStringArray)
+   For i = LBound(SearchStringArray) To UBound(SearchStringArray)
 #If USEREGEX = 1 Then
       With RegEx
-         .Pattern = searchStringArray(i)
+         .Pattern = SearchStringArray(i)
          .Global = False
-         bolUsed = .test(m_CodeModuleText)
-         If bolUsed Then Exit For
+         IsUsed = .test(m_CodeModuleText)
+         If IsUsed Then Exit For
       End With
 #Else
-      If m_CodeModuleText Like "*" & searchStringArray(i) & "*" Then
-         bolUsed = True
+      If m_CodeModuleText Like "*" & SearchStringArray(i) & "*" Then
+         IsUsed = True
          Exit For
       End If
 #End If
    Next
 
-   HeaderItemUsed = bolUsed
+   HeaderItemUsed = IsUsed
 
 End Function
 
@@ -458,34 +457,34 @@ Public Property Get PlainCodeText() As String
    Dim i As Long
 
    For i = 1 To m_CodeModule.CountOfLines
-      strCodeText = strCodeText & Trim$(getPlainCodeLine(m_CodeModule.Lines(i, 1))) & vbNewLine
+      strCodeText = strCodeText & Trim$(GetPlainCodeLine(m_CodeModule.Lines(i, 1))) & vbNewLine
    Next
    
    PlainCodeText = strCodeText
 
 End Property
 
-Private Function getPlainCodeLine(ByVal strCodeLine As String) As String
+Private Function GetPlainCodeLine(ByVal CodeLine As String) As String
 
-   Dim posSingleQuote As Long
-   Dim posDoubleQuote As Long
+   Dim PosSingleQuote As Long
+   Dim PosDoubleQuote As Long
 
-   posSingleQuote = InStr(1, strCodeLine, "'")
-   posDoubleQuote = InStr(1, strCodeLine, """")
+   PosSingleQuote = InStr(1, CodeLine, "'")
+   PosDoubleQuote = InStr(1, CodeLine, """")
    
-   If posSingleQuote = 0 Then
-      getPlainCodeLine = strCodeLine
+   If PosSingleQuote = 0 Then
+      GetPlainCodeLine = CodeLine
    Else
-      If posDoubleQuote = 0 Or posSingleQuote < posDoubleQuote Then
-         getPlainCodeLine = Left$(strCodeLine, posSingleQuote - 1)
+      If PosDoubleQuote = 0 Or PosSingleQuote < PosDoubleQuote Then
+         GetPlainCodeLine = Left$(CodeLine, PosSingleQuote - 1)
       Else ' posSingleQuote > posDoubleQuote and posDoubleQuote > 0 Then
          'schließendes Anführungszeichen:
-         posDoubleQuote = InStr(posDoubleQuote + 1, strCodeLine, """")
-         If posDoubleQuote > 0 Then
-            getPlainCodeLine = Left$(strCodeLine, posDoubleQuote) & _
-                            getPlainCodeLine(Mid$(strCodeLine, posDoubleQuote + 1))
+         PosDoubleQuote = InStr(PosDoubleQuote + 1, CodeLine, """")
+         If PosDoubleQuote > 0 Then
+            GetPlainCodeLine = Left$(CodeLine, PosDoubleQuote) & _
+                            GetPlainCodeLine(Mid$(CodeLine, PosDoubleQuote + 1))
          Else ' kann es eigentlich nicht geben
-            getPlainCodeLine = strCodeLine
+            GetPlainCodeLine = CodeLine
          End If
       End If
    End If
@@ -506,17 +505,17 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Property Get Procedures(Optional ByVal bRefresh As Boolean = False, _
-                               Optional ByVal includePrivateProc As Boolean = False) As Collection
+Public Property Get Procedures(Optional ByVal Refresh As Boolean = False, _
+                               Optional ByVal IncludePrivateProc As Boolean = False) As Collection
 
-   Static bolIncludePrivateProc As Boolean
+   Static IncludePrivate As Boolean
    
-   If includePrivateProc <> bolIncludePrivateProc Then
-      bRefresh = True
-      bolIncludePrivateProc = includePrivateProc
+   If IncludePrivateProc <> IncludePrivate Then
+      Refresh = True
+      IncludePrivate = IncludePrivateProc
    End If
    
-   If bRefresh Then
+   If Refresh Then
       Set m_ProcCollection = Nothing
    ElseIf Not m_ProcCollection Is Nothing Then
       Set Procedures = m_ProcCollection
@@ -525,54 +524,54 @@ Public Property Get Procedures(Optional ByVal bRefresh As Boolean = False, _
    
    Set m_ProcCollection = New Collection
 
-   Dim currentLine As Long
-   Dim tempProc As CodeModuleProcedure
-   Dim tempProcName As String
-   Dim tempProcKind As vbext_ProcKind
-   Dim bolAddProc As Boolean
-   Dim tempProcLine As String
+   Dim CurrentLine As Long
+   Dim TempProc As CodeModuleProcedure
+   Dim TempProcName As String
+   Dim TempProcKind As vbext_ProcKind
+   Dim AddProc As Boolean
+   Dim TempProcLine As String
 
-   currentLine = m_CodeModule.CountOfDeclarationLines + 1
-   Do While currentLine <= m_CodeModule.CountOfLines
-      tempProcKind = vbext_pk_Proc
-      tempProcName = m_CodeModule.ProcOfLine(currentLine, tempProcKind)
-      If Len(tempProcName) > 0 Then
-         bolAddProc = True
-         For Each tempProc In m_ProcCollection
-            If tempProc.Name = tempProcName Then
-               bolAddProc = False
+   CurrentLine = m_CodeModule.CountOfDeclarationLines + 1
+   Do While CurrentLine <= m_CodeModule.CountOfLines
+      TempProcKind = vbext_pk_Proc
+      TempProcName = m_CodeModule.ProcOfLine(CurrentLine, TempProcKind)
+      If Len(TempProcName) > 0 Then
+         AddProc = True
+         For Each TempProc In m_ProcCollection
+            If TempProc.Name = TempProcName Then
+               AddProc = False
                Exit For
             End If
          Next
          
-         If bolAddProc Then 'nur Public-Elemente anfügen
-            tempProcLine = Trim(m_CodeModule.Lines(m_CodeModule.ProcBodyLine(tempProcName & "", tempProcKind), 1))
-            If includePrivateProc Then
-               bolAddProc = True
+         If AddProc Then 'nur Public-Elemente anfügen
+            TempProcLine = Trim(m_CodeModule.Lines(m_CodeModule.ProcBodyLine(TempProcName & "", TempProcKind), 1))
+            If IncludePrivateProc Then
+               AddProc = True
             ElseIf m_CodeModule.Parent.Type = vbext_ct_StdModule Then 'kein Private
-               bolAddProc = Not (Left(tempProcLine, 8) = "Private ")
+               AddProc = Not (Left(TempProcLine, 8) = "Private ")
             Else 'nur Public oder Friend
-               bolAddProc = (Left(tempProcLine, 7) = "Public ") Or (Left(tempProcLine, 7) = "Friend ")
+               AddProc = (Left(TempProcLine, 7) = "Public ") Or (Left(TempProcLine, 7) = "Friend ")
             End If
             
          End If
       
-         If bolAddProc Then
-            Set tempProc = New CodeModuleProcedure
-            tempProc.Name = tempProcName
-            tempProc.procKind = tempProcKind
-            Set tempProc.ProcVBComponent = m_CodeModule.Parent
+         If AddProc Then
+            Set TempProc = New CodeModuleProcedure
+            TempProc.Name = TempProcName
+            TempProc.ProcKind = TempProcKind
+            Set TempProc.ProcVbComponent = m_CodeModule.Parent
             On Error Resume Next
-            m_ProcCollection.Add tempProc, tempProcName
+            m_ProcCollection.Add TempProc, TempProcName
             On Error GoTo 0
          End If
          
-         currentLine = m_CodeModule.ProcStartLine(tempProcName & "", tempProcKind) + m_CodeModule.ProcCountLines(tempProcName, tempProcKind)
+         CurrentLine = m_CodeModule.ProcStartLine(TempProcName & "", TempProcKind) + m_CodeModule.ProcCountLines(TempProcName, TempProcKind)
          ' Anm.: ProcCountLines ist inkl. Kommentar oberhalb der Prozedur
          '       => ProcStartLine + ProcCountLines und nicht ProcBodyLine + ProcCountLines
          
       End If
-      currentLine = currentLine + 1 'm_CodeModule.ProcCountLines(procName, procKind)
+      CurrentLine = CurrentLine + 1 'm_CodeModule.ProcCountLines(procName, procKind)
    Loop
    
    Set Procedures = m_ProcCollection
@@ -593,17 +592,17 @@ End Property
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Property Get HeaderItems(Optional ByVal bRefresh As Boolean = False) As Collection
+Public Property Get HeaderItems(Optional ByVal Refresh As Boolean = False) As Collection
 
    Dim strCheckString As String
    Dim i As Long
    Dim strCheckLines As Variant
-   Dim tempHeaderItem As CodeModuleHeaderItem
-   Dim checkHeaderItem As CodeModuleHeaderItem
+   Dim TempHeaderItem As CodeModuleHeaderItem
+   Dim CheckHeaderItem As CodeModuleHeaderItem
    Dim lngPos As Long
    Dim bolAddHeaderItem As Boolean
 
-   If bRefresh Then
+   If Refresh Then
       Set m_HeaderItemCollection = Nothing
    ElseIf Not m_HeaderItemCollection Is Nothing Then
       Set HeaderItems = m_HeaderItemCollection
@@ -620,7 +619,7 @@ Public Property Get HeaderItems(Optional ByVal bRefresh As Boolean = False) As C
    strCheckString = m_CodeModule.Lines(1, m_CodeModule.CountOfDeclarationLines)
    strCheckLines = Split(strCheckString, vbNewLine)
    For i = LBound(strCheckLines) To UBound(strCheckLines)
-      strCheckLines(i) = getPlainCodeLine(strCheckLines(i))
+      strCheckLines(i) = GetPlainCodeLine(strCheckLines(i))
    Next
    strCheckString = Join(strCheckLines, vbNewLine)
    
@@ -642,23 +641,23 @@ Public Property Get HeaderItems(Optional ByVal bRefresh As Boolean = False) As C
          lngPos = InStr(1, strCheckString, "Public ")
          If lngPos = 0 Then lngPos = InStr(1, strCheckString, "global ")
          strCheckString = Trim$(Mid$(strCheckString, lngPos + 7))
-         Set tempHeaderItem = New CodeModuleHeaderItem
+         Set TempHeaderItem = New CodeModuleHeaderItem
          
          '/**
          ' * @todo "Public x as long, y as long, ..." wird noch nicht berücksichtigt
          '**/
          
          If strCheckString Like "const *" Then
-            tempHeaderItem.ItemType = CodeModuleHeaderItemType.CodeModuleHeaderItemType_Const
+            TempHeaderItem.ItemType = CodeModuleHeaderItemType.CodeModuleHeaderItemType_Const
             strCheckString = Trim$(Mid$(strCheckString, 6))
          ElseIf strCheckString Like "enum *" Then
-            tempHeaderItem.ItemType = CodeModuleHeaderItemType.CodeModuleHeaderItemType_Enum
+            TempHeaderItem.ItemType = CodeModuleHeaderItemType.CodeModuleHeaderItemType_Enum
             strCheckString = Trim$(Mid$(strCheckString, 5))
          ElseIf strCheckString Like "type *" Then
-            tempHeaderItem.ItemType = CodeModuleHeaderItemType.CodeModuleHeaderItemType_Type
+            TempHeaderItem.ItemType = CodeModuleHeaderItemType.CodeModuleHeaderItemType_Type
             strCheckString = Trim$(Mid$(strCheckString, 6))
          ElseIf strCheckString Like "declare *" Then
-            tempHeaderItem.ItemType = CodeModuleHeaderItemType.CodeModuleHeaderItemType_Declare
+            TempHeaderItem.ItemType = CodeModuleHeaderItemType.CodeModuleHeaderItemType_Declare
             strCheckString = Trim$(Mid$(strCheckString, 8))
             If strCheckString Like "function *" Then
                strCheckString = Trim$(Mid$(strCheckString, 8))
@@ -666,24 +665,24 @@ Public Property Get HeaderItems(Optional ByVal bRefresh As Boolean = False) As C
                strCheckString = Trim$(Mid$(strCheckString, 4))
             End If
          Else
-            tempHeaderItem.ItemType = CodeModuleHeaderItemType.CodeModuleHeaderItemType_Var
+            TempHeaderItem.ItemType = CodeModuleHeaderItemType.CodeModuleHeaderItemType_Var
          End If
          
          lngPos = InStr(1, strCheckString, " ")
          If lngPos = 0 Then lngPos = Len(strCheckString)
-         tempHeaderItem.Name = Trim$(Left$(strCheckString, lngPos))
+         TempHeaderItem.Name = Trim$(Left$(strCheckString, lngPos))
          
-         Set tempHeaderItem.HeaderItemVBComponent = m_CodeModule.Parent
+         Set TempHeaderItem.HeaderItemVBComponent = m_CodeModule.Parent
          
-         For Each checkHeaderItem In m_HeaderItemCollection
-            If checkHeaderItem.Name = tempHeaderItem.Name Then
+         For Each CheckHeaderItem In m_HeaderItemCollection
+            If CheckHeaderItem.Name = TempHeaderItem.Name Then
                bolAddHeaderItem = False
                Exit For
             End If
          Next
          
          If bolAddHeaderItem Then
-            m_HeaderItemCollection.Add tempHeaderItem, tempHeaderItem.Name
+            m_HeaderItemCollection.Add TempHeaderItem, TempHeaderItem.Name
          End If
       
       End If
@@ -701,21 +700,21 @@ Private Property Get CurrentVbProject() As Object
 #End If
 
 #If EARLYBINDING Then
-   Dim proj As VBProject
+   Dim Proj As VBProject
 #Else
-   Dim proj As Object
+   Dim Proj As Object
 #End If
    Dim strCurrentDbName As String
 
    If m_CurrentVbProject Is Nothing Then
       Set m_CurrentVbProject = VBE.ActiveVBProject
       'Prüfen, ob das richtige VbProject gewählt wurde (muss das von CurrentDb sein)
-      strCurrentDbName = UNCPath(CurrentDb.Name)
+      strCurrentDbName = UncPath(CurrentDb.Name)
       If m_CurrentVbProject.FileName <> strCurrentDbName Then
          Set m_CurrentVbProject = Nothing
-         For Each proj In VBE.VBProjects
-            If proj.FileName = strCurrentDbName Then
-               Set m_CurrentVbProject = proj
+         For Each Proj In VBE.VBProjects
+            If Proj.FileName = strCurrentDbName Then
+               Set m_CurrentVbProject = Proj
                Exit For
             End If
          Next
