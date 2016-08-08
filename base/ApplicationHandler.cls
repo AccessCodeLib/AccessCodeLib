@@ -121,8 +121,6 @@ Private m_ApplicationStartFormName As String ' Formular das in Start-Methode geö
 
 Private m_CustomMDIBackgroundColor As Long
 
-Private m_TracingEnabled As Boolean
-
 'Events
 Public Event BeforeDispose(ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
 Public Event AfterDispose(ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
@@ -251,7 +249,7 @@ Public Function Start(Optional ByRef ResumeMessage As Variant) As Boolean
    End Select
 
    'Update prüfen
-   If checkVersionUpdate Then
+   If CheckVersionUpdate Then
       If Me.UpdateApplication Then
          Start = False
          Application.Quit acQuitSaveNone
@@ -491,9 +489,9 @@ End Property
 
 Friend Property Let ApplicationTitle(ByVal AppTitle As String)
    If Len(AppTitle) > 0 Then
-      setAppDbProperty DBPROPNAME_APPTITLE, dbText, AppTitle
+      SetAppDbProperty DBPROPNAME_APPTITLE, dbText, AppTitle
    Else
-      deleteAppDbProperty DBPROPNAME_APPTITLE
+      DeleteAppDbProperty DBPROPNAME_APPTITLE
    End If
    Access.Application.RefreshTitleBar
 End Property
@@ -503,8 +501,8 @@ Friend Sub SetAppIcon(ByVal AppIconFile As String, Optional ByVal UseAppIconForF
    Dim CheckVar As Boolean
 
    If Len(Dir$(AppIconFile)) > 0 Then
-      setAppDbProperty DBPROPNAME_APPICON, dbText, AppIconFile
-      setAppDbProperty DBPROPNAME_USE_APPICON_FOR_FRMRPT, dbBoolean, UseAppIconForFrmRpt
+      SetAppDbProperty DBPROPNAME_APPICON, dbText, AppIconFile
+      SetAppDbProperty DBPROPNAME_USE_APPICON_FOR_FRMRPT, dbBoolean, UseAppIconForFrmRpt
    Else
       '1. Prüfen ob AppFile-Erweiterung vorhanden ist
       RaiseEvent CheckExtension(EXTENSION_KEY_APPFILE, CheckVar)
@@ -513,10 +511,10 @@ Friend Sub SetAppIcon(ByVal AppIconFile As String, Optional ByVal UseAppIconForF
       End If
       '2. Properties einstellen
       If CheckVar Then
-         setAppDbProperty DBPROPNAME_APPICON, dbText, AppIconFile
-         setAppDbProperty DBPROPNAME_USE_APPICON_FOR_FRMRPT, dbBoolean, UseAppIconForFrmRpt
+         SetAppDbProperty DBPROPNAME_APPICON, dbText, AppIconFile
+         SetAppDbProperty DBPROPNAME_USE_APPICON_FOR_FRMRPT, dbBoolean, UseAppIconForFrmRpt
       Else
-         deleteAppDbProperty DBPROPNAME_APPICON
+         DeleteAppDbProperty DBPROPNAME_APPICON
       End If
    End If
    Application.RefreshTitleBar
@@ -525,66 +523,66 @@ End Sub
 
 Friend Property Let StartUpForm(ByVal StartUpFormName As String)
    If Len(StartUpFormName) > 0 Then
-      setAppDbProperty DBPROPNAME_STARTUPFORM, dbText, "Form." & StartUpFormName
+      SetAppDbProperty DBPROPNAME_STARTUPFORM, dbText, "Form." & StartUpFormName
    Else
-      deleteAppDbProperty DBPROPNAME_STARTUPFORM
+      DeleteAppDbProperty DBPROPNAME_STARTUPFORM
    End If
 End Property
 
 Friend Property Let StartUpMenuBar(ByVal MenuBarName As String)
    If Len(MenuBarName) > 0 Then
-      setAppDbProperty DBPROPNAME_STARTUPMENUBAR, dbText, MenuBarName
+      SetAppDbProperty DBPROPNAME_STARTUPMENUBAR, dbText, MenuBarName
    Else
-      deleteAppDbProperty DBPROPNAME_STARTUPMENUBAR
+      DeleteAppDbProperty DBPROPNAME_STARTUPMENUBAR
    End If
 End Property
 
 Public Sub SetApplicationProperty(ByVal PropName As String, ByVal PropValue As Variant, Optional ByVal PropType As Long = dbText)
-   setAppDbProperty PropName, PropType, PropValue
+   SetAppDbProperty PropName, PropType, PropValue
 End Sub
 
-Private Sub setAppDbProperty(ByVal PropName As String, ByVal PropType As Long, ByVal PropValue As Variant)
+Private Sub SetAppDbProperty(ByVal PropName As String, ByVal PropType As Long, ByVal PropValue As Variant)
    
-   Dim db As DAO.Database
+   Dim Db As DAO.Database
    Dim PropCol As DAO.Properties
    
-   Set db = AppDb
-   Set PropCol = db.Properties
-   If dbPropertyExists(PropCol, PropName) Then
+   Set Db = AppDb
+   Set PropCol = Db.Properties
+   If DbPropertyExists(PropCol, PropName) Then
       If Len(PropValue) = 0 Or IsNull(PropValue) Then
-         db.Properties.Delete PropName
+         Db.Properties.Delete PropName
       Else
-         db.Properties(PropName) = PropValue
+         Db.Properties(PropName) = PropValue
       End If
    Else
       If Len(PropValue) > 0 Then
-         db.Properties.Append db.CreateProperty(PropName, PropType, PropValue)
+         Db.Properties.Append Db.CreateProperty(PropName, PropType, PropValue)
       End If
    End If
 
 End Sub
 
-Private Sub deleteAppDbProperty(ByVal PropName As String)
+Private Sub DeleteAppDbProperty(ByVal PropName As String)
    
-   Dim db As DAO.Database
+   Dim Db As DAO.Database
    Dim PropCol As DAO.Properties
 
-   Set db = AppDb
-   Set PropCol = db.Properties
+   Set Db = AppDb
+   Set PropCol = Db.Properties
    
-   If dbPropertyExists(PropCol, PropName) Then
+   If DbPropertyExists(PropCol, PropName) Then
       PropCol.Delete PropName
    End If
 
 End Sub
 
-Private Function dbPropertyExists(ByRef PropCol As DAO.Properties, ByVal PropName As String) As Boolean
+Private Function DbPropertyExists(ByRef PropCol As DAO.Properties, ByVal PropName As String) As Boolean
    
    Dim Prop As DAO.Property
 
    For Each Prop In PropCol
       If Prop.Name = PropName Then
-         dbPropertyExists = True
+         DbPropertyExists = True
          Exit For
       End If
    Next
@@ -619,21 +617,21 @@ Public Sub WriteLog(ByVal Msg As String, _
       'niemand hat reagiert bzw. einen Abbruch gemeldet => WriteApplicationLogEntry
       Msg = Now() & ": " & Msg
       If Len(LogType) > 0 Then
-         Msg = "(" & getLogTypeString(LogType) & ") " & Msg
+         Msg = "(" & GetLogTypeString(LogType) & ") " & Msg
       End If
       WriteApplicationLogEntry Msg
    End If
 
 End Sub
 
-Private Function getLogTypeString(Optional ByRef LogType As ApplicationHandlerLogType) As String
+Private Function GetLogTypeString(Optional ByRef LogType As ApplicationHandlerLogType) As String
    Select Case LogType
       Case ApplicationHandlerLogType.AppLogType_Error
-         getLogTypeString = "Error"
+         GetLogTypeString = "Error"
       Case ApplicationHandlerLogType.AppLogType_Tracing
-         getLogTypeString = "Tracing"
+         GetLogTypeString = "Tracing"
       Case Else
-         getLogTypeString = "N/A"
+         GetLogTypeString = "N/A"
    End Select
 End Function
 
@@ -796,7 +794,7 @@ Public Function UpdateApplication() As Boolean
 
 End Function
 
-Private Function checkVersionUpdate() As Boolean
+Private Function CheckVersionUpdate() As Boolean
 ' True = Update erforderlich
    
    Dim EventResumeMode As ApplicationHandlerResumeModes
@@ -804,9 +802,9 @@ Private Function checkVersionUpdate() As Boolean
 
    RaiseEvent CheckUpdate(EventResumeMode, EventResumeMessage)
    If EventResumeMode = ApplicationHandlerResumeModes.AppResumeMode_Completed Then
-      checkVersionUpdate = EventResumeMessage
+      CheckVersionUpdate = EventResumeMessage
    Else
-      checkVersionUpdate = False
+      CheckVersionUpdate = False
    End If
 
 End Function

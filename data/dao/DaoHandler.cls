@@ -31,9 +31,9 @@ Option Compare Text
 Option Explicit
 
 #If VBA7 Then
-   Private Declare PtrSafe Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (dest As Any, Source As Any, ByVal bytes As Long)
+   Private Declare PtrSafe Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef Dest As Any, ByRef Source As Any, ByVal Bytes As Long)
 #Else
-   Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (dest As Any, Source As Any, ByVal bytes As Long)
+   Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef Dest As Any, ByRef Source As Any, ByVal Bytes As Long)
 #End If
 
 'DAO-Database
@@ -195,7 +195,7 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function ExecuteParamSQL(ByVal SqlText As String, _
+Public Function ExecuteParamSql(ByVal SqlText As String, _
                            ParamArray QueryParams() As Variant) As Long
  
    Dim qdf As DAO.QueryDef
@@ -208,7 +208,7 @@ On Error GoTo HandleErr
       Set qdf = Me.ParamQueryDefSql(SqlText, QueryParams)
    End If
    
-   ExecuteParamSQL = ExecuteQueryDef(qdf)
+   ExecuteParamSql = ExecuteQueryDef(qdf)
 
 On Error GoTo 0
 
@@ -295,23 +295,23 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function ExecuteQueryDef(ByVal qdf As DAO.QueryDef, _
+Public Function ExecuteQueryDef(ByVal QdfRef As DAO.QueryDef, _
                        ParamArray QueryParams() As Variant) As Long
  
    Dim QdfParamDefs() As Variant
    
    If Not IsMissing(QueryParams) Then
       QdfParamDefs = GetParamDefArray(QueryParams)
-      FillQueryDefParameters qdf, QdfParamDefs
+      FillQueryDefParameters QdfRef, QdfParamDefs
    End If
    
-   qdf.Execute dbFailOnError
+   QdfRef.Execute dbFailOnError
    
-   ExecuteQueryDef = qdf.RecordsAffected
+   ExecuteQueryDef = QdfRef.RecordsAffected
 
 End Function
 
-Private Sub FillQueryDefParameters(ByVal qdf As DAO.QueryDef, ByVal QdfParamDefs As Variant)
+Private Sub FillQueryDefParameters(ByVal QdfRef As DAO.QueryDef, ByVal QdfParamDefs As Variant)
    
    Dim ParamDefsArraySize As Long
    Dim ParamIndex As Variant
@@ -319,7 +319,7 @@ Private Sub FillQueryDefParameters(ByVal qdf As DAO.QueryDef, ByVal QdfParamDefs
 
    ParamDefsArraySize = UBound(QdfParamDefs, 1)
    
-   With qdf
+   With QdfRef
       For i = 0 To ParamDefsArraySize
          ParamIndex = QdfParamDefs(i, 0)
          If Len(ParamIndex) > 0 Then
@@ -437,7 +437,7 @@ Private Function Replace0WithIsMissing(ByVal CheckValue As Long) As Variant
    End If
 End Function
 
-Private Function GetIsMissing(Optional DoNotFillThisParam As Variant) As Variant
+Private Function GetIsMissing(Optional ByVal DoNotFillThisParam As Variant) As Variant
    GetIsMissing = DoNotFillThisParam
 End Function
 
@@ -461,7 +461,7 @@ End Function
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function OpenRecordsetParamSQL(ByVal ParamSqlText As String, _
+Public Function OpenRecordsetParamSql(ByVal ParamSqlText As String, _
                      ByVal RecordsetType As DAO.RecordsetTypeEnum, _
                      ByVal Options As DAO.RecordsetOptionEnum, _
                      ByVal LockEdit As DAO.LockTypeEnum, _
@@ -475,7 +475,7 @@ Public Function OpenRecordsetParamSQL(ByVal ParamSqlText As String, _
 On Error GoTo HandleErr
    
    Set qdf = Me.CurrentDb.CreateQueryDef("", ParamSqlText)
-   Set OpenRecordsetParamSQL = OpenRecordsetQueryDef(qdf, QdfParamDefs, RecordsetType, Options, LockEdit)
+   Set OpenRecordsetParamSql = OpenRecordsetQueryDef(qdf, QdfParamDefs, RecordsetType, Options, LockEdit)
    
 On Error GoTo 0
 
@@ -511,10 +511,10 @@ End Function
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function OpenRecordsetParamSQL2(ByVal ParamSqlText As String, _
+Public Function OpenRecordsetParamSql2(ByVal ParamSqlText As String, _
                                        ParamArray QueryParams() As Variant) As DAO.Recordset
 
-   Set OpenRecordsetParamSQL2 = OpenRecordsetParamSQL(ParamSqlText, _
+   Set OpenRecordsetParamSql2 = OpenRecordsetParamSql(ParamSqlText, _
                                                       m_RecordsetTypeEnumDefault, m_RecordsetOptionEnumDefault, m_LockTypeEnumDefault, _
                                                       QueryParams)
 
@@ -742,17 +742,17 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function OpenRecordsetQueryDef(ByVal qdf As DAO.QueryDef, _
+Public Function OpenRecordsetQueryDef(ByVal QdfRef As DAO.QueryDef, _
                              Optional ByVal QdfParamDefs As Variant, _
                              Optional ByVal RecordsetType As DAO.RecordsetTypeEnum, _
                              Optional ByVal Options As DAO.RecordsetOptionEnum, _
                              Optional ByVal LockEdit As DAO.LockTypeEnum) As DAO.Recordset
  
    If Not IsMissing(QdfParamDefs) Then
-      FillQueryDefParameters qdf, QdfParamDefs
+      FillQueryDefParameters QdfRef, QdfParamDefs
    End If
 
-   Set OpenRecordsetQueryDef = qdf.OpenRecordset(Replace0WithIsMissing(RecordsetType), _
+   Set OpenRecordsetQueryDef = QdfRef.OpenRecordset(Replace0WithIsMissing(RecordsetType), _
                                                  Replace0WithIsMissing(Options), _
                                                  Replace0WithIsMissing(LockEdit))
 
@@ -772,7 +772,7 @@ End Function
 ' <remarks>Die SQL-Anweisung ist im Jet-SQL-Dialekt zu schreiben.</remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function LookupSQL(ByVal SqlText As String, _
+Public Function LookupSql(ByVal SqlText As String, _
                  Optional ByVal Index As Variant = 0&, _
                  Optional ByVal ValueIfNull As Variant = Null) As Variant
 
@@ -783,9 +783,9 @@ On Error GoTo HandleErr
     Set rst = Me.OpenRecordset(SqlText, dbOpenForwardOnly, dbSeeChanges, dbReadOnly)
     With rst
         If .EOF Then
-            LookupSQL = ValueIfNull
+            LookupSql = ValueIfNull
         Else
-            LookupSQL = Nz(.Fields(Index), ValueIfNull)
+            LookupSql = Nz(.Fields(Index), ValueIfNull)
         End If
         .Close
     End With
@@ -822,15 +822,15 @@ Public Function Lookup(ByVal Expr As String, ByVal Domain As String, _
               Optional ByVal Criteria As Variant, _
               Optional ByVal ValueIfNull As Variant = Null) As Variant
 
-    Dim strSQL As String
+    Dim SelectSql As String
 
-    strSQL = "SELECT " & Expr & " FROM (" & Domain & ")"
+    SelectSql = "SELECT " & Expr & " FROM (" & Domain & ")"
     If Not (VarType(Criteria) = vbError) Then
         If Len(Criteria) > 0 Then
-            strSQL = strSQL & " WHERE " & Criteria
+            SelectSql = SelectSql & " WHERE " & Criteria
         End If
     End If
-    Lookup = LookupSQL(strSQL, , ValueIfNull)
+    Lookup = LookupSql(SelectSql, , ValueIfNull)
 
 End Function
 
@@ -921,24 +921,24 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function InsertIdentityReturn(ByVal InsertSQL As String) As Variant
+Public Function InsertIdentityReturn(ByVal InsertSql As String) As Variant
 
-    Dim db As DAO.Database
+    Dim Db As DAO.Database
     Dim rst As DAO.Recordset
-    Dim lngRecordsAffected As Long
+    Dim RecordsAffected As Long
 
 On Error GoTo HandleErr
 
-    Set db = Me.CurrentDb
-    db.Execute InsertSQL
-    lngRecordsAffected = db.RecordsAffected
+    Set Db = Me.CurrentDb
+    Db.Execute InsertSql
+    RecordsAffected = Db.RecordsAffected
     
-    If lngRecordsAffected = 0 Then
+    If RecordsAffected = 0 Then
         InsertIdentityReturn = Null 'es wurde kein neuer DS angefügt
         Exit Function
     End If
 
-    Set rst = db.OpenRecordset("SELECT @@Identity") 'zuletzt zugewiesener Autowert ... funktioniert nicht mit MySQL-Tabellen!
+    Set rst = Db.OpenRecordset("SELECT @@Identity") 'zuletzt zugewiesener Autowert ... funktioniert nicht mit MySQL-Tabellen!
     With rst
         If .EOF Then
             InsertIdentityReturn = Null

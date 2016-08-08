@@ -48,12 +48,12 @@ Attribute VB_Description = "Import/Export der Access-Objekte in/aus lokaler Code
 Option Compare Text
 Option Explicit
 
-Private Const m_EXTENSION_KEY As String = "ACLibFileManager"
+Private Const EXTENSION_KEY As String = "ACLibFileManager"
 
 ' Integrierte Erweiterungen
-Private Const EXTENSION_KEY_ACLibConfig As String = "ACLibConfiguration"
-Private Const EXTENSION_PROPNAME_LocalRepositoryRoot As String = "LocalRepositoryRoot"
-Private Const EXTENSION_PROPNAME_PrivateRepositoryRoot As String = "PrivateRepositoryRoot"
+Private Const EXTENSION_KEY_ACLIBCONFIG As String = "ACLibConfiguration"
+Private Const EXTENSION_PROPNAME_LOCALREPOSITORYROOT As String = "LocalRepositoryRoot"
+Private Const EXTENSION_PROPNAME_PRIVATEREPOSITORYROOT As String = "PrivateRepositoryRoot"
 
 #Const DEBUGMODE = 0
 #Const EARLYBINDING = 0
@@ -99,18 +99,18 @@ Private Const SEARCHSTRING_REPORTIDENTIFER As String = "Begin Report"
 
 Private Const MODULNAME_CONFIG_APPLICATION As String = "_config_Application"
 
-Private Const REPOSTITORY_ROOT_CODE_ApplicationRoot As String = "%AppFolder%"
-Private Const REPOSTITORY_ROOT_CODE_PrivateRoot As String = "%PrivateRoot%"
+Private Const REPOSTITORY_ROOT_CODE_APPLICATIONROOT As String = "%AppFolder%"
+Private Const REPOSTITORY_ROOT_CODE_PRIVATEROOT As String = "%PrivateRoot%"
 
 Private m_ImportFileCollection As Collection
 Private m_ReplacedFilesCollection As Collection
-Private m_cli As CodeLibInfo
+Private m_CLI As CodeLibInfo
 
 
 #If EARLYBINDING = 1 Then
-Private m_fso As FileSystemObject
+Private m_FSO As FileSystemObject
 #Else
-Private m_fso As Object
+Private m_FSO As Object
 'Private Const ForReading As Long = 1
 #End If
 
@@ -132,37 +132,41 @@ Public Event ImportRepositoryFile(ByVal ObjectName As String, ByVal RepositoryFi
 Private WithEvents m_ApplicationHandler As ApplicationHandler
 Attribute m_ApplicationHandler.VB_VarHelpID = -1
 
-Public Property Set ApplicationHandlerRef(ByRef objRef As Object) ' as ApplicationHandler
-   Set m_ApplicationHandler = objRef
+Public Property Set ApplicationHandlerRef(ByRef ObjRef As Object) ' as ApplicationHandler
+   Set m_ApplicationHandler = ObjRef
 End Property
 
 Public Property Get ExtensionKey() As String
-   ExtensionKey = m_EXTENSION_KEY
+   ExtensionKey = EXTENSION_KEY
 End Property
+
+Private Sub Class_Terminate()
+   Dispose
+End Sub
 
 '---------------------------------------------------------------------------------------
 ' Standard-Ereignisbehandlung von Erweiterungen
 '---------------------------------------------------------------------------------------
 
 ' CheckExtension
-Private Sub m_ApplicationHandler_CheckExtension(ByVal sExtensionKey As String, ByRef exists As Boolean)
-   If sExtensionKey = m_EXTENSION_KEY Then exists = True
+Private Sub m_ApplicationHandler_CheckExtension(ByVal ExtensionKeyToCheck As String, ByRef Exists As Boolean)
+   If ExtensionKeyToCheck = EXTENSION_KEY Then Exists = True
 End Sub
 
 ' ExtensionLookup
-Private Sub m_ApplicationHandler_ExtensionLookup(ByVal sExtensionKey As String, ByRef ExtensionReference As Object)
-   If sExtensionKey = m_EXTENSION_KEY Then
+Private Sub m_ApplicationHandler_ExtensionLookup(ByVal ExtensionKeyToCheck As String, ByRef ExtensionReference As Object)
+   If ExtensionKeyToCheck = EXTENSION_KEY Then
       Set ExtensionReference = Me
    End If
 End Sub
 
 'ExtensionPropertyLookup
 Private Sub m_ApplicationHandler_ExtensionPropertyLookup( _
-                     ByVal sExtensionKey As String, ByVal PropertyName As String, _
+                     ByVal ExtensionKeyToCheck As String, ByVal PropertyName As String, _
                      ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
 
-   If sExtensionKey = m_EXTENSION_KEY Then
-      getExtensionPropertyLookup PropertyName, ResumeMode, ResumeMessage
+   If ExtensionKeyToCheck = EXTENSION_KEY Then
+      GetExtensionPropertyLookup PropertyName, ResumeMode, ResumeMessage
    End If
 
 End Sub
@@ -181,7 +185,7 @@ End Sub
 ' Ergänzungen für Ereiterung: ACLibFileManager
 '---------------------------------------------------------------------------------------
 
-Private Sub getExtensionPropertyLookup(ByVal PropertyName As String, _
+Private Sub GetExtensionPropertyLookup(ByVal PropertyName As String, _
                                        ByRef ResumeMode As ApplicationHandlerResumeModes, _
                                        ByRef ResumeMessage As Variant)
 
@@ -199,7 +203,7 @@ End Sub
 Private Sub Dispose()
 On Error Resume Next
    Set m_ImportFileCollection = Nothing
-   Set m_fso = Nothing
+   Set m_FSO = Nothing
    Set m_CurrentVbProject = Nothing
 End Sub
 
@@ -213,11 +217,11 @@ Public Sub ExportAllModules()
 
    Dim ao As AccessObject
 
-   activateCurrentProject
+   ActivateCurrentProject
    DoCmd.RunCommand acCmdCompileAndSaveAllModules
    
    For Each ao In CurrentProject.AllModules
-      exportVbComponent ao.Name
+      ExportVbComponent ao.Name
    Next
    
 #If DEBUGMODE Then
@@ -230,15 +234,15 @@ Public Sub ExportAllForms()
 
    Dim ao As AccessObject
 
-   If checkDisallowExportFormReport() Then
+   If CheckDisallowExportFormReport() Then
       Exit Sub
    End If
 
-   activateCurrentProject
+   ActivateCurrentProject
    DoCmd.RunCommand acCmdCompileAndSaveAllModules
    
    For Each ao In CurrentProject.AllForms
-      exportAccessObject AcObjectType.acForm, ao.Name
+      ExportAccessObject AcObjectType.acForm, ao.Name
    Next
    
 #If DEBUGMODE Then
@@ -247,12 +251,12 @@ Public Sub ExportAllForms()
 
 End Sub
 
-Private Function checkDisallowExportFormReport() As Boolean
+Private Function CheckDisallowExportFormReport() As Boolean
 
    If Val(CurrentDb.Version) >= 12 Then
       MsgBox "Formular und Berichte ab dem Access2007-Format dürfen nicht exportiert werden." & _
              "Siehe Bug #16"
-      checkDisallowExportFormReport = True
+      CheckDisallowExportFormReport = True
    End If
 
 End Function
@@ -261,11 +265,11 @@ Public Sub ExportAllReports()
 
    Dim ao As AccessObject
 
-   activateCurrentProject
+   ActivateCurrentProject
    DoCmd.RunCommand acCmdCompileAndSaveAllModules
    
    For Each ao In CurrentProject.AllReports
-      exportAccessObject AcObjectType.acReport, ao.Name
+      ExportAccessObject AcObjectType.acReport, ao.Name
    Next
    
 #If DEBUGMODE Then
@@ -275,111 +279,111 @@ Public Sub ExportAllReports()
 End Sub
 
 Public Sub ImportAllFilesFromRepository(Optional ByVal ImportMode As CodeLibImportMode = clim_ImportMissingItems, _
-                                        Optional ByVal bImportTestFiles As Boolean = False)
+                                        Optional ByVal ImportTestFiles As Boolean = False)
 
-   Dim folderCol As Collection
+   Dim FolderCol As Collection
 #If EARLYBINDING Then
-   Dim checkFolder As Folder
-   Dim tempFolder As Folder
+   Dim CheckFolder As Folder
+   Dim TempFolder As Folder
    Dim TempFile As File
 #Else
-   Dim checkFolder As Object
-   Dim tempFolder As Object
+   Dim CheckFolder As Object
+   Dim TempFolder As Object
    Dim TempFile As Object
 #End If
    
-   Set folderCol = New Collection
+   Set FolderCol = New Collection
    Set m_ImportFileCollection = New Collection
    
-   Set tempFolder = fso.GetFolder(LocalRepositoryRootDirectory)
-   folderCol.Add tempFolder, tempFolder.Path
+   Set TempFolder = fso.GetFolder(LocalRepositoryRootDirectory)
+   FolderCol.Add TempFolder, TempFolder.Path
    
-   Do While folderCol.Count > 0
+   Do While FolderCol.Count > 0
       
-      Set checkFolder = folderCol(1)
+      Set CheckFolder = FolderCol(1)
       
-      For Each TempFile In checkFolder.Files
-         If Not ignoreFile(TempFile) Then
-            addMissingFile TempFile, ImportMode
+      For Each TempFile In CheckFolder.Files
+         If Not IgnoreFile(TempFile) Then
+            AddMissingFile TempFile, ImportMode
          End If
       Next
       
-      For Each tempFolder In checkFolder.SubFolders
-         If Not ignoreFolder(tempFolder) Then
-            folderCol.Add tempFolder, tempFolder.Path
+      For Each TempFolder In CheckFolder.SubFolders
+         If Not IgnoreFolder(TempFolder) Then
+            FolderCol.Add TempFolder, TempFolder.Path
          End If
       Next
    
-      folderCol.Remove 1
+      FolderCol.Remove 1
    
    Loop
    Set TempFile = Nothing
-   Set folderCol = Nothing
+   Set FolderCol = Nothing
    
-   importFilesFromImportCollection True, bImportTestFiles
+   ImportFilesFromImportCollection True, ImportTestFiles
 
 End Sub
 
 Public Sub ImportRepositoryFile(ByVal RepositoryPath As String, _
                        Optional ByVal ImportMode As CodeLibImportMode = clim_ImportMissingItems, _
-                       Optional ByVal bImportTestFiles As Boolean = False)
+                       Optional ByVal ImportTestFiles As Boolean = False)
    
-   Dim pathString As String
+   Dim PathString As String
 
-   pathString = GetRepositoryFullPath(RepositoryPath)
+   PathString = GetRepositoryFullPath(RepositoryPath)
    
    Dim TempFile As Object
-   Set TempFile = fso.GetFile(pathString)
-   addMissingFile TempFile, ImportMode
+   Set TempFile = fso.GetFile(PathString)
+   AddMissingFile TempFile, ImportMode
    Set TempFile = Nothing
    
-   importFilesFromImportCollection True, bImportTestFiles
+   ImportFilesFromImportCollection True, ImportTestFiles
 
 End Sub
 
 Public Sub ImportRepositoryFiles(ByRef RepositoryPathArray() As String, _
                         Optional ByVal ImportMode As CodeLibImportMode = clim_ImportMissingItems, _
-                        Optional ByVal bImportTestFiles As Boolean = False)
+                        Optional ByVal ImportTestFiles As Boolean = False)
    
    Dim ArraySize As Long
    Dim i As Long
-   Dim pathString As String
+   Dim PathString As String
    Dim TempFile As Object
 
    ArraySize = UBound(RepositoryPathArray)
    For i = LBound(RepositoryPathArray) To ArraySize - 1
-      pathString = GetRepositoryFullPath(RepositoryPathArray(i))
-      Set TempFile = fso.GetFile(pathString)
-      addMissingFile TempFile, ImportMode
+      PathString = GetRepositoryFullPath(RepositoryPathArray(i))
+      Set TempFile = fso.GetFile(PathString)
+      AddMissingFile TempFile, ImportMode
    Next
    Set TempFile = Nothing
    
-   importFilesFromImportCollection True, bImportTestFiles
+   ImportFilesFromImportCollection True, ImportTestFiles
 
 End Sub
 
-Private Sub importFilesFromImportCollection( _
+Private Sub ImportFilesFromImportCollection( _
                                    Optional ByRef CompileAfterImport As Boolean = True, _
-                                   Optional ByVal bImportTestFiles As Boolean = False)
+                                   Optional ByVal ImportTestFiles As Boolean = False)
    
    Dim TempFile As Object
-   Dim fileImportMode As CodeLibImportMode
+   Dim FileImportMode As CodeLibImportMode
    Dim i As Long
-   Dim maxCnt As Long
+   Dim MaxCnt As Long
    
-   Dim colItem As Variant
+   Dim ColItem As Variant
    
    ' eine VB-Modul aus CurrentVbProject aktivieren, sonst wirkt RunCommand acCmdCompileAndSaveAllModules
    ' möglicherweise im falschen VBProject
    ' zur Sicherheit mit On error resume next, weil es nicht unbedingt notwendig ist und den Ablauf nicht stört
    On Error Resume Next
-   activateCurrentProject
+   ActivateCurrentProject
    On Error GoTo 0
    If CurrentProject.AllModules.Count > 0 Then
       DoCmd.RunCommand acCmdCompileAndSaveAllModules
    End If
     
-    maxCnt = m_ImportFileCollection.Count
+    MaxCnt = m_ImportFileCollection.Count
     
     '/*
     ' * TODO: Bestimmung der Anzahl alle Dateien (inkl. Abhängigkeiten) vor dem Import
@@ -387,37 +391,37 @@ Private Sub importFilesFromImportCollection( _
     ' */
    
     i = 1
-    Do While i <= maxCnt
-        colItem = m_ImportFileCollection(i)
-        Set TempFile = colItem(0)
-        fileImportMode = colItem(1)
+    Do While i <= MaxCnt
+        ColItem = m_ImportFileCollection(i)
+        Set TempFile = ColItem(0)
+        FileImportMode = ColItem(1)
         
         AccessProgressBar.Init "Importiere " & TempFile & "...", 2, 1
         AccessProgressBar.PerformStep
         
-        ImportFile TempFile, fileImportMode, bImportTestFiles
+        ImportFile TempFile, FileImportMode, ImportTestFiles
         
         AccessProgressBar.PerformStep
-        maxCnt = m_ImportFileCollection.Count
+        MaxCnt = m_ImportFileCollection.Count
         i = i + 1
     Loop
 
 
 
    If CompileAfterImport Then
-      activateCurrentProject
+      ActivateCurrentProject
       CurrentProject.Application.DoCmd.RunCommand acCmdCompileAndSaveAllModules
    End If
    
    'Executes ausführen
-   If (0 / 1) + (Not Not m_cli.ExecuteList) Then
-      AccessProgressBar.Init "Executes ausführen...", UBound(m_cli.ExecuteList) + 1, 1
-      For i = 0 To UBound(m_cli.ExecuteList)
+   If (0 / 1) + (Not Not m_CLI.ExecuteList) Then
+      AccessProgressBar.Init "Executes ausführen...", UBound(m_CLI.ExecuteList) + 1, 1
+      For i = 0 To UBound(m_CLI.ExecuteList)
         AccessProgressBar.PerformStep
-        If StringTools.Contains(m_cli.ExecuteList(i), REPOSTITORY_ROOT_CODE_PrivateRoot) Then
-            Eval VBA.Strings.Replace(m_cli.ExecuteList(i), REPOSTITORY_ROOT_CODE_PrivateRoot, LocalRepositoryRootDirectory())
+        If StringTools.Contains(m_CLI.ExecuteList(i), REPOSTITORY_ROOT_CODE_PRIVATEROOT) Then
+            Eval VBA.Strings.Replace(m_CLI.ExecuteList(i), REPOSTITORY_ROOT_CODE_PRIVATEROOT, LocalRepositoryRootDirectory())
         Else
-            Eval (m_cli.ExecuteList(i))
+            Eval (m_CLI.ExecuteList(i))
         End If
       Next
       If AccessProgressBar.IsInitialized Then AccessProgressBar.Clear
@@ -426,7 +430,7 @@ Private Sub importFilesFromImportCollection( _
    'Modul-Variablen aufräumen, da Import-Vorgang an dieser Stelle abgeschlossen ist
    Set m_ImportFileCollection = Nothing
    Set m_ReplacedFilesCollection = Nothing
-   Set m_fso = Nothing
+   Set m_FSO = Nothing
    
 #If DEBUGMODE Then
    Debug.Print "Import abgeschlossen"
@@ -435,28 +439,28 @@ Private Sub importFilesFromImportCollection( _
 End Sub
 
 
-Private Function ignoreFolder(ByRef oTestFolder As Object) As Boolean
+Private Function IgnoreFolder(ByRef TestFolder As Object) As Boolean
 '/*
 ' * @todo Ausschlussliste für Verzeichnisse flexibler gestalten
 '**/
 
-   Select Case oTestFolder.Name
+   Select Case TestFolder.Name
       Case ".svn", "_codelib"
-         ignoreFolder = True
+         IgnoreFolder = True
       Case Else
          '
    End Select
 
 End Function
 
-Private Function ignoreFile(ByRef oTestFile As Object) As Boolean
+Private Function IgnoreFile(ByRef TestFile As Object) As Boolean
 '/*
 ' * @todo Ausschlussliste für Dateien flexibler gestalten
 '**/
 
-   Select Case oTestFile.Name
+   Select Case TestFile.Name
       Case "_info.txt", "_config_Application.bas"
-         ignoreFile = True
+         IgnoreFile = True
       Case Else
          '
    End Select
@@ -470,21 +474,21 @@ Public Property Get CurrentVbProject() As Object
 #End If
 
 #If EARLYBINDING Then
-   Dim proj As VBProject
+   Dim Proj As VBProject
 #Else
-   Dim proj As Object
+   Dim Proj As Object
 #End If
-   Dim strCurrentDbName As String
+   Dim CurrentDbName As String
 
    If m_CurrentVbProject Is Nothing Then
       Set m_CurrentVbProject = VBE.ActiveVBProject
       'Prüfen, ob das richtige VbProject gewählt wurde (muss das von CurrentDb sein)
-      strCurrentDbName = UNCPath(CurrentDb.Name)
-      If m_CurrentVbProject.FileName <> strCurrentDbName Then
+      CurrentDbName = UncPath(CurrentDb.Name)
+      If m_CurrentVbProject.FileName <> CurrentDbName Then
          Set m_CurrentVbProject = Nothing
-         For Each proj In VBE.VBProjects
-            If proj.FileName = strCurrentDbName Then
-               Set m_CurrentVbProject = proj
+         For Each Proj In VBE.VBProjects
+            If Proj.FileName = CurrentDbName Then
+               Set m_CurrentVbProject = Proj
                Exit For
             End If
          Next
@@ -495,9 +499,9 @@ Public Property Get CurrentVbProject() As Object
 
 End Property
 
-Private Sub activateCurrentProject()
+Private Sub ActivateCurrentProject()
 
-   Dim bolActivate As Boolean
+   Dim Activated As Boolean
 #If EARLYBINDING Then
    Dim vbc As VBComponent
 #Else
@@ -509,12 +513,12 @@ Private Sub activateCurrentProject()
       For Each vbc In CurrentVbProject.VBComponents
          If vbc.Type <> vbext_ct_Document Then
             vbc.Activate
-            bolActivate = True
+            Activated = True
             Exit For
          End If
       Next
       'falls nur vbext_ct_Document vorhanden sind, das erste verwenden
-      If Not bolActivate Then
+      If Not Activated Then
          CurrentVbProject.VBComponents(1).Activate
       End If
    End If
@@ -529,9 +533,9 @@ Private Property Get fso() As Object
 
    If fso Is Nothing Then
       'Set fso = New FileSystemObject
-      Set m_fso = CreateObject("Scripting.FileSystemObject")
+      Set m_FSO = CreateObject("Scripting.FileSystemObject")
    End If
-   Set fso = m_fso
+   Set fso = m_FSO
 
 End Property
 
@@ -553,20 +557,20 @@ Private Property Get CurrentReplacedFilesCollection() As Collection
 
 End Property
 
-Private Sub addReplacedFilePath(ByVal repFilePath As String)
+Private Sub AddReplacedFilePath(ByVal RepFilePath As String)
 
    Dim TempFile As Object
    Dim TempFilePath As Variant
    Dim i As Long
-   Dim maxCount As Long
+   Dim MaxCount As Long
    Dim col As Collection
 
-   maxCount = CurrentFileCollection.Count
-   For i = 1 To maxCount
+   MaxCount = CurrentFileCollection.Count
+   For i = 1 To MaxCount
       'tempFile = varfileColItem(0) =>
       'varfilColItem = m_ImportFileCollection(i) =>
       Set TempFile = m_ImportFileCollection(i)(0)
-      If TempFile.Path = repFilePath Then
+      If TempFile.Path = RepFilePath Then
          m_ImportFileCollection.Remove TempFile.Path
          Exit For
       End If
@@ -575,12 +579,12 @@ Private Sub addReplacedFilePath(ByVal repFilePath As String)
    
    Set col = CurrentReplacedFilesCollection
    For Each TempFilePath In col
-      If TempFilePath = repFilePath Then
+      If TempFilePath = RepFilePath Then
          Exit Sub
       End If
    Next
    
-   CurrentReplacedFilesCollection.Add CVar(repFilePath), repFilePath
+   CurrentReplacedFilesCollection.Add CVar(RepFilePath), RepFilePath
 
 End Sub
 
@@ -602,7 +606,7 @@ Private Property Get LocalRepositoryRootDirectory() As String
    If Len(m_LocalRepositoryRootDirectory) = 0 Then
       RaiseEvent PropertyMissingLocalRepositoryRootDirectory(m_LocalRepositoryRootDirectory)
       If Len(m_LocalRepositoryRootDirectory) = 0 Then
-         m_LocalRepositoryRootDirectory = CurrentApplication.GetExtensionProperty(EXTENSION_KEY_ACLibConfig, EXTENSION_PROPNAME_LocalRepositoryRoot, vbNullString)
+         m_LocalRepositoryRootDirectory = CurrentApplication.GetExtensionProperty(EXTENSION_KEY_ACLIBCONFIG, EXTENSION_PROPNAME_LOCALREPOSITORYROOT, vbNullString)
       End If
    End If
    LocalRepositoryRootDirectory = m_LocalRepositoryRootDirectory
@@ -623,7 +627,7 @@ Private Property Get PrivateRepositoryRootDirectory() As String
    If Len(m_PrivateRepositoryRootDirectory) = 0 Then
       RaiseEvent PropertyMissingLocalRepositoryRootDirectory(m_PrivateRepositoryRootDirectory)
       If Len(m_PrivateRepositoryRootDirectory) = 0 Then
-         m_PrivateRepositoryRootDirectory = CurrentApplication.GetExtensionProperty(EXTENSION_KEY_ACLibConfig, EXTENSION_PROPNAME_PrivateRepositoryRoot, vbNullString)
+         m_PrivateRepositoryRootDirectory = CurrentApplication.GetExtensionProperty(EXTENSION_KEY_ACLIBCONFIG, EXTENSION_PROPNAME_PRIVATEREPOSITORYROOT, vbNullString)
       End If
    End If
    PrivateRepositoryRootDirectory = m_PrivateRepositoryRootDirectory
@@ -641,25 +645,25 @@ End Property
 
 Public Function GetRepositoryFullPath(ByVal ReleativPath As String) As String
 
-   Dim repPath As String
+   Dim RepPath As String
 
    ReleativPath = Replace(ReleativPath, "/", "\")
    
-   If Left(ReleativPath, Len(REPOSTITORY_ROOT_CODE_ApplicationRoot)) = REPOSTITORY_ROOT_CODE_ApplicationRoot Then
-      repPath = CurrentProject.Path & "\"
-      ReleativPath = Mid$(ReleativPath, Len(REPOSTITORY_ROOT_CODE_ApplicationRoot) + 1)
+   If Left(ReleativPath, Len(REPOSTITORY_ROOT_CODE_APPLICATIONROOT)) = REPOSTITORY_ROOT_CODE_APPLICATIONROOT Then
+      RepPath = CurrentProject.Path & "\"
+      ReleativPath = Mid$(ReleativPath, Len(REPOSTITORY_ROOT_CODE_APPLICATIONROOT) + 1)
    
-   ElseIf Left(ReleativPath, Len(REPOSTITORY_ROOT_CODE_PrivateRoot)) = REPOSTITORY_ROOT_CODE_PrivateRoot Then
-      repPath = PrivateRepositoryRootDirectory
-      If Len(repPath) = 0 Then
+   ElseIf Left(ReleativPath, Len(REPOSTITORY_ROOT_CODE_PRIVATEROOT)) = REPOSTITORY_ROOT_CODE_PRIVATEROOT Then
+      RepPath = PrivateRepositoryRootDirectory
+      If Len(RepPath) = 0 Then
          Err.Raise vbObjectError, "getRepositoryFullPath", "Wert für privates Root-Verzeichnise fehlt (PrivateRepositoryRootDirectory = '')."
          Exit Function
       End If
-      ReleativPath = Mid$(ReleativPath, Len(REPOSTITORY_ROOT_CODE_PrivateRoot) + 1)
+      ReleativPath = Mid$(ReleativPath, Len(REPOSTITORY_ROOT_CODE_PRIVATEROOT) + 1)
       
    Else
-      repPath = LocalRepositoryRootDirectory
-      If Len(repPath) = 0 Then
+      RepPath = LocalRepositoryRootDirectory
+      If Len(RepPath) = 0 Then
          Err.Raise vbObjectError, "getRepositoryFullPath", "Wert für lokales Root-Verzeichnise fehlt (LocalRepositoryRootDirectory = '')."
          Exit Function
       End If
@@ -669,103 +673,101 @@ Public Function GetRepositoryFullPath(ByVal ReleativPath As String) As String
       ReleativPath = Mid$(ReleativPath, 2)
    Loop
 
-   GetRepositoryFullPath = repPath & ReleativPath
+   GetRepositoryFullPath = RepPath & ReleativPath
 
 End Function
 
 Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibImportMode, _
-              Optional ByVal bImportTestFiles As Boolean = False)
+              Optional ByVal ImportTestFiles As Boolean = False)
    
    Dim i As Long
    Dim TempFile As Object
    Dim FilePath As String
-   Dim cancelImport As Integer
+   Dim CancelImport As Integer
    
-   Dim ReplacedFile As String
-
-   getCodeLibInfoFromFile m_cli, ImportFile, (ImportMode <> clim_ImportSelectedOnly)
+   GetCodeLibInfoFromFile m_CLI, ImportFile, (ImportMode <> clim_ImportSelectedOnly)
    
-   If Len(m_cli.RepositoryFileReplacement) > 0 Then
-      addReplacedFilePath GetRepositoryFullPath(m_cli.RepositoryFileReplacement)
+   If Len(m_CLI.RepositoryFileReplacement) > 0 Then
+      AddReplacedFilePath GetRepositoryFullPath(m_CLI.RepositoryFileReplacement)
    End If
    
    'Abbruch ermöglichen
-   RaiseEvent ImportRepositoryFile(m_cli.Name, m_cli.RepositoryFile, m_cli.Type, m_cli.Dependency, ImportFile, cancelImport)
-   If cancelImport Then
+   RaiseEvent ImportRepositoryFile(m_CLI.Name, m_CLI.RepositoryFile, m_CLI.Type, m_CLI.Dependency, ImportFile, CancelImport)
+   If CancelImport Then
       Exit Sub
    End If
    
    'Lizenz (LICENSE-Block)
-   If Len(m_cli.LicenseFile) > 0 Then
-      FilePath = GetRepositoryFullPath(m_cli.LicenseFile)
+   If Len(m_CLI.LicenseFile) > 0 Then
+      FilePath = GetRepositoryFullPath(m_CLI.LicenseFile)
       Set TempFile = fso.GetFile(FilePath)
-      addMissingFile TempFile, clim_ImportMissingItems
+      AddMissingFile TempFile, clim_ImportMissingItems
    End If
 
    'Erforderliche Module (USE-Block)
    If ImportMode <> clim_ImportSelectedOnly Then
-      If (0 / 1) + (Not Not m_cli.Dependency) Then
-      For i = 0 To UBound(m_cli.Dependency)
-         FilePath = GetRepositoryFullPath(m_cli.Dependency(i))
+      If (0 / 1) + (Not Not m_CLI.Dependency) Then
+      For i = 0 To UBound(m_CLI.Dependency)
+         FilePath = GetRepositoryFullPath(m_CLI.Dependency(i))
          If fso.FileExists(FilePath) Then
             Set TempFile = fso.GetFile(FilePath)
-            addMissingFile TempFile, ImportMode
+            AddMissingFile TempFile, ImportMode
          End If
       Next
       End If
    End If
    
    'zuerst Verweise
-   If (0 / 1) + (Not Not m_cli.References) Then
-      For i = 0 To UBound(m_cli.References)
-         addMissingReference m_cli.References(i)
+   If (0 / 1) + (Not Not m_CLI.References) Then
+      For i = 0 To UBound(m_CLI.References)
+         AddMissingReference m_CLI.References(i)
       Next
    End If
    
    'dann Codemodul
-   Select Case m_cli.Type
+   Select Case m_CLI.Type
       Case CodeLibElementType.clet_ClassModule, CodeLibElementType.clet_StdModule
-         importVbComponent m_cli, ImportFile, ImportMode
+         ImportVbComponent m_CLI, ImportFile, ImportMode
       Case CodeLibElementType.clet_Form
-         importAccessObject acForm, m_cli, ImportFile, ImportMode
+         ImportAccessObject acForm, m_CLI, ImportFile, ImportMode
       Case CodeLibElementType.clet_Report
-         importAccessObject acReport, m_cli, ImportFile, ImportMode
+         ImportAccessObject acReport, m_CLI, ImportFile, ImportMode
       Case Else
          ' eventuell Fehler auslösen?
    End Select
       
    'eventuell die Tests
-   If bImportTestFiles Then
-   If (0 / 1) + (Not Not m_cli.TestFiles) Then
-      For i = 0 To UBound(m_cli.TestFiles)
-         FilePath = GetRepositoryFullPath(m_cli.TestFiles(i))
+   If ImportTestFiles Then
+   If (0 / 1) + (Not Not m_CLI.TestFiles) Then
+      For i = 0 To UBound(m_CLI.TestFiles)
+         FilePath = GetRepositoryFullPath(m_CLI.TestFiles(i))
          If fso.FileExists(FilePath) Then
             Set TempFile = fso.GetFile(FilePath)
-            addMissingFile TempFile, ImportMode
+            AddMissingFile TempFile, ImportMode
          End If
       Next
    End If
    End If
    
 #If DEBUGMODE Then
-   Debug.Print ImportFile.Path; " --> "; m_cli.Name
+   Debug.Print ImportFile.Path; " --> "; m_CLI.Name
 #End If
   
 End Sub
 
-Private Sub addMissingReference(ByRef NewCodeLibRef As CodeLibInfoReference)
+Private Sub AddMissingReference(ByRef NewCodeLibRef As CodeLibInfoReference)
    
-   Dim refs As Access.References
+   Dim Refs As Access.References
    Dim ref As Access.Reference
-   Dim bolReplace As Boolean
+   Dim ReplaceRef As Boolean
 
-   Set refs = Access.References
-   For Each ref In refs
+   Set Refs = Access.References
+   For Each ref In Refs
       If ref.Name = NewCodeLibRef.Name Then
          If ref.Major < NewCodeLibRef.Major Then
-            bolReplace = True
+            ReplaceRef = True
          ElseIf ref.Major = NewCodeLibRef.Major And ref.Minor < NewCodeLibRef.Minor Then
-            bolReplace = True
+            ReplaceRef = True
          Else 'Nicht ersetzen, Abbruch
             Exit Sub
          End If
@@ -773,25 +775,25 @@ Private Sub addMissingReference(ByRef NewCodeLibRef As CodeLibInfoReference)
       End If
    Next
    
-   If bolReplace Then
-      refs.Remove ref
+   If ReplaceRef Then
+      Refs.Remove ref
    End If
    
-   refs.AddFromGuid NewCodeLibRef.GUID, NewCodeLibRef.Major, NewCodeLibRef.Minor
+   Refs.AddFromGuid NewCodeLibRef.GUID, NewCodeLibRef.Major, NewCodeLibRef.Minor
  
 End Sub
 
-Private Sub addMissingFile(ByVal UsedFile As Object, ByVal ImportMode As CodeLibImportMode)
+Private Sub AddMissingFile(ByVal UsedFile As Object, ByVal ImportMode As CodeLibImportMode)
    
-   Dim varfilColItem As Variant
+   Dim FileColItem As Variant
    Dim TempFile As Object
    Dim i As Long
-   Dim maxCount As Long
+   Dim MaxCount As Long
 
    If IsReplacedFile(UsedFile) Then Exit Sub
 
-   maxCount = CurrentFileCollection.Count
-   For i = 1 To maxCount
+   MaxCount = CurrentFileCollection.Count
+   For i = 1 To MaxCount
       'tempFile = varfileColItem(0) =>
       'varfilColItem = m_ImportFileCollection(i) =>
       Set TempFile = m_ImportFileCollection(i)(0)
@@ -800,26 +802,26 @@ Private Sub addMissingFile(ByVal UsedFile As Object, ByVal ImportMode As CodeLib
       End If
    Next
 
-   varfilColItem = Array(UsedFile, ImportMode)
-   m_ImportFileCollection.Add varfilColItem, UsedFile.Path
+   FileColItem = Array(UsedFile, ImportMode)
+   m_ImportFileCollection.Add FileColItem, UsedFile.Path
  
 End Sub
 
 
-Private Sub exportAccessObject(ByRef aoType As AcObjectType, ByRef aoName As String)
+Private Sub ExportAccessObject(ByRef AoType As AcObjectType, ByRef AoName As String)
 
-   Select Case aoType
+   Select Case AoType
       Case AcObjectType.acModule
-         exportVbComponent aoName
+         ExportVbComponent AoName
       Case AcObjectType.acForm, AcObjectType.acReport
-         exportAccessObjectCli aoType, aoName
+         ExportAccessObjectCli AoType, AoName
       Case Else
          '
    End Select
 
 End Sub
 
-Private Sub exportAccessObjectCli(ByRef aoType As AcObjectType, ByRef aoName As String)
+Private Sub ExportAccessObjectCli(ByRef AoType As AcObjectType, ByRef AoName As String)
 
 '/**
 ' * @todo Was ist mit Formularen und Berichten ohne Modul?
@@ -827,16 +829,16 @@ Private Sub exportAccessObjectCli(ByRef aoType As AcObjectType, ByRef aoName As 
    
    Dim cli As CodeLibInfo
 
-   getCodeLibInfoFromAccessObject cli, aoType, aoName
+   GetCodeLibInfoFromAccessObject cli, AoType, AoName
    If Len(cli.RepositoryFile) > 0 Then
       cli.LocalFile = GetRepositoryFullPath(cli.RepositoryFile)
-      createMissingFolder getParentFolderPath(cli.LocalFile)
-      Application.SaveAsText aoType, aoName, cli.LocalFile
-      cleanAccessBugExport cli.LocalFile
+      CreateMissingFolder GetParentFolderPath(cli.LocalFile)
+      Application.SaveAsText AoType, AoName, cli.LocalFile
+      CleanAccessBugExport cli.LocalFile
    End If ' Rest ignorieren .. wenn im Code nicht steht, wird auch nicht exportiert
 
 #If DEBUGMODE Then
-   Debug.Print aoName; " --> ";
+   Debug.Print AoName; " --> ";
    If Len(cli.RepositoryFile) > 0 Then
       Debug.Print cli.LocalFile
    Else
@@ -846,48 +848,44 @@ Private Sub exportAccessObjectCli(ByRef aoType As AcObjectType, ByRef aoName As 
  
 End Sub
 
-Private Sub cleanAccessBugExport(ByVal sFile As String)
+Private Sub CleanAccessBugExport(ByVal FilePath As String)
    
-   Dim isAcc2010 As Boolean
+   Dim IsAcc2010 As Boolean
    
    On Error Resume Next
    If Application.Version >= "12.0" Then
-      isAcc2010 = True
+      IsAcc2010 = True
    End If
    On Error GoTo 0
-   If Not isAcc2010 Then
+   If Not IsAcc2010 Then
       Exit Sub
    End If
    
-   Dim Pos As Long
-   Dim checkString As String
+   Dim CheckString As String
    Dim TempString As String
-   Dim i As Long
-   Dim fileNumber As Long
+   Dim FileNumber As Long
 
-   fileNumber = FreeFile
-   Open sFile For Binary Access Read As fileNumber
-   checkString = String$(LOF(fileNumber), 0)
-   Get fileNumber, , checkString
-   Close fileNumber
+   FileNumber = FreeFile
+   Open FilePath For Binary Access Read As FileNumber
+   CheckString = String$(LOF(FileNumber), 0)
+   Get FileNumber, , CheckString
+   Close FileNumber
    
-   TempString = Replace(checkString, "NoSaveCTIWhenDisabled =1", vbNullString)
-   If StrComp(TempString, checkString, vbBinaryCompare) = 0 Then
+   TempString = Replace(CheckString, "NoSaveCTIWhenDisabled =1", vbNullString)
+   If StrComp(TempString, CheckString, vbBinaryCompare) = 0 Then
       Exit Sub
    End If
    
-   'tempString = Replace(checkString, vbnewline & vbn, vbNullString)
-   
-   Kill sFile
-   fileNumber = FreeFile
-   Open sFile For Binary Access Write As fileNumber
-      Put fileNumber, , TempString
-   Close fileNumber
+   Kill FilePath
+   FileNumber = FreeFile
+   Open FilePath For Binary Access Write As FileNumber
+      Put FileNumber, , TempString
+   Close FileNumber
    
    
 End Sub
 
-Private Sub exportVbComponent(ByRef vbcName As String)
+Private Sub ExportVbComponent(ByRef VbcName As String)
 
 #If EARLYBINDING Then
    Dim vbc As VBIDE.VBComponent
@@ -899,7 +897,7 @@ Private Sub exportVbComponent(ByRef vbcName As String)
 
    Dim cli As CodeLibInfo
   
-   Set vbc = CurrentVbProject.VBComponents(vbcName)
+   Set vbc = CurrentVbProject.VBComponents(VbcName)
    
    'Leerzeilen am Ende säubern
    Set cm = vbc.CodeModule
@@ -907,72 +905,72 @@ Private Sub exportVbComponent(ByRef vbcName As String)
       cm.DeleteLines cm.CountOfLines
    Loop
    
-   getCodeLibInfoFromVbComponent cli, vbc
+   GetCodeLibInfoFromVbComponent cli, vbc
    
    If Len(cli.RepositoryFile) > 0 Then
       cli.LocalFile = GetRepositoryFullPath(cli.RepositoryFile)
-      createMissingFolder getParentFolderPath(cli.LocalFile)
+      CreateMissingFolder GetParentFolderPath(cli.LocalFile)
       vbc.Export cli.LocalFile
    End If
    
 #If DEBUGMODE Then
-   Debug.Print vbcName; " --> "; cli.LocalFile
+   Debug.Print VbcName; " --> "; cli.LocalFile
 #End If
 
 End Sub
 
-Private Sub importVbComponent(ByRef cli As CodeLibInfo, ByRef ImportFile As Object, ByRef fileImportMode As CodeLibImportMode)
+Private Sub ImportVbComponent(ByRef CodeLibInf As CodeLibInfo, ByRef ImportFile As Object, ByRef FileImportMode As CodeLibImportMode)
    
 #If EARLYBINDING = 1 Then
-   Dim vbcCol As VBIDE.VBComponents
+   Dim VbcCol As VBIDE.VBComponents
    Dim vbc As VBIDE.VBComponent
    Dim cm As VBIDE.CodeModule
 #Else
-   Dim vbcCol As Object
+   Dim VbcCol As Object
    Dim vbc As Object
    Dim cm As Object
 #End If
-   Dim codeModuleExists As Boolean
+   Dim CodeModuleExists As Boolean
 
-   If Len(Trim$(cli.Name)) = 0 Then
+   If Len(Trim$(CodeLibInf.Name)) = 0 Then
       Err.Raise vbObjectError, "ADF_ImportExport.importVbComponent", "Es wurde versucht ein Module ohne Namen zu erstellen."
       Exit Sub
    End If
    
-   Set vbcCol = CurrentVbProject.VBComponents
-   For Each vbc In vbcCol
-      If vbc.Name = cli.Name Then
-         If vbc.Type <> cli.Type Then
+   Set VbcCol = CurrentVbProject.VBComponents
+   For Each vbc In VbcCol
+      If vbc.Name = CodeLibInf.Name Then
+         If vbc.Type <> CodeLibInf.Type Then
             ' trotz clim_ImportMissingItems importieren
-         ElseIf fileImportMode = clim_ImportMissingItems Then 'Abbruch, damit nicht überschrieben wird
+         ElseIf FileImportMode = clim_ImportMissingItems Then 'Abbruch, damit nicht überschrieben wird
             Exit Sub
          ElseIf vbc.Name = MODULNAME_CONFIG_APPLICATION Then ' _config_Application niemals überschreiben, wenn es schon existiert
             Exit Sub
          End If
-         codeModuleExists = True
+         CodeModuleExists = True
          Exit For
       End If
    Next
 
-   If codeModuleExists Then   ' überprüfen, ob Typen übereinstimmen
-      If vbc.Type <> cli.Type Then
-         vbcCol.Remove vbc
+   If CodeModuleExists Then   ' überprüfen, ob Typen übereinstimmen
+      If vbc.Type <> CodeLibInf.Type Then
+         VbcCol.Remove vbc
          Set vbc = Nothing
-         codeModuleExists = False
+         CodeModuleExists = False
       End If
    End If
 
-   If codeModuleExists Then ' Inhalt über CodeModule ändern, damit MS-Add-In für Quellcodeverwaltung keine Schwierigkeiten macht
+   If CodeModuleExists Then ' Inhalt über CodeModule ändern, damit MS-Add-In für Quellcodeverwaltung keine Schwierigkeiten macht
       Set cm = vbc.CodeModule
       cm.DeleteLines 1, cm.CountOfLines
       cm.AddFromFile ImportFile.Path
-      If cli.Type = CodeLibElementType.clet_ClassModule Then
+      If CodeLibInf.Type = CodeLibElementType.clet_ClassModule Then
          'wegschneiden von:
          'VERSION 1.0 CLASS
          'BEGIN
          '  MultiUse = -1  'True
          'End
-         deleteClassHeaderLinesFromCodeModul cm
+         DeleteClassHeaderLinesFromCodeModul cm
       End If
       'Leerzeilen am Ende säubern
       Do While Len(Trim$(cm.Lines(cm.CountOfLines, 1))) = 0 And cm.CountOfLines > 1
@@ -980,15 +978,15 @@ Private Sub importVbComponent(ByRef cli As CodeLibInfo, ByRef ImportFile As Obje
       Loop
       
    Else
-      vbcCol.import ImportFile.Path
+      VbcCol.import ImportFile.Path
    End If
 
 End Sub
 
 #If EARLYBINDING = 1 Then
-Private Sub deleteClassHeaderLinesFromCodeModul(ByRef cm As CodeModule)
+Private Sub DeleteClassHeaderLinesFromCodeModul(ByRef cm As CodeModule)
 #Else
-Private Sub deleteClassHeaderLinesFromCodeModul(ByRef cm As Object)
+Private Sub DeleteClassHeaderLinesFromCodeModul(ByRef cm As Object)
 #End If
 '
 'Header sieht so aus:
@@ -999,61 +997,61 @@ Private Sub deleteClassHeaderLinesFromCodeModul(ByRef cm As Object)
 'End
 '--
 
-   Dim target As String
-   Dim searchStartLine As Long, searchStartCol As Long, _
-       searchEndLine As Long, searchEndCol As Long
-   Dim headerStartLine As Long, headerEndLine As Long
+   Dim Target As String
+   Dim SearchStartLine As Long, SearchStartCol As Long, _
+       SearchEndLine As Long, SearchEndCol As Long
+   Dim HeaderStartLine As Long, HeaderEndLine As Long
 
-   searchStartLine = 1
-   searchStartCol = 1
-   searchEndLine = -1
-   searchEndCol = -1
+   SearchStartLine = 1
+   SearchStartCol = 1
+   SearchEndLine = -1
+   SearchEndCol = -1
    
-   target = "VERSION*CLASS"
-   If Not cm.Find(target, searchStartLine, searchStartCol, searchEndLine, searchEndCol, True, False, True) Then
+   Target = "VERSION*CLASS"
+   If Not cm.Find(Target, SearchStartLine, SearchStartCol, SearchEndLine, SearchEndCol, True, False, True) Then
       Exit Sub
    End If
-   headerStartLine = searchStartLine
+   HeaderStartLine = SearchStartLine
    
-   target = "BEGIN"
-   searchStartLine = searchEndLine
-   searchStartCol = searchEndCol
-   searchEndLine = -1
-   searchEndCol = -1
-   If Not cm.Find(target, searchStartLine, searchStartCol, searchEndLine, searchEndCol, True, False, False) Then
+   Target = "BEGIN"
+   SearchStartLine = SearchEndLine
+   SearchStartCol = SearchEndCol
+   SearchEndLine = -1
+   SearchEndCol = -1
+   If Not cm.Find(Target, SearchStartLine, SearchStartCol, SearchEndLine, SearchEndCol, True, False, False) Then
       Exit Sub
    End If
    
-   target = "End"
-   searchStartLine = searchEndLine
-   searchStartCol = searchEndCol
-   searchEndLine = -1
-   searchEndCol = -1
-   If Not cm.Find(target, searchStartLine, searchStartCol, searchEndLine, searchEndCol, True, False, False) Then
+   Target = "End"
+   SearchStartLine = SearchEndLine
+   SearchStartCol = SearchEndCol
+   SearchEndLine = -1
+   SearchEndCol = -1
+   If Not cm.Find(Target, SearchStartLine, SearchStartCol, SearchEndLine, SearchEndCol, True, False, False) Then
       Exit Sub
    End If
-   headerEndLine = searchEndLine
+   HeaderEndLine = SearchEndLine
 
 #If DEBUGMODE = 1 Then
-   Debug.Print "Header lines:", headerStartLine, headerEndLine
+   Debug.Print "Header lines:", HeaderStartLine, HeaderEndLine
 #End If
 
-   cm.DeleteLines headerStartLine, headerEndLine
+   cm.DeleteLines HeaderStartLine, HeaderEndLine
 
 End Sub
 
-Private Sub importAccessObject(ByRef acojbType As AcObjectType, ByRef cli As CodeLibInfo, _
+Private Sub ImportAccessObject(ByRef AcOjbType As AcObjectType, ByRef CodeLibInf As CodeLibInfo, _
                                ByRef ImportFile As Object, ByRef ImportMode As CodeLibImportMode)
    
    Dim col As Object ' AllForms oder AllReports
-   Dim acObj As AccessObject
+   Dim AcObj As AccessObject
 
-   If Len(Trim$(cli.Name)) = 0 Then
+   If Len(Trim$(CodeLibInf.Name)) = 0 Then
       Err.Raise vbObjectError, "ADF_ImportExport.importVbComponent", "Es wurde versucht ein Module ohne Namen zu erstellen."
       Exit Sub
    End If
    
-   Select Case acojbType
+   Select Case AcOjbType
       Case AcObjectType.acForm
          Set col = CurrentProject.AllForms
       Case AcObjectType.acReport
@@ -1068,33 +1066,31 @@ Private Sub importAccessObject(ByRef acojbType As AcObjectType, ByRef cli As Cod
    
    'Sonderfall: ACLibImportWizardForm .. weil dieser Formularname vom Import-Wizard verwendet wird
                                        ' und Access der Meinung ist, das Formular ist bereits geöffnet
-   If cli.Name = "ACLibImportWizardForm" Then
+   If CodeLibInf.Name = "ACLibImportWizardForm" Then
       'immer umbennenen, da sonst bei ungeöffneten Formular das Formular des Add-Ins gelöscht wird!
-      'If CodeProject.AllForms(cli.Name).IsLoaded Then
-         cli.Name = cli.Name & "_NEU"
-      'End If
+      CodeLibInf.Name = CodeLibInf.Name & "_NEU"
    End If
 
-   For Each acObj In col
-      If acObj.Name = cli.Name Then
+   For Each AcObj In col
+      If AcObj.Name = CodeLibInf.Name Then
          If ImportMode = clim_ImportMissingItems Then 'Abbruch, damit nicht überschrieben wird
             Exit Sub
          End If
-         If acObj.IsLoaded Then
-            DoCmd.Close acojbType, cli.Name, acSaveNo
+         If AcObj.IsLoaded Then
+            DoCmd.Close AcOjbType, CodeLibInf.Name, acSaveNo
          End If
-         Set acObj = Nothing
-         DoCmd.DeleteObject acojbType, cli.Name
+         Set AcObj = Nothing
+         DoCmd.DeleteObject AcOjbType, CodeLibInf.Name
          Exit For
       End If
    Next
    Set col = Nothing
    
-   Application.LoadFromText acojbType, cli.Name, ImportFile.Path
-   DoCmd.Close acojbType, cli.Name
+   Application.LoadFromText AcOjbType, CodeLibInf.Name, ImportFile.Path
+   DoCmd.Close AcOjbType, CodeLibInf.Name
 
    'Sonderfall: ACLibImportWizardForm
-   If cli.Name = "ACLibImportWizardForm_NEU" Then
+   If CodeLibInf.Name = "ACLibImportWizardForm_NEU" Then
       MsgBox "Bitte das Formular ""ACLibImportWizardForm_NEU"" manuell in ""ACLibImportWizardForm"" umbennenen." & vbNewLine & _
              "Es konnte nicht mit dem Originalnamen erstellt werden, da der Import-Assistent ein gleichnamiges Formular geöffnet hat."
    End If
@@ -1102,9 +1098,9 @@ Private Sub importAccessObject(ByRef acojbType As AcObjectType, ByRef cli As Cod
 End Sub
 
 #If EARLYBINDING = 1 Then
-Public Function GetCodeLibInfoFromCodeModule(ByVal sCodeModulName As String, Optional ByVal oVBProject As VBProject) As CodeLibInfo
+Public Function GetCodeLibInfoFromCodeModule(ByVal CodeModulName As String, Optional ByVal VbProjectRef As VBProject) As CodeLibInfo
 #Else
-Public Function GetCodeLibInfoFromCodeModule(ByVal sCodeModulName As String, Optional ByVal oVBProject As Object) As CodeLibInfo
+Public Function GetCodeLibInfoFromCodeModule(ByVal CodeModulName As String, Optional ByVal VbProjectRef As Object) As CodeLibInfo
 #End If
 
    Dim cli As CodeLibInfo
@@ -1114,93 +1110,91 @@ Public Function GetCodeLibInfoFromCodeModule(ByVal sCodeModulName As String, Opt
    Dim vbc As Object
 #End If
    
-   If oVBProject Is Nothing Then
-      Set oVBProject = CurrentVbProject
+   If VbProjectRef Is Nothing Then
+      Set VbProjectRef = CurrentVbProject
    End If
    
-   Set vbc = oVBProject.VBComponents(sCodeModulName)
+   Set vbc = VbProjectRef.VBComponents(CodeModulName)
    
-   getCodeLibInfoFromVbComponent cli, vbc
+   GetCodeLibInfoFromVbComponent cli, vbc
    
    GetCodeLibInfoFromCodeModule = cli
    
 End Function
 
-Private Sub getCodeLibInfoFromVbComponent(ByRef cli As CodeLibInfo, ByRef vbc As Object)
+Private Sub GetCodeLibInfoFromVbComponent(ByRef CodeLibInf As CodeLibInfo, ByRef VbComp As Object)
         
-   Dim checkString As String
-   Dim countOfCodeLines As Long
+   Dim CheckString As String
+   Dim CountOfCodeLines As Long
 
-   cli.Name = vbc.Name
-   cli.Type = vbc.Type
+   CodeLibInf.Name = VbComp.Name
+   CodeLibInf.Type = VbComp.Type
    
-   countOfCodeLines = vbc.CodeModule.CountOfDeclarationLines
-   If countOfCodeLines < 3 Then
+   CountOfCodeLines = VbComp.CodeModule.CountOfDeclarationLines
+   If CountOfCodeLines < 3 Then
       'Eventuell nur Prozeduren vorhanden und nach den Options eine Leerzeile
       '=> zur Sicherheit den Code bis zur ersten Prozedur verwenden
-      countOfCodeLines = getFirstProcLine(vbc.CodeModule) - 1
-      If countOfCodeLines < 3 Then ' ist auch keine Prozedur vorhanden? => gesamten Code verwenden
-         countOfCodeLines = vbc.CodeModule.CountOfLines
+      CountOfCodeLines = GetFirstProcLine(VbComp.CodeModule) - 1
+      If CountOfCodeLines < 3 Then ' ist auch keine Prozedur vorhanden? => gesamten Code verwenden
+         CountOfCodeLines = VbComp.CodeModule.CountOfLines
       End If
    End If
-   If countOfCodeLines = 0 Then 'kein Code vorhanden, der ausgewertet werden könnte
+   If CountOfCodeLines = 0 Then 'kein Code vorhanden, der ausgewertet werden könnte
       Exit Sub
    End If
-   checkString = vbc.CodeModule.Lines(1, countOfCodeLines)
-   checkString = findSubString(checkString, SEARCHSTRING_CODELIB_BEGIN, SEARCHSTRING_CODELIB_END)
+   CheckString = VbComp.CodeModule.Lines(1, CountOfCodeLines)
+   CheckString = FindSubString(CheckString, SEARCHSTRING_CODELIB_BEGIN, SEARCHSTRING_CODELIB_END)
    
-   If Len(checkString) > 0 Then
-      getCodeLibInfoRepositoryFile cli, checkString
-      getCodeLibInfoRepositoryFileReplacement cli, checkString
-      getCodeLibInfoLicenseFile cli, checkString
-      getCodeLibInfoDependency cli, checkString
-      getCodeLibInfoReferences cli, checkString
+   If Len(CheckString) > 0 Then
+      GetCodeLibInfoRepositoryFile CodeLibInf, CheckString
+      GetCodeLibInfoRepositoryFileReplacement CodeLibInf, CheckString
+      GetCodeLibInfoLicenseFile CodeLibInf, CheckString
+      GetCodeLibInfoDependency CodeLibInf, CheckString
+      GetCodeLibInfoReferences CodeLibInf, CheckString
    End If
 
 End Sub
 
-Private Sub getCodeLibInfoFromAccessObject(ByRef cli As CodeLibInfo, _
-               ByRef aoType As AcObjectType, ByRef aoName As String)
+Private Sub GetCodeLibInfoFromAccessObject(ByRef CodeLibInf As CodeLibInfo, _
+               ByRef AoType As AcObjectType, ByRef AoName As String)
 
 #If EARLYBINDING Then
    Dim vbc As VBComponent
 #Else
    Dim vbc As Object
 #End If
-   Dim vbcName As String
-   Dim tempForm As Access.Form
-   Dim tempReport As Access.Report
+   Dim VbcName As String
    
-   Select Case aoType
+   Select Case AoType
       Case AcObjectType.acModule
-         vbcName = aoName
+         VbcName = AoName
    
       Case AcObjectType.acForm, AcObjectType.acReport
-         vbcName = "Form_" & Replace(aoName, " ", "_")
-         If Not CodeModuleExits(vbcName) Then
-            vbcName = vbNullString
+         VbcName = "Form_" & Replace(AoName, " ", "_")
+         If Not CodeModuleExits(VbcName) Then
+            VbcName = vbNullString
          End If
          
       Case AcObjectType.acReport
-         vbcName = "Report_" & Replace(aoName, " ", "_")
-         If Not CodeModuleExits(vbcName) Then
-            vbcName = vbNullString
+         VbcName = "Report_" & Replace(AoName, " ", "_")
+         If Not CodeModuleExits(VbcName) Then
+            VbcName = vbNullString
          End If
 
       Case Else ' ... ???
       
    End Select
    
-   If Len(vbcName) > 0 Then
-      Set vbc = CurrentVbProject.VBComponents(vbcName)
-      getCodeLibInfoFromVbComponent cli, vbc
-      If Len(cli.RepositoryFile) > 0 Then
-         cli.LocalFile = GetRepositoryFullPath(cli.RepositoryFile)
+   If Len(VbcName) > 0 Then
+      Set vbc = CurrentVbProject.VBComponents(VbcName)
+      GetCodeLibInfoFromVbComponent CodeLibInf, vbc
+      If Len(CodeLibInf.RepositoryFile) > 0 Then
+         CodeLibInf.LocalFile = GetRepositoryFullPath(CodeLibInf.RepositoryFile)
       End If ' Rest ignorieren .. wenn im Code nicht steht, wird auch nicht exportiert
    End If
    
 #If DEBUGMODE Then
-   Debug.Print aoName; " --> "; cli.LocalFile
+   Debug.Print AoName; " --> "; CodeLibInf.LocalFile
 #End If
 
 End Sub
@@ -1225,40 +1219,40 @@ End Function
 
 Public Function GetCodeLibInfoFromFilePath(ByVal FilePath As String, Optional ByVal FindDependency As Boolean = True) As CodeLibInfo
    Dim cli As CodeLibInfo
-   getCodeLibInfoFromFile cli, fso.GetFile(FilePath), FindDependency
+   GetCodeLibInfoFromFile cli, fso.GetFile(FilePath), FindDependency
    GetCodeLibInfoFromFilePath = cli
 End Function
 
 
-Private Sub getCodeLibInfoFromFile(ByRef cli As CodeLibInfo, ByVal InputFile As Object, _
+Private Sub GetCodeLibInfoFromFile(ByRef CodeLibInf As CodeLibInfo, ByVal InputFile As Object, _
                           Optional ByVal FindDependency As Boolean = True, _
                           Optional ByVal FindTests As Boolean = True)
    
    Dim Pos As Long
-   Dim checkString As String
+   Dim CheckString As String
    Dim TempString As String
    Dim i As Long
-   Dim fileNumber As Long
+   Dim FileNumber As Long
 
-   fileNumber = FreeFile
-   Open InputFile.Path For Binary Access Read As fileNumber
-   checkString = String$(LOF(fileNumber), 0)
-   Get fileNumber, , checkString
-   Close fileNumber
+   FileNumber = FreeFile
+   Open InputFile.Path For Binary Access Read As FileNumber
+   CheckString = String$(LOF(FileNumber), 0)
+   Get FileNumber, , CheckString
+   Close FileNumber
    
    'Namen ermitteln
-   cli.Name = findSubString(checkString, SEARCHSTRING_ATTRIBUTNAME_BEGIN, SEARCHSTRING_ATTRIBUTNAME_END, Pos)
+   CodeLibInf.Name = FindSubString(CheckString, SEARCHSTRING_ATTRIBUTNAME_BEGIN, SEARCHSTRING_ATTRIBUTNAME_END, Pos)
    
-   If Len(cli.Name) = 0 Then ' aus Dateinamen
-      cli.Name = Left$(InputFile.Name, InStrRev(InputFile.Name, ".") - 1)
+   If Len(CodeLibInf.Name) = 0 Then ' aus Dateinamen
+      CodeLibInf.Name = Left$(InputFile.Name, InStrRev(InputFile.Name, ".") - 1)
    End If
    
    'Typ bestimmen
    If Pos > 0 Then ' da SEARCHSTRING_ATTRIBUTNAME_BEGIN gefunden wurde,
                    ' ist das definitiv ein Module oder eine Klasse
-      cli.Type = clet_StdModule
-      If InStr(1, Left$(checkString, Pos - 1), "CLASS", vbBinaryCompare) Then
-         cli.Type = clet_ClassModule
+      CodeLibInf.Type = clet_StdModule
+      If InStr(1, Left$(CheckString, Pos - 1), "CLASS", vbBinaryCompare) Then
+         CodeLibInf.Type = clet_ClassModule
       End If
    Else ' nach "BEGIN FORM" bzw "BEGIN REPORT" suchen (steht immer in der 4. Zeile)
       
@@ -1273,29 +1267,29 @@ Private Sub getCodeLibInfoFromFile(ByRef cli As CodeLibInfo, ByVal InputFile As 
 
       Pos = 1
       For i = 1 To 3
-         Pos = InStr(Pos, checkString, vbNewLine, vbBinaryCompare) + 1
+         Pos = InStr(Pos, CheckString, vbNewLine, vbBinaryCompare) + 1
          If Pos <= 0 Then Exit For
       Next
       If Pos > 1 Then
-         TempString = findSubString(Mid$(checkString, Pos - 1), vbNewLine, vbNewLine)
+         TempString = FindSubString(Mid$(CheckString, Pos - 1), vbNewLine, vbNewLine)
       End If
       
       If TempString = SEARCHSTRING_FORMIDENTIFER Then
-         cli.Type = clet_Form
+         CodeLibInf.Type = clet_Form
       ElseIf TempString = SEARCHSTRING_REPORTIDENTIFER Then
-         cli.Type = clet_Report
+         CodeLibInf.Type = clet_Report
    
       Else 'aus Dateiendung
       
          Select Case Mid$(InputFile.Name, InStrRev(InputFile.Name, ".") + 1)
             Case "frm", "acf"
-               cli.Type = clet_Form
+               CodeLibInf.Type = clet_Form
             Case "rep", "acr"
-               cli.Type = clet_Report
+               CodeLibInf.Type = clet_Report
             Case "bas", "acm"
-               cli.Type = clet_StdModule
+               CodeLibInf.Type = clet_StdModule
             Case "cls"
-               cli.Type = clet_ClassModule
+               CodeLibInf.Type = clet_ClassModule
             Case Else
                '
          End Select
@@ -1305,168 +1299,168 @@ Private Sub getCodeLibInfoFromFile(ByRef cli As CodeLibInfo, ByVal InputFile As 
    End If
    
    'CODELIB-Block auslesen
-   checkString = findSubString(checkString, SEARCHSTRING_CODELIB_BEGIN, SEARCHSTRING_CODELIB_END)
-   If Len(checkString) > 0 Then
-      getCodeLibInfoRepositoryFile cli, checkString
-      getCodeLibInfoRepositoryFileReplacement cli, checkString
-      getCodeLibInfoLicenseFile cli, checkString
-      If FindDependency Then getCodeLibInfoDependency cli, checkString
-      getCodeLibInfoReferences cli, checkString
-      If FindTests Then getCodeLibInfoTests cli, checkString
-      getCodeLibInfoDescription cli, checkString
-      getCodeLibInfoExecuteList cli, checkString
+   CheckString = FindSubString(CheckString, SEARCHSTRING_CODELIB_BEGIN, SEARCHSTRING_CODELIB_END)
+   If Len(CheckString) > 0 Then
+      GetCodeLibInfoRepositoryFile CodeLibInf, CheckString
+      GetCodeLibInfoRepositoryFileReplacement CodeLibInf, CheckString
+      GetCodeLibInfoLicenseFile CodeLibInf, CheckString
+      If FindDependency Then GetCodeLibInfoDependency CodeLibInf, CheckString
+      GetCodeLibInfoReferences CodeLibInf, CheckString
+      If FindTests Then GetCodeLibInfoTests CodeLibInf, CheckString
+      GetCodeLibInfoDescription CodeLibInf, CheckString
+      GetCodeLibInfoExecuteList CodeLibInf, CheckString
    End If
 
 End Sub
 
-Private Sub getCodeLibInfoRepositoryFile(ByRef cli As CodeLibInfo, ByRef sSourceString As String)
-   cli.RepositoryFile = Replace(findSubString(sSourceString, SEARCHSTRING_FILE_BEGIN, SEARCHSTRING_FILE_END), "\", "/")
+Private Sub GetCodeLibInfoRepositoryFile(ByRef CodeLibInf As CodeLibInfo, ByRef SourceString As String)
+   CodeLibInf.RepositoryFile = Replace(FindSubString(SourceString, SEARCHSTRING_FILE_BEGIN, SEARCHSTRING_FILE_END), "\", "/")
 End Sub
 
-Private Sub getCodeLibInfoRepositoryFileReplacement(ByRef cli As CodeLibInfo, ByRef sSourceString As String)
-   cli.RepositoryFileReplacement = Replace(findSubString(sSourceString, SEARCHSTRING_REPLACE_BEGIN, SEARCHSTRING_REPLACE_END), "\", "/")
+Private Sub GetCodeLibInfoRepositoryFileReplacement(ByRef CodeLibInf As CodeLibInfo, ByRef SourceString As String)
+   CodeLibInf.RepositoryFileReplacement = Replace(FindSubString(SourceString, SEARCHSTRING_REPLACE_BEGIN, SEARCHSTRING_REPLACE_END), "\", "/")
 End Sub
 
-Private Sub getCodeLibInfoLicenseFile(ByRef cli As CodeLibInfo, ByRef sSourceString As String)
-   cli.LicenseFile = Replace(findSubString(sSourceString, SEARCHSTRING_LICENSE_BEGIN, SEARCHSTRING_LICENSE_END), "\", "/")
+Private Sub GetCodeLibInfoLicenseFile(ByRef CodeLibInf As CodeLibInfo, ByRef SourceString As String)
+   CodeLibInf.LicenseFile = Replace(FindSubString(SourceString, SEARCHSTRING_LICENSE_BEGIN, SEARCHSTRING_LICENSE_END), "\", "/")
 End Sub
 
-Private Sub getCodeLibInfoDescription(ByRef cli As CodeLibInfo, ByRef sSourceString As String)
-   cli.Description = Replace(findSubString(sSourceString, SEARCHSTRING_DESCRIPTION_BEGIN, SEARCHSTRING_DESCRIPTION_END), "\", "/")
+Private Sub GetCodeLibInfoDescription(ByRef CodeLibInf As CodeLibInfo, ByRef SourceString As String)
+   CodeLibInf.Description = Replace(FindSubString(SourceString, SEARCHSTRING_DESCRIPTION_BEGIN, SEARCHSTRING_DESCRIPTION_END), "\", "/")
 End Sub
 
-Private Sub getCodeLibInfoExecuteList(ByRef cli As CodeLibInfo, ByRef sSourceString As String)
+Private Sub GetCodeLibInfoExecuteList(ByRef CodeLibInf As CodeLibInfo, ByRef SourceString As String)
     Dim lst() As String
 
-    If getCodelibInfoTagStrings(sSourceString, SEARCHSTRING_EXECUTE_BEGIN, SEARCHSTRING_EXECUTE_END, lst) > 0 Then
-        cli.ExecuteList = lst
+    If GetCodelibInfoTagStrings(SourceString, SEARCHSTRING_EXECUTE_BEGIN, SEARCHSTRING_EXECUTE_END, lst) > 0 Then
+        CodeLibInf.ExecuteList = lst
     End If
 End Sub
 
-Private Sub getCodeLibInfoDependency(ByRef cli As CodeLibInfo, ByRef sSourceString As String)
+Private Sub GetCodeLibInfoDependency(ByRef CodeLibInf As CodeLibInfo, ByRef SourceString As String)
 'Private Const SEARCHSTRING_USE_BEGIN As String = "<use>"
 'Private Const SEARCHSTRING_USE_END   As String = "</use>"
    
    Dim dep() As String
 
-   If getCodelibInfoTagStrings(sSourceString, SEARCHSTRING_USE_BEGIN, SEARCHSTRING_USE_END, dep) > 0 Then
-      cli.Dependency = dep
+   If GetCodelibInfoTagStrings(SourceString, SEARCHSTRING_USE_BEGIN, SEARCHSTRING_USE_END, dep) > 0 Then
+      CodeLibInf.Dependency = dep
    End If
   
 End Sub
 
-Private Sub getCodeLibInfoTests(ByRef cli As CodeLibInfo, ByRef sSourceString As String)
+Private Sub GetCodeLibInfoTests(ByRef CodeLibInf As CodeLibInfo, ByRef SourceString As String)
 
-   Dim tests() As String
+   Dim Tests() As String
 
-   If getCodelibInfoTagStrings(sSourceString, SEARCHSTRING_TEST_BEGIN, SEARCHSTRING_TEST_END, tests) > 0 Then
-      cli.TestFiles = tests
+   If GetCodelibInfoTagStrings(SourceString, SEARCHSTRING_TEST_BEGIN, SEARCHSTRING_TEST_END, Tests) > 0 Then
+      CodeLibInf.TestFiles = Tests
    End If
  
 End Sub
 
-Private Function getCodelibInfoTagStrings(ByRef sSourceString As String, _
-                                    ByRef sStartTag As String, ByRef sEndTag As String, _
+Private Function GetCodelibInfoTagStrings(ByRef SourceString As String, _
+                                    ByRef StartTag As String, ByRef EndTag As String, _
                                     ByRef TagStrings() As String) As Long
    
-   Dim startPos As Long
-   Dim endPos As Long
+   Dim StartPos As Long
+   Dim EndPos As Long
    
-   Dim tagString As String
-   Dim tagIdx As Long
+   Dim TagString As String
+   Dim TagIdx As Long
 
-   tagIdx = -1
+   TagIdx = -1
    
-   startPos = InStr(1, sSourceString, sStartTag)
-   Do While startPos > 0
-      startPos = startPos + Len(sStartTag)
-      endPos = InStr(startPos, sSourceString, sEndTag)
-      If endPos = 0 Then
+   StartPos = InStr(1, SourceString, StartTag)
+   Do While StartPos > 0
+      StartPos = StartPos + Len(StartTag)
+      EndPos = InStr(StartPos, SourceString, EndTag)
+      If EndPos = 0 Then
          Exit Do
       End If
       
-      tagString = Trim$(Mid$(sSourceString, startPos, endPos - startPos))
-      If Len(tagString) > 0 Then
-         tagIdx = tagIdx + 1
-         ReDim Preserve TagStrings(tagIdx)
-         TagStrings(tagIdx) = tagString
+      TagString = Trim$(Mid$(SourceString, StartPos, EndPos - StartPos))
+      If Len(TagString) > 0 Then
+         TagIdx = TagIdx + 1
+         ReDim Preserve TagStrings(TagIdx)
+         TagStrings(TagIdx) = TagString
       End If
    
-      endPos = endPos + Len(sEndTag)
-      startPos = InStr(endPos, sSourceString, sStartTag)
+      EndPos = EndPos + Len(EndTag)
+      StartPos = InStr(EndPos, SourceString, StartTag)
    
    Loop
 
-   getCodelibInfoTagStrings = tagIdx + 1
+   GetCodelibInfoTagStrings = TagIdx + 1
  
 End Function
 
-Private Sub getCodeLibInfoReferences(ByRef cli As CodeLibInfo, ByRef sSourceString As String)
+Private Sub GetCodeLibInfoReferences(ByRef CodeLibInf As CodeLibInfo, ByRef SourceString As String)
 
-   Dim refString As String
+   Dim RefString As String
    
-   Dim refBlocks() As String
-   Dim refBlockMaxIdx As Long
+   Dim RefBlocks() As String
+   Dim RefBlockMaxIdx As Long
    Dim ref() As CodeLibInfoReference
    Dim i As Long
 
-   refBlockMaxIdx = -1 + getCodelibInfoTagStrings(sSourceString, SEARCHSTRING_REF_BEGIN, SEARCHSTRING_REF_END, refBlocks)
+   RefBlockMaxIdx = -1 + GetCodelibInfoTagStrings(SourceString, SEARCHSTRING_REF_BEGIN, SEARCHSTRING_REF_END, RefBlocks)
    
-   If refBlockMaxIdx >= 0 Then
-      ReDim ref(refBlockMaxIdx)
-      For i = 0 To refBlockMaxIdx
-         refString = refBlocks(i)
-         ref(i).Name = findSubString(refString, SEARCHSTRING_REF_NAME_BEGIN, SEARCHSTRING_REF_NAME_END)
-         ref(i).Major = Val(findSubString(refString, SEARCHSTRING_REF_MAJOR_BEGIN, SEARCHSTRING_REF_MAJOR_END))
-         ref(i).Minor = Val(findSubString(refString, SEARCHSTRING_REF_MINOR_BEGIN, SEARCHSTRING_REF_MINOR_END))
-         ref(i).GUID = findSubString(refString, SEARCHSTRING_REF_GUID_BEGIN, SEARCHSTRING_REF_GUID_END)
+   If RefBlockMaxIdx >= 0 Then
+      ReDim ref(RefBlockMaxIdx)
+      For i = 0 To RefBlockMaxIdx
+         RefString = RefBlocks(i)
+         ref(i).Name = FindSubString(RefString, SEARCHSTRING_REF_NAME_BEGIN, SEARCHSTRING_REF_NAME_END)
+         ref(i).Major = Val(FindSubString(RefString, SEARCHSTRING_REF_MAJOR_BEGIN, SEARCHSTRING_REF_MAJOR_END))
+         ref(i).Minor = Val(FindSubString(RefString, SEARCHSTRING_REF_MINOR_BEGIN, SEARCHSTRING_REF_MINOR_END))
+         ref(i).GUID = FindSubString(RefString, SEARCHSTRING_REF_GUID_BEGIN, SEARCHSTRING_REF_GUID_END)
       Next
       
-      cli.References = ref
+      CodeLibInf.References = ref
       
    End If
  
 End Sub
 
 
-Private Function findSubString(ByRef SourceString As String, _
+Private Function FindSubString(ByRef SourceString As String, _
                                ByRef StartTag As String, ByRef EndTag As String, _
                                Optional ByRef LocatedStartPos As Long, Optional ByRef LocatedEndPos As Long) As String
 
-   Dim startPos As Long, endPos As Long
+   Dim StartPos As Long, EndPos As Long
 
-   startPos = InStr(1, SourceString, StartTag, vbTextCompare)
-   If startPos <= 0 Then
+   StartPos = InStr(1, SourceString, StartTag, vbTextCompare)
+   If StartPos <= 0 Then
       Exit Function
    End If
    
-   startPos = startPos + Len(StartTag)
-   endPos = InStr(startPos, SourceString, EndTag, vbTextCompare)
-   If endPos <= 0 Then
+   StartPos = StartPos + Len(StartTag)
+   EndPos = InStr(StartPos, SourceString, EndTag, vbTextCompare)
+   If EndPos <= 0 Then
       Exit Function
    End If
    
-   LocatedStartPos = startPos
-   LocatedEndPos = endPos
-   findSubString = Trim$(Mid$(SourceString, startPos, endPos - startPos))
+   LocatedStartPos = StartPos
+   LocatedEndPos = EndPos
+   FindSubString = Trim$(Mid$(SourceString, StartPos, EndPos - StartPos))
   
 End Function
 
-Private Sub createMissingFolder(ByRef FullPath As String)
+Private Sub CreateMissingFolder(ByRef FullPath As String)
    
    Dim TempPath As String
 
    If Len(Dir$(FullPath, vbDirectory)) = 0 Then
-      TempPath = getParentFolderPath(FullPath)
-      createMissingFolder TempPath
+      TempPath = GetParentFolderPath(FullPath)
+      CreateMissingFolder TempPath
       MkDir FullPath
    End If
   
 End Sub
 
-Private Function getParentFolderPath(ByRef FullPath As String) As String
+Private Function GetParentFolderPath(ByRef FullPath As String) As String
 
-   getParentFolderPath = Left$(FullPath, InStrRev(FullPath, "\", , vbTextCompare) - 1)
+   GetParentFolderPath = Left$(FullPath, InStrRev(FullPath, "\", , vbTextCompare) - 1)
  
 End Function
 
@@ -1488,7 +1482,7 @@ Public Sub RefreshAll(Optional ByVal ImportMode As CodeLibImportMode = _
                       Optional ByVal ShowMessageAfterRefresh As Boolean = False)
    
 
-   refreshAllAccessObjects AcObjectType.acDefault, ImportMode, ShowMessageAfterRefresh
+   RefreshAllAccessObjects AcObjectType.acDefault, ImportMode, ShowMessageAfterRefresh
 
 End Sub
 
@@ -1510,11 +1504,11 @@ Public Sub RefreshAllModules(Optional ByVal ImportMode As CodeLibImportMode = _
                                       CodeLibImportMode.clim_ImportMissingItems, _
                              Optional ByVal ShowMessageAfterRefresh As Boolean = False)
 
-   refreshAllAccessObjects AcObjectType.acModule, ImportMode, ShowMessageAfterRefresh
+   RefreshAllAccessObjects AcObjectType.acModule, ImportMode, ShowMessageAfterRefresh
  
 End Sub
 
-Private Sub refreshAllAccessObjects(ByVal aoType As AcObjectType, _
+Private Sub RefreshAllAccessObjects(ByVal AoType As AcObjectType, _
                                     ByVal ImportMode As CodeLibImportMode, _
                                     ByVal ShowMessageAfterRefresh As Boolean)
    
@@ -1527,16 +1521,16 @@ Private Sub refreshAllAccessObjects(ByVal aoType As AcObjectType, _
       Set m_ImportFileCollection = New Collection
    End If
    
-   Select Case aoType
+   Select Case AoType
       Case AcObjectType.acDefault
-         addAccessObjectCollectionToRefreshFileCollection acModule, ImportMode
-         addAccessObjectCollectionToRefreshFileCollection acForm, ImportMode
-         addAccessObjectCollectionToRefreshFileCollection acReport, ImportMode
+         AddAccessObjectCollectionToRefreshFileCollection acModule, ImportMode
+         AddAccessObjectCollectionToRefreshFileCollection acForm, ImportMode
+         AddAccessObjectCollectionToRefreshFileCollection acReport, ImportMode
       Case Else
-         addAccessObjectCollectionToRefreshFileCollection aoType, ImportMode
+         AddAccessObjectCollectionToRefreshFileCollection AoType, ImportMode
    End Select
    
-   importFilesFromImportCollection
+   ImportFilesFromImportCollection
    
    If ShowMessageAfterRefresh Then
       MsgBox "Aktualisierung ist abgeschlossen"
@@ -1544,59 +1538,59 @@ Private Sub refreshAllAccessObjects(ByVal aoType As AcObjectType, _
 
 End Sub
 
-Private Sub addAccessObjectCollectionToRefreshFileCollection( _
-                        ByRef aoType As AcObjectType, _
+Private Sub AddAccessObjectCollectionToRefreshFileCollection( _
+                        ByRef AoType As AcObjectType, _
                         ByRef ImportMode As CodeLibImportMode)
 
-   Dim aoCol As Object ' AllModules, ...
+   Dim AoCol As Object ' AllModules, ...
    Dim ao As AccessObject
 
-   Select Case aoType
+   Select Case AoType
       Case AcObjectType.acModule
-         Set aoCol = CurrentProject.AllModules
+         Set AoCol = CurrentProject.AllModules
       Case AcObjectType.acForm
-         Set aoCol = CurrentProject.AllForms
+         Set AoCol = CurrentProject.AllForms
       Case AcObjectType.acReport
-         Set aoCol = CurrentProject.AllReports
+         Set AoCol = CurrentProject.AllReports
       Case Else 'Mit Fehler Abbrechen
          Err.Raise vbObjectError, "refreshAccessObjects", "Nur Module, Formular und Berichte können aktualisiert werden"
          Exit Sub
    End Select
 
-   For Each ao In aoCol
-      addAccessObjectToRefreshFileCollection ao, ImportMode
+   For Each ao In AoCol
+      AddAccessObjectToRefreshFileCollection ao, ImportMode
    Next
 
 End Sub
 
-Private Sub addAccessObjectToRefreshFileCollection(ByRef ao As AccessObject, ByRef ImportMode As CodeLibImportMode)
+Private Sub AddAccessObjectToRefreshFileCollection(ByRef AcObj As AccessObject, ByRef ImportMode As CodeLibImportMode)
    
    Dim cli As CodeLibInfo
    Dim TempFile As Object
 
-   getCodeLibInfoFromAccessObject cli, ao.Type, ao.Name
+   GetCodeLibInfoFromAccessObject cli, AcObj.Type, AcObj.Name
    If Len(cli.RepositoryFile) > 0 Then
       cli.LocalFile = GetRepositoryFullPath(cli.RepositoryFile)
       Set TempFile = fso.GetFile(cli.LocalFile)
-      addMissingFile TempFile, ImportMode
+      AddMissingFile TempFile, ImportMode
    End If
 
 End Sub
 
 #If EARLYBINDING = 1 Then
-Private Function getFirstProcLine(cm As VBIDE.CodeModule) As Long
+Private Function GetFirstProcLine(ByRef CodMod As VBIDE.CodeModule) As Long
 #Else
-Private Function getFirstProcLine(cm As Object) As Long
+Private Function GetFirstProcLine(ByRef CodMod As Object) As Long
 #End If
 
-   Dim lngLine As Long
-   Dim procKind As vbext_ProcKind
-   Dim procName As String
+   Dim LineNum As Long
+   Dim ProcKind As vbext_ProcKind
+   Dim ProcName As String
 
-   For lngLine = cm.CountOfDeclarationLines + 1 To cm.CountOfLines
-      procName = cm.ProcOfLine(lngLine, procKind)
-      If Len(procName) > 0 Then
-         getFirstProcLine = cm.ProcBodyLine(procName, procKind)
+   For LineNum = CodMod.CountOfDeclarationLines + 1 To CodMod.CountOfLines
+      ProcName = CodMod.ProcOfLine(LineNum, ProcKind)
+      If Len(ProcName) > 0 Then
+         GetFirstProcLine = CodMod.ProcBodyLine(ProcName, ProcKind)
          Exit For
       End If
    Next
@@ -1604,42 +1598,40 @@ Private Function getFirstProcLine(cm As Object) As Long
 End Function
 
 #If EARLYBINDING = 1 Then
-Public Sub InsertCodeLibInfo(ByRef cm As VBIDE.CodeModule, cli As CodeLibInfo)
+Public Sub InsertCodeLibInfo(ByRef CodMod As VBIDE.CodeModule, ByRef CodeLibInf As CodeLibInfo)
 #Else
-Public Sub InsertCodeLibInfo(ByRef cm As Object, cli As CodeLibInfo)
+Public Sub InsertCodeLibInfo(ByRef CodMod As Object, ByRef CodeLibInf As CodeLibInfo)
 #End If
 
-   Dim tempCli As CodeLibInfo
-   Dim clTagArray() As String
+   Dim ClTagArray() As String
    Dim ref() As CodeLibInfoReference
-   Dim lngDepCnt As Long
    Dim i As Long
-   Dim strCodeLibInfo As String
+   Dim CodeLibInfoText As String
    Dim ExecuteList() As String
 
-   strCodeLibInfo = _
+   CodeLibInfoText = _
       "'<codelib>" & vbNewLine & _
-      "'  <file>" & cli.RepositoryFile & "</file>" & vbNewLine
+      "'  <file>" & CodeLibInf.RepositoryFile & "</file>" & vbNewLine
       
    '<replace>-Zeile
-   If Len(cli.RepositoryFileReplacement) > 0 Then
-      strCodeLibInfo = strCodeLibInfo & _
-      "'  <replace>" & cli.RepositoryFileReplacement & "</replace>" & vbNewLine
+   If Len(CodeLibInf.RepositoryFileReplacement) > 0 Then
+      CodeLibInfoText = CodeLibInfoText & _
+      "'  <replace>" & CodeLibInf.RepositoryFileReplacement & "</replace>" & vbNewLine
    End If
 
    '<use>-Blöcke
-   clTagArray = cli.Dependency
-   If Not ((0 / 1) + (Not Not clTagArray) = 0) Then
-      For i = LBound(clTagArray) To UBound(clTagArray)
-         strCodeLibInfo = strCodeLibInfo & "'  <use>" & clTagArray(i) & "</use>" & vbNewLine
+   ClTagArray = CodeLibInf.Dependency
+   If Not ((0 / 1) + (Not Not ClTagArray) = 0) Then
+      For i = LBound(ClTagArray) To UBound(ClTagArray)
+         CodeLibInfoText = CodeLibInfoText & "'  <use>" & ClTagArray(i) & "</use>" & vbNewLine
       Next
    End If
    
    '<ref>-Blöcke
-   ref = cli.References
+   ref = CodeLibInf.References
    If Not ((0 / 1) + (Not Not ref) = 0) Then
       For i = LBound(ref) To UBound(ref)
-         strCodeLibInfo = strCodeLibInfo & "'  <ref>" & _
+         CodeLibInfoText = CodeLibInfoText & "'  <ref>" & _
          "<name>" & ref(i).Name & "</name>" & _
          "<major>" & ref(i).Major & "</major>" & _
          "<minor>" & ref(i).Minor & "</minor>" & _
@@ -1649,27 +1641,26 @@ Public Sub InsertCodeLibInfo(ByRef cm As Object, cli As CodeLibInfo)
    End If
    
    '<test>-Blöcke
-   clTagArray = cli.TestFiles
-   If Not ((0 / 1) + (Not Not clTagArray) = 0) Then
-      For i = LBound(clTagArray) To UBound(clTagArray)
-         strCodeLibInfo = strCodeLibInfo & "'  <test>" & clTagArray(i) & "</test>" & vbNewLine
+   ClTagArray = CodeLibInf.TestFiles
+   If Not ((0 / 1) + (Not Not ClTagArray) = 0) Then
+      For i = LBound(ClTagArray) To UBound(ClTagArray)
+         CodeLibInfoText = CodeLibInfoText & "'  <test>" & ClTagArray(i) & "</test>" & vbNewLine
       Next
    End If
    
    '<execute>-Blöcke
-   ExecuteList = cli.ExecuteList
+   ExecuteList = CodeLibInf.ExecuteList
    If Not ((0 / 1) + (Not Not ExecuteList) = 0) Then
       For i = LBound(ExecuteList) To UBound(ExecuteList)
-         strCodeLibInfo = strCodeLibInfo & "'  <execute>" & clTagArray(i) & "</execute>" & vbNewLine
+         CodeLibInfoText = CodeLibInfoText & "'  <execute>" & ClTagArray(i) & "</execute>" & vbNewLine
       Next
    End If
    
-   
-   strCodeLibInfo = strCodeLibInfo & _
+   CodeLibInfoText = CodeLibInfoText & _
       "'</codelib>" & vbNewLine
    
 #If DEBUGMODE Then
-   Debug.Print strCodeLibInfo
+   Debug.Print CodeLibInfoText
 #End If
 
 End Sub

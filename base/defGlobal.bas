@@ -68,12 +68,12 @@ ExitHere:
    Exit Property
 
 HandleErr:
-   CurrentApplicationName = getApplicationNameFromDb
+   CurrentApplicationName = GetApplicationNameFromDb
    Resume ExitHere
 
 End Property
 
-Private Function getApplicationNameFromDb() As String
+Private Function GetApplicationNameFromDb() As String
 
    If Len(m_ApplicationName) = 0 Then 'Wert aus Titel-Eigenschaft, da Konstante nicht eingestellt wurde
           On Error Resume Next
@@ -84,6 +84,6 @@ Private Function getApplicationNameFromDb() As String
       End If
    End If
    
-   getApplicationNameFromDb = m_ApplicationName
+   GetApplicationNameFromDb = m_ApplicationName
    
 End Function

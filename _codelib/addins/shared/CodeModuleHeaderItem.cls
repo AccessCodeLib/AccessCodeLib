@@ -48,45 +48,45 @@ Public HeaderItemVBComponent As Object
 Public Property Get SearchStrings() As String()
 
 #If USEREGEX = 1 Then
-   Dim searchStringArray(0) As String
+   Dim SearchStringArray(0) As String
 #Else
-   Dim searchStringArray(11) As String
+   Dim SearchStringArray(11) As String
 #End If
-   Dim modulName As String
+   Dim ModulName As String
    Dim i As Long
-   Dim maxCnt As Long
+   Dim MaxCnt As Long
    
-   modulName = HeaderItemVBComponent.Name
+   ModulName = HeaderItemVBComponent.Name
    If HeaderItemVBComponent.Type = vbext_ct_Document Then
       'eigentlich nicht notwendig, da Klassen nicht nach Procs durchsucht werden müssen
-      If modulName Like "Form_" Then
-         modulName = Mid(modulName, 6)
-      ElseIf modulName Like "Report_" Then
-         modulName = Mid(modulName, 8)
+      If ModulName Like "Form_" Then
+         ModulName = Mid(ModulName, 6)
+      ElseIf ModulName Like "Report_" Then
+         ModulName = Mid(ModulName, 8)
       End If
    End If
    
 #If USEREGEX = 1 Then
-   searchStringArray(0) = "(\n| )(" & modulName & "\.|)" & Me.Name & "( |\.|,|:|\(|\n)"
+   SearchStringArray(0) = "(\n| )(" & ModulName & "\.|)" & Me.Name & "( |\.|,|:|\(|\n)"
 #Else
 
-   searchStringArray(0) = " " & Me.Name & " "
-   searchStringArray(1) = " " & Me.Name & "[.,:(]"
-   searchStringArray(2) = " " & Me.Name & vbNewLine
-   maxCnt = 2
+   SearchStringArray(0) = " " & Me.Name & " "
+   SearchStringArray(1) = " " & Me.Name & "[.,:(]"
+   SearchStringArray(2) = " " & Me.Name & vbNewLine
+   MaxCnt = 2
 
-   For i = 0 To maxCnt
-      searchStringArray(i + maxCnt + 1) = " " & modulName & "." & Mid(searchStringArray(i), 2)
+   For i = 0 To MaxCnt
+      SearchStringArray(i + MaxCnt + 1) = " " & ModulName & "." & Mid(SearchStringArray(i), 2)
    Next
-   maxCnt = 2 * maxCnt + 1
+   MaxCnt = 2 * MaxCnt + 1
    
 
-   For i = 0 To maxCnt
-      searchStringArray(i + maxCnt + 1) = vbNewLine & Mid(searchStringArray(i), 2)
+   For i = 0 To MaxCnt
+      SearchStringArray(i + MaxCnt + 1) = vbNewLine & Mid(SearchStringArray(i), 2)
    Next
    
 #End If
    
-   SearchStrings = searchStringArray
+   SearchStrings = SearchStringArray
 
 End Property

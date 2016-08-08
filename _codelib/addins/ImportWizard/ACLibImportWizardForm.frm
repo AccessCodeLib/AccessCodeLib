@@ -1,6 +1,6 @@
-Version =19
-VersionRequired =19
-Checksum =-1492134799
+Version =20
+VersionRequired =20
+Checksum =-1263150265
 Begin Form
     PopUp = NotDefault
     RecordSelectors = NotDefault
@@ -18,10 +18,10 @@ Begin Form
     Width =10215
     DatasheetFontHeight =11
     ItemSuffix =53
-    Left =7395
-    Top =1755
-    Right =17610
-    Bottom =9675
+    Left =7392
+    Top =1752
+    Right =17616
+    Bottom =9672
     OnUnload ="[Event Procedure]"
     RecSrcDt = Begin
         0x212b6fd80e9ce340
@@ -33,18 +33,18 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x0028282f04000000010000000c5017000e0000008052170034501700e712386c ,
-        0x010400069c00440343ef8005010009009a0b3408640001000f00c80002000100 ,
-        0xc800020001004134003cf7046c521700c43cf7046450170007a72a2fe03cf704 ,
-        0x0ea72a2f5c520000000000000000000000000000010000000000000001000000 ,
+        0x00ed47010000000000000000000000007cdc9900e0187e00200000000c000000 ,
+        0x010403069c00740343ef800501000900ea0a6f08640001000f00c80002000100 ,
+        0xc800020001004c657474657200df0600c2df06007c1b7b9c482f8a199c342e01 ,
+        0xbff9ffffdc360000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
-        0xe230000000000000000000000000000000000000000000000000000000000000 ,
+        0xe210000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000180000000000102710271027 ,
-        0x0000102700000000000000007000440300000000000000000000000000000000 ,
-        0x0000000000000000030000000000000000001000503403002888040000000000 ,
-        0x0000000000000100000000000000000000000000000000002401df8c03000000 ,
-        0x05000800ff000000000000000000000000000000000000000000000000000000 ,
+        0x0000102700000000000000008000740300000000000000000000000000000000 ,
+        0x0000000000000000010000000000000000001000503403002888040000000000 ,
+        0x000000000000010000000000000000000000000000000000c029e70d03000000 ,
+        0x00000000ff000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -61,16 +61,64 @@ Begin Form
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0100000000000000000000000000000070000000534d544a0000000010006000 ,
-        0x46007200650065005000440046005f005800500000005265736f6c7574696f6e ,
-        0x00363030647069005061676553697a650041310050616765526567696f6e0000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000
+        0x46007200650065005000440046005f0080000000534d544a0000000010007000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x00000000000000000000000000000000
     End
     PrtDevNames = Begin
-        0x080013001b000100000000000000000000000000000000000000004672656550 ,
-        0x44465850313a0000000000
+        0x080023002b000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000467265655044465850313a00
     End
     OnResize ="[Event Procedure]"
     OnLoad ="[Event Procedure]"
+    FilterOnLoad =0
+    AllowLayoutView =0
+    PrtDevModeW = Begin
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x01040306dc00740343ef800501000900ea0a6f08640001000f00c80002000100 ,
+        0xc800020001004c00650074007400650072000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000000000000000000000000000000000000000000050524956 ,
+        0xe210000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000180000000000102710271027 ,
+        0x0000102700000000000000008000740300000000000000000000000000000000 ,
+        0x0000000000000000010000000000000000001000503403002888040000000000 ,
+        0x000000000000010000000000000000000000000000000000c029e70d03000000 ,
+        0x00000000ff000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0100000000000000000000000000000070000000534d544a0000000010006000 ,
+        0x46007200650065005000440046005f0080000000534d544a0000000010007000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x00000000000000000000000000000000
+    End
+    PrtDevNamesW = Begin
+        0x04001f0027000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000460072006500650050004400460058005000 ,
+        0x31003a000000
+    End
+    
     Begin
         Begin Label
             BackStyle =0
@@ -78,6 +126,7 @@ Begin Form
             FontName ="Calibri"
         End
         Begin Line
+            BorderLineStyle =0
             Width =1701
         End
         Begin CommandButton
@@ -87,31 +136,38 @@ Begin Form
             FontWeight =400
             ForeColor =-2147483630
             FontName ="Calibri"
+            BorderLineStyle =0
         End
         Begin OptionButton
             SpecialEffect =2
+            BorderLineStyle =0
             LabelX =230
             LabelY =-30
         End
         Begin CheckBox
             SpecialEffect =2
+            BorderLineStyle =0
             LabelX =230
             LabelY =-30
         End
         Begin OptionGroup
             SpecialEffect =3
+            BorderLineStyle =0
             Width =1701
             Height =1701
         End
         Begin TextBox
             FELineBreak = NotDefault
+            BorderLineStyle =0
             Width =1701
             LabelX =-1701
             FontSize =11
             BorderColor =12632256
             FontName ="Calibri"
+            AsianLineBreak =255
         End
         Begin ListBox
+            BorderLineStyle =0
             Width =1701
             Height =1417
             LabelX =-1701
@@ -125,6 +181,7 @@ Begin Form
             FontSize =11
             FontWeight =400
             FontName ="Calibri"
+            BorderLineStyle =0
         End
         Begin Section
             Height =7937
@@ -186,6 +243,11 @@ Begin Form
                     GUID = Begin
                         0x7a375b3d4e7ab64aa4b92d9318fa2f75
                     End
+
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
                 End
                 Begin CommandButton
                     OverlapFlags =85
@@ -215,10 +277,15 @@ Begin Form
                     GUID = Begin
                         0xe62794268747e54e9d3b2819c30094ff
                     End
+
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
                 End
                 Begin TextBox
                     TabStop = NotDefault
-                    OverlapFlags =87
+                    OverlapFlags =85
                     TextFontCharSet =238
                     BackStyle =0
                     IMESentenceMode =3
@@ -235,9 +302,10 @@ Begin Form
                     GUID = Begin
                         0xffffa1d5ad2703478979ee0aca0822fd
                     End
+
                     Begin
                         Begin Label
-                            OverlapFlags =93
+                            OverlapFlags =85
                             Left =113
                             Top =120
                             Width =4575
@@ -266,6 +334,7 @@ Begin Form
                     GUID = Begin
                         0x05058d9cecfbbb4ea43e85b2775cd26f
                     End
+
                     Begin
                         Begin Label
                             OverlapFlags =85
@@ -298,6 +367,11 @@ Begin Form
                     GUID = Begin
                         0x039cfae327f89243b5a5953b895bbd58
                     End
+
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
                 End
                 Begin ListBox
                     OverlapFlags =247
@@ -323,6 +397,7 @@ Begin Form
                     GUID = Begin
                         0x97cc1de5cfe2a04b8cdb64735afe62b6
                     End
+
                     Begin
                         Begin Label
                             OverlapFlags =85
@@ -353,6 +428,12 @@ Begin Form
                     GUID = Begin
                         0x0752e8199e039a46b1633c490cc5b6d9
                     End
+
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
+                    Overlaps =1
                 End
                 Begin OptionGroup
                     OverlapFlags =223
@@ -367,6 +448,7 @@ Begin Form
                     GUID = Begin
                         0x91a1a06315224448bd037c8cd2b7e9fe
                     End
+
                     Begin
                         Begin Label
                             OverlapFlags =215
@@ -389,6 +471,7 @@ Begin Form
                             GUID = Begin
                                 0xa20e4892bdcb844cab1b25b010367d37
                             End
+
                             Begin
                                 Begin Label
                                     OverlapFlags =247
@@ -413,6 +496,7 @@ Begin Form
                             GUID = Begin
                                 0xc6bc8f322a47ad4683e8d970a2655c8c
                             End
+
                             Begin
                                 Begin Label
                                     OverlapFlags =247
@@ -437,6 +521,7 @@ Begin Form
                             GUID = Begin
                                 0xd9544bbca994c74196f99278c4a147bf
                             End
+
                             Begin
                                 Begin Label
                                     OverlapFlags =247
@@ -492,6 +577,12 @@ Begin Form
                     GUID = Begin
                         0xe40621db1bc93147b26953b8f737fc02
                     End
+
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
+                    Overlaps =1
                 End
                 Begin Label
                     Visible = NotDefault
@@ -519,6 +610,7 @@ Begin Form
                     GUID = Begin
                         0x41701c76b83aea418068794d55739952
                     End
+
                 End
                 Begin CheckBox
                     OverlapFlags =215
@@ -533,6 +625,7 @@ Begin Form
                     GUID = Begin
                         0x7262df6ddc0c3a4f89103b45350f36f9
                     End
+
                     Begin
                         Begin Label
                             OverlapFlags =215
@@ -562,6 +655,11 @@ Begin Form
                     GUID = Begin
                         0x950857d9af4f2d4999b6fb2515640201
                     End
+
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
                 End
                 Begin TextBox
                     Locked = NotDefault
@@ -579,6 +677,7 @@ Begin Form
                     GUID = Begin
                         0xfd1cc5ab6fc5024dbe9b6cf4925d1a14
                     End
+
                 End
                 Begin TextBox
                     Locked = NotDefault
@@ -597,6 +696,7 @@ Begin Form
                     GUID = Begin
                         0x6eef0d90281fdd4a90c14881cc72f01f
                     End
+
                 End
                 Begin ToggleButton
                     OverlapFlags =85
@@ -614,6 +714,11 @@ Begin Form
                     GUID = Begin
                         0x8ac695bd55ec8f448547c7aa22b0feae
                     End
+
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
                 End
                 Begin CommandButton
                     OverlapFlags =215
@@ -629,6 +734,12 @@ Begin Form
                     GUID = Begin
                         0xea677e08f97a5e4b95527fb5c4561aa7
                     End
+
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
+                    Overlaps =1
                 End
             End
         End
@@ -667,8 +778,8 @@ Option Compare Database
 Option Explicit
 
 ' verwendete Erweiterungen
-Private Const EXTENSION_KEY_AppFile As String = "AppFile"
-Private Const APPFILE_PROPNAME_AppIcon As String = "AppIcon"
+Private Const EXTENSION_KEY_APPFILE As String = "AppFile"
+Private Const APPFILE_PROPNAME_APPICON As String = "AppIcon"
 
 Private Const TEMPDB_TABNAME As String = "tRepositoryFiles"
 Private Const TEMPDB_TABDDL As String = "create table " & TEMPDB_TABNAME & " (LocalRepositoryPath varchar(255) primary key, ObjectName varchar(255), Description memo)"
@@ -676,20 +787,20 @@ Private m_TempDb As TempDbHandler
 
 Private m_LastSelectionID As Variant
 
-Private Sub bindTextbox(ByRef tb As Textbox, Optional ByVal BaseFolderPath As String = vbNullString)
+Private Sub BindTextbox(ByRef TextBoxRef As Textbox, Optional ByVal BaseFolderPath As String = vbNullString)
 
    'Latebindung, damit ApplicationHandler_DirTextbox-Klasse nicht vorhanden sein muss
-   Dim objDirTextbox As Object ' = ApplicationHandler_DirTextbox
+   Dim DirTextbox As Object ' = ApplicationHandler_DirTextbox
 
    'Standard-Instanz verwenden:
 On Error GoTo HandleErr
 
-   Set objDirTextbox = CurrentApplication.Extensions("DirTextbox")
+   Set DirTextbox = CurrentApplication.Extensions("DirTextbox")
    
    'Textbox binden
-   If Not (objDirTextbox Is Nothing) Then
-      Set objDirTextbox.Textbox = tb
-      objDirTextbox.BaseFolderPath = BaseFolderPath
+   If Not (DirTextbox Is Nothing) Then
+      Set DirTextbox.Textbox = TextBoxRef
+      DirTextbox.BaseFolderPath = BaseFolderPath
    End If
 
 ExitHere:
@@ -716,7 +827,7 @@ Private Sub cmdAddFile_Click()
 
 On Error GoTo HandleErr
 
-   addFileFromFileName Me.txtFileString & ""
+   AddFileFromFileName Me.txtFileString & ""
 
 ExitHere:
 On Error Resume Next
@@ -740,7 +851,7 @@ End Sub
 
 Private Sub cmdImportFiles_Click()
 
-   Dim fileNameArray() As String
+   Dim FileNameArray() As String
    Dim ArraySize As Long, i As Long
    Dim lb As ListBox
    
@@ -755,17 +866,17 @@ On Error GoTo HandleErr
       Exit Sub
    End If
    
-   ReDim fileNameArray(ArraySize)
+   ReDim FileNameArray(ArraySize)
    
    For i = 0 To ArraySize - 1
-      fileNameArray(i) = lb.ItemData(i)
+      FileNameArray(i) = lb.ItemData(i)
    Next
    
    Me.labInfo.Caption = "Importvorgang läuft ..."
    Me.labInfo.Visible = True
    Me.Repaint
    
-   CurrentACLibFileManager.ImportRepositoryFiles fileNameArray, Nz(Me.ogImportMode.Value, 0), Nz(Me.chkImportTests.Value, False)
+   CurrentACLibFileManager.ImportRepositoryFiles FileNameArray, Nz(Me.ogImportMode.Value, 0), Nz(Me.chkImportTests.Value, False)
    
    Me.labInfo.Caption = "Dateien wurden importiert"
    Me.Repaint
@@ -791,7 +902,7 @@ HandleErr:
 
 End Sub
 
-Private Sub cmdImportFiles_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdImportFiles_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
 
 On Error GoTo HandleErr
 
@@ -902,40 +1013,38 @@ End Sub
 
 Private Sub cmdSelectFile_Click()
    
-   Dim strStartFolder As String
-   Dim strFiles As String
-   Dim fileArray() As String
+   Dim StartFolder As String
+   Dim SelectedFiles As String
+   Dim FileArray() As String
    Dim Pos As Long
 
 On Error GoTo HandleErr
 
-   strStartFolder = Replace(Me.txtFileString.Value & "", "/", "\")
-   If Len(strStartFolder) > 0 Then
-      Do While Left$(strStartFolder, 1) = "\"
-         strStartFolder = Mid$(strStartFolder, 1)
-         If Len(strStartFolder) = 0 Then Exit Do
+   StartFolder = Replace(Me.txtFileString.Value & "", "/", "\")
+   If Len(StartFolder) > 0 Then
+      Do While Left$(StartFolder, 1) = "\"
+         StartFolder = Mid$(StartFolder, 1)
+         If Len(StartFolder) = 0 Then Exit Do
       Loop
    End If
    
-   strStartFolder = CurrentLocalRepositoryPath & strStartFolder
-   Do While Not DirExists(strStartFolder)
-      Pos = InStrRev(strStartFolder, "\")
+   StartFolder = CurrentLocalRepositoryPath & StartFolder
+   Do While Not DirExists(StartFolder)
+      Pos = InStrRev(StartFolder, "\")
       If Pos = 0 Then Exit Do
-      strStartFolder = Left$(strStartFolder, Pos - 1)
+      StartFolder = Left$(StartFolder, Pos - 1)
    Loop
 
    Me.sysFirst.SetFocus
    Me.cmdSelectFile.SetFocus
 
-   strFiles = SelectFile(strStartFolder, , , True)
-   If Len(strFiles) = 0 Then
+   SelectedFiles = SelectFile(StartFolder, , , True)
+   If Len(SelectedFiles) = 0 Then
       Exit Sub
    End If
    
-   fileArray = Split(strFiles, "|")
-   addFiles fileArray
-
-   
+   FileArray = Split(SelectedFiles, "|")
+   AddFiles FileArray
 
 ExitHere:
 On Error Resume Next
@@ -953,7 +1062,7 @@ HandleErr:
    
 End Sub
 
-Private Sub addFiles(ByRef fileArray() As String)
+Private Sub AddFiles(ByRef FileArray() As String)
    
    Dim lb As ListBox
    Dim i As Long
@@ -963,13 +1072,13 @@ Private Sub addFiles(ByRef fileArray() As String)
    
 On Error GoTo HandleErr
 
-   ArraySize = UBound(fileArray)
+   ArraySize = UBound(FileArray)
    
    Set lb = Me.lstImportFiles
    For i = 0 To ArraySize
-      cli = CurrentACLibFileManager.GetCodeLibInfoFromFilePath(fileArray(i))
+      cli = CurrentACLibFileManager.GetCodeLibInfoFromFilePath(FileArray(i))
       TempDb.Execute "insert into " & TEMPDB_TABNAME & " (ObjectName, LocalRepositoryPath, Description) VALUES (" & _
-                           SqlTools.TextToSqlText(cli.Name) & ", " & SqlTools.TextToSqlText(getLocalRepositoryPath(fileArray(i))) & _
+                           SqlTools.TextToSqlText(cli.Name) & ", " & SqlTools.TextToSqlText(GetLocalRepositoryPath(FileArray(i))) & _
                            ", " & SqlTools.TextToSqlText(cli.Description) & ")", dbFailOnError
    Next
    
@@ -992,11 +1101,11 @@ HandleErr:
    
 End Sub
 
-Private Function getLocalRepositoryPath(ByRef FullPath As String) As String
+Private Function GetLocalRepositoryPath(ByRef FullPath As String) As String
 
 On Error GoTo HandleErr
 
-   getLocalRepositoryPath = Replace(GetRelativPathFromFullPath(Replace(FullPath, "/", "\"), CurrentLocalRepositoryPath, False), "\", "/")
+   GetLocalRepositoryPath = Replace(GetRelativPathFromFullPath(Replace(FullPath, "/", "\"), CurrentLocalRepositoryPath, False), "\", "/")
 
 ExitHere:
 On Error Resume Next
@@ -1038,18 +1147,18 @@ End Property
 
 Private Sub cmdSelectLocalRepository_Click()
    
-   Dim selectedRepositoryPath As String
+   Dim SelectedRepositoryPath As String
    
 On Error GoTo HandleErr
 
-   selectedRepositoryPath = SelectFolder(Nz(Me.txtLocalRepositoryPath, vbNullString), "Lokalen Repository-Ordner auswählen", , False, 1)
+   SelectedRepositoryPath = SelectFolder(Nz(Me.txtLocalRepositoryPath, vbNullString), "Lokalen Repository-Ordner auswählen", , False, 1)
    
-   If Len(selectedRepositoryPath) > 0 Then
-      If Right$(selectedRepositoryPath, 1) = "\" Then
-         selectedRepositoryPath = Left$(selectedRepositoryPath, Len(selectedRepositoryPath) - 1)
+   If Len(SelectedRepositoryPath) > 0 Then
+      If Right$(SelectedRepositoryPath, 1) = "\" Then
+         SelectedRepositoryPath = Left$(SelectedRepositoryPath, Len(SelectedRepositoryPath) - 1)
       End If
       
-      setLocalRepositoryPath selectedRepositoryPath
+      SetLocalRepositoryPath SelectedRepositoryPath
       
    End If
    
@@ -1069,7 +1178,7 @@ HandleErr:
    
 End Sub
 
-Private Sub setEnableMode()
+Private Sub SetEnableMode()
 
 On Error GoTo HandleErr
 
@@ -1096,14 +1205,14 @@ Private Sub Form_Load()
 On Error GoTo HandleErr
 
    Me.Caption = CurrentApplication.ApplicationTitle & "  " & ChrW(&H25AA) & "  Version " & CurrentApplication.Version
-   loadIconFromAppFiles
+   LoadIconFromAppFiles
    
    Me.txtLocalRepositoryPath.Value = CurrentACLibConfiguration.LocalRepositoryPath
    Me.chkImportTests.Value = CurrentACLibConfiguration.ImportTestsDefaultValue
    
    EnableCodeModuleDescription Me.tbViewCodeModuleDescription.Value
    
-   setEnableMode
+   SetEnableMode
    
 ExitHere:
 On Error Resume Next
@@ -1125,7 +1234,7 @@ Private Sub Form_Resize()
    Me.cmdImportFiles.Top = Me.InsideHeight - Me.lblImportMode.Left - Me.cmdImportFiles.Height
 End Sub
 
-Private Sub Form_Unload(Cancel As Integer)
+Private Sub Form_Unload(ByRef Cancel As Integer)
 On Error Resume Next
    If Not (m_TempDb Is Nothing) Then
       Me.lstImportFiles.RowSource = vbNullString
@@ -1139,16 +1248,16 @@ Private Sub lstImportFiles_AfterUpdate()
    RefreshCodeModuleDescription
 End Sub
 
-Private Sub lstImportFiles_DblClick(Cancel As Integer)
+Private Sub lstImportFiles_DblClick(ByRef Cancel As Integer)
    OpenSelectItemFormImportFilesListboxInTextViewer
 End Sub
 
-Private Sub lstImportFiles_KeyDown(KeyCode As Integer, Shift As Integer)
+Private Sub lstImportFiles_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
 
 On Error GoTo HandleErr
 
    If KeyCode = vbKeyDelete Then
-      removeSelectedItemsFromListbox
+      RemoveSelectedItemsFromListbox
    ElseIf KeyCode = vbKeyF2 Then
       OpenSelectItemFormImportFilesListboxInTextViewer
    End If
@@ -1169,26 +1278,26 @@ HandleErr:
    
 End Sub
 
-Private Sub removeSelectedItemsFromListbox()
+Private Sub RemoveSelectedItemsFromListbox()
 
    Dim lb As ListBox
-   Dim selectedItem As Variant
-   Dim strItemFilter As String
+   Dim SelectedItem As Variant
+   Dim ItemFilter As String
 
 On Error GoTo HandleErr
 
    Set lb = Me.lstImportFiles
    
-   For Each selectedItem In lb.ItemsSelected
-      strItemFilter = ", " & SqlTools.TextToSqlText(lb.Column(1, selectedItem))
+   For Each SelectedItem In lb.ItemsSelected
+      ItemFilter = ", " & SqlTools.TextToSqlText(lb.Column(1, SelectedItem))
    Next
-   
-   If Len(strItemFilter) <= 2 Then
+    
+   If Len(ItemFilter) <= 2 Then
       Exit Sub
    End If
    
-   strItemFilter = Mid$(strItemFilter, 3)
-   TempDb.Execute "delete from " & TEMPDB_TABNAME & " where LocalRepositoryPath IN (" & strItemFilter & ")"
+   ItemFilter = Mid$(ItemFilter, 3)
+   TempDb.Execute "delete from " & TEMPDB_TABNAME & " where LocalRepositoryPath IN (" & ItemFilter & ")"
    
    lb.Requery
    
@@ -1223,15 +1332,15 @@ Private Sub tbViewCodeModuleDescription_AfterUpdate()
    End If
 End Sub
 
-Private Sub SelectListItem(ByVal sItemID As String)
+Private Sub SelectListItem(ByVal ItemID As String)
    Dim i As Long
    Dim lb As ListBox
    Set lb = Me.lstImportFiles
    For i = 0 To (lb.ListCount - 1)
-      If lb.Column(1, i) = sItemID Then
+      If lb.Column(1, i) = ItemID Then
          lb.SetFocus
          lb.Selected(i) = True
-         RefreshCodeModuleDescriptionFromID sItemID, lb.Column(0, i)
+         RefreshCodeModuleDescriptionFromId ItemID, lb.Column(0, i)
          Exit Sub
       End If
    Next
@@ -1239,10 +1348,10 @@ End Sub
 
 Private Sub txtFileString_GotFocus()
 On Error Resume Next
-   bindTextbox Me.txtFileString, CurrentLocalRepositoryPath
+   BindTextbox Me.txtFileString, CurrentLocalRepositoryPath
 End Sub
 
-Private Sub txtFileString_KeyDown(KeyCode As Integer, Shift As Integer)
+Private Sub txtFileString_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
 
 On Error GoTo HandleErr
 
@@ -1252,7 +1361,7 @@ On Error GoTo HandleErr
       ElseIf Replace(Right$(Me.txtFileString.Text, 3), "/", "\") = "\.." Then
          Exit Sub
       Else
-         addFileFromFileName Me.txtFileString.Text
+         AddFileFromFileName Me.txtFileString.Text
          KeyCode = 0
       End If
    ElseIf KeyCode = vbKeyF2 Then
@@ -1276,7 +1385,7 @@ HandleErr:
    
 End Sub
 
-Private Sub addFileFromFileName(ByVal FileString As String)
+Private Sub AddFileFromFileName(ByVal FileString As String)
 
 On Error GoTo HandleErr
 
@@ -1286,7 +1395,7 @@ On Error GoTo HandleErr
          FileString = Trim$(Mid$(FileString, 2))
          If Len(FileString) = 0 Then Exit Sub
       Loop
-      addFile CurrentLocalRepositoryPath & FileString
+      AddFile CurrentLocalRepositoryPath & FileString
    End If
 
 ExitHere:
@@ -1306,28 +1415,28 @@ HandleErr:
 End Sub
 
 
-Private Function addFile(ByRef newFileName As String) As Boolean
+Private Function AddFile(ByRef NewFileName As String) As Boolean
 
-   Dim fileArray(0) As String
+   Dim FileArray(0) As String
    
 On Error GoTo HandleErr
 
-   If Len(newFileName) = 0 Then
+   If Len(NewFileName) = 0 Then
       Exit Function
    End If
    
-   newFileName = Replace(newFileName, "\\", "\")
+   NewFileName = Replace(NewFileName, "\\", "\")
 
-   If Not FileExists(newFileName) Then
+   If Not FileExists(NewFileName) Then
       MsgBox "Diese Datei ist nicht vorhanden", vbInformation
-      addFile = False
+      AddFile = False
       Exit Function
    End If
    
-   fileArray(0) = newFileName
-   addFiles fileArray
+   FileArray(0) = NewFileName
+   AddFiles FileArray
    
-   addFile = True
+   AddFile = True
 
 ExitHere:
 On Error Resume Next
@@ -1349,7 +1458,7 @@ Private Sub txtLocalRepositoryPath_AfterUpdate()
 
 On Error GoTo HandleErr
 
-   setLocalRepositoryPath Me.txtLocalRepositoryPath & vbNullString
+   SetLocalRepositoryPath Me.txtLocalRepositoryPath & vbNullString
 
 ExitHere:
 On Error Resume Next
@@ -1367,16 +1476,16 @@ HandleErr:
    
 End Sub
 
-Private Sub setLocalRepositoryPath(ByRef newRoot As String)
+Private Sub SetLocalRepositoryPath(ByRef NewRoot As String)
 
 On Error GoTo HandleErr
 
-   CurrentACLibConfiguration.LocalRepositoryPath = newRoot
+   CurrentACLibConfiguration.LocalRepositoryPath = NewRoot
    
    'damit mögliche Modifikationen aus CurrentACLibConfiguration übernommen werden:
    Me.txtLocalRepositoryPath.Value = CurrentACLibConfiguration.LocalRepositoryPath
    
-   setEnableMode
+   SetEnableMode
 
 ExitHere:
 On Error Resume Next
@@ -1394,15 +1503,15 @@ HandleErr:
    
 End Sub
 
-Private Sub txtLocalRepositoryPath_BeforeUpdate(Cancel As Integer)
+Private Sub txtLocalRepositoryPath_BeforeUpdate(ByRef Cancel As Integer)
 
-   Dim strNewPath As String
+   Dim NewPath As String
 On Error GoTo HandleErr
 
-   strNewPath = Me.txtLocalRepositoryPath & ""
+   NewPath = Me.txtLocalRepositoryPath & ""
    
-   If Len(strNewPath) > 0 Then
-      Cancel = Not DirExists(strNewPath)
+   If Len(NewPath) > 0 Then
+      Cancel = Not DirExists(NewPath)
       If Cancel Then
          MsgBox "Verzeichnis ist nicht vorhanden", vbInformation
       End If
@@ -1424,13 +1533,13 @@ HandleErr:
 
 End Sub
 
-Private Sub loadIconFromAppFiles()
+Private Sub LoadIconFromAppFiles()
 
-   Dim strIconFilePath As String
-   Dim strIconFileName As String
+   Dim IconFilePath As String
+   Dim IconFileName As String
    
    'Latebindung, damit ApplicationHandler_AppFile-Klasse nicht vorhanden sein muss
-   Dim objAppFile As Object ' ... ApplicationHandler_AppFile
+   Dim AppFile As Object ' ... ApplicationHandler_AppFile
 
 On Error GoTo HandleErr
 
@@ -1438,27 +1547,27 @@ On Error GoTo HandleErr
       Exit Sub
    End If
 
-   Set objAppFile = CurrentApplication.Extensions(EXTENSION_KEY_AppFile)
+   Set AppFile = CurrentApplication.Extensions(EXTENSION_KEY_APPFILE)
    
    'Textbox binden
-   If Not (objAppFile Is Nothing) Then
-      strIconFileName = ACLibIconFileName
-      strIconFilePath = CurrentACLibConfiguration.ACLibConfigDirectory
+   If Not (AppFile Is Nothing) Then
+      IconFileName = ACLibIconFileName
+      IconFilePath = CurrentACLibConfiguration.ACLibConfigDirectory
 
       If Len(ACLibIconFileName) = 0 Then 'nur Temp-Datei erzeugen
-         strIconFileName = Me.Name & ".ico"
-         strIconFilePath = TempPath
+         IconFileName = Me.Name & ".ico"
+         IconFilePath = TempPath
       End If
       
-      strIconFilePath = strIconFilePath & strIconFileName
+      IconFilePath = IconFilePath & IconFileName
       
-      If Len(Dir$(strIconFilePath)) = 0 Then
-         If Not objAppFile.CreateAppFile(APPFILE_PROPNAME_AppIcon, strIconFilePath) Then
+      If Len(Dir$(IconFilePath)) = 0 Then
+         If Not AppFile.CreateAppFile(APPFILE_PROPNAME_APPICON, IconFilePath) Then
             Exit Sub
          End If
       End If
       
-      WinAPI.Image.SetFormIconFromFile Me, strIconFilePath
+      WinAPI.Image.SetFormIconFromFile Me, IconFilePath
       
    End If
 
@@ -1509,16 +1618,16 @@ Private Sub OpenSelectItemFormImportFilesListboxInTextViewer()
    OpenRepositoryFileInTextViewer Me.lstImportFiles.Column(1)
 End Sub
 
-Private Sub OpenRepositoryFileInTextViewer(ByVal sRelativeFilePath As String)
+Private Sub OpenRepositoryFileInTextViewer(ByVal RelativeFilePath As String)
    Dim FullPath As String
-   FullPath = CurrentACLibFileManager.GetRepositoryFullPath(sRelativeFilePath)
+   FullPath = CurrentACLibFileManager.GetRepositoryFullPath(RelativeFilePath)
    WinAPI.Shell.Execute FullPath, "open"
 End Sub
 
-Private Sub EnableCodeModuleDescription(ByVal bViewDescription As Boolean)
+Private Sub EnableCodeModuleDescription(ByVal ViewDescription As Boolean)
 
    With Me.lstImportFiles
-      If bViewDescription Then
+      If ViewDescription Then
          .Width = Me.lblImportMode.Left + Me.lblImportMode.Width - .Left
          RefreshCodeModuleDescription
       Else
@@ -1526,22 +1635,22 @@ Private Sub EnableCodeModuleDescription(ByVal bViewDescription As Boolean)
       End If
    End With
    
-   Me.txtCodeModuleDescription.Visible = bViewDescription
-   Me.txtCodeModuleName.Visible = bViewDescription
+   Me.txtCodeModuleDescription.Visible = ViewDescription
+   Me.txtCodeModuleName.Visible = ViewDescription
    
 End Sub
 
 Private Sub RefreshCodeModuleDescription()
-   RefreshCodeModuleDescriptionFromID Nz(Me.lstImportFiles.Column(1), vbNullString), Nz(Me.lstImportFiles.Column(0), vbNullString)
+   RefreshCodeModuleDescriptionFromId Nz(Me.lstImportFiles.Column(1), vbNullString), Nz(Me.lstImportFiles.Column(0), vbNullString)
 End Sub
 
-Private Sub RefreshCodeModuleDescriptionFromID(ByVal sLocalRepositoryPath As String, ByVal sName As String)
+Private Sub RefreshCodeModuleDescriptionFromId(ByVal LocalRepositoryPath As String, ByVal ModuleName As String)
 
-   Dim strDescription As String
-   If Len(sLocalRepositoryPath) > 0 Then
-      strDescription = Nz(m_TempDb.LookupSQL("select Description from " & TEMPDB_TABNAME & " where LocalRepositoryPath = " & SqlTools.TextToSqlText(sLocalRepositoryPath)), vbNullString)
+   Dim Description As String
+   If Len(LocalRepositoryPath) > 0 Then
+      Description = Nz(m_TempDb.LookupSql("select Description from " & TEMPDB_TABNAME & " where LocalRepositoryPath = " & SqlTools.TextToSqlText(LocalRepositoryPath)), vbNullString)
    End If
-   Me.txtCodeModuleName.Value = sName
-   Me.txtCodeModuleDescription.Value = strDescription
+   Me.txtCodeModuleName.Value = ModuleName
+   Me.txtCodeModuleDescription.Value = Description
    
 End Sub

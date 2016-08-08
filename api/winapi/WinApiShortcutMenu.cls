@@ -39,8 +39,8 @@ Option Explicit
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Private Type POINTAPI
-   X As Long
-   Y As Long
+   x As Long
+   y As Long
 End Type
 
 Private Type RECT
@@ -69,8 +69,8 @@ Private Declare PtrSafe Function CreateWindowEx _
       ByVal lpClassname As String, _
       ByVal lpWindowName As String, _
       ByVal dwStyle As Long, _
-      ByVal X As Long, _
-      ByVal Y As Long, _
+      ByVal x As Long, _
+      ByVal y As Long, _
       ByVal nWidth As Long, _
       ByVal nHeight As Long, _
       ByVal hwndParent As Long, _
@@ -95,8 +95,8 @@ Private Declare PtrSafe Function TrackPopupMenu _
       Lib "user32.dll" ( _
       ByVal hMenu As Long, _
       ByVal wFlags As Long, _
-      ByVal X As Long, _
-      ByVal Y As Long, _
+      ByVal x As Long, _
+      ByVal y As Long, _
       ByVal nReserved As Long, _
       ByVal Hwnd As Long, _
       lprc As Any _
@@ -149,8 +149,8 @@ Private Declare Function CreateWindowEx _
       ByVal lpClassname As String, _
       ByVal lpWindowName As String, _
       ByVal dwStyle As Long, _
-      ByVal X As Long, _
-      ByVal Y As Long, _
+      ByVal x As Long, _
+      ByVal y As Long, _
       ByVal nWidth As Long, _
       ByVal nHeight As Long, _
       ByVal hwndParent As Long, _
@@ -175,8 +175,8 @@ Private Declare Function TrackPopupMenu _
       Lib "user32.dll" ( _
       ByVal hMenu As Long, _
       ByVal wFlags As Long, _
-      ByVal X As Long, _
-      ByVal Y As Long, _
+      ByVal x As Long, _
+      ByVal y As Long, _
       ByVal nReserved As Long, _
       ByVal Hwnd As Long, _
       lprc As Any _
@@ -404,7 +404,7 @@ End Sub
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function OpenMenu(Optional ByVal X As Single = 0, Optional ByVal Y As Single = 0) As Long
+Public Function OpenMenu(Optional ByVal x As Single = 0, Optional ByVal y As Single = 0) As Long
 
    Dim MenuHwnd As Long
    Dim TmpHwnd As Long
@@ -456,12 +456,12 @@ Public Function OpenMenu(Optional ByVal X As Single = 0, Optional ByVal Y As Sin
    
    If m_MenuControl Is Nothing Then
       GetWindowRect m_AccessForm.Hwnd, AccFormRect
-      ButtonLeft = LayoutTools.GetPixelFromTwips(X) + AccFormRect.Left
-      ButtonTop = LayoutTools.GetPixelFromTwips(Y) + AccFormRect.Top
+      ButtonLeft = LayoutTools.GetPixelFromTwips(x) + AccFormRect.Left
+      ButtonTop = LayoutTools.GetPixelFromTwips(y) + AccFormRect.Top
    Else
    '- Buttom relativ zum Sektionsfenster
-      ButtonLeft = LayoutTools.GetPixelFromTwips(m_MenuControl.Left) + LayoutTools.GetPixelFromTwips(X)
-      ButtonTop = LayoutTools.GetPixelFromTwips(m_MenuControl.Top) + LayoutTools.GetPixelFromTwips(Y)
+      ButtonLeft = LayoutTools.GetPixelFromTwips(m_MenuControl.Left) + LayoutTools.GetPixelFromTwips(x)
+      ButtonTop = LayoutTools.GetPixelFromTwips(m_MenuControl.Top) + LayoutTools.GetPixelFromTwips(y)
    End If
    '- Miteinander verrechnen
    Xpos = RcHelper.Left + ButtonLeft - 1
