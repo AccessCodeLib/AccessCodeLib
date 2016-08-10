@@ -258,7 +258,7 @@ Public Function CheckDependency(Optional ByVal VbpRef As Object = Nothing, _
             If Not AddModule Then ' bei Klassen nur Enums prüfen
                Set CheckCollection = TempModuleReader.HeaderItems
                For Each TempHeaderItem In CheckCollection
-                  If TempHeaderItem.ItemType = CodeModuleHeaderItemType.CodeModuleHeaderItemType_Enum Then
+                  If TempHeaderItem.ItemType = CodeModuleHeaderItemType.cmItemType_Enum Then
                      If Me.HeaderItemUsed(TempHeaderItem) Then
                         AddModule = True
                         Exit For
@@ -648,16 +648,16 @@ Public Property Get HeaderItems(Optional ByVal Refresh As Boolean = False) As Co
          '**/
          
          If strCheckString Like "const *" Then
-            TempHeaderItem.ItemType = CodeModuleHeaderItemType.CodeModuleHeaderItemType_Const
+            TempHeaderItem.ItemType = CodeModuleHeaderItemType.cmItemType_Const
             strCheckString = Trim$(Mid$(strCheckString, 6))
          ElseIf strCheckString Like "enum *" Then
-            TempHeaderItem.ItemType = CodeModuleHeaderItemType.CodeModuleHeaderItemType_Enum
+            TempHeaderItem.ItemType = CodeModuleHeaderItemType.cmItemType_Enum
             strCheckString = Trim$(Mid$(strCheckString, 5))
          ElseIf strCheckString Like "type *" Then
-            TempHeaderItem.ItemType = CodeModuleHeaderItemType.CodeModuleHeaderItemType_Type
+            TempHeaderItem.ItemType = CodeModuleHeaderItemType.cmItemType_Type
             strCheckString = Trim$(Mid$(strCheckString, 6))
          ElseIf strCheckString Like "declare *" Then
-            TempHeaderItem.ItemType = CodeModuleHeaderItemType.CodeModuleHeaderItemType_Declare
+            TempHeaderItem.ItemType = CodeModuleHeaderItemType.cmItemType_Declare
             strCheckString = Trim$(Mid$(strCheckString, 8))
             If strCheckString Like "function *" Then
                strCheckString = Trim$(Mid$(strCheckString, 8))
@@ -665,7 +665,7 @@ Public Property Get HeaderItems(Optional ByVal Refresh As Boolean = False) As Co
                strCheckString = Trim$(Mid$(strCheckString, 4))
             End If
          Else
-            TempHeaderItem.ItemType = CodeModuleHeaderItemType.CodeModuleHeaderItemType_Var
+            TempHeaderItem.ItemType = CodeModuleHeaderItemType.cmItemType_Var
          End If
          
          lngPos = InStr(1, strCheckString, " ")

@@ -29,11 +29,11 @@ Option Compare Database
 Option Explicit
 
 Public Enum CodeModuleHeaderItemType
-   CodeModuleHeaderItemType_Var = 0
-   CodeModuleHeaderItemType_Const = 1
-   CodeModuleHeaderItemType_Enum = 2
-   CodeModuleHeaderItemType_Type = 3
-   CodeModuleHeaderItemType_Declare = 4
+   cmItemType_Var = 0
+   cmItemType_Const = 1
+   cmItemType_Enum = 2
+   cmItemType_Type = 3
+   cmItemType_Declare = 4
 End Enum
 
 Public Name As String
