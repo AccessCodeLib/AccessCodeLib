@@ -32,7 +32,7 @@ Option Explicit
 '-------------------------
 
 '---------------------------------------------------------------------------------------
-' Function: StartApplication (Josef Pötzl, 2009-12-14)
+' Function: StartApplication
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -43,7 +43,7 @@ Option Explicit
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function StartApplication(Optional ByRef StartParam As Variant) As Boolean
+Public Function StartApplication() As Boolean
 
 On Error GoTo HandleErr
 
@@ -59,7 +59,6 @@ HandleErr:
    Resume ExitHere
 
 End Function
-
 
 Public Sub RestoreApplicationDefaultSettings()
    On Error Resume Next
