@@ -62,8 +62,6 @@ Friend Sub WriteToForm(ByVal FormName As String, _
               Optional ByVal RemoveFilterCtlName As String, _
               Optional ByVal AutoFilterCtlName As String)
    
-   Dim frm As Form
-
    CheckRequiredCodeModules
    
    If CurrentProject.AllForms(FormName).IsLoaded Then
@@ -93,12 +91,6 @@ Private Sub AddCodeToForm(ByVal FrmRef As Form, _
                           ByVal UseFilterCtlName As String, _
                           ByVal RemoveFilterCtlName As String, _
                           ByVal AutoFilterCtlName As String)
-
-#If EARLYBINDING Then
-   Dim cm As CodeModule
-#Else
-   Dim cm As Object
-#End If
 
    Dim TempCode As String
 
@@ -259,10 +251,6 @@ Private Function GetFilterControlCodeLines() As String
    GetFilterControlCodeLines = _
       m_FilterControlLines.ToString(vbNewLine, "      .")
 
-End Function
-
-Private Function GetFilterControlNames() As String()
-   
 End Function
 
 Private Property Get FormLoadCode() As String
