@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =-1258511272
+Checksum =-2146822032
 Begin Form
     AllowFilters = NotDefault
     RecordSelectors = NotDefault
@@ -40,10 +40,10 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x000fff000000000000000000000000007cdcb101e0189601200000000c000000 ,
+        0x007f3501c82404067573bd5430e15201040000000000000000000000702cb854 ,
         0x010403069c00740353ef800301000900ea0a6f08640001000f00580202000100 ,
-        0x5802030001004c657474657200df1e01c2df1e01483f3471e816471a0c53ee00 ,
-        0xbff9ffff4c550000000000000000000000000000010000000000000001000000 ,
+        0x5802030001004c65747465720023b854007f3501e0240406180000000c000000 ,
+        0xec7e35017b860000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe210000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -76,18 +76,18 @@ Begin Form
     End
     PrtDevNames = Begin
         0x080023002b000100000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000467265655044465850313a00
+        0x0000000000000000000000467265655044465850313a000000000000000000
     End
     FilterOnLoad =0
     ShowPageMargins =0
     AllowLayoutView =0
     DatasheetGridlinesColor12 =12632256
     PrtDevModeW = Begin
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000a201aefcffff44060c00aefcffff8c7435011015e404428ca21000ff0000 ,
+        0x44060c00a4993501f0e55a74c6d4f765feffffff58743501350e452fd0743501 ,
         0x01040306dc00740353ef800301000900ea0a6f08640001000f00580202000100 ,
-        0x5802030001004c00650074007400650072000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x5802030001004c00650074007400650072000000a49935010000000048000000 ,
+        0x087535012401010109000000a8743501c000e404c000e404010000007f000000 ,
         0x0000000000000000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe210000000000000000000000000000000000000000000000000000000000000 ,
@@ -123,7 +123,7 @@ Begin Form
         0x04001f0027000100000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000460072006500650050004400460058005000 ,
-        0x31003a000000
+        0x31003a00000000000000000000000000000000000000
     End
     
     Begin
@@ -369,10 +369,10 @@ Begin Form
                     LayoutCachedTop =5475
                     LayoutCachedWidth =10497
                     LayoutCachedHeight =5850
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin Label
@@ -449,10 +449,10 @@ Begin Form
                     LayoutCachedTop =5081
                     LayoutCachedWidth =2676
                     LayoutCachedHeight =5376
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin CommandButton
@@ -475,10 +475,10 @@ Begin Form
                     LayoutCachedTop =4721
                     LayoutCachedWidth =2676
                     LayoutCachedHeight =5016
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin CommandButton
@@ -501,10 +501,10 @@ Begin Form
                     LayoutCachedTop =5441
                     LayoutCachedWidth =2676
                     LayoutCachedHeight =5736
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin Label
@@ -550,10 +550,10 @@ Begin Form
                     LayoutCachedTop =4376
                     LayoutCachedWidth =2676
                     LayoutCachedHeight =4671
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin ComboBox
@@ -692,7 +692,7 @@ Begin Form
                             Left =3615
                             Top =4893
                             OptionValue =0
-                            BorderColor =13553360
+                            BorderColor =12835293
                             Name ="Option93"
                             GUID = Begin
                                 0x2ed9a0b87581e9459437795c1ea4f08f
@@ -732,7 +732,7 @@ Begin Form
                             Top =5203
                             TabIndex =1
                             OptionValue =1
-                            BorderColor =13553360
+                            BorderColor =12835293
                             Name ="Option95"
                             GUID = Begin
                                 0x918bf012f5ab6a4a82b18d8d78de17cb
@@ -772,7 +772,7 @@ Begin Form
                             Top =5546
                             TabIndex =2
                             OptionValue =2
-                            BorderColor =13553360
+                            BorderColor =12835293
                             Name ="Option97"
                             GUID = Begin
                                 0x03d2ddc59a72074694568a25b639186a
@@ -900,7 +900,7 @@ Begin Form
                             Left =7395
                             Top =4892
                             OptionValue =1
-                            BorderColor =13553360
+                            BorderColor =12835293
                             Name ="Option105"
                             GUID = Begin
                                 0x9360b4bcc3c8bf48a0506593b1be6c0a
@@ -940,7 +940,7 @@ Begin Form
                             Top =5202
                             TabIndex =1
                             OptionValue =2
-                            BorderColor =13553360
+                            BorderColor =12835293
                             Name ="Option107"
                             GUID = Begin
                                 0x3b9786ef86a3784a9dd3a8c5ebed31d9
@@ -1391,7 +1391,7 @@ Private Sub Form_Current()
    CheckModules
 End Sub
 
-Private Sub OpenReplaceModulesContextMenu(ByRef MenuControlRef As Control, ByVal X As Single, ByVal Y As Single)
+Private Sub OpenReplaceModulesContextMenu(ByRef MenuControlRef As Control, ByVal x As Single, ByVal y As Single)
 
    Dim mnu As WinApiShortcutMenu
    Dim SelectedMenuItem As Long
@@ -1408,7 +1408,7 @@ Private Sub OpenReplaceModulesContextMenu(ByRef MenuControlRef As Control, ByVal
       
    End With
    
-   SelectedMenuItem = mnu.OpenMenu(X, Y)
+   SelectedMenuItem = mnu.OpenMenu(x, y)
    Select Case SelectedMenuItem
       Case 1
          ReplaceAllModules True
@@ -1470,16 +1470,16 @@ Private Sub labCheckVersion_Click()
    
 End Sub
 
-Private Sub labCheckVersion_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+Private Sub labCheckVersion_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
    If Me.labCheckVersion.Tag <> "VersionUptodate" Then
       modWinApi_Mouse.MouseCursor IDC_HAND
    End If
 End Sub
 
-Private Sub labCopyCaption_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+Private Sub labCopyCaption_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
 
    If Button = 1 Or Button = 2 Then
-      OpenReplaceModulesContextMenu Me.labCopyCaption, X, Y
+      OpenReplaceModulesContextMenu Me.labCopyCaption, x, y
    End If
 
 End Sub
@@ -1585,7 +1585,7 @@ On Error Resume Next
    
 End Sub
 
-Private Sub labCopyCaption_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+Private Sub labCopyCaption_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
    modWinApi_Mouse.MouseCursor IDC_HAND
 End Sub
 
