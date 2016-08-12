@@ -139,6 +139,7 @@ Private Sub GetExtensionPropertyLookup(ByVal PropertyName As String, _
    
       Case Else 'Property wurde nicht erkannt
          ResumeMode = AppResumeMode_Error
+         ResumeMessage = "Property '" & PropertyName & "' is not supported!"
          
    End Select
 
