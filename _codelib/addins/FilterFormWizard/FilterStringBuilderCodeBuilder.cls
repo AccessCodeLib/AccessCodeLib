@@ -57,7 +57,7 @@ Private Property Get IFilterFormCodeBuilder_ClassInitalisationCode( _
    
    Dim Code As String
 
-   Code = GetRefreshFilterCode(UseFilterCtlName) & vbNewLine
+   Code = GetRefreshFilterCode() & vbNewLine
       
    Code = Code & vbNewLine & _
       UseFilterMethodeCode & vbNewLine
@@ -83,7 +83,7 @@ Private Property Get IFilterFormCodeBuilder_ClassInitalisationCode( _
 
 End Property
 
-Private Function GetRefreshFilterCode(ByVal UseFilterCtlName As String) As String
+Private Function GetRefreshFilterCode() As String
 
    Dim Code As String
 
