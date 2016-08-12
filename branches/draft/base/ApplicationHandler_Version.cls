@@ -106,7 +106,7 @@ Private Sub m_ApplicationHandler_ExtensionPropertyLookup( _
                      ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
 
    If ExtensionKeyToCheck = EXTENSION_KEY Then
-      getExtensionPropertyLookup PropertyName, ResumeMode, ResumeMessage
+      GetExtensionPropertyLookup PropertyName, ResumeMode, ResumeMessage
    End If
 
 End Sub
@@ -129,7 +129,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 
-Private Sub getExtensionPropertyLookup(ByVal PropertyName As String, _
+Private Sub GetExtensionPropertyLookup(ByVal PropertyName As String, _
                                        ByRef ResumeMode As ApplicationHandlerResumeModes, _
                                        ByRef ResumeMessage As Variant)
 

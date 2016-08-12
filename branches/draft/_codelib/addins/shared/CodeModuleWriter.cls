@@ -180,7 +180,7 @@ Friend Property Get CurrentVbProject() As Object
    If m_CurrentVbProject Is Nothing Then
       Set m_CurrentVbProject = VBE.ActiveVBProject
       'Prüfen, ob das richtige VbProject gewählt wurde (muss das von CurrentDb sein)
-      strCurrentDbName = UNCPath(CurrentDb.Name)
+      strCurrentDbName = UncPath(CurrentDb.Name)
       If m_CurrentVbProject.FileName <> strCurrentDbName Then
          Set m_CurrentVbProject = Nothing
          For Each Proj In VBE.VBProjects
