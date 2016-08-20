@@ -85,9 +85,7 @@ On Error GoTo HandleErr
    
    Select Case ProcedureName
       Case "NewVersionExists"
-         
          ResumeMessage = NewVersionExists(ProcParams(0), ProcParams(1))
-         'ProcParams = VerParams
       Case Else
          ResumeMode = AppResumeMode_Error
    End Select
@@ -125,10 +123,9 @@ End Function
 
 
 '---------------------------------------------------------------------------------------
-' Ergänzungen für Ereiterung: ApplicationHandler_AppVersion
+' Ergänzungen für Erweiterung: ApplicationHandler_AppVersion
 '---------------------------------------------------------------------------------------
 '
-
 Private Sub GetExtensionPropertyLookup(ByVal PropertyName As String, _
                                        ByRef ResumeMode As ApplicationHandlerResumeModes, _
                                        ByRef ResumeMessage As Variant)
@@ -139,7 +136,7 @@ Private Sub GetExtensionPropertyLookup(ByVal PropertyName As String, _
    
       Case Else 'Property wurde nicht erkannt
          ResumeMode = AppResumeMode_Error
-         ResumeMessage = "Property '" & PropertyName & "' is not supported!"
+         ResumeMessage = "Property '" & PropertyName & "' is not supported"
          
    End Select
 
