@@ -43,28 +43,38 @@
         <Kind>ClassProperties</Kind>
         <AssemblyFullName />
         <ControlTypeFullName />
-        <WhenConditionsOperator>All</WhenConditionsOperator>
+        <WhenConditionsOperator>None</WhenConditionsOperator>
         <WhenConditions>
           <WhenCondition>
-            <Object>FileProperties</Object>
+            <Object>ClassProperties</Object>
             <ControlTypeFullName />
-            <PropertyDisplayedName>Type</PropertyDisplayedName>
-            <PropertyInternalName>Type</PropertyInternalName>
-            <PropertyKind>SingleEnum</PropertyKind>
-            <Operator>OneOfSelectedValues</Operator>
+            <PropertyDisplayedName>(Name)</PropertyDisplayedName>
+            <PropertyInternalName>Name</PropertyInternalName>
+            <PropertyKind>String</PropertyKind>
+            <Operator>Matching</Operator>
             <PropertyValue>
               <SingleValue>
-                <TypeFullName />
-                <DisplayedValue />
-                <InternalValue />
+                <TypeFullName>System.String</TypeFullName>
+                <DisplayedValue>ACLib[A-Z]+[a-z]+[A-Za-z]*</DisplayedValue>
+                <InternalValue>ACLib[A-Z]+[a-z]+[A-Za-z]*</InternalValue>
               </SingleValue>
-              <MultipleValues>
-                <Value>
-                  <TypeFullName>System.String</TypeFullName>
-                  <DisplayedValue>Class</DisplayedValue>
-                  <InternalValue>2</InternalValue>
-                </Value>
-              </MultipleValues>
+              <MultipleValues />
+            </PropertyValue>
+          </WhenCondition>
+          <WhenCondition>
+            <Object>ClassProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>(Name)</PropertyDisplayedName>
+            <PropertyInternalName>Name</PropertyInternalName>
+            <PropertyKind>String</PropertyKind>
+            <Operator>StartingWith</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName>System.String</TypeFullName>
+                <DisplayedValue>Form_</DisplayedValue>
+                <InternalValue>Form_</InternalValue>
+              </SingleValue>
+              <MultipleValues />
             </PropertyValue>
           </WhenCondition>
         </WhenConditions>
@@ -153,6 +163,22 @@
               <MultipleValues />
             </PropertyValue>
           </WhenCondition>
+          <WhenCondition>
+            <Object>ClassFieldProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>Declaration</PropertyDisplayedName>
+            <PropertyInternalName>Declaration</PropertyInternalName>
+            <PropertyKind>String</PropertyKind>
+            <Operator>Matching</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName>System.String</TypeFullName>
+                <DisplayedValue>\b\s*Public\s+[A-Z].*</DisplayedValue>
+                <InternalValue>\b\s*Public\s+[A-Z].*</InternalValue>
+              </SingleValue>
+              <MultipleValues />
+            </PropertyValue>
+          </WhenCondition>
         </WhenConditions>
         <Explanation />
         <HowToFix />
@@ -205,8 +231,25 @@
         <Kind>ModuleFieldProperties</Kind>
         <AssemblyFullName />
         <ControlTypeFullName />
-        <WhenConditionsOperator>All</WhenConditionsOperator>
-        <WhenConditions />
+        <WhenConditionsOperator>None</WhenConditionsOperator>
+        <WhenConditions>
+          <WhenCondition>
+            <Object>ModuleFieldProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>Declaration</PropertyDisplayedName>
+            <PropertyInternalName>Declaration</PropertyInternalName>
+            <PropertyKind>String</PropertyKind>
+            <Operator>Matching</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName>System.String</TypeFullName>
+                <DisplayedValue>\b\s*Public\s+[A-Z]+</DisplayedValue>
+                <InternalValue>\b\s*Public\s+[A-Z]+</InternalValue>
+              </SingleValue>
+              <MultipleValues />
+            </PropertyValue>
+          </WhenCondition>
+        </WhenConditions>
         <Explanation />
         <HowToFix />
         <Type>1</Type>
@@ -251,8 +294,8 @@
             <PropertyValue>
               <SingleValue>
                 <TypeFullName>System.String</TypeFullName>
-                <DisplayedValue>\b[A-Z][A-Za-z0-9]*(MDI)[A-Za-z0-9]*\b</DisplayedValue>
-                <InternalValue>\b[A-Z][A-Za-z0-9]*(MDI)[A-Za-z0-9]*\b</InternalValue>
+                <DisplayedValue>\b[A-Z][A-Za-z0-9]*(MDI|ACLib)[A-Za-z0-9]*\b</DisplayedValue>
+                <InternalValue>\b[A-Z][A-Za-z0-9]*(MDI|ACLib)[A-Za-z0-9]*\b</InternalValue>
               </SingleValue>
               <MultipleValues />
             </PropertyValue>
