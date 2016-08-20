@@ -94,7 +94,7 @@ Public Event DbObjectDeleted(ByVal LastDbObjectName As String, ByVal lCounter As
 ' <param name="ResponseMessage">Rückgabewert</param>
 ' <remarks>Wird in der Methode #DeleteOdbcTableDefs genutzt.</remarks>
 '**/
-Public Event HookInsertIdentityReturn(ByRef InsertSQL As String, _
+Public Event HookInsertIdentityReturn(ByRef InsertSql As String, _
                                       ByRef ActiveDb As DAO.Database, _
                                       ByRef IdentitySelectString As String, _
                                       ByRef ResponseMode As Long, ByRef ResponseMessage As Variant)
@@ -130,8 +130,8 @@ Friend Property Get HooksEnabled() As Boolean
    HooksEnabled = m_HooksEnabled
 End Property
 
-Friend Property Let HooksEnabled(ByVal bEnable As Boolean)
-   m_HooksEnabled = bEnable
+Friend Property Let HooksEnabled(ByVal NewValue As Boolean)
+   m_HooksEnabled = NewValue
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -342,15 +342,15 @@ End Function
 Public Function Execute(ByVal CommandText As String, _
                Optional ByVal Options As DAO.RecordsetOptionEnum) As Long
 
-   Dim db As DAO.Database
+   Dim Db As DAO.Database
    
-   Set db = Me.CurrentDbBE
+   Set Db = Me.CurrentDbBE
 
    If (Options And dbSeeChanges) = 0 Then
       Options = Options + dbSeeChanges
    End If
-   db.Execute CommandText, Options
-   Execute = db.RecordsAffected
+   Db.Execute CommandText, Options
+   Execute = Db.RecordsAffected
 
 End Function
 
@@ -371,15 +371,15 @@ Public Function ExecutePT(ByVal CommandText As String, _
                  Optional ByVal Options As DAO.RecordsetOptionEnum = DAO.RecordsetOptionEnum.dbSQLPassThrough _
                          ) As Long
          
-   Dim db As DAO.Database
+   Dim Db As DAO.Database
    Dim qdf As DAO.QueryDef
 
    If (Options And dbSQLPassThrough) = 0 Then
      Options = Options + dbSQLPassThrough
    End If
    
-   Set db = Me.CurrentDb
-   Set qdf = db.CreateQueryDef("")
+   Set Db = Me.CurrentDb
+   Set qdf = Db.CreateQueryDef("")
    With qdf
      .Connect = Me.ConnectionString
      .ODBCTimeout = 0
@@ -389,7 +389,7 @@ Public Function ExecutePT(ByVal CommandText As String, _
      .Close
    End With
    
-   ExecutePT = db.RecordsAffected
+   ExecutePT = Db.RecordsAffected
 
 End Function
 
@@ -408,7 +408,7 @@ End Function
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function LookupSQL(ByVal SqlText As String, _
+Public Function LookupSql(ByVal SqlText As String, _
                  Optional ByVal Index As Variant = 0&, _
                  Optional ByVal ValueIfNull As Variant = Null) As Variant
 
@@ -419,9 +419,9 @@ On Error GoTo HandleErr
    Set rst = Me.OpenRecordset(SqlText, dbOpenForwardOnly, dbSeeChanges, dbReadOnly)
    With rst
       If .EOF Then
-         LookupSQL = ValueIfNull
+         LookupSql = ValueIfNull
       Else
-         LookupSQL = Nz(.Fields(Index), ValueIfNull)
+         LookupSql = Nz(.Fields(Index), ValueIfNull)
       End If
       .Close
    End With
@@ -504,15 +504,15 @@ Public Function Lookup(ByVal Expr As String, ByVal Domain As String, _
               Optional ByVal Criteria As Variant, _
               Optional ByVal ValueIfNull As Variant = Null) As Variant
 
-   Dim strSQL As String
+   Dim SqlText As String
 
-   strSQL = "SELECT " & Expr & " FROM " & Domain
+   SqlText = "SELECT " & Expr & " FROM " & Domain
    If Not (VarType(Criteria) = vbError) Then
       If Len(Criteria) > 0 Then
-         strSQL = strSQL & " WHERE " & Criteria
+         SqlText = SqlText & " WHERE " & Criteria
       End If
    End If
-   Lookup = Me.LookupSQL(strSQL, , ValueIfNull)
+   Lookup = Me.LookupSql(SqlText, , ValueIfNull)
 
 End Function
 
@@ -600,19 +600,19 @@ End Function
 ' <remarks>Funktioniert erst ab Jet 4.0 (Access 2000) und ist vom DBMS abhängig. Bei MySQL-Tabellen wird z. B. 0 zurückgegeben</remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function InsertIdentityReturn(ByVal InsertSQL As String) As Variant
+Public Function InsertIdentityReturn(ByVal InsertSql As String) As Variant
 
-   Dim db As DAO.Database
+   Dim Db As DAO.Database
    Dim rst As DAO.Recordset
-   Dim lngRecordsAffected As Long
-   Dim strIdentitySQL As String
+   Dim RecordsAffected As Long
+   Dim IdentitySql As String
    Dim HookResponseMode As Long
    Dim HookResponseMessage As Variant
 
-   Set db = Me.CurrentDbBE
+   Set Db = Me.CurrentDbBE
    
    If m_HooksEnabled Then
-      RaiseEvent HookInsertIdentityReturn(InsertSQL, db, strIdentitySQL, HookResponseMode, HookResponseMessage)
+      RaiseEvent HookInsertIdentityReturn(InsertSql, Db, IdentitySql, HookResponseMode, HookResponseMessage)
       If HookResponseMode <> 0 Then 'Hook ermittelte bereits das Ergebnis
          InsertIdentityReturn = HookResponseMessage
          Exit Function
@@ -621,19 +621,19 @@ Public Function InsertIdentityReturn(ByVal InsertSQL As String) As Variant
    
 On Error GoTo HandleErr
 
-   db.Execute InsertSQL, dbFailOnError
-   lngRecordsAffected = db.RecordsAffected
+   Db.Execute InsertSql, dbFailOnError
+   RecordsAffected = Db.RecordsAffected
    
-   If lngRecordsAffected = 0 Then
+   If RecordsAffected = 0 Then
       InsertIdentityReturn = Null 'es wurde kein neuer DS angefügt
       Exit Function
    End If
    
-   If Len(strIdentitySQL) = 0 Then
-      strIdentitySQL = "SELECT @@Identity"
+   If Len(IdentitySql) = 0 Then
+      IdentitySql = "SELECT @@Identity"
    End If
 
-   Set rst = db.OpenRecordset(strIdentitySQL) 'zuletzt zugewiesener Autowert / ... funktioniert nicht bei MySQL!
+   Set rst = Db.OpenRecordset(IdentitySql) 'zuletzt zugewiesener Autowert / ... funktioniert nicht bei MySQL!
    With rst
       If .EOF Then
          InsertIdentityReturn = Null
@@ -643,7 +643,7 @@ On Error GoTo HandleErr
       .Close
    End With
    Set rst = Nothing
-   Set db = Nothing
+   Set Db = Nothing
     
 ExitHere:
    Exit Function
@@ -679,7 +679,7 @@ Public Sub LinkTable(ByVal SourceTableName As String, _
 
    Dim dbs As DAO.Database
    Dim tdf As DAO.TableDef
-   Dim lngPos As Long
+   Dim Pos As Long
    Dim NewConnectionString As String
    
    NewConnectionString = Me.ConnectionString
@@ -691,9 +691,9 @@ Public Sub LinkTable(ByVal SourceTableName As String, _
    If Len(LinkedTableName) = 0 Then
       LinkedTableName = SourceTableName
       If RemoveSchemaName Then
-         lngPos = InStr(1, LinkedTableName, ".")
-         If lngPos > 0 Then
-            LinkedTableName = Mid$(LinkedTableName, lngPos + 1) ' nur Text nach Punkt verwenden
+         Pos = InStr(1, LinkedTableName, ".")
+         If Pos > 0 Then
+            LinkedTableName = Mid$(LinkedTableName, Pos + 1) ' nur Text nach Punkt verwenden
          End If
       End If
       LinkedTableName = Replace(LinkedTableName, ".", "_")
@@ -753,6 +753,7 @@ Public Function RelinkTables(Optional ByVal SavePWD As Boolean = False, _
 'EventPeriod = 0 ... Rückgabe ist deaktiviert
 
    Dim NewConnectionString As String
+   Dim RelinkedItemCnt As Long
 
    NewConnectionString = Me.ConnectionString
    If Len(NewConnectionString) = 0 Then
@@ -760,7 +761,9 @@ Public Function RelinkTables(Optional ByVal SavePWD As Boolean = False, _
               "RelinkTable", "ODBC-Connectionstring fehlt!"
    End If
    
-   RelinkTablesWorker NewConnectionString, SavePWD, EventPeriod, 0
+   RelinkTablesWorker NewConnectionString, SavePWD, EventPeriod, RelinkedItemCnt
+   
+   RelinkTables = RelinkedItemCnt
 
 End Function
 
@@ -824,16 +827,16 @@ Public Function RelinkTable(ByVal LinkedTableName As String, _
 
 End Function
 
-Private Function RelinkTableDef(ByVal tdf As DAO.TableDef, _
+Private Function RelinkTableDef(ByVal TdfRef As DAO.TableDef, _
                                 ByVal NewConnectionString As String, _
                                 ByVal SavePWD As String) As Boolean
    
-   If Not IsLinkedTable(tdf) Then
+   If Not IsLinkedTable(TdfRef) Then
       RelinkTableDef = False
       Exit Function
    End If
    
-   With tdf
+   With TdfRef
    
       If Left(.Connect, 5) <> "ODBC;" Then Exit Function
    
@@ -841,9 +844,9 @@ Private Function RelinkTableDef(ByVal tdf As DAO.TableDef, _
       .RefreshLink
       
       If SavePWD Then
-         AddTableDefAttribut tdf, dbAttachSavePWD
+         AddTableDefAttribut TdfRef, dbAttachSavePWD
       Else
-         RemoveTableDefAttribut tdf, dbAttachSavePWD
+         RemoveTableDefAttribut TdfRef, dbAttachSavePWD
       End If
    End With
    
@@ -870,6 +873,7 @@ Public Function RelinkPassThroughQueries(Optional ByVal SavePWD As Boolean = Fal
 'EventPeriod = 0 ... Rückgabe ist deaktiviert
 
    Dim NewConnectionString As String
+   Dim RelinkedItems As Long
 
    NewConnectionString = Me.ConnectionString
    If Len(NewConnectionString) = 0 Then
@@ -877,7 +881,9 @@ Public Function RelinkPassThroughQueries(Optional ByVal SavePWD As Boolean = Fal
               "RelinkTable", "ODBC-Connectionstring fehlt!"
    End If
    
-   RelinkPassThroughQueriesWorker NewConnectionString, SavePWD, EventPeriod, 0
+   RelinkPassThroughQueriesWorker NewConnectionString, SavePWD, EventPeriod, RelinkedItems
+   
+   RelinkPassThroughQueries = RelinkedItems
 
 End Function
 
@@ -949,15 +955,15 @@ Public Function RelinkPassThroughQuery(ByVal QueryName As String, _
 
 End Function
 
-Private Function RelinkPassThroughQueryDef(ByVal qdf As DAO.QueryDef, _
+Private Function RelinkPassThroughQueryDef(ByVal QdfRef As DAO.QueryDef, _
                                            ByVal NewConnectionString As String) As Boolean
    
-   If Not IsPassThroughQuery(qdf) Then
+   If Not IsPassThroughQuery(QdfRef) Then
       RelinkPassThroughQueryDef = False
       Exit Function
    End If
    
-   qdf.Connect = NewConnectionString
+   QdfRef.Connect = NewConnectionString
    RelinkPassThroughQueryDef = True
    
 End Function
@@ -1020,15 +1026,15 @@ Public Function DeleteOdbcTableDefs(Optional ByVal EventPeriod As Long = 0) As L
    Dim dbs As DAO.Database
    Dim tdf As DAO.TableDef
    Dim i As Long
-   Dim tdfCount As Long
+   Dim TdfCount As Long
    Dim DeleteCounter As Long
    Dim LastDbObjectName As String
 
    Set dbs = Me.CurrentDb
       
    dbs.TableDefs.Refresh
-   tdfCount = dbs.TableDefs.Count - 1
-   For i = tdfCount To 0 Step -1
+   TdfCount = dbs.TableDefs.Count - 1
+   For i = TdfCount To 0 Step -1
       Set tdf = dbs.TableDefs(i)
       If IsLinkedTable(tdf) Then
          LastDbObjectName = tdf.Name
@@ -1054,43 +1060,43 @@ On Error Resume Next
    End If
 End Sub
 
-Private Sub RemoveTableDefAttribut(ByRef tdf As DAO.TableDef, Attr As TableDefAttributeEnum)
+Private Sub RemoveTableDefAttribut(ByRef TdfRef As DAO.TableDef, ByRef Attr As TableDefAttributeEnum)
 
-   Dim lngAttributes As Long
+   Dim AttributesValue As Long
 
-   lngAttributes = tdf.Attributes
-   If (lngAttributes And Attr) = Attr Then
+   AttributesValue = TdfRef.Attributes
+   If (AttributesValue And Attr) = Attr Then
    
-      If (tdf.Attributes And dbAttachedODBC) = dbAttachedODBC Then
-         lngAttributes = lngAttributes - dbAttachedODBC
-      ElseIf (tdf.Attributes And dbAttachedTable) = dbAttachedTable Then
-         lngAttributes = lngAttributes - dbAttachedTable
+      If (TdfRef.Attributes And dbAttachedODBC) = dbAttachedODBC Then
+         AttributesValue = AttributesValue - dbAttachedODBC
+      ElseIf (TdfRef.Attributes And dbAttachedTable) = dbAttachedTable Then
+         AttributesValue = AttributesValue - dbAttachedTable
       End If
       
       'Entfernen
-      lngAttributes = lngAttributes - Attr
-      tdf.Attributes = lngAttributes
+      AttributesValue = AttributesValue - Attr
+      TdfRef.Attributes = AttributesValue
       
    End If
 
 End Sub
 
-Private Sub AddTableDefAttribut(ByRef tdf As DAO.TableDef, Attr As TableDefAttributeEnum)
+Private Sub AddTableDefAttribut(ByRef TdfRef As DAO.TableDef, ByRef Attr As TableDefAttributeEnum)
 
-   Dim lngAttributes As Long
+   Dim AttributesValue As Long
 
-   lngAttributes = tdf.Attributes
-   If (lngAttributes And Attr) = 0 Then
+   AttributesValue = TdfRef.Attributes
+   If (AttributesValue And Attr) = 0 Then
    
-      If (tdf.Attributes And dbAttachedODBC) = dbAttachedODBC Then
-         lngAttributes = lngAttributes Xor dbAttachedODBC
-      ElseIf (tdf.Attributes And dbAttachedTable) = dbAttachedTable Then
-         lngAttributes = lngAttributes Xor dbAttachedTable
+      If (TdfRef.Attributes And dbAttachedODBC) = dbAttachedODBC Then
+         AttributesValue = AttributesValue Xor dbAttachedODBC
+      ElseIf (TdfRef.Attributes And dbAttachedTable) = dbAttachedTable Then
+         AttributesValue = AttributesValue Xor dbAttachedTable
       End If
    
       'Ergänzen
-      lngAttributes = lngAttributes Or Attr
-      tdf.Attributes = lngAttributes
+      AttributesValue = AttributesValue Or Attr
+      TdfRef.Attributes = AttributesValue
    End If
 
 End Sub

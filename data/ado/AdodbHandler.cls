@@ -34,7 +34,7 @@ Option Explicit
 Private m_AdoConnection As ADODB.Connection
 
 'ADO-Connectionstring
-Private m_conADO_ConnectionString As String
+Private m_AdoConnectionString As String
 
 'Error-Events für mögliche Fehlerbehandlung über die FE-Anwendung
 '/**
@@ -62,7 +62,7 @@ Public Event ErrorMissingCurrentConnection(ByVal Msg As String, ByRef NewCurrent
 Public Event ErrorEmptyConnectionString(ByVal Msg As String, ByRef NewConnectionString As String)
 
 
-Public Event HookInsertIdentityReturn(ByRef InsertSQL As String, ByRef IdentityTable As String, _
+Public Event HookInsertIdentityReturn(ByRef InsertSql As String, ByRef IdentityTable As String, _
                                       ByRef ActiveConnection As ADODB.Connection, ByRef IdentitySelectString As String, _
                                       ByRef HookResumeMode As Long, ByRef HookResumeMessage As Variant)
 
@@ -93,8 +93,8 @@ Public Property Get HooksEnabled() As Boolean
    HooksEnabled = m_HooksEnabled
 End Property
 
-Public Property Let HooksEnabled(ByVal bEnable As Boolean)
-   m_HooksEnabled = bEnable
+Public Property Let HooksEnabled(ByVal NewValue As Boolean)
+   m_HooksEnabled = NewValue
 End Property
 
 
@@ -175,16 +175,16 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get ConnectionString() As String
-   If Len(m_conADO_ConnectionString) = 0 Then
+   If Len(m_AdoConnectionString) = 0 Then
       If Not (m_AdoConnection Is Nothing) Then
-         m_conADO_ConnectionString = m_AdoConnection.ConnectionString
+         m_AdoConnectionString = m_AdoConnection.ConnectionString
       End If
-      If Len(m_conADO_ConnectionString) = 0 Then
+      If Len(m_AdoConnectionString) = 0 Then
          'Connectiostring mittels Event abfragen
-         RaiseEvent ErrorEmptyConnectionString("DbConnection.ConnectionString", m_conADO_ConnectionString)
+         RaiseEvent ErrorEmptyConnectionString("DbConnection.ConnectionString", m_AdoConnectionString)
       End If
    End If
-   ConnectionString = m_conADO_ConnectionString
+   ConnectionString = m_AdoConnectionString
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -200,7 +200,7 @@ End Property
 '---------------------------------------------------------------------------------------
 Public Property Let ConnectionString(ByVal Value As String)
    Set CurrentConnection = Nothing
-   m_conADO_ConnectionString = Value
+   m_AdoConnectionString = Value
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -249,7 +249,7 @@ Public Function ExecuteCommand(ByVal CmdText As String, _
    Dim cmd As ADODB.Command
    Dim ParamDefsArraySize As Long
    Dim i As Long
-   Dim strParamName As String
+   Dim ParamName As String
 
    Set cmd = New ADODB.Command
    With cmd
@@ -261,9 +261,9 @@ Public Function ExecuteCommand(ByVal CmdText As String, _
       If Not IsMissing(CmdParamDefs) Then
          ParamDefsArraySize = UBound(CmdParamDefs, 1)
          For i = 0 To ParamDefsArraySize
-            strParamName = Nz(CmdParamDefs(i, 0), vbNullString)
-            If Len(strParamName) > 0 Then
-               .Parameters(strParamName).Value = CmdParamDefs(i, 1)
+            ParamName = Nz(CmdParamDefs(i, 0), vbNullString)
+            If Len(ParamName) > 0 Then
+               .Parameters(ParamName).Value = CmdParamDefs(i, 1)
             End If
          Next i
       End If
@@ -329,7 +329,7 @@ End Function
 ' <remarks>Die SQL-Anweisung ist im SQL-Dialekt des betroffenen DBMS zu schreiben.</remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function LookupSQL(ByVal SqlText As String, _
+Public Function LookupSql(ByVal SqlText As String, _
                  Optional ByVal Index As Variant = 0&, _
                  Optional ByVal ValueIfNull As Variant = Null) As Variant
 
@@ -340,9 +340,9 @@ On Error GoTo HandleErr
    Set rst = Me.OpenRecordset(SqlText, adOpenForwardOnly, adLockReadOnly, adUseServer)
    With rst
       If .EOF Then
-         LookupSQL = ValueIfNull
+         LookupSql = ValueIfNull
       Else
-         LookupSQL = Nz(.Fields(Index), ValueIfNull)
+         LookupSql = Nz(.Fields(Index), ValueIfNull)
       End If
       .Close
    End With
@@ -379,15 +379,15 @@ Public Function Lookup(ByVal Expr As String, ByVal Domain As String, _
               Optional ByVal Criteria As Variant, _
               Optional ByVal ValueIfNull As Variant = Null) As Variant
 
-   Dim strSQL As String
+   Dim SelectSqlText As String
 
-   strSQL = "SELECT " & Expr & " FROM " & Domain
+   SelectSqlText = "SELECT " & Expr & " FROM " & Domain
    If Not (VarType(Criteria) = vbError) Then
       If Len(Criteria) > 0 Then
-         strSQL = strSQL & " WHERE " & Criteria
+         SelectSqlText = SelectSqlText & " WHERE " & Criteria
       End If
    End If
-   Lookup = Me.LookupSQL(strSQL, , ValueIfNull)
+   Lookup = Me.LookupSql(SelectSqlText, , ValueIfNull)
 
 End Function
 
@@ -475,44 +475,44 @@ End Function
 ' <remarks>Funktioniert für Jet erst ab Jet 4.0 (Access 2000), IdentityTable ist nur für MSSQL anwendbar, unter MySQL gibt es die Funktion IDENT_CURRENT nicht.</remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function InsertIdentityReturn(ByVal InsertSQL As String, Optional ByVal IdentityTable As String = vbNullString) As Variant
+Public Function InsertIdentityReturn(ByVal InsertSql As String, Optional ByVal IdentityTable As String = vbNullString) As Variant
 
    Dim cnn As ADODB.Connection
    Dim rst As ADODB.Recordset
-   Dim lngRecordsAffected As Long
-   Dim strIdentitySQL As String
+   Dim RecordsAffected As Long
+   Dim IdentitySql As String
    
-   Dim lngHookResumeMode As Long
-   Dim varHookResumeMessage As Variant
+   Dim CurrentHookResumeMode As Long
+   Dim CurrentHookResumeMessage As Variant
 
    Set cnn = Me.CurrentConnection
    
    If m_HooksEnabled Then
-      RaiseEvent HookInsertIdentityReturn(InsertSQL, IdentityTable, cnn, strIdentitySQL, lngHookResumeMode, varHookResumeMessage)
-      If lngHookResumeMode <> 0 Then 'Hook ermittelte bereits das Ergebnis
-         InsertIdentityReturn = varHookResumeMessage
+      RaiseEvent HookInsertIdentityReturn(InsertSql, IdentityTable, cnn, IdentitySql, CurrentHookResumeMode, CurrentHookResumeMessage)
+      If CurrentHookResumeMode <> 0 Then 'Hook ermittelte bereits das Ergebnis
+         InsertIdentityReturn = CurrentHookResumeMessage
          Exit Function
       End If
    End If
    
-   cnn.Execute InsertSQL, lngRecordsAffected
+   cnn.Execute InsertSql, RecordsAffected
    
-   If lngRecordsAffected = 0 Then
+   If RecordsAffected = 0 Then
       InsertIdentityReturn = Null 'es wurde kein neuer DS angefügt
       Exit Function
    End If
 
-   If Len(strIdentitySQL) = 0 Then
+   If Len(IdentitySql) = 0 Then
       If Len(IdentityTable) > 0 Then
-         strIdentitySQL = "SELECT IDENT_CURRENT('" & IdentityTable & "')" 'wegen trigger .. funktioniert nicht bei allen DBMS!!!
+         IdentitySql = "SELECT IDENT_CURRENT('" & IdentityTable & "')" 'wegen trigger .. funktioniert nicht bei allen DBMS!!!
       Else
-         strIdentitySQL = "SELECT @@Identity" 'zuletzt zugewiesener Autowert
+         IdentitySql = "SELECT @@Identity" 'zuletzt zugewiesener Autowert
       End If
    End If
 
 On Error GoTo HandleErr
 
-   Set rst = cnn.Execute(strIdentitySQL)
+   Set rst = cnn.Execute(IdentitySql)
    With rst
       If .EOF Then
          InsertIdentityReturn = Null

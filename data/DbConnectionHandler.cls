@@ -130,14 +130,14 @@ Public Sub Dispose()
 
 On Error Resume Next
 
-   clearObjectReferences
+   ClearObjectReferences
    
    m_Disposed = True
    RaiseEvent Disposed
    
 End Sub
 
-Private Sub clearObjectReferences()
+Private Sub ClearObjectReferences()
 
 On Error Resume Next
 
@@ -241,8 +241,8 @@ End Property
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Property Let OledbConnectionString(ByVal sConnectionString As String)
-   Me.ADODB.ConnectionString = sConnectionString
+Public Property Let OledbConnectionString(ByVal NewConnectionString As String)
+   Me.ADODB.ConnectionString = NewConnectionString
 End Property
 
 '//@}
@@ -360,8 +360,8 @@ End Property
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Property Let OdbcConnectionString(ByVal sConnectionString As String)
-   Me.ODBC.ConnectionString = sConnectionString
+Public Property Let OdbcConnectionString(ByVal NewConnectionString As String)
+   Me.ODBC.ConnectionString = NewConnectionString
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -391,9 +391,9 @@ End Property
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Property Set CurrentDbBE(ByRef NewCurrentDbBE As DAO.Database)
-   If Not (NewCurrentDbBE Is Nothing) Then
-      Set Me.ODBC.CurrentDbBE = NewCurrentDbBE
+Public Property Set CurrentDbBE(ByRef NewDb As DAO.Database)
+   If Not (NewDb Is Nothing) Then
+      Set Me.ODBC.CurrentDbBE = NewDb
    End If
 End Property
 
@@ -406,29 +406,29 @@ End Property
 
 ' ADODB-Handler-Events
 ' --------------------
-Private Sub m_AdodbHandler_ErrorMissingCurrentConnection(ByVal Msg As String, NewCurrentConnection As ADODB.Connection)
+Private Sub m_AdodbHandler_ErrorMissingCurrentConnection(ByVal Msg As String, ByRef NewCurrentConnection As ADODB.Connection)
    RaiseEvent ErrorMissingCurrentConnection(Msg, NewCurrentConnection)
 End Sub
 
-Private Sub m_AdodbHandler_ErrorEmptyConnectionString(ByVal Msg As String, NewConnectionString As String)
+Private Sub m_AdodbHandler_ErrorEmptyConnectionString(ByVal Msg As String, ByRef NewConnectionString As String)
    RaiseEvent ErrorEmptyOledbConnectionString(Msg, NewConnectionString)
 End Sub
 
 
 ' DAO-Handler-Events
 ' ------------------
-Private Sub m_DaoHandler_ErrorMissingCurrentDb(ByVal Msg As String, NewCurrentDbRef As DAO.Database)
+Private Sub m_DaoHandler_ErrorMissingCurrentDb(ByVal Msg As String, ByRef NewCurrentDbRef As DAO.Database)
    RaiseEvent ErrorMissingCurrentDb(Msg, NewCurrentDbRef)
 End Sub
 
 
 ' ODBC-Handler-Events
 ' ------------------
-Private Sub m_OdbcHandler_ErrorEmptyConnectionString(ByVal Msg As String, NewConnectionString As String)
+Private Sub m_OdbcHandler_ErrorEmptyConnectionString(ByVal Msg As String, ByRef NewConnectionString As String)
    RaiseEvent ErrorEmptyOdbcConnectionString(Msg, NewConnectionString)
 End Sub
 
-Private Sub m_OdbcHandler_ErrorMissingCurrentDb(ByVal Msg As String, NewCurrentDbRef As DAO.Database)
+Private Sub m_OdbcHandler_ErrorMissingCurrentDb(ByVal Msg As String, ByRef NewCurrentDbRef As DAO.Database)
 
    '1. Versuchen aus DAO-Klasse zu übergeben:
    Set NewCurrentDbRef = Me.DAO.CurrentDb
