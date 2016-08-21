@@ -294,8 +294,8 @@
             <PropertyValue>
               <SingleValue>
                 <TypeFullName>System.String</TypeFullName>
-                <DisplayedValue>\b[A-Z][A-Za-z0-9]*(MDI|ACLib)[A-Za-z0-9]*\b</DisplayedValue>
-                <InternalValue>\b[A-Z][A-Za-z0-9]*(MDI|ACLib)[A-Za-z0-9]*\b</InternalValue>
+                <DisplayedValue>\b[A-Z][A-Za-z0-9]*(MDI|ACLib|PT|BE)[A-Za-z0-9]*\b</DisplayedValue>
+                <InternalValue>\b[A-Z][A-Za-z0-9]*(MDI|ACLib|PT|BE)[A-Za-z0-9]*\b</InternalValue>
               </SingleValue>
               <MultipleValues />
             </PropertyValue>
@@ -453,6 +453,22 @@
               <MultipleValues />
             </PropertyValue>
           </WhenCondition>
+          <WhenCondition>
+            <Object>ParameterProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>(Name)</PropertyDisplayedName>
+            <PropertyInternalName>Name</PropertyInternalName>
+            <PropertyKind>String</PropertyKind>
+            <Operator>Matching</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName>System.String</TypeFullName>
+                <DisplayedValue>[A-Z]{2,3}</DisplayedValue>
+                <InternalValue>[A-Z]{2,3}</InternalValue>
+              </SingleValue>
+              <MultipleValues />
+            </PropertyValue>
+          </WhenCondition>
         </WhenConditions>
         <Explanation />
         <HowToFix />
@@ -566,7 +582,7 @@
       <ProgrammingRule>
         <Active>1</Active>
         <ID />
-        <Description>Classes cannot have more than 1000 lines of code</Description>
+        <Description>Classes cannot have more than 2000 lines of code</Description>
         <Kind>ClassProperties</Kind>
         <AssemblyFullName />
         <ControlTypeFullName />
@@ -583,8 +599,8 @@
           <PropertyValue>
             <SingleValue>
               <TypeFullName>System.Int32</TypeFullName>
-              <DisplayedValue>1000</DisplayedValue>
-              <InternalValue>1000</InternalValue>
+              <DisplayedValue>2000</DisplayedValue>
+              <InternalValue>2000</InternalValue>
             </SingleValue>
             <MultipleValues />
           </PropertyValue>
@@ -737,6 +753,106 @@
               <TypeFullName>System.String</TypeFullName>
               <DisplayedValue>$P[PARENT_CODE_ELEMENT_NAME]</DisplayedValue>
               <InternalValue>$P[PARENT_CODE_ELEMENT_NAME]</InternalValue>
+            </SingleValue>
+            <MultipleValues />
+          </PropertyValue>
+        </ObjectPropertiesCondition>
+      </ProgrammingRule>
+      <ProgrammingRule>
+        <Active>1</Active>
+        <ID />
+        <Description>Property Get muss Rückgabewert haben</Description>
+        <Kind>PropertyProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>All</WhenConditionsOperator>
+        <WhenConditions>
+          <WhenCondition>
+            <Object>PropertyProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>PropertyKind</PropertyDisplayedName>
+            <PropertyInternalName>PropertyKind</PropertyInternalName>
+            <PropertyKind>SingleEnum</PropertyKind>
+            <Operator>OneOfSelectedValues</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName />
+                <DisplayedValue />
+                <InternalValue />
+              </SingleValue>
+              <MultipleValues>
+                <Value>
+                  <TypeFullName>System.String</TypeFullName>
+                  <DisplayedValue>Get (Eigenschaft)</DisplayedValue>
+                  <InternalValue>PropertyGet</InternalValue>
+                </Value>
+              </MultipleValues>
+            </PropertyValue>
+          </WhenCondition>
+        </WhenConditions>
+        <Explanation />
+        <HowToFix />
+        <Type>1</Type>
+        <ObjectPropertiesCondition>
+          <PropertyDisplayedName>Code</PropertyDisplayedName>
+          <PropertyInternalName>Code</PropertyInternalName>
+          <PropertyKind>String</PropertyKind>
+          <Operator>Matching</Operator>
+          <PropertyValue>
+            <SingleValue>
+              <TypeFullName>System.String</TypeFullName>
+              <DisplayedValue>\r?\n(?!=')\s*(Set\s)?$P[CODE_ELEMENT_NAME]\s=\s.*</DisplayedValue>
+              <InternalValue>\r?\n(?!=')\s*(Set\s)?$P[CODE_ELEMENT_NAME]\s=\s.*</InternalValue>
+            </SingleValue>
+            <MultipleValues />
+          </PropertyValue>
+        </ObjectPropertiesCondition>
+      </ProgrammingRule>
+      <ProgrammingRule>
+        <Active>1</Active>
+        <ID />
+        <Description>Funktion muss Rückgabewert haben</Description>
+        <Kind>MethodProperties</Kind>
+        <AssemblyFullName />
+        <ControlTypeFullName />
+        <WhenConditionsOperator>Any</WhenConditionsOperator>
+        <WhenConditions>
+          <WhenCondition>
+            <Object>MethodProperties</Object>
+            <ControlTypeFullName />
+            <PropertyDisplayedName>MethodKind</PropertyDisplayedName>
+            <PropertyInternalName>MethodKind</PropertyInternalName>
+            <PropertyKind>SingleEnum</PropertyKind>
+            <Operator>OneOfSelectedValues</Operator>
+            <PropertyValue>
+              <SingleValue>
+                <TypeFullName />
+                <DisplayedValue />
+                <InternalValue />
+              </SingleValue>
+              <MultipleValues>
+                <Value>
+                  <TypeFullName>System.String</TypeFullName>
+                  <DisplayedValue>Funktion</DisplayedValue>
+                  <InternalValue>MethodWithReturnValue</InternalValue>
+                </Value>
+              </MultipleValues>
+            </PropertyValue>
+          </WhenCondition>
+        </WhenConditions>
+        <Explanation />
+        <HowToFix />
+        <Type>1</Type>
+        <ObjectPropertiesCondition>
+          <PropertyDisplayedName>Code</PropertyDisplayedName>
+          <PropertyInternalName>Code</PropertyInternalName>
+          <PropertyKind>String</PropertyKind>
+          <Operator>Matching</Operator>
+          <PropertyValue>
+            <SingleValue>
+              <TypeFullName>System.String</TypeFullName>
+              <DisplayedValue>\r?\n(?!=')\s*(Set\s)?$P[CODE_ELEMENT_NAME]\s=\s.*</DisplayedValue>
+              <InternalValue>\r?\n(?!=')\s*(Set\s)?$P[CODE_ELEMENT_NAME]\s=\s.*</InternalValue>
             </SingleValue>
             <MultipleValues />
           </PropertyValue>
