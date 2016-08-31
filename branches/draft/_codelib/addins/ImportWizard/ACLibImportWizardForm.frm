@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =-1263150265
+Checksum =1226632824
 Begin Form
     PopUp = NotDefault
     RecordSelectors = NotDefault
@@ -33,10 +33,10 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x00ed47010000000000000000000000007cdc9900e0187e00200000000c000000 ,
+        0x00842f01c824c3067573bd5458594301040000000000000000000000702cb854 ,
         0x010403069c00740343ef800501000900ea0a6f08640001000f00c80002000100 ,
-        0xc800020001004c657474657200df0600c2df06007c1b7b9c482f8a199c342e01 ,
-        0xbff9ffffdc360000000000000000000000000000010000000000000001000000 ,
+        0xc800020001004c65747465720023b85400842f01e024c306180000000c000000 ,
+        0xec832f017b860000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe210000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -69,19 +69,19 @@ Begin Form
     End
     PrtDevNames = Begin
         0x080023002b000100000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000467265655044465850313a00
+        0x0000000000000000000000467265655044465850313a0000000000
     End
     OnResize ="[Event Procedure]"
     OnLoad ="[Event Procedure]"
     FilterOnLoad =0
     AllowLayoutView =0
     PrtDevModeW = Begin
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x00007701c0062b00c0062b00a49e2f018c792f01f98f58744003004300ff0000 ,
+        0xc0062b00a49e2f01f0e55a740b1c38fafeffffff58792f01350e452fd0792f01 ,
         0x01040306dc00740343ef800501000900ea0a6f08640001000f00c80002000100 ,
-        0xc800020001004c00650074007400650072000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000010000000000000001000000 ,
+        0xc800020001004c00650074007400650072000000a49e2f010000000048000000 ,
+        0x087a2f01247b010107000000a8792f01090000000900000001000000474ca62f ,
+        0x0100000000000000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000000000000000000000000000000000000050524956 ,
         0xe210000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -116,7 +116,7 @@ Begin Form
         0x04001f0027000100000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000460072006500650050004400460058005000 ,
-        0x31003a000000
+        0x31003a0000000000000000000000
     End
     
     Begin
@@ -244,10 +244,10 @@ Begin Form
                         0x7a375b3d4e7ab64aa4b92d9318fa2f75
                     End
 
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                 End
                 Begin CommandButton
                     OverlapFlags =85
@@ -277,11 +277,12 @@ Begin Form
                     GUID = Begin
                         0xe62794268747e54e9d3b2819c30094ff
                     End
+                    UnicodeAccessKey =83
 
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -334,6 +335,7 @@ Begin Form
                     GUID = Begin
                         0x05058d9cecfbbb4ea43e85b2775cd26f
                     End
+                    UnicodeAccessKey =97
 
                     Begin
                         Begin Label
@@ -368,10 +370,10 @@ Begin Form
                         0x039cfae327f89243b5a5953b895bbd58
                     End
 
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                 End
                 Begin ListBox
                     OverlapFlags =247
@@ -397,6 +399,7 @@ Begin Form
                     GUID = Begin
                         0x97cc1de5cfe2a04b8cdb64735afe62b6
                     End
+                    UnicodeAccessKey =68
 
                     Begin
                         Begin Label
@@ -428,11 +431,12 @@ Begin Form
                     GUID = Begin
                         0x0752e8199e039a46b1633c490cc5b6d9
                     End
+                    UnicodeAccessKey =105
 
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin OptionGroup
@@ -448,6 +452,7 @@ Begin Form
                     GUID = Begin
                         0x91a1a06315224448bd037c8cd2b7e9fe
                     End
+                    UnicodeAccessKey =77
 
                     Begin
                         Begin Label
@@ -578,10 +583,10 @@ Begin Form
                         0xe40621db1bc93147b26953b8f737fc02
                     End
 
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin Label
@@ -625,6 +630,7 @@ Begin Form
                     GUID = Begin
                         0x7262df6ddc0c3a4f89103b45350f36f9
                     End
+                    UnicodeAccessKey =84
 
                     Begin
                         Begin Label
@@ -656,10 +662,10 @@ Begin Form
                         0x950857d9af4f2d4999b6fb2515640201
                     End
 
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                 End
                 Begin TextBox
                     Locked = NotDefault
@@ -715,10 +721,10 @@ Begin Form
                         0x8ac695bd55ec8f448547c7aa22b0feae
                     End
 
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                 End
                 Begin CommandButton
                     OverlapFlags =215
@@ -735,10 +741,10 @@ Begin Form
                         0xea677e08f97a5e4b95527fb5c4561aa7
                     End
 
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
             End
@@ -766,7 +772,7 @@ Attribute VB_Exposed = False
 '  <description>Maske für Import-Wizard</description>
 '  <use>base/modErrorHandler.bas</use>
 '  <use>_codelib/addins/ImportWizard/defGlobal_ACLibImportWizard.bas</use>
-'  <use>api/winapi/modWinAPI.bas</use>
+'  <use>api/winapi/WinApiShellTools.cls</use>
 '  <use>api/winapi/WinApiShortcutMenu.cls</use>
 '  <use>file/modFiles.bas</use>
 '  <use>data/dao/TempDbHandler.cls</use>
