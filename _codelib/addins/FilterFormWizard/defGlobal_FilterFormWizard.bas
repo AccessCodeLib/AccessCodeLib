@@ -6,9 +6,6 @@ Attribute VB_Name = "defGlobal_FilterFormWizard"
 ' <summary>
 ' Anwendungskonfiguration für FilterFormWizard
 ' </summary>
-' <remarks>
-' Indiviuell gestaltete Config-Module nicht in das Repositiory laden.
-' </remarks>
 ' \ingroup ACLibAddInFilterFormWizard
 '**/
 '---------------------------------------------------------------------------------------
@@ -25,7 +22,7 @@ Option Explicit
 '
 ' Konstanten
 '
-
+Public Const FILTERFORMWIZARD_TEXT_CREATENEW As String = "<Neu erstellen>"
 
 '---------------------------------------------------------------------------------------
 '
