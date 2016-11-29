@@ -36,6 +36,40 @@ Public Property Set Form(ByVal FormRef As Form)
    Set m_Form = FormRef
 End Property
 
+Public Property Get FormName() As String
+   If m_Form Is Nothing Then
+      FormName = vbNullString
+   Else
+      FormName = m_Form.Name
+   End If
+End Property
+
+Public Property Let FormName(ByVal NewValue As String)
+   Set Me.Form = GetFormInDesignMode(NewValue)
+End Property
+
+Private Function GetFormInDesignMode(ByVal FormName As String) As Form
+   
+   Dim FormRef As Form
+   Dim FormIsLoaded As Boolean
+   
+   FormIsLoaded = CurrentProject.AllForms(FormName).IsLoaded
+   
+   If FormIsLoaded Then
+      If Application.Forms(FormName).CurrentView <> 0 Then
+         DoCmd.Close acForm, FormName
+         FormIsLoaded = False
+      End If
+   End If
+   
+   If Not FormIsLoaded Then
+      DoCmd.OpenForm FormName, acDesign, , , , acWindowNormal
+   End If
+   
+   Set GetFormInDesignMode = Application.Forms(FormName)
+
+End Function
+
 Public Function AddControl(ByVal ControlType As AcControlType, ByVal ControlName As String, ByVal Section As AcSection, _
                            Optional ByVal LeftPos As Variant, Optional ByVal TopPos As Variant, _
                            Optional ByVal ControlWidth As Variant, Optional ByVal ControlHeight As Variant, _
@@ -71,6 +105,7 @@ Public Function AddControl(ByVal ControlType As AcControlType, ByVal ControlName
       LabelCtl.Name = GetCheckedControlName("lab" & ctl.Name)
       LabelCtl.Caption = LabelControlCaption
       ctl.Top = LabelCtl.Top + LabelCtl.Height
+
    End If
    
 End Function
