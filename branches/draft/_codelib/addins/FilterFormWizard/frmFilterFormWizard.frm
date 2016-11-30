@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =-672627675
+Checksum =1030732869
 Begin Form
     AllowFilters = NotDefault
     RecordSelectors = NotDefault
@@ -39,10 +39,10 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x007c6c4200000000006316011b27cf2f1407722f200000000000000000000000 ,
+        0x00273e7b0000000000f933071b27cf2f1407722f200000000000000000000000 ,
         0x010403069c00501453ef800301000900ea0a6f08640001000f00580202000100 ,
-        0x5802030001004c657474657200d10d58b05e04054059b5000800000001000000 ,
-        0xe0e7d60400190000000000000000000000000000010000000000000001000000 ,
+        0x5802030001004c657474657200d10d58d072c8044058ae000800000001000000 ,
+        0xe0e7ac0408e30000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
         0x2200c80024032c113f5d7b7e0000000000000000000000000000000000000000 ,
         0x0000000000000000050000000000090001000000000000000000000000000000 ,
@@ -1712,7 +1712,7 @@ Private Sub AddChangeFilterControlsToForm(ByVal FilterFormName As String, ByRef 
    
    If AutoFilterCtlName = FILTERFORMWIZARD_TEXT_CREATENEW Then
       AutoFilterCtlName = "cbAutoFilter"
-      AddChangeFilterControlToForm FilterFormName, AutoFilterCtlName, acCheckBox, "Autofilter"
+      AddChangeFilterControlToForm FilterFormName, AutoFilterCtlName, acCheckBox, "Autofilter", True
       SaveForm = True
    End If
    
@@ -1725,7 +1725,8 @@ End Sub
 Private Sub AddChangeFilterControlToForm(ByVal FilterFormName As String, _
                                          ByRef ControlName As String, _
                                          ByVal ControlType As AcControlType, _
-                                         ByVal ControlCaption As String)
+                                         ByVal ControlCaption As String, _
+                                Optional ByVal DefaultValue As Variant)
 
    Const DistanceBetweenControls As Long = 72
 
@@ -1746,6 +1747,9 @@ Private Sub AddChangeFilterControlToForm(ByVal FilterFormName As String, _
             .Caption = ControlCaption
          End If
          ControlName = .Name
+         If Not IsMissing(DefaultValue) Then
+            .DefaultValue = DefaultValue
+         End If
       End With
    End With
 

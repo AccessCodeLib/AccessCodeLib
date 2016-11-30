@@ -201,7 +201,7 @@ Private Function GetRemoveFilterCode() As String
    Dim Code As String
 
    Code = "Private Sub RemoveFilter()" & vbNewLine & _
-          "   FilterControlManager.RemoveFilter ""1=0""" & vbNewLine & _
+          "   FilterControlManager.RemoveFilter ""1=0"" ' 0=1 .. damit nach dem Entfernen der Filterwerte keine Datensätze angezeigt werden" & vbNewLine & _
           "End Sub" & vbNewLine
 
    GetRemoveFilterCode = Code
