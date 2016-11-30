@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =609251244
+Checksum =-672627675
 Begin Form
     AllowFilters = NotDefault
     RecordSelectors = NotDefault
@@ -17,13 +17,12 @@ Begin Form
     DatasheetGridlinesBehavior =3
     Cycle =1
     GridY =10
-    Width =10732
+    Width =10771
     DatasheetFontHeight =10
-    ItemSuffix =122
-    Left =4152
-    Top =1056
-    Right =12276
-    Bottom =7068
+    ItemSuffix =126
+    Top =690
+    Right =10635
+    Bottom =6705
     DatasheetGridlinesColor =12632256
     RecSrcDt = Begin
         0x668d2cd46a58e440
@@ -40,10 +39,10 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x006e8900486e890168b70077000000000000a1220000a122c000a12260eaa122 ,
+        0x007c6c4200000000006316011b27cf2f1407722f200000000000000000000000 ,
         0x010403069c00501453ef800301000900ea0a6f08640001000f00580202000100 ,
-        0x5802030001004c65747465720002000000000000d76800779bd5fd4118000000 ,
-        0x0000a12210000000000000000000000000000000010000000000000001000000 ,
+        0x5802030001004c657474657200d10d58b05e04054059b5000800000001000000 ,
+        0xe0e7d60400190000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
         0x2200c80024032c113f5d7b7e0000000000000000000000000000000000000000 ,
         0x0000000000000000050000000000090001000000000000000000000000000000 ,
@@ -212,19 +211,19 @@ Begin Form
     PrtDevNames = Begin
         0x08001f0036000100000000000000000000000000000000000000000000000000 ,
         0x00000000000000000000000000000000000000000000504f525450524f4d5054 ,
-        0x3a0000000000
+        0x3a00
     End
     FilterOnLoad =0
     ShowPageMargins =0
     AllowLayoutView =0
     DatasheetGridlinesColor12 =12632256
     PrtDevModeW = Begin
-        0x0000a622000000005b0000006002a6220100000088499401e8688901f05e0377 ,
-        0x53c37f37386789010c000000902415683867890160538b130c00000006000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x74006f0020005000440046000000000000000000000000000000000000000000 ,
         0x01040306dc00501453ef800301000900ea0a6f08640001000f00580202000100 ,
-        0x5802030001004c00650074007400650072000000e8168d00bdcec2c0bdcec2c0 ,
-        0x1c6789012067890144538b13d8668901e48efc00ffffffff54658901e29d9100 ,
-        0xb4538b131c670000000000000000000000000000010000000000000001000000 ,
+        0x5802030001004c00650074007400650072000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
         0x2200c80024032c113f5d7b7e0000000000000000000000000000000000000000 ,
         0x0000000000000000050000000000090001000000000000000000000000000000 ,
@@ -394,8 +393,7 @@ Begin Form
         0x04001b0032000100000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000050004f0052005400500052004f004d00500054003a00000000000000 ,
-        0x00000000
+        0x0000000050004f0052005400500052004f004d00500054003a000000
     End
     
     Begin
@@ -413,6 +411,20 @@ Begin Form
         Begin Line
             BorderLineStyle =0
             Width =1701
+        End
+        Begin Image
+            BackStyle =0
+            OldBorderStyle =0
+            BorderLineStyle =0
+            SizeMode =3
+            PictureAlignment =2
+            Width =1701
+            Height =1701
+            BorderColor =16777215
+            BorderThemeColorIndex =3
+            BorderShade =90.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
         End
         Begin CommandButton
             Width =1701
@@ -496,8 +508,8 @@ Begin Form
                     TextFontCharSet =2
                     TextAlign =1
                     TextFontFamily =2
-                    Left =2381
-                    Top =5081
+                    Left =2345
+                    Top =5076
                     Width =295
                     Height =295
                     FontSize =16
@@ -509,10 +521,10 @@ Begin Form
                         0xdd6a6769d341054eb9b6a296fae08f29
                     End
                     VerticalAnchor =1
-                    LayoutCachedLeft =2381
-                    LayoutCachedTop =5081
-                    LayoutCachedWidth =2676
-                    LayoutCachedHeight =5376
+                    LayoutCachedLeft =2345
+                    LayoutCachedTop =5076
+                    LayoutCachedWidth =2640
+                    LayoutCachedHeight =5371
                 End
                 Begin Label
                     OldBorderStyle =1
@@ -521,8 +533,8 @@ Begin Form
                     TextFontCharSet =2
                     TextAlign =1
                     TextFontFamily =2
-                    Left =2381
-                    Top =4721
+                    Left =2345
+                    Top =4716
                     Width =295
                     Height =295
                     FontSize =16
@@ -533,10 +545,10 @@ Begin Form
                         0x305cae0a69ac99408cdac46d5e2689ce
                     End
                     VerticalAnchor =1
-                    LayoutCachedLeft =2381
-                    LayoutCachedTop =4721
-                    LayoutCachedWidth =2676
-                    LayoutCachedHeight =5016
+                    LayoutCachedLeft =2345
+                    LayoutCachedTop =4716
+                    LayoutCachedWidth =2640
+                    LayoutCachedHeight =5011
                 End
                 Begin Label
                     OldBorderStyle =1
@@ -545,8 +557,8 @@ Begin Form
                     TextFontCharSet =2
                     TextAlign =1
                     TextFontFamily =2
-                    Left =2381
-                    Top =5441
+                    Left =2345
+                    Top =5436
                     Width =295
                     Height =295
                     FontSize =16
@@ -557,10 +569,10 @@ Begin Form
                         0x1d0212a8607e14459c58854d3069900b
                     End
                     VerticalAnchor =1
-                    LayoutCachedLeft =2381
-                    LayoutCachedTop =5441
-                    LayoutCachedWidth =2676
-                    LayoutCachedHeight =5736
+                    LayoutCachedLeft =2345
+                    LayoutCachedTop =5436
+                    LayoutCachedWidth =2640
+                    LayoutCachedHeight =5731
                 End
                 Begin Label
                     OldBorderStyle =1
@@ -569,8 +581,8 @@ Begin Form
                     TextFontCharSet =2
                     TextAlign =1
                     TextFontFamily =2
-                    Left =2381
-                    Top =4376
+                    Left =2345
+                    Top =4371
                     Width =295
                     Height =295
                     FontSize =16
@@ -581,16 +593,16 @@ Begin Form
                         0xbe7161d84c13b5499ad792e6366b9eac
                     End
                     VerticalAnchor =1
-                    LayoutCachedLeft =2381
-                    LayoutCachedTop =4376
-                    LayoutCachedWidth =2676
-                    LayoutCachedHeight =4671
+                    LayoutCachedLeft =2345
+                    LayoutCachedTop =4371
+                    LayoutCachedWidth =2640
+                    LayoutCachedHeight =4666
                 End
                 Begin Line
                     OverlapFlags =85
                     SpecialEffect =2
-                    Left =2784
-                    Top =4215
+                    Left =2748
+                    Top =4210
                     Width =0
                     Height =1814
                     Name ="Linie49"
@@ -598,10 +610,10 @@ Begin Form
                         0x6c2c3106ded8534c87892e2ee126530c
                     End
                     VerticalAnchor =1
-                    LayoutCachedLeft =2784
-                    LayoutCachedTop =4215
-                    LayoutCachedWidth =2784
-                    LayoutCachedHeight =6029
+                    LayoutCachedLeft =2748
+                    LayoutCachedTop =4210
+                    LayoutCachedWidth =2748
+                    LayoutCachedHeight =6024
                 End
                 Begin TextBox
                     AllowAutoCorrect = NotDefault
@@ -641,16 +653,16 @@ Begin Form
                     LayoutCachedTop =5475
                     LayoutCachedWidth =10497
                     LayoutCachedHeight =5850
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin Label
                     OverlapFlags =85
-                    Left =356
-                    Top =4746
+                    Left =320
+                    Top =4741
                     Width =1991
                     Height =255
                     FontSize =9
@@ -660,15 +672,15 @@ Begin Form
                         0x8b2a1e9b456dac47a589d89260e7cd9d
                     End
                     VerticalAnchor =1
-                    LayoutCachedLeft =356
-                    LayoutCachedTop =4746
-                    LayoutCachedWidth =2347
-                    LayoutCachedHeight =5001
+                    LayoutCachedLeft =320
+                    LayoutCachedTop =4741
+                    LayoutCachedWidth =2311
+                    LayoutCachedHeight =4996
                 End
                 Begin Label
                     OverlapFlags =85
-                    Left =356
-                    Top =5106
+                    Left =320
+                    Top =5101
                     Width =1991
                     Height =255
                     FontSize =9
@@ -678,15 +690,15 @@ Begin Form
                         0x502db6c278e7644e80b7bb465da8086e
                     End
                     VerticalAnchor =1
-                    LayoutCachedLeft =356
-                    LayoutCachedTop =5106
-                    LayoutCachedWidth =2347
-                    LayoutCachedHeight =5361
+                    LayoutCachedLeft =320
+                    LayoutCachedTop =5101
+                    LayoutCachedWidth =2311
+                    LayoutCachedHeight =5356
                 End
                 Begin Label
                     OverlapFlags =85
-                    Left =356
-                    Top =5466
+                    Left =320
+                    Top =5461
                     Width =1991
                     Height =255
                     FontSize =9
@@ -696,16 +708,16 @@ Begin Form
                         0xdd04a61804b3d3489636dea0aac6d966
                     End
                     VerticalAnchor =1
-                    LayoutCachedLeft =356
-                    LayoutCachedTop =5466
-                    LayoutCachedWidth =2347
-                    LayoutCachedHeight =5721
+                    LayoutCachedLeft =320
+                    LayoutCachedTop =5461
+                    LayoutCachedWidth =2311
+                    LayoutCachedHeight =5716
                 End
                 Begin CommandButton
                     Transparent = NotDefault
                     OverlapFlags =215
-                    Left =2381
-                    Top =5081
+                    Left =2345
+                    Top =5076
                     Width =295
                     Height =295
                     TabIndex =5
@@ -717,21 +729,21 @@ Begin Form
                     End
                     VerticalAnchor =1
 
-                    LayoutCachedLeft =2381
-                    LayoutCachedTop =5081
-                    LayoutCachedWidth =2676
-                    LayoutCachedHeight =5376
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    LayoutCachedLeft =2345
+                    LayoutCachedTop =5076
+                    LayoutCachedWidth =2640
+                    LayoutCachedHeight =5371
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin CommandButton
                     Transparent = NotDefault
                     OverlapFlags =215
-                    Left =2381
-                    Top =4721
+                    Left =2345
+                    Top =4716
                     Width =295
                     Height =295
                     TabIndex =3
@@ -743,21 +755,21 @@ Begin Form
                     End
                     VerticalAnchor =1
 
-                    LayoutCachedLeft =2381
-                    LayoutCachedTop =4721
-                    LayoutCachedWidth =2676
-                    LayoutCachedHeight =5016
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    LayoutCachedLeft =2345
+                    LayoutCachedTop =4716
+                    LayoutCachedWidth =2640
+                    LayoutCachedHeight =5011
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin CommandButton
                     Transparent = NotDefault
                     OverlapFlags =215
-                    Left =2381
-                    Top =5441
+                    Left =2345
+                    Top =5436
                     Width =295
                     Height =295
                     TabIndex =6
@@ -769,21 +781,21 @@ Begin Form
                     End
                     VerticalAnchor =1
 
-                    LayoutCachedLeft =2381
-                    LayoutCachedTop =5441
-                    LayoutCachedWidth =2676
-                    LayoutCachedHeight =5736
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    LayoutCachedLeft =2345
+                    LayoutCachedTop =5436
+                    LayoutCachedWidth =2640
+                    LayoutCachedHeight =5731
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin Label
                     FontUnderline = NotDefault
                     OverlapFlags =93
-                    Left =120
-                    Top =4398
+                    Left =84
+                    Top =4393
                     Width =2145
                     Height =255
                     FontSize =9
@@ -797,16 +809,16 @@ Begin Form
                         0x6fdf1d4132b76c429cd92273cd9ef89b
                     End
                     VerticalAnchor =1
-                    LayoutCachedLeft =120
-                    LayoutCachedTop =4398
-                    LayoutCachedWidth =2265
-                    LayoutCachedHeight =4653
+                    LayoutCachedLeft =84
+                    LayoutCachedTop =4393
+                    LayoutCachedWidth =2229
+                    LayoutCachedHeight =4648
                 End
                 Begin CommandButton
                     Transparent = NotDefault
                     OverlapFlags =223
-                    Left =2381
-                    Top =4376
+                    Left =2345
+                    Top =4371
                     Width =295
                     Height =295
                     TabIndex =1
@@ -818,22 +830,22 @@ Begin Form
                     End
                     VerticalAnchor =1
 
-                    LayoutCachedLeft =2381
-                    LayoutCachedTop =4376
-                    LayoutCachedWidth =2676
-                    LayoutCachedHeight =4671
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    LayoutCachedLeft =2345
+                    LayoutCachedTop =4371
+                    LayoutCachedWidth =2640
+                    LayoutCachedHeight =4666
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin ComboBox
                     LimitToList = NotDefault
                     OverlapFlags =85
                     IMESentenceMode =3
-                    Left =2039
-                    Top =170
+                    Left =2003
+                    Top =165
                     Width =3402
                     Height =285
                     FontSize =10
@@ -847,15 +859,15 @@ Begin Form
                     FontName ="Verdana"
                     OnGotFocus ="[Event Procedure]"
 
-                    LayoutCachedLeft =2039
-                    LayoutCachedTop =170
-                    LayoutCachedWidth =5441
-                    LayoutCachedHeight =455
+                    LayoutCachedLeft =2003
+                    LayoutCachedTop =165
+                    LayoutCachedWidth =5405
+                    LayoutCachedHeight =450
                     Begin
                         Begin Label
                             OverlapFlags =85
-                            Left =113
-                            Top =170
+                            Left =77
+                            Top =165
                             Width =1920
                             Height =285
                             FontSize =10
@@ -865,10 +877,10 @@ Begin Form
                             GUID = Begin
                                 0x686faf8a460dc643aef4f21fb057114d
                             End
-                            LayoutCachedLeft =113
-                            LayoutCachedTop =170
-                            LayoutCachedWidth =2033
-                            LayoutCachedHeight =455
+                            LayoutCachedLeft =77
+                            LayoutCachedTop =165
+                            LayoutCachedWidth =1997
+                            LayoutCachedHeight =450
                         End
                     End
                 End
@@ -876,8 +888,8 @@ Begin Form
                     Enabled = NotDefault
                     OverlapFlags =87
                     SpecialEffect =3
-                    Left =120
-                    Top =900
+                    Left =84
+                    Top =895
                     Width =10605
                     Height =3255
                     TabIndex =7
@@ -891,17 +903,17 @@ Begin Form
                     HorizontalAnchor =2
                     VerticalAnchor =2
 
-                    LayoutCachedLeft =120
-                    LayoutCachedTop =900
-                    LayoutCachedWidth =10725
-                    LayoutCachedHeight =4155
+                    LayoutCachedLeft =84
+                    LayoutCachedTop =895
+                    LayoutCachedWidth =10689
+                    LayoutCachedHeight =4150
                     BorderThemeColorIndex =-1
                     BorderShade =100.0
                     Begin
                         Begin Label
                             OverlapFlags =93
-                            Left =120
-                            Top =615
+                            Left =84
+                            Top =610
                             Width =1920
                             Height =285
                             FontSize =10
@@ -910,19 +922,19 @@ Begin Form
                             GUID = Begin
                                 0x316e57d56817c141a27648ce160be30c
                             End
-                            LayoutCachedLeft =120
-                            LayoutCachedTop =615
-                            LayoutCachedWidth =2040
-                            LayoutCachedHeight =900
+                            LayoutCachedLeft =84
+                            LayoutCachedTop =610
+                            LayoutCachedWidth =2004
+                            LayoutCachedHeight =895
                         End
                     End
                 End
                 Begin OptionGroup
                     Enabled = NotDefault
                     OverlapFlags =93
-                    Left =3465
-                    Top =4621
-                    Width =3681
+                    Left =3108
+                    Top =4615
+                    Width =3742
                     Height =1304
                     TabIndex =9
                     Name ="UseFilterMethodOptions"
@@ -934,16 +946,16 @@ Begin Form
                     HorizontalAnchor =1
                     VerticalAnchor =1
 
-                    LayoutCachedLeft =3465
-                    LayoutCachedTop =4621
-                    LayoutCachedWidth =7146
-                    LayoutCachedHeight =5925
+                    LayoutCachedLeft =3108
+                    LayoutCachedTop =4615
+                    LayoutCachedWidth =6850
+                    LayoutCachedHeight =5919
                     Begin
                         Begin Label
                             BackStyle =1
                             OverlapFlags =215
-                            Left =3581
-                            Top =4501
+                            Left =3224
+                            Top =4495
                             Width =1395
                             Height =240
                             BackColor =-2147483633
@@ -954,17 +966,17 @@ Begin Form
                             End
                             HorizontalAnchor =1
                             VerticalAnchor =1
-                            LayoutCachedLeft =3581
-                            LayoutCachedTop =4501
-                            LayoutCachedWidth =4976
-                            LayoutCachedHeight =4741
+                            LayoutCachedLeft =3224
+                            LayoutCachedTop =4495
+                            LayoutCachedWidth =4619
+                            LayoutCachedHeight =4735
                         End
                         Begin OptionButton
                             OverlapFlags =87
-                            Left =3615
-                            Top =4893
+                            Left =3258
+                            Top =4887
                             OptionValue =0
-                            BorderColor =13553360
+                            BorderColor =12835293
                             Name ="Option93"
                             GUID = Begin
                                 0x2ed9a0b87581e9459437795c1ea4f08f
@@ -973,15 +985,15 @@ Begin Form
                             HorizontalAnchor =1
                             VerticalAnchor =1
 
-                            LayoutCachedLeft =3615
-                            LayoutCachedTop =4893
-                            LayoutCachedWidth =3875
-                            LayoutCachedHeight =5133
+                            LayoutCachedLeft =3258
+                            LayoutCachedTop =4887
+                            LayoutCachedWidth =3518
+                            LayoutCachedHeight =5127
                             Begin
                                 Begin Label
                                     OverlapFlags =247
-                                    Left =3840
-                                    Top =4861
+                                    Left =3483
+                                    Top =4855
                                     Width =3075
                                     Height =240
                                     Name ="Bezeichnungsfeld94"
@@ -991,20 +1003,20 @@ Begin Form
                                     End
                                     HorizontalAnchor =1
                                     VerticalAnchor =1
-                                    LayoutCachedLeft =3840
-                                    LayoutCachedTop =4861
-                                    LayoutCachedWidth =6915
-                                    LayoutCachedHeight =5101
+                                    LayoutCachedLeft =3483
+                                    LayoutCachedTop =4855
+                                    LayoutCachedWidth =6558
+                                    LayoutCachedHeight =5095
                                 End
                             End
                         End
                         Begin OptionButton
                             OverlapFlags =87
-                            Left =3615
-                            Top =5203
+                            Left =3258
+                            Top =5197
                             TabIndex =1
                             OptionValue =1
-                            BorderColor =13553360
+                            BorderColor =12835293
                             Name ="Option95"
                             GUID = Begin
                                 0x918bf012f5ab6a4a82b18d8d78de17cb
@@ -1013,15 +1025,15 @@ Begin Form
                             HorizontalAnchor =1
                             VerticalAnchor =1
 
-                            LayoutCachedLeft =3615
-                            LayoutCachedTop =5203
-                            LayoutCachedWidth =3875
-                            LayoutCachedHeight =5443
+                            LayoutCachedLeft =3258
+                            LayoutCachedTop =5197
+                            LayoutCachedWidth =3518
+                            LayoutCachedHeight =5437
                             Begin
                                 Begin Label
                                     OverlapFlags =247
-                                    Left =3844
-                                    Top =5176
+                                    Left =3487
+                                    Top =5170
                                     Width =3049
                                     Height =240
                                     Name ="Bezeichnungsfeld96"
@@ -1031,20 +1043,20 @@ Begin Form
                                     End
                                     HorizontalAnchor =1
                                     VerticalAnchor =1
-                                    LayoutCachedLeft =3844
-                                    LayoutCachedTop =5176
-                                    LayoutCachedWidth =6893
-                                    LayoutCachedHeight =5416
+                                    LayoutCachedLeft =3487
+                                    LayoutCachedTop =5170
+                                    LayoutCachedWidth =6536
+                                    LayoutCachedHeight =5410
                                 End
                             End
                         End
                         Begin OptionButton
                             OverlapFlags =87
-                            Left =3615
-                            Top =5546
+                            Left =3258
+                            Top =5540
                             TabIndex =2
                             OptionValue =2
-                            BorderColor =13553360
+                            BorderColor =12835293
                             Name ="Option97"
                             GUID = Begin
                                 0x03d2ddc59a72074694568a25b639186a
@@ -1053,15 +1065,15 @@ Begin Form
                             HorizontalAnchor =1
                             VerticalAnchor =1
 
-                            LayoutCachedLeft =3615
-                            LayoutCachedTop =5546
-                            LayoutCachedWidth =3875
-                            LayoutCachedHeight =5786
+                            LayoutCachedLeft =3258
+                            LayoutCachedTop =5540
+                            LayoutCachedWidth =3518
+                            LayoutCachedHeight =5780
                             Begin
                                 Begin Label
                                     OverlapFlags =247
-                                    Left =3844
-                                    Top =5516
+                                    Left =3487
+                                    Top =5510
                                     Width =1114
                                     Height =240
                                     Name ="Bezeichnungsfeld98"
@@ -1071,10 +1083,10 @@ Begin Form
                                     End
                                     HorizontalAnchor =1
                                     VerticalAnchor =1
-                                    LayoutCachedLeft =3844
-                                    LayoutCachedTop =5516
-                                    LayoutCachedWidth =4958
-                                    LayoutCachedHeight =5756
+                                    LayoutCachedLeft =3487
+                                    LayoutCachedTop =5510
+                                    LayoutCachedWidth =4601
+                                    LayoutCachedHeight =5750
                                 End
                             End
                         End
@@ -1086,8 +1098,8 @@ Begin Form
                     OverlapFlags =247
                     IMESentenceMode =3
                     ListWidth =3402
-                    Left =4958
-                    Top =5516
+                    Left =4601
+                    Top =5510
                     Width =2061
                     TabIndex =8
                     GUID = Begin
@@ -1101,16 +1113,16 @@ Begin Form
                     HorizontalAnchor =1
                     VerticalAnchor =1
 
-                    LayoutCachedLeft =4958
-                    LayoutCachedTop =5516
-                    LayoutCachedWidth =7019
-                    LayoutCachedHeight =5756
+                    LayoutCachedLeft =4601
+                    LayoutCachedTop =5510
+                    LayoutCachedWidth =6662
+                    LayoutCachedHeight =5750
                 End
                 Begin Label
                     OverlapFlags =215
                     TextAlign =3
-                    Left =1680
-                    Top =4188
+                    Left =1644
+                    Top =4183
                     Width =1080
                     Height =210
                     FontSize =7
@@ -1121,10 +1133,10 @@ Begin Form
                         0x9586ac4241703346a1cfd7ee0517764e
                     End
                     VerticalAnchor =1
-                    LayoutCachedLeft =1680
-                    LayoutCachedTop =4188
-                    LayoutCachedWidth =2760
-                    LayoutCachedHeight =4398
+                    LayoutCachedLeft =1644
+                    LayoutCachedTop =4183
+                    LayoutCachedWidth =2724
+                    LayoutCachedHeight =4393
                 End
                 Begin OptionGroup
                     Enabled = NotDefault
@@ -1172,7 +1184,7 @@ Begin Form
                             Left =7395
                             Top =4892
                             OptionValue =1
-                            BorderColor =13553360
+                            BorderColor =12835293
                             Name ="Option105"
                             GUID = Begin
                                 0x9360b4bcc3c8bf48a0506593b1be6c0a
@@ -1212,7 +1224,7 @@ Begin Form
                             Top =5202
                             TabIndex =1
                             OptionValue =2
-                            BorderColor =13553360
+                            BorderColor =12835293
                             Name ="Option107"
                             GUID = Begin
                                 0x3b9786ef86a3784a9dd3a8c5ebed31d9
@@ -1428,8 +1440,8 @@ Begin Form
                     FontUnderline = NotDefault
                     OverlapFlags =85
                     TextAlign =1
-                    Left =96
-                    Top =5760
+                    Left =60
+                    Top =5755
                     Width =2568
                     Height =240
                     ForeColor =16737792
@@ -1442,10 +1454,41 @@ Begin Form
                         0xdcdeffa97bf2ca4f8f5702328eae0b9b
                     End
                     VerticalAnchor =1
-                    LayoutCachedLeft =96
-                    LayoutCachedTop =5760
-                    LayoutCachedWidth =2664
-                    LayoutCachedHeight =6000
+                    LayoutCachedLeft =60
+                    LayoutCachedTop =5755
+                    LayoutCachedWidth =2628
+                    LayoutCachedHeight =5995
+                End
+                Begin CommandButton
+                    Enabled = NotDefault
+                    OverlapFlags =95
+                    Left =2004
+                    Top =595
+                    Width =3402
+                    Height =284
+                    FontSize =7
+                    TabIndex =15
+                    Name ="cmdFillFilterControlsFromDataSource"
+                    Caption ="FilterControl-Liste mit Namen aus Datenquelle füllen"
+                    StatusBarText ="Zum Füllen der List mit den Namen aus der Formulardatenquelle bitte zuerst in de"
+                        "r Use-Filter-Methode das Datenformular einstellen"
+                    OnClick ="[Event Procedure]"
+                    ControlTipText ="Bitte zuerst in der \"UseFilter-Methode\"-Option das Datenformular einstellen"
+                    GUID = Begin
+                        0x683609b2ef3da847bec91b308cba0601
+                    End
+                    HorizontalAnchor =1
+
+                    LayoutCachedLeft =2004
+                    LayoutCachedTop =595
+                    LayoutCachedWidth =5406
+                    LayoutCachedHeight =879
+                    BackColor =-2147483633
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                    Overlaps =1
                 End
             End
         End
@@ -1579,6 +1622,7 @@ Private Sub LoadForms()
 End Sub
 
 Private Sub cbxUseFilterSubForm_AfterUpdate()
+   SetFillFilterControlsFromDataSourceMode
    RefreshAddFilterButtonEnableMode
 End Sub
 
@@ -1720,6 +1764,62 @@ Private Sub cmdAddFilterCodeToForm_Click()
          AddFilterCodeToForm New FilterStringBuilderCodeBuilder
    End Select
    
+End Sub
+
+Private Sub cmdFillFilterControlsFromDataSource_Click()
+   
+   Dim FilterFormName As String
+   Dim SubFormName As String
+   
+   FilterFormName = Nz(Me.cbxFormName.Value, vbNullString)
+   If Len(FilterFormName) = 0 Then Exit Sub
+   
+   Select Case Me.UseFilterMethodOptions.Value
+      Case 1
+         ' keine weiteren Anpassungen
+      Case 2
+         SubFormName = Nz(Me.cbxUseFilterSubForm.Value, vbNullString)
+         If Len(SubFormName) = 0 Then Exit Sub
+      Case Else
+         Exit Sub
+   End Select
+
+   If Not CurrentProject.AllForms(FilterFormName).IsLoaded Then
+      DoCmd.OpenForm FilterFormName, acDesign, , , , acWindowNormal
+   End If
+   
+   With Application.Forms(FilterFormName)
+      Select Case Me.UseFilterMethodOptions.Value
+         Case 1
+            FillFilterControlsFromDataSource .RecordSource
+         Case 2
+            FillFilterControlsFromDataSource .Controls(SubFormName).Form.RecordSource
+      End Select
+   
+   End With
+   
+End Sub
+
+Private Sub FillFilterControlsFromDataSource(ByVal DataSource As String)
+   
+   Dim fld As DAO.Field
+   
+   If Len(DataSource) = 0 Then
+      MsgBox "Es ist keine Datenquelle eingestellt.", vbExclamation, "Filter aus Datenfelder erzeugen"
+      Exit Sub
+   End If
+   
+   With CurrentDb.OpenRecordset(DataSource)
+      For Each fld In .Fields
+         AddFilterControlFromDataField fld
+      Next
+      .Close
+   End With
+   
+End Sub
+
+Private Sub AddFilterControlFromDataField(ByVal fld As DAO.Field)
+   Me.sfrFilterControls.Form.InsertFilterRecord fld.Name, fld.Type
 End Sub
 
 Private Sub Form_Current()
@@ -1930,9 +2030,32 @@ Private Sub UseFilterMethodOptions_AfterUpdate()
       .Enabled = (Me.UseFilterMethodOptions = SubFormUseFilterOption)
       If .Enabled = False Then .Value = Null
    End With
+   
+   SetFillFilterControlsFromDataSourceMode
 
    RefreshAddFilterButtonEnableMode
 
+End Sub
+
+Private Sub SetFillFilterControlsFromDataSourceMode()
+
+   With Me.cmdFillFilterControlsFromDataSource
+      Select Case Me.UseFilterMethodOptions
+         Case 1
+            .Enabled = True
+         Case 2
+            .Enabled = (Len(Nz(Me.cbxUseFilterSubForm.Value, vbNullString)) > 0)
+         Case Else
+            .Enabled = False
+      End Select
+   
+      If .Enabled Then
+         .ControlTipText = vbNullString
+      Else
+         .ControlTipText = "Bitte zuerst in der 'UseFilter-Methode'-Option das Datenformular einstellen"
+      End If
+   End With
+   
 End Sub
 
 Private Sub LoadControlsFromForm(ByVal FormRef As Form)
