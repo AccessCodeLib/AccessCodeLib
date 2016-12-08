@@ -102,6 +102,15 @@ Public Sub Format_DateTime_FormattedDateTime(ByVal Expression As Variant, ByVal 
    Assert.AreEqual Expected, Actual
 End Sub
 
+'AccUnit:Row(#01/02/2000 14:34:56#, #01/01/2000 00:00:00#, "[hh]:nn:ss", "38:34:56")
+'AccUnit:Row(2, 0, "[hh]:nn:ss", "48:00:00")
+Public Sub Format_CalculatedDateTime_FormattedDateTime(ByVal Date1 As Variant, ByVal Date2 As Variant, ByVal FormatString As Variant, ByVal Expected As String)
+   Dim Actual As String
+   Actual = StringTools.Format(Date1 - Date2, FormatString)
+   Assert.AreEqual Expected, Actual
+End Sub
+
+
 'AccUnit:Row("Test", 4, "_", "Test")
 'AccUnit:Row("Test", 6, "_", "__Test")
 Public Sub PadLeft_String_LeftPadString(ByVal Value As String, ByVal totalWidth As Integer, ByVal padChar As String, ByVal Expected As String)
