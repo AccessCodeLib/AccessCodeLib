@@ -30,3 +30,14 @@ Public Property Get SvnRev() As Long
    End With
    
 End Property
+
+Public Property Get SvnRevMin() As Long
+   
+   With CodeDb.OpenRecordset("select Min(SvnRev) from usys_AppFiles")
+      If Not .EOF Then
+         SvnRevMin = Nz(.Fields(0).Value, 0)
+      End If
+      .Close
+   End With
+   
+End Property
