@@ -31,7 +31,7 @@ Public Property Get Self() As IFilterFormCodeBuilder
 '
 End Property
 
-Public Sub CheckRequiredCodeModules()
+Public Sub CheckRequiredCodeModules(ByVal CodemoduleImporter As AppFileCodeModulTransfer)
 '
 End Sub
 

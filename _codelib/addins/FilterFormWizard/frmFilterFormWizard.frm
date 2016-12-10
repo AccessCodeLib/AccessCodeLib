@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =-631277913
+Checksum =978664834
 Begin Form
     AllowFilters = NotDefault
     RecordSelectors = NotDefault
@@ -20,10 +20,10 @@ Begin Form
     Width =10771
     DatasheetFontHeight =10
     ItemSuffix =126
-    Left =4128
-    Top =1056
-    Right =14904
-    Bottom =7068
+    Left =528
+    Top =984
+    Right =11304
+    Bottom =6996
     DatasheetGridlinesColor =12632256
     RecSrcDt = Begin
         0x668d2cd46a58e440
@@ -40,10 +40,10 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x002b695fdc4bd200144bd200285c7a0100000000000000000000000000000000 ,
+        0x002b695fec4fdd00244fdd00285c7a0100000000000000000000000000000000 ,
         0x01041e039c00280a53ef8003010009009a0b3408640001000f00580202000100 ,
         0x5802030001004134000000000000000000000000000000000000000001000000 ,
-        0x285c7a01a84a0000000000000000000000000000000000000000000001000000 ,
+        0x285c7a01b84e0000000000000000000000000000000000000000000001000000 ,
         0x0200000001000000020000000000000000000000000000000000000043616e6f ,
         0x6e000000fc080000000000000001000001000000020600000904bc0300c00704 ,
         0x4300430061006e006f006e0020004c0042005000320039003000300000000000 ,
@@ -1373,7 +1373,7 @@ End Property
 Private Property Get CodeModulImporter() As AppFileCodeModulTransfer
    If m_CodeModulImporter Is Nothing Then
       Set m_CodeModulImporter = New AppFileCodeModulTransfer
-      m_CodeModulImporter.UseVbComponentsImport = True
+      m_CodeModulImporter.UseVbComponentsImport = APPLICATION_FILTERCODEMODULE_USEVBCOMPONENTSIMPORT
    End If
    Set CodeModulImporter = m_CodeModulImporter
 End Property
@@ -1736,7 +1736,11 @@ On Error Resume Next
 End Sub
 
 Private Sub Form_Open(ByRef Cancel As Integer)
-   Me.Caption = Me.Caption & "  " & ChrW(&H25AA) & "  Version " & CurrentApplication.Version & " (Filter-Klassen: SVN-Rev. " & SvnRev & ")"
+   SetFormCaption
+End Sub
+
+Private Sub SetFormCaption()
+   Me.Caption = "ACLib FilterForm Wizard  " & ChrW(&H25AA) & "  Version " & CurrentApplication.Version & " (Filter-Klassen: SVN-Rev. " & SvnRev & ")"
 End Sub
 
 Private Sub labCheckVersion_Click()
@@ -2004,5 +2008,7 @@ Private Sub RefreshCodeModulesFromSvnRepo()
    End With
    
    MsgBox "Codemodule wurden aktualisiert", , CurrentApplication.ApplicationName
+   
+   SetFormCaption
 
 End Sub

@@ -34,8 +34,8 @@ Private Property Get IFilterFormCodeBuilder_Self() As IFilterFormCodeBuilder
    Set IFilterFormCodeBuilder_Self = Me
 End Property
 
-Private Sub IFilterFormCodeBuilder_CheckRequiredCodeModules()
-   With New AppFileCodeModulTransfer
+Private Sub IFilterFormCodeBuilder_CheckRequiredCodeModules(ByVal CodemoduleImporter As AppFileCodeModulTransfer)
+   With CodemoduleImporter
       .TransferCodeModules "SqlTools", "StringCollection", "FilterStringBuilder"
    End With
 End Sub
