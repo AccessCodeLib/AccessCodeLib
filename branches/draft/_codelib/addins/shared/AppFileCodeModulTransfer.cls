@@ -28,6 +28,26 @@ Attribute VB_Exposed = False
 Option Compare Database
 Option Explicit
 
+#Const EARLYBINDING = 0
+
+#If EARLYBINDING = 1 Then
+Private m_CurrentVbProject As VBIDE.VBProject
+#Else
+Private m_CurrentVbProject As Object
+#End If
+
+Private m_CodeModuleWriter As CodeModuleWriter
+Private m_UseVbComponentsImport As Boolean
+
+Public Property Get UseVbComponentsImport() As Boolean
+   UseVbComponentsImport = m_UseVbComponentsImport
+End Property
+
+Public Property Let UseVbComponentsImport(ByVal NewValue As Boolean)
+   m_UseVbComponentsImport = NewValue
+End Property
+
+
 'Module u. Klassen übertragen
 Public Sub TransferCodeModules(ParamArray ModulNames() As Variant)
    
@@ -56,13 +76,13 @@ Public Function ReplaceCodeModules(ParamArray ModulNames() As Variant) As Boolea
       ArrSize = UBound(ModulNames)
       For i = 0 To ArrSize
       
-         If CheckCodeModule(ModulNames(i)) Then
+         If CheckCodeModule(ModulNames(i)) And (UseVbComponentsImport = False) Then
             'Modul löschen
             vbp.VBComponents.Remove vbp.VBComponents(ModulNames(i))
          End If
          
-         'Module kopieren:
-         CheckCodeModule ModulNames(i), True
+         'Module aktualisieren
+         TransferCodeModul CurrentProject, acModule, ModulNames(i)
          
       Next
       ReplaceCodeModules = True
@@ -111,6 +131,8 @@ Public Function CheckCodeModule(ByVal ModulName As String, _
 
 End Function
 
+
+
 Private Sub TransferCodeModul(ByVal TargetProject As Access.CurrentProject, _
                               ByVal ObjType As AcObjectType, ByVal ModulName As String)
 
@@ -118,7 +140,65 @@ Private Sub TransferCodeModul(ByVal TargetProject As Access.CurrentProject, _
    
    FileName = FileTools.GetNewTempFileName
    CurrentApplication.CreateAppFile ModulName, FileName
-   TargetProject.Application.LoadFromText ObjType, ModulName, FileName
+   If UseVbComponentsImport And ObjType = acModule Then
+      If VbeTools.CodeModuleExists(ModulName) Then
+         CurrentCodeModulWriter.ImportVbComponent 0, ModulName, FileName
+      Else
+         ConvertToSaveAsTextFile FileName
+         TargetProject.Application.LoadFromText ObjType, ModulName, FileName
+      End If
+   Else
+      TargetProject.Application.LoadFromText ObjType, ModulName, FileName
+   End If
    Kill FileName
    
+   VbeTools.ActivateCurrentProject
+   With TargetProject.Application.DoCmd
+      '.RunCommand acCmdCompileAndSaveAllModules
+      .Save acModule, ModulName
+   End With
 End Sub
+
+Private Sub ConvertToSaveAsTextFile(ByVal FilePath As String)
+   
+   Const SEARCHSTRING_ATTRIBUTNAME_BEGIN As String = "Attribute VB_Name = """
+   Const SEARCHSTRING_ATTRIBUTNAME_END   As String = """"
+
+   Dim Pos As Long
+   Dim CheckString As String
+   Dim NewFile As String
+   Dim i As Long
+   
+   Dim FileNumber As Long
+   Dim CmType As vbext_ComponentType
+
+   FileNumber = FreeFile
+   Open FilePath For Binary Access Read As FileNumber
+   CheckString = String$(LOF(FileNumber), 0)
+   Get FileNumber, , CheckString
+   Close FileNumber
+   
+   Pos = InStr(1, CheckString, SEARCHSTRING_ATTRIBUTNAME_BEGIN)
+   If Pos <= 1 Then
+      Exit Sub
+   End If
+   
+   CheckString = Mid(CheckString, Pos)
+   
+   NewFile = FilePath & "_SaT"
+   FileNumber = FreeFile
+   Open NewFile For Binary Access Write As FileNumber
+   Put FileNumber, , CheckString
+   Close FileNumber
+   
+   Kill FilePath
+   Name NewFile As FilePath
+   
+End Sub
+
+Private Property Get CurrentCodeModulWriter() As CodeModuleWriter
+   If m_CodeModuleWriter Is Nothing Then
+      Set m_CodeModuleWriter = New CodeModuleWriter
+   End If
+   Set CurrentCodeModulWriter = m_CodeModuleWriter
+End Property

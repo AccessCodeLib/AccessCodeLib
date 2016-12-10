@@ -21,13 +21,14 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>_codelib/addins/shared/CodeModuleWriter.cls</file>
 '  <license>_codelib/license.bas</license>
+'  <use>_codelib/addins/shared/VbeTools.cls</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
 Option Compare Database
 Option Explicit
 
-#Const EARLYBINDING = 0
+#Const EARLYBINDING = 1
 
 #If EARLYBINDING Then
    Private m_CodeModule As VBIDE.CodeModule
@@ -178,20 +179,162 @@ Friend Property Get CurrentVbProject() As Object
    Dim strCurrentDbName As String
 
    If m_CurrentVbProject Is Nothing Then
-      Set m_CurrentVbProject = VBE.ActiveVBProject
-      'Prüfen, ob das richtige VbProject gewählt wurde (muss das von CurrentDb sein)
-      strCurrentDbName = UncPath(CurrentDb.Name)
-      If m_CurrentVbProject.FileName <> strCurrentDbName Then
-         Set m_CurrentVbProject = Nothing
-         For Each Proj In VBE.VBProjects
-            If Proj.FileName = strCurrentDbName Then
-               Set m_CurrentVbProject = Proj
-               Exit For
-            End If
-         Next
-      End If
+      Set m_CurrentVbProject = VbeTools.CurrentVbProject
    End If
    
    Set CurrentVbProject = m_CurrentVbProject
 
 End Property
+
+Public Sub ImportVbComponent(ByVal ComponentType As vbext_ComponentType, ByVal CodeModulName As String, ByVal ImportFile As String)
+
+#If EARLYBINDING = 1 Then
+   Dim VbcCol As VBIDE.VBComponents
+   Dim vbc As VBIDE.VBComponent
+   Dim cm As VBIDE.CodeModule
+#Else
+   Dim VbcCol As Object
+   Dim vbc As Object
+   Dim cm As Object
+#End If
+   Dim CodeModuleExists As Boolean
+
+   If ComponentType = 0 Then
+      ComponentType = GetComponentTypeFromFile(ImportFile)
+   End If
+
+   Set VbcCol = CurrentVbProject.VBComponents
+   For Each vbc In VbcCol
+      If vbc.Name = CodeModulName Then
+         CodeModuleExists = True
+         Exit For
+      End If
+   Next
+
+   If CodeModuleExists Then   ' überprüfen, ob Typen übereinstimmen
+      If vbc.Type <> ComponentType Then
+         VbcCol.Remove vbc
+         Set vbc = Nothing
+         CodeModuleExists = False
+      End If
+   End If
+  
+   If Not CodeModuleExists Then
+      Set vbc = VbcCol.Add(ComponentType)
+      vbc.Name = CodeModulName
+   End If
+   
+   Set cm = vbc.CodeModule
+   cm.DeleteLines 1, cm.CountOfLines
+   cm.AddFromFile ImportFile
+   If ComponentType = vbext_ComponentType.vbext_ct_ClassModule Then
+      'wegschneiden von:
+      'VERSION 1.0 CLASS
+      'BEGIN
+      '  MultiUse = -1  'True
+      'End
+      DeleteClassHeaderLinesFromCodeModul cm
+   End If
+   'Leerzeilen am Ende säubern
+   Do While Len(Trim$(cm.Lines(cm.CountOfLines, 1))) = 0 And cm.CountOfLines > 1
+      cm.DeleteLines cm.CountOfLines
+   Loop
+'
+'   Else
+'      Set vbc = VbcCol.import(ImportFile)
+'
+'   End If
+
+End Sub
+
+Private Function GetComponentTypeFromFile(ByVal FilePath As String) As vbext_ComponentType
+
+   Const SEARCHSTRING_ATTRIBUTNAME_BEGIN As String = "Attribute VB_Name = """
+   Const SEARCHSTRING_ATTRIBUTNAME_END   As String = """"
+
+   Dim Pos As Long
+   Dim CheckString As String
+   Dim TempString As String
+   Dim i As Long
+   Dim FileNumber As Long
+   Dim CmType As vbext_ComponentType
+
+   FileNumber = FreeFile
+   Open FilePath For Binary Access Read As FileNumber
+   CheckString = String$(LOF(FileNumber), 0)
+   Get FileNumber, , CheckString
+   Close FileNumber
+   
+   'Pos von VB_Name ermitteln (= Kennzeichen für Standardmodul oder Klasse)
+   Pos = InStr(1, CheckString, SEARCHSTRING_ATTRIBUTNAME_BEGIN)
+   
+   'Typ bestimmen
+   If Pos > 0 Then
+      CmType = vbext_ComponentType.vbext_ct_StdModule
+      If InStr(1, Left$(CheckString, Pos - 1), "CLASS", vbBinaryCompare) Then
+         CmType = vbext_ComponentType.vbext_ct_ClassModule
+      End If
+   Else
+      Err.Raise vbObjectError, "", "Codemodule file required (StdModule or ClassModule)"
+   End If
+
+   GetComponentTypeFromFile = CmType
+
+End Function
+
+#If EARLYBINDING = 1 Then
+Private Sub DeleteClassHeaderLinesFromCodeModul(ByRef cm As CodeModule)
+#Else
+Private Sub DeleteClassHeaderLinesFromCodeModul(ByRef cm As Object)
+#End If
+'
+'Header sieht so aus:
+'--
+'VERSION 1.0 CLASS
+'BEGIN
+'  MultiUse = -1  'True
+'End
+'--
+
+   Dim Target As String
+   Dim SearchStartLine As Long, SearchStartCol As Long, _
+       SearchEndLine As Long, SearchEndCol As Long
+   Dim HeaderStartLine As Long, HeaderEndLine As Long
+
+   SearchStartLine = 1
+   SearchStartCol = 1
+   SearchEndLine = -1
+   SearchEndCol = -1
+
+   Target = "VERSION*CLASS"
+   If Not cm.Find(Target, SearchStartLine, SearchStartCol, SearchEndLine, SearchEndCol, True, False, True) Then
+      Exit Sub
+   End If
+   HeaderStartLine = SearchStartLine
+
+   Target = "BEGIN"
+   SearchStartLine = SearchEndLine
+   SearchStartCol = SearchEndCol
+   SearchEndLine = -1
+   SearchEndCol = -1
+   If Not cm.Find(Target, SearchStartLine, SearchStartCol, SearchEndLine, SearchEndCol, True, False, False) Then
+      Exit Sub
+   End If
+
+   Target = "End"
+   SearchStartLine = SearchEndLine
+   SearchStartCol = SearchEndCol
+   SearchEndLine = -1
+   SearchEndCol = -1
+   If Not cm.Find(Target, SearchStartLine, SearchStartCol, SearchEndLine, SearchEndCol, True, False, False) Then
+      Exit Sub
+   End If
+   HeaderEndLine = SearchEndLine
+
+#If DEBUGMODE = 1 Then
+   Debug.Print "Header lines:", HeaderStartLine, HeaderEndLine
+#End If
+
+   cm.DeleteLines HeaderStartLine, HeaderEndLine
+
+End Sub
