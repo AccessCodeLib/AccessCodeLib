@@ -34,6 +34,7 @@ Private m_FilterControlNames As StringCollection
 Private m_FilterControlLines As StringCollection
 
 Private m_Importer As IFilterFormCodeBuilder
+Private m_CodeModulImporter As AppFileCodeModulTransfer
 
 Private Sub Class_Initialize()
    Set m_FilterControlNames = New StringCollection
@@ -52,6 +53,14 @@ Public Property Set Importer(ByVal NewRef As IFilterFormCodeBuilder)
    Set m_Importer = NewRef
 End Property
 
+Private Property Get CodeModulImporter() As AppFileCodeModulTransfer
+   If m_CodeModulImporter Is Nothing Then
+      Set m_CodeModulImporter = New AppFileCodeModulTransfer
+      m_CodeModulImporter.UseVbComponentsImport = APPLICATION_FILTERCODEMODULE_USEVBCOMPONENTSIMPORT
+   End If
+   Set CodeModulImporter = m_CodeModulImporter
+End Property
+
 Friend Sub WriteToForm(ByVal FormName As String, _
               Optional ByVal KindOfUseFilterMethode As Long = 0, _
               Optional ByVal UseFilterMethodeSubFormName As String, _
@@ -62,7 +71,7 @@ Friend Sub WriteToForm(ByVal FormName As String, _
               Optional ByVal RemoveFilterCtlName As String, _
               Optional ByVal AutoFilterCtlName As String)
    
-   CheckRequiredCodeModules
+   CheckRequiredCodeModules CodeModulImporter
    
    If CurrentProject.AllForms(FormName).IsLoaded Then
       DoCmd.Close acForm, FormName
@@ -78,8 +87,8 @@ Friend Sub WriteToForm(ByVal FormName As String, _
 
 End Sub
 
-Private Function CheckRequiredCodeModules() As Boolean
-   m_Importer.CheckRequiredCodeModules
+Private Function CheckRequiredCodeModules(ByVal CodemoduleImporter As AppFileCodeModulTransfer) As Boolean
+   m_Importer.CheckRequiredCodeModules CodemoduleImporter
 End Function
 
 Private Sub AddCodeToForm(ByVal FrmRef As Form, _

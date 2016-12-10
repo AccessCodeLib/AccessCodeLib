@@ -19,7 +19,7 @@ Option Explicit
 
 'Versionsnummer
 Private Const APPLICATION_VERSION As String = "1.5.0" '2016-12-11
-Private Const APPLICATION_CODEMODULES_SVNREV As Long = 420
+Private Const APPLICATION_CODEMODULES_SVNREV As Long = 422
 
 #Const USE_CLASS_APPLICATIONHANDLER_APPFILE = 1
 #Const USE_CLASS_APPLICATIONHANDLER_VERSION = 1
@@ -36,6 +36,9 @@ Private Const APPLICATION_DOWNLOAD_VERSIONXMLFILE As String = APPLICATION_DOWNLO
 Private Const DefaultErrorHandlerMode As Long = ACLibErrorHandlerMode.aclibErrMsgBox
 
 Private Const ApplicationStartFormName As String = "frmFilterFormWizard"
+
+Public Const APPLICATION_FILTERCODEMODULE_USEVBCOMPONENTSIMPORT As Boolean = True
+'
 
 '---------------------------------------------------------------------------------------
 ' Sub: InitConfig (Josef Pötzl)

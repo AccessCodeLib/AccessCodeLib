@@ -143,6 +143,10 @@ Private Sub TransferCodeModul(ByVal TargetProject As Access.CurrentProject, _
    If UseVbComponentsImport And ObjType = acModule Then
       If VbeTools.CodeModuleExists(ModulName) Then
          CurrentCodeModulWriter.ImportVbComponent 0, ModulName, FileName
+         VbeTools.ActivateCurrentProject
+         With TargetProject.Application.DoCmd
+            .RunCommand acCmdCompileAndSaveAllModules
+         End With
       Else
          ConvertToSaveAsTextFile FileName
          TargetProject.Application.LoadFromText ObjType, ModulName, FileName
@@ -152,11 +156,7 @@ Private Sub TransferCodeModul(ByVal TargetProject As Access.CurrentProject, _
    End If
    Kill FileName
    
-   VbeTools.ActivateCurrentProject
-   With TargetProject.Application.DoCmd
-      '.RunCommand acCmdCompileAndSaveAllModules
-      .Save acModule, ModulName
-   End With
+   
 End Sub
 
 Private Sub ConvertToSaveAsTextFile(ByVal FilePath As String)
