@@ -18,7 +18,7 @@ Attribute VB_Exposed = False
 ' </summary>
 ' <remarks>Attribute VB_PredeclaredId = True einstellen, damit SqlTools ohne Instanzierung erstellt werden kann</remarks>
 '
-' \warning Nicht vergessen: Parameter für Datumsformat, Boolean und WildCard für das DBMS eintellen
+' \warning Nicht vergessen: Parameter für Datumsformat, Boolean und WildCard für das DBMS einstellen
 '
 ' \ingroup data
 '**/
