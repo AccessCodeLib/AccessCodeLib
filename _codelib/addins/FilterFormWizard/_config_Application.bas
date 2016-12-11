@@ -19,7 +19,6 @@ Option Explicit
 
 'Versionsnummer
 Private Const APPLICATION_VERSION As String = "1.5.0" '2016-12-11
-Private Const APPLICATION_CODEMODULES_SVNREV As Long = 422
 
 #Const USE_CLASS_APPLICATIONHANDLER_APPFILE = 1
 #Const USE_CLASS_APPLICATIONHANDLER_VERSION = 1
@@ -156,44 +155,5 @@ End Sub
 ' Hilfsfunktion zum Speichern von Dateien in die lokale AppFile-Tabelle
 '----------------------------------------------------------------------------
 Private Sub SetAppFiles()
-On Error GoTo HandleErr
-
    Call CurrentApplication.Extensions("AppFile").SaveAppFile("AppIcon", CodeProject.Path & "\" & APPLICATION_ICONFILE)
-   SaveCodeModulesToTable
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case HandleError(Err.Number, "setAppFiles", Err.Description, ACLibErrorHandlerMode.aclibErrMsgBox)
-   Case ACLibErrorResumeMode.aclibErrResume
-      Resume
-   Case ACLibErrorResumeMode.aclibErrResumeNext
-      Resume Next
-   Case Else
-      Resume ExitHere
-   End Select
-End Sub
-
-Private Sub SaveCodeModulesToTable()
-
-   Dim CodeModuleArray As Variant
-   Dim i As Long
-   
-   CodeModuleArray = Array("SqlTools", "StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
-   For i = 0 To UBound(CodeModuleArray)
-      SaveCodeModulToTable acModule, CodeModuleArray(i), APPLICATION_CODEMODULES_SVNREV
-   Next
-   
-End Sub
-
-Private Sub SaveCodeModulToTable(ByVal ObjType As AcObjectType, ByVal ModulName As String, ByVal SvnRev As Long)
-   
-   Dim FileName As String
-
-   FileName = FileTools.GetNewTempFileName
-   Application.SaveAsText ObjType, ModulName, FileName
-   CurrentApplication.SaveAppFile ModulName, FileName, True, "SvnRev", SvnRev
-   Kill FileName
-   
 End Sub
