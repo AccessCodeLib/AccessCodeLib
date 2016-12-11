@@ -12,7 +12,7 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' Inhalt von Code-Modul auswerten
+' Code-Module erstellen
 ' </summary>
 ' <remarks>
 ' </remarks>
@@ -28,7 +28,8 @@ Attribute VB_Exposed = False
 Option Compare Database
 Option Explicit
 
-#Const EARLYBINDING = 1
+#Const EARLYBINDING = 0
+#Const DEBUGMODE = 0
 
 #If EARLYBINDING Then
    Private m_CodeModule As VBIDE.CodeModule
@@ -235,22 +236,17 @@ Public Sub ImportVbComponent(ByVal ComponentType As vbext_ComponentType, ByVal C
       'End
       DeleteClassHeaderLinesFromCodeModul cm
    End If
+   
    'Leerzeilen am Ende säubern
    Do While Len(Trim$(cm.Lines(cm.CountOfLines, 1))) = 0 And cm.CountOfLines > 1
       cm.DeleteLines cm.CountOfLines
    Loop
-'
-'   Else
-'      Set vbc = VbcCol.import(ImportFile)
-'
-'   End If
 
 End Sub
 
 Private Function GetComponentTypeFromFile(ByVal FilePath As String) As vbext_ComponentType
 
    Const SEARCHSTRING_ATTRIBUTNAME_BEGIN As String = "Attribute VB_Name = """
-   Const SEARCHSTRING_ATTRIBUTNAME_END   As String = """"
 
    Dim Pos As Long
    Dim CheckString As String

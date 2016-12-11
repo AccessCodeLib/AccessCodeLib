@@ -22,6 +22,7 @@ Attribute VB_Exposed = False
 '  <file>_codelib/addins/FilterFormWizard/FilterStringBuilderCodeBuilder.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>_codelib/addins/FilterFormWizard/IFilterFormCodeBuilder.cls</use>
+'  <use>_codelib/addins/shared/AppFileCodeModulTransfer.cls</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

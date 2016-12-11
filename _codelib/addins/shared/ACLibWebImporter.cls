@@ -12,7 +12,7 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' Hilfsklasse zum Importieren der Code-Bibliothek in die usys_Appfiles-Tabelle eines ACLib-Add-Ins
+' Hilfsklasse zum Importieren von Codemodulen aus der Code-Bibliothek in die usys_Appfiles-Tabelle
 ' </summary>
 ' <remarks>
 ' </remarks>

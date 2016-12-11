@@ -13,7 +13,7 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' Inhalt von Code-Modul auswerten
+' VBE-Programmierunterstützung
 ' </summary>
 ' <remarks>
 ' </remarks>
@@ -27,6 +27,9 @@ Attribute VB_Exposed = False
 '
 Option Compare Database
 Option Explicit
+
+#Const EARLYBINDING = 0
+#Const DEBUGMODE = 0
 
 #If EARLYBINDING Then
 Friend Property Get CurrentVbProject() As VBIDE.VBProject
