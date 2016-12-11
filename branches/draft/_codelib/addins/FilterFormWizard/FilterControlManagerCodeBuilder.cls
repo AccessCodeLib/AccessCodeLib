@@ -22,6 +22,7 @@ Attribute VB_Exposed = False
 '  <file>_codelib/addins/FilterFormWizard/FilterControlManagerCodeBuilder.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>_codelib/addins/FilterFormWizard/IFilterFormCodeBuilder.cls</use>
+'  <use>_codelib/addins/shared/AppFileCodeModulTransfer.cls</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -36,7 +37,6 @@ End Property
 
 Private Sub IFilterFormCodeBuilder_CheckRequiredCodeModules(ByVal CodemoduleImporter As AppFileCodeModulTransfer)
    With CodemoduleImporter
-      .UseVbComponentsImport = True
       .TransferCodeModules "SqlTools", "StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager"
    End With
 End Sub

@@ -22,6 +22,7 @@ Attribute VB_Exposed = False
 '  <file>_codelib/addins/shared/AppFileCodeModulTransfer.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>_codelib/addins/shared/CodeModuleWriter.cls</use>
+'  <use>_codelib/addins/shared/VbeTools.cls</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -131,8 +132,6 @@ Public Function CheckCodeModule(ByVal ModulName As String, _
 
 End Function
 
-
-
 Private Sub TransferCodeModul(ByVal TargetProject As Access.CurrentProject, _
                               ByVal ObjType As AcObjectType, ByVal ModulName As String)
 
@@ -162,7 +161,6 @@ End Sub
 Private Sub ConvertToSaveAsTextFile(ByVal FilePath As String)
    
    Const SEARCHSTRING_ATTRIBUTNAME_BEGIN As String = "Attribute VB_Name = """
-   Const SEARCHSTRING_ATTRIBUTNAME_END   As String = """"
 
    Dim Pos As Long
    Dim CheckString As String
