@@ -221,7 +221,7 @@ Public Function AddSubSelectCriteria( _
    
    If WhereReplacementPos > 0 Then
       SqlPrefix = SqlPrefix & Trim$(Left(SelectFromText, WhereReplacementPos - 1))
-      SqlSuffix = " " & Trim$(Mid$(SelectFromText, WhereReplacementPos + Len(WhereReplacementText) + 1)) & SqlSuffix
+      SqlSuffix = " " & Trim$(Mid$(SelectFromText, WhereReplacementPos + Len(WhereReplacementText))) & SqlSuffix
    Else
       SqlPrefix = SqlPrefix & SelectFromText
    End If

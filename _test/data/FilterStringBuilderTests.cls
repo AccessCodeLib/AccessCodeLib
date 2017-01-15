@@ -207,6 +207,30 @@ Public Sub AddSubSelectCriteria_IgnoreEmptySubFilter_CheckSqlText()
 
 End Sub
 
+Public Sub AddSubSelectCriteria_WithSubFilterAndUseWhereReplacementText_CheckSqlText()
+
+   Const Expected As String = "((F1 = 1)) And (idXyz In (Select fiXyz From TabXyzItems Where (fiTyp = 2) Group By fiXyz Having Count(*) = 3))"
+   
+   Dim Actual As String
+
+   With New FilterStringBuilder
+
+      Set .SqlTool = SqlTools.NewInstance("\#yyyy-mm-dd\#", "True", "*")
+
+      .Add "F1", SQL_Numeric, SQL_Equal, 1
+      
+      With .AddSubSelectCriteria("idXyz", SQL_In, "Select fiXyz From TabXyzItems [WhereStatement] Group By fiXyz Having Count(*) = 3", False, True)
+         .Add "fiTyp", SQL_Numeric, SQL_Equal, 2
+      End With
+
+      Actual = .ToString()
+
+   End With
+   
+   Assert.That Actual, Iz.EqualTo(Expected)
+
+End Sub
+
 Public Sub AddSubSelectCriteria_IgnoreEmptySubFilterAndUseWhereReplacementText_CheckSqlText()
 
    Const Expected As String = "((F1 = 1))"
