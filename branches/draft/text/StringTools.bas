@@ -169,8 +169,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function PadLeft(ByVal Value As String, ByVal totalWidth As Integer, Optional ByVal padChar As String = " ") As String
-    PadLeft = VBA.Right$(VBA.String$(totalWidth, padChar) & Value, totalWidth)
+Public Function PadLeft(ByVal Value As String, ByVal TotalWidth As Integer, Optional ByVal PadChar As String = " ") As String
+    PadLeft = VBA.Right$(VBA.String$(TotalWidth, PadChar) & Value, TotalWidth)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -185,12 +185,12 @@ End Function
 ' <param name="padChar">Zeichen mit dem aufgefüllt werden soll</param>
 ' <returns>String</returns>
 ' <remarks>
-' Wenn die Länge von value größer oder gleich totalWidth ist, wird das Resultat auf totalWidth Zeichen begrenzt
+' Wenn die Länge von Value größer oder gleich totalWidth ist, wird das Resultat auf TotalWidth Zeichen begrenzt
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function PadRight(ByVal Value As String, ByVal totalWidth As Integer, Optional ByVal padChar As String = " ") As String
-    PadRight = VBA.Left$(Value & VBA.String$(totalWidth, padChar), totalWidth)
+Public Function PadRight(ByVal Value As String, ByVal TotalWidth As Integer, Optional ByVal PadChar As String = " ") As String
+    PadRight = VBA.Left$(Value & VBA.String$(TotalWidth, PadChar), TotalWidth)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -208,8 +208,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Contains(ByVal checkValue As String, ByVal searchValue As String) As Boolean
-    Contains = VBA.InStr(1, checkValue, searchValue, vbTextCompare) > 0
+Public Function Contains(ByVal CheckValue As String, ByVal SearchValue As String) As Boolean
+    Contains = VBA.InStr(1, CheckValue, SearchValue, vbTextCompare) > 0
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -226,8 +226,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function EndsWith(ByVal checkValue As String, ByVal searchValue As String) As Boolean
-    EndsWith = VBA.Right$(checkValue, VBA.Len(searchValue)) = searchValue
+Public Function EndsWith(ByVal CheckValue As String, ByVal SearchValue As String) As Boolean
+    EndsWith = VBA.Right$(CheckValue, VBA.Len(SearchValue)) = SearchValue
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -244,8 +244,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function StartsWith(ByVal checkValue As String, ByVal searchValue As String) As Boolean
-    StartsWith = VBA.Left$(checkValue, VBA.Len(searchValue)) = searchValue
+Public Function StartsWith(ByVal CheckValue As String, ByVal SearchValue As String) As Boolean
+    StartsWith = VBA.Left$(CheckValue, VBA.Len(SearchValue)) = SearchValue
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -333,9 +333,9 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Substring(ByVal Value As String, ByVal startIndex As Long, Optional ByVal length As Long = 0) As String
-    If length = 0 Then length = StringTools.Lenght(Value) - startIndex
-    Substring = VBA.Mid$(Value, startIndex + 1, length)
+Public Function Substring(ByVal Value As String, ByVal StartIndex As Long, Optional ByVal length As Long = 0) As String
+    If length = 0 Then length = StringTools.Lenght(Value) - StartIndex
+    Substring = VBA.Mid$(Value, StartIndex + 1, length)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -353,6 +353,6 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function InsertAt(ByVal Value As String, ByVal insertValue As String, ByVal pos As Long) As String
-    InsertAt = VBA.Mid$(Value, 1, pos) & insertValue & StringTools.Substring(Value, pos)
+Public Function InsertAt(ByVal Value As String, ByVal InsertValue As String, ByVal Pos As Long) As String
+    InsertAt = VBA.Mid$(Value, 1, Pos) & InsertValue & StringTools.Substring(Value, Pos)
 End Function
