@@ -77,7 +77,7 @@ End Sub
 
 Public Sub AddCriteria(ByVal Criteria As String)
    If Len(Criteria) = 0 Then Exit Sub
-   m_Items.Add "(" & Criteria & ")"
+   m_Items.Add Criteria
 End Sub
 
 Friend Property Get SqlTool() As SqlTools
@@ -109,16 +109,24 @@ Friend Sub ConfigSqlFormat(ByVal SqlDateFormat As String, _
 End Sub
 
 Public Function ToString(Optional ByVal ConcatOperator As SqlLogicalOperator = SqlLogicalOperator.[_SQL_Default], _
-                         Optional ByVal IgnoreDuplicateFilters As Boolean = False) As String
+                         Optional ByVal IgnoreDuplicateFilters As Boolean = False, _
+                         Optional ByVal UseConditionBracket As Boolean = False) As String
    
    Dim FilterString As String
+   Dim ItemPrefix As String
+   Dim ItemSuffix As String
 
    If ConcatOperator = SqlLogicalOperator.[_SQL_Default] Then
       ConcatOperator = DefaultConcatOperator
    End If
    
-   FilterString = m_Items.ToString(GetConcatOperatorString(ConcatOperator), , , , IgnoreDuplicateFilters)
-   FilterString = AppendFilterGroupsString(FilterString, ConcatOperator)
+   If UseConditionBracket Then
+      ItemPrefix = "("
+      ItemSuffix = ")"
+   End If
+   
+   FilterString = m_Items.ToString(GetConcatOperatorString(ConcatOperator), ItemPrefix, ItemSuffix, , IgnoreDuplicateFilters)
+   FilterString = AppendFilterGroupsString(FilterString, ConcatOperator, IgnoreDuplicateFilters, UseConditionBracket)
    If Len(FilterString) > 0 Then
       FilterString = m_ConditionPrefix & FilterString
    End If
@@ -171,7 +179,12 @@ Public Function NewConditionGroup(ByVal ConcatOperator As SqlLogicalOperator) As
 End Function
 
 Private Function AppendFilterGroupsString(ByVal BaseFilterString As String, ByVal ConcatOperator As SqlLogicalOperator, _
-                                 Optional ByVal IgnoreDuplicateFilters As Boolean = False) As String
+                                 Optional ByVal IgnoreDuplicateFilters As Boolean = False, _
+                                 Optional ByVal UseConditionBracket As Boolean = False) As String
+   
+   Dim CondPrefix As String
+   Dim CondSuffix As String
+   Dim Cond As String
    
    If m_ConditionGroups Is Nothing Then
       AppendFilterGroupsString = BaseFilterString
@@ -188,11 +201,22 @@ Private Function AppendFilterGroupsString(ByVal BaseFilterString As String, ByVa
    With New StringCollection
    
       .Add BaseFilterString
+      
+      If Not UseConditionBracket Then ' Gruppen immer Klammern
+         CondPrefix = "("
+         CondSuffix = ")"
+      End If
    
       For Each FSB In m_ConditionGroups
-         .Add FSB.ToString()
+'         Cond = FSB.ToString(, , UseConditionBracket)
+'         If UseConditionBracket Then
+'            If Len(Cond) > 0 Then
+'               Cond = CondPrefix & Cond & CondSuffix
+'            End If
+'         End If
+         .Add FSB.ToString(, , UseConditionBracket)
       Next
-      
+
       AppendFilterGroupsString = .ToString(GetConcatOperatorString(ConcatOperator), "(", ")", True, IgnoreDuplicateFilters)
       
    End With
