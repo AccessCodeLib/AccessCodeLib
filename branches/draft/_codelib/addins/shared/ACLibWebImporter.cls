@@ -30,7 +30,7 @@ Option Explicit
 
 Const SvnBaseUrl As String = "https://svn.access-codelib.net/svn/codelib/"
 
-Private m_SvnRev As Long
+Private m_SvnRev As String
 Private m_UseDraftBranch As Boolean
 
 #If VBA7 Then
@@ -47,9 +47,12 @@ Public Property Let UseDraftBranch(ByVal NewValue As Boolean)
    m_UseDraftBranch = NewValue
 End Property
 
-Public Property Get CurrentSvnRev(Optional ByVal RequerySvnRev As Boolean = False) As Long
-   If m_SvnRev = 0 Or RequerySvnRev Then
+Public Property Get CurrentSvnRev(Optional ByVal RequerySvnRev As Boolean = False) As String
+   If Len(m_SvnRev) = 0 Or RequerySvnRev Then
       m_SvnRev = GetRevisionFromWeb
+      If UseDraftBranch Then
+         m_SvnRev = m_SvnRev & "-draft"
+      End If
    End If
    CurrentSvnRev = m_SvnRev
 End Property
@@ -142,8 +145,28 @@ Private Sub OpenIEandLoadHtmlDoc(ByVal Url As String, ByRef IE As Object, ByRef 
 
    Dim TimeOut As Long
    Dim RunInTimeOut As Boolean
+   Dim ErrHdlCnt As Long
+   
+   Dim ErrNumber As Long
+   Dim ErrDescription As String
 
+On Error Resume Next
    Set IE = CreateObject("InternetExplorer.Application")
+   Do While Err.Number = -2147023706 And ErrHdlCnt < 10
+      Err.Clear
+      ErrHdlCnt = ErrHdlCnt + 1
+      Set IE = CreateObject("InternetExplorer.Application")
+   Loop
+
+   If Err.Number <> 0 Then
+      ErrNumber = Err.Number
+      ErrDescription = Err.Description
+   On Error GoTo 0
+      Err.Raise ErrNumber, "ACLibWebImporter.OpenIEandLoadHtmlDoc", ErrDescription
+   End If
+   
+On Error GoTo 0
+   
    With IE
       TimeOut = Timer + 10
       Do While .Busy And (Not RunInTimeOut)
