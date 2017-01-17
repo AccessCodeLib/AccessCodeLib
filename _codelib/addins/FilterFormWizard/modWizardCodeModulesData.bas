@@ -20,7 +20,7 @@ Attribute VB_Name = "modWizardCodeModulesData"
 Option Compare Database
 Option Explicit
 
-Public Property Get SvnRev() As Long
+Public Property Get SvnRev() As String
    
    With CodeDb.OpenRecordset("select max(SvnRev) from usys_AppFiles")
       If Not .EOF Then
@@ -31,11 +31,11 @@ Public Property Get SvnRev() As Long
    
 End Property
 
-Public Property Get SvnRevMin() As Long
+Public Property Get SvnRevMin() As String
    
    With CodeDb.OpenRecordset("select Min(SvnRev) from usys_AppFiles")
       If Not .EOF Then
-         SvnRevMin = Nz(.Fields(0).Value, 0)
+         SvnRevMin = Nz(.Fields(0).Value, "0")
       End If
       .Close
    End With
