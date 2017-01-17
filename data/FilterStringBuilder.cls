@@ -109,8 +109,7 @@ Friend Sub ConfigSqlFormat(ByVal SqlDateFormat As String, _
 End Sub
 
 Public Function ToString(Optional ByVal ConcatOperator As SqlLogicalOperator = SqlLogicalOperator.[_SQL_Default], _
-                         Optional ByVal IgnoreDuplicateFilters As Boolean = False, _
-                         Optional ByVal UseConditionBracket As Boolean = False) As String
+                         Optional ByVal IgnoreDuplicateFilters As Boolean = False) As String
    
    Dim FilterString As String
    Dim ItemPrefix As String
@@ -120,13 +119,13 @@ Public Function ToString(Optional ByVal ConcatOperator As SqlLogicalOperator = S
       ConcatOperator = DefaultConcatOperator
    End If
    
-   If UseConditionBracket Then
+   If ConcatOperator <> SQL_CommaSeparator Then
       ItemPrefix = "("
       ItemSuffix = ")"
    End If
    
    FilterString = m_Items.ToString(GetConcatOperatorString(ConcatOperator), ItemPrefix, ItemSuffix, , IgnoreDuplicateFilters)
-   FilterString = AppendFilterGroupsString(FilterString, ConcatOperator, IgnoreDuplicateFilters, UseConditionBracket)
+   FilterString = AppendFilterGroupsString(FilterString, ConcatOperator, IgnoreDuplicateFilters)
    If Len(FilterString) > 0 Then
       FilterString = m_ConditionPrefix & FilterString
    End If
@@ -179,8 +178,7 @@ Public Function NewConditionGroup(ByVal ConcatOperator As SqlLogicalOperator) As
 End Function
 
 Private Function AppendFilterGroupsString(ByVal BaseFilterString As String, ByVal ConcatOperator As SqlLogicalOperator, _
-                                 Optional ByVal IgnoreDuplicateFilters As Boolean = False, _
-                                 Optional ByVal UseConditionBracket As Boolean = False) As String
+                                 Optional ByVal IgnoreDuplicateFilters As Boolean = False) As String
    
    Dim CondPrefix As String
    Dim CondSuffix As String
@@ -196,28 +194,22 @@ Private Function AppendFilterGroupsString(ByVal BaseFilterString As String, ByVa
       Exit Function
    End If
    
+   If ConcatOperator <> SQL_CommaSeparator Then
+      CondPrefix = "("
+      CondSuffix = ")"
+   End If
+   
    Dim FSB As FilterStringBuilder
    
    With New StringCollection
    
       .Add BaseFilterString
       
-      If Not UseConditionBracket Then ' Gruppen immer Klammern
-         CondPrefix = "("
-         CondSuffix = ")"
-      End If
-   
       For Each FSB In m_ConditionGroups
-'         Cond = FSB.ToString(, , UseConditionBracket)
-'         If UseConditionBracket Then
-'            If Len(Cond) > 0 Then
-'               Cond = CondPrefix & Cond & CondSuffix
-'            End If
-'         End If
-         .Add FSB.ToString(, , UseConditionBracket)
+         .Add FSB.ToString()
       Next
 
-      AppendFilterGroupsString = .ToString(GetConcatOperatorString(ConcatOperator), "(", ")", True, IgnoreDuplicateFilters)
+      AppendFilterGroupsString = .ToString(GetConcatOperatorString(ConcatOperator), CondPrefix, CondSuffix, True, IgnoreDuplicateFilters)
       
    End With
    

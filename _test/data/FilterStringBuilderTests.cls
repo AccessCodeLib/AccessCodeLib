@@ -57,7 +57,7 @@ Public Sub Add_StringNumericDateBooleanFilter_CheckDoaSyntax()
       .Add "D", SQL_Date, SQL_LessThan, #2/1/2015#
       .Add "B", SQL_Boolean, SQL_Equal, True
       
-      Actual = .ToString(SQL_And, , True)
+      Actual = .ToString(SQL_And)
       
    End With
    
@@ -67,7 +67,7 @@ End Sub
 
 Public Sub Add_StringNumericDateBooleanFilterWithoutBrackets_CheckDoaSyntax()
    
-   Const Expected As String = "S Like 'a*' And N >= 5.1 And D < #2015-02-01# And B = True"
+   Const Expected As String = "(S Like 'a*') And (N >= 5.1) And (D < #2015-02-01#) And (B = True)"
    
    Dim Actual As Variant
    
@@ -80,7 +80,7 @@ Public Sub Add_StringNumericDateBooleanFilterWithoutBrackets_CheckDoaSyntax()
       .Add "D", SQL_Date, SQL_LessThan, #2/1/2015#
       .Add "B", SQL_Boolean, SQL_Equal, True
       
-      Actual = .ToString(SQL_And, , False)
+      Actual = .ToString(SQL_And)
       
    End With
    
@@ -98,7 +98,7 @@ Public Sub AddCriteria_AddConString_CheckSqlText()
    
       .AddCriteria ("a > b")
       
-      Actual = .ToString(SQL_And, , True)
+      Actual = .ToString(SQL_And)
       
    End With
    
@@ -124,12 +124,9 @@ Public Sub ConfigSqlFormat_DAO_CheckFormats()
    
 End Sub
 
-'AccUnit:Row(True, "((F1 = 1)) And ((F2a Like 'a*') Or (F2b Like 'a*') Or (F2c Like 'a*')) And ((F3a = True) Or (F3b = True) Or (F3c = True))")
-'AccUnit:Row(False, "(F1 = 1) And (F2a Like 'a*' Or F2b Like 'a*' Or F2c Like 'a*') And (F3a = True Or F3b = True Or F3c = True)")
-Public Sub ConditionGroups_AddOrGroups_CheckSqlText(ByVal WithCondBracket As Boolean, ByVal Expected As String)
+Public Sub ConditionGroups_AddOrGroups_CheckSqlText()
 
-   'AccUnit-Bugfix:
-   Expected = Replace(Expected, "=True", "= True")
+   Const Expected = "((F1 = 1)) And ((F2a Like 'a*') Or (F2b Like 'a*') Or (F2c Like 'a*')) And ((F3a = True) Or (F3b = True) Or (F3c = True))"
    
    Dim Actual As String
 
@@ -150,7 +147,7 @@ Public Sub ConditionGroups_AddOrGroups_CheckSqlText(ByVal WithCondBracket As Boo
          .Add "F3c", SQL_Boolean, SQL_Equal, True
       End With
 
-      Actual = .ToString(, , WithCondBracket)
+      Actual = .ToString()
 
    End With
    
@@ -158,11 +155,10 @@ Public Sub ConditionGroups_AddOrGroups_CheckSqlText(ByVal WithCondBracket As Boo
 
 End Sub
 
-'AccUnit:Row(True, "((F1 = 1)) And (fiXyz In (Select idXyz From TabXyz Where (F2a Like 'a*') Or (F2b Like 'b*')))")
-'AccUnit:Row(False, "(F1 = 1) And (fiXyz In (Select idXyz From TabXyz Where F2a Like 'a*' Or F2b Like 'b*'))")
-Public Sub AddSubSelectCriteria_WithSubSelectCond_CheckSqlText(ByVal WithCondBracket As Boolean, ByVal Expected As String)
 
-   'Const Expected As String = "((F1 = 1)) And (fiXyz In (Select idXyz From TabXyz Where (F2a Like 'a*') Or (F2b Like 'b*')))"
+Public Sub AddSubSelectCriteria_WithSubSelectCond_CheckSqlText()
+
+   Const Expected As String = "((F1 = 1)) And (fiXyz In (Select idXyz From TabXyz Where (F2a Like 'a*') Or (F2b Like 'b*')))"
    
    Dim Actual As String
 
@@ -177,7 +173,7 @@ Public Sub AddSubSelectCriteria_WithSubSelectCond_CheckSqlText(ByVal WithCondBra
          .Add "F2b", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix, "b"
       End With
 
-      Actual = .ToString(, , WithCondBracket)
+      Actual = .ToString()
 
    End With
    
@@ -185,11 +181,9 @@ Public Sub AddSubSelectCriteria_WithSubSelectCond_CheckSqlText(ByVal WithCondBra
 
 End Sub
 
-'AccUnit:Row(True, "((F1 = 1)) And (idXyz In (Select fiXyz From TabXyzItems Where (fiTyp In (1,2,3)) Group By fiXyz Having Count(*) = 3))")
-'AccUnit:Row(False, "(F1 = 1) And (idXyz In (Select fiXyz From TabXyzItems Where fiTyp In (1,2,3) Group By fiXyz Having Count(*) = 3))")
-Public Sub AddSubSelectCriteria_UseWhereReplacementText_CheckSqlText(ByVal WithCondBracket As Boolean, ByVal Expected As String)
+Public Sub AddSubSelectCriteria_UseWhereReplacementText_CheckSqlText()
 
-   'Const Expected As String = "((F1 = 1)) And (idXyz In (Select fiXyz From TabXyzItems Where (fiTyp In (1,2,3)) Group By fiXyz Having Count(*) = 3))"
+   Const Expected As String = "((F1 = 1)) And (idXyz In (Select fiXyz From TabXyzItems Where (fiTyp In (1,2,3)) Group By fiXyz Having Count(*) = 3))"
    
    Dim Actual As String
 
@@ -203,7 +197,7 @@ Public Sub AddSubSelectCriteria_UseWhereReplacementText_CheckSqlText(ByVal WithC
          .Add "fiTyp", SQL_Numeric, SQL_In, Array(1, 2, 3)
       End With
 
-      Actual = .ToString(, , WithCondBracket)
+      Actual = .ToString()
 
    End With
    
@@ -213,7 +207,7 @@ End Sub
 
 Public Sub AddSubSelectCriteria_IgnoreEmptySubFilter_CheckSqlText()
 
-   Const Expected As String = "(F1 = 1)"
+   Const Expected As String = "((F1 = 1))"
    
    Dim Actual As String
 
@@ -236,11 +230,9 @@ Public Sub AddSubSelectCriteria_IgnoreEmptySubFilter_CheckSqlText()
 
 End Sub
 
-'AccUnit:Row(True, "((F1 = 1)) And (idXyz In (Select fiXyz From TabXyzItems Where (fiTyp = 2) Group By fiXyz Having Count(*) = 3))")
-'AccUnit:Row(False, "(F1 = 1) And (idXyz In (Select fiXyz From TabXyzItems Where fiTyp = 2 Group By fiXyz Having Count(*) = 3))")
-Public Sub AddSubSelectCriteria_WithSubFilterAndUseWhereReplacementText_CheckSqlText(ByVal WithCondBracket As Boolean, ByVal Expected As String)
+Public Sub AddSubSelectCriteria_WithSubFilterAndUseWhereReplacementText_CheckSqlText()
 
-   'Const Expected As String = "((F1 = 1)) And (idXyz In (Select fiXyz From TabXyzItems Where (fiTyp = 2) Group By fiXyz Having Count(*) = 3))"
+   Const Expected As String = "((F1 = 1)) And (idXyz In (Select fiXyz From TabXyzItems Where (fiTyp = 2) Group By fiXyz Having Count(*) = 3))"
    
    Dim Actual As String
 
@@ -254,7 +246,7 @@ Public Sub AddSubSelectCriteria_WithSubFilterAndUseWhereReplacementText_CheckSql
          .Add "fiTyp", SQL_Numeric, SQL_Equal, 2
       End With
 
-      Actual = .ToString(, , WithCondBracket)
+      Actual = .ToString()
 
    End With
    
@@ -264,7 +256,7 @@ End Sub
 
 Public Sub AddSubSelectCriteria_IgnoreEmptySubFilterAndUseWhereReplacementText_CheckSqlText()
 
-   Const Expected As String = "(F1 = 1)"
+   Const Expected As String = "((F1 = 1))"
    
    Dim Actual As String
 
@@ -288,7 +280,7 @@ End Sub
 
 Public Sub AddSubSelectCriteria_WithEmptySubFilterAndUseWhereReplacementText_CheckSqlText()
 
-   Const Expected As String = "(F1 = 1) And (idXyz In (Select fiXyz From TabXyzItems Group By fiXyz Having Count(*) = 3))"
+   Const Expected As String = "((F1 = 1)) And (idXyz In (Select fiXyz From TabXyzItems Group By fiXyz Having Count(*) = 3))"
    
    Dim Actual As String
 
@@ -310,14 +302,9 @@ Public Sub AddSubSelectCriteria_WithEmptySubFilterAndUseWhereReplacementText_Che
 
 End Sub
 
-'AccUnit:Row(True, "((F1 = 1)) And (Exists (Select * From TabXyz Where (idXyz = T.fiXyz) And (F2a Like 'a*') And (F2b Like 'b*')))")
-'AccUnit:Row(False, "(F1 = 1) And (Exists (Select * From TabXyz Where idXyz = T.fiXyz And F2a Like 'a*' And F2b Like 'b*'))")
-Public Sub AddExistsCriteria_WithSubSelectCond_CheckSqlText(ByVal WithCondBracket As Boolean, ByVal Expected As String)
+Public Sub AddExistsCriteria_WithSubSelectCond_CheckSqlText()
 
-   'Const Expected As String = "((F1 = 1)) And (Exists (Select * From TabXyz Where (idXyz = T.fiXyz) And (F2a Like 'a*') And (F2b Like 'b*')))"
-   
-   'AccUnit-Bugfix:
-   Expected = Replace(Expected, "=T.fiXyz", "= T.fiXyz")
+   Const Expected As String = "((F1 = 1)) And (Exists (Select * From TabXyz Where (idXyz = T.fiXyz) And (F2a Like 'a*') And (F2b Like 'b*')))"
    
    Dim Actual As String
 
@@ -333,7 +320,7 @@ Public Sub AddExistsCriteria_WithSubSelectCond_CheckSqlText(ByVal WithCondBracke
          .Add "F2b", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix, "b"
       End With
 
-      Actual = .ToString(, , WithCondBracket)
+      Actual = .ToString()
 
    End With
    
