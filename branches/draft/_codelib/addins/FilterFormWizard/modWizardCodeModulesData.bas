@@ -19,6 +19,7 @@ Attribute VB_Name = "modWizardCodeModulesData"
 '
 Option Compare Database
 Option Explicit
+Option Private Module
 
 Public Property Get SvnRev() As String
    

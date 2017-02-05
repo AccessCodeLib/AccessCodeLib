@@ -62,12 +62,12 @@ Private Property Get CodeModulImporter() As AppFileCodeModulTransfer
 End Property
 
 Friend Sub WriteToForm(ByVal FormName As String, _
-              Optional ByVal KindOfUseFilterMethode As Long = 0, _
-              Optional ByVal UseFilterMethodeSubFormName As String, _
+              Optional ByVal KindOfApplyFilterMethode As Long = 0, _
+              Optional ByVal ApplyFilterMethodeSubFormName As String, _
               Optional ByVal SqlDateFormat As String = vbNullString, _
               Optional ByVal SqlBooleanTrueString As String = vbNullString, _
               Optional ByVal SqlWildCardString As String = vbNullString, _
-              Optional ByVal UseFilterCtlName As String, _
+              Optional ByVal ApplyFilterCtlName As String, _
               Optional ByVal RemoveFilterCtlName As String, _
               Optional ByVal AutoFilterCtlName As String)
    
@@ -79,25 +79,25 @@ Friend Sub WriteToForm(ByVal FormName As String, _
 
    DoCmd.OpenForm FormName, acDesign, , , , acWindowNormal
 
-   AddCodeToForm Application.Forms(FormName), KindOfUseFilterMethode, UseFilterMethodeSubFormName, _
+   AddCodeToForm Application.Forms(FormName), KindOfApplyFilterMethode, ApplyFilterMethodeSubFormName, _
                   SqlDateFormat, SqlBooleanTrueString, SqlWildCardString, _
-                 UseFilterCtlName, RemoveFilterCtlName, AutoFilterCtlName
+                 ApplyFilterCtlName, RemoveFilterCtlName, AutoFilterCtlName
 
    DoCmd.Save acForm, FormName
 
 End Sub
 
-Private Function CheckRequiredCodeModules(ByVal CodemoduleImporter As AppFileCodeModulTransfer) As Boolean
+Private Sub CheckRequiredCodeModules(ByVal CodemoduleImporter As AppFileCodeModulTransfer)
    m_Importer.CheckRequiredCodeModules CodemoduleImporter
-End Function
+End Sub
 
 Private Sub AddCodeToForm(ByVal FrmRef As Form, _
-                          ByVal KindOfUseFilterMethode As Long, _
-                          ByVal UseFilterMethodeSubFormName As String, _
+                          ByVal KindOfApplyFilterMethode As Long, _
+                          ByVal ApplyFilterMethodeSubFormName As String, _
                           ByVal SqlDateFormat As String, _
                           ByVal SqlBooleanTrueString As String, _
                           ByVal SqlWildCardString As String, _
-                          ByVal UseFilterCtlName As String, _
+                          ByVal ApplyFilterCtlName As String, _
                           ByVal RemoveFilterCtlName As String, _
                           ByVal AutoFilterCtlName As String)
 
@@ -115,9 +115,9 @@ Private Sub AddCodeToForm(ByVal FrmRef As Form, _
       End If
       
       TempCode = TempCode & _
-                 ClassInitalisationCode(KindOfUseFilterMethode, UseFilterMethodeSubFormName, _
+                 ClassInitalisationCode(KindOfApplyFilterMethode, ApplyFilterMethodeSubFormName, _
                            SqlDateFormat, SqlBooleanTrueString, SqlWildCardString, _
-                           UseFilterCtlName, RemoveFilterCtlName, AutoFilterCtlName)
+                           ApplyFilterCtlName, RemoveFilterCtlName, AutoFilterCtlName)
 
       .AddCode TempCode
    
@@ -131,10 +131,10 @@ Private Sub AddCodeToForm(ByVal FrmRef As Form, _
          .AddCodeToEventProcedure "Unload", "Form", TempCode
       End If
       
-      If Len(UseFilterCtlName) > 0 Then
-         TempCode = UseFilterCtlCode
+      If Len(ApplyFilterCtlName) > 0 Then
+         TempCode = ApplyFilterCtlCode
          If Len(TempCode) > 0 Then
-            .AddCodeToEventProcedure "Click", UseFilterCtlName, TempCode
+            .AddCodeToEventProcedure "Click", ApplyFilterCtlName, TempCode
          End If
       End If
       
@@ -152,7 +152,7 @@ Private Sub AddCodeToForm(ByVal FrmRef As Form, _
          End If
       End If
       
-      TempCode = FilterControlValueChangedEventFunction(UseFilterCtlName, AutoFilterCtlName)
+      TempCode = FilterControlValueChangedEventFunction(ApplyFilterCtlName, AutoFilterCtlName)
       If Len(TempCode) > 0 Then
          .AddCode TempCode
          InsertFilterControlValueChangedEventFunction FrmRef
@@ -176,34 +176,34 @@ Private Property Get DeclarationCode() As String
 End Property
 
 Private Property Get ClassInitalisationCode( _
-                        ByVal KindOfUseFilterMethode As Long, _
-                        ByVal UseFilterMethodeSubFormName As String, _
+                        ByVal KindOfApplyFilterMethode As Long, _
+                        ByVal ApplyFilterMethodeSubFormName As String, _
                         ByVal SqlDateFormat As String, _
                         ByVal SqlBooleanTrueString As String, _
                         ByVal SqlWildCardString As String, _
-                        ByVal UseFilterCtlName As String, _
+                        ByVal ApplyFilterCtlName As String, _
                         ByVal RemoveFilterCtlName As String, _
                         ByVal AutoFilterCtlName As String) As String
    
    ClassInitalisationCode = m_Importer.ClassInitalisationCode( _
-                  GetUseFilterMethodeCode(KindOfUseFilterMethode, UseFilterMethodeSubFormName, UseFilterCtlName, False), _
+                  GetApplyFilterMethodeCode(KindOfApplyFilterMethode, ApplyFilterMethodeSubFormName, ApplyFilterCtlName, False), _
                   GetFilterControlCodeLines, m_FilterControlNames, _
                   SqlDateFormat, SqlBooleanTrueString, SqlWildCardString, _
-                  UseFilterCtlName, RemoveFilterCtlName, AutoFilterCtlName)
+                  ApplyFilterCtlName, RemoveFilterCtlName, AutoFilterCtlName)
 
 End Property
 
-Private Function GetUseFilterMethodeCode( _
-                        ByVal KindOfUseFilterMethode As Long, _
-                        ByVal UseFilterMethodeSubFormName As String, _
-                        ByVal UseFilterCtlName As String, _
+Private Function GetApplyFilterMethodeCode( _
+                        ByVal KindOfApplyFilterMethode As Long, _
+                        ByVal ApplyFilterMethodeSubFormName As String, _
+                        ByVal ApplyFilterCtlName As String, _
                         ByVal AddDebugLine As Boolean) As String
    
    Dim MethodeCode As String
    Dim SufFormRefCode As String
    Dim LinePrefix As String
    
-   Select Case KindOfUseFilterMethode
+   Select Case KindOfApplyFilterMethode
       Case 0
          LinePrefix = "'"
          SufFormRefCode = " ' oder Me.EinUnterformular.Form"
@@ -213,14 +213,14 @@ Private Function GetUseFilterMethodeCode( _
          SufFormRefCode = vbNullString
       Case 2
          LinePrefix = vbNullString
-         If Len(UseFilterMethodeSubFormName) = 0 Then
+         If Len(ApplyFilterMethodeSubFormName) = 0 Then
             Err.Raise vbObjectError, "FilterControlManagerImporter", "Bitte Unterformular angeben"
          End If
-         SufFormRefCode = "." & UseFilterMethodeSubFormName & ".Form"
+         SufFormRefCode = "." & ApplyFilterMethodeSubFormName & ".Form"
    End Select
 
    MethodeCode = _
-         "Private Function UseFilter(ByVal NewFilterString As String)" & vbNewLine
+         "Private Function ApplyFilter(ByVal NewFilterString As String)" & vbNewLine
          
    If AddDebugLine Then
       MethodeCode = MethodeCode & vbNewLine & _
@@ -235,15 +235,15 @@ Private Function GetUseFilterMethodeCode( _
          LinePrefix & "   End With" & vbNewLine
          
          
-   If Len(UseFilterCtlName) > 0 Then
+   If Len(ApplyFilterCtlName) > 0 Then
        MethodeCode = MethodeCode & vbNewLine & _
-         "   Me." & UseFilterCtlName & ".FontBold = False" & vbNewLine
+         "   Me." & ApplyFilterCtlName & ".FontBold = False" & vbNewLine
    End If
          
    MethodeCode = MethodeCode & vbNewLine & _
          "End Function"
 
-   GetUseFilterMethodeCode = MethodeCode
+   GetApplyFilterMethodeCode = MethodeCode
 
 End Function
 
@@ -270,8 +270,8 @@ Private Property Get FormUnLoadCode() As String
    FormUnLoadCode = m_Importer.FormUnLoadCode
 End Property
 
-Private Property Get UseFilterCtlCode() As String
-   UseFilterCtlCode = m_Importer.UseFilterCtlCode
+Private Property Get ApplyFilterCtlCode() As String
+   ApplyFilterCtlCode = m_Importer.ApplyFilterCtlCode
 End Property
 
 Private Property Get RemoveFilterCtlCode() As String
@@ -282,8 +282,8 @@ Private Property Get AutoFilterCtlCode(ByVal AutoFilterCtlName As String) As Str
    AutoFilterCtlCode = m_Importer.AutoFilterCtlCode(AutoFilterCtlName)
 End Property
 
-Private Property Get FilterControlValueChangedEventFunction(ByVal UseFilterCtlName As String, ByVal AutoFilterCtlName As String) As String
-   FilterControlValueChangedEventFunction = m_Importer.FilterControlValueChangedEventFunction(UseFilterCtlName, AutoFilterCtlName)
+Private Property Get FilterControlValueChangedEventFunction(ByVal ApplyFilterCtlName As String, ByVal AutoFilterCtlName As String) As String
+   FilterControlValueChangedEventFunction = m_Importer.FilterControlValueChangedEventFunction(ApplyFilterCtlName, AutoFilterCtlName)
 End Property
 
 Private Sub InsertFilterControlValueChangedEventFunction(ByVal FormRef As Form)

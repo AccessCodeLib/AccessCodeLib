@@ -20,6 +20,7 @@ Attribute VB_Description = "Funktionen für Dateioperationen"
 '
 Option Compare Text
 Option Explicit
+Option Private Module
 
 Private Const SELECTBOX_FILE_DIALOG_TITLE As String = "Datei auswählen"
 Private Const SELECTBOX_FOLDER_DIALOG_TITLE As String = "Ordner auswählen"

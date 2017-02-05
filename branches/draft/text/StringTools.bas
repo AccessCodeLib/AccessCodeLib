@@ -95,6 +95,10 @@ Public Function FormatText(ByVal FormatString As String, ParamArray Args() As Va
    Dim Temp As String
    Dim i As Long
    
+#If USELOCALIZATION = 1 Then
+   FormatString = L10n.Text(FormatString)
+#End If
+   
    Temp = FormatString
    For Each Arg In Args
       Temp = Replace(Temp, "{" & i & "}", CStr(Arg))
@@ -333,9 +337,9 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Substring(ByVal Value As String, ByVal StartIndex As Long, Optional ByVal length As Long = 0) As String
-    If length = 0 Then length = StringTools.Lenght(Value) - StartIndex
-    Substring = VBA.Mid$(Value, StartIndex + 1, length)
+Public Function SubString(ByVal Value As String, ByVal StartIndex As Long, Optional ByVal Length As Long = 0) As String
+    If Length = 0 Then Length = StringTools.Lenght(Value) - StartIndex
+    SubString = VBA.Mid$(Value, StartIndex + 1, Length)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -354,5 +358,5 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function InsertAt(ByVal Value As String, ByVal InsertValue As String, ByVal Pos As Long) As String
-    InsertAt = VBA.Mid$(Value, 1, Pos) & InsertValue & StringTools.Substring(Value, Pos)
+    InsertAt = VBA.Mid$(Value, 1, Pos) & InsertValue & StringTools.SubString(Value, Pos)
 End Function

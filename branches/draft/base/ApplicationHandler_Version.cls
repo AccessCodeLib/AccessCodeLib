@@ -162,11 +162,8 @@ Public Function CheckVersion(Optional ByRef NewVersion As Variant, Optional ByRe
    Dim DownloadVersionRemarks As String
    
    DownloadVersion = GetVersionFromDownloadSource(XmlVersionCheckFile, DownloadVersionRemarks)
-   
-   Debug.Print CurrentApplication.Version, DownloadVersion
-   Debug.Print CompareVersions(CurrentApplication.Version, DownloadVersion)
-
    CheckVersion = CompareVersions(CurrentApplication.Version, DownloadVersion)
+   
    If CheckVersion = VerState_Newer Then
       NewVersion = DownloadVersion
       VersionRemarks = DownloadVersionRemarks

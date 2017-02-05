@@ -22,6 +22,7 @@ Attribute VB_Description = "Standard-Prozeduren für die Arbeit mit ApplicationHa
 '
 Option Compare Text
 Option Explicit
+Option Private Module
 
 ' Instanz der Hauptsteuerung
 Private m_ApplicationHandler As ApplicationHandler

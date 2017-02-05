@@ -22,6 +22,7 @@ Attribute VB_Name = "_initApplication"
 '
 Option Compare Text
 Option Explicit
+Option Private Module
 
 '-------------------------
 ' Anwendungseinstellungen

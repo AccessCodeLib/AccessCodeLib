@@ -17,6 +17,7 @@ Attribute VB_Name = "defGlobal_FilterFormWizard"
 '
 Option Compare Database
 Option Explicit
+Option Private Module
 
 '---------------------------------------------------------------------------------------
 '

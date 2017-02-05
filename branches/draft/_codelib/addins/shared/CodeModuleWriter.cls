@@ -250,8 +250,6 @@ Private Function GetComponentTypeFromFile(ByVal FilePath As String) As vbext_Com
 
    Dim Pos As Long
    Dim CheckString As String
-   Dim TempString As String
-   Dim i As Long
    Dim FileNumber As Long
    Dim CmType As vbext_ComponentType
 

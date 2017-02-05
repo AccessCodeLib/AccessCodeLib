@@ -165,10 +165,7 @@ Private Sub ConvertToSaveAsTextFile(ByVal FilePath As String)
    Dim Pos As Long
    Dim CheckString As String
    Dim NewFile As String
-   Dim i As Long
-   
    Dim FileNumber As Long
-   Dim CmType As vbext_ComponentType
 
    FileNumber = FreeFile
    Open FilePath For Binary Access Read As FileNumber

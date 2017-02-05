@@ -105,12 +105,18 @@ End Property
 
 Public Sub UseAutoFilterMode()
    If m_AutoFilterModeOn Then
-      UseFilter
+      ApplyFilter
    End If
 End Sub
 
 Public Sub UseFilter()
+' DEPRECATED --> New: ApplyFilter
+   Stop
+   ApplyFilter
+End Sub
 
+Public Sub ApplyFilter()
+   
    Dim NewFilterString As String
    NewFilterString = CreateFilterString
    

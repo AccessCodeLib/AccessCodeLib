@@ -1,7 +1,7 @@
 Attribute VB_Name = "defGlobal"
 Attribute VB_Description = "Allgemeine Konstanten und Eigenschaften"
 '---------------------------------------------------------------------------------------
-' Modul: defGlobal (2009-07-27)
+' Modul: defGlobal
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -20,6 +20,7 @@ Attribute VB_Description = "Allgemeine Konstanten und Eigenschaften"
 '
 Option Explicit
 Option Compare Text
+Option Private Module
 
 '---------------------------------------------------------------------------------------
 '
