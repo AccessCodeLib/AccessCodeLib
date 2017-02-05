@@ -250,6 +250,9 @@ Private Sub TranslateControl(ByVal CtlRef As Control)
          .Tag = TagTextPrefix & "LANG:" & LangTextKeyString
       Else
          ControlTextKeys = Split(LangTextKeyString, TextKeySeparatorString)
+         If UBound(ControlTextKeys) < 2 Then
+            ReDim Preserve ControlTextKeys(2)
+         End If
       End If
    End With
    
