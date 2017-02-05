@@ -50,7 +50,6 @@ End Property
 
 Private Function GetFormInDesignMode(ByVal FormName As String) As Form
    
-   Dim FormRef As Form
    Dim FormIsLoaded As Boolean
    
    FormIsLoaded = CurrentProject.AllForms(FormName).IsLoaded

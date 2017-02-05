@@ -18,6 +18,7 @@ Attribute VB_Name = "modWinApi_Mouse"
 '
 Option Compare Database
 Option Explicit
+Option Private Module
 
 Public Enum IDC_MouseCursor
    IDC_HAND = 32649&

@@ -182,7 +182,6 @@ Private Function AppendFilterGroupsString(ByVal BaseFilterString As String, ByVa
    
    Dim CondPrefix As String
    Dim CondSuffix As String
-   Dim Cond As String
    
    If m_ConditionGroups Is Nothing Then
       AppendFilterGroupsString = BaseFilterString

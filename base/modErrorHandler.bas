@@ -19,6 +19,7 @@ Attribute VB_Description = "Prozeduren für die Fehlerbehandlung"
 '
 Option Compare Text
 Option Explicit
+Option Private Module
 
 '---------------------------------------------------------------------------------------
 ' Enum: ACLibErrorHandlerMode

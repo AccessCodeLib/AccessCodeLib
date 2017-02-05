@@ -11,14 +11,19 @@ Attribute VB_Name = "_config_Application"
 '  <use>base/ApplicationHandler_AppFile.cls</use>
 '  <use>_codelib/addins/shared/AppFileCodeModulTransfer.cls</use>
 '  <use>base/modErrorHandler.bas</use>
+'  <use>localization/L10nTools.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
+' Nicht vergessen: USELOCALIZATION = 1 als Complier-Arg. in Projekteigenschaft einstellen
+'
+'
 Option Compare Database
 Option Explicit
+Option Private Module
 
 'Versionsnummer
-Private Const APPLICATION_VERSION As String = "1.5.0" '2016-12-11
+Private Const APPLICATION_VERSION As String = "1.6.0" '2017-02-05
 
 #Const USE_CLASS_APPLICATIONHANDLER_APPFILE = 1
 #Const USE_CLASS_APPLICATIONHANDLER_VERSION = 1

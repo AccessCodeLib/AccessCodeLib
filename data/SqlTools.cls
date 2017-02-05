@@ -16,7 +16,7 @@ Attribute VB_Exposed = False
 ' <summary>
 ' SQL-Hilfsfunktionen
 ' </summary>
-' <remarks>Attribute VB_PredeclaredId = True einstellen, damit SqlTools ohne Instanzierung erstellt werden kann</remarks>
+' <remarks>Attribute VB_PredeclaredId = True einstellen, damit SqlTools ohne explizite Instanzierung genutzt werden kann</remarks>
 '
 ' \warning Nicht vergessen: Parameter für Datumsformat, Boolean und WildCard für das DBMS einstellen
 '

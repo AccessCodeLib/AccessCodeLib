@@ -47,13 +47,13 @@ Private Property Get IFilterFormCodeBuilder_DeclarationCode() As String
 End Property
 
 Private Property Get IFilterFormCodeBuilder_ClassInitalisationCode( _
-                        ByVal UseFilterMethodeCode As String, _
+                        ByVal ApplyFilterMethodeCode As String, _
                         ByVal FilterControlCodeLines As String, _
                         ByVal FilterControlNames As StringCollection, _
                Optional ByVal SqlDateFormat As String = "\#yyyy-mm-dd hh:nn:ss\#", _
                Optional ByVal SqlBooleanTrueString As String = "True", _
                Optional ByVal SqlWildCardString As String = "*", _
-               Optional ByVal UseFilterCtlName As String, _
+               Optional ByVal ApplyFilterCtlName As String, _
                Optional ByVal RemoveFilterCtlName As String, _
                Optional ByVal AutoFilterCtlName As String) As String
    
@@ -61,27 +61,27 @@ Private Property Get IFilterFormCodeBuilder_ClassInitalisationCode( _
 
    Code = _
       "Private Sub m_FilterControlManager_FilterStringChanged(ByVal NewFilterString As String)" & vbNewLine & _
-      "   UseFilter NewFilterString" & vbNewLine & _
+      "   ApplyFilter NewFilterString" & vbNewLine & _
       "End Sub" & vbNewLine
       
-   If Len(UseFilterCtlName) > 0 Then
+   If Len(ApplyFilterCtlName) > 0 Then
       Code = Code & vbNewLine & _
          "Private Sub m_FilterControlManager_FilterValuesChanged()" & vbNewLine & _
-         "   SetUseFilterSignal" & vbNewLine & _
+         "   SetApplyFilterSignal" & vbNewLine & _
          "End Sub" & vbNewLine
       
       Code = Code & vbNewLine & _
-         "Private Sub SetUseFilterSignal()" & vbNewLine & _
-         "' Notwendigen Klick auf ""Filter anwenden"" signalisieren" & vbNewLine
+         "Private Sub SetApplyFilterSignal()" & vbNewLine & _
+         "' " & L10n.Text("Notwendigen Klick auf ""Filter anwenden"" signalisieren") & vbNewLine
       
       If Len(AutoFilterCtlName) > 0 Then
          Code = Code & _
             "   If Me." & AutoFilterCtlName & ".Value = False Then" & vbNewLine & _
-            "      Me." & UseFilterCtlName & ".FontBold = True" & vbNewLine & _
+            "      Me." & ApplyFilterCtlName & ".FontBold = True" & vbNewLine & _
             "   End If" & vbNewLine
       Else
          Code = Code & _
-            "   Me." & UseFilterCtlName & ".FontBold = True" & vbNewLine
+            "   Me." & ApplyFilterCtlName & ".FontBold = True" & vbNewLine
       End If
      
       Code = Code & _
@@ -90,14 +90,14 @@ Private Property Get IFilterFormCodeBuilder_ClassInitalisationCode( _
    End If
 
    Code = Code & vbNewLine & _
-      UseFilterMethodeCode & vbNewLine
+      ApplyFilterMethodeCode & vbNewLine
 
    Code = Code & vbNewLine & _
       "Private Sub InitFilterControlManager()" & vbNewLine & _
       "   Set m_FilterControlManager = New FilterControlManager" & vbNewLine & _
       "   m_FilterControlManager.ConfigSqlFormat """ & SqlDateFormat & """, """ & SqlBooleanTrueString & """, """ & SqlWildCardString & """" & vbNewLine & _
       "   InitFilterControls" & vbNewLine & _
-      "   m_FilterControlManager.AutoFilterOn = True 'oder z. B. mittels Checkbox: = Nz(Me.cbAutoFilter.Value, False)" & vbNewLine & _
+      "   m_FilterControlManager.AutoFilterOn = True '" & L10n.Text("oder z. B. mittels Checkbox:") & " = Nz(Me.cbAutoFilter.Value, False)" & vbNewLine & _
       "End Sub" & vbNewLine
 
    Code = Code & vbNewLine & _
@@ -132,8 +132,8 @@ Private Property Get IFilterFormCodeBuilder_FormUnLoadCode() As String
    IFilterFormCodeBuilder_FormUnLoadCode = "   Set m_FilterControlManager = Nothing"
 End Property
 
-Private Property Get IFilterFormCodeBuilder_UseFilterCtlCode() As String
-   IFilterFormCodeBuilder_UseFilterCtlCode = "   FilterControlManager.UseFilter"
+Private Property Get IFilterFormCodeBuilder_ApplyFilterCtlCode() As String
+   IFilterFormCodeBuilder_ApplyFilterCtlCode = "   FilterControlManager.ApplyFilter"
 End Property
 
 Private Property Get IFilterFormCodeBuilder_RemoveFilterCtlCode() As String
@@ -145,7 +145,7 @@ Private Function IFilterFormCodeBuilder_AutoFilterCtlCode(Optional ByVal AutoFil
    IFilterFormCodeBuilder_AutoFilterCtlCode = "   m_FilterControlManager.AutoFilterOn = Me." & AutoFilterCtlName & ".Value"
 End Function
 
-Private Function IFilterFormCodeBuilder_FilterControlValueChangedEventFunction(Optional ByVal UseFilterCtlName As String = vbNullString, Optional ByVal AutoFilterCtlName As String = vbNullString) As String
+Private Function IFilterFormCodeBuilder_FilterControlValueChangedEventFunction(Optional ByVal ApplyFilterCtlName As String = vbNullString, Optional ByVal AutoFilterCtlName As String = vbNullString) As String
    IFilterFormCodeBuilder_FilterControlValueChangedEventFunction = vbNullString
 End Function
 
@@ -202,7 +202,7 @@ Private Function GetRemoveFilterCode() As String
    Dim Code As String
 
    Code = "Private Sub RemoveFilter()" & vbNewLine & _
-          "   FilterControlManager.RemoveFilter ""1=0"" ' 0=1 .. damit nach dem Entfernen der Filterwerte keine Datensätze angezeigt werden" & vbNewLine & _
+          "   FilterControlManager.RemoveFilter ""1=0"" ' 0=1 .. " & L10n.Text("damit nach dem Entfernen der Filterwerte keine Datensätze angezeigt werden") & vbNewLine & _
           "End Sub" & vbNewLine
 
    GetRemoveFilterCode = Code
