@@ -385,6 +385,8 @@ Public Sub RemoveFilterValue(Optional ByVal RaiseFilterValueChangedEvent As Bool
             ElseIf Not (IsNull(m_Control.Value) And IsNull(GetCheckedIgnoreValue)) Then
                m_Control.Value = GetCheckedIgnoreValue
             End If
+         Case acListBox
+            RemoveListboxSelection m_Control
          Case Else
             m_Control.Value = GetCheckedIgnoreValue
       End Select
@@ -404,4 +406,22 @@ Public Sub RemoveFilterValue(Optional ByVal RaiseFilterValueChangedEvent As Bool
    If RaiseFilterValueChangedEvent Then
       RaiseFilterValueChanged
    End If
+End Sub
+
+Private Sub RemoveListboxSelection(ByVal ListBoxRef As ListBox)
+   
+   Dim Item As Variant
+
+   With ListBoxRef
+      If IsArray(.Value) Then
+         .Value = Array() ' Auswahl in MultiValue-Combobox leeren
+      ElseIf .MultiSelect = 1 Then
+         For Each Item In .ItemsSelected
+            .Selected(Item) = False
+         Next
+      Else
+         .Value = GetCheckedIgnoreValue
+      End If
+   End With
+   
 End Sub
