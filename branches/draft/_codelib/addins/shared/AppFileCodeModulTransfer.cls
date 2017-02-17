@@ -143,9 +143,12 @@ Private Sub TransferCodeModul(ByVal TargetProject As Access.CurrentProject, _
       If VbeTools.CodeModuleExists(ModulName) Then
          CurrentCodeModulWriter.ImportVbComponent 0, ModulName, FileName
          VbeTools.ActivateCurrentProject
-         With TargetProject.Application.DoCmd
-            .RunCommand acCmdCompileAndSaveAllModules
-         End With
+         On Error Resume Next ' Bei mde-Add-In weigert sich Access manchmal die eigentliche Anwendung zu kompilieren
+         TargetProject.Application.DoCmd.RunCommand acCmdCompileAndSaveAllModules
+         If Err.Number <> 0 Then
+            Err.Clear
+         End If
+         On Error GoTo 0
       Else
          ConvertToSaveAsTextFile FileName
          TargetProject.Application.LoadFromText ObjType, ModulName, FileName

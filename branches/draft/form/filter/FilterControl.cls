@@ -414,7 +414,7 @@ Private Sub RemoveListboxSelection(ByVal ListBoxRef As ListBox)
 
    With ListBoxRef
       If IsArray(.Value) Then
-         .Value = Array() ' Auswahl in MultiValue-Combobox leeren
+         .Value = Array() ' Auswahl in MultiValue-Listbox leeren
       ElseIf .MultiSelect = 1 Then
          For Each Item In .ItemsSelected
             .Selected(Item) = False
