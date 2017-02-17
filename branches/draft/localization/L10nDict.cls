@@ -158,7 +158,7 @@ Public Function GetUserLanguageID() As Long
    Set AccApp = Application
    
 On Error GoTo AccAppInterFaceErr
-   GetUserLanguageID = AccApp.LanguageSettings.LanguageID2(2)
+   GetUserLanguageID = AccApp.LanguageSettings.LanguageID(2)
 
 Exit Function
 
