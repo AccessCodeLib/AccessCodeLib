@@ -50,16 +50,18 @@ Private Type RECT
    Bottom As Long
 End Type
 
+#If VBA7 Then
+
+Private m_Helper As LongPtr 'Hilfsfenster-Handle
+
 Private Type APIMSG
-   Hwnd As Long
-   Message As Long
+   Hwnd As LongPtr
+   Message As LongPtr
    wParam As Long
    lParam As Long
-   time As Long
+   time As LongPtr
    pt As POINTAPI
 End Type
-
-#If VBA7 Then
 
 'Hilfsfenster
 Private Declare PtrSafe Function CreateWindowEx _
@@ -73,9 +75,9 @@ Private Declare PtrSafe Function CreateWindowEx _
       ByVal y As Long, _
       ByVal nWidth As Long, _
       ByVal nHeight As Long, _
-      ByVal hwndParent As Long, _
-      ByVal hMenu As Long, _
-      ByVal hInstance As Long, _
+      ByVal hwndParent As LongPtr, _
+      ByVal hMenu As LongPtr, _
+      ByVal hInstance As LongPtr, _
       ByRef lpParam As Any) As Long
 
 'Menü-Standardfunktionen
@@ -85,26 +87,26 @@ Private Declare PtrSafe Function CreatePopupMenu _
 Private Declare PtrSafe Function AppendMenu _
       Lib "user32.dll" _
       Alias "AppendMenuA" ( _
-      ByVal hMenu As Long, _
+      ByVal hMenu As LongPtr, _
       ByVal wFlags As Long, _
-      ByVal wIDNewItem As Long, _
+      ByVal wIDNewItem As LongPtr, _
       ByVal lpNewItem As Any _
       ) As Long
 
 Private Declare PtrSafe Function TrackPopupMenu _
       Lib "user32.dll" ( _
-      ByVal hMenu As Long, _
+      ByVal hMenu As LongPtr, _
       ByVal wFlags As Long, _
       ByVal x As Long, _
       ByVal y As Long, _
       ByVal nReserved As Long, _
-      ByVal Hwnd As Long, _
+      ByVal Hwnd As LongPtr, _
       lprc As Any _
-      ) As Long 'lprc As RECT
+      ) As LongPtr 'lprc As RECT
 
 Private Declare PtrSafe Function DestroyMenu _
       Lib "user32.dll" ( _
-         ByVal hMenu As Long _
+         ByVal hMenu As LongPtr _
       ) As Long
 
 'Message-Loop
@@ -112,7 +114,7 @@ Private Declare PtrSafe Function GetMessage _
       Lib "user32.dll" _
       Alias "GetMessageA" ( _
       ByRef lpMsg As APIMSG, _
-      ByVal Hwnd As Long, _
+      ByVal Hwnd As LongPtr, _
       ByVal wMsgFilterMin As Long, _
       ByVal wMsgFilterMax As Long _
       ) As Long
@@ -128,18 +130,29 @@ Private Declare PtrSafe Function TranslateMessage _
 
 Private Declare PtrSafe Function GetWindowRect _
       Lib "user32.dll" ( _
-         ByVal Hwnd As Long, _
+         ByVal Hwnd As LongPtr, _
          ByRef lpRect As RECT _
-      ) As Long
+      ) As LongPtr
       
 Private Declare PtrSafe Function SetMenuDefaultItem _
       Lib "user32" ( _
-         ByVal hMenu As Long, _
-         ByVal uItem As Long, _
-         ByVal fByPos As Long _
-      ) As Long
+         ByVal hMenu As LongPtr, _
+         ByVal uItem As LongPtr, _
+         ByVal fByPos As LongPtr _
+      ) As LongPtr
       
 #Else
+
+Private m_Helper As Long 'Hilfsfenster-Handle
+
+Private Type APIMSG
+   Hwnd As Long
+   Message As Long
+   wParam As Long
+   lParam As Long
+   time As Long
+   pt As POINTAPI
+End Type
 
 'Hilfsfenster
 Private Declare Function CreateWindowEx _
@@ -246,8 +259,6 @@ Private Const TPM_BOTTOMALIGN As Long = &H20&
 'Hilfsfenster
 Private Const WS_CHILD As Long = &H40000000
 
-Private m_Helper As Long 'Hilfsfenster-Handle
-
 '---- Ergänzung
 
 Private Type WinAPIMenuHandlerItem
@@ -305,7 +316,11 @@ End Property
 
 Public Property Set MenuControl(ByRef MnuCtl As Access.Control)
    
+#If VBA7 Then
+   Dim lngSectionHwnd As LongPtr
+#Else
    Dim lngSectionHwnd As Long
+#End If
    Dim ParentObj As Object
 
    Set m_MenuControl = MnuCtl
@@ -406,16 +421,23 @@ End Sub
 '---------------------------------------------------------------------------------------
 Public Function OpenMenu(Optional ByVal x As Single = 0, Optional ByVal y As Single = 0) As Long
 
+#If VBA7 Then
+   Dim MenuHwnd As LongPtr
+   Dim TmpHwnd As LongPtr
+   Dim Hwnd As LongPtr
+#Else
    Dim MenuHwnd As Long
    Dim TmpHwnd As Long
-   
+   Dim Hwnd As Long
+#End If
+
+   Dim Message As APIMSG
    Dim RcHelper As RECT
    Dim ButtonLeft As Long
    Dim ButtonTop As Long
    Dim Xpos As Long
    Dim Ypos As Long
-   Dim Message As APIMSG
- 
+   
    Dim ParentObj As Object
    Dim AccFormRect As RECT
 
@@ -483,7 +505,6 @@ Public Function OpenMenu(Optional ByVal x As Single = 0, Optional ByVal y As Sin
    
    'Message-Loop (Obacht: für normale Formulare Application.hWndAccessApp, für POPUPS Me.hwnd)
    
-   Dim Hwnd As Long
    If m_AccessForm.PopUp = True Then
       Hwnd = m_AccessForm.Hwnd
    Else
