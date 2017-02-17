@@ -46,7 +46,11 @@ Private m_LangSeparatorChar As String
 Public Event LanguageChanged()
 Public Event DictionaryRefreshed()
 
-Private Declare Function GetUserDefaultUILanguage Lib "kernel32.dll" () As Long
+#If VBA7 Then
+    Private Declare PtrSafe Function GetUserDefaultUILanguage Lib "kernel32.dll" () As Long
+#Else
+    Private Declare Function GetUserDefaultUILanguage Lib "kernel32.dll" () As Long
+#End If
 
 #If DictEarlyBinding Then
 Private Property Get Dict() As Scripting.Dictionary
