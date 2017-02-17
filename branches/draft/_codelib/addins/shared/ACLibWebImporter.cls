@@ -34,8 +34,10 @@ Private m_SvnRev As String
 Private m_UseDraftBranch As Boolean
 
 #If VBA7 Then
+Private Declare PtrSafe Function DeleteUrlCacheEntry Lib "wininet.dll" Alias "DeleteUrlCacheEntryA" (ByVal lpszUrlName As String) As Long
 Private Declare PtrSafe Function URLDownloadToFile Lib "urlmon" Alias "URLDownloadToFileA" (ByVal pCaller As Long, ByVal szURL As String, ByVal szFileName As String, ByVal dwReserved As Long, ByVal lpfnCB As Long) As Long
 #Else
+Private Declare Function DeleteUrlCacheEntry Lib "wininet.dll" Alias "DeleteUrlCacheEntryA" (ByVal lpszUrlName As String) As Long
 Private Declare Function URLDownloadToFile Lib "urlmon" Alias "URLDownloadToFileA" (ByVal pCaller As Long, ByVal szURL As String, ByVal szFileName As String, ByVal dwReserved As Long, ByVal lpfnCB As Long) As Long
 #End If
 
@@ -199,5 +201,7 @@ On Error GoTo 0
 End Sub
 
 Private Sub DownloadFileFromWeb(ByVal Url As String, ByVal TargetPath As String)
+   If FileExists(TargetPath) Then Kill TargetPath
+   DeleteUrlCacheEntry Url
    URLDownloadToFile 0, Url, TargetPath, 0, 0
 End Sub
