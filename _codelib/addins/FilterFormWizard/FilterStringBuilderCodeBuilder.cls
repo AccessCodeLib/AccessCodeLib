@@ -102,13 +102,14 @@ Private Function GetRemoveFilterCode(ByVal ApplyFilterCtlName As String, ByVal F
 
    Code = "Private Sub RemoveFilter()" & vbNewLine & _
           "   RemoveFilterValues" & vbNewLine & _
-          "   ApplyFilter ""0=1"" ' " & L10n.Text("Anzeige leeren") & vbNewLine
+          "'  ApplyFilter ""0=1""        ' " & L10n.Text("Anzeige leeren, keine Datensätze anzeigen") & vbNewLine & _
+          "   ApplyFilter vbNullString ' " & L10n.Text("Alle Datensätze anzeigen") & vbNewLine
           
    If Len(ApplyFilterCtlName) > 0 Then
        Code = Code & _
           "   Me." & ApplyFilterCtlName & ".FontBold = False" & vbNewLine
    End If
-   
+
    Code = Code & _
       "End Sub" & vbNewLine
       
