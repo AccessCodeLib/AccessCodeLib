@@ -96,9 +96,14 @@ Private Property Get IFilterFormCodeBuilder_ClassInitalisationCode( _
       "Private Sub InitFilterControlManager()" & vbNewLine & _
       "   Set m_FilterControlManager = New FilterControlManager" & vbNewLine & _
       "   m_FilterControlManager.ConfigSqlFormat """ & SqlDateFormat & """, """ & SqlBooleanTrueString & """, """ & SqlWildCardString & """" & vbNewLine & _
-      "   InitFilterControls" & vbNewLine & _
-      "   m_FilterControlManager.AutoFilterOn = True '" & L10n.Text("oder z. B. mittels Checkbox:") & " = Nz(Me.cbAutoFilter.Value, False)" & vbNewLine & _
-      "End Sub" & vbNewLine
+      "   InitFilterControls" & vbNewLine
+      
+   If Len(AutoFilterCtlName) Then
+      Code = Code & "   m_FilterControlManager.AutoFilterOn = Nz(Me." & AutoFilterCtlName & ".Value, False)" & vbNewLine
+   Else
+      Code = Code & "   m_FilterControlManager.AutoFilterOn = True '" & L10n.Text("oder z. B. mittels Checkbox:") & " = Nz(Me.cbAutoFilter.Value, False)" & vbNewLine
+   End If
+   Code = Code & "End Sub" & vbNewLine
 
    Code = Code & vbNewLine & _
       "Private Property Get FilterControlManager() As FilterControlManager" & vbNewLine & _
@@ -202,7 +207,8 @@ Private Function GetRemoveFilterCode() As String
    Dim Code As String
 
    Code = "Private Sub RemoveFilter()" & vbNewLine & _
-          "   FilterControlManager.RemoveFilter ""1=0"" ' 0=1 .. " & L10n.Text("damit nach dem Entfernen der Filterwerte keine Datensätze angezeigt werden") & vbNewLine & _
+          "'  FilterControlManager.RemoveFilter ""1=0""  ' 1=0 .. " & L10n.Text("damit nach dem Entfernen der Filterwerte keine Datensätze angezeigt werden") & vbNewLine & _
+          "   FilterControlManager.RemoveFilter        ' " & L10n.Text("ohne Parameterübergabe werden alle Datensätze angezeigt") & vbNewLine & _
           "End Sub" & vbNewLine
 
    GetRemoveFilterCode = Code

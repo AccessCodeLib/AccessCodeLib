@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =805467576
+Checksum =-1287339636
 Begin Form
     AllowFilters = NotDefault
     RecordSelectors = NotDefault
@@ -20,10 +20,10 @@ Begin Form
     Width =10771
     DatasheetFontHeight =10
     ItemSuffix =129
-    Left =564
-    Top =744
-    Right =13500
-    Bottom =8940
+    Left =4056
+    Top =1476
+    Right =14832
+    Bottom =7488
     DatasheetGridlinesColor =12632256
     RecSrcDt = Begin
         0x668d2cd46a58e440
@@ -40,10 +40,10 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x00d96b0cac78751818855701010000000c000000588457010200000002000000 ,
+        0x007c441958300119f8fbfc0c6cdee601f8fbfc0c4c4e9801d637050100000000 ,
         0x010403069c00740353ef800301000900ea0a6f08640001000f00580202000100 ,
-        0x5802030001004c6574746572002d6f638d3d70638c84570148c25d180c000000 ,
-        0x0a000000c0840000000000000000000000000000010000000000000001000000 ,
+        0x5802030001004c6574746572004f980182370501fffffffffe65990068659900 ,
+        0xfeac38a5604f0000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000004749535000000000000000000000000050524956 ,
         0xe210000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -76,19 +76,19 @@ Begin Form
     End
     PrtDevNames = Begin
         0x080023002b000100000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000467265655044465850313a0000000000
+        0x0000000000000000000000467265655044465850313a00
     End
     FilterOnLoad =0
     ShowPageMargins =0
     AllowLayoutView =0
     DatasheetGridlinesColor12 =12632256
     PrtDevModeW = Begin
-        0x00000058d12be784ac8e5701aefcfffff49f57010300000008000000100e4719 ,
-        0xf47a5701325b6677684a7501ac8e5701000000001015530b0000000000004719 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x01040306dc00740353ef800301000900ea0a6f08640001000f00580202000100 ,
-        0x5802030001004c00650074007400650072000000c000530bf82e48190a000000 ,
-        0xc87d5701b067697748000000feffffff907b5701955c6677fc01000000000000 ,
-        0x9801470101000000000000000000000000000000010000000000000001000000 ,
+        0x5802030001004c00650074007400650072000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000010000000000000001000000 ,
         0x0200000001000000000000004749535000000000000000000000000050524956 ,
         0xe210000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -123,7 +123,7 @@ Begin Form
         0x04001f0027000100000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000460072006500650050004400460058005000 ,
-        0x31003a0000000000000000000000
+        0x31003a000000
     End
     
     Begin
@@ -688,23 +688,24 @@ Begin Form
                         Begin Label
                             BackStyle =1
                             OverlapFlags =215
-                            Left =3224
-                            Top =4495
-                            Width =1395
+                            TextAlign =2
+                            Left =3228
+                            Top =4500
+                            Width =1536
                             Height =240
                             BackColor =-2147483633
                             Name ="labUseFilterMethodOptions"
-                            Caption ="UseFilter-Methode"
+                            Caption ="ApplyFilter-Methode"
                             Tag ="LANG:"
                             GUID = Begin
                                 0x6e694148f314bf4eae763e55e8443045
                             End
                             HorizontalAnchor =1
                             VerticalAnchor =1
-                            LayoutCachedLeft =3224
-                            LayoutCachedTop =4495
-                            LayoutCachedWidth =4619
-                            LayoutCachedHeight =4735
+                            LayoutCachedLeft =3228
+                            LayoutCachedTop =4500
+                            LayoutCachedWidth =4764
+                            LayoutCachedHeight =4740
                         End
                         Begin OptionButton
                             OverlapFlags =87
@@ -1024,6 +1025,7 @@ Begin Form
                     DefaultValue ="\"Jet/DAO\""
                     Tag ="LANG:"
                     HorizontalAnchor =1
+                    VerticalAnchor =1
 
                     LayoutCachedLeft =8820
                     LayoutCachedTop =4200
@@ -1045,6 +1047,7 @@ Begin Form
                                 0x14d7ced7ebfa2f4dbad32c7023fb2a33
                             End
                             HorizontalAnchor =1
+                            VerticalAnchor =1
                             LayoutCachedLeft =7755
                             LayoutCachedTop =4200
                             LayoutCachedWidth =8820
@@ -1213,10 +1216,10 @@ Begin Form
                     Name ="cmdFillFilterControlsFromDataSource"
                     Caption ="FilterControl-Liste mit Namen aus Datenquelle füllen"
                     StatusBarText ="Zum Füllen der List mit den Namen aus der Formulardatenquelle bitte zuerst in de"
-                        "r Use-Filter-Methode das Datenformular einstellen"
+                        "r ApplyFilter-Methode das Datenformular einstellen"
                     OnClick ="[Event Procedure]"
                     Tag ="LANG:"
-                    ControlTipText ="Bitte zuerst in der \"UseFilter-Methode\"-Option das Datenformular einstellen"
+                    ControlTipText ="Bitte zuerst in der 'ApplyFilter-Methode'-Option das Datenformular einstellen!"
                     GUID = Begin
                         0x683609b2ef3da847bec91b308cba0601
                     End
@@ -1406,7 +1409,6 @@ Private Sub cbxLangCode_AfterUpdate()
       End If
       L10n.LangCode = .Value
    End With
-   L10n.TranslateControls Me
 End Sub
 
 Private Sub cbxApplyFilterSubForm_AfterUpdate()
@@ -1688,7 +1690,7 @@ End Sub
 
 Private Sub Form_Open(ByRef Cancel As Integer)
    Me.cbxLangCode.Value = L10n.LangCode
-   L10n.TranslateControls Me
+   L10n.TranslateControls Me.Controls
    Set m_L10nDict = L10n
    SetFormCaption
 End Sub
@@ -1833,7 +1835,8 @@ Private Sub m_L10nDict_LanguageChanged()
    If Nz(Me.cbxLangCode.Value, vbNullString) <> L10n.LangCode Then
       Me.cbxLangCode.Value = L10n.LangCode
    End If
-   L10n.TranslateControls Me
+   SetFormCaption
+   L10n.TranslateControls Me.Controls
 End Sub
 
 Private Sub ApplyFilterMethodOptions_AfterUpdate()
@@ -1947,7 +1950,7 @@ Private Sub SetNewVersionInfo()
 End Sub
 
 Private Sub OpenDownloadSource()
-   Application.FollowHyperlink DownloadSource, , True, False
+   Application.FollowHyperlink APPLICATION_DOWNLOADSOURCE, , True, False
 End Sub
 
 Private Function GetCheckedControlName(ByVal ControlNameToCheck As String) As String

@@ -140,6 +140,12 @@ Public Property Get LangCode() As String
    LangCode = m_LangCode
 End Property
 
+Public Property Let LangCode(ByVal NewValue As String)
+   m_LangCode = NewValue
+   FillDict
+   RaiseEvent LanguageChanged
+End Property
+
 Public Property Get LangSeparatorChar() As String
    If Len(m_LangSeparatorChar) = 0 Then
       m_LangSeparatorChar = DefaultLangSeparatorChar
@@ -166,12 +172,6 @@ AccAppInterFaceErr:
    GetUserLanguageID = GetUserDefaultUILanguage
 
 End Function
-
-Public Property Let LangCode(ByVal NewValue As String)
-   m_LangCode = NewValue
-   RaiseEvent LanguageChanged
-   FillDict
-End Property
 
 Public Function Text(ByVal KeyText As String) As String
 
@@ -209,11 +209,11 @@ Private Sub AddTextToTable(ByVal BaseText As String)
    
 End Sub
 
-Public Sub TranslateControls(ByVal FormRef As Form)
+Public Sub TranslateControls(ByVal ControlList As Controls)
 
    Dim ctl As Control
    
-   For Each ctl In FormRef.Controls
+   For Each ctl In ControlList
       TranslateControl ctl
    Next
 

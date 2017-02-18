@@ -220,7 +220,7 @@ Private Function GetApplyFilterMethodeCode( _
    End Select
 
    MethodeCode = _
-         "Private Function ApplyFilter(ByVal NewFilterString As String)" & vbNewLine
+         "Private Sub ApplyFilter(ByVal NewFilterString As String)" & vbNewLine
          
    If AddDebugLine Then
       MethodeCode = MethodeCode & vbNewLine & _
@@ -241,7 +241,7 @@ Private Function GetApplyFilterMethodeCode( _
    End If
          
    MethodeCode = MethodeCode & vbNewLine & _
-         "End Function"
+         "End Sub"
 
    GetApplyFilterMethodeCode = MethodeCode
 

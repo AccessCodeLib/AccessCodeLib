@@ -23,7 +23,7 @@ Option Explicit
 Option Private Module
 
 'Versionsnummer
-Private Const APPLICATION_VERSION As String = "1.6.2" '2017-02-17
+Private Const APPLICATION_VERSION As String = "1.6.3" '2017-02-18
 
 #Const USE_CLASS_APPLICATIONHANDLER_APPFILE = 1
 #Const USE_CLASS_APPLICATIONHANDLER_VERSION = 1
@@ -33,11 +33,9 @@ Private Const APPLICATION_FULLNAME As String = "Access Code Library - FilterForm
 Private Const APPLICATION_TITLE As String = APPLICATION_FULLNAME
 Private Const APPLICATION_ICONFILE As String = "ACLib.ico"
 
-Public Const DownloadSource As String = "http://wiki.access-codelib.net/ACLib-FilterForm-Wizard"
+Public Const APPLICATION_DOWNLOADSOURCE As String = "http://wiki.access-codelib.net/ACLib-FilterForm-Wizard"
 Private Const APPLICATION_DOWNLOAD_FOLDER As String = "http://access-codelib.net/download/addins/"
 Private Const APPLICATION_DOWNLOAD_VERSIONXMLFILE As String = APPLICATION_DOWNLOAD_FOLDER & "ACLibFilterFormWizard.xml"
-
-Private Const DefaultErrorHandlerMode As Long = ACLibErrorHandlerMode.aclibErrMsgBox
 
 Private Const ApplicationStartFormName As String = "frmFilterFormWizard"
 
