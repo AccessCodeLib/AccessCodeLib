@@ -71,9 +71,11 @@ End Type
 Private m_SearchMode As FileSearchMode
 Private m_SeachItems() As SeachItem
 Private m_SearchItemCount As Long
+Private m_OpenSeachItems As Collection
 Private m_OpenSearchItemCount As Long
 
 Private m_FSO As Scripting.FileSystemObject
+
 
 '---------------------------------------------------------------------------------------
 ' Sub: AddSearchItem
@@ -127,6 +129,12 @@ Public Function Search(ByVal StartPath As String, Optional ByVal SearchMode As F
    
    Set m_FSO = CreateObject("Scripting.FileSystemObject")
    Set StartFolder = m_FSO.GetFolder(StartPath)
+   
+   Set m_OpenSeachItems = New Collection
+   Dim i As Long
+   For i = LBound(m_SeachItems) To UBound(m_SeachItems)
+      m_OpenSeachItems.Add i, "Idx" & i
+   Next
    
    RunThroughFolders StartFolder
    
@@ -194,12 +202,10 @@ Private Sub RunThroughFolders(ByVal StartFolder As Object)
    
 On Error GoTo HandleErr
    For Each SubFolder In StartFolder.SubFolders
-   
       RunThroughFolders SubFolder
       If m_OpenSearchItemCount <= 0 Then
          Exit Sub
       End If
-   
    Next
    
    Exit Sub
@@ -217,29 +223,14 @@ End Sub
 Private Sub RunThroughFolder(ByVal StartFolder As Object)
    
    Dim FileRef As Scripting.File
-   Dim OpenItemCnt As Long
-   Dim i As Long
-   
+
 On Error GoTo HandleErr
 
-   OpenItemCnt = m_OpenSearchItemCount
-
    For Each FileRef In StartFolder.Files
-      
-      For i = LBound(m_SeachItems) To UBound(m_SeachItems)
-         If CheckFileName(m_SeachItems(i), FileRef, OpenItemCnt) Then
-            If m_SearchMode = FSMode_SearchOneFile Then
-               m_OpenSearchItemCount = 0
-               Exit Sub
-            ElseIf m_SearchMode = FSMode_SearchOneOfEveryItem Then
-               m_OpenSearchItemCount = m_OpenSearchItemCount - 1
-               If m_OpenSearchItemCount <= 0 Then
-                  Exit Sub
-               End If
-            End If
-         End If
-      Next
-      
+      CheckSearchItems FileRef
+      If m_OpenSearchItemCount <= 0 Then
+         Exit Sub
+      End If
    Next
    
    Exit Sub
@@ -254,14 +245,31 @@ HandleErr:
    
 End Sub
 
-Private Function CheckFileName(ByRef SearchItm As SeachItem, ByVal FileRef As Scripting.File, ByRef OpenItemCnt As Long) As Boolean
-
-   If m_SearchMode = FSMode_SearchOneOfEveryItem Then
-   If SearchItm.Matches.Count > 0 Then
-      Exit Function
-   End If
-   End If
+Private Function CheckSearchItems(ByVal FileRef As Scripting.File) As Boolean
    
+   Dim Itm As SeachItem
+   Dim ItmIndex As Variant
+   
+   For Each ItmIndex In m_OpenSeachItems
+   
+      If CheckFileName(m_SeachItems(ItmIndex), FileRef) Then
+         If m_SearchMode = FSMode_SearchOneFile Then
+            m_OpenSearchItemCount = 0
+            Exit Function
+         ElseIf m_SearchMode = FSMode_SearchOneOfEveryItem Then
+            m_OpenSeachItems.Remove "Idx" & ItmIndex
+            m_OpenSearchItemCount = m_OpenSearchItemCount - 1
+            If m_OpenSearchItemCount <= 0 Then
+               Exit Function
+            End If
+         End If
+      End If
+   Next
+   
+End Function
+
+Private Function CheckFileName(ByRef SearchItm As SeachItem, ByVal FileRef As Scripting.File) As Boolean
+
    If FileRef.Name Like SearchItm.FileName Then
       With SearchItm.Matches
          .Add FileRef.Path
