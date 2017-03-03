@@ -23,7 +23,7 @@ Option Explicit
 Option Private Module
 
 'Versionsnummer
-Private Const APPLICATION_VERSION As String = "1.6.3" '2017-02-18
+Private Const APPLICATION_VERSION As String = "1.6.4" '2017-03-03
 
 #Const USE_CLASS_APPLICATIONHANDLER_APPFILE = 1
 #Const USE_CLASS_APPLICATIONHANDLER_VERSION = 1
