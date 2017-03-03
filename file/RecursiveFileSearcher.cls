@@ -43,11 +43,23 @@ Attribute VB_Exposed = False
 Option Compare Database
 Option Explicit
 
+'---------------------------------------------------------------------------------------
+' Enum: FileSearchMode
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Suchvarianten
+' </summary>
+' <list type="table">
+'   <item><term>FSMode_SearchOneOfEveryItem (0)</term><description>Sobald Suchbegriff einmal gefunden wurde, diesen Begriff nicht weiter suchen. Die Suche läuft, bis das Verzeichnis durchsucht wurde oder jeder Suchbegriff 1x gefunden wurde.</description></item>
+'   <item><term>FSMode_SearchOneFile (1)</term><description>Suche beenden, sobald einer der Suchbegriffe einen Treffer ergab</description></item>
+'   <item><term>FSMode_SearchAllFolders (2)</term><description>Die komplette Verzeichnisstruktur durchsuchen -> je Suchbegriff kann es mehrere Treffer geben</description></item>
+' </list>
+'**/
 Public Enum FileSearchMode
    FSMode_SearchOneOfEveryItem = 0  ' Sobald Suchbegriff einmal gefunden wurde, diesen Begriff nicht weiter suchen.
-                                    '     Sie Suche läuft, bis das Verzeichnis durchsucht wurde
-                                    '     oder jeder Suchbegriff 1x einen Treffer lieferte
-   FSMode_SearchOneFile = 1         ' Suche beenden, sobald einer der Suchbegriffe einen Treffer ergabe
+                                    '   Die Suche läuft, bis das Verzeichnis durchsucht wurde oder jeder Suchbegriff 1x gefunden wurde.
+   FSMode_SearchOneFile = 1         ' Suche beenden, sobald einer der Suchbegriffe einen Treffer ergab
    FSMode_SearchAllFolders = 2      ' Die komplette Verzeichnisstruktur durchsuchen -> je Suchbegriff kann es mehrere Treffer geben
 End Enum
 
@@ -63,6 +75,17 @@ Private m_OpenSearchItemCount As Long
 
 Private m_FSO As Scripting.FileSystemObject
 
+'---------------------------------------------------------------------------------------
+' Sub: AddSearchItem
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Suchbegriff anfügen
+' </summary>
+' <param name="FileName">Suchbegriff für den zu suchenen Dateinamen</param>
+' <remarks>Wildcards sind möglich, da Textvergleich mit Like durchgeführt wird.</remarks>
+'**/
+'---------------------------------------------------------------------------------------
 Public Sub AddSearchItem(ByVal FileName As String)
 
    Dim Itm As SeachItem
@@ -77,28 +100,6 @@ Public Sub AddSearchItem(ByVal FileName As String)
    m_SeachItems(m_SearchItemCount - 1) = Itm
    
 End Sub
-
-Public Property Get Matches() As Collection
-
-   Dim Mtchs As Collection
-   Dim Itm As SeachItem
-   Dim i As Long
-   Dim m As Variant
-   
-   Set Mtchs = New Collection
-   
-   For i = 0 To UBound(m_SeachItems)
-      Itm = m_SeachItems(i)
-      If Itm.Matches.Count > 0 Then
-         For Each m In Itm.Matches
-            Mtchs.Add m
-         Next
-      End If
-   Next
-   
-   Set Matches = Mtchs
-
-End Property
 
 '---------------------------------------------------------------------------------------
 ' Function: Search
@@ -132,6 +133,39 @@ Public Function Search(ByVal StartPath As String, Optional ByVal SearchMode As F
    Search = MatchExists
 
 End Function
+
+'---------------------------------------------------------------------------------------
+' Property: Matches
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Matches-Collection
+' </summary>
+' <returns>Collection (String-Item) der gefundenen Dateien</returns>
+' <remarks>Mit Matches.Count kann die Anzahl der gefundenen Dateien abgefragt werden.</remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Property Get Matches() As Collection
+
+   Dim Mtchs As Collection
+   Dim Itm As SeachItem
+   Dim i As Long
+   Dim m As Variant
+   
+   Set Mtchs = New Collection
+   
+   For i = 0 To UBound(m_SeachItems)
+      Itm = m_SeachItems(i)
+      If Itm.Matches.Count > 0 Then
+         For Each m In Itm.Matches
+            Mtchs.Add m
+         Next
+      End If
+   Next
+   
+   Set Matches = Mtchs
+
+End Property
 
 Private Property Get MatchExists() As Boolean
    
