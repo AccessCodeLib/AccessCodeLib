@@ -76,7 +76,6 @@ Private m_OpenSearchItemCount As Long
 
 Private m_FSO As Scripting.FileSystemObject
 
-
 '---------------------------------------------------------------------------------------
 ' Sub: AddSearchItem
 '---------------------------------------------------------------------------------------
@@ -197,10 +196,11 @@ Private Sub RunThroughFolders(ByVal StartFolder As Object)
    
    RunThroughFolder StartFolder
    If m_OpenSearchItemCount <= 0 Then
-       Exit Sub
+      Exit Sub
    End If
    
 On Error GoTo HandleErr
+
    For Each SubFolder In StartFolder.SubFolders
       RunThroughFolders SubFolder
       If m_OpenSearchItemCount <= 0 Then
@@ -245,9 +245,8 @@ HandleErr:
    
 End Sub
 
-Private Function CheckSearchItems(ByVal FileRef As Scripting.File) As Boolean
+Private Sub CheckSearchItems(ByVal FileRef As Scripting.File)
    
-   Dim Itm As SeachItem
    Dim ItmIndex As Variant
    
    For Each ItmIndex In m_OpenSeachItems
@@ -255,18 +254,18 @@ Private Function CheckSearchItems(ByVal FileRef As Scripting.File) As Boolean
       If CheckFileName(m_SeachItems(ItmIndex), FileRef) Then
          If m_SearchMode = FSMode_SearchOneFile Then
             m_OpenSearchItemCount = 0
-            Exit Function
+            Exit Sub
          ElseIf m_SearchMode = FSMode_SearchOneOfEveryItem Then
             m_OpenSeachItems.Remove "Idx" & ItmIndex
             m_OpenSearchItemCount = m_OpenSearchItemCount - 1
             If m_OpenSearchItemCount <= 0 Then
-               Exit Function
+               Exit Sub
             End If
          End If
       End If
    Next
    
-End Function
+End Sub
 
 Private Function CheckFileName(ByRef SearchItm As SeachItem, ByVal FileRef As Scripting.File) As Boolean
 
