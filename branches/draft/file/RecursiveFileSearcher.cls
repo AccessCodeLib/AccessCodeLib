@@ -108,11 +108,11 @@ End Property
 ' Dateisuche starten
 ' </summary>
 ' <param name="StartPath">Start-Verzeichnis (String)/param>
-' <param name="SearchMode">(Optional) Suchmodus ... Standard = MFSM_SearchEveryFile (sobald Suchbegriff einmal gefunden wurde, diesen Begriff nicht weiter suchen</param>
+' <param name="SearchMode">(Optional) Suchmodus ... Standard = FSMode_SearchOneOfEveryItem (sobald Suchbegriff einmal gefunden wurde, diesen Begriff nicht weiter suchen</param>
 ' <returns>True wenn mind. 1 Datei gefunden wurde</returns>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Search(ByVal StartPath As String, Optional ByVal SearchMode As FileSearchMode = MFSM_SearchEveryFile) As Boolean
+Public Function Search(ByVal StartPath As String, Optional ByVal SearchMode As FileSearchMode = FSMode_SearchOneOfEveryItem) As Boolean
    
    Dim StartFolder As Scripting.Folder
    
