@@ -108,8 +108,8 @@ End Property
 ' Dateisuche starten
 ' </summary>
 ' <param name="StartPath">Start-Verzeichnis (String)/param>
-' <param name="SearchMode">Optional: Standard = MFSM_SearchEveryFile (sobald Suchbegriff einmal gefunden wurde, diesen Begriff nicht weiter suchen</param>
-' <remarks>Wenn 0 eingestellt wird, kommt Standard von DAO zum Einsatz (0-Parameter werden als "IsMissing"-Variant-Wert an DAO weitergeben)</remarks>
+' <param name="SearchMode">(Optional) Suchmodus ... Standard = MFSM_SearchEveryFile (sobald Suchbegriff einmal gefunden wurde, diesen Begriff nicht weiter suchen</param>
+' <returns>True wenn mind. 1 Datei gefunden wurde</returns>
 '**/
 '---------------------------------------------------------------------------------------
 Public Function Search(ByVal StartPath As String, Optional ByVal SearchMode As FileSearchMode = MFSM_SearchEveryFile) As Boolean
