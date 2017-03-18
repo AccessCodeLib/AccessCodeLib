@@ -169,7 +169,7 @@ End Sub
 'AccUnit:Row("", 0)
 'AccUnit:Row("1234567890", 10)
 Public Sub Lenght_String_HasLenght(ByVal checkValue As String, Expected As Integer)
-    Assert.That StringTools.Lenght(checkValue), Iz.EqualTo(Expected)
+    Assert.That StringTools.Length(checkValue), Iz.EqualTo(Expected)
 End Sub
 
 'AccUnit:Row("", "", "")
@@ -209,8 +209,8 @@ End Sub
 'AccUnit:Row("abc", 2,1, "c")
 'AccUnit:Row("abc", 3,0, "")
 'AccUnit:Row("abc", 0,3, "abc")
-Public Sub Substring_String_ExpectedSubstring(ByVal Value As String, ByVal startIndex As Long, ByVal length As Long, ByVal Expected As String)
-    Assert.That StringTools.Substring(Value, startIndex, length), Iz.EqualTo(Expected)
+Public Sub Substring_String_ExpectedSubstring(ByVal Value As String, ByVal startIndex As Long, ByVal Length As Long, ByVal Expected As String)
+    Assert.That StringTools.SubString(Value, startIndex, Length), Iz.EqualTo(Expected)
 End Sub
 
 'AccUnit:Row("", "", 0, "")
