@@ -99,19 +99,12 @@ Public Sub Load(ByVal ModuleName As String)
    Set m_CodeModule = CurrentVbProject.VBComponents.Item(ModuleName).CodeModule
 End Sub
 
-#If EARLYBINDING Then
 Public Sub AddCode(ByVal Code As String)
-#Else
-Public Sub AddCode(ByVal Code As String)
-#End If
    m_CodeModule.InsertLines m_CodeModule.CountOfDeclarationLines + 1, vbNewLine & Code
 End Sub
 
-#If EARLYBINDING Then
 Public Sub AddCodeToEventProcedure(ByVal EventName As String, ByVal ObjectName As String, ByVal Code As String)
-#Else
-Public Sub AddCodeToEventProcedure(ByVal EventName As String, ByVal ObjectName As String, ByVal Code As String)
-#End If
+
    Dim StartLine As Long
    
    StartLine = FindEventProcedureBodyLine(EventName, ObjectName)
@@ -124,11 +117,8 @@ Public Sub AddCodeToEventProcedure(ByVal EventName As String, ByVal ObjectName A
 
 End Sub
 
-#If EARLYBINDING Then
 Private Function FindEventProcedureBodyLine(ByVal EventName As String, ByVal ObjectName As String) As Long
-#Else
-Private Function FindEventProcedureBodyLine(ByVal EventName As String, ByVal ObjectName As String) As Long
-#End If
+
    Dim StartLine As Long
    Dim EndLine As Long
 
@@ -149,11 +139,7 @@ Private Function FindEventProcedureBodyLine(ByVal EventName As String, ByVal Obj
 
 End Function
 
-#If EARLYBINDING Then
 Private Function CreateEmptyEventProcedure(ByVal EventName As String, ByVal ObjectName As String) As Long
-#Else
-Private Function CreateEmptyEventProcedure(ByVal EventName As String, ByVal ObjectName As String) As Long
-#End If
    m_CodeModule.CreateEventProc EventName, ObjectName
    CreateEmptyEventProcedure = m_CodeModule.ProcBodyLine(ObjectName & "_" & EventName, vbext_pk_Proc)
 End Function
