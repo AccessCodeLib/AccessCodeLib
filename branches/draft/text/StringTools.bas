@@ -212,8 +212,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Contains(ByVal checkValue As String, ByVal searchValue As String) As Boolean
-    Contains = VBA.InStr(1, checkValue, searchValue, vbTextCompare) > 0
+Public Function Contains(ByVal checkValue As String, ByVal SearchValue As String) As Boolean
+    Contains = VBA.InStr(1, checkValue, SearchValue, vbTextCompare) > 0
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -230,8 +230,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function EndsWith(ByVal checkValue As String, ByVal searchValue As String) As Boolean
-    EndsWith = VBA.Right$(checkValue, VBA.Len(searchValue)) = searchValue
+Public Function EndsWith(ByVal checkValue As String, ByVal SearchValue As String) As Boolean
+    EndsWith = VBA.Right$(checkValue, VBA.Len(SearchValue)) = SearchValue
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -248,8 +248,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function StartsWith(ByVal checkValue As String, ByVal searchValue As String) As Boolean
-    StartsWith = VBA.Left$(checkValue, VBA.Len(searchValue)) = searchValue
+Public Function StartsWith(ByVal checkValue As String, ByVal SearchValue As String) As Boolean
+    StartsWith = VBA.Left$(checkValue, VBA.Len(SearchValue)) = SearchValue
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -357,6 +357,6 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function InsertAt(ByVal Value As String, ByVal insertValue As String, ByVal pos As Long) As String
-    InsertAt = VBA.Mid$(Value, 1, pos) & insertValue & StringTools.SubString(Value, pos)
+Public Function InsertAt(ByVal Value As String, ByVal insertValue As String, ByVal Pos As Long) As String
+    InsertAt = VBA.Mid$(Value, 1, Pos) & insertValue & StringTools.SubString(Value, Pos)
 End Function
