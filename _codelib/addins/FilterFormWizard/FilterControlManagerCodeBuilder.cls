@@ -55,7 +55,8 @@ Private Property Get IFilterFormCodeBuilder_ClassInitalisationCode( _
                Optional ByVal SqlWildCardString As String = "*", _
                Optional ByVal ApplyFilterCtlName As String, _
                Optional ByVal RemoveFilterCtlName As String, _
-               Optional ByVal AutoFilterCtlName As String) As String
+               Optional ByVal AutoFilterCtlName As String, _
+               Optional ByVal FilterControlTagConverterMode As Long = 0) As String
    
    Dim Code As String
 
@@ -112,22 +113,52 @@ Private Property Get IFilterFormCodeBuilder_ClassInitalisationCode( _
       "End Property" & vbNewLine
 
    Code = Code & vbNewLine & _
-      "Private Sub InitFilterControls()" & vbNewLine & _
-      vbNewLine & _
-      "   With FilterControlManager.FilterControls" & vbNewLine & _
-      vbNewLine & _
-      FilterControlCodeLines & vbNewLine & _
-      vbNewLine & _
-      "   End With" & vbNewLine & _
-      vbNewLine & _
-      "End Sub" & vbNewLine
-      
+      GetInitFilterControlsCode(FilterControlCodeLines, FilterControlTagConverterMode <> 0, FilterControlTagConverterMode = 2)
+   
    Code = Code & vbNewLine & _
       GetRemoveFilterCode()
 
    IFilterFormCodeBuilder_ClassInitalisationCode = Code
 
 End Property
+
+Private Function GetInitFilterControlsCode(ByVal FilterControlCodeLines As String, ByVal UseFilterControlTagConverter As Boolean, ByVal UseHeaderControls As Boolean) As String
+   
+   Dim Code As String
+   Dim ControlsCollectionCode As String
+
+   Code = _
+      "Private Sub InitFilterControls()" & vbNewLine & _
+      vbNewLine
+      
+   If UseFilterControlTagConverter Then
+   
+      If UseHeaderControls Then
+         ControlsCollectionCode = "Me.Section(acHeader).Controls"
+      Else
+         ControlsCollectionCode = "Me.Controls"
+      End If
+   
+      Code = Code & _
+         "   With New FilterControlTagConverter" & vbNewLine & _
+         "      .AddFilterControls FilterControlManager.FilterControls, " & ControlsCollectionCode & vbNewLine & _
+         "   End With" & vbNewLine
+   Else
+      Code = Code & _
+         "   With FilterControlManager.FilterControls" & vbNewLine & _
+         vbNewLine & _
+         FilterControlCodeLines & vbNewLine & _
+         vbNewLine & _
+         "   End With" & vbNewLine
+   End If
+   
+   Code = Code & _
+      vbNewLine & _
+      "End Sub" & vbNewLine
+      
+   GetInitFilterControlsCode = Code
+
+End Function
 
 Private Property Get IFilterFormCodeBuilder_FormLoadCode() As String
    IFilterFormCodeBuilder_FormLoadCode = "   InitFilterControlManager"

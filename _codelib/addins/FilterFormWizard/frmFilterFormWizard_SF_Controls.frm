@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =-496456883
+Checksum =-675564561
 Begin Form
     NavigationButtons = NotDefault
     AllowDesignChanges = NotDefault
@@ -11,10 +11,10 @@ Begin Form
     Width =10050
     DatasheetFontHeight =11
     ItemSuffix =33
-    Left =4152
-    Top =2856
-    Right =14748
-    Bottom =6084
+    Left =1950
+    Top =1920
+    Right =7905
+    Bottom =5145
     DatasheetGridlinesColor =15062992
     RecSrcDt = Begin
         0xc4d680b8ef58e440
@@ -27,18 +27,14 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x00526e00000000000000000000000000e8516e0090506e00456e7069c809360b ,
-        0x010403069c00740353ef800101000900ea0a6f08640001000f00580202000100 ,
-        0x5802030001004c657474657200a81d01ffffffff3222b2001263b20000000000 ,
-        0xdd1eaf0017630000000000000000000000000000010000000000000001000000 ,
-        0x0200000001000000000000004749535000000000000000000000000050524956 ,
-        0xe210000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000180000000000102710271027 ,
-        0x0000102700000000000000008000740300000000000000000000000000000000 ,
-        0x0000000000000000010000000000000000001000503403002888040000000000 ,
-        0x000000000000010000000000000000000000000000000000c029e70d03000000 ,
-        0x00000000ff000000000000000000000000000000000000000000000000000000 ,
+        0x000000000453f40098bdbb61cdbdbb61c6d3417c8874ec0d807f0000d821d30d ,
+        0x010403069c00d80353ef8001010009009a0b3408640001000f00580202000100 ,
+        0x580203000100413400bcbb618874ec0d08faba1301000004b854f40004000000 ,
+        0xdc54f40000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000011010000ffffffff4749533400000000000000000000000044494e55 ,
+        0x22006001bc031c00ed43a17d0000000000000000000000000000000000000000 ,
+        0x00000000000000000c0000000100000000000000000001000000000000000000 ,
+        0x0000010000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -53,17 +49,25 @@ Begin Form
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0100000000000000000000000000000070000000534d544a0000000010006000 ,
-        0x46007200650065005000440046005f0080000000534d544a0000000010007000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x00000000000000000000000000000000
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x00000000000000000000000000000000000000000000000060010000534d544a ,
+        0x00000000100050017b00430033004300310043003100310041002d0038003500 ,
+        0x460032002d0034003700310033002d0042003100370037002d00320038003600 ,
+        0x4200430038003900410038003500390041007d000000496e70757442696e0041 ,
+        0x55544f00524553444c4c00556e69726573444c4c004f7269656e746174696f6e ,
+        0x00504f52545241495400436f6c6c617465004f4646004d656469615479706500 ,
+        0x5072696e74657244656661756c74004a6f62426c61636b4f7074696d697a6174 ,
+        0x696f6e004f4e005265736f6c7574696f6e006470695f31323030783630307831 ,
+        0x00506170657253697a65004c4554544552005061676573506572536865657400 ,
+        0x3100506167654f726465720046726f6e74546f4261636b0050616765426f7264 ,
+        0x6572004f464600436f6c6f724d6f646500436f6c6f7200000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000001c0000005634444d ,
+        0x0100000000000000000000000000000000000000
     End
     PrtDevNames = Begin
-        0x080023002b000100000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000467265655044465850313a00
+        0x08002a0046000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x00000000000055534230303300
     End
     OnLoad ="[Event Procedure]"
     FilterOnLoad =0
@@ -76,19 +80,15 @@ Begin Form
     FitToScreen =1
     PrtDevModeW = Begin
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x01040306dc00740353ef800101000900ea0a6f08640001000f00580202000100 ,
-        0x5802030001004c00650074007400650072000000000000000000000000000000 ,
+        0x2d00330032003000200053006500720069006500730000000000000000000000 ,
+        0x01040306dc00d80353ef8001010009009a0b3408640001000f00580202000100 ,
+        0x5802030001004100340000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000010000000000000001000000 ,
-        0x0200000001000000000000004749535000000000000000000000000050524956 ,
-        0xe210000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000180000000000102710271027 ,
-        0x0000102700000000000000008000740300000000000000000000000000000000 ,
-        0x0000000000000000010000000000000000001000503403002888040000000000 ,
-        0x000000000000010000000000000000000000000000000000c029e70d03000000 ,
-        0x00000000ff000000000000000000000000000000000000000000000000000000 ,
+        0x0200000011010000ffffffff4749533400000000000000000000000044494e55 ,
+        0x22006001bc031c00ed43a17d0000000000000000000000000000000000000000 ,
+        0x00000000000000000c0000000100000000000000000001000000000000000000 ,
+        0x0000010000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -103,19 +103,27 @@ Begin Form
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0100000000000000000000000000000070000000534d544a0000000010006000 ,
-        0x46007200650065005000440046005f0080000000534d544a0000000010007000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x00000000000000000000000000000000
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x00000000000000000000000000000000000000000000000060010000534d544a ,
+        0x00000000100050017b00430033004300310043003100310041002d0038003500 ,
+        0x460032002d0034003700310033002d0042003100370037002d00320038003600 ,
+        0x4200430038003900410038003500390041007d000000496e70757442696e0041 ,
+        0x55544f00524553444c4c00556e69726573444c4c004f7269656e746174696f6e ,
+        0x00504f52545241495400436f6c6c617465004f4646004d656469615479706500 ,
+        0x5072696e74657244656661756c74004a6f62426c61636b4f7074696d697a6174 ,
+        0x696f6e004f4e005265736f6c7574696f6e006470695f31323030783630307831 ,
+        0x00506170657253697a65004c4554544552005061676573506572536865657400 ,
+        0x3100506167654f726465720046726f6e74546f4261636b0050616765426f7264 ,
+        0x6572004f464600436f6c6f724d6f646500436f6c6f7200000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000001c0000005634444d ,
+        0x0100000000000000000000000000000000000000
     End
     PrtDevNamesW = Begin
-        0x04001f0027000100000000000000000000000000000000000000000000000000 ,
+        0x0400260042000100000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000460072006500650050004400460058005000 ,
-        0x31003a000000
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000005500530042003000300033000000
     End
     
     Begin
@@ -824,7 +832,7 @@ Private Sub LoadControlsFromForm(ByVal FrmRef As Form)
 
 End Sub
 
-Public Sub AddControlsToImporter(ByVal Importer As FilterFormCodeImporter, ByVal FilterFormName As String)
+Public Function AddControlsToImporter(ByVal Importer As FilterFormCodeImporter, ByVal FilterFormName As String, ByVal UseFilterDefinitionInTagProperty As Boolean) As Boolean
    
 #If ADODB_EARLYBINDING = 1 Then
    Dim rst As ADODB.Recordset
@@ -833,63 +841,129 @@ Public Sub AddControlsToImporter(ByVal Importer As FilterFormCodeImporter, ByVal
 #End If
 
    Dim RelOp As String
+   Dim UseBetweenRelOp As Boolean
+   Dim FilterCtl As Control
+   Dim FrmDsgnr As FormDesigner
 
    Set rst = Me.Recordset.Clone
    If rst.RecordCount = 0 Then
-      Exit Sub
+      Exit Function
    End If
    
    Dim DataFieldName As String
    Dim ControlName As String, ControlName2 As String
    
    Dim SaveForm As Boolean
+   
+   If UseFilterDefinitionInTagProperty Then
+      Set FrmDsgnr = New FormDesigner
+      FrmDsgnr.FormName = FilterFormName
+   End If
 
    With rst
       Do While Not .EOF
 
          RelOp = Nz(.Fields("RelationalOperator"), vbNullString)
-         If .Fields("WildCardSuffix") = True Then
-            RelOp = RelOp & " + SQL_Add_WildCardSuffix"
-         End If
-         If .Fields("WildCardPrefix") = True Then
-            RelOp = RelOp & " + SQL_Add_WildCardPrefix"
-         End If
-         If .Fields("RelationalOperatorNot") = True Then
-            RelOp = "SQL_Not + " & RelOp
+         UseBetweenRelOp = (RelOp = "SQL_Between")
+         
+         If UseFilterDefinitionInTagProperty Then
+            RelOp = GetRelationalOperatorKey(RelOp)
+            If .Fields("WildCardSuffix") = True Then
+               RelOp = RelOp & "*"
+            End If
+            If .Fields("WildCardPrefix") = True Then
+               RelOp = "*" & RelOp
+            End If
+            If .Fields("RelationalOperatorNot") = True Then
+               RelOp = "Not " & RelOp
+            End If
+         Else
+            If .Fields("WildCardSuffix") = True Then
+               RelOp = RelOp & " + SQL_Add_WildCardSuffix"
+            End If
+            If .Fields("WildCardPrefix") = True Then
+               RelOp = RelOp & " + SQL_Add_WildCardPrefix"
+            End If
+            If .Fields("RelationalOperatorNot") = True Then
+               RelOp = "SQL_Not + " & RelOp
+            End If
          End If
          
          DataFieldName = Nz(.Fields("DataField").Value, vbNullString)
 
          If .Fields("CreateControl").Value = True Then
-            InsertFormControl FilterFormName, Nz(.Fields("ControlType").Value, acTextBox), DataFieldName, RelOp, ControlName, ControlName2
+            Set FilterCtl = InsertFormControl(FilterFormName, Nz(.Fields("ControlType").Value, acTextBox), DataFieldName, UseBetweenRelOp, ControlName, ControlName2, UseFilterDefinitionInTagProperty)
             SaveForm = True
+            AddControlsToImporter = True
          Else
-            ControlName = GetCheckedControlName(Nz(.Fields("Control").Value, vbNullString))
-            ControlName2 = GetCheckedControlName(Nz(.Fields("Control2"), vbNullString))
+            ControlName = Nz(.Fields("Control").Value, vbNullString)
+            ControlName2 = Nz(.Fields("Control2"), vbNullString)
+            If UseFilterDefinitionInTagProperty Then
+               Set FilterCtl = FrmDsgnr.Form.Controls(ControlName)
+            End If
          End If
 
-         Importer.AddFilterControlDefinition DataFieldName, _
-                                             Nz(.Fields("DataType"), vbNullString), _
-                                             RelOp, _
-                                             ControlName, _
-                                             ControlName2
-
+         If UseFilterDefinitionInTagProperty Then
+            FilterCtl.Tag = GetFilterControlTag(Nz(.Fields("DataType").Value, vbNullString), RelOp, DataFieldName, ControlName2)
+            SaveForm = True
+         Else
+            ControlName = GetCheckedControlName(ControlName)
+            ControlName2 = GetCheckedControlName(ControlName2)
+            Importer.AddFilterControlDefinition DataFieldName, _
+                                                Nz(.Fields("DataType"), vbNullString), _
+                                                RelOp, _
+                                                ControlName, _
+                                                ControlName2
+         End If
+         
+         Set FilterCtl = Nothing
+         ControlName = vbNullString
+         ControlName2 = vbNullString
          .MoveNext
 
       Loop
    End With
    
+   If UseFilterDefinitionInTagProperty Then
+      Set FrmDsgnr = Nothing
+   End If
+   
    If SaveForm Then
       DoCmd.Save acForm, FilterFormName
    End If
 
-End Sub
+End Function
 
-Private Sub InsertFormControl(ByVal FilterFormName As String, ByVal ControlType As AcControlType, ByVal DataFieldName As String, ByVal RelOp As String, ByRef ControlName As String, ByRef Control2Name As String)
+Private Function GetFilterControlTag(ByVal DataTypeText As String, ByVal RelOpText As String, ByVal DataFieldName As String, ByVal ControlName2 As String) As String
+   
+   Dim ControlTag As String
+   Const SeparatorChar As String = "|"
+   
+   ControlTag = Replace(DataTypeText, "SQL_", vbNullString) & SeparatorChar & RelOpText & SeparatorChar & DataFieldName & SeparatorChar & ControlName2
+   
+   Do While Right(ControlTag, 1) = SeparatorChar
+      ControlTag = Left(ControlTag, Len(ControlTag) - 1)
+   Loop
+   
+   GetFilterControlTag = ControlTag
+   
+End Function
+
+Private Function GetRelationalOperatorKey(ByVal RelationalOperatorCode As String) As String
+   With CodeProject.Connection.Execute("select RelationalOperator from tabRelationalOperators where RelationalOperatorCode = '" & Replace(RelationalOperatorCode, "'", "''") & "'")
+      If Not .EOF Then
+         GetRelationalOperatorKey = .Fields(0).Value
+      End If
+      .Close
+   End With
+End Function
+
+Private Function InsertFormControl(ByVal FilterFormName As String, ByVal ControlType As AcControlType, ByVal DataFieldName As String, ByVal UseBetweenRelOp As Boolean, ByRef ControlName As String, ByRef Control2Name As String, ByVal UseFilterDefinitionInTagProperty As Boolean) As Control
 
    Const DistanceBetweenControls As Long = 72
 
-   Dim ctl As Control
+   Dim FilterCtl As Control
+   Dim LabCtl As Control
    
    Dim ControlCaption As String, Control2Caption As String
    Dim CreateControl2 As Boolean
@@ -904,24 +978,30 @@ Private Sub InsertFormControl(ByVal FilterFormName As String, ByVal ControlType 
    
       .FormName = FilterFormName
       
-      If (RelOp Like "*SQL_Between*") Then
+      If UseBetweenRelOp Then
          CreateControl2 = True
          Control2Caption = ControlCaption & " bis"
-         Control2Name = ControlName & "Max"
-         ControlName = ControlName & "Min"
+         If UseFilterDefinitionInTagProperty Then
+            Control2Name = "x" & ControlName & "Max"
+         Else
+            Control2Name = ControlName & "Max"
+            ControlName = ControlName & "Min"
+         End If
          ControlCaption = ControlCaption & " von"
       End If
       
-      Set ctl = .AddControl(ControlType, ControlName, acHeader, , , , , DistanceBetweenControls, True, ControlCaption)
-      ControlName = ctl.Name
+      Set FilterCtl = .AddControl(ControlType, ControlName, acHeader, , , , , DistanceBetweenControls, True, ControlCaption)
+      ControlName = FilterCtl.Name
       If CreateControl2 Then
-         Set ctl = ctl.Controls(0)
-         Control2Name = .AddControl(ControlType, Control2Name, acHeader, ctl.Left + ctl.Width + DistanceBetweenControls, ctl.Top, , , DistanceBetweenControls, True, Control2Caption).Name
+         Set LabCtl = FilterCtl.Controls(0)
+         Control2Name = .AddControl(ControlType, Control2Name, acHeader, LabCtl.Left + LabCtl.Width + DistanceBetweenControls, LabCtl.Top, , , DistanceBetweenControls, True, Control2Caption).Name
       End If
       
    End With
+   
+   Set InsertFormControl = FilterCtl
 
-End Sub
+End Function
 
 Private Sub cbCreateControl_AfterUpdate()
 
