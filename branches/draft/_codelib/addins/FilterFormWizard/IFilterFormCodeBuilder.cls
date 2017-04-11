@@ -49,7 +49,8 @@ Public Property Get ClassInitalisationCode( _
                Optional ByVal SqlWildCardString As String = "*", _
                Optional ByVal ApplyFilterCtlName As String, _
                Optional ByVal RemoveFilterCtlName As String, _
-               Optional ByVal AutoFilterCtlName As String) As String
+               Optional ByVal AutoFilterCtlName As String, _
+               Optional ByVal FilterControlTagConverterMode As Long = 0) As String
 '
 End Property
 

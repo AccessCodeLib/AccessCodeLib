@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =168903004
+Checksum =363598325
 Begin Form
     AllowFilters = NotDefault
     RecordSelectors = NotDefault
@@ -19,11 +19,11 @@ Begin Form
     GridY =10
     Width =10771
     DatasheetFontHeight =10
-    ItemSuffix =129
-    Left =4056
-    Top =1476
-    Right =14832
-    Bottom =7488
+    ItemSuffix =136
+    Left =990
+    Top =240
+    Right =13620
+    Bottom =8460
     DatasheetGridlinesColor =12632256
     RecSrcDt = Begin
         0x668d2cd46a58e440
@@ -40,18 +40,14 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x0025ad0fc4fbc91a58874f00010000000c00000098864f000200000002000000 ,
-        0x010403069c00740353ef800301000900ea0a6f08640001000f00580202000100 ,
-        0x5802030001004c657474657200296d69d9eba3e798874f0014cee91101000000 ,
-        0x00000000b4870000000000000000000000000000010000000000000001000000 ,
-        0x0200000001000000000000004749535000000000000000000000000050524956 ,
-        0xe210000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000180000000000102710271027 ,
-        0x0000102700000000000000008000740300000000000000000000000000000000 ,
-        0x0000000000000000010000000000000000001000503403002888040000000000 ,
-        0x000000000000010000000000000000000000000000000000c029e70d03000000 ,
-        0x00000000ff000000000000000000000000000000000000000000000000000000 ,
+        0x00000100ffffffffb43e54001c8a0a01efa4914d08a1f412bc3e5400822ba86f ,
+        0x010403069c00d80353ef8003010009009a0b3408640001000f00580202000100 ,
+        0x580203000100413400a15b0068a15b00c4a15b00d084f412183f540032630a01 ,
+        0x37630a0143a50000000000000000000000000000010000000000000001000000 ,
+        0x0200000011010000ffffffff4749533400000000000000000000000044494e55 ,
+        0x22006001bc031c00ed43a17d0000000000000000000000000000000000000000 ,
+        0x00000000000000000c0000000100000000000000000001000000000000000000 ,
+        0x0000010000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -66,37 +62,41 @@ Begin Form
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0100000000000000000000000000000070000000534d544a0000000010006000 ,
-        0x46007200650065005000440046005f0080000000534d544a0000000010007000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x00000000000000000000000000000000
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x00000000000000000000000000000000000000000000000060010000534d544a ,
+        0x00000000100050017b00430033004300310043003100310041002d0038003500 ,
+        0x460032002d0034003700310033002d0042003100370037002d00320038003600 ,
+        0x4200430038003900410038003500390041007d000000496e70757442696e0041 ,
+        0x55544f00524553444c4c00556e69726573444c4c004f7269656e746174696f6e ,
+        0x00504f52545241495400436f6c6c617465004f4646004d656469615479706500 ,
+        0x5072696e74657244656661756c74004a6f62426c61636b4f7074696d697a6174 ,
+        0x696f6e004f4e005265736f6c7574696f6e006470695f31323030783630307831 ,
+        0x00506170657253697a65004c4554544552005061676573506572536865657400 ,
+        0x3100506167654f726465720046726f6e74546f4261636b0050616765426f7264 ,
+        0x6572004f464600436f6c6f724d6f646500436f6c6f7200000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000001c0000005634444d ,
+        0x0100000000000000000000000000000000000000
     End
     PrtDevNames = Begin
-        0x080023002b000100000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000467265655044465850313a0000000000
+        0x08002a0046000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x00000000000055534230303300
     End
     FilterOnLoad =0
     ShowPageMargins =0
     AllowLayoutView =0
     DatasheetGridlinesColor12 =12632256
     PrtDevModeW = Begin
-        0x000000587e3249d8ec904f00aefcffff34a24f000300000008000000100ef41c ,
-        0x347d4f00325bb177002e7f00ec904f00000000001015290b000000000000f41c ,
-        0x01040306dc00740353ef800301000900ea0a6f08640001000f00580202000100 ,
-        0x5802030001004c00650074007400650072000000c000290be02ffd1c0a000000 ,
-        0x08804f00b067b47748000000feffffffd07d4f00955cb177fc01000000000000 ,
-        0x9801f40101000000000000000000000000000000010000000000000001000000 ,
-        0x0200000001000000000000004749535000000000000000000000000050524956 ,
-        0xe210000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000180000000000102710271027 ,
-        0x0000102700000000000000008000740300000000000000000000000000000000 ,
-        0x0000000000000000010000000000000000001000503403002888040000000000 ,
-        0x000000000000010000000000000000000000000000000000c029e70d03000000 ,
-        0x00000000ff000000000000000000000000000000000000000000000000000000 ,
+        0x2d00330032003000200053006500720069006500730000000000000000000000 ,
+        0x01040306dc00d80353ef8003010009009a0b3408640001000f00580202000100 ,
+        0x5802030001004100340000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000011010000ffffffff4749533400000000000000000000000044494e55 ,
+        0x22006001bc031c00ed43a17d0000000000000000000000000000000000000000 ,
+        0x00000000000000000c0000000100000000000000000001000000000000000000 ,
+        0x0000010000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -111,19 +111,27 @@ Begin Form
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0100000000000000000000000000000070000000534d544a0000000010006000 ,
-        0x46007200650065005000440046005f0080000000534d544a0000000010007000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x00000000000000000000000000000000
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x00000000000000000000000000000000000000000000000060010000534d544a ,
+        0x00000000100050017b00430033004300310043003100310041002d0038003500 ,
+        0x460032002d0034003700310033002d0042003100370037002d00320038003600 ,
+        0x4200430038003900410038003500390041007d000000496e70757442696e0041 ,
+        0x55544f00524553444c4c00556e69726573444c4c004f7269656e746174696f6e ,
+        0x00504f52545241495400436f6c6c617465004f4646004d656469615479706500 ,
+        0x5072696e74657244656661756c74004a6f62426c61636b4f7074696d697a6174 ,
+        0x696f6e004f4e005265736f6c7574696f6e006470695f31323030783630307831 ,
+        0x00506170657253697a65004c4554544552005061676573506572536865657400 ,
+        0x3100506167654f726465720046726f6e74546f4261636b0050616765426f7264 ,
+        0x6572004f464600436f6c6f724d6f646500436f6c6f7200000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000001c0000005634444d ,
+        0x0100000000000000000000000000000000000000
     End
     PrtDevNamesW = Begin
-        0x04001f0027000100000000000000000000000000000000000000000000000000 ,
+        0x0400260042000100000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000460072006500650050004400460058005000 ,
-        0x31003a0000000000000000000000
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000005500530042003000300033000000
     End
     
     Begin
@@ -224,7 +232,7 @@ Begin Form
         End
         Begin Section
             CanGrow = NotDefault
-            Height =6029
+            Height =6362
             BackColor =-2147483633
             Name ="Detailbereich"
             GUID = Begin
@@ -239,7 +247,7 @@ Begin Form
                     TextAlign =1
                     TextFontFamily =2
                     Left =2345
-                    Top =5076
+                    Top =5394
                     Width =295
                     Height =295
                     FontSize =16
@@ -252,9 +260,9 @@ Begin Form
                     End
                     VerticalAnchor =1
                     LayoutCachedLeft =2345
-                    LayoutCachedTop =5076
+                    LayoutCachedTop =5394
                     LayoutCachedWidth =2640
-                    LayoutCachedHeight =5371
+                    LayoutCachedHeight =5689
                 End
                 Begin Label
                     OldBorderStyle =1
@@ -264,7 +272,7 @@ Begin Form
                     TextAlign =1
                     TextFontFamily =2
                     Left =2345
-                    Top =4716
+                    Top =4710
                     Width =295
                     Height =295
                     FontSize =16
@@ -276,9 +284,9 @@ Begin Form
                     End
                     VerticalAnchor =1
                     LayoutCachedLeft =2345
-                    LayoutCachedTop =4716
+                    LayoutCachedTop =4710
                     LayoutCachedWidth =2640
-                    LayoutCachedHeight =5011
+                    LayoutCachedHeight =5005
                 End
                 Begin Label
                     OldBorderStyle =1
@@ -288,7 +296,7 @@ Begin Form
                     TextAlign =1
                     TextFontFamily =2
                     Left =2345
-                    Top =5436
+                    Top =5769
                     Width =295
                     Height =295
                     FontSize =16
@@ -300,9 +308,9 @@ Begin Form
                     End
                     VerticalAnchor =1
                     LayoutCachedLeft =2345
-                    LayoutCachedTop =5436
+                    LayoutCachedTop =5769
                     LayoutCachedWidth =2640
-                    LayoutCachedHeight =5731
+                    LayoutCachedHeight =6064
                 End
                 Begin Label
                     OldBorderStyle =1
@@ -334,7 +342,7 @@ Begin Form
                     Left =2748
                     Top =4210
                     Width =0
-                    Height =1814
+                    Height =2098
                     Name ="Linie49"
                     GUID = Begin
                         0x6c2c3106ded8534c87892e2ee126530c
@@ -343,7 +351,7 @@ Begin Form
                     LayoutCachedLeft =2748
                     LayoutCachedTop =4210
                     LayoutCachedWidth =2748
-                    LayoutCachedHeight =6024
+                    LayoutCachedHeight =6308
                 End
                 Begin TextBox
                     AllowAutoCorrect = NotDefault
@@ -363,8 +371,8 @@ Begin Form
                     Enabled = NotDefault
                     TabStop = NotDefault
                     OverlapFlags =93
-                    Left =7425
-                    Top =5475
+                    Left =7426
+                    Top =5832
                     Width =3072
                     Height =375
                     FontSize =10
@@ -380,20 +388,20 @@ Begin Form
                     HorizontalAnchor =1
                     VerticalAnchor =1
 
-                    LayoutCachedLeft =7425
-                    LayoutCachedTop =5475
-                    LayoutCachedWidth =10497
-                    LayoutCachedHeight =5850
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    LayoutCachedLeft =7426
+                    LayoutCachedTop =5832
+                    LayoutCachedWidth =10498
+                    LayoutCachedHeight =6207
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin Label
                     OverlapFlags =85
-                    Left =320
-                    Top =4741
+                    Left =315
+                    Top =4740
                     Width =1991
                     Height =255
                     FontSize =9
@@ -403,15 +411,15 @@ Begin Form
                         0x8b2a1e9b456dac47a589d89260e7cd9d
                     End
                     VerticalAnchor =1
-                    LayoutCachedLeft =320
-                    LayoutCachedTop =4741
-                    LayoutCachedWidth =2311
-                    LayoutCachedHeight =4996
+                    LayoutCachedLeft =315
+                    LayoutCachedTop =4740
+                    LayoutCachedWidth =2306
+                    LayoutCachedHeight =4995
                 End
                 Begin Label
                     OverlapFlags =85
-                    Left =320
-                    Top =5101
+                    Left =315
+                    Top =5419
                     Width =1991
                     Height =255
                     FontSize =9
@@ -421,15 +429,15 @@ Begin Form
                         0x502db6c278e7644e80b7bb465da8086e
                     End
                     VerticalAnchor =1
-                    LayoutCachedLeft =320
-                    LayoutCachedTop =5101
-                    LayoutCachedWidth =2311
-                    LayoutCachedHeight =5356
+                    LayoutCachedLeft =315
+                    LayoutCachedTop =5419
+                    LayoutCachedWidth =2306
+                    LayoutCachedHeight =5674
                 End
                 Begin Label
                     OverlapFlags =85
-                    Left =320
-                    Top =5461
+                    Left =315
+                    Top =5794
                     Width =1991
                     Height =255
                     FontSize =9
@@ -439,16 +447,16 @@ Begin Form
                         0xdd04a61804b3d3489636dea0aac6d966
                     End
                     VerticalAnchor =1
-                    LayoutCachedLeft =320
-                    LayoutCachedTop =5461
-                    LayoutCachedWidth =2311
-                    LayoutCachedHeight =5716
+                    LayoutCachedLeft =315
+                    LayoutCachedTop =5794
+                    LayoutCachedWidth =2306
+                    LayoutCachedHeight =6049
                 End
                 Begin CommandButton
                     Transparent = NotDefault
                     OverlapFlags =215
                     Left =2345
-                    Top =5076
+                    Top =5394
                     Width =295
                     Height =295
                     TabIndex =5
@@ -461,20 +469,20 @@ Begin Form
                     VerticalAnchor =1
 
                     LayoutCachedLeft =2345
-                    LayoutCachedTop =5076
+                    LayoutCachedTop =5394
                     LayoutCachedWidth =2640
-                    LayoutCachedHeight =5371
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    LayoutCachedHeight =5689
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin CommandButton
                     Transparent = NotDefault
                     OverlapFlags =215
                     Left =2345
-                    Top =4716
+                    Top =4710
                     Width =295
                     Height =295
                     TabIndex =3
@@ -487,20 +495,20 @@ Begin Form
                     VerticalAnchor =1
 
                     LayoutCachedLeft =2345
-                    LayoutCachedTop =4716
+                    LayoutCachedTop =4710
                     LayoutCachedWidth =2640
-                    LayoutCachedHeight =5011
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    LayoutCachedHeight =5005
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin CommandButton
                     Transparent = NotDefault
                     OverlapFlags =215
                     Left =2345
-                    Top =5436
+                    Top =5769
                     Width =295
                     Height =295
                     TabIndex =6
@@ -513,13 +521,13 @@ Begin Form
                     VerticalAnchor =1
 
                     LayoutCachedLeft =2345
-                    LayoutCachedTop =5436
+                    LayoutCachedTop =5769
                     LayoutCachedWidth =2640
-                    LayoutCachedHeight =5731
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    LayoutCachedHeight =6064
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin Label
@@ -566,10 +574,10 @@ Begin Form
                     LayoutCachedTop =4371
                     LayoutCachedWidth =2640
                     LayoutCachedHeight =4666
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin ComboBox
@@ -666,8 +674,8 @@ Begin Form
                 Begin OptionGroup
                     Enabled = NotDefault
                     OverlapFlags =93
-                    Left =3108
-                    Top =4615
+                    Left =3120
+                    Top =4705
                     Width =3742
                     Height =1304
                     TabIndex =9
@@ -680,17 +688,17 @@ Begin Form
                     HorizontalAnchor =1
                     VerticalAnchor =1
 
-                    LayoutCachedLeft =3108
-                    LayoutCachedTop =4615
-                    LayoutCachedWidth =6850
-                    LayoutCachedHeight =5919
+                    LayoutCachedLeft =3120
+                    LayoutCachedTop =4705
+                    LayoutCachedWidth =6862
+                    LayoutCachedHeight =6009
                     Begin
                         Begin Label
                             BackStyle =1
                             OverlapFlags =215
                             TextAlign =2
-                            Left =3228
-                            Top =4500
+                            Left =3240
+                            Top =4590
                             Width =1536
                             Height =240
                             BackColor =-2147483633
@@ -702,15 +710,15 @@ Begin Form
                             End
                             HorizontalAnchor =1
                             VerticalAnchor =1
-                            LayoutCachedLeft =3228
-                            LayoutCachedTop =4500
-                            LayoutCachedWidth =4764
-                            LayoutCachedHeight =4740
+                            LayoutCachedLeft =3240
+                            LayoutCachedTop =4590
+                            LayoutCachedWidth =4776
+                            LayoutCachedHeight =4830
                         End
                         Begin OptionButton
                             OverlapFlags =87
-                            Left =3258
-                            Top =4887
+                            Left =3270
+                            Top =4977
                             OptionValue =0
                             BorderColor =13553360
                             Name ="ApplyFilterMethodOptions_Opt0"
@@ -721,15 +729,15 @@ Begin Form
                             HorizontalAnchor =1
                             VerticalAnchor =1
 
-                            LayoutCachedLeft =3258
-                            LayoutCachedTop =4887
-                            LayoutCachedWidth =3518
-                            LayoutCachedHeight =5127
+                            LayoutCachedLeft =3270
+                            LayoutCachedTop =4977
+                            LayoutCachedWidth =3530
+                            LayoutCachedHeight =5217
                             Begin
                                 Begin Label
                                     OverlapFlags =247
-                                    Left =3483
-                                    Top =4855
+                                    Left =3495
+                                    Top =4945
                                     Width =3075
                                     Height =240
                                     Name ="labUseFilterMethodOptions0"
@@ -740,17 +748,17 @@ Begin Form
                                     End
                                     HorizontalAnchor =1
                                     VerticalAnchor =1
-                                    LayoutCachedLeft =3483
-                                    LayoutCachedTop =4855
-                                    LayoutCachedWidth =6558
-                                    LayoutCachedHeight =5095
+                                    LayoutCachedLeft =3495
+                                    LayoutCachedTop =4945
+                                    LayoutCachedWidth =6570
+                                    LayoutCachedHeight =5185
                                 End
                             End
                         End
                         Begin OptionButton
                             OverlapFlags =87
-                            Left =3258
-                            Top =5197
+                            Left =3270
+                            Top =5287
                             TabIndex =1
                             OptionValue =1
                             BorderColor =13553360
@@ -762,15 +770,15 @@ Begin Form
                             HorizontalAnchor =1
                             VerticalAnchor =1
 
-                            LayoutCachedLeft =3258
-                            LayoutCachedTop =5197
-                            LayoutCachedWidth =3518
-                            LayoutCachedHeight =5437
+                            LayoutCachedLeft =3270
+                            LayoutCachedTop =5287
+                            LayoutCachedWidth =3530
+                            LayoutCachedHeight =5527
                             Begin
                                 Begin Label
                                     OverlapFlags =247
-                                    Left =3487
-                                    Top =5170
+                                    Left =3499
+                                    Top =5260
                                     Width =3049
                                     Height =240
                                     Name ="labUseFilterMethodOptions1"
@@ -781,17 +789,17 @@ Begin Form
                                     End
                                     HorizontalAnchor =1
                                     VerticalAnchor =1
-                                    LayoutCachedLeft =3487
-                                    LayoutCachedTop =5170
-                                    LayoutCachedWidth =6536
-                                    LayoutCachedHeight =5410
+                                    LayoutCachedLeft =3499
+                                    LayoutCachedTop =5260
+                                    LayoutCachedWidth =6548
+                                    LayoutCachedHeight =5500
                                 End
                             End
                         End
                         Begin OptionButton
                             OverlapFlags =87
-                            Left =3258
-                            Top =5540
+                            Left =3270
+                            Top =5630
                             TabIndex =2
                             OptionValue =2
                             BorderColor =13553360
@@ -803,15 +811,15 @@ Begin Form
                             HorizontalAnchor =1
                             VerticalAnchor =1
 
-                            LayoutCachedLeft =3258
-                            LayoutCachedTop =5540
-                            LayoutCachedWidth =3518
-                            LayoutCachedHeight =5780
+                            LayoutCachedLeft =3270
+                            LayoutCachedTop =5630
+                            LayoutCachedWidth =3530
+                            LayoutCachedHeight =5870
                             Begin
                                 Begin Label
                                     OverlapFlags =247
-                                    Left =3487
-                                    Top =5510
+                                    Left =3499
+                                    Top =5600
                                     Width =1114
                                     Height =240
                                     Name ="labUseFilterMethodOptions3"
@@ -822,10 +830,10 @@ Begin Form
                                     End
                                     HorizontalAnchor =1
                                     VerticalAnchor =1
-                                    LayoutCachedLeft =3487
-                                    LayoutCachedTop =5510
-                                    LayoutCachedWidth =4601
-                                    LayoutCachedHeight =5750
+                                    LayoutCachedLeft =3499
+                                    LayoutCachedTop =5600
+                                    LayoutCachedWidth =4613
+                                    LayoutCachedHeight =5840
                                 End
                             End
                         End
@@ -837,8 +845,8 @@ Begin Form
                     OverlapFlags =247
                     IMESentenceMode =3
                     ListWidth =3402
-                    Left =4601
-                    Top =5510
+                    Left =4613
+                    Top =5600
                     Width =2061
                     TabIndex =8
                     GUID = Begin
@@ -852,10 +860,10 @@ Begin Form
                     HorizontalAnchor =1
                     VerticalAnchor =1
 
-                    LayoutCachedLeft =4601
-                    LayoutCachedTop =5510
-                    LayoutCachedWidth =6662
-                    LayoutCachedHeight =5750
+                    LayoutCachedLeft =4613
+                    LayoutCachedTop =5600
+                    LayoutCachedWidth =6674
+                    LayoutCachedHeight =5840
                 End
                 Begin Label
                     OverlapFlags =215
@@ -880,13 +888,14 @@ Begin Form
                 End
                 Begin OptionGroup
                     Enabled = NotDefault
-                    OverlapFlags =215
-                    Left =7245
-                    Top =4620
+                    OverlapFlags =223
+                    Left =7260
+                    Top =4720
                     Width =3458
-                    Height =1304
+                    Height =1574
                     TabIndex =10
                     Name ="FormCodeOptions"
+                    AfterUpdate ="[Event Procedure]"
                     DefaultValue ="1"
                     GUID = Begin
                         0xed45349e0bb4624d802c11bd5a81e244
@@ -894,16 +903,16 @@ Begin Form
                     HorizontalAnchor =1
                     VerticalAnchor =1
 
-                    LayoutCachedLeft =7245
-                    LayoutCachedTop =4620
-                    LayoutCachedWidth =10703
-                    LayoutCachedHeight =5924
+                    LayoutCachedLeft =7260
+                    LayoutCachedTop =4720
+                    LayoutCachedWidth =10718
+                    LayoutCachedHeight =6294
                     Begin
                         Begin Label
                             BackStyle =1
                             OverlapFlags =215
-                            Left =7361
-                            Top =4500
+                            Left =7376
+                            Top =4590
                             Width =1395
                             Height =240
                             BackColor =-2147483633
@@ -915,15 +924,15 @@ Begin Form
                             End
                             HorizontalAnchor =1
                             VerticalAnchor =1
-                            LayoutCachedLeft =7361
-                            LayoutCachedTop =4500
-                            LayoutCachedWidth =8756
-                            LayoutCachedHeight =4740
+                            LayoutCachedLeft =7376
+                            LayoutCachedTop =4590
+                            LayoutCachedWidth =8771
+                            LayoutCachedHeight =4830
                         End
                         Begin OptionButton
                             OverlapFlags =87
-                            Left =7395
-                            Top =4892
+                            Left =7365
+                            Top =4937
                             OptionValue =1
                             BorderColor =13553360
                             Name ="FormCodeOptions_Opt1"
@@ -934,15 +943,15 @@ Begin Form
                             HorizontalAnchor =1
                             VerticalAnchor =1
 
-                            LayoutCachedLeft =7395
-                            LayoutCachedTop =4892
-                            LayoutCachedWidth =7655
-                            LayoutCachedHeight =5132
+                            LayoutCachedLeft =7365
+                            LayoutCachedTop =4937
+                            LayoutCachedWidth =7625
+                            LayoutCachedHeight =5177
                             Begin
                                 Begin Label
                                     OverlapFlags =247
-                                    Left =7620
-                                    Top =4860
+                                    Left =7594
+                                    Top =4905
                                     Width =2948
                                     Height =240
                                     Name ="labFormCodeOptions1"
@@ -953,51 +962,51 @@ Begin Form
                                     End
                                     HorizontalAnchor =1
                                     VerticalAnchor =1
-                                    LayoutCachedLeft =7620
-                                    LayoutCachedTop =4860
-                                    LayoutCachedWidth =10568
-                                    LayoutCachedHeight =5100
+                                    LayoutCachedLeft =7594
+                                    LayoutCachedTop =4905
+                                    LayoutCachedWidth =10542
+                                    LayoutCachedHeight =5145
                                 End
                             End
                         End
                         Begin OptionButton
                             OverlapFlags =87
-                            Left =7395
-                            Top =5202
+                            Left =7365
+                            Top =5517
                             TabIndex =1
                             OptionValue =2
                             BorderColor =13553360
                             Name ="FormCodeOptions_Opt2"
                             GUID = Begin
-                                0x3b9786ef86a3784a9dd3a8c5ebed31d9
+                                0x399f46d9140f0046867202b5fe43960b
                             End
                             GridlineColor =10921638
                             HorizontalAnchor =1
                             VerticalAnchor =1
 
-                            LayoutCachedLeft =7395
-                            LayoutCachedTop =5202
-                            LayoutCachedWidth =7655
-                            LayoutCachedHeight =5442
+                            LayoutCachedLeft =7365
+                            LayoutCachedTop =5517
+                            LayoutCachedWidth =7625
+                            LayoutCachedHeight =5757
                             Begin
                                 Begin Label
                                     OverlapFlags =247
-                                    Left =7624
-                                    Top =5175
+                                    Left =7594
+                                    Top =5490
                                     Width =2948
                                     Height =240
-                                    Name ="labFormCodeOptions2"
+                                    Name ="Label130"
                                     Caption ="FilterStringBuilder-Methoden"
                                     Tag ="LANG:"
                                     GUID = Begin
-                                        0x69dd7bb4498fde4eadebb58c04022929
+                                        0x64e90502b684ed47bc4f3ac100414f12
                                     End
                                     HorizontalAnchor =1
                                     VerticalAnchor =1
-                                    LayoutCachedLeft =7624
-                                    LayoutCachedTop =5175
-                                    LayoutCachedWidth =10572
-                                    LayoutCachedHeight =5415
+                                    LayoutCachedLeft =7594
+                                    LayoutCachedTop =5490
+                                    LayoutCachedWidth =10542
+                                    LayoutCachedHeight =5730
                                 End
                             End
                         End
@@ -1007,8 +1016,8 @@ Begin Form
                     OverlapFlags =87
                     IMESentenceMode =3
                     ColumnCount =4
-                    Left =8820
-                    Top =4200
+                    Left =8831
+                    Top =4195
                     Width =1836
                     TabIndex =11
                     ColumnInfo ="\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"10\";\"40\""
@@ -1027,16 +1036,16 @@ Begin Form
                     HorizontalAnchor =1
                     VerticalAnchor =1
 
-                    LayoutCachedLeft =8820
-                    LayoutCachedTop =4200
-                    LayoutCachedWidth =10656
-                    LayoutCachedHeight =4440
+                    LayoutCachedLeft =8831
+                    LayoutCachedTop =4195
+                    LayoutCachedWidth =10667
+                    LayoutCachedHeight =4435
                     Begin
                         Begin Label
                             OverlapFlags =93
                             TextAlign =3
-                            Left =7755
-                            Top =4200
+                            Left =7766
+                            Top =4195
                             Width =1065
                             Height =240
                             RightMargin =29
@@ -1048,17 +1057,17 @@ Begin Form
                             End
                             HorizontalAnchor =1
                             VerticalAnchor =1
-                            LayoutCachedLeft =7755
-                            LayoutCachedTop =4200
-                            LayoutCachedWidth =8820
-                            LayoutCachedHeight =4440
+                            LayoutCachedLeft =7766
+                            LayoutCachedTop =4195
+                            LayoutCachedWidth =8831
+                            LayoutCachedHeight =4435
                         End
                     End
                 End
                 Begin ComboBox
                     Enabled = NotDefault
                     RowSourceTypeInt =1
-                    OverlapFlags =87
+                    OverlapFlags =85
                     IMESentenceMode =3
                     ListWidth =2268
                     Left =8423
@@ -1077,7 +1086,7 @@ Begin Form
                     LayoutCachedHeight =548
                     Begin
                         Begin Label
-                            OverlapFlags =93
+                            OverlapFlags =85
                             TextAlign =3
                             Left =5496
                             Top =312
@@ -1100,7 +1109,7 @@ Begin Form
                 Begin ComboBox
                     Enabled = NotDefault
                     RowSourceTypeInt =1
-                    OverlapFlags =87
+                    OverlapFlags =85
                     IMESentenceMode =3
                     Left =8423
                     Top =24
@@ -1119,7 +1128,7 @@ Begin Form
                     LayoutCachedHeight =264
                     Begin
                         Begin Label
-                            OverlapFlags =93
+                            OverlapFlags =85
                             TextAlign =3
                             Left =5496
                             Top =28
@@ -1142,7 +1151,7 @@ Begin Form
                 Begin ComboBox
                     Enabled = NotDefault
                     RowSourceTypeInt =1
-                    OverlapFlags =87
+                    OverlapFlags =85
                     IMESentenceMode =3
                     ListWidth =2268
                     Left =8424
@@ -1161,7 +1170,7 @@ Begin Form
                     LayoutCachedHeight =838
                     Begin
                         Begin Label
-                            OverlapFlags =93
+                            OverlapFlags =85
                             TextAlign =3
                             Left =5497
                             Top =602
@@ -1185,8 +1194,8 @@ Begin Form
                     FontUnderline = NotDefault
                     OverlapFlags =85
                     TextAlign =1
-                    Left =60
-                    Top =5755
+                    Left =56
+                    Top =6122
                     Width =2568
                     Height =240
                     ForeColor =16737792
@@ -1199,14 +1208,14 @@ Begin Form
                         0xdcdeffa97bf2ca4f8f5702328eae0b9b
                     End
                     VerticalAnchor =1
-                    LayoutCachedLeft =60
-                    LayoutCachedTop =5755
-                    LayoutCachedWidth =2628
-                    LayoutCachedHeight =5995
+                    LayoutCachedLeft =56
+                    LayoutCachedTop =6122
+                    LayoutCachedWidth =2624
+                    LayoutCachedHeight =6362
                 End
                 Begin CommandButton
                     Enabled = NotDefault
-                    OverlapFlags =87
+                    OverlapFlags =95
                     Left =2004
                     Top =595
                     Width =3402
@@ -1229,10 +1238,10 @@ Begin Form
                     LayoutCachedWidth =5406
                     LayoutCachedHeight =879
                     BackColor =-2147483633
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin ComboBox
@@ -1264,6 +1273,110 @@ Begin Form
                     LayoutCachedWidth =10689
                     LayoutCachedHeight =252
                 End
+                Begin CheckBox
+                    Enabled = NotDefault
+                    OverlapFlags =215
+                    Left =7605
+                    Top =5191
+                    TabIndex =17
+                    Name ="cbUseFilterControlTagConverter"
+                    DefaultValue ="False"
+                    GUID = Begin
+                        0xebe406d4e2ce4e46aee4429b78d71adf
+                    End
+
+                    LayoutCachedLeft =7605
+                    LayoutCachedTop =5191
+                    LayoutCachedWidth =7865
+                    LayoutCachedHeight =5431
+                    Begin
+                        Begin Label
+                            OverlapFlags =247
+                            Left =7833
+                            Top =5160
+                            Width =2760
+                            Height =240
+                            Name ="Label132"
+                            Caption ="Filter-Definition in Tag-Eigenschaft"
+                            GUID = Begin
+                                0x1e52dc617c06464d9368b2ee7e43ddb9
+                            End
+                            LayoutCachedLeft =7833
+                            LayoutCachedTop =5160
+                            LayoutCachedWidth =10593
+                            LayoutCachedHeight =5400
+                        End
+                    End
+                End
+                Begin Label
+                    OldBorderStyle =1
+                    BorderWidth =1
+                    OverlapFlags =93
+                    TextFontCharSet =2
+                    TextAlign =1
+                    TextFontFamily =2
+                    Left =2345
+                    Top =5019
+                    Width =295
+                    Height =295
+                    FontSize =16
+                    ForeColor =5026082
+                    Name ="labCopyModulFilterControltagConverter"
+                    FontName ="Marlett"
+                    GUID = Begin
+                        0x41cb68107db29845b3b4d42b0eff3207
+                    End
+                    VerticalAnchor =1
+                    LayoutCachedLeft =2345
+                    LayoutCachedTop =5019
+                    LayoutCachedWidth =2640
+                    LayoutCachedHeight =5314
+                End
+                Begin Label
+                    OverlapFlags =85
+                    TextAlign =3
+                    Left =315
+                    Top =5044
+                    Width =1991
+                    Height =255
+                    TopMargin =14
+                    Name ="labCaptionCopyModulFilterControlTagConverter"
+                    Caption ="FilterControlTagConverter"
+                    GUID = Begin
+                        0xd0e3ed495ee75945aab05d0e052c2cc4
+                    End
+                    VerticalAnchor =1
+                    LayoutCachedLeft =315
+                    LayoutCachedTop =5044
+                    LayoutCachedWidth =2306
+                    LayoutCachedHeight =5299
+                End
+                Begin CommandButton
+                    Transparent = NotDefault
+                    OverlapFlags =215
+                    Left =2345
+                    Top =5019
+                    Width =295
+                    Height =295
+                    TabIndex =18
+                    Name ="cmdCopyModulFilterControlTagConverter"
+                    Caption ="Befehl69"
+                    OnClick ="[Event Procedure]"
+                    GUID = Begin
+                        0x58a5194fc9c8e2489472f05af604ecc9
+                    End
+                    VerticalAnchor =1
+
+                    LayoutCachedLeft =2345
+                    LayoutCachedTop =5019
+                    LayoutCachedWidth =2640
+                    LayoutCachedHeight =5314
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                    Overlaps =1
+                End
             End
         End
     End
@@ -1273,7 +1386,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'---------------------------------f------------------------------------------------------
+'---------------------------------------------------------------------------------------
 ' Form: frmFilterFormWizard
 '---------------------------------------------------------------------------------------
 '/**
@@ -1342,7 +1455,10 @@ Private Sub cbxFormName_AfterUpdate()
       .Value = Null
    End With
    
-   Me.FormCodeOptions.Enabled = FormSelected
+   With Me.FormCodeOptions
+      .Enabled = FormSelected
+      Me.cbUseFilterControlTagConverter.Enabled = FormSelected And (.Value = 1)
+   End With
    
    If Not FormSelected Then
       Me.cbxFormName.RowSource = vbNullString
@@ -1447,6 +1563,7 @@ Private Sub AddFilterCodeToForm(ByVal ImporterRef As IFilterFormCodeBuilder)
    Dim ApplyFilterCtlName As String
    Dim RemoveFilterCtlName As String
    Dim AutoFilterCtlName As String
+   Dim FilterControlTagConverterMode As Long
 
    FormName = Nz(Me.cbxFormName.Value, vbNullString)
    If Len(FormName) = 0 Then
@@ -1460,11 +1577,21 @@ Private Sub AddFilterCodeToForm(ByVal ImporterRef As IFilterFormCodeBuilder)
    
    AddChangeFilterControlsToForm FormName, ApplyFilterCtlName, RemoveFilterCtlName, AutoFilterCtlName
    
+   If Me.FormCodeOptions.Value = 1 Then
+      FilterControlTagConverterMode = Abs(Nz(Me.cbUseFilterControlTagConverter.Value, 0))
+   Else
+      FilterControlTagConverterMode = 0
+   End If
+   
    With New FilterFormCodeImporter
    
       Set .Importer = ImporterRef
    
-      AddControlsToImporter .Self, FormName
+      If AddControlsToImporter(.Self, FormName, FilterControlTagConverterMode <> 0) Then ' New Controls added to Header
+         If FilterControlTagConverterMode = 1 Then
+            FilterControlTagConverterMode = 2 'use Me.Section(acHeader).Controls
+         End If
+      End If
       
       .WriteToForm FormName, _
                    Nz(Me.ApplyFilterMethodOptions.Value, 0), _
@@ -1474,7 +1601,8 @@ Private Sub AddFilterCodeToForm(ByVal ImporterRef As IFilterFormCodeBuilder)
                    Nz(Me.cbxSqlLang.Column(3), vbNullString), _
                    GetCheckedControlName(ApplyFilterCtlName), _
                    GetCheckedControlName(RemoveFilterCtlName), _
-                   GetCheckedControlName(AutoFilterCtlName)
+                   GetCheckedControlName(AutoFilterCtlName), _
+                   FilterControlTagConverterMode
 
    End With
 
@@ -1544,9 +1672,9 @@ Private Sub AddChangeFilterControlToForm(ByVal FilterFormName As String, _
 
 End Sub
 
-Private Sub AddControlsToImporter(ByVal Importer As FilterFormCodeImporter, ByVal FilterFormName As String)
-   Me.sfrFilterControls.Form.AddControlsToImporter Importer, FilterFormName
-End Sub
+Private Function AddControlsToImporter(ByVal Importer As FilterFormCodeImporter, ByVal FilterFormName As String, ByVal UseFilterDefinitionInTagProperty As Boolean) As Boolean
+   AddControlsToImporter = Me.sfrFilterControls.Form.AddControlsToImporter(Importer, FilterFormName, UseFilterDefinitionInTagProperty)
+End Function
 
 Private Sub cmdAddFilterCodeToForm_Click()
    
@@ -1616,7 +1744,7 @@ Private Sub AddFilterControlFromDataField(ByVal DataField As DAO.Field)
 End Sub
 
 Private Sub Form_Current()
-   CheckModules
+   CheckModules True, True
 End Sub
 
 Private Sub OpenReplaceModulesContextMenu(ByRef MenuControlRef As Control, ByVal x As Single, ByVal y As Single)
@@ -1699,6 +1827,17 @@ Private Sub SetFormCaption()
    Me.Caption = "ACLib FilterForm Wizard  " & ChrW(&H25AA) & "  Version " & CurrentApplication.Version & " (" & L10n.Text("Filter-Klassen") & ": SVN-Rev. " & SvnRev & ")"
 End Sub
 
+Private Sub FormCodeOptions_AfterUpdate()
+
+   With Me.cbUseFilterControlTagConverter
+      .Enabled = (Me.FormCodeOptions.Value = 1)
+      If Not .Enabled Then
+         .Value = False
+      End If
+   End With
+
+End Sub
+
 Private Sub labCheckVersion_Click()
    
    Select Case L10n.ControlTag(Me.labCheckVersion.Tag)
@@ -1726,7 +1865,7 @@ Private Sub labCopyCaption_MouseDown(ByRef Button As Integer, ByRef Shift As Int
 
 End Sub
 
-Private Sub CheckModules(Optional ByVal WithControlManager As Boolean = True)
+Private Sub CheckModules(Optional ByVal WithControlManager As Boolean = True, Optional ByVal WithTagConverter As Boolean = False)
    
    Dim CheckOk As Boolean
    
@@ -1747,6 +1886,13 @@ On Error Resume Next
          CheckOk = .CheckCodeModules("FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
          m_OpenModules = m_OpenModules + 1 + CheckOk
          SetModulCopyControls "CopyModulFilterControlManager", CheckOk
+         
+         If WithTagConverter Then
+            CheckOk = .CheckCodeModules("FilterControlTagConverter")
+            m_OpenModules = m_OpenModules + 1 + CheckOk
+            SetModulCopyControls "CopyModulFilterControlTagConverter", CheckOk
+         End If
+         
       End If
       
       CheckOk = (m_OpenModules = 0)
@@ -1776,6 +1922,19 @@ Private Sub cmdCopyModulFilterControlManager_Click()
 
 End Sub
 
+Private Sub cmdCopyModulFilterControlTagConverter_Click()
+
+   With CodeModulImporter
+      .TransferCodeModules "FilterControlTagConverter"
+      m_OpenModules = m_OpenModules - 1
+      If Not .CheckCodeModules("FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager") Then
+         cmdCopyModulFilterControlManager_Click
+      End If
+      SetModulCopyControls "CopyModulFilterControlTagConverter", True
+   End With
+
+End Sub
+
 Private Sub cmdCopyModulFilterStringBuilder_Click()
 
    With CodeModulImporter
@@ -1791,10 +1950,11 @@ End Sub
 
 Private Sub cmdCopyModules_Click()
 
-   CodeModulImporter.TransferCodeModules "SqlTools", "StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager"
+   CodeModulImporter.TransferCodeModules "SqlTools", "StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager", "FilterControlTagConverter"
    SetModulCopyControls "CopyModulSqlTools", True
    SetModulCopyControls "CopyModulFilterStringBuilder", True
    SetModulCopyControls "CopyModulFilterControlManager", True
+   SetModulCopyControls "CopyModulFilterControlTagConverter", True
    SetModulCopyControls "CopyModules", True
    m_OpenModules = 0
 

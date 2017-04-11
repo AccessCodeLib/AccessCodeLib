@@ -69,7 +69,8 @@ Friend Sub WriteToForm(ByVal FormName As String, _
               Optional ByVal SqlWildCardString As String = vbNullString, _
               Optional ByVal ApplyFilterCtlName As String, _
               Optional ByVal RemoveFilterCtlName As String, _
-              Optional ByVal AutoFilterCtlName As String)
+              Optional ByVal AutoFilterCtlName As String, _
+              Optional ByVal FilterControlTagConverterMode As Long = 0)
    
    CheckRequiredCodeModules CodeModulImporter
    
@@ -81,7 +82,7 @@ Friend Sub WriteToForm(ByVal FormName As String, _
 
    AddCodeToForm Application.Forms(FormName), KindOfApplyFilterMethode, ApplyFilterMethodeSubFormName, _
                   SqlDateFormat, SqlBooleanTrueString, SqlWildCardString, _
-                 ApplyFilterCtlName, RemoveFilterCtlName, AutoFilterCtlName
+                 ApplyFilterCtlName, RemoveFilterCtlName, AutoFilterCtlName, FilterControlTagConverterMode
 
    DoCmd.Save acForm, FormName
 
@@ -99,7 +100,8 @@ Private Sub AddCodeToForm(ByVal FrmRef As Form, _
                           ByVal SqlWildCardString As String, _
                           ByVal ApplyFilterCtlName As String, _
                           ByVal RemoveFilterCtlName As String, _
-                          ByVal AutoFilterCtlName As String)
+                          ByVal AutoFilterCtlName As String, _
+                          ByVal FilterControlTagConverterMode As Long)
 
    Dim TempCode As String
 
@@ -117,7 +119,7 @@ Private Sub AddCodeToForm(ByVal FrmRef As Form, _
       TempCode = TempCode & _
                  ClassInitalisationCode(KindOfApplyFilterMethode, ApplyFilterMethodeSubFormName, _
                            SqlDateFormat, SqlBooleanTrueString, SqlWildCardString, _
-                           ApplyFilterCtlName, RemoveFilterCtlName, AutoFilterCtlName)
+                           ApplyFilterCtlName, RemoveFilterCtlName, AutoFilterCtlName, FilterControlTagConverterMode)
 
       .AddCode TempCode
    
@@ -183,13 +185,14 @@ Private Property Get ClassInitalisationCode( _
                         ByVal SqlWildCardString As String, _
                         ByVal ApplyFilterCtlName As String, _
                         ByVal RemoveFilterCtlName As String, _
-                        ByVal AutoFilterCtlName As String) As String
+                        ByVal AutoFilterCtlName As String, _
+                        ByVal FilterControlTagConverterMode As Long) As String
    
    ClassInitalisationCode = m_Importer.ClassInitalisationCode( _
                   GetApplyFilterMethodeCode(KindOfApplyFilterMethode, ApplyFilterMethodeSubFormName, ApplyFilterCtlName, False), _
                   GetFilterControlCodeLines, m_FilterControlNames, _
                   SqlDateFormat, SqlBooleanTrueString, SqlWildCardString, _
-                  ApplyFilterCtlName, RemoveFilterCtlName, AutoFilterCtlName)
+                  ApplyFilterCtlName, RemoveFilterCtlName, AutoFilterCtlName, FilterControlTagConverterMode)
 
 End Property
 
