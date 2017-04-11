@@ -1,6 +1,6 @@
 Version =20
 VersionRequired =20
-Checksum =363598325
+Checksum =-1831513038
 Begin Form
     AllowFilters = NotDefault
     RecordSelectors = NotDefault
@@ -20,10 +20,10 @@ Begin Form
     Width =10771
     DatasheetFontHeight =10
     ItemSuffix =136
-    Left =990
-    Top =240
-    Right =13620
-    Bottom =8460
+    Left =750
+    Top =165
+    Right =13380
+    Bottom =8385
     DatasheetGridlinesColor =12632256
     RecSrcDt = Begin
         0x668d2cd46a58e440
@@ -40,10 +40,10 @@ Begin Form
         0x010000006801000000000000a10700000100000001000000
     End
     PrtDevMode = Begin
-        0x00000100ffffffffb43e54001c8a0a01efa4914d08a1f412bc3e5400822ba86f ,
+        0x004f01021c8a0a011ca5e1ad3894a40ee44f0102822ba86f00001d0200000000 ,
         0x010403069c00d80353ef8003010009009a0b3408640001000f00580202000100 ,
-        0x580203000100413400a15b0068a15b00c4a15b00d084f412183f540032630a01 ,
-        0x37630a0143a50000000000000000000000000000010000000000000001000000 ,
+        0x58020300010041340082250260a8a40e4050010232630a0137630a0180bae1ad ,
+        0x2075c00d60a80000000000000000000000000000010000000000000001000000 ,
         0x0200000011010000ffffffff4749533400000000000000000000000044494e55 ,
         0x22006001bc031c00ed43a17d0000000000000000000000000000000000000000 ,
         0x00000000000000000c0000000100000000000000000001000000000000000000 ,
@@ -80,18 +80,18 @@ Begin Form
     PrtDevNames = Begin
         0x08002a0046000100000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x00000000000055534230303300
+        0x000000000000555342303033000000000000000000
     End
     FilterOnLoad =0
     ShowPageMargins =0
     AllowLayoutView =0
     DatasheetGridlinesColor12 =12632256
     PrtDevModeW = Begin
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x2d00330032003000200053006500720069006500730000000000000000000000 ,
+        0x0000ffff04990202c4085f005f9e0901d0c302020a0000001cc402020000a20d ,
+        0x6b76fa761015a20d000000004774fa761c490071480000000000a20d3c000000 ,
         0x01040306dc00d80353ef8003010009009a0b3408640001000f00580202000100 ,
-        0x5802030001004100340000000000000000000000000000000000000000000000 ,
-        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x5802030001004100340000007471e2add0c30202aefcffffacc4020203000000 ,
+        0x08000000100e261a7c990202325bfa76384f1d02d0c30202000000001015a20d ,
         0x0000000000000000000000000000000000000000010000000000000001000000 ,
         0x0200000011010000ffffffff4749533400000000000000000000000044494e55 ,
         0x22006001bc031c00ed43a17d0000000000000000000000000000000000000000 ,
@@ -131,7 +131,8 @@ Begin Form
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
         0x0000000000000000000000000000000000000000000000000000000000000000 ,
-        0x000000005500530042003000300033000000
+        0x0000000055005300420030003000330000000000000000000000000000000000 ,
+        0x0000
     End
     
     Begin
@@ -376,7 +377,7 @@ Begin Form
                     Width =3072
                     Height =375
                     FontSize =10
-                    TabIndex =4
+                    TabIndex =18
                     Name ="cmdAddFilterCodeToForm"
                     Caption ="Formular-Code einfügen"
                     OnClick ="[Event Procedure]"
@@ -459,7 +460,7 @@ Begin Form
                     Top =5394
                     Width =295
                     Height =295
-                    TabIndex =5
+                    TabIndex =15
                     Name ="cmdCopyModulFilterStringBuilder"
                     Caption ="Befehl69"
                     OnClick ="[Event Procedure]"
@@ -485,7 +486,7 @@ Begin Form
                     Top =4710
                     Width =295
                     Height =295
-                    TabIndex =3
+                    TabIndex =11
                     Name ="cmdCopyModulFilterControlManager"
                     Caption ="Befehl69"
                     OnClick ="[Event Procedure]"
@@ -511,7 +512,7 @@ Begin Form
                     Top =5769
                     Width =295
                     Height =295
-                    TabIndex =6
+                    TabIndex =17
                     Name ="cmdCopyModulSqlTools"
                     Caption ="Befehl69"
                     OnClick ="[Event Procedure]"
@@ -561,7 +562,7 @@ Begin Form
                     Top =4371
                     Width =295
                     Height =295
-                    TabIndex =1
+                    TabIndex =9
                     Name ="cmdCopyModules"
                     Caption ="Befehl69"
                     OnClick ="[Event Procedure]"
@@ -589,7 +590,7 @@ Begin Form
                     Width =3402
                     Height =285
                     FontSize =10
-                    TabIndex =2
+                    TabIndex =3
                     GUID = Begin
                         0x9ae17955cc84ce48bbcca6b1a3566263
                     End
@@ -678,7 +679,7 @@ Begin Form
                     Top =4705
                     Width =3742
                     Height =1304
-                    TabIndex =9
+                    TabIndex =10
                     Name ="ApplyFilterMethodOptions"
                     AfterUpdate ="[Event Procedure]"
                     DefaultValue ="0"
@@ -848,7 +849,7 @@ Begin Form
                     Left =4613
                     Top =5600
                     Width =2061
-                    TabIndex =8
+                    TabIndex =16
                     GUID = Begin
                         0xd2abcc3725b6174684facff57821578b
                     End
@@ -893,7 +894,7 @@ Begin Form
                     Top =4720
                     Width =3458
                     Height =1574
-                    TabIndex =10
+                    TabIndex =12
                     Name ="FormCodeOptions"
                     AfterUpdate ="[Event Procedure]"
                     DefaultValue ="1"
@@ -1019,7 +1020,7 @@ Begin Form
                     Left =8831
                     Top =4195
                     Width =1836
-                    TabIndex =11
+                    TabIndex =8
                     ColumnInfo ="\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"10\";\"40\""
                     GUID = Begin
                         0x441a7ad565bdaf4ba272387b51e93fe5
@@ -1073,7 +1074,7 @@ Begin Form
                     Left =8423
                     Top =308
                     Width =1659
-                    TabIndex =12
+                    TabIndex =4
                     GUID = Begin
                         0x7fbc37c8d7358d42adb800f0c274acc7
                     End
@@ -1114,7 +1115,7 @@ Begin Form
                     Left =8423
                     Top =24
                     Width =1659
-                    TabIndex =13
+                    TabIndex =1
                     GUID = Begin
                         0x468d75b535427e479ada1078d0e59ce2
                     End
@@ -1157,7 +1158,7 @@ Begin Form
                     Left =8424
                     Top =598
                     Width =1659
-                    TabIndex =14
+                    TabIndex =6
                     GUID = Begin
                         0xa00a87a1d6cb4544b317178021673676
                     End
@@ -1221,7 +1222,7 @@ Begin Form
                     Width =3402
                     Height =284
                     FontSize =7
-                    TabIndex =15
+                    TabIndex =5
                     Name ="cmdFillFilterControlsFromDataSource"
                     Caption ="FilterControl-Liste mit Namen aus Datenquelle füllen"
                     StatusBarText ="Zum Füllen der List mit den Namen aus der Formulardatenquelle bitte zuerst in de"
@@ -1257,7 +1258,7 @@ Begin Form
                     Top =24
                     Width =561
                     Height =228
-                    TabIndex =16
+                    TabIndex =2
                     BackColor =14151142
                     GUID = Begin
                         0x15a2262ca2a68c44a65eace584910596
@@ -1278,7 +1279,7 @@ Begin Form
                     OverlapFlags =215
                     Left =7605
                     Top =5191
-                    TabIndex =17
+                    TabIndex =14
                     Name ="cbUseFilterControlTagConverter"
                     DefaultValue ="False"
                     GUID = Begin
@@ -1358,7 +1359,7 @@ Begin Form
                     Top =5019
                     Width =295
                     Height =295
-                    TabIndex =18
+                    TabIndex =13
                     Name ="cmdCopyModulFilterControlTagConverter"
                     Caption ="Befehl69"
                     OnClick ="[Event Procedure]"
@@ -1793,9 +1794,9 @@ On Error Resume Next
    
    With CodeModulImporter
       If WithSqlTools Then
-         ModulesReplaced = .ReplaceCodeModules("SqlTools", "StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
+         ModulesReplaced = .ReplaceCodeModules("SqlTools", "StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager", "FilterControlTagConverter")
       Else
-         ModulesReplaced = .ReplaceCodeModules("StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager")
+         ModulesReplaced = .ReplaceCodeModules("StringCollection", "FilterStringBuilder", "FilterControlEventBridge", "FilterControl", "FilterControlCollection", "FilterControlManager", "FilterControlTagConverter")
       End If
    End With
 
