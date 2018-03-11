@@ -70,6 +70,7 @@ Public Enum SqlRelationalOperators
    SQL_Add_WildCardSuffix = 2048
    SQL_Add_WildCardPrefix = 4096
    SQL_SplitValueToArray = 8192
+   SQL_UseLikeBehavior = 65536
 End Enum
 
 Public Enum SqlFieldDataType
@@ -264,7 +265,7 @@ Public Function DateToSqlText(ByVal Value As Variant, _
       End If
    End If
    
-   DateToSqlText = Format$(Value, FormatString)
+   DateToSqlText = VBA.Format$(Value, FormatString)
 
 End Function
 
@@ -391,7 +392,7 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
       Exit Function
    End If
 
-   If (RelationalOperator And SQL_Like) = SQL_Like Then
+   If (RelationalOperator And SQL_Like) = SQL_Like Or (RelationalOperator And SQL_UseLikeBehavior) = SQL_UseLikeBehavior Then
       If SqlWildCardString <> "*" Then
          If InStr(1, FilterValue, "*") > 0 Then
             FilterValue = Replace(FilterValue, "[*]", "@@@|||STAR|||@@@")
@@ -402,7 +403,7 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
    End If
 
    If (RelationalOperator And SQL_Add_WildCardSuffix) = SQL_Add_WildCardSuffix Then
-      If (RelationalOperator And SQL_Like) = SQL_Like Then
+      If (RelationalOperator And SQL_Like) = SQL_Like Or (RelationalOperator And SQL_UseLikeBehavior) = SQL_UseLikeBehavior Then
          FilterValue = FilterValue & SqlWildCardString
       ElseIf (FieldDataType And SQL_Date) = SQL_Date Then
          If (RelationalOperator And SQL_LessThan) = 0 Then ' kein < daher:  >, >= oder nur =
@@ -424,7 +425,7 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
    End If
 
    If (RelationalOperator And SQL_Add_WildCardPrefix) = SQL_Add_WildCardPrefix Then
-      If (RelationalOperator And SQL_Like) = SQL_Like Then
+      If (RelationalOperator And SQL_Like) = SQL_Like Or (RelationalOperator And SQL_UseLikeBehavior) = SQL_UseLikeBehavior Then
          FilterValue = SqlWildCardString & FilterValue
       End If
    End If
@@ -438,6 +439,10 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
       End If
       BuildCriteria = FieldName & OperatorString & FilterValueString
       Exit Function
+   End If
+   
+   If (RelationalOperator And SQL_UseLikeBehavior) = SQL_UseLikeBehavior Then
+      RelationalOperator = RelationalOperator - SQL_UseLikeBehavior
    End If
    
    OperatorString = GetRelationalOperatorString(RelationalOperator)
