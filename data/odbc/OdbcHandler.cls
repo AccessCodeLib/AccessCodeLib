@@ -342,15 +342,15 @@ End Function
 Public Function Execute(ByVal CommandText As String, _
                Optional ByVal Options As DAO.RecordsetOptionEnum) As Long
 
-   Dim Db As DAO.Database
+   Dim db As DAO.Database
    
-   Set Db = Me.CurrentDbBE
+   Set db = Me.CurrentDbBE
 
    If (Options And dbSeeChanges) = 0 Then
       Options = Options + dbSeeChanges
    End If
-   Db.Execute CommandText, Options
-   Execute = Db.RecordsAffected
+   db.Execute CommandText, Options
+   Execute = db.RecordsAffected
 
 End Function
 
@@ -371,15 +371,15 @@ Public Function ExecutePT(ByVal CommandText As String, _
                  Optional ByVal Options As DAO.RecordsetOptionEnum = DAO.RecordsetOptionEnum.dbSQLPassThrough _
                          ) As Long
          
-   Dim Db As DAO.Database
+   Dim db As DAO.Database
    Dim qdf As DAO.QueryDef
 
    If (Options And dbSQLPassThrough) = 0 Then
      Options = Options + dbSQLPassThrough
    End If
    
-   Set Db = Me.CurrentDb
-   Set qdf = Db.CreateQueryDef("")
+   Set db = Me.CurrentDb
+   Set qdf = db.CreateQueryDef("")
    With qdf
      .Connect = Me.ConnectionString
      .ODBCTimeout = 0
@@ -389,7 +389,7 @@ Public Function ExecutePT(ByVal CommandText As String, _
      .Close
    End With
    
-   ExecutePT = Db.RecordsAffected
+   ExecutePT = db.RecordsAffected
 
 End Function
 
@@ -602,17 +602,17 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Function InsertIdentityReturn(ByVal InsertSql As String) As Variant
 
-   Dim Db As DAO.Database
+   Dim db As DAO.Database
    Dim rst As DAO.Recordset
    Dim RecordsAffected As Long
    Dim IdentitySql As String
    Dim HookResponseMode As Long
    Dim HookResponseMessage As Variant
 
-   Set Db = Me.CurrentDbBE
+   Set db = Me.CurrentDbBE
    
    If m_HooksEnabled Then
-      RaiseEvent HookInsertIdentityReturn(InsertSql, Db, IdentitySql, HookResponseMode, HookResponseMessage)
+      RaiseEvent HookInsertIdentityReturn(InsertSql, db, IdentitySql, HookResponseMode, HookResponseMessage)
       If HookResponseMode <> 0 Then 'Hook ermittelte bereits das Ergebnis
          InsertIdentityReturn = HookResponseMessage
          Exit Function
@@ -621,8 +621,8 @@ Public Function InsertIdentityReturn(ByVal InsertSql As String) As Variant
    
 On Error GoTo HandleErr
 
-   Db.Execute InsertSql, dbFailOnError
-   RecordsAffected = Db.RecordsAffected
+   db.Execute InsertSql, dbFailOnError
+   RecordsAffected = db.RecordsAffected
    
    If RecordsAffected = 0 Then
       InsertIdentityReturn = Null 'es wurde kein neuer DS angefügt
@@ -633,7 +633,7 @@ On Error GoTo HandleErr
       IdentitySql = "SELECT @@Identity"
    End If
 
-   Set rst = Db.OpenRecordset(IdentitySql) 'zuletzt zugewiesener Autowert / ... funktioniert nicht bei MySQL!
+   Set rst = db.OpenRecordset(IdentitySql) 'zuletzt zugewiesener Autowert / ... funktioniert nicht bei MySQL!
    With rst
       If .EOF Then
          InsertIdentityReturn = Null
@@ -643,7 +643,7 @@ On Error GoTo HandleErr
       .Close
    End With
    Set rst = Nothing
-   Set Db = Nothing
+   Set db = Nothing
     
 ExitHere:
    Exit Function
@@ -724,7 +724,7 @@ Public Sub LinkTable(ByVal SourceTableName As String, _
    tdf.Connect = NewConnectionString
    dbs.TableDefs.Append tdf
    If SavePWD Then
-      AddTableDefAttribut tdf, dbAttachSavePWD
+      AddTableDefAttribut tdf, DbAttachSavePWD
       tdf.RefreshLink
    End If
    
@@ -844,9 +844,9 @@ Private Function RelinkTableDef(ByVal TdfRef As DAO.TableDef, _
       .RefreshLink
       
       If SavePWD Then
-         AddTableDefAttribut TdfRef, dbAttachSavePWD
+         AddTableDefAttribut TdfRef, DbAttachSavePWD
       Else
-         RemoveTableDefAttribut TdfRef, dbAttachSavePWD
+         RemoveTableDefAttribut TdfRef, DbAttachSavePWD
       End If
    End With
    
