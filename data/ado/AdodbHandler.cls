@@ -316,6 +316,58 @@ Public Function OpenRecordset(ByVal Source As String, _
 End Function
 
 '---------------------------------------------------------------------------------------
+' Function: OpenRecordsetCommandParam
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Recocordset mittels ADODB.Command öffnen
+' </summary>
+' <param name="CmdText">ADODB.CommandText-Wert</param>
+' <param name="CmdType">ADODB.CommandType-Wert</param>
+' <param name="commandParamDefs">2-dimensionales Parameter-Array (Array(n,1) ... x(n,0) = Parametername, x(n,0) = Parameterwert) ... abwechselnd Paramtername und Parameterwert einstellen</param>
+' <returns>ADODB.Recordset</returns>
+' <remarks>Mit dieser Variante kann sehr einfach SQL-Injection vermieden werden, da die Parameter nicht direkt in der SQL-Anweisung eingebaut sind und somit ein Parameterwert (der z. B. von einer Benutzereingabe stammt) keine SQL-Anweisung einschleusen kann.</remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function OpenRecordsetCommandParam(ByVal CmdText As String, _
+                                          ByVal CmdType As ADODB.CommandTypeEnum, _
+                                 Optional ByVal commandParamDefs As Variant) As ADODB.Recordset
+'gibt geöffnetes ADO-Recordset zurück
+
+   Dim cmd As ADODB.Command
+
+   Dim ParamDefsArraySize As Long
+   Dim i As Long
+   Dim strParamName As String
+
+   Set cmd = New ADODB.Command
+
+   With cmd
+
+      Set .ActiveConnection = Me.CurrentConnection
+      .CommandText = CmdText
+      .CommandType = CmdType
+
+      If Not IsMissing(commandParamDefs) Then
+         ParamDefsArraySize = UBound(commandParamDefs, 1)
+         For i = 0 To ParamDefsArraySize
+         strParamName = Nz(commandParamDefs(i, 0), vbNullString)
+         If Len(strParamName) > 0 Then
+            .Parameters(commandParamDefs(i, 0)).Value = commandParamDefs(i, 1)
+         End If
+         Next i
+      End If
+
+      Set OpenRecordsetCommandParam = .Execute()
+
+   End With
+
+   Set cmd = Nothing
+
+
+End Function
+
+'---------------------------------------------------------------------------------------
 ' Function: LookupSQL
 '---------------------------------------------------------------------------------------
 '/**
@@ -534,5 +586,81 @@ HandleErr:
    End If
 
    Err.Raise Err.Number, "InsertIdentityReturn:" & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
+
+End Function
+
+Public Function InsertValuesIdentityReturn(ByVal sSource As String, ParamArray InsertFields() As Variant) As Variant
+
+   Dim strInsert As String
+   Dim strValues As String
+   Dim i As Long
+
+   For i = 0 To (UBound(InsertFields) - 1) Step 2
+      strInsert = strInsert & ", " & InsertFields(i)
+      strValues = strValues & ", " & InsertFields(i + 1)
+   Next i
+   strInsert = "INSERT INTO " & sSource & " (" & Mid(strInsert, 3) & ") VALUES (" & Mid(strValues, 3) & ")"
+
+   InsertValuesIdentityReturn = DbCon.ADODB.InsertIdentityReturn(strInsert, sSource)
+
+End Function
+
+Public Function Exists(ByVal SourceName As String, _
+              Optional ByVal Criteria As String = vbNullString) As Boolean
+
+   Dim strSQL As String
+
+   strSQL = "SELECT 1 FROM " & SourceName
+   If Len(Criteria) > 0 Then
+      strSQL = strSQL & " WHERE " & Replace(Criteria, "*", "%", , , vbBinaryCompare)
+   End If
+   Exists = (DbCon.ADODB.LookupSql(strSQL, , 0) = 1)
+
+End Function
+
+Public Function ValueList(ByVal SqlSource As String, Optional ByVal ListConcatString As String = ", ", Optional ValueIfNull As Variant = Null) As Variant
+
+   Dim ListString As String
+
+   With DbCon.ADODB.OpenRecordset(SqlSource, adOpenKeyset, adLockOptimistic, adUseClient, True)
+      Do While Not .EOF
+         ListString = ListString & ListConcatString & .Fields(0)
+         .MoveNext
+      Loop
+      .Close
+   End With
+
+   If Len(ListString) > 0 Then
+      ValueList = Mid(ListString, 3)
+   Else
+      ValueList = ValueIfNull
+   End If
+
+End Function
+
+Public Function LookupSqlValueCollection(ByVal SqlSource As String, Optional ByVal ValueIfNull As Variant = Null) As Collection
+
+   Dim lngWherePos As Long
+   Dim Results As Collection
+   Dim rst As ADODB.Recordset
+   Dim fld As ADODB.Field
+
+'   lngWherePos = InStr(1, SqlSource, "WHERE", vbTextCompare)
+'   If lngWherePos > 0 Then
+'      SqlSource = Left$(SqlSource, lngWherePos + 5) & Replace(SqlSource, "*", "%", lngWherePos + 6, , vbBinaryCompare)
+'      SqlSource = Replace(SqlSource, "Count(%)", "Count(*)")
+'   End If
+   
+   Set rst = OpenRecordset(SqlSource, adOpenKeyset, adLockOptimistic, adUseClient, True)
+
+   Set Results = New Collection
+   If Not rst.EOF Then
+      For Each fld In rst.Fields
+         Results.Add Nz(fld.Value, ValueIfNull), fld.Name
+      Next
+   End If
+   rst.Close
+
+   Set LookupSqlValueCollection = Results
 
 End Function
