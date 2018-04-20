@@ -129,6 +129,9 @@ Private Sub GetExtensionPropertyLookup(ByVal PropertyName As String, ByRef Resum
    Select Case PropertyName
       Case PROPNAME_LOCALREPOSITORYROOT
          ResumeMessage = LocalRepositoryPath
+      
+      Case PROPNAME_PRIVATEREPOSITORYROOT
+         ResumeMessage = PrivateRepositoryPath
          
       Case Else 'Property wurde nicht erkannt
          ResumeMode = AppResumeMode_Error
