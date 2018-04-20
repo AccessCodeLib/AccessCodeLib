@@ -923,22 +923,22 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Function InsertIdentityReturn(ByVal InsertSql As String) As Variant
 
-    Dim Db As DAO.Database
+    Dim db As DAO.Database
     Dim rst As DAO.Recordset
     Dim RecordsAffected As Long
 
 On Error GoTo HandleErr
 
-    Set Db = Me.CurrentDb
-    Db.Execute InsertSql
-    RecordsAffected = Db.RecordsAffected
+    Set db = Me.CurrentDb
+    db.Execute InsertSql
+    RecordsAffected = db.RecordsAffected
     
     If RecordsAffected = 0 Then
         InsertIdentityReturn = Null 'es wurde kein neuer DS angefügt
         Exit Function
     End If
 
-    Set rst = Db.OpenRecordset("SELECT @@Identity") 'zuletzt zugewiesener Autowert ... funktioniert nicht mit MySQL-Tabellen!
+    Set rst = db.OpenRecordset("SELECT @@Identity") 'zuletzt zugewiesener Autowert ... funktioniert nicht mit MySQL-Tabellen!
     With rst
         If .EOF Then
             InsertIdentityReturn = Null
@@ -960,4 +960,230 @@ HandleErr:
 
    Err.Raise Err.Number, "InsertIdentityReturn:" & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
 
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: NewRecord
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Datensatz über Recordset anfügen und Feldwerte einstellen.
+' </summary>
+' <param name="Source">Datenquelle (Tabellenname oder SQL-Anweisung)</param>
+' <param name="ReturnFieldName">Feldname, dessen Wert zurückgegeben werden soll (z. B. Autowert-Feld)</param>
+' <param name="DataParams">Neue Daten ... abwechselnd: Feldname, Feldwert</param>
+' <returns>Wert aus ReturnFieldName, oder True/False, falls kein ReturnFieldName festgelegt wurde</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function NewRecord(ByVal Source As String, ByVal ReturnFieldName As String, _
+                 ParamArray DataParams() As Variant) As Variant
+
+   Dim vA() As Variant
+   vA = ConvertParamArrayToVariantArray(DataParams)
+   NewRecord = NewRecord_FieldArray(Source, ReturnFieldName, vA)
+
+End Function
+
+Private Function ConvertParamArrayToVariantArray(ByVal ArrayToConvert As Variant) As Variant()
+   ConvertParamArrayToVariantArray = ArrayToConvert
+End Function
+
+Private Function NewRecord_FieldArray(ByVal strSource As String, ByVal ReturnFieldName As String, _
+                       ByRef DataParams() As Variant) As Variant
+
+    Dim lngNum As Long, i As Long, anz As Long
+    Dim DataFields() As Variant, DataValues() As Variant
+    Dim rst As DAO.Recordset
+
+    lngNum = hfArraySize(DataParams)
+    ReDim DataFields(lngNum \ 2)
+    ReDim DataValues(lngNum \ 2)
+    
+    anz = 0
+    For i = 0 To (lngNum - 2) Step 2
+      DataFields(anz) = DataParams(i)
+      DataValues(anz) = DataParams(i + 1)
+      anz = anz + 1
+    Next i
+    
+    Set rst = Me.OpenRecordset(strSource, dbOpenDynaset)
+
+On Error GoTo HandleErr
+    With rst
+      .AddNew
+      i = 0
+      For i = 0 To (anz - 1)
+         .Fields(DataFields(i)) = DataValues(i)
+      Next i
+
+      .Update
+      If Len(ReturnFieldName) > 0 Then
+          .Bookmark = .LastModified
+          NewRecord_FieldArray = .Fields(ReturnFieldName).Value
+      Else
+          NewRecord_FieldArray = True
+      End If
+      .Close
+    End With
+    Set rst = Nothing
+
+ExitHere:
+    Exit Function
+
+HandleErr:
+   Dim FncErrNr As Long
+   Dim FncErrDesc As String
+
+   FncErrNr = Err.Number
+   FncErrDesc = Err.Description
+   Err.Clear
+On Error Resume Next
+    If Not (rst Is Nothing) Then
+        rst.Close
+        Set rst = Nothing
+    End If
+On Error GoTo 0
+   Err.Raise FncErrNr, "NewRecord_FieldArray", FncErrDesc
+
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: CopyRecord
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Datensatz kopieren und einzelne Werte ändern
+' </summary>
+' <param name="Source">Datenquelle (Tabellenname oder SQL-Anweisung)</param>
+' <param name="StartFieldNumber">Datenfeld-Nr. ab der die Daten kopiert werden</param>
+' <param name="LastFieldNumber">Datenfeld-Nr. ab bis zu der die kopiert werden. Ein negativer Wert zähle von hinten.</param>
+' <param name="ReturnFieldName">Feldname, dessen Wert zurückgegeben werden soll (z. B. Autowert-Feld)</param>
+' <param name="DataToChange">zu ändernde Daten ... abwechselnd: Feldname, Feldwert</param>
+' <returns>Wert aus ReturnFieldName, oder True/False, falls kein ReturnFieldName festgelegt wurde</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function CopyRecord(ByVal Source As String, _
+                 ByVal StartFieldNumber As Long, ByVal LastFieldNumber As Long, _
+                 ByVal ReturnFieldName As String, _
+                 ParamArray DataToChange() As Variant) As Variant
+
+    Dim vA() As Variant
+    vA = ConvertParamArrayToVariantArray(DataToChange)
+
+    CopyRecord = CopyRecord_FieldArray(Source, StartFieldNumber, LastFieldNumber, ReturnFieldName, vA)
+
+End Function
+
+Private Function CopyRecord_FieldArray(ByVal Source As String, _
+                                ByVal StartFieldNumber As Long, ByVal LastFieldNumber As Long, _
+                                ByVal ReturnFieldName As String, ByRef DataToChange() As Variant) As Variant
+'Datensätze kopieren
+' SQLFilter.....SQL.Text (Auswahl des zu kopierenden DS, !Feldnamen müssen den Namen der Tabelle entsprechen !)
+' StartFeldID...Ab welcher FeldNummer sollen Daten geändert werden (Anm. Autowert im DS nach vorne, dann ausklammern oder gleich in SQL nicht anführen
+' ctlChange.....abwechselnd Feldname und zugehörigen Wert eingeben z.B. "UserID","Testperson"
+
+On Error GoTo HandleErr
+
+ Dim lngNum As Long, i As Long, iDS As Long, anz As Long
+ Dim strCtl() As Variant, valCtl() As Variant
+ Dim rst As DAO.Recordset
+ Dim lngLastCopyField As Long, dsAnz As Long, Start As Long
+ Dim fCopyVal() As Variant
+
+ 'Parameterübernahme
+  lngNum = hfArraySize(DataToChange)
+  
+  anz = 0
+  ReDim strCtl((lngNum \ 2) - 1)
+  ReDim valCtl((lngNum \ 2) - 1)
+  
+  For i = 0 To (lngNum - 2) Step 2
+    strCtl(anz) = DataToChange(i)
+    valCtl(anz) = DataToChange(i + 1)
+    anz = anz + 1
+  Next i
+  
+ 'Recordsetobjekt öffnen
+  Set rst = OpenRecordset(Source, dbOpenDynaset)
+  
+  If rst.EOF And rst.BOF Then
+        rst.Close
+        Set rst = Nothing
+        CopyRecord_FieldArray = 0
+        Exit Function
+  End If
+  
+   With rst
+      .MoveLast
+      .MoveFirst
+      dsAnz = .RecordCount
+      
+      If LastFieldNumber = 0 Then
+          lngLastCopyField = .Fields.Count
+      ElseIf LastFieldNumber < 0 Then
+          lngLastCopyField = .Fields.Count + LastFieldNumber
+      Else
+          lngLastCopyField = LastFieldNumber
+      End If
+      
+      ReDim fCopyVal(dsAnz, lngLastCopyField)
+      
+      If StartFieldNumber > 1 Then Start = StartFieldNumber - 1 Else Start = 0
+      
+      'Werte einlesen
+      iDS = 0
+      While Not .EOF
+          For i = Start To lngLastCopyField - 1
+            fCopyVal(iDS, i) = .Fields(i).Value
+          Next i
+          .MoveNext
+          iDS = iDS + 1
+      Wend
+      .MoveLast
+ 
+      'Werte kopieren
+      For iDS = 0 To (dsAnz - 1)
+         .AddNew
+         For i = Start To (lngLastCopyField - 1)
+           .Fields(i) = fCopyVal(iDS, i)
+         Next i
+         For i = 0 To (anz - 1)
+           .Fields(strCtl(i)) = valCtl(i)
+         Next i
+         .Update
+      Next iDS
+       
+      If Len(ReturnFieldName) > 0 Then
+          .Bookmark = .LastModified
+          CopyRecord_FieldArray = .Fields(ReturnFieldName).Value
+      Else
+          CopyRecord_FieldArray = True
+      End If
+      
+      .Close
+      
+  End With
+  
+ExitHere:
+    Exit Function
+
+HandleErr:
+   Dim FncErrNr As Long
+   Dim FncErrDesc As String
+
+   FncErrNr = Err.Number
+   FncErrDesc = Err.Description
+   Err.Clear
+On Error Resume Next
+    If Not (rst Is Nothing) Then
+        rst.Close
+        Set rst = Nothing
+    End If
+On Error GoTo 0
+   Err.Raise FncErrNr, "CopyRecord_FieldArray", FncErrDesc
+   
 End Function
