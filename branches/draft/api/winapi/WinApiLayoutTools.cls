@@ -57,8 +57,8 @@ Private Declare PtrSafe Function SetClassLong _
       Lib "user32.dll" _
       Alias "SetClassLongA" ( _
       ByVal Hwnd As Long, _
-      ByVal NIndex As Long, _
-      ByVal DwNewLong As Long _
+      ByVal nIndex As Long, _
+      ByVal dwNewLong As Long _
       ) As Long
 
 Private Declare PtrSafe Function GetSystemMetrics Lib "user32" (ByVal Index As Long) As Long
@@ -86,8 +86,8 @@ Private Declare Function SetClassLong _
       Lib "user32.dll" _
       Alias "SetClassLongA" ( _
       ByVal Hwnd As Long, _
-      ByVal NIndex As Long, _
-      ByVal DwNewLong As Long _
+      ByVal nIndex As Long, _
+      ByVal dwNewLong As Long _
       ) As Long
 
 Private Declare Function GetSystemMetrics Lib "user32" (ByVal Index As Long) As Long
