@@ -187,7 +187,7 @@ Private Function GetVersionFromDownloadSource(ByVal XmlFile As String, ByRef Ver
    Set XmlDoc = CreateObject("MSXML.DOMDocument") 'New MSXML2.DOMDocument60
    XmlDoc.async = False
    If Not XmlDoc.Load(XmlFile) Then
-      Err.Raise XmlDoc.parseError.errorCode, , XmlDoc.parseError.reason
+      Err.Raise XmlDoc.parseError.errorCode, , XmlDoc.parseError.Reason
    End If
    
    GetVersionFromDownloadSource = XmlDoc.getElementsByTagName("version").Item(0).Text
