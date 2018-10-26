@@ -29,8 +29,8 @@ Attribute VB_Exposed = False
 Option Compare Database
 Option Explicit
 
-Private WithEvents m_Combobox As ComboBox
-Attribute m_Combobox.VB_VarHelpID = -1
+Private WithEvents m_ComboBox As ComboBox
+Attribute m_ComboBox.VB_VarHelpID = -1
 
 Private m_DataRecordset As Object 'DAO.Recordset oder ADODB.Recordset
 Private m_BoundColumnIndex As Long
@@ -58,7 +58,7 @@ Private Sub Class_Terminate()
 End Sub
 
 Public Sub Dispose()
-   Set m_Combobox = Nothing
+   Set m_ComboBox = Nothing
    Set m_DataRecordset = Nothing
    Set m_SearchRecordset = Nothing
    m_BoundColumnIndex = 0
@@ -72,9 +72,9 @@ Public Sub Init(ByVal ComboboxRef As ComboBox, _
 
    Const EventProcedurePropertyTag As String = "[Event Procedure]"
 
-   Set m_Combobox = ComboboxRef
+   Set m_ComboBox = ComboboxRef
 
-   With m_Combobox
+   With m_ComboBox
    
       m_BoundColumnIndex = .BoundColumn - 1
       
@@ -118,9 +118,9 @@ Private Sub m_Combobox_KeyDown(KeyCode As Integer, Shift As Integer)
    Select Case KeyCode
       Case vbKeyReturn, vbKeyTab, vbKeyLeft, vbKeyRight
          'Damit Change-Ereignis auf jeden Fall eintritt
-         With m_Combobox
+         With m_ComboBox
             If .LimitToList = False Or Len(.Text) = 0 Then
-               .Text = m_Combobox.Text
+               .Text = m_ComboBox.Text
                If m_InSearchMode Then
                   KeyCode = 0
                End If
@@ -131,13 +131,13 @@ Private Sub m_Combobox_KeyDown(KeyCode As Integer, Shift As Integer)
 End Sub
 
 Private Sub m_Combobox_NotInList(NewData As String, Response As Integer)
-   CheckFilterValue m_Combobox.Text
+   CheckFilterValue m_ComboBox.Text
    Response = acDataErrContinue
 End Sub
 
-Private Sub m_Combobox_AfterUpdate()
+Private Sub m_ComboBox_AfterUpdate()
 
-   With m_Combobox
+   With m_ComboBox
 
       CheckFilterValue .Value
       If Not m_InSearchMode Then
@@ -161,7 +161,7 @@ Private Property Get DataRecordset() As Object
 
    If m_DataRecordset Is Nothing Then
       RaiseEvent MissingDataRecordset(m_DataRecordset)
-      If m_DataRecordset Is Nothing And Len(m_Combobox.RowSource) > 0 Then
+      If m_DataRecordset Is Nothing And Len(m_ComboBox.RowSource) > 0 Then
          UseRowSourceForDataRecordset
          Exit Sub
       End If
@@ -172,7 +172,7 @@ Private Property Get DataRecordset() As Object
 End Property
 
 Private Sub CheckDataSource()
-   With m_Combobox
+   With m_ComboBox
       If Len(.RowSource) = 0 Then
          SetComboboxDataSource DataRecordset
       ElseIf .RowSourceType = "Table/Query" Then
@@ -182,7 +182,7 @@ Private Sub CheckDataSource()
 End Sub
 
 Private Sub UseRowSourceForDataRecordset()
-   With m_Combobox
+   With m_ComboBox
       If .Recordset Is Nothing Then
          Set m_DataRecordset = CurrentDb.OpenRecordset(.RowSource)
       Else
@@ -193,7 +193,7 @@ End Sub
 
 Private Sub CheckDropDownStatus()
    If m_InSearchMode Then
-      m_Combobox.Dropdown
+      m_ComboBox.Dropdown
    End If
 End Sub
 
@@ -204,16 +204,16 @@ Private Sub CheckFilterValue(Optional ByVal FilterValue As Variant)
    Dim bolUseDataRecordset As Boolean
 
    If IsMissing(FilterValue) Then
-      FilterValue = m_Combobox.Value
+      FilterValue = m_ComboBox.Value
    End If
 
    bolUseDataRecordset = IsNull(FilterValue) Or (Len(FilterValue) = 0)
    If Not bolUseDataRecordset Then
-      bolUseDataRecordset = FilterValueInBoundColumnData(FilterValue, Not m_Combobox.LimitToList)
+      bolUseDataRecordset = FilterValueInBoundColumnData(FilterValue, Not m_ComboBox.LimitToList)
    End If
    
    'Problem bei ADODB-Recordset + RowSourceType = "Table/Query":
-   With m_Combobox
+   With m_ComboBox
       
 '      Debug.Assert Nz(.Value = .Column(m_BoundColumnIndex), True)
       If .Value <> .Column(m_BoundColumnIndex) Then
@@ -242,7 +242,7 @@ Private Sub ActivateSearchMode(Optional ByVal FilterValue As Variant)
    Dim Cancel As Boolean
    Dim rst As Object 'DAO.Recordset oder ADODB.Recordset
 
-   m_Combobox.Value = Null
+   m_ComboBox.Value = Null
 
    If Not IsArray(m_SearchColumnArray) Then
       m_SearchColumnArray = GetSearchColumnsFromCombobox
@@ -277,7 +277,7 @@ End Sub
 
 Private Sub SetComboboxDataSource(ByRef rst As Object)
 
-   With m_Combobox
+   With m_ComboBox
 
       If .RowSourceType = "Value List" Then
          .RowSource = GetValueListFromRecordset(rst)
@@ -342,7 +342,7 @@ Private Function FilterValueInBoundColumnData(ByVal FilterValue As Variant, ByVa
    Dim FilterColArray(0) As Long
    Dim rst As Object 'DAO.Recordset oder ADODB.Recordset
 
-   If m_Combobox.Column(m_BoundColumnIndex) = FilterValue Then
+   If m_ComboBox.Column(m_BoundColumnIndex) = FilterValue Then
    'direkter Treffer
       FilterValueInBoundColumnData = True
       Exit Function
@@ -428,7 +428,7 @@ Private Function GetSearchColumnsFromCombobox() As Variant()
    Dim i As Long
    Dim c As Long
    
-   With m_Combobox
+   With m_ComboBox
       ColumnWidthArray = Split(.ColumnWidths, ";")
       ReDim SearchColumns(UBound(ColumnWidthArray))
       
