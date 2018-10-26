@@ -543,20 +543,20 @@ End Sub
 
 Private Sub SetAppDbProperty(ByVal PropName As String, ByVal PropType As Long, ByVal PropValue As Variant)
    
-   Dim Db As DAO.Database
+   Dim db As DAO.Database
    Dim PropCol As DAO.Properties
    
-   Set Db = AppDb
-   Set PropCol = Db.Properties
+   Set db = AppDb
+   Set PropCol = db.Properties
    If DbPropertyExists(PropCol, PropName) Then
       If Len(PropValue) = 0 Or IsNull(PropValue) Then
-         Db.Properties.Delete PropName
+         db.Properties.Delete PropName
       Else
-         Db.Properties(PropName) = PropValue
+         db.Properties(PropName) = PropValue
       End If
    Else
       If Len(PropValue) > 0 Then
-         Db.Properties.Append Db.CreateProperty(PropName, PropType, PropValue)
+         db.Properties.Append db.CreateProperty(PropName, PropType, PropValue)
       End If
    End If
 
@@ -564,11 +564,11 @@ End Sub
 
 Private Sub DeleteAppDbProperty(ByVal PropName As String)
    
-   Dim Db As DAO.Database
+   Dim db As DAO.Database
    Dim PropCol As DAO.Properties
 
-   Set Db = AppDb
-   Set PropCol = Db.Properties
+   Set db = AppDb
+   Set PropCol = db.Properties
    
    If DbPropertyExists(PropCol, PropName) Then
       PropCol.Delete PropName

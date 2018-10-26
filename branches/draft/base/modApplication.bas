@@ -1,7 +1,7 @@
 Attribute VB_Name = "modApplication"
 Attribute VB_Description = "Standard-Prozeduren für die Arbeit mit ApplicationHandler"
 '---------------------------------------------------------------------------------------
-' Module: modApplication (Josef Pötzl, 2009-12-11)
+' Module: modApplication
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -30,9 +30,8 @@ Private m_ApplicationHandler As ApplicationHandler
 ' Erweiterungen zu ApplicationHandler (Ansteuerung erfolgt über Ereignisse von ApplicationHandler)
 Private m_Extension As Collection
 
-
 '---------------------------------------------------------------------------------------
-' Property: CurrentApplication (Josef Pötzl, 2009-12-11)
+' Property: CurrentApplication
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -71,7 +70,7 @@ End Sub
 
 
 '---------------------------------------------------------------------------------------
-' Sub: TraceLog (Josef Pötzl, 2010-07-03)
+' Sub: TraceLog
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -86,7 +85,6 @@ End Sub
 Public Sub TraceLog(ByRef Msg As String, ParamArray Args() As Variant)
    CurrentApplication.WriteLog Msg, ApplicationHandlerLogType.AppLogType_Tracing, Args, False
 End Sub
-
 
 Private Sub InitApplication()
 
@@ -103,7 +101,7 @@ End Sub
 
 
 '---------------------------------------------------------------------------------------
-' Sub: DisposeCurrentApplicationHandler (Josef Pötzl, 2009-12-11)
+' Sub: DisposeCurrentApplicationHandler
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
