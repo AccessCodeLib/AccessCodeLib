@@ -386,7 +386,7 @@ Public Function RibbonXml(Optional ByVal TabXmlBefore As String, Optional TabXml
    Dim Pos As Long
    Dim tempTabStringStart As String
    Dim tempTabStringEnd As String
-   Dim tempString As String
+   Dim TempString As String
    Dim tempTabID As String
    
    Dim StartFromScratchString As String
@@ -414,17 +414,17 @@ Public Function RibbonXml(Optional ByVal TabXmlBefore As String, Optional TabXml
          
          If Pos > 0 Then
             tempTabStringStart = Left(arrRibbonTabs(i), Pos + 6)
-            tempString = Mid(arrRibbonTabs(i), Pos + 7)
+            TempString = Mid(arrRibbonTabs(i), Pos + 7)
             
-            Pos = InStr(1, tempString, "</group>", vbTextCompare)
-            tempTabStringEnd = Mid(tempString, Pos)
-            tempString = Left(tempString, Pos - 1) '=> alles innerhalb der ersten Group
+            Pos = InStr(1, TempString, "</group>", vbTextCompare)
+            tempTabStringEnd = Mid(TempString, Pos)
+            TempString = Left(TempString, Pos - 1) '=> alles innerhalb der ersten Group
    
-            tempString = tempString & "<button id=""RWEC" & tempTabID & """ tag=""" & tempTabID & """ label=""xxx"" onAction=""RibbonWatcherCallBack_OnAction"" getVisible=""RibbonWatcherCallBack_GetVisible"" />"
+            TempString = TempString & "<button id=""RWEC" & tempTabID & """ tag=""" & tempTabID & """ label=""xxx"" onAction=""RibbonWatcherCallBack_OnAction"" getVisible=""RibbonWatcherCallBack_GetVisible"" />"
             
-            tempString = tempTabStringStart & tempString & tempTabStringEnd
+            TempString = tempTabStringStart & TempString & tempTabStringEnd
             
-            arrRibbonTabs(i) = tempString & "</tab>"
+            arrRibbonTabs(i) = TempString & "</tab>"
          End If
       
       Next
@@ -547,7 +547,7 @@ Public Sub CallOnAction(rwcNr As Long)
    Dim strProc As String
    Dim strOnActionParams As String
    Dim onActionParams As Variant
-   Dim params(29) As Variant
+   Dim Params(29) As Variant
    Dim bolWithParams As Boolean
    Dim lngPos As Long
    Dim i As Long
@@ -555,7 +555,7 @@ Public Sub CallOnAction(rwcNr As Long)
    If Not m_ribbonControlInfoArrayFilled Then FillRibbonInfoArray
    
    For i = 0 To 29
-      params(i) = GetIsMissing()
+      Params(i) = GetIsMissing()
    Next
    
    strOnAction = ribbonControlInfoArray(rwcNr).OnAction
@@ -572,7 +572,7 @@ Public Sub CallOnAction(rwcNr As Long)
                If Left(onActionParams(i), 1) Like "['""]" And Right(onActionParams(i), 1) Like "['""]" Then '@todo: genauer prüfen!
                   onActionParams(i) = Mid(onActionParams(i), 2, Len(onActionParams(i)) - 2)
                End If
-               params(i) = onActionParams(i)
+               Params(i) = onActionParams(i)
             Next
          End If
          strProc = Left(strProc, lngPos - 1)
@@ -580,7 +580,7 @@ Public Sub CallOnAction(rwcNr As Long)
    Else 'Callback
       strProc = strOnAction
       bolWithParams = True
-      Set params(0) = ribbonControlInfoArray(rwcNr)
+      Set Params(0) = ribbonControlInfoArray(rwcNr)
 '/**
 ' * @todo Was ist mit Callback-Aufrufen, die noch weitere Parameter benötigen?
 '**/
@@ -588,9 +588,9 @@ Public Sub CallOnAction(rwcNr As Long)
    End If
   
 
-   Application.Run strProc, params(0), params(1), params(2), params(3), params(4), params(5), params(6), params(7), params(8), params(9), _
-                            params(10), params(11), params(12), params(13), params(14), params(15), params(16), params(17), params(18), params(19), _
-                            params(20), params(21), params(22), params(23), params(24), params(25), params(26), params(27), params(28), params(29)
+   Application.Run strProc, Params(0), Params(1), Params(2), Params(3), Params(4), Params(5), Params(6), Params(7), Params(8), Params(9), _
+                            Params(10), Params(11), Params(12), Params(13), Params(14), Params(15), Params(16), Params(17), Params(18), Params(19), _
+                            Params(20), Params(21), Params(22), Params(23), Params(24), Params(25), Params(26), Params(27), Params(28), Params(29)
    
 End Sub
 
