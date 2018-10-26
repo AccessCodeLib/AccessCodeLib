@@ -277,8 +277,6 @@ Private m_Section As Long
 Private m_WindowTools As WinApiWindowTools
 Private m_LayoutTools As WinApiLayoutTools
 
-'Public Event Selected(ByVal lMnuItemNr As Long)
-
 Private Sub Class_Initialize()
 On Error Resume Next
    m_ItemCnt = 0
