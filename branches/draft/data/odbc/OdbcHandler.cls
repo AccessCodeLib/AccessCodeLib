@@ -724,7 +724,7 @@ Public Sub LinkTable(ByVal SourceTableName As String, _
    tdf.Connect = NewConnectionString
    dbs.TableDefs.Append tdf
    If SavePWD Then
-      AddTableDefAttribut tdf, DbAttachSavePWD
+      AddTableDefAttribut tdf, dbAttachSavePWD
       tdf.RefreshLink
    End If
    
@@ -844,9 +844,9 @@ Private Function RelinkTableDef(ByVal TdfRef As DAO.TableDef, _
       .RefreshLink
       
       If SavePWD Then
-         AddTableDefAttribut TdfRef, DbAttachSavePWD
+         AddTableDefAttribut TdfRef, dbAttachSavePWD
       Else
-         RemoveTableDefAttribut TdfRef, DbAttachSavePWD
+         RemoveTableDefAttribut TdfRef, dbAttachSavePWD
       End If
    End With
    
