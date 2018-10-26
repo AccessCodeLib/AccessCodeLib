@@ -290,6 +290,10 @@ On Error Resume Next
    Set m_AccessForm = Nothing
 End Sub
 
+Public Property Get Object() As WinApiShortcutMenu
+   Set Object = Me
+End Property
+
 Private Property Get WindowTools() As WinApiWindowTools
    If m_WindowTools Is Nothing Then
       Set m_WindowTools = New WinApiWindowTools
