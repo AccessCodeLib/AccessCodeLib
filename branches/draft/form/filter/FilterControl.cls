@@ -59,6 +59,8 @@ Private Const EventProcedurePropertyTag As String = "[Event Procedure]"
 Private m_FilterControl2 As FilterControl
 Private m_SubFilterControls As Collection
 
+Public DisableRemoveFilterValue As Boolean
+
 Private Sub InitControl()
 
    RemoveWithEventsControlRefs

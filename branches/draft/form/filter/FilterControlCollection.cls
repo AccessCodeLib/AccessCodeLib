@@ -71,11 +71,11 @@ Public Property Get Self() As FilterControlCollection
    Set Self = Me
 End Property
 
-Public Sub Add(ByVal DataFieldName As String, ByVal DataType As SqlFieldDataType, _
+Public Function Add(ByVal DataFieldName As String, ByVal DataType As SqlFieldDataType, _
                ByVal RelationalOperator As SqlRelationalOperators, _
                ByVal ControlRef As Control, _
       Optional ByVal Control2Ref As Control = Nothing, _
-      Optional ByVal IgnoreValue As Variant = Null)
+      Optional ByVal IgnoreValue As Variant = Null) As FilterControl
    
    With New FilterControl
       Set .EventBridge = m_EventBridge
@@ -88,9 +88,10 @@ Public Sub Add(ByVal DataFieldName As String, ByVal DataType As SqlFieldDataType
       End If
       .IgnoreValue = IgnoreValue
       m_FilterControls.Add .Self
+      Set Add = .Self
    End With
    
-End Sub
+End Function
 
 Public Function AddGroup(Optional ByVal ConcatOperator As SqlLogicalOperator = SqlLogicalOperator.SQL_Or) As FilterControlCollection
    
@@ -143,6 +144,17 @@ Public Sub RemoveFilterValues(Optional ByVal RaiseFilterValuesChangedEvent As Bo
          fc.RemoveFilterValue False
       End If
    Next
+   
+   If RaiseFilterValuesChangedEvent Then
+      RaiseEvent FilterValuesChanged
+   End If
+   
+End Sub
+
+Public Sub RemoveControls(Optional ByVal RaiseFilterValuesChangedEvent As Boolean = True)
+   
+   Set m_FilterControls = Nothing
+   Set m_FilterControls = New Collection
    
    If RaiseFilterValuesChangedEvent Then
       RaiseEvent FilterValuesChanged
