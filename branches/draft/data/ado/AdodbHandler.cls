@@ -300,6 +300,15 @@ Public Function OpenRecordset(ByVal Source As String, _
 ' Source = SQL-Anweisung
 
    Dim rst As ADODB.Recordset
+   
+   If DisconnectedRecordset Then
+      If CursorLocation = adUseServer Then
+         CursorLocation = adUseClient
+      End If
+      If CursorType = adOpenForwardOnly Then
+         CursorType = adOpenKeyset
+      End If
+   End If
 
    Set rst = New ADODB.Recordset
    With rst
@@ -640,7 +649,7 @@ End Function
 
 Public Function LookupSqlValueCollection(ByVal SqlSource As String, Optional ByVal ValueIfNull As Variant = Null) As Collection
 
-   Dim lngWherePos As Long
+'   Dim lngWherePos As Long
    Dim Results As Collection
    Dim rst As ADODB.Recordset
    Dim fld As ADODB.Field
