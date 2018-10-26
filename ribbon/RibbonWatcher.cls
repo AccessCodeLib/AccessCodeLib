@@ -28,7 +28,7 @@ Attribute VB_Exposed = False
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
-Option Compare Database
+Option Compare Text
 Option Explicit
 
 Private m_RibbonUI As IRibbonUI
@@ -63,7 +63,7 @@ Public Event EditBoxOnChange(ByVal rc As IRibbonControl, ByRef strText As Varian
 Public Event EditBoxGetText(ByVal rc As IRibbonControl, ByRef Text)
 
 Public Event DropDownGetItemCount(ByVal rc As IRibbonControl, ByRef Count)
-Public Event DropDownGetItemId(ByVal Control As IRibbonControl, ByRef Index As Integer, ByRef ItemId)
+Public Event DropDownGetItemId(ByVal Control As IRibbonControl, ByRef Index As Integer, ByRef ItemID)
 Public Event DropDownGetItemLabel(ByVal Control As IRibbonControl, ByRef Index As Integer, ByRef Label)
 Public Event DropDownGetSelectedItemID(ByVal rc As IRibbonControl, ByRef selectedId)
 Public Event DropDownGetSelectedItemIndex(ByVal rc As IRibbonControl, ByRef selectedIndex As Variant)
@@ -81,7 +81,7 @@ Private Sub Class_Initialize()
 
    'Standardwerte einstellen:
    InitRibbonGroupLayout
-
+   
 End Sub
 
 Public Sub InitRibbonGroupLayout(Optional ByVal lLargeButtonCount As Long = m_DEFAULT_LargeButtonCount, _
@@ -118,6 +118,10 @@ Private Sub FillRibbonInfoArray()
    
 On Error GoTo HandleErr
 
+   If Not AppLoadedForRibbonWatcher Then
+      Exit Sub
+   End If
+
    strSQL = "select TOP " & m_RibbonControlInfoArraySize & _
             " RibbonControlId, rcLabel, rcOnAction, rcImageMso" & _
             " from usysUserRibbonClicks" & _
@@ -143,8 +147,8 @@ On Error GoTo HandleErr
          .ImageMso = Nz(rst.Fields("rcImageMso"), vbNullString)
          .Visible = True
          
-         If .Id <> strID Then
-            .Id = strID
+         If .ID <> strID Then
+            .ID = strID
             RefreshRibbonWatcherControl currentArrayCnt
          End If
    
@@ -155,7 +159,7 @@ On Error GoTo HandleErr
    rst.Close
    
    m_ribbonControlInfoArrayFilled = True
-
+   
 ExitHere:
    Exit Sub
 
@@ -235,7 +239,7 @@ Public Property Let UsedRibbonItemXml(ByVal XmlString As String)
    Dim strImageMso As String
    Dim strOnAction As String
    Dim strLabel As String
-   
+      
    Dim lngPos As Long
    
    If Len(XmlString) = 0 Then
@@ -379,7 +383,7 @@ Public Function RibbonXml(Optional ByVal TabXmlBefore As String, Optional TabXml
    Dim strRibbonXml As String
    Dim arrRibbonTabs As Variant
    Dim i As Long
-   Dim pos As Long
+   Dim Pos As Long
    Dim tempTabStringStart As String
    Dim tempTabStringEnd As String
    Dim tempString As String
@@ -406,15 +410,15 @@ Public Function RibbonXml(Optional ByVal TabXmlBefore As String, Optional TabXml
          tempTabID = Mid(tempTabID, InStr(1, tempTabID, "id=""", vbTextCompare) + 4)
          tempTabID = Left(tempTabID, InStr(1, tempTabID, """", vbTextCompare) - 1)
 
-         pos = InStr(1, arrRibbonTabs(i), "<group ", vbTextCompare)
+         Pos = InStr(1, arrRibbonTabs(i), "<group ", vbTextCompare)
          
-         If pos > 0 Then
-            tempTabStringStart = Left(arrRibbonTabs(i), pos + 6)
-            tempString = Mid(arrRibbonTabs(i), pos + 7)
+         If Pos > 0 Then
+            tempTabStringStart = Left(arrRibbonTabs(i), Pos + 6)
+            tempString = Mid(arrRibbonTabs(i), Pos + 7)
             
-            pos = InStr(1, tempString, "</group>", vbTextCompare)
-            tempTabStringEnd = Mid(tempString, pos)
-            tempString = Left(tempString, pos - 1) '=> alles innerhalb der ersten Group
+            Pos = InStr(1, tempString, "</group>", vbTextCompare)
+            tempTabStringEnd = Mid(tempString, Pos)
+            tempString = Left(tempString, Pos - 1) '=> alles innerhalb der ersten Group
    
             tempString = tempString & "<button id=""RWEC" & tempTabID & """ tag=""" & tempTabID & """ label=""xxx"" onAction=""RibbonWatcherCallBack_OnAction"" getVisible=""RibbonWatcherCallBack_GetVisible"" />"
             
@@ -467,7 +471,7 @@ Private Function GetRibbonControlXml(ByVal sID As String, ByVal sSize As String)
 End Function
 
 Public Function GetRibbonControlLabel(ByVal rc As IRibbonControl) As Variant
-   GetRibbonControlLabel = GetLabel(Val(Mid(rc.Id, 4)))
+   GetRibbonControlLabel = GetLabel(Val(Mid(rc.ID, 4)))
 End Function
 
 Public Function GetLabel(ByVal rwcNr As Long) As String
@@ -478,7 +482,7 @@ Public Function GetLabel(ByVal rwcNr As Long) As String
 End Function
 
 Public Function GetRibbonControlImage(ByVal rc As IRibbonControl) As Variant
-   GetRibbonControlImage = GetImage(Val(Mid(rc.Id, 4)))
+   GetRibbonControlImage = GetImage(Val(Mid(rc.ID, 4)))
 End Function
 
 Public Function GetImage(ByVal rwcNr As Long) As Variant
@@ -499,11 +503,11 @@ Public Function GetRibbonControlVisible(ByVal rc As IRibbonControl) As Boolean
 
    Dim bVisible As Boolean
 
-   If Left(rc.Id, 4) = "RWEC" Then
+   If Left(rc.ID, 4) = "RWEC" Then
       SetActivatedEventControl rc
       bVisible = False
-   ElseIf Left(rc.Id, 3) = "RWC" Then
-      bVisible = GetRibbonWatcherControlVisible(Val(Mid(rc.Id, 4)))
+   ElseIf Left(rc.ID, 3) = "RWC" Then
+      bVisible = GetRibbonWatcherControlVisible(Val(Mid(rc.ID, 4)))
    Else
       RaiseGetVisible rc, bVisible
    End If
@@ -525,8 +529,8 @@ End Function
 
 Public Sub CallRibbonControlOnAction(ByVal rc As IRibbonControl)
 
-   If Left(rc.Id, 3) = "RWC" Then
-      CallOnAction Val(Mid(rc.Id, 4))
+   If Left(rc.ID, 3) = "RWC" Then
+      CallOnAction Val(Mid(rc.ID, 4))
    Else
       RaiseOnAction rc
    End If
@@ -600,15 +604,15 @@ Private Sub SetActivatedEventControl(ByVal rc As IRibbonControl)
    Dim bolItemExits As Boolean
    
    For Each Item In m_EventGroupCollection
-      If Item.Id = rc.Id Then
+      If Item.ID = rc.ID Then
          bolItemExits = True
       Else
-         Me.RibbonUI.InvalidateControl Item.Id
+         Me.RibbonUI.InvalidateControl Item.ID
       End If
    Next
    
    If Not bolItemExits Then
-      m_EventGroupCollection.Add rc, rc.Id
+      m_EventGroupCollection.Add rc, rc.ID
    End If
    
    RaiseEvent RibbonTabChanged(rc.Tag)
@@ -632,8 +636,8 @@ End Sub
 
 Public Sub RaiseDropDownGetItemID(ByVal rc As IRibbonControl, _
                                   ByRef Index As Integer, _
-                                  ByRef ItemId)
-   RaiseEvent DropDownGetItemId(rc, Index, ItemId)
+                                  ByRef ItemID)
+   RaiseEvent DropDownGetItemId(rc, Index, ItemID)
 End Sub
 
 Public Sub RaiseDropDownGetItemLabel(ByVal rc As IRibbonControl, _

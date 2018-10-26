@@ -22,6 +22,7 @@ Option Compare Database
 Option Explicit
 
 Private m_CurrentRibbonWatcher As RibbonWatcher
+Public AppLoadedForRibbonWatcher As Boolean
 
 'RibbonWatcher-Instanz
 Public Property Get CurrentRibbonWatcher() As RibbonWatcher
@@ -93,8 +94,8 @@ End Sub
 
 Sub RibbonWatcherCallBack_DropDown_getItemID(ByRef rc As IRibbonControl, _
                                              ByRef Index As Integer, _
-                                             ByRef ItemId)
-    CurrentRibbonWatcher.RaiseDropDownGetItemID rc, Index, ItemId
+                                             ByRef ItemID)
+    CurrentRibbonWatcher.RaiseDropDownGetItemID rc, Index, ItemID
 End Sub
 
 Sub RibbonWatcherCallBack_DropDown_getItemLabel(rc As IRibbonControl, _
@@ -109,8 +110,8 @@ Sub RibbonWatcherCallBack_DropDown_onAction(ByRef rc As IRibbonControl, _
     CurrentRibbonWatcher.RaiseDropDownOnAction rc, selectedId, selectedIndex
 End Sub
 
-Public Sub RibbonWatcherCallBack_DropDown_getSelectedItemID(ByRef rc As IRibbonControl, ByRef ItemId)
-   CurrentRibbonWatcher.RaiseDropDownGetSelectedItemID rc, ItemId
+Public Sub RibbonWatcherCallBack_DropDown_getSelectedItemID(ByRef rc As IRibbonControl, ByRef ItemID)
+   CurrentRibbonWatcher.RaiseDropDownGetSelectedItemID rc, ItemID
 End Sub
 
 Public Sub RibbonWatcherCallBack_DropDown_getSelectedItemIndex(ByRef rc As IRibbonControl, ByRef Index)
