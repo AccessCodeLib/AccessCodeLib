@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '-----------------------------------------------------------------------------
-' Klassenmodul: ListFormHandler (15.09.2007)
+' Klassenmodul: ListFormHandler
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
