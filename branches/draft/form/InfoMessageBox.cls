@@ -227,7 +227,7 @@ End Sub
 
 Public Property Let Transparency(ByVal NewTransparency As Byte)
    
-   Dim ret As Long
+   Dim RetVal As Long
    Dim TransparencyValue As Long
    Dim bAlpha As Byte
    
@@ -247,9 +247,9 @@ Public Property Let Transparency(ByVal NewTransparency As Byte)
    
    bAlpha = (255 - TransparencyValue)
    
-   ret = GetWindowLong(Me.Form.Hwnd, (-20))
-   ret = ret Or &H80000
-   SetWindowLong m_Form.Hwnd, (-20), ret
+   RetVal = GetWindowLong(Me.Form.Hwnd, (-20))
+   RetVal = RetVal Or &H80000
+   SetWindowLong m_Form.Hwnd, (-20), RetVal
                                
    SetLayeredWindowAttributes m_Form.Hwnd, 0, bAlpha, &H2
     
