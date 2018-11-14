@@ -135,9 +135,9 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function GetFileVersion(ByVal sFile As String) As String
-   Dim verInfo As FILEINFOOUT
-   If GetVersion(sFile, verInfo) Then
-      GetFileVersion = verInfo.FileVersion
+   Dim VerInfo As FILEINFOOUT
+   If GetVersion(sFile, VerInfo) Then
+      GetFileVersion = VerInfo.FileVersion
    Else
       GetFileVersion = vbNullString
    End If
