@@ -39,16 +39,16 @@ Private Enum SqlToolsErrorNumbers
    ERRNR_NOCONFIG = vbObjectError + 1
 End Enum
 
+' Standard-Werte für Methodenparameter
 Private Const SQL_DEFAULT_TEXTDELIMITER As String = "'"
-Private Const SQL_DEFAULT_DATEFORMAT As String = "" ' => SqlDateFormat-Eigenschaft verwenden.
-                                                    '    Zum Deaktivieren Wert eintragen (z. B. "\#yyyy\-mm\-dd\#"),
-                                                    '    dann wird dieser Wert als Standardeintrag verwendet.
-Private Const SQL_DEFAULT_BOOLTRUESTRING As String = "" ' => SqlBooleanTrueString wird verwendet.
+Private Const SQL_DEFAULT_DATEFORMAT As String = ""     ' "" => SqlDateFormat-Eigenschaft wird verwenden.
+                                                        '    Zum Deaktivieren Wert eintragen (z. B. "\#yyyy\-mm\-dd\#"),
+                                                        '    dann wird dieser Wert als Standardeintrag verwendet.
+Private Const SQL_DEFAULT_BOOLTRUESTRING As String = "" ' "" => SqlBooleanTrueString wird verwendet.
                                                         '    Zum Deaktivieren Wert eintragen (z. B. "True oder 1")
-
-Private Const SQL_DEFAULT_WILDCARD As String = "*" ' * = Standardwert,
-                                                   ' benötigte Abweichungen über SqlWildCardString einstellen
-
+Private Const SQL_DEFAULT_WILDCARD As String = "%"      ' * = Standardwert,
+                                                        ' benötigte Abweichungen über SqlWildCardString einstellen
+                                                   
 Private Const SqlAndConcatString As String = " And "
 Private Const SqlOrConcatString As String = " Or "
 
@@ -87,6 +87,15 @@ Public Enum SqlLogicalOperator
    SQL_CommaSeparator = 3
 End Enum
 
+' SQL-Dialekt-Voreinstellungen
+Public Property Get DAO() As SqlTools
+   Set DAO = Me.Clone("\#yyyy-mm-dd hh:nn:ss\#", "True", "*")
+End Property
+
+Public Property Get TSql() As SqlTools
+   Set TSql = Me.Clone("'yyyymmdd hh:nn:ss'", "1", "%")
+End Property
+
 ' Konfiguration für den SQL-Dialekt
 Public Property Get SqlWildCardString() As String
    If Len(m_SqlWildCardString) > 0 Then
@@ -112,7 +121,6 @@ Public Property Let SqlDateFormat(ByVal NewValue As String)
    m_SqlDateFormat = NewValue
 End Property
 
-
 Public Property Get SqlBooleanTrueString() As String
    If Len(m_SqlBooleanTrueString) > 0 Then
       SqlBooleanTrueString = m_SqlBooleanTrueString
@@ -137,10 +145,9 @@ End Property
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Clone(Optional ByVal NewSqlDateFormat As String = SQL_DEFAULT_DATEFORMAT, _
-                      Optional ByVal NewSqlBooleanTrueString As String = SQL_DEFAULT_BOOLTRUESTRING, _
-                      Optional ByVal NewSqlWildCardString As String = SQL_DEFAULT_WILDCARD) As SqlTools
-
+Public Function Clone(Optional ByVal NewSqlDateFormat As String, _
+                      Optional ByVal NewSqlBooleanTrueString As String, _
+                      Optional ByVal NewSqlWildCardString As String) As SqlTools
 
    If Len(NewSqlDateFormat) = 0 Then NewSqlDateFormat = Me.SqlDateFormat
    If Len(NewSqlBooleanTrueString) = 0 Then NewSqlBooleanTrueString = Me.SqlBooleanTrueString
