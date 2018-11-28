@@ -373,6 +373,10 @@ Public Function CreateDirectory(ByVal FullPath As String) As Boolean
 
 End Function
 
+Public Sub CreateDirectoryIfMissing(ByVal FullPath As String)
+   CreateDirectory FullPath
+End Sub
+
 '---------------------------------------------------------------------------------------
 ' Function: FileExists
 '---------------------------------------------------------------------------------------
@@ -561,12 +565,11 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Function GetRelativPathFromFullPath(ByVal FullPath As String, _
                                            ByVal BaseDir As String, _
-                                  Optional ByVal EnableRelativePrefix As Boolean = False) As String
+                                  Optional ByVal EnableRelativePrefix As Boolean = False, _
+                                  Optional ByVal DisableDecreaseBaseDir As Boolean = False) As String
 
    Dim RelativPath As String
-   Dim Pos As Long
-   Dim Counter As Long, i As Long
-
+   
    If FullPath = BaseDir Then
       GetRelativPathFromFullPath = "."
       Exit Function
@@ -577,34 +580,59 @@ Public Function GetRelativPathFromFullPath(ByVal FullPath As String, _
       GetRelativPathFromFullPath = "."
       Exit Function
    End If
+   
+   If Not DisableDecreaseBaseDir Then
+      RelativPath = TryGetRelativPathWithDecreaseBaseDir(FullPath, BaseDir, EnableRelativePrefix)
+   Else
+      RelativPath = FullPath
+      If Right$(BaseDir, 1) <> "\" Then BaseDir = BaseDir & "\"
+      If Len(BaseDir) > 0 Then
+         If Nz(InStr(1, FullPath, BaseDir, vbTextCompare), 0) > 0 Then
+            RelativPath = Mid$(FullPath, Len(BaseDir) + 1)
+            If EnableRelativePrefix Then
+               RelativPath = ".\" & RelativPath
+            End If
+         End If
+      End If
+   End If
+   
+   GetRelativPathFromFullPath = RelativPath
 
+End Function
+
+Private Function TryGetRelativPathWithDecreaseBaseDir(ByVal FullPath As String, ByVal BaseDir As String, ByVal EnableRelativePrefix As Boolean) As String
+
+   Dim RelativPath As String
+   Dim DecreaseCounter As Long
+   Dim Pos As Long
+   Dim i As Long
+   
    RelativPath = BaseDir
 
    Do While InStr(1, FullPath, RelativPath) = 0
       Pos = InStrRev(Left$(RelativPath, Len(RelativPath) - 1), "\")
       RelativPath = Left$(RelativPath, Pos)
-      Counter = Counter + 1
+      DecreaseCounter = DecreaseCounter + 1
       If Len(RelativPath) = 0 Then
-         Counter = 0
+         DecreaseCounter = 0
          Exit Do
       End If
    Loop
-
+   
    If Len(RelativPath) > 0 Then
       RelativPath = Replace(FullPath, RelativPath, vbNullString)
-      For i = 1 To Counter
+      For i = 1 To DecreaseCounter
          RelativPath = "..\" & RelativPath
       Next
 
       If EnableRelativePrefix Then
          RelativPath = ".\" & RelativPath
       End If
-
    Else
       RelativPath = FullPath
    End If
 
-   GetRelativPathFromFullPath = RelativPath
+   TryGetRelativPathWithDecreaseBaseDir = RelativPath
 
 End Function
 
@@ -622,6 +650,10 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function GetDirFromFullFileName(ByVal FullFileName As String) As String
+   GetDirFromFullFileName = PathFromFullFileName(FullFileName)
+End Function
+
+Public Function PathFromFullFileName(ByVal FullFileName As Variant) As String
 
    Dim DirPath As String
    Dim Pos As Long
@@ -634,7 +666,7 @@ Public Function GetDirFromFullFileName(ByVal FullFileName As String) As String
       DirPath = vbNullString
    End If
 
-   GetDirFromFullFileName = DirPath
+   PathFromFullFileName = DirPath
 
 End Function
 
@@ -737,5 +769,5 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function GetFileExtension(ByVal FilePath As String, Optional ByVal WithDotBeforeExtension As Boolean = True) As String
-    GetFileExtension = VBA.Strings.Mid$(FilePath, VBA.Strings.InStrRev(FilePath, ".") + (1 - Abs(WithDotBeforeExtension)))
+   GetFileExtension = VBA.Strings.Mid$(FilePath, VBA.Strings.InStrRev(FilePath, ".") + (1 - Abs(WithDotBeforeExtension)))
 End Function
