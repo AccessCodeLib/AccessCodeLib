@@ -126,7 +126,8 @@ End Property
 ' <summary>
 ' Datei aus usys_AppFiles extrahieren
 ' </summary>
-' <param name="Param"></param>
+' <param name="FileID">Datensatzkennung</param>
+' <param name="FileName">zu erzeugender Dateiname</param>
 ' <returns>Boolean</returns>
 ' <remarks>
 ' </remarks>
@@ -134,37 +135,41 @@ End Property
 '---------------------------------------------------------------------------------------
 Public Function CreateAppFile(ByVal FileID As String, ByVal FileName As String) As Boolean
 
-   Dim f As Integer
    Dim Binfile() As Byte
    Dim FieldSize As Long
-   Dim rst As DAO.Recordset
    Dim fld As DAO.Field
 
-   Set rst = CodeDb.OpenRecordset("select file from " & TABLE_APPFILES & " where id='" & FileID & "'")
-   If rst.EOF Then
-      CreateAppFile = False
-   Else
-      Set fld = rst.Fields(0)
-      FieldSize = fld.FieldSize
-      If FieldSize > 0 Then
-
-         ReDim Binfile(FieldSize - 1)
-         Binfile = fld.GetChunk(0, FieldSize)
-
-        ' Datei erstellen
-         f = FreeFile
-         Open FileName For Binary As #f
-         Put #f, , Binfile()
-         Close #f
-
-         CreateAppFile = True
-      Else
-         CreateAppFile = False
+   With CodeDb.OpenRecordset("select " & TABLE_FIELD_FILE & " from " & TABLE_APPFILES & " where " & TABLE_FIELD_ID & "='" & Replace(FileID, "'", "''") & "'")
+      If Not .EOF Then
+      
+         Set fld = .Fields(0)
+         FieldSize = fld.FieldSize
+         
+         If FieldSize > 0 Then
+            ReDim Binfile(FieldSize - 1)
+            Binfile = fld.GetChunk(0, FieldSize)
+            CreateFileFromByteArray FileName, Binfile
+            CreateAppFile = True
+         End If
+         
       End If
-
-   End If
-
+      .Close
+   End With
+   
 End Function
+
+Private Sub CreateFileFromByteArray(ByVal FileName As String, ByRef Binfile() As Byte)
+   
+   Dim f As Integer
+   
+   FileTools.CreateDirectoryIfMissing FileTools.GetDirFromFullFileName(FileName)
+
+   f = FreeFile
+   Open FileName For Binary As #f
+   Put #f, , Binfile()
+   Close #f
+   
+End Sub
 
 '---------------------------------------------------------------------------------------
 ' Function: SaveAppFile
@@ -220,9 +225,9 @@ On Error GoTo HandleErr
       Version = FileInfo.GetFileVersion(FileName)
           Set FileInfo = Nothing
       If Len(Version) = 0 Then
-         Version = Format$(Nz(FileDateTime(FileName), vbNullString), "yyyy.mm.dd")
+         Version = VBA.Format$(Nz(FileDateTime(FileName), vbNullString), "yyyy.mm.dd")
       End If
-      rst.Fields("version") = Version
+      rst.Fields(TABLE_FIELD_VERSION) = Version
    End If
    
    If Len(ExtFieldName) > 0 Then
