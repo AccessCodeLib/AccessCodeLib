@@ -997,7 +997,7 @@ Private Function NewRecord_FieldArray(ByVal strSource As String, ByVal ReturnFie
     Dim DataFields() As Variant, DataValues() As Variant
     Dim rst As DAO.Recordset
 
-    lngNum = hfArraySize(DataParams)
+    lngNum = Ubound(DataParams) + 1
     ReDim DataFields(lngNum \ 2)
     ReDim DataValues(lngNum \ 2)
     
@@ -1095,7 +1095,7 @@ On Error GoTo HandleErr
  Dim fCopyVal() As Variant
 
  'Parameterübernahme
-  lngNum = hfArraySize(DataToChange)
+  lngNum = UBound(DataToChange) + 1
   
   anz = 0
   ReDim strCtl((lngNum \ 2) - 1)
