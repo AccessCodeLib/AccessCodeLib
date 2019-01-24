@@ -284,28 +284,28 @@ End Function
 
 Private Function CheckConfigTableDef() As Boolean
 
-   Dim Db As DAO.Database
+   Dim db As DAO.Database
    Dim tdf As DAO.TableDef
 
-   Set Db = CodeDb
+   Set db = CodeDb
    
-   If Not TableDefExists(ACLIB_CONFIG_TABLEDEFNAME, Db) Then
+   If Not TableDefExists(ACLIB_CONFIG_TABLEDEFNAME, db) Then
    
-      Set tdf = Db.CreateTableDef(ACLIB_CONFIG_TABLEDEFNAME)
+      Set tdf = db.CreateTableDef(ACLIB_CONFIG_TABLEDEFNAME)
       tdf.Connect = ";Database=" & ACLibConfigDatabaseFile
       tdf.SourceTableName = ACLIB_CONFIG_TABLEDEFNAME
-      Db.TableDefs.Append tdf
+      db.TableDefs.Append tdf
       
-   ElseIf Len(Dir$(Mid$(Db.TableDefs(ACLIB_CONFIG_TABLEDEFNAME).Connect, Len(";Database=") + 1))) = 0 Then
+   ElseIf Len(Dir$(Mid$(db.TableDefs(ACLIB_CONFIG_TABLEDEFNAME).Connect, Len(";Database=") + 1))) = 0 Then
    
-      With Db.TableDefs(ACLIB_CONFIG_TABLEDEFNAME)
+      With db.TableDefs(ACLIB_CONFIG_TABLEDEFNAME)
          .Connect = ";Database=" & ACLibConfigDatabaseFile
          .RefreshLink
       End With
       
    End If
    
-   Set Db = Nothing
+   Set db = Nothing
    
    CheckConfigTableDef = True
 
@@ -326,7 +326,7 @@ End Property
 
 Private Property Get ACLibConfigDatabaseFile() As String
    
-   Dim Db As DAO.Database
+   Dim db As DAO.Database
    Dim strDbFile As String
    Dim bolCreateConfigTable As Boolean
    
@@ -349,19 +349,19 @@ Private Property Get ACLibConfigDatabaseFile() As String
 
       'Datenbank anlegen
       If CodeDb.Version = "4.0" Then
-         Set Db = DBEngine.CreateDatabase(strDbFile, dbLangGeneral, dbVersion40)
+         Set db = DBEngine.CreateDatabase(strDbFile, dbLangGeneral, dbVersion40)
       Else
-         Set Db = DBEngine.CreateDatabase(strDbFile, dbLangGeneral)
+         Set db = DBEngine.CreateDatabase(strDbFile, dbLangGeneral)
       End If
-      Db.Close
+      db.Close
       
       bolCreateConfigTable = True
    
    Else 'Prüfen ob Config-Tabelle vorhanden ist
       
-      Set Db = DBEngine.OpenDatabase(strDbFile)
-      bolCreateConfigTable = Not TableDefExists(ACLIB_CONFIG_TABLEDEFNAME, Db)
-      Db.Close
+      Set db = DBEngine.OpenDatabase(strDbFile)
+      bolCreateConfigTable = Not TableDefExists(ACLIB_CONFIG_TABLEDEFNAME, db)
+      db.Close
    
    End If
    
