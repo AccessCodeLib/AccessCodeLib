@@ -253,7 +253,7 @@ Public Function StartsWith(ByVal CheckValue As String, ByVal SearchValue As Stri
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: Lenght
+' Function: Length
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -338,7 +338,7 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function Substring(ByVal Value As String, ByVal StartIndex As Long, Optional ByVal Length As Long = 0) As String
-    If Length = 0 Then Length = StringTools.Lenght(Value) - StartIndex
+    If Length = 0 Then Length = StringTools.Length(Value) - StartIndex
     Substring = VBA.Mid$(Value, StartIndex + 1, Length)
 End Function
 
