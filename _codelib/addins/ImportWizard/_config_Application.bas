@@ -20,7 +20,7 @@ Option Compare Database
 Option Explicit
 
 'Versionsnummer
-Private Const APPLICATION_VERSION As String = "1.0.14" '2018-04-20
+Private Const APPLICATION_VERSION As String = "1.0.16" '2019-01-24
 
 #Const USE_CLASS_ApplicationHandler_AppFile = 1
 #Const USE_CLASS_ApplicationHandler_DirTextbox = 1
@@ -35,7 +35,7 @@ Private Const DEFAULT_ERRORHANDLERMODE As Long = ACLibErrorHandlerMode.aclibErrM
 Private Const APPLICATION_STARTFORMNAME As String = "ACLibImportWizardForm"
 
 '---------------------------------------------------------------------------------------
-' Sub: InitConfig (Josef Pötzl, 2009-12-11)
+' Sub: InitConfig
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
