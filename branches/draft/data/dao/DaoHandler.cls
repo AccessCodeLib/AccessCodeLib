@@ -997,7 +997,7 @@ Private Function NewRecord_FieldArray(ByVal strSource As String, ByVal ReturnFie
     Dim DataFields() As Variant, DataValues() As Variant
     Dim rst As DAO.Recordset
 
-    lngNum = Ubound(DataParams) + 1
+    lngNum = UBound(DataParams) + 1
     ReDim DataFields(lngNum \ 2)
     ReDim DataValues(lngNum \ 2)
     
