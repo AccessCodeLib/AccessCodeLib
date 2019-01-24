@@ -214,7 +214,7 @@ Public Sub ExportAll()
    ExportAllReports
 End Sub
 
-Public Sub ExportAllModules()
+Public Sub ExportAllModules(Optional ExportComponentsWithoutCodeLibInfo As Boolean = False)
 
    Dim ao As AccessObject
 
@@ -222,7 +222,7 @@ Public Sub ExportAllModules()
    DoCmd.RunCommand acCmdCompileAndSaveAllModules
    
    For Each ao In CurrentProject.AllModules
-      ExportVbComponent ao.Name
+      ExportVbComponent ao.Name, ExportComponentsWithoutCodeLibInfo
    Next
    
 #If DEBUGMODE Then
@@ -886,7 +886,7 @@ Private Sub CleanAccessBugExport(ByVal FilePath As String)
    
 End Sub
 
-Private Sub ExportVbComponent(ByRef VbcName As String)
+Private Sub ExportVbComponent(ByRef VbcName As String, Optional ExportComponentsWithoutCodeLibInfo As Boolean = False)
 
 #If EARLYBINDING Then
    Dim vbc As VBIDE.VBComponent
@@ -908,6 +908,12 @@ Private Sub ExportVbComponent(ByRef VbcName As String)
    
    GetCodeLibInfoFromVbComponent cli, vbc
    
+   If ExportComponentsWithoutCodeLibInfo Then
+   If Len(cli.RepositoryFile) = 0 Then
+      cli.RepositoryFile = REPOSTITORY_ROOT_CODE_APPLICATIONROOT & "/CodeExport/" & GenerateRepositoryFileName(cli.Name, cli.Type)
+   End If
+   End If
+   
    If Len(cli.RepositoryFile) > 0 Then
       cli.LocalFile = GetRepositoryFullPath(cli.RepositoryFile)
       CreateMissingFolder GetParentFolderPath(cli.LocalFile)
@@ -919,6 +925,27 @@ Private Sub ExportVbComponent(ByRef VbcName As String)
 #End If
 
 End Sub
+
+Private Function GenerateRepositoryFileName(ByVal CodeModuleName As String, ByVal CodeModuleType As CodeLibElementType) As String
+   
+   Dim FileExt As String
+   
+   Select Case CodeModuleType
+      Case CodeLibElementType.clet_ClassModule
+         FileExt = ".cls"
+      Case CodeLibElementType.clet_StdModule
+         FileExt = ".bas"
+      Case CodeLibElementType.clet_Form
+         FileExt = ".frm"
+      Case CodeLibElementType.clet_Report
+         FileExt = ".rpt"
+      Case Else
+         Err.Raise vbObjectError, "ACLibFileManager.GenerateRepositoryFileName", "CodeModuleType " & CodeModuleType & " not supported"
+   End Select
+   
+   GenerateRepositoryFileName = CodeModuleName & FileExt
+   
+End Function
 
 Private Sub ImportVbComponent(ByRef CodeLibInf As CodeLibInfo, ByRef ImportFile As Object, ByRef FileImportMode As CodeLibImportMode)
    
@@ -1466,20 +1493,20 @@ Private Function GetParentFolderPath(ByRef FullPath As String) As String
 End Function
 
 '---------------------------------------------------------------------------------------
-' Sub: RefreshAll (Josef Pötzl, 2009-12-16)
+' Sub: RefreshAll
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
 ' Alle in der Anwendung vorhandenen Codelib-Elemente neu importieren
 ' </summary>
-' <param name="Param"></param>
-' <returns></returns>
+' <param name="ImportMode">Import-Modus (Standard: clim_ImportAllUsedItems)</param>
+' <param name="ShowMessageAfterRefresh">Messagebox nach Abschluss der Aktualiserung anzeigen</param>
 ' <remarks>
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
 Public Sub RefreshAll(Optional ByVal ImportMode As CodeLibImportMode = _
-                               CodeLibImportMode.clim_ImportMissingItems, _
+                               CodeLibImportMode.clim_ImportAllUsedItems, _
                       Optional ByVal ShowMessageAfterRefresh As Boolean = False)
    
 
@@ -1488,21 +1515,21 @@ Public Sub RefreshAll(Optional ByVal ImportMode As CodeLibImportMode = _
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Sub: RefreshAllModules (Josef Pötzl, 2009-12-16)
+' Sub: RefreshAllModules
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
 ' Alle in der Anwendung vorhandenen Code-Module mit Codelib-Blcok neu importieren
 ' (nur Module und Klassen, keine Formulare oder Berichte)
 ' </summary>
-' <param name="ImportMode">Import-Modus (Stanard: clim_ImportAllUsedItems)</param>
+' <param name="ImportMode">Import-Modus (Standard: clim_ImportAllUsedItems)</param>
 ' <param name="ShowMessageAfterRefresh">Messagebox nach Abschluss der Aktualiserung anzeigen</param>
 ' <remarks>
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
 Public Sub RefreshAllModules(Optional ByVal ImportMode As CodeLibImportMode = _
-                                      CodeLibImportMode.clim_ImportMissingItems, _
+                                      CodeLibImportMode.clim_ImportAllUsedItems, _
                              Optional ByVal ShowMessageAfterRefresh As Boolean = False)
 
    RefreshAllAccessObjects AcObjectType.acModule, ImportMode, ShowMessageAfterRefresh
