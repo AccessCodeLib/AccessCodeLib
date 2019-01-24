@@ -188,8 +188,8 @@ End Property
 ' <remarks></remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Property Set ClientDatabase(ByRef Db As DAO.Database)
-   Set m_ClientDatabase = Db
+Public Property Set ClientDatabase(ByRef db As DAO.Database)
+   Set m_ClientDatabase = db
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -485,7 +485,7 @@ End Function
 Public Sub DropLinkedTableDefs()
 
    Dim DbFile As String
-   Dim Db As DAO.Database
+   Dim db As DAO.Database
    Dim tdf As DAO.TableDef
    Dim TdfCnt As Long, i As Long
 
@@ -498,8 +498,8 @@ Public Sub DropLinkedTableDefs()
    
    If Len(DbFile) = 0 Then Exit Sub
    
-   Set Db = ClientDatabase
-   With Db
+   Set db = ClientDatabase
+   With db
       TdfCnt = .TableDefs.Count
       For i = (TdfCnt - 1) To 0 Step -1
          Set tdf = .TableDefs(i)
@@ -525,15 +525,15 @@ End Sub
 '---------------------------------------------------------------------------------------
 Public Property Get LinkedTableDefExists(ByVal TableDefName As String) As Boolean
    
-   Dim Db As DAO.Database
+   Dim db As DAO.Database
    Dim tdf As DAO.TableDef
    
-   Set Db = ClientDatabase
-   Db.TableDefs.Refresh 'zur Sicherheit, falls im FE Tab gelöscht wurde
+   Set db = ClientDatabase
+   db.TableDefs.Refresh 'zur Sicherheit, falls im FE Tab gelöscht wurde
    
    LinkedTableDefExists = False
    
-   For Each tdf In Db.TableDefs
+   For Each tdf In db.TableDefs
       If tdf.Name = TableDefName Then
          LinkedTableDefExists = True
          Exit For
