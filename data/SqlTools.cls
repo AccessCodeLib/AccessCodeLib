@@ -545,20 +545,27 @@ Private Function TryBuildArrayCriteria(ByRef FieldName As String, ByVal FieldDat
                                        ByRef Criteria As String) As Boolean
    Dim itm As Variant
    Dim ItmCriteria As String
+   Dim ConcatString As String
    
    If Not IsArray(FilterValue) Then
       Exit Function
    End If
+   
+   If (RelationalOperator And SQL_Not) = SQL_Not Then
+      ConcatString = SqlAndConcatString
+   Else
+      ConcatString = SqlOrConcatString
+   End If
 
-   'Kriterien über Or verbinden
+   'Kriterien über Or bzw. And (bei Not im Ausdruck) verbinden
    For Each itm In FilterValue
       ItmCriteria = BuildCriteria(FieldName, FieldDataType, RelationalOperator, itm, , IgnoreValue)
       If Len(ItmCriteria) > 0 Then
-         Criteria = Criteria & SqlOrConcatString & ItmCriteria
+         Criteria = Criteria & ConcatString & ItmCriteria
       End If
    Next
    If Len(Criteria) > 0 Then
-      Criteria = Mid(Criteria, Len(SqlOrConcatString) + 1) ' 1. Or wegschneiden
+      Criteria = Mid(Criteria, Len(ConcatString) + 1) ' 1. Or/And wegschneiden
    End If
 
    TryBuildArrayCriteria = True
