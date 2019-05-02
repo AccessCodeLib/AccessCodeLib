@@ -27,16 +27,16 @@ Option Compare Text
 Option Explicit
 
 Private Type POINTAPI
-   X As Long
-   Y As Long
+   x As Long
+   y As Long
 End Type
 
-Private Declare Function ClientToScreen Lib "USER32.DLL" ( _
+Private Declare Function ClientToScreen Lib "user32.dll" ( _
          ByVal Hwnd As Long, _
          ByRef lpPoint As POINTAPI _
       ) As Long
 
-Private Declare Function FindWindowEx Lib "USER32.DLL" Alias "FindWindowExA" ( _
+Private Declare Function FindWindowEx Lib "user32.dll" Alias "FindWindowExA" ( _
          ByVal hWnd1 As Long, _
          ByVal hWnd2 As Long, _
          ByVal lpsz1 As String, _
@@ -178,12 +178,12 @@ On Error Resume Next
 
       'Bildschirmkoordinaten dieses Controls ermitteln
       'dafür die Punktkoordinaten aus dem letzten Durchlauf zurücksetzen, sonst wird addiert!
-      pt.X = 0
-      pt.Y = 0
+      pt.x = 0
+      pt.y = 0
       ClientToScreen h, pt
 
       'Objekt bei den Koordinaten ermitteln
-      Set obj = frm.accHitTest(pt.X, pt.Y)
+      Set obj = frm.accHitTest(pt.x, pt.y)
 
       'Wenn Objektname = Tabname Ausstieg aus der Schleife
       If obj.Name = ControlName Then

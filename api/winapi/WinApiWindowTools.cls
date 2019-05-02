@@ -46,10 +46,10 @@ Private Declare PtrSafe Function ClientToScreen Lib "user32.dll" ( _
       ) As Long
 
 Private Declare PtrSafe Function FindWindowEx Lib "user32.dll" Alias "FindWindowExA" ( _
-         ByVal HWnd1 As Long, _
-         ByVal HWnd2 As Long, _
-         ByVal Lpsz1 As String, _
-         ByVal Lpsz2 As String _
+         ByVal hWnd1 As Long, _
+         ByVal hWnd2 As Long, _
+         ByVal lpsz1 As String, _
+         ByVal lpsz2 As String _
       ) As Long
 
 #Else
@@ -60,10 +60,10 @@ Private Declare Function ClientToScreen Lib "user32.dll" ( _
       ) As Long
 
 Private Declare Function FindWindowEx Lib "user32.dll" Alias "FindWindowExA" ( _
-         ByVal HWnd1 As Long, _
-         ByVal HWnd2 As Long, _
-         ByVal Lpsz1 As String, _
-         ByVal Lpsz2 As String _
+         ByVal hWnd1 As Long, _
+         ByVal hWnd2 As Long, _
+         ByVal lpsz1 As String, _
+         ByVal lpsz2 As String _
       ) As Long
 
 #End If
