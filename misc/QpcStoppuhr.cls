@@ -46,8 +46,8 @@ Private p_Timer As Currency
 Private p_Timer_Start As Currency
 
 'Win-API
-Private Declare Function QueryPerformanceCounter Lib "kernel32" (X As Currency) As Boolean
-Private Declare Function QueryPerformanceFrequency Lib "kernel32" (X As Currency) As Boolean
+Private Declare Function QueryPerformanceCounter Lib "kernel32" (x As Currency) As Boolean
+Private Declare Function QueryPerformanceFrequency Lib "kernel32" (x As Currency) As Boolean
                         
 'Klasse initialisieren
 Private Sub Class_Initialize()
@@ -154,12 +154,12 @@ End Property
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Property Get Time() As Currency
+Public Property Get time() As Currency
     QueryPerformanceCounter p_TempTime
     If Me.IsRunning Then
-        Time = (p_Timer + p_TempTime - p_Timer_Start) * 1000 / p_TestFrequ  ' [ms]
+        time = (p_Timer + p_TempTime - p_Timer_Start) * 1000 / p_TestFrequ  ' [ms]
     Else
-        Time = p_Timer * 1000 / p_TestFrequ
+        time = p_Timer * 1000 / p_TestFrequ
     End If
 End Property
 
@@ -187,7 +187,7 @@ Public Property Get TimeString(Optional sSecFormatString As String = "hh:nn:ss",
     Dim curTimeSec As Currency
     Dim strTimeString As String
 
-    curTimeSec = VBA.Round(Me.Time / 1000, iMSecDigits) 'mathematisches Runden ist ok
+    curTimeSec = VBA.Round(Me.time / 1000, iMSecDigits) 'mathematisches Runden ist ok
     
     strTimeString = Format(TimeSerial(0, 0, Fix(curTimeSec)), sSecFormatString)
     If iMSecDigits > 0 Then
