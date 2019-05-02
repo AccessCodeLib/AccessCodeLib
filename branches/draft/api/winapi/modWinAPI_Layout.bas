@@ -35,7 +35,7 @@ Private Declare Function RedrawWindow _
       ) As Long
 
 Private Declare Function SetClassLong _
-      Lib "USER32.DLL" _
+      Lib "user32.dll" _
       Alias "SetClassLongA" ( _
       ByVal Hwnd As Long, _
       ByVal nIndex As Long, _

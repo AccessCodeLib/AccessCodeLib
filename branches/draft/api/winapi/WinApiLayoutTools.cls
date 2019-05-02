@@ -42,15 +42,15 @@ Private Const SM_CXVSCROLL As Long = 2
 
 Private Declare PtrSafe Function CreateSolidBrush _
       Lib "gdi32.dll" ( _
-      ByVal CrColor As Long _
+      ByVal crColor As Long _
       ) As Long
 
 Private Declare PtrSafe Function RedrawWindow _
       Lib "user32" ( _
       ByVal Hwnd As Long, _
-      LprcUpdate As Any, _
-      ByVal HrgnUpdate As Long, _
-      ByVal FuRedraw As Long _
+      lprcUpdate As Any, _
+      ByVal hrgnUpdate As Long, _
+      ByVal fuRedraw As Long _
       ) As Long
 
 Private Declare PtrSafe Function SetClassLong _
@@ -71,15 +71,15 @@ Private Declare PtrSafe Function GetDeviceCaps Lib "gdi32" (ByVal DC As Long, By
 
 Private Declare Function CreateSolidBrush _
       Lib "gdi32.dll" ( _
-      ByVal CrColor As Long _
+      ByVal crColor As Long _
       ) As Long
 
 Private Declare Function RedrawWindow _
       Lib "user32" ( _
       ByVal Hwnd As Long, _
-      LprcUpdate As Any, _
-      ByVal HrgnUpdate As Long, _
-      ByVal FuRedraw As Long _
+      lprcUpdate As Any, _
+      ByVal hrgnUpdate As Long, _
+      ByVal fuRedraw As Long _
       ) As Long
 
 Private Declare Function SetClassLong _
@@ -197,8 +197,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetTwipsFromPixel(ByVal Pixel As Long) As Long
-   GetTwipsFromPixel = TwipsPerPixelX * Pixel
+Public Function GetTwipsFromPixel(ByVal pixel As Long) As Long
+   GetTwipsFromPixel = TwipsPerPixelX * pixel
 End Function
 
 '---------------------------------------------------------------------------------------
