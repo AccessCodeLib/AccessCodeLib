@@ -610,7 +610,7 @@ Public Function InsertValuesIdentityReturn(ByVal sSource As String, ParamArray I
    Next i
    strInsert = "INSERT INTO " & sSource & " (" & Mid(strInsert, 3) & ") VALUES (" & Mid(strValues, 3) & ")"
 
-   InsertValuesIdentityReturn = DbCon.ADODB.InsertIdentityReturn(strInsert, sSource)
+   InsertValuesIdentityReturn = InsertIdentityReturn(strInsert, sSource)
 
 End Function
 
@@ -623,7 +623,7 @@ Public Function Exists(ByVal SourceName As String, _
    If Len(Criteria) > 0 Then
       strSQL = strSQL & " WHERE " & Replace(Criteria, "*", "%", , , vbBinaryCompare)
    End If
-   Exists = (DbCon.ADODB.LookupSql(strSQL, , 0) = 1)
+   Exists = (LookupSql(strSQL, , 0) = 1)
 
 End Function
 
@@ -631,7 +631,7 @@ Public Function ValueList(ByVal SqlSource As String, Optional ByVal ListConcatSt
 
    Dim ListString As String
 
-   With DbCon.ADODB.OpenRecordset(SqlSource, adOpenKeyset, adLockOptimistic, adUseClient, True)
+   With OpenRecordset(SqlSource, adOpenKeyset, adLockOptimistic, adUseClient, True)
       Do While Not .EOF
          ListString = ListString & ListConcatString & .Fields(0)
          .MoveNext
