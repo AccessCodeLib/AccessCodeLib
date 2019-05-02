@@ -63,34 +63,34 @@ Private Const SYSCOLOR_COLOR_APPWORKSPACE As Long = 12
 #If VBA7 Then
 
 Private Declare PtrSafe Function FindWindowEx Lib "user32.dll" Alias "FindWindowExA" ( _
-       ByVal HWnd1 As Long, ByVal HWnd2 As Long, _
-       ByVal Lpsz1 As String, ByVal Lpsz2 As String) As Long
+       ByVal hWnd1 As Long, ByVal hWnd2 As Long, _
+       ByVal lpsz1 As String, ByVal lpsz2 As String) As Long
        
-Private Declare PtrSafe Function CreateSolidBrush Lib "gdi32.dll" (ByVal CrColor As Long) As Long
+Private Declare PtrSafe Function CreateSolidBrush Lib "gdi32.dll" (ByVal crColor As Long) As Long
 
 Private Declare PtrSafe Function SetClassLong Lib "user32" Alias "SetClassLongA" ( _
        ByVal Hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
        
 Private Declare PtrSafe Function RedrawWindow Lib "user32" ( _
-       ByVal Hwnd As Long, LprcUpdate As Any, _
-       ByVal HrgnUpdate As Long, ByVal FuRedraw As Long) As Long
+       ByVal Hwnd As Long, lprcUpdate As Any, _
+       ByVal hrgnUpdate As Long, ByVal fuRedraw As Long) As Long
 
 Private Declare PtrSafe Function GetSysColor Lib "user32" (ByVal NumIndex As Long) As Long
 
 #Else
 
 Private Declare Function FindWindowEx Lib "user32.dll" Alias "FindWindowExA" ( _
-       ByVal HWnd1 As Long, ByVal HWnd2 As Long, _
-       ByVal Lpsz1 As String, ByVal Lpsz2 As String) As Long
+       ByVal hWnd1 As Long, ByVal hWnd2 As Long, _
+       ByVal lpsz1 As String, ByVal lpsz2 As String) As Long
        
-Private Declare Function CreateSolidBrush Lib "gdi32.dll" (ByVal CrColor As Long) As Long
+Private Declare Function CreateSolidBrush Lib "gdi32.dll" (ByVal crColor As Long) As Long
 
 Private Declare Function SetClassLong Lib "user32" Alias "SetClassLongA" ( _
        ByVal Hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
        
 Private Declare Function RedrawWindow Lib "user32" ( _
-       ByVal Hwnd As Long, LprcUpdate As Any, _
-       ByVal HrgnUpdate As Long, ByVal FuRedraw As Long) As Long
+       ByVal Hwnd As Long, lprcUpdate As Any, _
+       ByVal hrgnUpdate As Long, ByVal fuRedraw As Long) As Long
 
 Private Declare Function GetSysColor Lib "user32" (ByVal Index As Long) As Long
 
