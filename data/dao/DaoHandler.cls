@@ -963,6 +963,109 @@ HandleErr:
 End Function
 
 '---------------------------------------------------------------------------------------
+' Function: InsertValues
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Recordset öffnen und Werte eines Datensatzes anfügen
+' </summary>
+' <param name="SqlSource">Anfüge-Datenquelle</param>
+' <param name="FieldsAndValues">Auflistung: Feldname1, Wert1, Feldname2, Wert2, .. FeldnameN, WertN</param>
+' <returns>True, wenn vollständig durchgeführt</returns>
+' <remarks>
+' Da ein Recordset zum Einfügen verwendet wird, erfolgt im Code keine Datentyp-Prüfung -> auf implizite Konvertierung achten.
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function InsertValues(ByVal SqlSource As String, ParamArray FieldsAndValues() As Variant) As Boolean
+   InsertValues = InsertRecordValuesArrayReturnFieldValue(SqlSource, vbNullString, FieldsAndValues)
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: InsertValuesReturnFieldValue
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Recordset öffnen und Werte eines Datensatzes anfügen, gibt Wert eine definierten Datenfeldes zurück
+' </summary>
+' <param name="SqlSource">Anfüge-Datenquelle</param>
+' <param name="ReturnFieldNameOrIndex">Datenfeld für Wertrückgabe</param>
+' <param name="FieldsAndValues">Auflistung: Feldname1, Wert1, Feldname2, Wert2, .. FeldnameN, WertN</param>
+' <returns>Wert aus Datenfeld</returns>
+' <remarks>
+' Da ein Recordset zum Einfügen verwendet wird, erfolgt im Code keine Datentyp-Prüfung -> auf implizite Konvertierung achten.
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function InsertValuesReturnFieldValue(ByVal SqlSource As String, ByVal ReturnFieldNameOrIndex As Variant, ParamArray FieldsAndValues() As Variant) As Variant
+   InsertValuesReturnFieldValue = InsertRecordValuesArrayReturnFieldValue(SqlSource, ReturnFieldNameOrIndex, FieldsAndValues)
+End Function
+
+Private Function InsertRecordValuesArrayReturnFieldValue( _
+                        ByVal Source As String, ByVal ReturnField As Variant, _
+                        ByVal FieldsAndValues As Variant) As Variant
+
+    Dim lngNum As Long, lngAnz As Long, i As Long, anz As Long
+    Dim FieldNames() As Variant, FieldValues() As Variant
+    Dim rst As DAO.Recordset
+    Dim ErrNo As Long, ErrDesc As String, ErrSource As String
+ 
+On Error GoTo HandleErr
+
+    lngNum = UBound(FieldsAndValues) - LBound(FieldsAndValues) + 1 'hfArraySize(FieldsAndValues)
+    ReDim FieldNames(lngNum \ 2)
+    ReDim FieldValues(lngNum \ 2)
+    
+    anz = 0
+    For i = 0 To (lngNum - 2) Step 2
+      FieldNames(anz) = FieldsAndValues(i)
+      FieldValues(anz) = FieldsAndValues(i + 1)
+      anz = anz + 1
+    Next i
+
+    Set rst = Me.OpenRecordset(Source, dbOpenDynaset)
+    With rst
+    
+      .AddNew
+      i = 0
+      For i = 0 To (anz - 1)
+         .Fields(FieldNames(i)) = FieldValues(i)
+      Next i
+      .Update
+      
+      If Len(ReturnField & vbNullString) > 0 Then
+          .Bookmark = .LastModified
+          InsertRecordValuesArrayReturnFieldValue = .Fields(ReturnField)
+      Else
+          InsertRecordValuesArrayReturnFieldValue = True
+      End If
+      
+      .Close
+      
+    End With
+    Set rst = Nothing
+
+ExitHere:
+    Exit Function
+    
+ResumeRaiseError:
+On Error GoTo 0
+   Err.Raise ErrNo, ErrSource, ErrDesc
+
+HandleErr:
+    ErrNo = Err.Number
+    ErrDesc = Err.Description
+    ErrSource = "InsertRecordValuesArrayReturnFieldValue (" & Err.Source & ")"
+
+    If Not (rst Is Nothing) Then
+        rst.Close
+    End If
+    Set rst = Nothing
+    Resume ResumeRaiseError
+
+End Function
+
+'---------------------------------------------------------------------------------------
 ' Function: NewRecord
 '---------------------------------------------------------------------------------------
 '/**
@@ -1186,4 +1289,187 @@ On Error Resume Next
 On Error GoTo 0
    Err.Raise FncErrNr, "CopyRecord_FieldArray", FncErrDesc
    
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: CopyRecords
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Recordset öffnen und Werte eines Datensatzes anfügen
+' </summary>
+' <param name="SqlSource">Anfüge-Datenquelle</param>
+' <param name="StartFeldID">Datenfeld, ab dem kopiert werden soll (z. B. auf 1. Platz ist Autowert => ab 2 kopieren</param>
+' <param name="LastFeldID">Datenfeld, bis zu dem kopiert werden soll. Soderfälle: 0 = bis zum Ende, negative Wert = ab hinten gezählt</param>
+' <param name="UpdateFieldsAndValues">Auflistung der zu ändernden Felder inkl. deren Werte: Feldname1, Wert1, Feldname2, Wert2, .. FeldnameN, WertN</param>
+' <returns>True, wenn vollständig durchgeführt</returns>
+' <remarks>
+' Da ein Recordset zum Einfügen verwendet wird, erfolgt im Code keine Datentyp-Prüfung -> auf implizite Konvertierung achten.
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function CopyRecords(ByVal SqlSource As String, _
+                           ByVal StartFeldID As Long, ByVal LastFeldID As Long, _
+                           ParamArray UpdateFieldsAndValues() As Variant) As Variant
+    
+    Dim maxIdx As Long
+    Dim vA() As Variant
+    Dim i As Long
+
+    maxIdx = UBound(UpdateFieldsAndValues)
+    ReDim vA(maxIdx)
+    
+    For i = 0 To maxIdx
+        vA(i) = UpdateFieldsAndValues(i)
+    Next i
+
+    CopyRecords = CopyRecordsArrayReturnFieldValue(SqlSource, StartFeldID, LastFeldID, vbNullString, vA)
+ 
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: CopyRecordsReturnFieldValue
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Datensätze kopieren und Werte ändern
+' </summary>
+' <param name="SqlSource">Anfüge-Datenquelle</param>
+' <param name="StartFeldID">Datenfeld, ab dem kopiert werden soll (z. B. auf 1. Platz ist Autowert => ab 2 kopieren</param>
+' <param name="LastFeldID">Datenfeld, bis zu dem kopiert werden soll. Soderfälle: 0 = bis zum Ende, negative Wert = ab hinten gezählt</param>
+' <param name="ReturnFieldNameOrIndex">Datenfeld für Wertrückgabe</param>
+' <param name="UpdateFieldsAndValues">Auflistung der zu ändernden Felder inkl. deren Werte: Feldname1, Wert1, Feldname2, Wert2, .. FeldnameN, WertN</param>
+' <returns>Wert aus Datenfeld</returns>
+' <remarks>
+' Da ein Recordset zum Einfügen verwendet wird, erfolgt im Code keine Datentyp-Prüfung -> auf implizite Konvertierung achten.
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function CopyRecordsReturnFieldValue(ByVal SqlSource As String, _
+                           ByVal StartFeldID As Long, ByVal LastFeldID As Long, _
+                           ByVal ReturnField As String, _
+                           ParamArray UpdateFieldsAndValues() As Variant) As Variant
+    
+    Dim maxIdx As Long
+    Dim vA() As Variant
+    Dim i As Long
+
+    maxIdx = UBound(UpdateFieldsAndValues)
+    ReDim vA(maxIdx)
+    For i = 0 To maxIdx
+        vA(i) = UpdateFieldsAndValues(i)
+    Next i
+    CopyRecordsReturnFieldValue = CopyRecordsArrayReturnFieldValue(SqlSource, StartFeldID, LastFeldID, ReturnField, vA)
+
+End Function
+
+Private Function CopyRecordsArrayReturnFieldValue(ByVal SqlSource As String, _
+                           ByVal StartFeldID As Long, ByVal LastFeldID As Long, _
+                           ByVal ReturnField As String, ByRef UpdateFieldsAndValues() As Variant) As Variant
+
+On Error GoTo HandleErr
+
+ Dim lngNum As Long, lngAnz As Long, i As Long, iDS As Long, anz As Long
+ Dim strCtl() As Variant, valCtl() As Variant
+ Dim rst As Object
+ Dim lngLastCopyField As Long, dsAnz As Long, Start As Long
+ Dim CopyFieldsAndValues() As Variant
+ Dim ErrNo As Long, ErrDesc As String, ErrSource As String
+ 
+ 'Parameterübernahme
+  lngNum = UBound(UpdateFieldsAndValues) - LBound(UpdateFieldsAndValues) + 1
+  
+  anz = 0
+  ReDim strCtl((lngNum \ 2) - 1)
+  ReDim valCtl((lngNum \ 2) - 1)
+  
+  For i = 0 To (lngNum - 2) Step 2
+    strCtl(anz) = UpdateFieldsAndValues(i)
+    valCtl(anz) = UpdateFieldsAndValues(i + 1)
+    anz = anz + 1
+  Next i
+  
+ 'Recordsetobjekt öffnen
+  Set rst = Me.OpenRecordset(SqlSource, dbOpenDynaset)
+  
+  If rst.EOF And rst.BOF Then
+        rst.Close
+        Set rst = Nothing
+        CopyRecordsArrayReturnFieldValue = 0
+        Exit Function
+  End If
+  
+  With rst
+    .MoveLast
+    .MoveFirst
+    dsAnz = .RecordCount
+    
+    If LastFeldID = 0 Then
+        lngLastCopyField = .Fields.Count
+    ElseIf LastFeldID < 0 Then
+        lngLastCopyField = .Fields.Count + LastFeldID
+    Else
+        lngLastCopyField = LastFeldID
+    End If
+    
+    ReDim CopyFieldsAndValues(dsAnz, lngLastCopyField)
+    
+    If StartFeldID > 1 Then Start = StartFeldID - 1 Else Start = 0
+    
+    'Werte einlesen
+    iDS = 0
+    While Not .EOF
+        For i = Start To lngLastCopyField - 1
+            If .Fields(i).Type <> dbBinary Then
+                CopyFieldsAndValues(iDS, i) = .Fields(i).Value
+            End If
+        Next i
+        .MoveNext
+        iDS = iDS + 1
+    Wend
+    .MoveLast
+ 
+ 'Werte kopieren
+    For iDS = 0 To (dsAnz - 1)
+        'neuen DS anfügen
+        .AddNew
+        For i = Start To (lngLastCopyField - 1)
+            If .Fields(i).Type <> dbBinary Then
+                .Fields(i) = CopyFieldsAndValues(iDS, i)
+            End If
+        Next i
+        For i = 0 To (anz - 1)
+          .Fields(strCtl(i)) = valCtl(i)
+        Next i
+        .Update
+    Next iDS
+    
+    If Len(ReturnField & vbNullString) > 0 Then
+        .Bookmark = .LastModified
+        CopyRecordsArrayReturnFieldValue = .Fields(ReturnField)
+    Else
+        CopyRecordsArrayReturnFieldValue = True
+    End If
+    .Close
+  End With
+  
+ExitHere:
+    Set rst = Nothing
+    Exit Function
+    
+ResumeRaiseError:
+On Error GoTo 0
+   Err.Raise ErrNo, ErrSource, ErrDesc
+
+HandleErr:
+    ErrNo = Err.Number
+    ErrDesc = Err.Description
+    ErrSource = "CopyRecordsArrayReturnFieldValue (" & Err.Source & ")"
+
+    If Not (rst Is Nothing) Then
+        rst.Close
+    End If
+    Set rst = Nothing
+    Resume ResumeRaiseError
+
 End Function
