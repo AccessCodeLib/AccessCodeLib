@@ -11,7 +11,7 @@ Attribute VB_Name = "_AccessCodeLib_license"
 ' access-codelib.net Lizenz                                                             \n
 '---------------------------------------------------------------------------------------\n
 '
-' Copyright (c) 2010, access-codelib.net
+' Copyright (c) access-codelib.net
 ' All rights reserved.
 '
 ' Redistribution and use in source and binary forms, with or without modification,
@@ -57,7 +57,7 @@ Public Function GetAccessCodeLibLicense() As String
 On Error Resume Next
    
    GetAccessCodeLibLicense = _
-      "Copyright (c) 2010, access-codelib.net" & vbNewLine & _
+      "Copyright (c) access-codelib.net" & vbNewLine & _
       "All rights reserved." & vbNewLine & vbNewLine & _
       "Redistribution and use in source and binary forms, with or without modification," & vbNewLine & _
       "are permitted provided that the following conditions are met:" & vbNewLine & _
