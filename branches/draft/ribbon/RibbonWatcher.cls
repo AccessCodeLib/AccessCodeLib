@@ -143,6 +143,7 @@ On Error GoTo HandleErr
       With ribbonControlInfoArray(currentArrayCnt)
          strID = rst.Fields("RibbonControlId")
          .Label = Nz(rst.Fields("rcLabel"), "---")
+         '.Label = Replace(Nz(rst.Fields("rcLabel"), "---"), "- " & vbNewLine, vbNullString) '<-- besser?
          .OnAction = Nz(rst.Fields("rcOnAction"), vbNullString)
          .ImageMso = Nz(rst.Fields("rcImageMso"), vbNullString)
          .Visible = True
