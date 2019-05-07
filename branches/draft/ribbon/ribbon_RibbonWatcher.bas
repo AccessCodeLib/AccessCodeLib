@@ -18,7 +18,7 @@ Attribute VB_Name = "ribbon_RibbonWatcher"
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
-Option Compare Database
+Option Compare Text
 Option Explicit
 
 Private m_CurrentRibbonWatcher As RibbonWatcher
@@ -26,6 +26,7 @@ Public AppLoadedForRibbonWatcher As Boolean
 
 'RibbonWatcher-Instanz
 Public Property Get CurrentRibbonWatcher() As RibbonWatcher
+On Error Resume Next
    If m_CurrentRibbonWatcher Is Nothing Then
       Set m_CurrentRibbonWatcher = New RibbonWatcher
    End If
@@ -39,34 +40,39 @@ End Property
 '
 
 Public Sub RibbonWatcherCallBack_OnLoad(ByRef ribbon As IRibbonUI)
-
+On Error Resume Next
    Set CurrentRibbonWatcher.RibbonUI = ribbon
 
 End Sub
 
 Public Sub RibbonWatcherCallBack_OnAction(ByRef rc As IRibbonControl)
-   
+On Error Resume Next
    CurrentRibbonWatcher.CallRibbonControlOnAction rc
 
 End Sub
 
 Public Sub RibbonWatcherCallBack_GetLabel(ByRef rc As IRibbonControl, _
                                           ByRef Label As Variant)
-
+On Error Resume Next
    Label = CurrentRibbonWatcher.GetRibbonControlLabel(rc)
-
 End Sub
 
 Public Sub RibbonWatcherCallBack_GetImages(ByRef rc As IRibbonControl, _
-                                           ByRef image As Variant)
-
-   image = CurrentRibbonWatcher.GetRibbonControlImage(rc)
-
+                                           ByRef Image As Variant)
+On Error Resume Next
+   Dim strImage As String
+   strImage = CurrentRibbonWatcher.GetRibbonControlImage(rc)
+   If Len(strImage) > 0 Then
+      Image = strImage
+   Else
+      Image = "CreateReport"
+   End If
+   
 End Sub
 
 Public Sub RibbonWatcherCallBack_GetVisible(ByRef rc As IRibbonControl, _
                                             ByRef Visible As Variant)
-
+On Error Resume Next
    Visible = CurrentRibbonWatcher.GetRibbonControlVisible(rc)
 
 End Sub
