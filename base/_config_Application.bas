@@ -50,6 +50,11 @@ Const m_DefaultErrorHandlerMode = ACLibErrorHandlerMode.aclibErrMsgBox
 
 Private Const m_ApplicationStartFormName As String = ""
 
+#USE_EXTENSIONS = True
+#If USE_EXTENSIONS = True
+Private m_Extensions As ApplicationHandler_ExtensionCollection
+#End If
+
 '---------------------------------------------------------------------------------------
 ' Sub: InitConfig
 '---------------------------------------------------------------------------------------
@@ -105,8 +110,20 @@ Public Sub InitConfig(Optional oCurrentAppHandler As ApplicationHandler = Nothin
 '----------------------------------------------------------------------------
 ' Erweiterung: ...
 '
+#If USE_EXTENSIONS = True
 
+   Set m_Extensions = New ApplicationHandler_ExtensionCollection
+   With m_Extensions
+      Set .ApplicationHandler = oCurrentAppHandler
+	  
+	  ' Erweiterungen laden
+	  ' z. B.:
+      '.Add New ApplicationHandler_AppFile
+	  
+   End With
 
+#End If
+   
 '----------------------------------------------------------------------------
 ' Konfiguration nach Initialisierung der Erweiterungen
 '
@@ -125,7 +142,7 @@ End Sub
 '----------------------------------------------------------------------------
 ' Hilfsfunktion zum Speichern von Dateien in die lokale AppFile-Tabelle
 '----------------------------------------------------------------------------
-Private Sub setAppFiles()
+Private Sub SetAppFiles()
    Call CurrentApplication.SaveAppFile("AppIcon", CurrentProject.Path & "\TestApp.ico")
 End Sub
 

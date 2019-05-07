@@ -50,7 +50,7 @@ Public Property Get CurrentApplication() As ApplicationHandler
 End Property
 
 '---------------------------------------------------------------------------------------
-' Sub: AddApplicationHandlerExtension (Josef Pötzl)
+' Sub: AddApplicationHandlerExtension
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -64,6 +64,9 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Sub AddApplicationHandlerExtension(ByRef ObjRef As Object)
+'  --- DEPRECATED ! ---
+' Durch Klasse ApplicationHandler_ExtensionCollection ersetzt.
+Stop
    Set ObjRef.ApplicationHandlerRef = CurrentApplication
    m_Extension.Add ObjRef, ObjRef.ExtensionKey
 End Sub
@@ -122,6 +125,10 @@ On Error Resume Next
    End If
 
    If Not (m_Extension Is Nothing) Then
+      '  --- DEPRECATED ! ---
+      ' Durch Klasse ApplicationHandler_ExtensionCollection ersetzt.
+      Stop
+      WriteApplicationLogEntry "DisposeCurrentApplicationHandler: m_Extension in modApplication durch Klasse ApplicationHandler_ExtensionCollection ersetzt.", AppLogType_Error
       MaxCnt = m_Extension.Count * 2 'nur zur Sicherheit falls wider Erwarten m_Extension.Remove eine Endlosschleife bringen würde
       Do While m_Extension.Count > 0 Or CheckCnt > MaxCnt
          m_Extension.Remove 1
@@ -138,13 +145,10 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 ' Hilfsprozeduren
-'
-'Public Property Get ApplicationTitlebar() As String
-'   ApplicationTitlebar = CurrentApplication.Titelbar
-'End Property
-
-Public Sub WriteApplicationLogEntry(ByVal Msg As String)
-   CurrentApplication.WriteApplicationLogEntry Msg
+Public Sub WriteApplicationLogEntry(ByVal Msg As String, _
+           Optional LogType As ApplicationHandlerLogType, _
+           Optional ByVal Args As Variant)
+   CurrentApplication.WriteLog Msg, LogType, Args
 End Sub
 
 Public Property Get PublicPath() As String
