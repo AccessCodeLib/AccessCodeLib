@@ -1,6 +1,6 @@
 Attribute VB_Name = "modWinAPI_SpecFolder"
 '---------------------------------------------------------------------------------------
-' Module: modWinAPI_SpecFolder (Josef Pötzl, 2010-03-13)
+' Module: modWinAPI_SpecFolder
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
