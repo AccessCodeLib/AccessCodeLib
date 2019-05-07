@@ -1,10 +1,8 @@
 Attribute VB_Name = "StringTools"
-Attribute VB_Description = "SQL-Hilfsfunktionen"
 '---------------------------------------------------------------------------------------
 ' Modul: StringTools
 '---------------------------------------------------------------------------------------
 '/**
-' \author       Josef Pötzl
 ' <summary>
 ' Text-Hilfsfunktionen
 ' </summary>
@@ -29,19 +27,19 @@ Option Private Module
 '---------------------------------------------------------------------------------------
 '/**                                            '<-- Start Doxygen-Block
 ' <summary>
-' Verfügbare Trim-Optionen für die Round-Funktion
+' Verfügbare Trim-Optionen für die Trim-Funktion
 ' </summary>
 ' <list type="table">
-'   <item><term>TrimBoth (1)</term><description>Führende und nachgestellte Leerzeichen entfernen</description></item>
-'   <item><term>TrimStart (2)</term><description>Führende Leerzeichen aus einer Zeichenfolgenvariablen entfernen</description></item>
-'   <item><term>TrimEnd (3)</term><description>Nachgestellte Leerzeichen aus einer Zeichenfolgenvariablen entfernen</description></item>
+'   <item><term>TrimStart (1)</term><description>Führende Leerzeichen aus einer Zeichenfolgenvariablen entfernen</description></item>
+'   <item><term>TrimEnd (2)</term><description>Nachgestellte Leerzeichen aus einer Zeichenfolgenvariablen entfernen</description></item>
+'   <item><term>TrimBoth (3)</term><description>Führende und nachgestellte Leerzeichen entfernen</description></item>
 ' </list>
 '**/                                            '<-- Ende Doxygen-Block
 '---------------------------------------------------------------------------------------
 Public Enum TrimOption
-    TrimBoth
-    TrimStart
-    TrimEnd
+    TrimStart = 1
+    TrimEnd = 2
+    TrimBoth = 3
 End Enum
 
 '---------------------------------------------------------------------------------------
@@ -152,7 +150,7 @@ Public Function Format(ByVal Expression As Variant, Optional ByVal FormatString 
          End If
       End If
    End If
-
+   
    Format = VBA.Format$(Expression, FormatString, FirstDayOfWeek, FirstWeekOfYear)
 
 End Function
@@ -325,21 +323,21 @@ End Function
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' Gibt einen Teil der Zeichenfolge Value zurück, die an der Postiion startIndex beginnt
-' und die Länge length hat.
+' Gibt einen Teil der Zeichenfolge Value zurück, die an der Position StartIndex beginnt
+' und die Länge Length hat.
 ' </summary>
 ' <param name="Value">Zeichenfolge</param>
-' <param name="startIndex">Startposition in der Zeichenfolge</param>
-' <param name="length">Anzahl Zeichen die Zurückgegeben werden sollen</param>
+' <param name="StartIndex">Startposition in der Zeichenfolge</param>
+' <param name="Length">Anzahl Zeichen die Zurückgegeben werden sollen</param>
 ' <returns>String</returns>
 ' <remarks>
-' startIndex ist Nullterminiert, analog zu String.Substring() in .NET
+' StartIndex ist Nullterminiert, analog zu String.Substring() in .NET
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Substring(ByVal Value As String, ByVal StartIndex As Long, Optional ByVal Length As Long = 0) As String
+Public Function SubString(ByVal Value As String, ByVal StartIndex As Long, Optional ByVal Length As Long = 0) As String
     If Length = 0 Then Length = StringTools.Length(Value) - StartIndex
-    Substring = VBA.Mid$(Value, StartIndex + 1, Length)
+    SubString = VBA.Mid$(Value, StartIndex + 1, Length)
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -347,16 +345,65 @@ End Function
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' Setzt die Zeichenfolge insertValue an der Position Pos ein
+' Setzt die Zeichenfolge InsertValue an der Position Pos ein
 ' </summary>
 ' <param name="Value">Zeichenfolge</param>
-' <param name="insertValue">Zeichenfolge die eingefügt werden soll</param>
-' <param name="pos">Position an der die Zeichenfolge eingefügt werden soll</param>
+' <param name="InsertValue">Zeichenfolge die eingefügt werden soll</param>
+' <param name="Pos">Position an der die Zeichenfolge eingefügt werden soll (Pos ist nullterminiert)</param>
 ' <returns>String</returns>
 ' <remarks>
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
 Public Function InsertAt(ByVal Value As String, ByVal InsertValue As String, ByVal Pos As Long) As String
-    InsertAt = VBA.Mid$(Value, 1, Pos) & InsertValue & StringTools.Substring(Value, Pos)
+    InsertAt = VBA.Mid$(Value, 1, Pos) & InsertValue & StringTools.SubString(Value, Pos)
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: Replicate
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Zeichenfolge wiederholen
+' </summary>
+' <param name="Value">Die zu wiederholende Zeichenfolge</param>
+' <param name="Number">Anzahl der Wiederholungen</param>
+' <returns>String</returns>
+' <remarks>
+' Replicate("abc", 3) erzeugt "abcabcabc"
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function Replicate(ByVal Value As String, ByVal Number As Long) As String
+
+   Dim ValueLen As Long
+   Dim TempString As String
+   Dim i As Long
+   
+   If Number = 0 Then
+      Replicate = vbNullString
+      Exit Function
+   ElseIf Number = 1 Then
+      Replicate = Value
+      Exit Function
+   End If
+   
+   ValueLen = Len(Value)
+   
+   If ValueLen = 0 Then
+      Replicate = vbNullString
+      Exit Function
+   ElseIf ValueLen = 1 Then
+      Replicate = String$(Number, Value)
+      Exit Function
+   End If
+   
+   TempString = String$(Number * ValueLen, Chr(0))
+   
+   For i = 1 To Number
+      Mid$(TempString, (i - 1) * ValueLen + 1, ValueLen) = Value
+   Next
+   
+   Replicate = TempString
+   
 End Function
