@@ -197,8 +197,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetTwipsFromPixel(ByVal pixel As Long) As Long
-   GetTwipsFromPixel = TwipsPerPixelX * pixel
+Public Function GetTwipsFromPixel(ByVal Pixel As Long) As Long
+   GetTwipsFromPixel = TwipsPerPixelX * Pixel
 End Function
 
 '---------------------------------------------------------------------------------------
