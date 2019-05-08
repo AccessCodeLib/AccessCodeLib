@@ -19,7 +19,7 @@ Attribute VB_Name = "_config_Application"
 '\ingroup base
 '**/
 '<codelib>
-'  <file>base/_config_Application.bas</file> <-- umschreiben bzw. löschen!!!
+'  <file>%AppFolder%/Source/_config_Application.bas</file> <-- in Anwendungsordner speicher, damit Repo-File nicht überschrieben wird
 '  <license>_codelib/license.bas</license>
 '  <use>base/modApplication.bas</use>
 '  <use>base/ApplicationHandler.cls</use>
@@ -50,8 +50,8 @@ Const m_DefaultErrorHandlerMode = ACLibErrorHandlerMode.aclibErrMsgBox
 
 Private Const m_ApplicationStartFormName As String = ""
 
-#USE_EXTENSIONS = True
-#If USE_EXTENSIONS = True
+#Const USE_EXTENSIONS = True
+#If USE_EXTENSIONS = True Then
 Private m_Extensions As ApplicationHandler_ExtensionCollection
 #End If
 
@@ -110,16 +110,16 @@ Public Sub InitConfig(Optional oCurrentAppHandler As ApplicationHandler = Nothin
 '----------------------------------------------------------------------------
 ' Erweiterung: ...
 '
-#If USE_EXTENSIONS = True
+#If USE_EXTENSIONS = True Then
 
    Set m_Extensions = New ApplicationHandler_ExtensionCollection
    With m_Extensions
       Set .ApplicationHandler = oCurrentAppHandler
-	  
-	  ' Erweiterungen laden
-	  ' z. B.:
-      '.Add New ApplicationHandler_AppFile
-	  
+     
+      ' Erweiterungen laden
+	  ' z.B. ApplicationHandler_DbConnection:
+      '.Add New ApplicationHandler_DbConnection
+     
    End With
 
 #End If
