@@ -12,11 +12,20 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' Erweiterung für ApplicationHandler-Klasse: Einbindung DbConnectionHandler
+' Einbindung der Erweiterungen für ApplicationHandler-Framework
 ' </summary>
 ' <remarks>
-' Aktivierung im _config_Application-Modul:\n
-' <code>modApplication.AddApplicationHandlerExtension New ApplicationHandler_DbConnection</code>
+' Verwendung im _config_Application-Modul:\n
+' <code>
+'   Set m_Extensions = New ApplicationHandler_ExtensionCollection
+'   With m_Extensions
+'      Set .ApplicationHandler = oCurrentAppHandler
+'
+'      ' Erweiterungen laden (z. B. ApplicationHandler_DbConnection):
+'      .Add New ApplicationHandler_DbConnection
+'
+'   End With
+' </code>
 ' </remarks>
 '\ingroup base
 '**/

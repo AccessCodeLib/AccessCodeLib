@@ -17,6 +17,8 @@ Attribute VB_Exposed = False
 ' <remarks>
 ' Aktivierung im _config_Application-Modul:\n
 ' <code>modApplication.AddApplicationHandlerExtension New ApplicationHandler_DbConnection</code>
+' oder mittels ExtensionCollection:\n
+' <code>ExtensionsCollectionReferenz.Add New ApplicationHandler_DbConnection</code>
 ' </remarks>
 '\ingroup base
 '**/
