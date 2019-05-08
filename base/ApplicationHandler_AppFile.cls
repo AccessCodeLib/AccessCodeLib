@@ -18,6 +18,8 @@ Attribute VB_Description = "Erweiterung für ApplicationHandler-Klasse: Anwendung
 ' <remarks>
 ' Aktivierung im _config_Application-Modul:\n
 ' <code>modApplication.AddApplicationHandlerExtension New ApplicationHandler_AppFile</code>
+' oder mittels ExtensionCollection:\n
+' <code>ExtensionsCollectionReferenz.Add New ApplicationHandler_AppFile</code>
 ' </remarks>
 '\ingroup base
 '**/
