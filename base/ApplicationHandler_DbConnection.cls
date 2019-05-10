@@ -36,8 +36,11 @@ Option Explicit
 
 Private Const m_EXTENSION_KEY As String = "DbConnection"
 
+Private Const SETTINGS_EXTENSION_KEY As String = "Settings"
+
 Private m_Disposed As Boolean
-Private m_DbConnectionManager As DbConnectionManager
+Private WithEvents m_DbConnectionManager As DbConnectionManager
+Attribute m_DbConnectionManager.VB_VarHelpID = -1
 
 '---------------------------------------------------------------------------------------
 ' Standard-Initialisierung von Erweiterungen
@@ -178,3 +181,19 @@ End Property
 Public Property Get DbConnection() As DbConnectionHandler
    Set DbConnection = ConnectionManager.DbConnection
 End Property
+
+Private Sub m_DbConnectionManager_BeforeInitDbConnection(OdbcConnectionString As String, OledbConnectionString As String, Settings As DbConnectionSettings)
+
+   With Settings
+   
+      .SqlBooleanTrueString = m_ApplicationHandler.GetExtensionProperty(SETTINGS_EXTENSION_KEY, "SqlBooleanTrueString", .SqlBooleanTrueString)
+      .SqlDateFormat = m_ApplicationHandler.GetExtensionProperty(SETTINGS_EXTENSION_KEY, "SqlDateFormat", .SqlDateFormat)
+      .SqlWildCardString = m_ApplicationHandler.GetExtensionProperty(SETTINGS_EXTENSION_KEY, "SqlWildCardString", .SqlWildCardString)
+      
+      .DefaultAdodbCursorLocation = m_ApplicationHandler.GetExtensionProperty(SETTINGS_EXTENSION_KEY, "DefaultAdodbCursorLocation", .DefaultAdodbCursorLocation)
+      
+      .OpenPermanentBackendRecordset = m_ApplicationHandler.GetExtensionProperty(SETTINGS_EXTENSION_KEY, "OpenPermanentBackendRecordset", .OpenPermanentBackendRecordset)
+      
+   End With
+
+End Sub

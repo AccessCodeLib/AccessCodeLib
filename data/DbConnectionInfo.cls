@@ -12,7 +12,7 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' Hilfsklasse zur Einstellung der Verbingungsparameter
+' Hilfsklasse zur Einstellung der Verbindungsparameter
 ' </summary>
 ' <remarks></remarks>
 '**/
@@ -1237,16 +1237,50 @@ End Function
 Public Property Get DateFormat() As String
    Select Case m_DBMSNAME
       Case m_DBMSNAME_MSJET
-         DateFormat = "\#yyyy-mm-dd\#"
+         DateFormat = "\#yyyy-mm-dd hh:nn:ss\#"
       Case m_DBMSNAME_MSSQL
-         DateFormat = "'yyyymmdd'"
+         DateFormat = "'yyyymmdd hh:nn:ss'"
       Case m_DBMSNAME_MYSQL
-         DateFormat = "'yyyy-mm-dd'"
+         DateFormat = "'yyyy-mm-dd hh:nn:ss'"
       Case m_DBMSNAME_ORACLE
-         DateFormat = "'yyyymmdd'"
+         DateFormat = "'yyyymmdd hh:nn:ss'"
       Case m_DBMSNAME_ODBC
-         DateFormat = "'yyyymmdd'"
+         DateFormat = "'yyyymmdd hh:nn:ss'"
       Case Else
          Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NODBMS, "DbConnectionInfo.DateFormat", "Für '" & m_DBMSNAME & "' kann keine Datumsfromat ermittelt werden."
+   End Select
+End Property
+
+Public Property Get WildCardString() As String
+   Select Case m_DBMSNAME
+      Case m_DBMSNAME_MSJET
+         WildCardString = "*"
+      Case m_DBMSNAME_MSSQL
+         WildCardString = "%"
+      Case m_DBMSNAME_MYSQL
+         WildCardString = "%"
+      Case m_DBMSNAME_ORACLE
+         WildCardString = "%"
+      Case m_DBMSNAME_ODBC
+         WildCardString = "%"
+      Case Else
+         WildCardString = "%"
+   End Select
+End Property
+
+Public Property Get BooleanTrueString() As String
+   Select Case m_DBMSNAME
+      Case m_DBMSNAME_MSJET
+         BooleanTrueString = "True"
+      Case m_DBMSNAME_MSSQL
+         BooleanTrueString = "1"
+      Case m_DBMSNAME_MYSQL
+         BooleanTrueString = "1"
+      Case m_DBMSNAME_ORACLE
+         BooleanTrueString = "1"
+      Case m_DBMSNAME_ODBC
+         BooleanTrueString = "True"
+      Case Else
+         Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NODBMS, "DbConnectionInfo.BooleanTrueString", "Für '" & m_DBMSNAME & "' kann kein True-String ermittelt werden."
    End Select
 End Property

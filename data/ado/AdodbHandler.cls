@@ -68,6 +68,8 @@ Public Event HookInsertIdentityReturn(ByRef InsertSql As String, ByRef IdentityT
 
 Private m_HooksEnabled As Boolean
 
+Private m_DefaultCursorLocation As ADODB.CursorLocationEnum
+
 'Private Type AdodbCommandParamDef
 '   ParamName As String
 '   ParamValue As Variant
@@ -76,10 +78,10 @@ Private m_HooksEnabled As Boolean
 '
 ' Init / Terminate
 ' ----------------
-'
-'Private Sub Class_Initialize()
-''
-'End Sub
+
+Private Sub Class_Initialize()
+   m_DefaultCursorLocation = adUseServer
+End Sub
 
 Private Sub Class_Terminate()
    Dispose
@@ -96,6 +98,15 @@ End Property
 Public Property Let HooksEnabled(ByVal NewValue As Boolean)
    m_HooksEnabled = NewValue
 End Property
+
+Public Property Get DefaultCursorLocation() As ADODB.CursorLocationEnum
+   DefaultCursorLocation = m_DefaultCursorLocation
+End Property
+
+Public Property Let DefaultCursorLocation(ByVal NewValue As ADODB.CursorLocationEnum)
+   m_DefaultCursorLocation = NewValue
+End Property
+
 
 
 '---------------------------------------------------------------------------------------
@@ -294,12 +305,16 @@ End Function
 Public Function OpenRecordset(ByVal Source As String, _
                      Optional ByVal CursorType As ADODB.CursorTypeEnum = ADODB.CursorTypeEnum.adOpenForwardOnly, _
                      Optional ByVal LockType As ADODB.LockTypeEnum = ADODB.LockTypeEnum.adLockReadOnly, _
-                     Optional ByVal CursorLocation As ADODB.CursorLocationEnum = ADODB.CursorLocationEnum.adUseServer, _
+                     Optional ByVal CursorLocation As ADODB.CursorLocationEnum = -1, _
                      Optional ByVal DisconnectedRecordset As Boolean = False) As ADODB.Recordset
 ' gibt geöffnetes ADO-Recordset zurück
 ' Source = SQL-Anweisung
 
    Dim rst As ADODB.Recordset
+   
+   If CursorLocation = -1 Then
+      CursorLocation = m_DefaultCursorLocation
+   End If
    
    If DisconnectedRecordset Then
       If CursorLocation = adUseServer Then
