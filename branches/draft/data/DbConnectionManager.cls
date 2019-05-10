@@ -37,6 +37,10 @@ Attribute m_DbConnectionInfo.VB_VarHelpID = -1
 Private WithEvents m_DbConnection As DbConnectionHandler
 Attribute m_DbConnection.VB_VarHelpID = -1
 
+Public Event BeforeInitDbConnection(ByRef OdbcConnectionString As String, ByRef OledbConnectionString As String, ByRef Settings As DbConnectionSettings)
+Public Event DbConnectionInitialized()
+
+Private m_DefaultDbConnecionSettings As DbConnectionSettings
 Private m_PermanentBackendRst As DAO.Recordset
 Private m_Disposed As Boolean
 
@@ -59,6 +63,16 @@ On Error Resume Next
    m_Disposed = (0 = Err.Number)
 
 End Sub
+
+Public Property Get DefaultSettings() As DbConnectionSettings
+   If m_DefaultDbConnecionSettings Is Nothing Then
+      Set m_DefaultDbConnecionSettings = New DbConnectionSettings
+      m_DefaultDbConnecionSettings.DefaultAdodbCursorLocation = adUseServer
+      m_DefaultDbConnecionSettings.OpenPermanentBackendRecordset = True
+   End If
+   Set DefaultSettings = m_DefaultDbConnecionSettings
+End Property
+
 
 Private Sub DisposePermanentBackendRst()
 On Error Resume Next
@@ -128,7 +142,6 @@ End Property
 Public Property Get DbConnection() As DbConnectionHandler
 
    If m_DbConnection Is Nothing Then
-      Set m_DbConnection = New DbConnectionHandler
       InitDbConnection
    End If
    Set DbConnection = m_DbConnection
@@ -136,14 +149,50 @@ Public Property Get DbConnection() As DbConnectionHandler
 End Property
 
 Private Sub InitDbConnection()
-   'DbConnection neu einstellen
-   Set Me.DbConnection.CurrentDb = Application.CurrentDb ' ... nicht unbedingt erforderlich, wird bei Bedarf über Event angefordert
+   
+   Dim OdbcConnectionString As String
+   Dim OledbConnectionString As String
+   Dim NewSettings As DbConnectionSettings
+   
+   If m_DbConnection Is Nothing Then
+      Set m_DbConnection = New DbConnectionHandler
+   End If
+   
+   Set NewSettings = DefaultSettings.Clone
    With Me.ConnectionInfo
-      Me.DbConnection.OdbcConnectionString = .OdbcConnectionString
-      Me.DbConnection.OledbConnectionString = .OledbConnectionString
-      SqlTools.SqlDateFormat = .DateFormat
+      OdbcConnectionString = .OdbcConnectionString
+      OledbConnectionString = .OledbConnectionString
+      NewSettings.SqlDateFormat = .DateFormat
+      NewSettings.SqlWildCardString = .WildCardString
+      NewSettings.SqlBooleanTrueString = .BooleanTrueString
    End With
-   OpenPermanentBackendRecordset
+   
+   RaiseEvent BeforeInitDbConnection(OdbcConnectionString, OledbConnectionString, NewSettings)
+   
+   ' DefaultSettings von NewSettings übernehmen:
+   ' Kopieren und nicht Referenz zuweisen, damit Daten passen, falls an anderer Stelle bereits eine Referenz auf DefaultSettings gesetzt wurde
+   DefaultSettings.CopyFrom NewSettings
+   
+   Set m_DbConnection.CurrentDb = Application.CurrentDb ' ... nicht unbedingt erforderlich, wird bei Bedarf über Event angefordert
+   m_DbConnection.OdbcConnectionString = OdbcConnectionString
+   m_DbConnection.OledbConnectionString = OledbConnectionString
+   
+   With DefaultSettings
+
+      SqlTools.SqlDateFormat = .SqlDateFormat
+      SqlTools.SqlWildCardString = .SqlWildCardString
+      SqlTools.SqlBooleanTrueString = .SqlBooleanTrueString
+      
+       m_DbConnection.ADODB.DefaultCursorLocation = .DefaultAdodbCursorLocation
+      
+      If .OpenPermanentBackendRecordset Then
+         OpenPermanentBackendRecordset
+      End If
+      
+   End With
+
+   RaiseEvent DbConnectionInitialized
+   
 End Sub
 
 Private Sub OpenPermanentBackendRecordset()
