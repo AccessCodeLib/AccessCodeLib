@@ -22,6 +22,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>data/DbConnectionInfo.cls</use>
 '  <use>data/DbConnectionHandler.cls</use>
+'  <use>data/DbConnectionSettings.cls</use>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
 '</codelib>
 '---------------------------------------------------------------------------------------
