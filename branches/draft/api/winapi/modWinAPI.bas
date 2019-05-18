@@ -359,7 +359,7 @@ End Sub
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Sub SetFormIconFromFile(ByRef formRef As Access.Form, ByVal IconFilePath As String)
+Public Sub SetFormIconFromFile(ByRef FormRef As Access.Form, ByVal IconFilePath As String)
    
 On Error Resume Next ' ... Fehlermeldung würde bei dieser "unwichtigen" Funktion nur stören
   
@@ -370,7 +370,7 @@ On Error Resume Next ' ... Fehlermeldung würde bei dieser "unwichtigen" Funktion
    imageHandle = LoadImage(0, IconFilePath, IMAGE_ICON, _
                            ICONPIXELSIZE, ICONPIXELSIZE, LR_LOADFROMFILE)
    If imageHandle <> 0 Then
-      SendMessage formRef.Hwnd, WM_MSG_SETICON, WM_PARAM_ICON_SMALL, ByVal imageHandle
+      SendMessage FormRef.Hwnd, WM_MSG_SETICON, WM_PARAM_ICON_SMALL, ByVal imageHandle
    End If
    
 End Sub
