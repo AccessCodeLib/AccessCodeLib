@@ -59,7 +59,7 @@ Private Type APIMSG
    Message As LongPtr
    wParam As Long
    lParam As Long
-   time As LongPtr
+   Time As LongPtr
    pt As POINTAPI
 End Type
 
@@ -150,7 +150,7 @@ Private Type APIMSG
    Message As Long
    wParam As Long
    lParam As Long
-   time As Long
+   Time As Long
    pt As POINTAPI
 End Type
 
