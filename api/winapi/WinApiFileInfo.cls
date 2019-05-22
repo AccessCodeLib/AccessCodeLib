@@ -117,7 +117,7 @@ Private Function GetVersion(ByVal FilePath As String, _
     Exit Function
   End If
   
-  ReDim sBuffer(Size)
+  ReDim BufferString(Size)
   Ret = GetFileVersionInfo(FilePath, 0&, Size, BufferString(0))
   If Ret = 0 Then
     GetVersion = False
