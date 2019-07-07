@@ -5,7 +5,7 @@ Attribute VB_Name = "_config_Application"
 ' Indiviuell gestaltete Config-Module nicht in das Repositiory laden.
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>base/_config_Application_sample.bas</file> <-- für Exportsperre entfernen bzw. umschreiben!!!
+'  <file>_dotnetlib/samples/_config_Application.bas</file> <-- für Exportsperre entfernen bzw. umschreiben!!!
 '  <replace>base/_config_Application.bas</replace> 'dieses Modul mit <file> ersetzen ... es darf nur ein Konfig-Datei geben
 '  <license>_codelib/license.bas</license>
 '  <use>base/modApplication.bas</use>
@@ -14,6 +14,7 @@ Attribute VB_Name = "_config_Application"
 '  <use>_dotnetlib/integration/DotNetLibsSetup.bas</use>
 '  <use>_dotnetlib/integration/DotNetLibRepair.frm</use>
 '  <use>/data/SqlTools_DotNetLib.bas</use>
+'  <use>/data/SqlTools_DotNetLib_Examples.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -24,8 +25,6 @@ Private Const m_ApplicationName As String = "ACL DotNetLib Integration Example"
 Private Const m_ApplicationFullName As String = m_ApplicationName
 Private Const m_ApplicationTitle As String = m_ApplicationName
 Private Const m_ApplicationIconFile As String = m_ApplicationName & ".ico"
-
-Private Const m_DefaultErrorHandlerMode = ACLibErrorHandlerMode.aclibErrMsgBox
 
 '
 ' Farben
@@ -49,11 +48,6 @@ End Enum
 '**/
 '---------------------------------------------------------------------------------------
 Public Sub InitConfig(Optional oCurrentAppHandler As ApplicationHandler = Nothing)
-
-'----------------------------------------------------------------------------
-' Fehlerbehandlung
-'
-   modErrorHandler.DefaultErrorHandlerMode = m_DefaultErrorHandlerMode
 
 '----------------------------------------------------------------------------
 ' Globale Variablen einstellen
@@ -108,4 +102,3 @@ End Sub
 Private Sub setAppFiles()
    Call CurrentApplication.SaveAppFile("AppIcon", CurrentProject.Path & "\TestApp.ico")
 End Sub
-
