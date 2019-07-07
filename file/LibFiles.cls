@@ -479,12 +479,12 @@ End Function
 Private Property Get IsMDE() As Boolean
 
    Dim db As DAO.Database
-   Dim prop As DAO.Property
+   Dim Prop As DAO.Property
 
    Set db = CodeDb
-   For Each prop In db.Properties
-      If prop.Name = "MDE" Then
-         IsMDE = (prop.Value = "T")
+   For Each Prop In db.Properties
+      If Prop.Name = "MDE" Then
+         IsMDE = (Prop.Value = "T")
          Exit Property
       End If
    Next
