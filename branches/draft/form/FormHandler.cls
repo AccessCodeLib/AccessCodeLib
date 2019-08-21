@@ -909,6 +909,14 @@ Private Sub SetData_ProcedurePT(ByVal sFilterParams As String, _
 
    With ActiveForm
       .RecordSource = strQdfName
+      'Problemumgehung Verbindungsabbruch (Access 2016)
+      With .Recordset
+         If .RecordCount <> 0 Then
+            .MoveLast
+            .MoveFirst
+         End If
+      End With
+
    End With
 
 End Sub
