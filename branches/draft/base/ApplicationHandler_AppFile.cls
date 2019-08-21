@@ -162,14 +162,14 @@ End Function
 
 Private Sub CreateFileFromByteArray(ByVal FileName As String, ByRef Binfile() As Byte)
    
-   Dim f As Integer
+   Dim FileNo As Integer
    
    FileTools.CreateDirectoryIfMissing FileTools.GetDirFromFullFileName(FileName)
 
-   f = FreeFile
-   Open FileName For Binary As #f
-   Put #f, , Binfile()
-   Close #f
+   FileNo = FreeFile
+   Open FileName For Binary As #FileNo
+   Put #FileNo, , Binfile()
+   Close #FileNo
    
 End Sub
 
@@ -191,7 +191,7 @@ Public Function SaveAppFile(ByVal FileID As String, ByVal FileName As String, _
                    Optional ByVal SaveVersion As Boolean = False, _
                    Optional ByVal ExtFieldName As String, Optional ByVal ExtFieldValue As Variant) As Boolean
 
-   Dim f As Integer
+   Dim FileNo As Integer
    Dim Binfile() As Byte
    Dim ArraySize As Long
    Dim Version As String
@@ -199,14 +199,14 @@ Public Function SaveAppFile(ByVal FileID As String, ByVal FileName As String, _
    
 On Error GoTo HandleErr
 
-   f = FreeFile
-   Open FileName For Binary As #f
-   ArraySize = LOF(f) - 1
+   FileNo = FreeFile
+   Open FileName For Binary As #FileNo
+   ArraySize = LOF(FileNo) - 1
    If ArraySize >= 0 Then
       ReDim Binfile(ArraySize)
-      Get #f, , Binfile()
+      Get #FileNo, , Binfile()
    End If
-   Close #f
+   Close #FileNo
 
    If ArraySize < 0 Then
       SaveAppFile = False
