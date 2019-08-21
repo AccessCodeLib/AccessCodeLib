@@ -142,7 +142,7 @@ Public Property Get CurrentConnection() As ADODB.Connection
             m_AdoConnection.Open strConnString
          End If
       End If
-   ElseIf (m_AdoConnection.State = ObjectStateEnum.adStateClosed) Then
+   ElseIf (m_AdoConnection.State <> ObjectStateEnum.adStateOpen) Then
       If Len(m_AdoConnection.ConnectionString) > 0 Then
          m_AdoConnection.Open
       Else 'neu verbinden
