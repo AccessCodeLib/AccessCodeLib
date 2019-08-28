@@ -378,3 +378,24 @@ On Error Resume Next
    End If
    
 End Sub
+
+Public Sub RemoveMultiValueSelection(ByVal FormRef As Form, ByVal MultiValueControl As Control)
+
+   Dim rsMV As DAO.Recordset2
+
+   If IsArray(MultiValueControl.Value) Then
+
+      Set rsMV = FormRef.Recordset.Fields(MultiValueControl.ControlSource).Value
+      With rsMV
+         Do While Not .EOF
+            .Delete
+            .Requery
+         Loop
+      End With
+   
+      FormRef.Dirty = False
+      MultiValueControl.Requery
+
+   End If
+
+End Sub

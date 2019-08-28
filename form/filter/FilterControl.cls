@@ -430,31 +430,27 @@ End Sub
 
 Private Sub RemoveMultiValueSelection(ByVal MultiValueControl As Control)
 ' Auswahl in MultiValue-Listbox/Combobox leeren
-   
-   MultiValueControl.Value = Array() ' August 2019: läuft nun nicht mehr => Memory overflow
-                                     ' funktioniert bei Office 1902 build 11328.20368, Windows 10.0.10586 Build 10586
-   
-End Sub
 
-Public Sub ClearMulitValueFilterValues(ByVal FormRef As Form, ByVal MultiValueControl As Control)
-
+   Dim FormRef As Form
    Dim rsMV As DAO.Recordset2
-   
-On Error Resume Next
-   
-   If IsArray(MultiValueControl.Value) Then
 
-      Set rsMV = FormRef.Recordset.Fields(MultiValueControl.ControlSource).Value
-      With rsMV
-         Do While Not .EOF
-            .Delete
-            .Requery
-         Loop
-      End With
-   
-      FormRef.Dirty = False
-      MultiValueControl.Requery
-
+   If Not IsArray(MultiValueControl.Value) Then
+      Exit Sub
    End If
+   
+'   MultiValueControl.Value = Array() ' August 2019: läuft nun nicht mehr => Memory overflow => Umweg über Recordset gehen
+                                      ' (funktionierte noch bei Office 1902 build 11328.20368, Windows 10.0.10586 Build 10586)
+   
+   Set FormRef = m_Control.Parent
+   Set rsMV = FormRef.Recordset.Fields(MultiValueControl.ControlSource).Value
+   With rsMV
+      Do While Not .EOF
+         .Delete
+         .Requery
+      Loop
+   End With
 
+   FormRef.Dirty = False
+   MultiValueControl.Requery
+   
 End Sub
