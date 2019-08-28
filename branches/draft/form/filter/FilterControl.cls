@@ -382,7 +382,7 @@ Public Sub RemoveFilterValue(Optional ByVal RaiseFilterValueChangedEvent As Bool
             End If
          Case acComboBox
             If IsArray(m_Control.Value) Then
-               m_Control.Value = Array() ' Auswahl in MultiValue-Combobox leeren
+               RemoveMultiValueSelection m_Control
             ElseIf m_Control.Value = GetCheckedIgnoreValue Then
             ElseIf Not (IsNull(m_Control.Value) And IsNull(GetCheckedIgnoreValue)) Then
                m_Control.Value = GetCheckedIgnoreValue
@@ -416,7 +416,7 @@ Private Sub RemoveListboxSelection(ByVal ListBoxRef As ListBox)
 
    With ListBoxRef
       If IsArray(.Value) Then
-         .Value = Array() ' Auswahl in MultiValue-Listbox leeren
+         RemoveMultiValueSelection ListBoxRef
       ElseIf .MultiSelect = 1 Then
          For Each Item In .ItemsSelected
             .Selected(Item) = False
@@ -425,5 +425,13 @@ Private Sub RemoveListboxSelection(ByVal ListBoxRef As ListBox)
          .Value = GetCheckedIgnoreValue
       End If
    End With
+   
+End Sub
+
+Private Sub RemoveMultiValueSelection(ByVal MultiValueControl As Control)
+' Auswahl in MultiValue-Listbox/Combobox leeren
+   
+   MultiValueControl.Value = Array() ' August 2019: läuft nun nicht mehr => Memory overflow
+                                     ' funktioniert bei Office 1902 build 11328.20368, Windows 10.0.10586 Build 10586
    
 End Sub
