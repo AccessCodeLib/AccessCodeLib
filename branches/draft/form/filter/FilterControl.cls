@@ -435,3 +435,26 @@ Private Sub RemoveMultiValueSelection(ByVal MultiValueControl As Control)
                                      ' funktioniert bei Office 1902 build 11328.20368, Windows 10.0.10586 Build 10586
    
 End Sub
+
+Public Sub ClearMulitValueFilterValues(ByVal FormRef As Form, ByVal MultiValueControl As Control)
+
+   Dim rsMV As DAO.Recordset2
+   
+On Error Resume Next
+   
+   If IsArray(MultiValueControl.Value) Then
+
+      Set rsMV = FormRef.Recordset.Fields(MultiValueControl.ControlSource).Value
+      With rsMV
+         Do While Not .EOF
+            .Delete
+            .Requery
+         Loop
+      End With
+   
+      FormRef.Dirty = False
+      MultiValueControl.Requery
+
+   End If
+
+End Sub
