@@ -392,10 +392,22 @@ Public Sub RemoveMultiValueSelection(ByVal FormRef As Form, ByVal MultiValueCont
             .Requery
          Loop
       End With
-   
+
       FormRef.Dirty = False
       MultiValueControl.Requery
 
    End If
 
+End Sub
+
+Public Sub CheckSubFormSourceObject(ByVal SubFormRef As SubForm, ByVal SourceObjectNameIfEmpty As String, Optional ByVal RequeryIfNoEmpty As Boolean = False)
+   
+   With SubFormRef
+      If Len(.SourceObject) = 0 Then
+         .SourceObject = SourceObjectNameIfEmpty
+      ElseIf RequeryIfNoEmpty Then
+         .Requery
+      End If
+   End With
+   
 End Sub
