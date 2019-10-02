@@ -309,9 +309,16 @@ Private Sub readDBMSprop(Optional ByVal withoutLoginForm As Boolean = False, Opt
 
    If Not withoutLoginForm Then
    If m_UseLoginForm Then 'ergibt Anmeldung, daher nicht für Vorabeinstellungen nutzen! (=>withoutLoginForm=true)
+   
+      Dim LoginUserName As String
+      LoginUserName = GetUserNameFromConfigFile
+      If Len(LoginUserName) = 0 Then
+         LoginUserName = m_DBUSER
+      End If
+   
       'm_LoginForm über Property LoginForm zugänglich machen und im LoginForm selbst setzen:
       Set g_TempRef = Me
-      DoCmd.OpenForm m_LoginFormName, acNormal, , , acFormEdit, acDialog, m_CID & "@" & m_DBUSER
+      DoCmd.OpenForm m_LoginFormName, acNormal, , , acFormEdit, acDialog, m_CID & "@" & LoginUserName
       Set g_TempRef = Nothing
    End If
    End If
@@ -320,6 +327,14 @@ Private Sub readDBMSprop(Optional ByVal withoutLoginForm As Boolean = False, Opt
       RaiseEvent DbmsConnectionChanged(m_CID)
    End If
 
+End Sub
+
+Private Function GetUserNameFromConfigFile() As String
+   GetUserNameFromConfigFile = System.PrivateProfileString(CurrentProject.Path & "\" & m_CID & ".ini", "Login", "UserName")
+End Function
+
+Private Sub SaveUserNameToConfigFile(ByVal UserName As String)
+   System.PrivateProfileString(CurrentProject.Path & "\" & m_CID & ".ini", "Login", "UserName") = UserName
 End Sub
 
 Public Property Get LoginForm() As Form
@@ -361,6 +376,7 @@ Private Sub m_LoginForm_Logon(ByVal LoginName As String, ByVal Password As Strin
 
    If Len(m_DBUSER) > 0 Then
       CurrentDb.Execute "UPDATE usys_DbmsConnection SET dbmsUser = '" & m_DBUSER & "' WHERE DBMS='" & m_DBMSNAME & "'"
+      SaveUserNameToConfigFile m_DBUSER
    End If
 
    Set m_LoginForm = Nothing
