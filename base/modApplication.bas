@@ -67,6 +67,9 @@ Public Sub AddApplicationHandlerExtension(ByRef ObjRef As Object)
 '  --- DEPRECATED ! ---
 ' Durch Klasse ApplicationHandler_ExtensionCollection ersetzt.
 Stop
+   If m_Extension Is Nothing Then
+      Set m_Extension = New Collection
+   End If
    Set ObjRef.ApplicationHandlerRef = CurrentApplication
    m_Extension.Add ObjRef, ObjRef.ExtensionKey
 End Sub
@@ -93,9 +96,6 @@ Private Sub InitApplication()
 
    ' Hauptinstanz erzeugen
    Set m_ApplicationHandler = New ApplicationHandler
-   
-   ' Extension-Collection neu setzen
-   Set m_Extension = New Collection
    
    'Einstellungen initialisieren
    Call InitConfig(m_ApplicationHandler)
