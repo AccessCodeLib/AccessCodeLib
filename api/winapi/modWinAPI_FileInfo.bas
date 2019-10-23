@@ -22,6 +22,7 @@ Attribute VB_Description = "Dateiinformationen mit Win-API auslesen"
 '
 Option Compare Text
 Option Explicit
+Option Private Module
 
 Private Declare Function GetFileVersionInfoSize Lib "version.dll" Alias "GetFileVersionInfoSizeA" ( _
   ByVal lptstrFilename As String, _
