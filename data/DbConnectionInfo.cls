@@ -217,7 +217,6 @@ Private Sub readDBMSprop(Optional ByVal withoutLoginForm As Boolean = False, Opt
    End If
              
    Set rst = CurrentDb.OpenRecordset(strSQL, dbOpenSnapshot)
-   
    If rst.EOF Then
       
       rst.Close
@@ -299,7 +298,7 @@ Private Sub readDBMSprop(Optional ByVal withoutLoginForm As Boolean = False, Opt
       .Close
    End With
    Set rst = Nothing
-   
+
    m_DbmsInfoReaded = True
    m_SAVEPWD = (Len(m_DBUSERPWD) > 0) And (m_UseLoginForm = False)
    
@@ -330,10 +329,12 @@ Private Sub readDBMSprop(Optional ByVal withoutLoginForm As Boolean = False, Opt
 End Sub
 
 Private Function GetUserNameFromConfigFile() As String
+On Error Resume Next
    GetUserNameFromConfigFile = System.PrivateProfileString(CurrentProject.Path & "\" & m_CID & ".ini", "Login", "UserName")
 End Function
 
 Private Sub SaveUserNameToConfigFile(ByVal UserName As String)
+On Error Resume Next
    System.PrivateProfileString(CurrentProject.Path & "\" & m_CID & ".ini", "Login", "UserName") = UserName
 End Sub
 
