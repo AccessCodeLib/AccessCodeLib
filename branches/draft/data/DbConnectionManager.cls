@@ -193,7 +193,7 @@ Private Sub InitDbConnection()
    End With
 
    RaiseEvent DbConnectionInitialized
-   
+
 End Sub
 
 Private Sub OpenPermanentBackendRecordset()
