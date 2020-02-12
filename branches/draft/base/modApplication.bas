@@ -89,7 +89,7 @@ End Sub
 '**/
 '---------------------------------------------------------------------------------------
 Public Sub TraceLog(ByRef Msg As String, ParamArray Args() As Variant)
-   CurrentApplication.WriteLog Msg, ApplicationHandlerLogType.AppLogType_Tracing, Args, False
+   CurrentApplication.WriteLog Msg, ApplicationHandlerLogType.AppLogType_Tracing, Args
 End Sub
 
 Private Sub InitApplication()

@@ -171,6 +171,8 @@ Public Event NewAppLog( _
             ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
 
 
+Public WriteLogToFileIfNoEventResponse As Boolean
+
 '---------------------------------------------------------------------------------------
 ' Dispose-Ablauf
 '---------------------------------------------------------------------------------------
@@ -605,15 +607,14 @@ End Sub
 
 Public Sub WriteLog(ByVal Msg As String, _
            Optional ByRef LogType As ApplicationHandlerLogType, _
-           Optional ByVal Args As Variant, _
-           Optional ByVal WriteToFileIfNoEventResponse As Boolean = True)
+           Optional ByVal Args As Variant)
 
    Dim ResumeMode As ApplicationHandlerResumeModes
    Dim EventResumeMessage As Variant
 
    RaiseEvent NewAppLog(LogType, Msg, Args, ResumeMode, EventResumeMessage)
    
-   If ResumeMode = 0 And WriteToFileIfNoEventResponse Then
+   If ResumeMode = 0 And (WriteLogToFileIfNoEventResponse Or LogType = AppLogType_Error) Then
       'niemand hat reagiert bzw. einen Abbruch gemeldet => WriteApplicationLogEntry
       Msg = Now() & ": " & Msg
       If Len(LogType) > 0 Then
