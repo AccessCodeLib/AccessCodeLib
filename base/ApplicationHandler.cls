@@ -591,7 +591,7 @@ Private Function DbPropertyExists(ByRef PropCol As DAO.Properties, ByVal PropNam
 
 End Function
 
-Public Sub WriteApplicationLogEntry(ByVal Msg As String)
+Private Sub WriteApplicationLogEntry(ByVal Msg As String)
 
    Dim LogFile As String
    Dim FileNo As Long
@@ -607,14 +607,15 @@ End Sub
 
 Public Sub WriteLog(ByVal Msg As String, _
            Optional ByRef LogType As ApplicationHandlerLogType, _
-           Optional ByVal Args As Variant)
+           Optional ByVal Args As Variant, _
+           Optional ByVal WriteToFileIfNoEventResponse As Boolean = False)
 
    Dim ResumeMode As ApplicationHandlerResumeModes
    Dim EventResumeMessage As Variant
 
    RaiseEvent NewAppLog(LogType, Msg, Args, ResumeMode, EventResumeMessage)
    
-   If ResumeMode = 0 And (WriteLogToFileIfNoEventResponse Or LogType = AppLogType_Error) Then
+   If ResumeMode = 0 And (WriteToFileIfNoEventResponse Or WriteLogToFileIfNoEventResponse Or LogType = AppLogType_Error) Then
       'niemand hat reagiert bzw. einen Abbruch gemeldet => WriteApplicationLogEntry
       Msg = Now() & ": " & Msg
       If Len(LogType) > 0 Then
