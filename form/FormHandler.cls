@@ -39,10 +39,15 @@ Private Const WM_VSCROLL = &H115
 Private Const SB_LINEUP = 0
 Private Const SB_LINEDOWN = 1
 
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" ( _
+#If VBA7 Then
+   Private Declare PtrSafe Function SendMessage Lib "user32" Alias "SendMessageA" ( _
+                              ByVal Hwnd As LongPtr, ByVal wMsg As Long, _
+                              ByVal wParam As LongPtr, lParam As Any) As Long
+#Else
+   Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" ( _
                               ByVal Hwnd As Long, ByVal wMsg As Long, _
                               ByVal wParam As Long, lParam As Any) As Long
-
+#End If
 '/**
 ' <summary>
 ' Einstellmöglichkeit für Datenherkunft des Formulars
@@ -463,7 +468,7 @@ Public Sub RequeryData()
    Dim varIDValue As Variant
 
    Dim lngPos As Long, lngPosDiff As Long
-   Dim lngDirection As Long
+   Dim lngDirection As LongPtr
    Dim i As Long, lngRet As Long
    Dim bolIsListForm As Boolean
 
