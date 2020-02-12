@@ -145,6 +145,24 @@ Public Event DbmsInfoMessage(ByVal Source As String, ByVal Msg As String, ByVal 
 Public Event PasswordChanged()
 Public Event Disposed()
 
+
+'API
+Private Declare PtrSafe Function GetPrivateProfileString Lib "kernel32" _
+  Alias "GetPrivateProfileStringA" ( _
+  ByVal lpApplicationName As String, _
+  ByVal lpKeyName As Any, _
+  ByVal lpDefault As String, _
+  ByVal lpReturnedString As String, _
+  ByVal nSize As Long, _
+  ByVal lpFileName As String) As Long
+
+Private Declare PtrSafe Function WritePrivateProfileString Lib "kernel32" _
+  Alias "WritePrivateProfileStringA" ( _
+  ByVal lpApplicationName As String, _
+  ByVal lpKeyName As Any, _
+  ByVal lpString As Any, _
+  ByVal lpFileName As String) As Long
+
 Public Property Get CID() As String
 On Error Resume Next
    CID = m_CID
@@ -329,13 +347,20 @@ Private Sub readDBMSprop(Optional ByVal withoutLoginForm As Boolean = False, Opt
 End Sub
 
 Private Function GetUserNameFromConfigFile() As String
+
+   Dim ReturnStr As String * 1280
+   Dim RetVal As Long
+   
 On Error Resume Next
-   GetUserNameFromConfigFile = System.PrivateProfileString(CurrentProject.Path & "\" & m_CID & ".ini", "Login", "UserName")
+
+   RetVal = GetPrivateProfileString("Login", "UserName", vbNullString & vbNullChar, ReturnStr, Len(ReturnStr), CurrentProject.Path & "\" & m_CID & ".ini")
+   GetUserNameFromConfigFile = Trim(Left(ReturnStr, RetVal))
+
 End Function
 
 Private Sub SaveUserNameToConfigFile(ByVal UserName As String)
 On Error Resume Next
-   System.PrivateProfileString(CurrentProject.Path & "\" & m_CID & ".ini", "Login", "UserName") = UserName
+   WritePrivateProfileString "Login", "UserName", UserName, CurrentProject.Path & "\" & m_CID & ".ini"
 End Sub
 
 Public Property Get LoginForm() As Form
@@ -376,7 +401,7 @@ Private Sub m_LoginForm_Logon(ByVal LoginName As String, ByVal Password As Strin
    End If
 
    If Len(m_DBUSER) > 0 Then
-      CurrentDb.Execute "UPDATE usys_DbmsConnection SET dbmsUser = '" & m_DBUSER & "' WHERE DBMS='" & m_DBMSNAME & "'"
+      CurrentDb.Execute "UPDATE (select * from usys_DbmsConnectionWHERE DBMS='" & m_DBMSNAME & "') SET dbmsUser = '" & m_DBUSER & "'" ' thanks to MSFT (https://support.office.com/en-us/article/access-error-query-is-corrupt-fad205a5-9fd4-49f1-be83-f21636caedec)
       SaveUserNameToConfigFile m_DBUSER
    End If
 
