@@ -55,9 +55,32 @@ Private m_FadeInOutStep As Long
 
 Private m_Transparency As Byte
 
-Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal Hwnd As Long, ByVal nIndex As Long) As Long
-Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal Hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
-Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal Hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
+#If VBA7 Then
+    #If Win64 Then
+        Private Declare PtrSafe Function GetWindowLong Lib "user32" Alias "GetWindowLongPtrA" (ByVal Hwnd As LongPtr, ByVal nIndex As Long) As LongPtr
+    #Else
+        Private Declare PtrSafe Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal Hwnd As LongPtr, ByVal nIndex As Long) As LongPtr
+    #End If
+#Else
+    Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal Hwnd As Long, ByVal nIndex As Long) As Long
+#End If
+
+#If VBA7 Then
+    #If Win64 Then
+        Private Declare PtrSafe Function SetWindowLong Lib "user32" Alias "SetWindowLongPtrA" (ByVal Hwnd As LongPtr, ByVal nIndex As Long, ByVal dwNewLong As LongPtr) As LongPtr
+    #Else
+        Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal Hwnd As LongPtr, ByVal nIndex As Long, ByVal dwNewLong As LongPtr) As LongPtr
+    #End If
+#Else
+    Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal Hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+#End If
+
+#If VBA7 Then
+    Private Declare PtrSafe Function SetLayeredWindowAttributes Lib "user32" (ByVal Hwnd As LongPtr, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
+#Else
+    Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal Hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
+#End If
+
 
 '********************************************************************************
 ' Deklarationen für GetTextHeight
@@ -96,13 +119,23 @@ Private Type LOGFONT
         lfFaceName As String * LF_FACESIZE
 End Type
 
-Private Declare Function apiCreateFontIndirect Lib "gdi32" Alias "CreateFontIndirectA" (lpLogFont As LOGFONT) As Long
-Private Declare Function apiSelectObject Lib "gdi32" Alias "SelectObject" (ByVal hDC As Long, ByVal hObject As Long) As Long
-Private Declare Function apiDeleteObject Lib "gdi32" Alias "DeleteObject" (ByVal hObject As Long) As Long
-Private Declare Function apiGetDeviceCaps Lib "gdi32" Alias "GetDeviceCaps" (ByVal hDC As Long, ByVal nIndex As Long) As Long
-Private Declare Function apiGetDC Lib "user32" Alias "GetDC" (ByVal Hwnd As Long) As Long
-Private Declare Function apiReleaseDC Lib "user32" Alias "ReleaseDC" (ByVal Hwnd As Long, ByVal hDC As Long) As Long
-Private Declare Function apiDrawText Lib "user32" Alias "DrawTextA" (ByVal hDC As Long, ByVal lpStr As String, ByVal nCount As Long, lpRect As RECT, ByVal wFormat As Long) As Long
+#If VBA7 Then
+   Private Declare PtrSafe Function apiCreateFontIndirect Lib "gdi32" Alias "CreateFontIndirectA" (lpLogFont As LOGFONT) As Long
+   Private Declare PtrSafe Function apiSelectObject Lib "gdi32" Alias "SelectObject" (ByVal hDC As LongPtr, ByVal hObject As LongPtr) As Long
+   Private Declare PtrSafe Function apiDeleteObject Lib "gdi32" Alias "DeleteObject" (ByVal hObject As LongPtr) As Long
+   Private Declare PtrSafe Function apiGetDeviceCaps Lib "gdi32" Alias "GetDeviceCaps" (ByVal hDC As LongPtr, ByVal nIndex As Long) As Long
+   Private Declare PtrSafe Function apiGetDC Lib "user32" Alias "GetDC" (ByVal Hwnd As LongPtr) As Long
+   Private Declare PtrSafe Function apiReleaseDC Lib "user32" Alias "ReleaseDC" (ByVal Hwnd As LongPtr, ByVal hDC As LongPtr) As Long
+   Private Declare PtrSafe Function apiDrawText Lib "user32" Alias "DrawTextA" (ByVal hDC As LongPtr, ByVal lpStr As String, ByVal nCount As Long, lpRect As RECT, ByVal wFormat As Long) As Long
+#Else
+   Private Declare Function apiCreateFontIndirect Lib "gdi32" Alias "CreateFontIndirectA" (lpLogFont As LOGFONT) As Long
+   Private Declare Function apiSelectObject Lib "gdi32" Alias "SelectObject" (ByVal hDC As Long, ByVal hObject As Long) As Long
+   Private Declare Function apiDeleteObject Lib "gdi32" Alias "DeleteObject" (ByVal hObject As Long) As Long
+   Private Declare Function apiGetDeviceCaps Lib "gdi32" Alias "GetDeviceCaps" (ByVal hDC As Long, ByVal nIndex As Long) As Long
+   Private Declare Function apiGetDC Lib "user32" Alias "GetDC" (ByVal Hwnd As Long) As Long
+   Private Declare Function apiReleaseDC Lib "user32" Alias "ReleaseDC" (ByVal Hwnd As Long, ByVal hDC As Long) As Long
+   Private Declare Function apiDrawText Lib "user32" Alias "DrawTextA" (ByVal hDC As Long, ByVal lpStr As String, ByVal nCount As Long, lpRect As RECT, ByVal wFormat As Long) As Long
+#End If
 '********************************************************************************
 
 Public Event InfoMessageClosed()

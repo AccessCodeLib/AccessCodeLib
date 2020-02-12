@@ -41,13 +41,13 @@ End Type
 #If VBA7 Then
 
 Private Declare PtrSafe Function ClientToScreen Lib "user32.dll" ( _
-         ByVal Hwnd As Long, _
+         ByVal Hwnd As LongPtr, _
          ByRef lpPoint As POINTAPI _
       ) As Long
 
 Private Declare PtrSafe Function FindWindowEx Lib "user32.dll" Alias "FindWindowExA" ( _
-         ByVal hWnd1 As Long, _
-         ByVal hWnd2 As Long, _
+         ByVal hWnd1 As LongPtr, _
+         ByVal hWnd2 As LongPtr, _
          ByVal lpsz1 As String, _
          ByVal lpsz2 As String _
       ) As Long

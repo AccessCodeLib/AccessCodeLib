@@ -24,25 +24,25 @@ Option Compare Text
 Option Explicit
 Option Private Module
 
-Private Declare Function GetFileVersionInfoSize Lib "version.dll" Alias "GetFileVersionInfoSizeA" ( _
+Private Declare PtrSafe Function GetFileVersionInfoSize Lib "version.dll" Alias "GetFileVersionInfoSizeA" ( _
   ByVal lptstrFilename As String, _
-  lpdwHandle As Long) As Long
+  lpdwHandle As LongPtr) As Long
 
-Private Declare Function GetFileVersionInfo Lib "version.dll" Alias "GetFileVersionInfoA" ( _
+Private Declare PtrSafe Function GetFileVersionInfo Lib "version.dll" Alias "GetFileVersionInfoA" ( _
   ByVal lptstrFilename As String, _
-  ByVal dwHandle As Long, _
+  ByVal dwHandle As LongPtr, _
   ByVal dwLen As Long, _
   lpData As Any _
   ) As Long
 
-Private Declare Function VerQueryValue Lib "version.dll" Alias "VerQueryValueA" ( _
+Private Declare PtrSafe Function VerQueryValue Lib "version.dll" Alias "VerQueryValueA" ( _
   pBlock As Any, _
   ByVal lpSubBlock As String, _
   lplpBuffer As Any, _
   puLen As Long _
   ) As Long
 
-Private Declare Sub MoveMemory Lib "kernel32" Alias "RtlMoveMemory" ( _
+Private Declare PtrSafe Sub MoveMemory Lib "kernel32" Alias "RtlMoveMemory" ( _
   Dest As Any, _
   ByVal Source As Long, _
   ByVal Length As Long)
