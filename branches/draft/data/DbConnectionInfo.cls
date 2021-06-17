@@ -21,6 +21,7 @@ Attribute VB_Exposed = False
 '  <file>data/DbConnectionInfo.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
+'  <use>data/defDbConnection.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -33,7 +34,8 @@ Private Enum DbConnectionInfoErrorNumbers
    ERRNR_INACTIVE = vbObjectError + 3
 End Enum
 
-Private Const m_LoginFormName As String = g_ApplicationLoginFormName
+Private m_LoginFormName As String
+Private m_DbmsConfigFormName As String
 
 Private Const m_CheckConnectionTimeout As Long = 5 'Connectiontimeout für Verbindungsprüfung (Standard wäre 15 sec)
 
@@ -83,8 +85,11 @@ Private m_DatabaseFile As String 'für dateibasierte DBS
 Private m_UseLoginForm As Boolean
 Private m_SAVEPWD As Boolean
 
+#If CONFIG_USELOGINFORM = 1 Then
 Private WithEvents m_LoginForm As Form_frmLogin
 Attribute m_LoginForm.VB_VarHelpID = -1
+#End If
+
 Private m_LoginCancelled As Boolean
 
 'DSN
@@ -207,7 +212,9 @@ End Sub
 
 Private Sub Dispose()
 On Error Resume Next
+#If CONFIG_USELOGINFORM = 1 Then
    If Not (m_LoginForm Is Nothing) Then Set m_LoginForm = Nothing
+#End If
    m_DbmsInfoReaded = False
    RaiseEvent Disposed
 End Sub
@@ -326,7 +333,7 @@ Private Sub readDBMSprop(Optional ByVal withoutLoginForm As Boolean = False, Opt
 
    If Not withoutLoginForm Then
    If m_UseLoginForm Then 'ergibt Anmeldung, daher nicht für Vorabeinstellungen nutzen! (=>withoutLoginForm=true)
-   
+#If CONFIG_USELOGINFORM = 1 Then
       Dim LoginUserName As String
       LoginUserName = GetUserNameFromConfigFile
       If Len(LoginUserName) = 0 Then
@@ -334,9 +341,13 @@ Private Sub readDBMSprop(Optional ByVal withoutLoginForm As Boolean = False, Opt
       End If
    
       'm_LoginForm über Property LoginForm zugänglich machen und im LoginForm selbst setzen:
+
       Set g_TempRef = Me
       DoCmd.OpenForm m_LoginFormName, acNormal, , , acFormEdit, acDialog, m_CID & "@" & LoginUserName
       Set g_TempRef = Nothing
+#Else
+   Err.Raise vbObjectError, "DbConnectionInfo", "CONFIG_USELOGINFORM in Projekteigenschaften nicht gesetzt!"
+#End If
    End If
    End If
    
@@ -363,6 +374,8 @@ On Error Resume Next
    WritePrivateProfileString "Login", "UserName", UserName, CurrentProject.Path & "\" & m_CID & ".ini"
 End Sub
 
+#If CONFIG_USELOGINFORM = 1 Then
+
 Public Property Get LoginForm() As Form
 On Error Resume Next
    Set LoginForm = m_LoginForm
@@ -381,6 +394,8 @@ Private Sub m_LoginForm_Cancelled()
    m_LoginCancelled = True
 
 End Sub
+
+#End If
 
 Private Sub m_LoginForm_Logon(ByVal LoginName As String, ByVal Password As String, Cancel As Boolean)
    
@@ -405,7 +420,9 @@ Private Sub m_LoginForm_Logon(ByVal LoginName As String, ByVal Password As Strin
       SaveUserNameToConfigFile m_DBUSER
    End If
 
+#If CONFIG_USELOGINFORM = 1 Then
    Set m_LoginForm = Nothing
+#End If
 
 End Sub
 
@@ -1325,4 +1342,50 @@ Public Property Get BooleanTrueString() As String
       Case Else
          Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NODBMS, "DbConnectionInfo.BooleanTrueString", "Für '" & m_DBMSNAME & "' kann kein True-String ermittelt werden."
    End Select
+End Property
+
+
+
+#If CONFIG_USELOGINFORM = 1 Then
+'---------------------------------------------------------------------------------------
+' Property: LoginFormName
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Name des Login-Formulars
+' </summary>
+' <returns>String</returns>
+' <remarks>
+' Beispiel aus ACLib: \base\login\frmLogin.frm
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Property Get LoginFormName() As String
+   LoginFormName = m_LoginFormName
+End Property
+
+Public Property Let LoginFormName(ByVal NewValue As String)
+    m_LoginFormName = NewValue
+End Property
+
+#End If
+
+'---------------------------------------------------------------------------------------
+' Property: DbmsConfigFormName
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Name des Formulars zur DBMS-Konfiguration
+' </summary>
+' <returns>String</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Property Get DbmsConfigFormName() As String
+   DbmsConfigFormName = m_DbmsConfigFormName
+End Property
+
+Public Property Let DbmsConfigFormName(ByVal NewValue As String)
+    m_DbmsConfigFormName = NewValue
 End Property
