@@ -180,7 +180,7 @@ On Error Resume Next
    m_CID = selectCID
    
    If Len(m_CID) > 0 Then
-      readDBMSprop RaiseDbmsConnectionChangedEvent:=True
+      ReadDBMSprop RaiseDbmsConnectionChangedEvent:=True
    Else
       RaiseEvent DbmsConnectionChanged(vbNullString)
    End If
@@ -190,7 +190,7 @@ End Property
 Public Property Get DbmsName() As String
 On Error Resume Next
    If StrPtr(m_DBMSNAME) = 0 Then
-      readDBMSprop
+      ReadDBMSprop
    End If
    DbmsName = m_DBMSNAME
 End Property
@@ -219,7 +219,7 @@ On Error Resume Next
    RaiseEvent Disposed
 End Sub
 
-Private Sub readDBMSprop(Optional ByVal withoutLoginForm As Boolean = False, Optional ByVal RaiseDbmsConnectionChangedEvent As Boolean = False)
+Private Sub ReadDBMSprop(Optional ByVal withoutLoginForm As Boolean = False, Optional ByVal RaiseDbmsConnectionChangedEvent As Boolean = False)
 
    Dim strSQL As String
    Dim rst As DAO.Recordset
@@ -432,7 +432,7 @@ Private Sub setConnectionStrings(Optional ByVal bWithConnectionCheck As Boolean 
    Dim ErrMsg As String
 
    If Not m_DbmsInfoReaded Then
-      readDBMSprop
+      ReadDBMSprop
       If m_LoginCancelled Or ((Len(m_DBSERVER) + Len(m_DBNAME)) = 0) Then
          Exit Sub
       End If
@@ -451,7 +451,7 @@ Private Sub setConnectionStrings(Optional ByVal bWithConnectionCheck As Boolean 
 
       If Not m_DbmsInfoReaded Then
       If Len(m_DBUSER) = 0 Then
-         readDBMSprop
+         ReadDBMSprop
       End If
       End If
 
@@ -916,7 +916,7 @@ End Function
 Public Property Get ConnectionStrings() As DbmsConnectionStrings
 
    If m_DbmsInfoReaded = False Then
-      readDBMSprop
+      ReadDBMSprop
    End If
 
    Select Case m_DBMSNAME
@@ -941,7 +941,7 @@ Private Function getOdbcUserInfo(Optional ByVal sUID As String = vbNullString, _
    
    If Len(sUID) = 0 Then
       If m_DbmsInfoReaded = False Then
-         readDBMSprop
+         ReadDBMSprop
       End If
       sUID = m_DBUSER
       sPWD = m_DBUSERPWD
