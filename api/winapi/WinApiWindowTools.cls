@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Module: modWinAPI_Handles
+' Module: WinApiWindowTools
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -34,11 +34,9 @@ Option Compare Text
 Option Explicit
 
 Private Type POINTAPI
-   x As Long
-   y As Long
+   X As Long
+   Y As Long
 End Type
-
-#If VBA7 Then
 
 Private Declare PtrSafe Function ClientToScreen Lib "user32.dll" ( _
          ByVal Hwnd As LongPtr, _
@@ -46,27 +44,12 @@ Private Declare PtrSafe Function ClientToScreen Lib "user32.dll" ( _
       ) As Long
 
 Private Declare PtrSafe Function FindWindowEx Lib "user32.dll" Alias "FindWindowExA" ( _
-         ByVal hWnd1 As LongPtr, _
-         ByVal hWnd2 As LongPtr, _
-         ByVal lpsz1 As String, _
-         ByVal lpsz2 As String _
-      ) As Long
+         ByVal HWnd1 As LongPtr, _
+         ByVal HWnd2 As LongPtr, _
+         ByVal Lpsz1 As String, _
+         ByVal Lpsz2 As String _
+      ) As LongPtr
 
-#Else
-
-Private Declare Function ClientToScreen Lib "user32.dll" ( _
-         ByVal Hwnd As Long, _
-         ByRef lpPoint As POINTAPI _
-      ) As Long
-
-Private Declare Function FindWindowEx Lib "user32.dll" Alias "FindWindowExA" ( _
-         ByVal hWnd1 As Long, _
-         ByVal hWnd2 As Long, _
-         ByVal lpsz1 As String, _
-         ByVal lpsz2 As String _
-      ) As Long
-
-#End If
 '---------------------------------------------------------------------------------------
 ' Function: GetMDI
 '---------------------------------------------------------------------------------------
@@ -79,8 +62,8 @@ Private Declare Function FindWindowEx Lib "user32.dll" Alias "FindWindowExA" ( _
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetMDI() As Long
-   Dim h As Long
+Public Function GetMDI() As LongPtr
+   Dim h As LongPtr
    h = Application.hWndAccessApp
    'Erstes (und einziges) "MDIClient"-Kindfenster des Applikationsfensters suchen
    GetMDI = FindWindowEx(h, 0&, "MDIClient", vbNullString)
@@ -99,8 +82,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetHeaderSection(ByVal Hwnd As Long) As Long
-   Dim h As Long
+Public Function GetHeaderSection(ByVal Hwnd As LongPtr) As LongPtr
+   Dim h As LongPtr
    'Erstes "OFormsub"-Kindfenster des Formulares (fhwnd) ermitteln
    h = FindWindowEx(Hwnd, 0&, "OformSub", vbNullString)
    GetHeaderSection = h
@@ -119,8 +102,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetDetailSection(ByVal Hwnd As Long) As Long
-   Dim h As Long
+Public Function GetDetailSection(ByVal Hwnd As LongPtr) As LongPtr
+   Dim h As LongPtr
    'Erstes "OFormsub"-Kindfenster des Formulares (fhwnd) ermitteln, beginnend
    'nach dem Kopfbereich
    h = GetHeaderSection(Hwnd)
@@ -141,8 +124,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetFooterSection(ByVal Hwnd As Long) As Long
-   Dim h As Long
+Public Function GetFooterSection(ByVal Hwnd As Long) As LongPtr
+   Dim h As LongPtr
    'Erstes "OFormsub"-Kindfenster des Formulares (fhwnd) ermitteln, beginnend
    'nach dem Detailbereich
    h = GetDetailSection(Hwnd)
@@ -166,7 +149,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetControl(ByRef FrmRef As Access.Form, ByVal Hwnd As Long, ByVal ClassName As String, ByVal ControlName As String) As Long
+Public Function GetControl(ByRef FrmRef As Access.Form, ByVal Hwnd As LongPtr, _
+                           ByVal ClassName As String, ByVal ControlName As String) As LongPtr
 
    'Ermittelt den Handle eines beliebigen Controls
 
@@ -190,7 +174,7 @@ Public Function GetControl(ByRef FrmRef As Access.Form, ByVal Hwnd As Long, ByVa
 
 On Error Resume Next
 
-   Dim h As Long
+   Dim h As LongPtr
    Dim obj As Object
    Dim pt As POINTAPI
 
@@ -202,12 +186,12 @@ On Error Resume Next
 
       'Bildschirmkoordinaten dieses Controls ermitteln
       'dafür die Punktkoordinaten aus dem letzten Durchlauf zurücksetzen, sonst wird addiert!
-      pt.x = 0
-      pt.y = 0
+      pt.X = 0
+      pt.Y = 0
       ClientToScreen h, pt
 
       'Objekt bei den Koordinaten ermitteln
-      Set obj = FrmRef.accHitTest(pt.x, pt.y)
+      Set obj = FrmRef.accHitTest(pt.X, pt.Y)
 
       'Wenn Objektname = Tabname Ausstieg aus der Schleife
       If obj.Name = ControlName Then
