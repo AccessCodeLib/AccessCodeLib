@@ -145,9 +145,10 @@ End Property
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function Clone(Optional ByVal NewSqlDateFormat As String, _
-                      Optional ByVal NewSqlBooleanTrueString As String, _
-                      Optional ByVal NewSqlWildCardString As String) As SqlTools
+Public Function Clone(Optional ByVal NewSqlDateFormat As String = SQL_DEFAULT_DATEFORMAT, _
+                      Optional ByVal NewSqlBooleanTrueString As String = SQL_DEFAULT_BOOLTRUESTRING, _
+                      Optional ByVal NewSqlWildCardString As String = SQL_DEFAULT_WILDCARD) As SqlTools
+
 
    If Len(NewSqlDateFormat) = 0 Then NewSqlDateFormat = Me.SqlDateFormat
    If Len(NewSqlBooleanTrueString) = 0 Then NewSqlBooleanTrueString = Me.SqlBooleanTrueString
@@ -299,12 +300,35 @@ Public Function NumberToSqlText(ByVal Value As Variant) As String
       Exit Function
    End If
    
+   Value = ConvertToNumeric(Value)
+   
    Result = Trim$(Str$(Value))
    If Left(Result, 1) = "." Then
       Result = "0" & Result
    End If
    
    NumberToSqlText = Result
+   
+End Function
+
+Private Function ConvertToNumeric(ByVal Value As Variant) As Variant
+   
+   Const CheckNumber As Double = 1.23
+   
+   Dim CheckText As String
+   
+   CheckText = CStr(CheckNumber)
+   If InStr(1, CheckText, ",") > 0 Then
+      If InStr(1, Value, ".") > 0 Then
+         Value = CDbl(Replace(Value, ".", ","))
+      End If
+   Else
+      If InStr(1, Value, ",") > 0 Then
+         Value = CDbl(Replace(Value, ",", "."))
+      End If
+   End If
+   
+   ConvertToNumeric = CDbl(Value)
    
 End Function
 
@@ -364,17 +388,74 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
                               ByVal RelationalOperator As SqlRelationalOperators, _
                               ByVal FilterValue As Variant, _
                      Optional ByVal FilterValue2 As Variant = Null, _
-                     Optional ByVal IgnoreValue As Variant = Null) As String
+                     Optional ByVal IgnoreValue As Variant = Null, _
+                     Optional ByVal DisableIgnoreNullValue As Boolean = False) As String
 
    Dim FilterValueString As String
    Dim OperatorString As String
    Dim Criteria As String
+   Dim TempArr() As String
 
    If (RelationalOperator And [_IgnoreAll]) = [_IgnoreAll] Then
       Exit Function
    End If
    
-   If NullFilterOrEmptyFilter(FieldName, FieldDataType, Nz(FilterValue, FilterValue2), IgnoreValue, Criteria) Then
+   If Not IsArray(FilterValue) Then
+     
+      
+      If FilterValue = "{NULL}" Or FilterValue = "{LEER}" Or FilterValue = "{EMPTY}" Then
+   '      BuildCriteria = BuildCriteria(FieldName, FieldDataType, RelationalOperator, Null, Null, Null, True)
+   '      Exit Function
+         FilterValue = Null
+         DisableIgnoreNullValue = True
+      End If
+      
+      If FilterValue2 = "{NULL}" Or FilterValue2 = "{LEER}" Or FilterValue2 = "{EMPTY}" Then
+         FilterValue2 = Null
+         DisableIgnoreNullValue = True
+      End If
+      
+      If FieldDataType = SQL_Numeric Then
+      
+         If FilterValue = "*" And RelationalOperator = SQL_Equal Then
+            BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_Not, Null, Null, 0, True)
+            Exit Function
+         End If
+      
+         If IsNull(FilterValue2) Then
+         If FilterValue Like "[0-9]*-*[0-9]" Then
+            TempArr = Split(FilterValue, "-")
+            BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_Between, Trim(TempArr(0)), Trim(TempArr(1)), IgnoreValue, DisableIgnoreNullValue)
+            Exit Function
+         End If
+         End If
+         
+         If Left(FilterValue, 1) = "<" Then
+            If ((RelationalOperator And SQL_Equal) = SQL_Equal) Then
+               RelationalOperator = RelationalOperator - SQL_Equal
+            End If
+            RelationalOperator = RelationalOperator Or SQL_LessThan
+            FilterValue = Mid(FilterValue, 2)
+         End If
+         
+         If Left(FilterValue, 1) = ">" Then
+            If ((RelationalOperator And SQL_Equal) = SQL_Equal) Then
+               RelationalOperator = RelationalOperator - SQL_Equal
+            End If
+            RelationalOperator = RelationalOperator Or SQL_GreaterThan
+            FilterValue = Mid(FilterValue, 2)
+         End If
+      
+         If Left(FilterValue, 1) = "=" Then
+            RelationalOperator = RelationalOperator Or SQL_Equal
+            FilterValue = Mid(FilterValue, 2)
+         End If
+         
+      End If
+      
+   End If
+   
+   If NullFilterOrEmptyFilter(FieldName, FieldDataType, RelationalOperator, Nz(FilterValue, FilterValue2), IgnoreValue, Criteria, DisableIgnoreNullValue) Then
       BuildCriteria = Criteria
       Exit Function
    End If
@@ -399,7 +480,7 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
       Exit Function
    End If
 
-   If (RelationalOperator And SQL_Like) = SQL_Like Or (RelationalOperator And SQL_UseLikeBehavior) = SQL_UseLikeBehavior Then
+   If (RelationalOperator And SQL_Like) = SQL_Like Then
       If SqlWildCardString <> "*" Then
          If InStr(1, FilterValue, "*") > 0 Then
             FilterValue = Replace(FilterValue, "[*]", "@@@|||STAR|||@@@")
@@ -410,7 +491,7 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
    End If
 
    If (RelationalOperator And SQL_Add_WildCardSuffix) = SQL_Add_WildCardSuffix Then
-      If (RelationalOperator And SQL_Like) = SQL_Like Or (RelationalOperator And SQL_UseLikeBehavior) = SQL_UseLikeBehavior Then
+      If (RelationalOperator And SQL_Like) = SQL_Like Then
          FilterValue = FilterValue & SqlWildCardString
       ElseIf (FieldDataType And SQL_Date) = SQL_Date Then
          If (RelationalOperator And SQL_LessThan) = 0 Then ' kein < daher:  >, >= oder nur =
@@ -432,7 +513,7 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
    End If
 
    If (RelationalOperator And SQL_Add_WildCardPrefix) = SQL_Add_WildCardPrefix Then
-      If (RelationalOperator And SQL_Like) = SQL_Like Or (RelationalOperator And SQL_UseLikeBehavior) = SQL_UseLikeBehavior Then
+      If (RelationalOperator And SQL_Like) = SQL_Like Then
          FilterValue = SqlWildCardString & FilterValue
       End If
    End If
@@ -446,10 +527,6 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
       End If
       BuildCriteria = FieldName & OperatorString & FilterValueString
       Exit Function
-   End If
-   
-   If (RelationalOperator And SQL_UseLikeBehavior) = SQL_UseLikeBehavior Then
-      RelationalOperator = RelationalOperator - SQL_UseLikeBehavior
    End If
    
    OperatorString = GetRelationalOperatorString(RelationalOperator)
@@ -545,27 +622,22 @@ Private Function TryBuildArrayCriteria(ByRef FieldName As String, ByVal FieldDat
                                        ByRef Criteria As String) As Boolean
    Dim itm As Variant
    Dim ItmCriteria As String
-   Dim ConcatString As String
+   
+   Dim arrFilterValue() As Variant
    
    If Not IsArray(FilterValue) Then
       Exit Function
    End If
-   
-   If (RelationalOperator And SQL_Not) = SQL_Not Then
-      ConcatString = SqlAndConcatString
-   Else
-      ConcatString = SqlOrConcatString
-   End If
 
-   'Kriterien über Or bzw. And (bei Not im Ausdruck) verbinden
+   'Kriterien über Or verbinden
    For Each itm In FilterValue
       ItmCriteria = BuildCriteria(FieldName, FieldDataType, RelationalOperator, itm, , IgnoreValue)
       If Len(ItmCriteria) > 0 Then
-         Criteria = Criteria & ConcatString & ItmCriteria
+         Criteria = Criteria & SqlOrConcatString & ItmCriteria
       End If
    Next
    If Len(Criteria) > 0 Then
-      Criteria = Mid(Criteria, Len(ConcatString) + 1) ' 1. Or/And wegschneiden
+      Criteria = Mid(Criteria, Len(SqlOrConcatString) + 1) ' 1. Or wegschneiden
    End If
 
    TryBuildArrayCriteria = True
@@ -665,13 +737,19 @@ Private Function GetCheckedIgnoreValue(ByVal IgnoreValue As Variant) As Variant
 End Function
 
 Private Function NullFilterOrEmptyFilter(ByVal FieldName As String, ByVal FieldDataType As SqlFieldDataType, _
+                                          ByVal RelationalOperator As SqlRelationalOperators, _
                                          ByVal Value As Variant, ByVal IgnoreValue As Variant, _
-                                         ByRef NullFilterString As String) As Boolean
+                                         ByRef NullFilterString As String, _
+                                Optional ByVal DisableIgnoreNullValue As Boolean = False) As Boolean
    
    If IsObject(IgnoreValue) Then
    If IgnoreValue Is Nothing Then
       If IsNull(Value) Then
-         NullFilterString = FieldName & " Is Null"
+         If (RelationalOperator And SQL_Not) = SQL_Not Then
+            NullFilterString = FieldName & " Is Not Null"
+         Else
+            NullFilterString = FieldName & " Is Null"
+         End If
          NullFilterOrEmptyFilter = True
       Else
          NullFilterOrEmptyFilter = False
@@ -681,7 +759,9 @@ Private Function NullFilterOrEmptyFilter(ByVal FieldName As String, ByVal FieldD
    End If
    
    If IsNull(Value) Then
-      If Not ValuesAreEqual(FieldDataType, Value, IgnoreValue) Then
+      If DisableIgnoreNullValue Then
+         NullFilterString = FieldName & " Is Null"
+      ElseIf Not ValuesAreEqual(FieldDataType, Value, IgnoreValue) Then
          NullFilterString = FieldName & " Is Null"
       End If
       NullFilterOrEmptyFilter = True
@@ -706,6 +786,10 @@ On Error Resume Next
       End If
    Else
       NullFilterOrEmptyFilter = ValuesAreEqual(FieldDataType, Value, IgnoreValue)
+   End If
+   
+   If (RelationalOperator And SQL_Not) = SQL_Not Then
+         NullFilterString = Replace(NullFilterString, "Is Null", "Is Not Null")
    End If
 
 End Function
