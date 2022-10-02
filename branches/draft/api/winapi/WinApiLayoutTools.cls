@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Module: modWinAPI_Layout
+' Module: WinApiLayoutTools
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -32,7 +32,7 @@ Private Const GCL_HBRBACKGROUND As Long = -10
 Private Const RDW_INVALIDATE As Long = &H1
 Private Const RDW_ERASE As Long = &H4
 
-Private Const HWND_DESKTOP As Long = 0
+Private Const HWND_DESKTOP As LongPtr = 0
 Private Const LOGPIXELSX As Long = 88
 Private Const LOGPIXELSY As Long = 90
 
@@ -42,44 +42,44 @@ Private Const SM_CXVSCROLL As Long = 2
 
 Private Declare PtrSafe Function CreateSolidBrush _
       Lib "gdi32.dll" ( _
-      ByVal crColor As Long _
-      ) As Long
+      ByVal CrColor As Long _
+      ) As LongPtr
 
 Private Declare PtrSafe Function RedrawWindow _
       Lib "user32" ( _
-      ByVal Hwnd As Long, _
-      lprcUpdate As Any, _
-      ByVal hrgnUpdate As Long, _
-      ByVal fuRedraw As Long _
+      ByVal Hwnd As LongPtr, _
+      LprcUpdate As Any, _
+      ByVal HrgnUpdate As Long, _
+      ByVal FuRedraw As Long _
       ) As Long
 
 Private Declare PtrSafe Function SetClassLong _
       Lib "user32.dll" _
       Alias "SetClassLongA" ( _
-      ByVal Hwnd As Long, _
+      ByVal Hwnd As LongPtr, _
       ByVal nIndex As Long, _
       ByVal dwNewLong As Long _
       ) As Long
 
 Private Declare PtrSafe Function GetSystemMetrics Lib "user32" (ByVal Index As Long) As Long
 
-Private Declare PtrSafe Function GetDC Lib "user32" (ByVal Hwnd As Long) As Long
-Private Declare PtrSafe Function ReleaseDC Lib "user32" (ByVal Hwnd As Long, ByVal DC As Long) As Long
-Private Declare PtrSafe Function GetDeviceCaps Lib "gdi32" (ByVal DC As Long, ByVal Index As Long) As Long
+Private Declare PtrSafe Function GetDC Lib "user32" (ByVal Hwnd As LongPtr) As LongPtr
+Private Declare PtrSafe Function ReleaseDC Lib "user32" (ByVal Hwnd As LongPtr, ByVal DC As LongPtr) As Long
+Private Declare PtrSafe Function GetDeviceCaps Lib "gdi32" (ByVal DC As LongPtr, ByVal Index As Long) As LongPtr
 
 #Else
 
 Private Declare Function CreateSolidBrush _
       Lib "gdi32.dll" ( _
-      ByVal crColor As Long _
+      ByVal CrColor As Long _
       ) As Long
 
 Private Declare Function RedrawWindow _
       Lib "user32" ( _
       ByVal Hwnd As Long, _
-      lprcUpdate As Any, _
-      ByVal hrgnUpdate As Long, _
-      ByVal fuRedraw As Long _
+      LprcUpdate As Any, _
+      ByVal HrgnUpdate As Long, _
+      ByVal FuRedraw As Long _
       ) As Long
 
 Private Declare Function SetClassLong _
@@ -99,7 +99,7 @@ Private Declare Function GetDeviceCaps Lib "gdi32" (ByVal DC As Long, ByVal Inde
 #End If
 
 '---------------------------------------------------------------------------------------
-' Sub: SetBackColor (Josef Pötzl, 2010-04-19)
+' Sub: SetBackColor
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -112,7 +112,7 @@ Private Declare Function GetDeviceCaps Lib "gdi32" (ByVal DC As Long, ByVal Inde
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Sub SetBackColor(ByVal Hwnd As Long, ByVal Color As Long)
+Public Sub SetBackColor(ByVal Hwnd As LongPtr, ByVal Color As Long)
   
    Dim NewBrush As Long
    
@@ -160,7 +160,7 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function TwipsPerPixelY() As Single
-   Dim DC As Long
+   Dim DC As LongPtr
    DC = GetDC(HWND_DESKTOP)
    TwipsPerPixelY = 1440& / GetDeviceCaps(DC, LOGPIXELSY)
    ReleaseDC HWND_DESKTOP, DC

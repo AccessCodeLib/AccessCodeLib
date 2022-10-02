@@ -70,7 +70,7 @@ Private Const WAIT_TIMEOUT As Long = &H102&
 Private Declare PtrSafe Function ShellExecuteA Lib "shell32.dll" ( _
    ByVal Hwnd As Long, _
    ByVal lOperation As String, _
-   ByVal LpFile As String, _
+   ByVal lpFile As String, _
    ByVal lpParameters As String, _
    ByVal lpDirectory As String, _
    ByVal nShowCmd As Long) As Long
@@ -99,7 +99,7 @@ Private Declare PtrSafe Sub Sleep Lib "kernel32" (ByVal DwMilliseconds As Long)
 Private Declare Function ShellExecuteA Lib "shell32.dll" ( _
    ByVal Hwnd As Long, _
    ByVal lOperation As String, _
-   ByVal LpFile As String, _
+   ByVal lpFile As String, _
    ByVal lpParameters As String, _
    ByVal lpDirectory As String, _
    ByVal nShowCmd As Long) As Long
@@ -144,7 +144,8 @@ Private Declare Sub Sleep Lib "kernel32" (ByVal DwMilliseconds As Long)
 '**/
 '---------------------------------------------------------------------------------------
 Public Function Execute(ByVal FilePath As String, _
-               Optional ByVal ApiOperation As String = vbNullString) As Boolean
+               Optional ByVal ApiOperation As String = vbNullString, _
+               Optional ByVal ShowCmd As VbAppWinStyle = vbNormalFocus) As Boolean
 
    Dim Ret As Long
    Dim Directory As String
@@ -155,7 +156,7 @@ Public Function Execute(ByVal FilePath As String, _
       Exit Function
    Else
       DeskWin = GetDesktopWindow()
-      Ret = ShellExecuteA(DeskWin, ApiOperation, FilePath, vbNullString, vbNullString, vbNormalFocus)
+      Ret = ShellExecuteA(DeskWin, ApiOperation, FilePath, vbNullString, vbNullString, ShowCmd)
    End If
    
    If Ret = SE_ERR_NOTFOUND Then
@@ -171,7 +172,7 @@ Public Function Execute(ByVal FilePath As String, _
       Ret = GetSystemDirectory(Directory, Len(Directory))
       Directory = Left$(Directory, Ret)
       Call ShellExecuteA(DeskWin, vbNullString, "RUNDLL32.EXE", "shell32.dll, OpenAs_RunDLL " & _
-         FilePath, Directory, vbNormalFocus)
+         FilePath, Directory, ShowCmd)
    End If
    
    Execute = True
@@ -215,7 +216,7 @@ Public Function ShellExecuteSendMail(ByVal SendTo As String, _
                                      ByVal Body As String) As Boolean
 
    Dim Ret As Long
-   Dim LpFile As String
+   Dim lpFile As String
    
    If Len(SendTo) = 0 Then
       ShellExecuteSendMail = False
@@ -223,24 +224,24 @@ Public Function ShellExecuteSendMail(ByVal SendTo As String, _
    End If
    
    If Subject > vbNullString Then
-      LpFile = "subject=" & Subject
+      lpFile = "subject=" & Subject
    End If
    If Body > vbNullString Then
-      If LpFile > vbNullString Then
-         LpFile = LpFile & "&body=" & Body
+      If lpFile > vbNullString Then
+         lpFile = lpFile & "&body=" & Body
       Else
-         LpFile = "body=" & Body
+         lpFile = "body=" & Body
       End If
    End If
-   If LpFile > vbNullString Then
-       LpFile = "mailto:" & SendTo & "?" & LpFile
+   If lpFile > vbNullString Then
+       lpFile = "mailto:" & SendTo & "?" & lpFile
    Else
-      LpFile = "mailto:" & SendTo
+      lpFile = "mailto:" & SendTo
    End If
 
    
    
-   Ret = ShellExecuteA(GetDesktopWindow(), "open", LpFile, vbNullString, vbNullString, vbNormalFocus)
+   Ret = ShellExecuteA(GetDesktopWindow(), "open", lpFile, vbNullString, vbNullString, vbNormalFocus)
    ShellExecuteSendMail = (Ret <> 0)
 
 End Function
