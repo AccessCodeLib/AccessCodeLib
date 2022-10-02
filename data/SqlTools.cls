@@ -402,10 +402,7 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
    
    If Not IsArray(FilterValue) Then
      
-      
       If FilterValue = "{NULL}" Or FilterValue = "{LEER}" Or FilterValue = "{EMPTY}" Then
-   '      BuildCriteria = BuildCriteria(FieldName, FieldDataType, RelationalOperator, Null, Null, Null, True)
-   '      Exit Function
          FilterValue = Null
          DisableIgnoreNullValue = True
       End If
@@ -415,55 +412,52 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
          DisableIgnoreNullValue = True
       End If
       
-      If FieldDataType = SQL_Numeric Then
-      
-         If FilterValue = "*" And RelationalOperator = SQL_Equal Then
-            BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_Not, Null, Null, 0, True)
-            Exit Function
-         End If
-      
-         If IsNull(FilterValue2) Then
-         If FilterValue Like "[0-9]*-*[0-9]" Then
-            TempArr = Split(FilterValue, "-")
-            BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_Between, Trim(TempArr(0)), Trim(TempArr(1)), IgnoreValue, DisableIgnoreNullValue)
-            Exit Function
-         End If
-         End If
-         
-         If Left(FilterValue, 1) = "<" Then
-            If ((RelationalOperator And SQL_Equal) = SQL_Equal) Then
-               RelationalOperator = RelationalOperator - SQL_Equal
-            End If
-            RelationalOperator = RelationalOperator Or SQL_LessThan
-            FilterValue = Mid(FilterValue, 2)
-         End If
-         
-         If Left(FilterValue, 1) = ">" Then
-            If ((RelationalOperator And SQL_Equal) = SQL_Equal) Then
-               RelationalOperator = RelationalOperator - SQL_Equal
-            End If
-            RelationalOperator = RelationalOperator Or SQL_GreaterThan
-            FilterValue = Mid(FilterValue, 2)
-         End If
-      
-         If Left(FilterValue, 1) = "=" Then
-            RelationalOperator = RelationalOperator Or SQL_Equal
-            FilterValue = Mid(FilterValue, 2)
-         End If
-         
-      End If
-      
    End If
    
    If NullFilterOrEmptyFilter(FieldName, FieldDataType, RelationalOperator, Nz(FilterValue, FilterValue2), IgnoreValue, Criteria, DisableIgnoreNullValue) Then
       BuildCriteria = Criteria
       Exit Function
    End If
-
+   
    If (RelationalOperator And SQL_SplitValueToArray) = SQL_SplitValueToArray Then
-      FilterValue = Split(CharTrim(FilterValue, ";"), ";")
+      If InStr(1, FilterValue, ";") > 0 Then
+         FilterValue = Split(CharTrim(FilterValue, ";"), ";")
+      End If
       RelationalOperator = RelationalOperator Xor SQL_SplitValueToArray
    End If
+   
+   'Sonderfälle:
+   If Not IsArray(FilterValue) Then
+     
+      If FieldDataType = SQL_Numeric Then
+      
+         If FilterValue = "*" And RelationalOperator = SQL_Equal Then
+            BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_Not, Null, Null, 0, True)
+            Exit Function
+         End If
+         
+         If IsNull(FilterValue2) Then
+         
+            If FilterValue Like "[0-9]*-*[0-9]*" Then
+               TempArr = Split(FilterValue, "-")
+               BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_Between, Trim(TempArr(0)), Trim(TempArr(1)), IgnoreValue, DisableIgnoreNullValue)
+               Exit Function
+            End If
+         
+            If FilterValue Like "*[0-9]" & DecimalSign & "*[*]" Then
+               FilterValue = Replace(FilterValue, "*", "0")
+               BuildCriteria = BuildCriteria(FieldName, FieldDataType, RelationalOperator + SQL_Add_WildCardSuffix, FilterValue, FilterValue2, IgnoreValue, DisableIgnoreNullValue)
+               Exit Function
+            End If
+         
+         End If
+         
+         ConfigNumericSpecials RelationalOperator, FilterValue, FilterValue2
+         
+      End If
+      
+   End If
+
 
    If TryBuildInCriteria(FieldName, FieldDataType, RelationalOperator, FilterValue, IgnoreValue, Criteria) Then
       BuildCriteria = Criteria
@@ -509,6 +503,22 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
             End If
             FilterValue = DateAdd("d", 1, CDate(CLng(FilterValue)))
          End If
+      ElseIf (FieldDataType And SQL_Numeric) = SQL_Numeric Then
+         If (RelationalOperator And SQL_LessThan) = 0 Then ' kein < daher:  >, >= oder nur =
+            If (RelationalOperator And SQL_GreaterThan) = SQL_GreaterThan Then
+               ' nichts ändern => >= Zahl  / SQL_Add_WildCardSuffix ist nicht logisch
+            Else ' nachfolgende Dezimalwerte berücksichtigen FieldName >= Zahl and FieldName < (Zahl + x)
+               BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue) & _
+                               SqlAndConcatString & _
+                               BuildCriteria(FieldName, FieldDataType, SQL_LessThan, GetNextDigitNumber(FilterValue))
+               Exit Function
+            End If
+         Else
+            If (RelationalOperator And SQL_Equal) = SQL_Equal Then
+               RelationalOperator = RelationalOperator - SQL_Equal
+            End If
+            FilterValue = GetNextDigitNumber(FilterValue)
+         End If
       End If
    End If
 
@@ -539,6 +549,77 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
    BuildCriteria = Criteria
 
 End Function
+
+Private Function ConfigNumericSpecials( _
+                              ByRef RelationalOperator As SqlRelationalOperators, _
+                              ByRef FilterValue As Variant, _
+                              ByRef FilterValue2 As Variant)
+
+   If Left(FilterValue, 1) = "<" Then
+      If ((RelationalOperator And SQL_Equal) = SQL_Equal) Then
+         RelationalOperator = RelationalOperator - SQL_Equal
+      End If
+      RelationalOperator = RelationalOperator Or SQL_LessThan
+      FilterValue = Mid(FilterValue, 2)
+   End If
+   
+   If Left(FilterValue, 1) = ">" Then
+      If ((RelationalOperator And SQL_Equal) = SQL_Equal) Then
+         RelationalOperator = RelationalOperator - SQL_Equal
+      End If
+      RelationalOperator = RelationalOperator Or SQL_GreaterThan
+      FilterValue = Mid(FilterValue, 2)
+   End If
+
+   If Left(FilterValue, 1) = "=" Then
+      RelationalOperator = RelationalOperator Or SQL_Equal
+      FilterValue = Mid(FilterValue, 2)
+   End If
+   
+   If Right(FilterValue, 1) = "*" Then
+      RelationalOperator = RelationalOperator Or SQL_Add_WildCardSuffix
+      FilterValue = Replace(FilterValue, "*", "0")
+   End If
+   
+   If Right(FilterValue2, 1) = "*" Then
+      RelationalOperator = RelationalOperator Or SQL_Add_WildCardSuffix
+      FilterValue2 = Replace(FilterValue2, "*", "0")
+   End If
+
+End Function
+
+Private Function GetNextDigitNumber(ByVal Z As Double) As Double
+   
+   Dim TestString As String
+   Dim KommaPos As Long
+   Dim digits As Long
+   TestString = Trim(CStr(Z))
+   
+   KommaPos = InStrRev(TestString, DecimalSign)
+   If KommaPos = 0 Then ' nächste Ganzzahl
+      GetNextDigitNumber = Z + 1
+      Exit Function
+   End If
+   
+   digits = Len(TestString) - KommaPos
+
+   GetNextDigitNumber = Z + 1 / 10 ^ digits
+   
+End Function
+
+Private Property Get DecimalSign() As String
+
+   Static DecSign As String
+   Dim x As String
+   
+   If Len(DecSign) = 0 Then
+      x = Trim(CStr(1.2))
+      DecSign = Mid(x, 2, 1)
+   End If
+   
+   DecimalSign = DecSign
+
+End Property
 
 Private Function CharTrim(ByVal ValueToTrim As String, ByVal TrimChar As String) As String
 
@@ -720,6 +801,12 @@ Private Function TryBuildBetweenCriteria(ByRef FieldName As String, ByVal FieldD
                  BuildCriteria(FieldName, FieldDataType, SQL_LessThan + SQL_Equal + SQL_Add_WildCardSuffix, FilterValue2)
       TryBuildBetweenCriteria = True
       Exit Function
+   ElseIf (FieldDataType And SQL_Numeric) = SQL_Numeric And (RelationalOperator And SQL_Add_WildCardSuffix) Then
+      Criteria = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue) & _
+                 SqlAndConcatString & _
+                 BuildCriteria(FieldName, FieldDataType, SQL_LessThan + SQL_Equal + SQL_Add_WildCardSuffix, FilterValue2)
+      TryBuildBetweenCriteria = True
+      Exit Function
    Else
       Criteria = FieldName & " Between " & ConvertToSqlText(FilterValue, FieldDataType) & SqlAndConcatString & ConvertToSqlText(FilterValue2, FieldDataType)
       TryBuildBetweenCriteria = True
@@ -819,17 +906,17 @@ Private Function ValuesAreEqual(ByVal FieldDataType As SqlFieldDataType, ByVal V
 
 End Function
 
-Private Function ArrayContains(ByVal FieldDataType As SqlFieldDataType, ByVal ArrayToCheck As Variant, ByVal SearchValue As Variant) As Boolean
+Private Function ArrayContains(ByVal FieldDataType As SqlFieldDataType, ByVal ArrayToCheck As Variant, ByVal searchValue As Variant) As Boolean
    
    Dim i As Long
 
-   If IsNull(SearchValue) Then
+   If IsNull(searchValue) Then
       ArrayContains = ArrayContainsNull(ArrayToCheck)
       Exit Function
    End If
 
    For i = LBound(ArrayToCheck) To UBound(ArrayToCheck)
-      If ValuesAreEqual(FieldDataType, ArrayToCheck(i), SearchValue) Then
+      If ValuesAreEqual(FieldDataType, ArrayToCheck(i), searchValue) Then
          ArrayContains = True
          Exit Function
       End If
