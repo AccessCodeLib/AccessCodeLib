@@ -29,6 +29,9 @@ Private Const SELECTBOX_OPENTITLE As String = "auswählen"
 Private Const DEFAULT_TEMPPATH_NOENV As String = "C:\"
 Private Const PATHLEN_MAX As Long = 255
 
+Private Const SE_ERR_NOTFOUND As Long = 2
+Private Const SE_ERR_NOASSOC  As Long = 31
+
 #If VBA7 Then
 
 Private Declare PtrSafe Function WNetGetConnection Lib "mpr.dll" Alias "WNetGetConnectionA" ( _
@@ -43,6 +46,14 @@ Private Declare PtrSafe Function API_GetTempFilename Lib "kernel32" Alias "GetTe
          ByVal lpPrefixString As String, _
          ByVal wUnique As Long, _
          ByVal lpTempFileName As String) As Long
+         
+Private Declare PtrSafe Function API_ShellExecuteA Lib "shell32.dll" ( _
+         ByVal Hwnd As LongPtr, _
+         ByVal lOperation As String, _
+         ByVal lpFile As String, _
+         ByVal lpParameters As String, _
+         ByVal lpDirectory As String, _
+         ByVal nShowCmd As Long) As Long
 
 #Else
 
@@ -58,6 +69,14 @@ Private Declare Function API_GetTempFilename Lib "kernel32" Alias "GetTempFileNa
          ByVal lpPrefixString As String, _
          ByVal wUnique As Long, _
          ByVal lpTempFileName As String) As Long
+
+Private Declare Function API_ShellExecuteA Lib "shell32.dll" ( _
+         ByVal Hwnd As Long, _
+         ByVal lOperation As String, _
+         ByVal lpFile As String, _
+         ByVal lpParameters As String, _
+         ByVal lpDirectory As String, _
+         ByVal nShowCmd As Long) As Long
 
 #End If
 
@@ -770,4 +789,74 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Function GetFileExtension(ByVal FilePath As String, Optional ByVal WithDotBeforeExtension As Boolean = False) As String
    GetFileExtension = VBA.Strings.Mid$(FilePath, VBA.Strings.InStrRev(FilePath, ".") + (1 - Abs(WithDotBeforeExtension)))
+End Function
+
+Public Function OpenFile(FileName As String, Optional ByVal ReadOnlyMode As Boolean = False) As Boolean
+
+   Dim strFile As String
+
+   strFile = FileName
+   If Len(Dir(strFile)) = 0 Then
+      Err.Raise vbObjectError, "OpenFile", "Die Datei '" & FileName & vbNewLine & "' " & _
+                  "konnte nicht gefunden werden." & vbNewLine & _
+                  "Bitte überprüfen Sie den Datei-Pfad."
+            Exit Function
+   End If
+
+   OpenFile = ShellExecute(strFile, "open")
+   
+End Function
+
+Public Function OpenFilePath(FilePath As String) As Boolean
+
+   Dim strFile As String
+
+   strFile = FilePath
+   If Len(Dir(FilePath, vbDirectory)) = 0 Then
+      Err.Raise vbObjectError, "OpenFilePath", "Das Verzeichnis '" & FilePath & vbNewLine & "' " & _
+                  "konnte nicht gefunden werden." & vbNewLine & _
+                  "Bitte überprüfen Sie den Pfad."
+            Exit Function
+   End If
+
+   OpenFilePath = ShellExecute(strFile, "open")
+   
+End Function
+
+Private Function ShellExecute(ByVal FilePath As String, _
+               Optional ByVal ApiOperation As String = vbNullString) As Boolean
+
+   Dim Ret As Long
+   Dim Directory As String
+   Dim DeskWin As Long
+   
+   If Len(FilePath) = 0 Then
+      ShellExecute = False
+      Exit Function
+   Else
+      DeskWin = Application.hWndAccessApp
+      Ret = API_ShellExecuteA(DeskWin, ApiOperation, FilePath, vbNullString, vbNullString, vbNormalFocus)
+   End If
+   
+   If Ret = SE_ERR_NOTFOUND Then
+      'Datei nicht gefunden
+      MsgBox "Datei nicht gefunden" & vbNewLine & vbNewLine & _
+             FilePath
+      ShellExecute = False
+      Exit Function
+   ElseIf Ret = SE_ERR_NOASSOC Then
+      ShellExecute = False
+      Exit Function
+' ToDo: "Öffnen mit"-Dialog verwenden:
+      'Wenn die Dateierweiterung noch nicht bekannt ist...
+      'wird der "Öffnen mit..."-Dialog angezeigt.
+'      Directory = Space$(260)
+'      Ret = GetSystemDirectory(Directory, Len(Directory))
+'      Directory = Left$(Directory, Ret)
+'      Call ShellExecuteA(DeskWin, vbNullString, "RUNDLL32.EXE", "shell32.dll, OpenAs_RunDLL " & _
+'         FilePath, Directory, vbNormalFocus)
+   End If
+   
+   ShellExecute = True
+
 End Function
