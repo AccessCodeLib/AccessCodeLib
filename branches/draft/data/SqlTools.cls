@@ -449,14 +449,25 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
          
             If FilterValue Like "[0-9]*-*[0-9]*" Then
                TempArr = Split(FilterValue, "-")
-               BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_Between, Trim(TempArr(0)), Trim(TempArr(1)), IgnoreValue, DisableIgnoreNullValue)
+               If Not IsNumeric(TempArr(1)) Then
+                  RelationalOperator = RelationalOperator + SQL_Add_WildCardSuffix
+                  BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_Equal + SQL_GreaterThan, Trim(TempArr(0)), , IgnoreValue, DisableIgnoreNullValue) & _
+                                  SqlAndConcatString & _
+                                  BuildCriteria(FieldName, FieldDataType, SQL_Equal + SQL_LessThan, Trim(TempArr(1)), , IgnoreValue, DisableIgnoreNullValue)
+
+               Else
+                  BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_Between, Trim(TempArr(0)), Trim(TempArr(1)), IgnoreValue, DisableIgnoreNullValue)
+               End If
+               
                Exit Function
             End If
          
             If FilterValue Like "*[0-9]" & DecimalMarker & "*[*]" Then
-               FilterValue = Replace(FilterValue, "*", "0")
+            If (RelationalOperator And RelationalOperator) = 0 Then
+               'FilterValue = Replace(FilterValue, "*", "0")
                BuildCriteria = BuildCriteria(FieldName, FieldDataType, RelationalOperator + SQL_Add_WildCardSuffix, FilterValue, FilterValue2, IgnoreValue, DisableIgnoreNullValue)
                Exit Function
+            End If
             End If
          
          End If
@@ -515,6 +526,9 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
       ElseIf (FieldDataType And SQL_Numeric) = SQL_Numeric Then
          If (RelationalOperator And SQL_LessThan) = 0 Then ' kein < daher:  >, >= oder nur =
             If (RelationalOperator And SQL_GreaterThan) = SQL_GreaterThan Then
+               If FilterValue Like "*[*]" Then
+                  FilterValue = Replace(FilterValue, "*", "0")
+               End If
                ' nichts ändern => >= Zahl  / SQL_Add_WildCardSuffix ist nicht logisch
             Else ' nachfolgende Dezimalwerte berücksichtigen FieldName >= Zahl and FieldName < (Zahl + x)
                BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue) & _
@@ -587,32 +601,33 @@ Private Function ConfigNumericSpecials( _
    
    If Right(FilterValue, 1) = "*" Then
       RelationalOperator = RelationalOperator Or SQL_Add_WildCardSuffix
-      FilterValue = Replace(FilterValue, "*", "0")
+      'FilterValue = Replace(FilterValue, "*", "0")
    End If
    
    If Right(FilterValue2, 1) = "*" Then
       RelationalOperator = RelationalOperator Or SQL_Add_WildCardSuffix
-      FilterValue2 = Replace(FilterValue2, "*", "0")
+      'FilterValue2 = Replace(FilterValue2, "*", "0")
    End If
 
 End Function
 
-Private Function GetNextDigitNumber(ByVal Z As Double) As Double
+Private Function GetNextDigitNumber(ByVal Z As Variant) As Double
    
    Dim TestString As String
    Dim KommaPos As Long
    Dim digits As Long
-   TestString = Trim(CStr(Z))
+   
+   TestString = Replace(Trim(CStr(Z)), "*", "0")
    
    KommaPos = InStrRev(TestString, DecimalMarker)
    If KommaPos = 0 Then ' nächste Ganzzahl
-      GetNextDigitNumber = Z + 1
+      GetNextDigitNumber = CDbl(TestString) + 1
       Exit Function
    End If
    
-   digits = Len(TestString) - KommaPos
+   digits = Len(TestString) - KommaPos - 1
 
-   GetNextDigitNumber = Z + 1 / 10 ^ digits
+   GetNextDigitNumber = CDbl(TestString) + 1 / 10 ^ digits
    
 End Function
 
