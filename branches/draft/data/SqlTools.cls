@@ -321,11 +321,17 @@ Private Function ConvertToNumeric(ByVal Value As Variant) As Variant
    CheckText = CStr(CheckNumber)
    If InStr(1, CheckText, ",") > 0 Then
       If InStr(1, Value, ".") > 0 Then
-         Value = CDbl(Replace(Value, ".", ","))
+         Value = Replace(Value, ".", ",")
+         Do While Value Like "*,*,*"
+            Value = Replace(Value, ",", vbNullString, 1, 1)
+         Loop
       End If
    Else
       If InStr(1, Value, ",") > 0 Then
-         Value = CDbl(Replace(Value, ",", "."))
+         Value = Replace(Value, ",", ".")
+         Do While Value Like "*.*.*"
+            Value = Replace(Value, ".", vbNullString, 1, 1)
+         Loop
       End If
    End If
    
@@ -450,11 +456,9 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
             If FilterValue Like "[0-9]*-*[0-9]*" Then
                TempArr = Split(FilterValue, "-")
                If Not IsNumeric(TempArr(1)) Then
-                  RelationalOperator = RelationalOperator + SQL_Add_WildCardSuffix
                   BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_Equal + SQL_GreaterThan, Trim(TempArr(0)), , IgnoreValue, DisableIgnoreNullValue) & _
                                   SqlAndConcatString & _
                                   BuildCriteria(FieldName, FieldDataType, SQL_Equal + SQL_LessThan, Trim(TempArr(1)), , IgnoreValue, DisableIgnoreNullValue)
-
                Else
                   BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_Between, Trim(TempArr(0)), Trim(TempArr(1)), IgnoreValue, DisableIgnoreNullValue)
                End If
@@ -463,7 +467,7 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
             End If
          
             If FilterValue Like "*[0-9]" & DecimalMarker & "*[*]" Then
-            If (RelationalOperator And RelationalOperator) = 0 Then
+            If (RelationalOperator And SQL_Add_WildCardSuffix) = 0 Then
                'FilterValue = Replace(FilterValue, "*", "0")
                BuildCriteria = BuildCriteria(FieldName, FieldDataType, RelationalOperator + SQL_Add_WildCardSuffix, FilterValue, FilterValue2, IgnoreValue, DisableIgnoreNullValue)
                Exit Function
@@ -617,7 +621,10 @@ Private Function GetNextDigitNumber(ByVal Z As Variant) As Double
    Dim KommaPos As Long
    Dim digits As Long
    
-   TestString = Replace(Trim(CStr(Z)), "*", "0")
+   Const AdditionalDecDigit As String = "1"
+   Const AdditionalDecDigitKorr As Double = 0.1
+   
+   TestString = Trim(CStr(ConvertToNumeric(Replace(CStr(Z), "*", AdditionalDecDigit))))
    
    KommaPos = InStrRev(TestString, DecimalMarker)
    If KommaPos = 0 Then ' nächste Ganzzahl
@@ -627,7 +634,7 @@ Private Function GetNextDigitNumber(ByVal Z As Variant) As Double
    
    digits = Len(TestString) - KommaPos - 1
 
-   GetNextDigitNumber = CDbl(TestString) + 1 / 10 ^ digits
+   GetNextDigitNumber = CDbl(TestString) + (1 - AdditionalDecDigitKorr) / 10 ^ digits
    
 End Function
 
