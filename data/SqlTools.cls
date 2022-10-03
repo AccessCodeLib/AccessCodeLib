@@ -618,7 +618,7 @@ End Function
 
 Private Property Get DecimalMarker() As String
 
-   Static DecChar As String * 1
+   Static DecChar As String
    Dim x As String
    
    If Len(DecChar) = 0 Then
