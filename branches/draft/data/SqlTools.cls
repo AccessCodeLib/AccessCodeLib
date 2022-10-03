@@ -70,6 +70,7 @@ Public Enum SqlRelationalOperators
    SQL_Add_WildCardSuffix = 2048
    SQL_Add_WildCardPrefix = 4096
    SQL_SplitValueToArray = 8192
+   SQL_AllowSqlDirect = 16384
    SQL_UseLikeBehavior = 65536
 End Enum
 
@@ -410,6 +411,14 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
       If FilterValue2 = "{NULL}" Or FilterValue2 = "{LEER}" Or FilterValue2 = "{EMPTY}" Then
          FilterValue2 = Null
          DisableIgnoreNullValue = True
+      End If
+      
+      If (RelationalOperator And SQL_AllowSqlDirect) = SQL_AllowSqlDirect Then
+         If FilterValue Like "{*@*}" Then ' Idee von Ulrich: Anwender schreibt SQL-Ausdruck
+            Criteria = Replace(Mid(FilterValue, 2, Len(FilterValue) - 2), "@", FieldName)
+            BuildCriteria = Criteria
+            Exit Function
+         End If
       End If
       
    End If
