@@ -24,6 +24,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>localization/L10nDict.cls</file>
 '  <license>_codelib/license.bas</license>
+'  <use>data/SqlTools.cls</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
