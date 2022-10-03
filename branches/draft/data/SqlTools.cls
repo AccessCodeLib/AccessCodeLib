@@ -453,7 +453,7 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
                Exit Function
             End If
          
-            If FilterValue Like "*[0-9]" & DecimalSign & "*[*]" Then
+            If FilterValue Like "*[0-9]" & DecimalMarker & "*[*]" Then
                FilterValue = Replace(FilterValue, "*", "0")
                BuildCriteria = BuildCriteria(FieldName, FieldDataType, RelationalOperator + SQL_Add_WildCardSuffix, FilterValue, FilterValue2, IgnoreValue, DisableIgnoreNullValue)
                Exit Function
@@ -604,7 +604,7 @@ Private Function GetNextDigitNumber(ByVal Z As Double) As Double
    Dim digits As Long
    TestString = Trim(CStr(Z))
    
-   KommaPos = InStrRev(TestString, DecimalSign)
+   KommaPos = InStrRev(TestString, DecimalMarker)
    If KommaPos = 0 Then ' nächste Ganzzahl
       GetNextDigitNumber = Z + 1
       Exit Function
@@ -616,17 +616,17 @@ Private Function GetNextDigitNumber(ByVal Z As Double) As Double
    
 End Function
 
-Private Property Get DecimalSign() As String
+Private Property Get DecimalMarker() As String
 
-   Static DecSign As String
+   Static DecChar As String * 1
    Dim x As String
    
-   If Len(DecSign) = 0 Then
+   If Len(DecChar) = 0 Then
       x = Trim(CStr(1.2))
-      DecSign = Mid(x, 2, 1)
+      DecChar = Mid(x, 2, 1)
    End If
    
-   DecimalSign = DecSign
+   DecimalMarker = DecChar
 
 End Property
 
