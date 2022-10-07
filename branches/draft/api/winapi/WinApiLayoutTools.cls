@@ -58,7 +58,7 @@ Private Declare PtrSafe Function SetClassLong _
       Alias "SetClassLongA" ( _
       ByVal Hwnd As LongPtr, _
       ByVal nIndex As Long, _
-      ByVal dwNewLong As Long _
+      ByVal dwNewLong As LongPtr _
       ) As Long
 
 Private Declare PtrSafe Function GetSystemMetrics Lib "user32" (ByVal Index As Long) As Long
@@ -114,7 +114,7 @@ Private Declare Function GetDeviceCaps Lib "gdi32" (ByVal DC As Long, ByVal Inde
 '---------------------------------------------------------------------------------------
 Public Sub SetBackColor(ByVal Hwnd As LongPtr, ByVal Color As Long)
   
-   Dim NewBrush As Long
+   Dim NewBrush As LongPtr
    
    'Brush erzeugen
    NewBrush = CreateSolidBrush(Color)
@@ -140,7 +140,7 @@ End Sub
 '**/
 '---------------------------------------------------------------------------------------
 Public Function TwipsPerPixelX() As Single
-   Dim DC As Long
+   Dim DC As LongPtr
    DC = GetDC(HWND_DESKTOP)
    TwipsPerPixelX = 1440& / GetDeviceCaps(DC, LOGPIXELSX)
    ReleaseDC HWND_DESKTOP, DC
