@@ -318,6 +318,14 @@ Private Function ConvertToNumeric(ByVal Value As Variant) As Variant
    
    Dim CheckText As String
    
+   If IsNull(Value) Then
+      ConvertToNumeric = Null
+      Exit Function
+   ElseIf CStr(Value) = vbNullString Then
+      ConvertToNumeric = Null
+      Exit Function
+   End If
+   
    CheckText = CStr(CheckNumber)
    If InStr(1, CheckText, ",") > 0 Then
       If InStr(1, Value, ".") > 0 Then
@@ -401,6 +409,8 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
    Dim FilterValueString As String
    Dim OperatorString As String
    Dim Criteria As String
+   Dim Criteria1 As String
+   Dim Criteria2 As String
    Dim TempArr() As String
 
    If (RelationalOperator And [_IgnoreAll]) = [_IgnoreAll] Then
@@ -453,22 +463,32 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
          
          If IsNull(FilterValue2) Then
          
-            If FilterValue Like "[0-9]*-*[0-9]*" Then
-               TempArr = Split(FilterValue, "-")
-               If Not IsNumeric(TempArr(1)) Then
-                  BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_Equal + SQL_GreaterThan, Trim(TempArr(0)), , IgnoreValue, DisableIgnoreNullValue) & _
-                                  SqlAndConcatString & _
-                                  BuildCriteria(FieldName, FieldDataType, SQL_Equal + SQL_LessThan, Trim(TempArr(1)), , IgnoreValue, DisableIgnoreNullValue)
-               Else
-                  BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_Between, Trim(TempArr(0)), Trim(TempArr(1)), IgnoreValue, DisableIgnoreNullValue)
-               End If
-               
+            FilterValue = Trim(FilterValue)
+            
+            If FilterValue Like "[0-9]*..*[0-9]*" Or FilterValue Like "[+-][0-9]*..*[0-9]*" Then
+               TempArr = Split(FilterValue, "..")
+               BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_Between, Trim(TempArr(0)), Trim(TempArr(1)), IgnoreValue, DisableIgnoreNullValue)
                Exit Function
+            End If
+         
+            If FilterValue Like "[0-9]*-*[0-9]*" Or FilterValue Like "[+-][0-9]*-*[0-9]*" Then    ' convert to a..b
+               If Left(FilterValue, 1) = "-" Then
+                  FilterValue = "{M}" & Mid(FilterValue, 2)
+               End If
+               FilterValue = Replace(FilterValue, "  ", " ")
+               FilterValue = Replace(FilterValue, "- -", "--")
+               FilterValue = Replace(FilterValue, "--", "-{M}")
+               FilterValue = Replace(FilterValue, "-", "..")
+               FilterValue = Replace(FilterValue, "{M}", "-")
+               
+               TempArr = Split(FilterValue, "..")
+               BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_Between, Trim(TempArr(0)), Trim(TempArr(1)), IgnoreValue, DisableIgnoreNullValue)
+               Exit Function
+               
             End If
          
             If FilterValue Like "*[0-9]" & DecimalMarker & "*[*]" Then
             If (RelationalOperator And SQL_Add_WildCardSuffix) = 0 Then
-               'FilterValue = Replace(FilterValue, "*", "0")
                BuildCriteria = BuildCriteria(FieldName, FieldDataType, RelationalOperator + SQL_Add_WildCardSuffix, FilterValue, FilterValue2, IgnoreValue, DisableIgnoreNullValue)
                Exit Function
             End If
@@ -530,14 +550,26 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
       ElseIf (FieldDataType And SQL_Numeric) = SQL_Numeric Then
          If (RelationalOperator And SQL_LessThan) = 0 Then ' kein < daher:  >, >= oder nur =
             If (RelationalOperator And SQL_GreaterThan) = SQL_GreaterThan Then
-               If FilterValue Like "*[*]" Then
-                  FilterValue = Replace(FilterValue, "*", "0")
+               If FilterValue Like "*[,.]*[*]" Then
+                  FilterValue = Replace(FilterValue, "*", 0)
+               ElseIf FilterValue Like "*[*]" Then
+                  FilterValue = Replace(FilterValue, "*", vbNullString)
                End If
                ' nichts ändern => >= Zahl  / SQL_Add_WildCardSuffix ist nicht logisch
             Else ' nachfolgende Dezimalwerte berücksichtigen FieldName >= Zahl and FieldName < (Zahl + x)
-               BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue) & _
-                               SqlAndConcatString & _
-                               BuildCriteria(FieldName, FieldDataType, SQL_LessThan, GetNextDigitNumber(FilterValue))
+               If FilterValue Like "-*[*]" Then
+                  If FilterValue Like "*[,.]*[*]" Then
+                     FilterValue2 = Replace(FilterValue, "*", 0)
+                  Else
+                     FilterValue2 = Replace(FilterValue, "*", vbNullString)
+                  End If
+                  Criteria1 = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan, GetNextDigitNumber(FilterValue, True))
+                  Criteria2 = BuildCriteria(FieldName, FieldDataType, SQL_LessThan + SQL_Equal, FilterValue2)
+               Else
+                  Criteria1 = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue)
+                  Criteria2 = BuildCriteria(FieldName, FieldDataType, SQL_LessThan, GetNextDigitNumber(FilterValue))
+               End If
+               BuildCriteria = Criteria1 & SqlAndConcatString & Criteria2
                Exit Function
             End If
          Else
@@ -605,36 +637,54 @@ Private Function ConfigNumericSpecials( _
    
    If Right(FilterValue, 1) = "*" Then
       RelationalOperator = RelationalOperator Or SQL_Add_WildCardSuffix
-      'FilterValue = Replace(FilterValue, "*", "0")
-   End If
-   
-   If Right(FilterValue2, 1) = "*" Then
+   ElseIf Right(FilterValue2, 1) = "*" Then
       RelationalOperator = RelationalOperator Or SQL_Add_WildCardSuffix
-      'FilterValue2 = Replace(FilterValue2, "*", "0")
    End If
 
 End Function
 
-Private Function GetNextDigitNumber(ByVal Z As Variant) As Double
+Private Function GetNextDigitNumber(ByVal Z As Variant, Optional AddToAbsoluteValue As Boolean = False) As Double
    
    Dim TestString As String
    Dim KommaPos As Long
    Dim digits As Long
-   
+   Dim IsNegativ As Boolean
+
    Const AdditionalDecDigit As String = "1"
    Const AdditionalDecDigitKorr As Double = 0.1
    
    TestString = Trim(CStr(ConvertToNumeric(Replace(CStr(Z), "*", AdditionalDecDigit))))
    
+   If Left(TestString, 1) = "-" And (Not AddToAbsoluteValue) Then
+      GetNextDigitNumber = CDbl(Replace(CStr(Z), "*", vbNullString))
+      Exit Function
+   End If
+   
+   If Left(TestString, 1) = "-" Then
+      IsNegativ = True
+   End If
+   
    KommaPos = InStrRev(TestString, DecimalMarker)
    If KommaPos = 0 Then ' nächste Ganzzahl
-      GetNextDigitNumber = CDbl(TestString) + 1
+      If AddToAbsoluteValue And IsNegativ Then
+         GetNextDigitNumber = CDbl(Replace(CStr(Z), "*", vbNullString)) - 1
+      Else
+         GetNextDigitNumber = CDbl(Replace(CStr(Z), "*", vbNullString)) + 1
+      End If
       Exit Function
    End If
    
    digits = Len(TestString) - KommaPos - 1
-
-   GetNextDigitNumber = CDbl(TestString) + (1 - AdditionalDecDigitKorr) / 10 ^ digits
+   
+   If Left(TestString, 1) = "-" Then
+      IsNegativ = True
+   End If
+   
+   If AddToAbsoluteValue And IsNegativ Then
+      GetNextDigitNumber = CDbl(TestString) + AdditionalDecDigitKorr / 10 ^ digits - AdditionalDecDigitKorr / 10 ^ (digits - 1)
+   Else
+      GetNextDigitNumber = CDbl(TestString) + (1 - AdditionalDecDigitKorr) / 10 ^ digits
+   End If
    
 End Function
 
@@ -806,20 +856,35 @@ Private Function TryBuildBetweenCriteria(ByRef FieldName As String, ByVal FieldD
                                          ByRef IgnoreValue As Variant, _
                                          ByRef Criteria As String) As Boolean
    
+   Dim Criteria1 As String
+   Dim Criteria2 As String
+   
    If (RelationalOperator And SQL_Between) = False Then
       TryBuildBetweenCriteria = False
       Exit Function
    End If
    
    If (RelationalOperator And SQL_Not) = SQL_Not Then 'Bedingung umdrehen
-      Criteria = BuildCriteria(FieldName, FieldDataType, SQL_LessThan, FilterValue, , IgnoreValue) & _
-                 SqlAndConcatString & _
-                 BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan, FilterValue2, , IgnoreValue)
-                 ' & SqlOrConcatString & FieldName & " Is Null)"
+      Criteria1 = BuildCriteria(FieldName, FieldDataType, SQL_LessThan, FilterValue, , IgnoreValue)
+      Criteria2 = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan, FilterValue2, , IgnoreValue)
+      Criteria = Criteria1 & SqlAndConcatString & Criteria2
       TryBuildBetweenCriteria = True
       Exit Function
    End If
    
+   If FieldDataType = SQL_Numeric Then
+      If FilterValue2 Like "<=*" Then 'wegschneiden
+         FilterValue2 = Mid(FilterValue2, 3)
+      ElseIf FilterValue2 Like "<*" Then
+         FilterValue2 = Mid(FilterValue2, 2)
+         Criteria1 = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue)
+         Criteria2 = BuildCriteria(FieldName, FieldDataType, SQL_LessThan, FilterValue2)
+         Criteria = Criteria1 & SqlAndConcatString & Criteria2
+         TryBuildBetweenCriteria = True
+         Exit Function
+      End If
+   End If
+
    If IsNull(FilterValue2) Or IsMissing(FilterValue2) Or ValuesAreEqual(FieldDataType, FilterValue2, IgnoreValue) Then
       RelationalOperator = SQL_GreaterThan + SQL_Equal
    ElseIf IsNull(FilterValue) Or ValuesAreEqual(FieldDataType, FilterValue, IgnoreValue) Then
@@ -827,15 +892,15 @@ Private Function TryBuildBetweenCriteria(ByRef FieldName As String, ByVal FieldD
       FilterValue = FilterValue2
       FilterValue2 = GetCheckedIgnoreValue(IgnoreValue)
    ElseIf (FieldDataType And SQL_Date) = SQL_Date And (RelationalOperator And SQL_Add_WildCardSuffix) Then
-      Criteria = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue) & _
-                 SqlAndConcatString & _
-                 BuildCriteria(FieldName, FieldDataType, SQL_LessThan + SQL_Equal + SQL_Add_WildCardSuffix, FilterValue2)
+      Criteria1 = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue)
+      Criteria2 = BuildCriteria(FieldName, FieldDataType, SQL_LessThan + SQL_Equal + SQL_Add_WildCardSuffix, FilterValue2)
+      Criteria = Criteria1 & SqlAndConcatString & Criteria2
       TryBuildBetweenCriteria = True
       Exit Function
    ElseIf (FieldDataType And SQL_Numeric) = SQL_Numeric And (RelationalOperator And SQL_Add_WildCardSuffix) Then
-      Criteria = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue) & _
-                 SqlAndConcatString & _
-                 BuildCriteria(FieldName, FieldDataType, SQL_LessThan + SQL_Equal + SQL_Add_WildCardSuffix, FilterValue2)
+      Criteria1 = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue)
+      Criteria2 = BuildCriteria(FieldName, FieldDataType, SQL_LessThan + SQL_Equal + SQL_Add_WildCardSuffix, FilterValue2)
+      Criteria = Criteria1 & SqlAndConcatString & Criteria2
       TryBuildBetweenCriteria = True
       Exit Function
    Else
