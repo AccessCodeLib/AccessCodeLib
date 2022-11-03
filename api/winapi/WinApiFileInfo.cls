@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Module: modWinAPI_FileInfo
+' Class: WinApiFileInfo
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -34,12 +34,12 @@ Option Explicit
 
 Private Declare PtrSafe Function GetFileVersionInfoSize Lib "version.dll" Alias "GetFileVersionInfoSizeA" ( _
   ByVal lptstrFilename As String, _
-  lpdwHandle As Long) As Long
+  lpdwHandle As LongPtr) As Long
 
 Private Declare PtrSafe Function GetFileVersionInfo Lib "version.dll" Alias "GetFileVersionInfoA" ( _
   ByVal lptstrFilename As String, _
-  ByVal dwHandle As Long, _
-  ByVal dwLen As Long, _
+  ByVal dwHandle As LongPtr, _
+  ByVal dwLen As LongPtr, _
   lpData As Any _
   ) As Long
 
@@ -52,7 +52,7 @@ Private Declare PtrSafe Function VerQueryValue Lib "version.dll" Alias "VerQuery
 
 Private Declare PtrSafe Sub MoveMemory Lib "kernel32" Alias "RtlMoveMemory" ( _
   Dest As Any, _
-  ByVal Source As Long, _
+  ByVal Source As LongPtr, _
   ByVal Length As Long)
 
 #Else
@@ -106,8 +106,8 @@ End Type
 Private Function GetVersion(ByVal FilePath As String, _
                             ByRef GetFileInfo As FILEINFOOUT) As Boolean
 
-  Dim Ret As Long, Size As Long, Handle As Long
-  Dim VerBufLen As Long, VerPointer As Long
+  Dim Ret As Long, Size As Long, Handle As LongPtr
+  Dim VerBufLen As Long, VerPointer As LongPtr
   Dim FileInfo As VS_FIXEDFILEINFO
   Dim BufferString() As Byte
 
