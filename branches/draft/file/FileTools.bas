@@ -206,9 +206,9 @@ Public Function UncPath(ByVal Path As String, Optional ByVal IgnoreErrors As Boo
    
    Dim UNC As String * 512
    
-   If Len(Path) = 1 Then Path = Path & ":"
+   If VBA.Len(Path) = 1 Then Path = Path & ":"
    
-   If WNetGetConnection(Left$(Path, 2), UNC, Len(UNC)) Then
+   If WNetGetConnection(VBA.Left$(Path, 2), UNC, VBA.Len(UNC)) Then
    
       ' API-Routine gibt Fehler zurück:
       If IgnoreErrors Then
@@ -220,7 +220,7 @@ Public Function UncPath(ByVal Path As String, Optional ByVal IgnoreErrors As Boo
    Else
    
       ' Ergebnis zurückgeben:
-      UncPath = Left$(UNC, InStr(UNC, vbNullChar) - 1) & Mid$(Path, 3)
+      UncPath = VBA.Left$(UNC, VBA.InStr(UNC, vbNullChar) - 1) & VBA.Mid$(Path, 3)
    
    End If
    
@@ -370,7 +370,7 @@ Public Function CreateDirectory(ByVal FullPath As String) As Boolean
    Dim PathBefore As String
 
    If Right$(FullPath, 1) = "\" Then
-      FullPath = Left$(FullPath, Len(FullPath) - 1)
+      FullPath = VBA.Left$(FullPath, Len(FullPath) - 1)
    End If
 
    If DirExists(FullPath) Then 'Verzeichnis ist bereits vorhanden
@@ -378,7 +378,7 @@ Public Function CreateDirectory(ByVal FullPath As String) As Boolean
       Exit Function
    End If
 
-   PathBefore = Mid$(FullPath, 1, InStrRev(FullPath, "\") - 1)
+   PathBefore = VBA.Mid$(FullPath, 1, VBA.InStrRev(FullPath, "\") - 1)
    If Not DirExists(PathBefore) Then
       If CreateDirectory(PathBefore) = False Then
          CreateDirectory = False
@@ -386,7 +386,7 @@ Public Function CreateDirectory(ByVal FullPath As String) As Boolean
       End If
    End If
 
-   MkDir FullPath
+   VBA.MkDir FullPath
 
    CreateDirectory = True
 
@@ -435,7 +435,7 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Function DirExists(ByVal FullPath As String) As Boolean
 
-   If Right$(FullPath, 1) <> "\" Then
+   If VBA.Right$(FullPath, 1) <> "\" Then
       FullPath = FullPath & "\"
    End If
 
@@ -710,7 +710,7 @@ Public Sub AddToZipFile(ByVal ZipFile As String, ByVal FullFileName As String)
    End If
 
    With CreateObject("Shell.Application")
-      .Namespace(ZipFile & "").CopyHere FullFileName & ""
+      .NameSpace(ZipFile & "").CopyHere FullFileName & ""
    End With
 
 End Sub
@@ -732,8 +732,8 @@ End Sub
 Public Function ExtractFromZipFile(ByVal ZipFile As String, ByVal Destination As String) As String
 
    With CreateObject("Shell.Application")
-      .Namespace(Destination & "").CopyHere .Namespace(ZipFile & "").Items
-      ExtractFromZipFile = .Namespace(ZipFile & "").Items.Item(0).Name
+      .NameSpace(Destination & "").CopyHere .NameSpace(ZipFile & "").Items
+      ExtractFromZipFile = .NameSpace(ZipFile & "").Items.Item(0).Name
    End With
 
 End Function

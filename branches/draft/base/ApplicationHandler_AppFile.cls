@@ -189,13 +189,15 @@ End Sub
 '---------------------------------------------------------------------------------------
 Public Function SaveAppFile(ByVal FileID As String, ByVal FileName As String, _
                    Optional ByVal SaveVersion As Boolean = False, _
-                   Optional ByVal ExtFieldName As String, Optional ByVal ExtFieldValue As Variant) As Boolean
+                   Optional ByVal ExtFieldName As String, Optional ByVal ExtFieldValue As Variant, _
+                   Optional ByVal ExtFilterFieldName As String, Optional ExtFilterValue As Variant) As Boolean
 
    Dim FileNo As Integer
    Dim Binfile() As Byte
    Dim ArraySize As Long
    Dim Version As String
    Dim FileInfo As WinApiFileInfo
+   Dim SelectSql As String
    
 On Error GoTo HandleErr
 
@@ -213,11 +215,19 @@ On Error GoTo HandleErr
       Exit Function
    End If
 
+   SelectSql = "select * from " & TABLE_APPFILES & " where id='" & Replace(FileID, "'", "''") & "'"
+   If Len(ExtFilterFieldName) > 0 Then
+      SelectSql = SelectSql & " and " & ExtFilterFieldName & " = '" & Replace(ExtFilterValue, "'", "''") & "'"
+   End If
+
    Dim rst As DAO.Recordset
-   Set rst = CodeDb.OpenRecordset("select * from " & TABLE_APPFILES & " where id='" & FileID & "'")
+   Set rst = CodeDb.OpenRecordset(SelectSql)
    If rst.EOF Then
       rst.AddNew
       rst.Fields("id") = FileID
+      If Len(ExtFilterFieldName) > 0 Then
+         rst.Fields(ExtFilterFieldName) = ExtFilterValue
+      End If
    Else
       rst.Edit
    End If
