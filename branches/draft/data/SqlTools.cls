@@ -1002,17 +1002,17 @@ Private Function ValuesAreEqual(ByVal FieldDataType As SqlFieldDataType, ByVal V
 
 End Function
 
-Private Function ArrayContains(ByVal FieldDataType As SqlFieldDataType, ByVal ArrayToCheck As Variant, ByVal searchValue As Variant) As Boolean
+Private Function ArrayContains(ByVal FieldDataType As SqlFieldDataType, ByVal ArrayToCheck As Variant, ByVal SearchValue As Variant) As Boolean
    
    Dim i As Long
 
-   If IsNull(searchValue) Then
+   If IsNull(SearchValue) Then
       ArrayContains = ArrayContainsNull(ArrayToCheck)
       Exit Function
    End If
 
    For i = LBound(ArrayToCheck) To UBound(ArrayToCheck)
-      If ValuesAreEqual(FieldDataType, ArrayToCheck(i), searchValue) Then
+      If ValuesAreEqual(FieldDataType, ArrayToCheck(i), SearchValue) Then
          ArrayContains = True
          Exit Function
       End If
