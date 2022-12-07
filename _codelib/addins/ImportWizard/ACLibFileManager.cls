@@ -254,11 +254,12 @@ End Sub
 
 Private Function CheckDisallowExportFormReport() As Boolean
 
-   If Val(CurrentDb.Version) >= 12 Then
-      MsgBox "Formular und Berichte ab dem Access2007-Format dürfen nicht exportiert werden." & _
-             "Siehe Bug #16"
-      CheckDisallowExportFormReport = True
-   End If
+'2022-12-07: Ac2000-Dateiformat nicht mehr berücksichtigen
+'   If Val(CurrentDb.Version) >= 12 Then
+'      MsgBox "Formular und Berichte ab dem Access2007-Format dürfen nicht exportiert werden." & _
+'             "Siehe Bug #16"
+'      CheckDisallowExportFormReport = True
+'   End If
 
 End Function
 

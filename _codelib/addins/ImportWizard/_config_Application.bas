@@ -20,7 +20,7 @@ Option Compare Database
 Option Explicit
 
 'Versionsnummer
-Private Const APPLICATION_VERSION As String = "1.0.16" '2019-01-24
+Private Const APPLICATION_VERSION As String = "1.1.0" '2022-12-07
 
 #Const USE_CLASS_ApplicationHandler_AppFile = 1
 #Const USE_CLASS_ApplicationHandler_DirTextbox = 1
@@ -29,10 +29,10 @@ Private Const APPLICATION_NAME As String = "ACLib Import Wizard"
 Private Const APPLICATION_FULLNAME As String = "Access Code Library - Import Wizard"
 Private Const APPLICATION_TITLE As String = APPLICATION_FULLNAME
 Private Const APPLICATION_ICONFILE As String = "ACLib.ico"
-
 Private Const DEFAULT_ERRORHANDLERMODE As Long = ACLibErrorHandlerMode.aclibErrMsgBox
-
 Private Const APPLICATION_STARTFORMNAME As String = "ACLibImportWizardForm"
+
+Private m_Extensions As ApplicationHandler_ExtensionCollection
 
 '---------------------------------------------------------------------------------------
 ' Sub: InitConfig
@@ -90,27 +90,31 @@ On Error GoTo HandleErr
    End With
    
 '----------------------------------------------------------------------------
-' Erweiterung: AppFile
+' Erweiterungen laden
 '
+   Set m_Extensions = New ApplicationHandler_ExtensionCollection
+   With m_Extensions
+   
+      Set .ApplicationHandler = CurrentAppHandlerRef
+     
+
+      ' AppFile
 #If USE_CLASS_ApplicationHandler_AppFile = 1 Then
-   modApplication.AddApplicationHandlerExtension New ApplicationHandler_AppFile
+      .Add New ApplicationHandler_AppFile
 #End If
 
-'Dateiauswahl in Textbox
+      'Dateiauswahl in Textbox
 #If USE_CLASS_ApplicationHandler_DirTextbox = 1 Then
-   modApplication.AddApplicationHandlerExtension New ApplicationHandler_DirTextbox
+      .Add New ApplicationHandler_DirTextbox
 #End If
 
-'----------------------------------------------------------------------------
-' Erweiterungen für Add-In laden
-'
-   'Konfiguration/Add-In-Einstellungen
-   modApplication.AddApplicationHandlerExtension New ACLibConfiguration
-   
-   'Import/Export von Dateien bzw. Access-Objekten
-   modApplication.AddApplicationHandlerExtension New ACLibFileManager
-   
-   
+      'Konfiguration/Add-In-Einstellungen
+      .Add New ACLibConfiguration
+      
+      'Import/Export von Dateien bzw. Access-Objekten
+      .Add New ACLibFileManager
+
+   End With
 
 '----------------------------------------------------------------------------
 ' Konfiguration nach Erweiterungen
