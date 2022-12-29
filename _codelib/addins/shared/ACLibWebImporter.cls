@@ -95,7 +95,7 @@ Private Sub UpdateCodeModuleInTable(ByVal ModuleName As String, ByVal ACLibPath 
    If UseDraftBranch Then
       DownLoadUrl = DownLoadUrl & "branches/draft"
    Else
-      DownLoadUrl = DownLoadUrl & "trunk"
+      DownLoadUrl = DownLoadUrl & "trunk/codelib"
    End If
    DownLoadUrl = DownLoadUrl & ACLibPath
    
