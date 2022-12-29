@@ -23,7 +23,7 @@ Option Explicit
 Option Private Module
 
 'Versionsnummer
-Private Const APPLICATION_VERSION As String = "1.7.0b" '2017-04-11
+Private Const APPLICATION_VERSION As String = "1.7.0" '2022-12-25
 
 #Const USE_CLASS_APPLICATIONHANDLER_APPFILE = 1
 #Const USE_CLASS_APPLICATIONHANDLER_VERSION = 1
@@ -33,17 +33,19 @@ Private Const APPLICATION_FULLNAME As String = "Access Code Library - FilterForm
 Private Const APPLICATION_TITLE As String = APPLICATION_FULLNAME
 Private Const APPLICATION_ICONFILE As String = "ACLib.ico"
 
-Public Const APPLICATION_DOWNLOADSOURCE As String = "http://wiki.access-codelib.net/ACLib-FilterForm-Wizard"
-Private Const APPLICATION_DOWNLOAD_FOLDER As String = "http://access-codelib.net/download/addins/"
+Public Const APPLICATION_DOWNLOADSOURCE As String = "https://wiki.access-codelib.net/ACLib-FilterForm-Wizard"
+Private Const APPLICATION_DOWNLOAD_FOLDER As String = "https://access-codelib.net/download/addins/"
 Private Const APPLICATION_DOWNLOAD_VERSIONXMLFILE As String = APPLICATION_DOWNLOAD_FOLDER & "ACLibFilterFormWizard.xml"
 
 Private Const ApplicationStartFormName As String = "frmFilterFormWizard"
 
 Public Const APPLICATION_FILTERCODEMODULE_USEVBCOMPONENTSIMPORT As Boolean = True
+
+Private m_Extensions As ApplicationHandler_ExtensionCollection
 '
 
 '---------------------------------------------------------------------------------------
-' Sub: InitConfig (Josef Pötzl)
+' Sub: InitConfig
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -98,33 +100,23 @@ On Error GoTo HandleErr
    
     
    End With
-
    
 '----------------------------------------------------------------------------
-' Erweiterung: AppFile
+' Erweiterungen:
 '
-#If USE_CLASS_APPLICATIONHANDLER_APPFILE = 1 Then
-   modApplication.AddApplicationHandlerExtension New ApplicationHandler_AppFile
-#End If
-
-
-'----------------------------------------------------------------------------
-' Erweiterung: AppFile
-'
+   Set m_Extensions = New ApplicationHandler_ExtensionCollection
+   With m_Extensions
+      Set .ApplicationHandler = CurrentAppHandlerRef
+      .Add New ApplicationHandler_AppFile
+   
 #If USE_CLASS_APPLICATIONHANDLER_VERSION = 1 Then
-   Dim AppHdlVersion As ApplicationHandler_Version
-   
-   Set AppHdlVersion = New ApplicationHandler_Version
-   modApplication.AddApplicationHandlerExtension AppHdlVersion
-   AppHdlVersion.XmlVersionCheckFile = APPLICATION_DOWNLOAD_VERSIONXMLFILE
-   
+      Dim AppHdlVersion As ApplicationHandler_Version
+      Set AppHdlVersion = New ApplicationHandler_Version
+      .Add AppHdlVersion
+      AppHdlVersion.XmlVersionCheckFile = APPLICATION_DOWNLOAD_VERSIONXMLFILE
 #End If
 
-
-'----------------------------------------------------------------------------
-' Erweiterungen für Add-In laden
-'
-
+   End With
 
 '----------------------------------------------------------------------------
 ' Konfiguration nach Erweiterungen
