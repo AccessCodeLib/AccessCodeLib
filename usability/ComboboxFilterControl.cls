@@ -127,6 +127,9 @@ Private Sub m_Combobox_KeyDown(KeyCode As Integer, Shift As Integer)
                CheckDropDownStatus
             End If
          End With
+        Case vbKeyEscape
+            DeactivateSearchMode
+            KeyCode = 0
    End Select
 End Sub
 
