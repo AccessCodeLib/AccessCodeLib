@@ -29,6 +29,8 @@ Attribute VB_Exposed = False
 Option Compare Database
 Option Explicit
 
+Private m_ListSeparatorChar As String
+
 Private WithEvents m_ComboBox As ComboBox
 Attribute m_ComboBox.VB_VarHelpID = -1
 
@@ -48,6 +50,10 @@ Public Event MissingDataRecordset(ByRef rs As Object)
 'Möglichkeiten für die Recordsetermittlung von außen (z. B. falls Filterkritien an eine MSSQL-SErver-Prozedur übergeben werden sollen)
 Public Event BeforeCreateSearchResultRecordset(ByVal FilterValue As Variant, ByVal FilterColumns As Variant, ByRef rs As Object)
              ' rs = Rückgabemöglichkeit des zu verwendenden Recordsets
+
+Private Declare PtrSafe Function GetUserDefaultLCID Lib "kernel32" () As LongPtr
+Private Declare PtrSafe Function GetLocaleInfo Lib "kernel32" Alias "GetLocaleInfoA" ( _
+            ByVal Locale As Long, ByVal LCType As Long, ByVal LCData As String, ByVal cchData As Long) As Long
 
 Private Sub Class_Initialize()
    Set m_FilterValues = New Collection
@@ -289,9 +295,10 @@ Private Sub SetComboboxDataSource(ByRef rst As Object)
             Exit Sub
          ElseIf Not .Recordset Is Nothing Then
             If Not (.Recordset Is m_DataRecordset) Then
-               .Recordset.Close
+               .Recordset.Close ' To close or not to close, that is the question.
             End If
          End If
+         .RowSource = vbNullString 'Remove ComboBox.Recordset
          Set .Recordset = rst
       End If
       
@@ -307,7 +314,7 @@ Private Function GetValueListFromRecordset(ByVal rst As Object) As String
    If TypeOf rst Is DAO.Recordset Then
       GetValueListFromRecordset = GetValueListFromDaoRecordset(rst)
    Else
-      GetValueListFromRecordset = rst.GetString(2, , ";", ";") 'adClipString = 2
+      GetValueListFromRecordset = rst.GetString(2, , ListSeparatorChar, ListSeparatorChar) 'adClipString = 2
    End If
 
 End Function
@@ -336,7 +343,7 @@ Private Function GetValueListFromDaoRecordset(ByVal rst As DAO.Recordset) As Str
       Next
    Next
 
-   GetValueListFromDaoRecordset = Join(Values, ";")
+   GetValueListFromDaoRecordset = Join(Values, ListSeparatorChar)
 
 End Function
 
@@ -367,7 +374,7 @@ End Function
 Private Function GetSeachResultRecordset(ByVal FilterValue As Variant, ByVal SearchColumnArray As Variant, _
                                 Optional ByVal SaveFilterValue As Boolean = True) As Object 'DAO.Recordset
    
-   Dim rst As Object 'DAO.Recordset oder ADODB.Recordset
+   Dim rst As Object 'DAO.Recordset or ADODB.Recordset
    Dim FilterString As String
    Dim i As Long
    
@@ -377,7 +384,7 @@ Private Function GetSeachResultRecordset(ByVal FilterValue As Variant, ByVal Sea
    
    RaiseEvent BeforeCreateSearchResultRecordset(FilterValue, SearchColumnArray, rst)
    If Not (rst Is Nothing) Then
-   ' Abbruch, da rst von außen übergeben wurde
+   ' Cancel, rst was set from the outside (BeforeCreateSearchResultRecordset)
       Set GetSeachResultRecordset = rst
       Exit Function
    End If
@@ -399,7 +406,7 @@ Private Function GetSeachResultRecordset(ByVal FilterValue As Variant, ByVal Sea
       FilterString = FilterString & " OR " & rst.Fields(SearchColumnArray(i)).Name & " like '" & FilterValue & "'"
    Next
    If Len(FilterString) > 0 Then
-      FilterString = Mid(FilterString, 5) ' " OR " abschneiden
+      FilterString = Mid(FilterString, 5) ' remove " OR "
    End If
    
    If TypeOf rst Is DAO.Recordset Then
@@ -432,7 +439,7 @@ Private Function GetSearchColumnsFromCombobox() As Variant()
    Dim c As Long
    
    With m_ComboBox
-      ColumnWidthArray = Split(.ColumnWidths, ";")
+      ColumnWidthArray = Split(.ColumnWidths, ListSeparatorChar)
       ReDim SearchColumns(UBound(ColumnWidthArray))
       
       For i = 0 To UBound(ColumnWidthArray)
@@ -453,3 +460,37 @@ End Function
 Public Property Get FilterValues() As Collection
    Set FilterValues = m_FilterValues
 End Property
+
+' Get ListSeparatorChar from OS config
+Public Property Get ListSeparatorChar() As String
+    
+    If Len(m_ListSeparatorChar) = 0 Then
+        m_ListSeparatorChar = GetListSeparator
+    End If
+    ListSeparatorChar = m_ListSeparatorChar
+
+End Property
+
+Private Function GetListSeparator() As String
+    
+    Const LOCALE_SLIST = &HC
+    
+    Dim LcID As Long
+    Dim LcInfo1 As Long
+    Dim LcInfo2 As Long
+    Dim SeparatorChar As String
+    
+    Dim LCData As String
+    Dim CutPos As Long
+    
+    LcID = GetUserDefaultLCID()
+    LcInfo1 = GetLocaleInfo(LcID, LOCALE_SLIST, LCData, 0)
+    SeparatorChar = String$(LcInfo1, 0)
+    LcInfo2 = GetLocaleInfo(LcID, LOCALE_SLIST, SeparatorChar, LcInfo1)
+    CutPos = InStr(SeparatorChar, Chr$(0))
+    If CutPos > 0 Then
+        SeparatorChar = Left$(SeparatorChar, CutPos - 1)
+        GetListSeparator = SeparatorChar
+    End If
+
+End Function
