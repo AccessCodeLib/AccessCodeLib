@@ -298,7 +298,8 @@ Private Sub SetComboboxDataSource(ByRef rst As Object)
                .Recordset.Close ' To close or not to close, that is the question.
             End If
          End If
-         .RowSource = vbNullString 'Remove ComboBox.Recordset
+         Set .Recordset = Nothing
+         .RowSource = vbNullString
          Set .Recordset = rst
       End If
       
