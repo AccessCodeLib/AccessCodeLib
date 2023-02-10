@@ -14,8 +14,9 @@ Attribute VB_Exposed = False
 ' \author   Josef Poetzl
 ' <summary>
 ' Combobox-Steuerung zum Suchen/Auswählen von Einträgen innerhalb der Combobox-Liste
+' Combobox control for searching/selecting entries within the combobox list
 ' </summary>
-' <remarks>Beispiel für Verwendung siehe ComboboxFilterControl_Beispiele.frm</remarks>
+' <remarks>example: ComboboxFilterControl_Beispiele.frm</remarks>
 '\ingroup usability
 '**/
 '---------------------------------------------------------------------------------------
@@ -30,11 +31,11 @@ Option Compare Database
 Option Explicit
 
 Private m_ListSeparatorChar As String
-
 Private WithEvents m_ComboBox As ComboBox
 Attribute m_ComboBox.VB_VarHelpID = -1
 
-Private m_DataRecordset As Object 'DAO.Recordset oder ADODB.Recordset
+Private m_OriginalRowSource As String
+Private m_DataRecordset As Object 'DAO.Recordset or ADODB.Recordset
 Private m_BoundColumnIndex As Long
 Private m_SearchColumnArray As Variant
 
@@ -47,7 +48,7 @@ Public Event Changed()
 Public Event EmptySearchRecordset(ByRef CancelSearch As Boolean)
 Public Event MissingDataRecordset(ByRef rs As Object)
 
-'Möglichkeiten für die Recordsetermittlung von außen (z. B. falls Filterkritien an eine MSSQL-SErver-Prozedur übergeben werden sollen)
+'Möglichkeiten für die Recordsetermittlung von außen (z. B. falls Filterkritien an eine MSSQL-Server-Prozedur übergeben werden sollen)
 Public Event BeforeCreateSearchResultRecordset(ByVal FilterValue As Variant, ByVal FilterColumns As Variant, ByRef rs As Object)
              ' rs = Rückgabemöglichkeit des zu verwendenden Recordsets
 
@@ -63,13 +64,37 @@ Private Sub Class_Terminate()
    Dispose
 End Sub
 
-Public Sub Dispose()
+Public Sub Dispose(Optional RestoreComboboxConfig As Boolean = False)
+   
+On Error Resume Next
+
+   If RestoreComboboxConfig Then
+      RestoreOriginalComboboxConfig
+   End If
+
    Set m_ComboBox = Nothing
    Set m_DataRecordset = Nothing
    Set m_SearchRecordset = Nothing
    m_BoundColumnIndex = 0
    m_SearchColumnArray = Array()
    m_InSearchMode = 0
+   
+End Sub
+
+Private Sub RestoreOriginalComboboxConfig()
+
+   If m_ComboBox Is Nothing Then
+      Exit Sub
+   End If
+
+   If Len(m_OriginalRowSource) > 0 Then
+      With m_ComboBox
+         If .RowSource <> m_OriginalRowSource Then
+            .RowSource = m_OriginalRowSource
+         End If
+      End With
+   End If
+
 End Sub
 
 Public Sub Init(ByVal ComboboxRef As ComboBox, _
@@ -193,6 +218,7 @@ End Sub
 Private Sub UseRowSourceForDataRecordset()
    With m_ComboBox
       If .Recordset Is Nothing Then
+         m_OriginalRowSource = .RowSource
          Set m_DataRecordset = CurrentDb.OpenRecordset(.RowSource)
       Else
          Set m_DataRecordset = .Recordset
@@ -228,7 +254,7 @@ Private Sub CheckFilterValue(Optional ByVal FilterValue As Variant)
       If .Value <> .Column(m_BoundColumnIndex) Then
          ' Column(x) zeigt einen Wert, obwohl .Value keinem Wert in der gebundenen Spalte entspricht.
          ' Das tritt an dieser Stelle nur auf, wenn die Combox nicht aufgeklappt war, als Text eingeben wurde.
-         ' Aber ist .Column(x) enthält spätestens nach dem Zuklappen der Combobox einen Wert.
+         ' Aber .Column(x) enthält spätestens nach dem Zuklappen der Combobox einen Wert.
          Debug.Print "Value = " & .Value, "Column(" & m_BoundColumnIndex & ") = " & .Column(m_BoundColumnIndex)
          ' Wie kann man das vermeiden? => Problemumgehung: RowSourceType auf "Value List" einstellen.
       End If
@@ -249,7 +275,7 @@ End Sub
 Private Sub ActivateSearchMode(Optional ByVal FilterValue As Variant)
 
    Dim Cancel As Boolean
-   Dim rst As Object 'DAO.Recordset oder ADODB.Recordset
+   Dim rst As Object 'DAO.Recordset or ADODB.Recordset
 
    m_ComboBox.Value = Null
 
@@ -277,7 +303,7 @@ Private Sub ActivateSearchMode(Optional ByVal FilterValue As Variant)
    
 End Sub
 
-Private Sub DeactivateSearchMode()
+Public Sub DeactivateSearchMode()
    m_InSearchMode = False
    SetComboboxDataSource m_DataRecordset
    Set m_SearchRecordset = Nothing
@@ -299,8 +325,12 @@ Private Sub SetComboboxDataSource(ByRef rst As Object)
             End If
          End If
          Set .Recordset = Nothing
-         .RowSource = vbNullString
-         Set .Recordset = rst
+         If (rst Is m_DataRecordset) And Len(m_OriginalRowSource) > 0 Then
+            RestoreOriginalComboboxConfig
+         Else
+            .RowSource = vbNullString
+            Set .Recordset = rst
+         End If
       End If
       
    End With
@@ -351,7 +381,7 @@ End Function
 Private Function FilterValueInBoundColumnData(ByVal FilterValue As Variant, ByVal UseWildCardFilterOption As Boolean) As Boolean
 
    Dim FilterColArray(0) As Long
-   Dim rst As Object 'DAO.Recordset oder ADODB.Recordset
+   Dim rst As Object 'DAO.Recordset or ADODB.Recordset
 
    If m_ComboBox.Column(m_BoundColumnIndex) = FilterValue Then
    'direkter Treffer
@@ -463,7 +493,7 @@ Public Property Get FilterValues() As Collection
 End Property
 
 ' Get ListSeparatorChar from OS config
-Public Property Get ListSeparatorChar() As String
+Private Property Get ListSeparatorChar() As String
     
     If Len(m_ListSeparatorChar) = 0 Then
         m_ListSeparatorChar = GetListSeparator
@@ -479,19 +509,17 @@ Private Function GetListSeparator() As String
     Dim LcID As Long
     Dim LcInfo1 As Long
     Dim LcInfo2 As Long
-    Dim SeparatorChar As String
-    
+    Dim ApiString As String
     Dim LCData As String
     Dim CutPos As Long
     
     LcID = GetUserDefaultLCID()
     LcInfo1 = GetLocaleInfo(LcID, LOCALE_SLIST, LCData, 0)
-    SeparatorChar = String$(LcInfo1, 0)
-    LcInfo2 = GetLocaleInfo(LcID, LOCALE_SLIST, SeparatorChar, LcInfo1)
-    CutPos = InStr(SeparatorChar, Chr$(0))
+    ApiString = String$(LcInfo1, 0)
+    LcInfo2 = GetLocaleInfo(LcID, LOCALE_SLIST, ApiString, LcInfo1)
+    CutPos = InStr(ApiString, Chr$(0))
     If CutPos > 0 Then
-        SeparatorChar = Left$(SeparatorChar, CutPos - 1)
-        GetListSeparator = SeparatorChar
+        GetListSeparator = Left$(ApiString, CutPos - 1)
     End If
 
 End Function
