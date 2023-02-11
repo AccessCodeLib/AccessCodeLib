@@ -493,6 +493,14 @@ Public Property Get FilterValues() As Collection
    Set FilterValues = m_FilterValues
 End Property
 
+Public Property Get LastFilterValue() As Variant
+   If m_FilterValues.Count = 0 Then
+      LastFilterValue = Null
+   Else
+      LastFilterValue = m_FilterValues.Item(m_FilterValues.Count)
+   End If
+End Property
+
 ' Get ListSeparatorChar from OS config
 Private Property Get ListSeparatorChar() As String
     
