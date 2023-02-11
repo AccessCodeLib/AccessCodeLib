@@ -197,7 +197,6 @@ Private Property Get DataRecordset() As Object
       RaiseEvent MissingDataRecordset(m_DataRecordset)
       If m_DataRecordset Is Nothing And Len(m_ComboBox.RowSource) > 0 Then
          UseRowSourceForDataRecordset
-         Exit Sub
       End If
    End If
    
@@ -307,6 +306,8 @@ Public Sub DeactivateSearchMode()
    m_InSearchMode = False
    SetComboboxDataSource m_DataRecordset
    Set m_SearchRecordset = Nothing
+   Set m_DataRecordset = Nothing ' => so that the next time there is a possibility
+                                 '    to use the updated combobox data source.
    ClearFilterCollection
 End Sub
 
