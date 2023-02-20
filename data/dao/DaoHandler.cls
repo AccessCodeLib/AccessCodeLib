@@ -871,7 +871,7 @@ Public Function Max(ByVal Expr As String, ByVal Domain As String, Optional ByVal
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: DMin
+' Function: Min
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -889,7 +889,7 @@ Public Function Min(ByVal Expr As String, ByVal Domain As String, Optional ByVal
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: DSum
+' Function: Sum
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -904,6 +904,32 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Function Sum(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
     Sum = Me.Lookup("Sum(" & Expr & ")", Domain, Criteria)
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: Exists
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' DSum-Recordset-Ersatzfunktion
+' </summary>
+' <param name="Domain">Tabelle, Abfrage oder SQL-Ausdruck für Sub-Abfrage (FROM-Teil)</param>
+' <param name="Criteria">Filter (WHERE-Teil)</param>
+' <returns>Boolean</returns>
+' <remarks></remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function Exists(ByVal Domain As String, _
+              Optional ByVal Criteria As String = vbNullString) As Boolean
+
+   Dim strSQL As String
+
+   strSQL = "SELECT True FROM " & Domain
+   If Len(Criteria) > 0 Then
+      strSQL = strSQL & " WHERE " & Criteria
+   End If
+   Exists = (LookupSql(strSQL, , False) = True)
+
 End Function
 
 '---------------------------------------------------------------------------------------
