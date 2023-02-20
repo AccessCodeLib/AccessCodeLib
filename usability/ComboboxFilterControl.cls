@@ -14,8 +14,9 @@ Attribute VB_Exposed = False
 ' \author   Josef Poetzl
 ' <summary>
 ' Combobox-Steuerung zum Suchen/Auswählen von Einträgen innerhalb der Combobox-Liste
+' Combobox control for searching/selecting entries within the combobox list
 ' </summary>
-' <remarks>Beispiel für Verwendung siehe ComboboxFilterControl_Beispiele.frm</remarks>
+' <remarks>example: ComboboxFilterControl_Beispiele.frm</remarks>
 '\ingroup usability
 '**/
 '---------------------------------------------------------------------------------------
@@ -29,10 +30,12 @@ Attribute VB_Exposed = False
 Option Compare Database
 Option Explicit
 
+Private m_ListSeparatorChar As String
 Private WithEvents m_ComboBox As ComboBox
 Attribute m_ComboBox.VB_VarHelpID = -1
 
-Private m_DataRecordset As Object 'DAO.Recordset oder ADODB.Recordset
+Private m_OriginalRowSource As String
+Private m_DataRecordset As Object 'DAO.Recordset or ADODB.Recordset
 Private m_BoundColumnIndex As Long
 Private m_SearchColumnArray As Variant
 
@@ -45,9 +48,13 @@ Public Event Changed()
 Public Event EmptySearchRecordset(ByRef CancelSearch As Boolean)
 Public Event MissingDataRecordset(ByRef rs As Object)
 
-'Möglichkeiten für die Recordsetermittlung von außen (z. B. falls Filterkritien an eine MSSQL-SErver-Prozedur übergeben werden sollen)
+'Möglichkeiten für die Recordsetermittlung von außen (z. B. falls Filterkritien an eine MSSQL-Server-Prozedur übergeben werden sollen)
 Public Event BeforeCreateSearchResultRecordset(ByVal FilterValue As Variant, ByVal FilterColumns As Variant, ByRef rs As Object)
              ' rs = Rückgabemöglichkeit des zu verwendenden Recordsets
+
+Private Declare PtrSafe Function GetUserDefaultLCID Lib "kernel32" () As LongPtr
+Private Declare PtrSafe Function GetLocaleInfo Lib "kernel32" Alias "GetLocaleInfoA" ( _
+            ByVal Locale As Long, ByVal LCType As Long, ByVal LCData As String, ByVal cchData As Long) As Long
 
 Private Sub Class_Initialize()
    Set m_FilterValues = New Collection
@@ -57,13 +64,37 @@ Private Sub Class_Terminate()
    Dispose
 End Sub
 
-Public Sub Dispose()
+Public Sub Dispose(Optional RestoreComboboxConfig As Boolean = False)
+   
+On Error Resume Next
+
+   If RestoreComboboxConfig Then
+      RestoreOriginalComboboxConfig
+   End If
+
    Set m_ComboBox = Nothing
    Set m_DataRecordset = Nothing
    Set m_SearchRecordset = Nothing
    m_BoundColumnIndex = 0
    m_SearchColumnArray = Array()
    m_InSearchMode = 0
+   
+End Sub
+
+Private Sub RestoreOriginalComboboxConfig()
+
+   If m_ComboBox Is Nothing Then
+      Exit Sub
+   End If
+
+   If Len(m_OriginalRowSource) > 0 Then
+      With m_ComboBox
+         If .RowSource <> m_OriginalRowSource Then
+            .RowSource = m_OriginalRowSource
+         End If
+      End With
+   End If
+
 End Sub
 
 Public Sub Init(ByVal ComboboxRef As ComboBox, _
@@ -127,6 +158,9 @@ Private Sub m_Combobox_KeyDown(KeyCode As Integer, Shift As Integer)
                CheckDropDownStatus
             End If
          End With
+        Case vbKeyEscape
+            DeactivateSearchMode
+            KeyCode = 0
    End Select
 End Sub
 
@@ -163,7 +197,6 @@ Private Property Get DataRecordset() As Object
       RaiseEvent MissingDataRecordset(m_DataRecordset)
       If m_DataRecordset Is Nothing And Len(m_ComboBox.RowSource) > 0 Then
          UseRowSourceForDataRecordset
-         Exit Sub
       End If
    End If
    
@@ -184,6 +217,7 @@ End Sub
 Private Sub UseRowSourceForDataRecordset()
    With m_ComboBox
       If .Recordset Is Nothing Then
+         m_OriginalRowSource = .RowSource
          Set m_DataRecordset = CurrentDb.OpenRecordset(.RowSource)
       Else
          Set m_DataRecordset = .Recordset
@@ -219,7 +253,7 @@ Private Sub CheckFilterValue(Optional ByVal FilterValue As Variant)
       If .Value <> .Column(m_BoundColumnIndex) Then
          ' Column(x) zeigt einen Wert, obwohl .Value keinem Wert in der gebundenen Spalte entspricht.
          ' Das tritt an dieser Stelle nur auf, wenn die Combox nicht aufgeklappt war, als Text eingeben wurde.
-         ' Aber ist .Column(x) enthält spätestens nach dem Zuklappen der Combobox einen Wert.
+         ' Aber .Column(x) enthält spätestens nach dem Zuklappen der Combobox einen Wert.
          Debug.Print "Value = " & .Value, "Column(" & m_BoundColumnIndex & ") = " & .Column(m_BoundColumnIndex)
          ' Wie kann man das vermeiden? => Problemumgehung: RowSourceType auf "Value List" einstellen.
       End If
@@ -240,7 +274,7 @@ End Sub
 Private Sub ActivateSearchMode(Optional ByVal FilterValue As Variant)
 
    Dim Cancel As Boolean
-   Dim rst As Object 'DAO.Recordset oder ADODB.Recordset
+   Dim rst As Object 'DAO.Recordset or ADODB.Recordset
 
    m_ComboBox.Value = Null
 
@@ -268,10 +302,12 @@ Private Sub ActivateSearchMode(Optional ByVal FilterValue As Variant)
    
 End Sub
 
-Private Sub DeactivateSearchMode()
+Public Sub DeactivateSearchMode()
    m_InSearchMode = False
    SetComboboxDataSource m_DataRecordset
    Set m_SearchRecordset = Nothing
+   Set m_DataRecordset = Nothing ' => so that the next time there is a possibility
+                                 '    to use the updated combobox data source.
    ClearFilterCollection
 End Sub
 
@@ -286,10 +322,16 @@ Private Sub SetComboboxDataSource(ByRef rst As Object)
             Exit Sub
          ElseIf Not .Recordset Is Nothing Then
             If Not (.Recordset Is m_DataRecordset) Then
-               .Recordset.Close
+               .Recordset.Close ' To close or not to close, that is the question.
             End If
          End If
-         Set .Recordset = rst
+         Set .Recordset = Nothing
+         If (rst Is m_DataRecordset) And Len(m_OriginalRowSource) > 0 Then
+            RestoreOriginalComboboxConfig
+         Else
+            .RowSource = vbNullString
+            Set .Recordset = rst
+         End If
       End If
       
    End With
@@ -304,7 +346,7 @@ Private Function GetValueListFromRecordset(ByVal rst As Object) As String
    If TypeOf rst Is DAO.Recordset Then
       GetValueListFromRecordset = GetValueListFromDaoRecordset(rst)
    Else
-      GetValueListFromRecordset = rst.GetString(2, , ";", ";") 'adClipString = 2
+      GetValueListFromRecordset = rst.GetString(2, , ListSeparatorChar, ListSeparatorChar) 'adClipString = 2
    End If
 
 End Function
@@ -333,14 +375,14 @@ Private Function GetValueListFromDaoRecordset(ByVal rst As DAO.Recordset) As Str
       Next
    Next
 
-   GetValueListFromDaoRecordset = Join(Values, ";")
+   GetValueListFromDaoRecordset = Join(Values, ListSeparatorChar)
 
 End Function
 
 Private Function FilterValueInBoundColumnData(ByVal FilterValue As Variant, ByVal UseWildCardFilterOption As Boolean) As Boolean
 
    Dim FilterColArray(0) As Long
-   Dim rst As Object 'DAO.Recordset oder ADODB.Recordset
+   Dim rst As Object 'DAO.Recordset or ADODB.Recordset
 
    If m_ComboBox.Column(m_BoundColumnIndex) = FilterValue Then
    'direkter Treffer
@@ -364,7 +406,7 @@ End Function
 Private Function GetSeachResultRecordset(ByVal FilterValue As Variant, ByVal SearchColumnArray As Variant, _
                                 Optional ByVal SaveFilterValue As Boolean = True) As Object 'DAO.Recordset
    
-   Dim rst As Object 'DAO.Recordset oder ADODB.Recordset
+   Dim rst As Object 'DAO.Recordset or ADODB.Recordset
    Dim FilterString As String
    Dim i As Long
    
@@ -374,7 +416,7 @@ Private Function GetSeachResultRecordset(ByVal FilterValue As Variant, ByVal Sea
    
    RaiseEvent BeforeCreateSearchResultRecordset(FilterValue, SearchColumnArray, rst)
    If Not (rst Is Nothing) Then
-   ' Abbruch, da rst von außen übergeben wurde
+   ' Cancel, rst was set from the outside (BeforeCreateSearchResultRecordset)
       Set GetSeachResultRecordset = rst
       Exit Function
    End If
@@ -396,7 +438,7 @@ Private Function GetSeachResultRecordset(ByVal FilterValue As Variant, ByVal Sea
       FilterString = FilterString & " OR " & rst.Fields(SearchColumnArray(i)).Name & " like '" & FilterValue & "'"
    Next
    If Len(FilterString) > 0 Then
-      FilterString = Mid(FilterString, 5) ' " OR " abschneiden
+      FilterString = Mid(FilterString, 5) ' remove " OR "
    End If
    
    If TypeOf rst Is DAO.Recordset Then
@@ -429,7 +471,7 @@ Private Function GetSearchColumnsFromCombobox() As Variant()
    Dim c As Long
    
    With m_ComboBox
-      ColumnWidthArray = Split(.ColumnWidths, ";")
+      ColumnWidthArray = Split(.ColumnWidths, ListSeparatorChar)
       ReDim SearchColumns(UBound(ColumnWidthArray))
       
       For i = 0 To UBound(ColumnWidthArray)
@@ -450,3 +492,43 @@ End Function
 Public Property Get FilterValues() As Collection
    Set FilterValues = m_FilterValues
 End Property
+
+Public Property Get LastFilterValue() As Variant
+   If m_FilterValues.Count = 0 Then
+      LastFilterValue = Null
+   Else
+      LastFilterValue = m_FilterValues.Item(m_FilterValues.Count)
+   End If
+End Property
+
+' Get ListSeparatorChar from OS config
+Private Property Get ListSeparatorChar() As String
+    
+    If Len(m_ListSeparatorChar) = 0 Then
+        m_ListSeparatorChar = GetListSeparator
+    End If
+    ListSeparatorChar = m_ListSeparatorChar
+
+End Property
+
+Private Function GetListSeparator() As String
+    
+    Const LOCALE_SLIST = &HC
+    
+    Dim LcID As Long
+    Dim LcInfo1 As Long
+    Dim LcInfo2 As Long
+    Dim ApiString As String
+    Dim LCData As String
+    Dim CutPos As Long
+    
+    LcID = GetUserDefaultLCID()
+    LcInfo1 = GetLocaleInfo(LcID, LOCALE_SLIST, LCData, 0)
+    ApiString = String$(LcInfo1, 0)
+    LcInfo2 = GetLocaleInfo(LcID, LOCALE_SLIST, ApiString, LcInfo1)
+    CutPos = InStr(ApiString, Chr$(0))
+    If CutPos > 0 Then
+        GetListSeparator = Left$(ApiString, CutPos - 1)
+    End If
+
+End Function
