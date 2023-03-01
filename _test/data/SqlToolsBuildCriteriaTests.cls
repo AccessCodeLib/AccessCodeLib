@@ -62,7 +62,7 @@ End Property
 ' Tests
 '--------------------------------------------------------------------
 
-'AccUnit:Row(2, Null, Null, Null, "", "").Name("Emtpy")
+'AccUnit:Row(2, Null, Null, Null, "", "").Name("Empty")
 'AccUnit:Row(2, "a", Null, Null, "F = 'a'", "F = 'a'").Name("Equal")
 'AccUnit:Row(2+8, "a", Null, Null, "F >= 'a'", "F >= 'a'").Name("Equal+GreaterThan")
 'AccUnit:Row(2+4, "a", Null, Null, "F <= 'a'", "F <= 'a'").Name("Equal+LessThan")
@@ -88,14 +88,14 @@ Public Sub BuildCriteria_TextFilter( _
    Dim Actual As String
 
    Actual = DaoTools.BuildCriteria("F", SQL_Text, RelationalOperator, FilterValue, FilterValue2, IgnoreValue)
-   Assert.That Actual, Iz.EqualTo(ExpectedDao)
+   Assert.That "" & Actual, Iz.EqualTo(ExpectedDao)
 
    Actual = TSqlTools.BuildCriteria("F", SQL_Text, RelationalOperator, FilterValue, FilterValue2, IgnoreValue)
-   Assert.That Actual, Iz.EqualTo(ExpectedTSql)
+   Assert.That "" & Actual, Iz.EqualTo(ExpectedTSql)
 
 End Sub
 
-'AccUnit:Row(2, Null, Null, Null, "").Name("Emtpy")
+'AccUnit:Row(2, Null, Null, Null, "").Name("Empty")
 'AccUnit:Row(2, 123, Null, Null, "F = 123").Name("Equal")
 'AccUnit:Row(2, 1.23, Null, Null, "F = 1.23").Name("Equal")
 'AccUnit:Row(2+8, 123, Null, Null, "F >= 123").Name("Equal+GreaterThan")
@@ -111,14 +111,14 @@ Public Sub BuildCriteria_NumericFilter( _
    Dim Actual As String
 
    Actual = DaoTools.BuildCriteria("F", SQL_Numeric, RelationalOperator, FilterValue, FilterValue2, IgnoreValue)
-   Assert.That Actual, Iz.EqualTo(ExpectedDaoOrTSql)
+   Assert.That "" & Actual, Iz.EqualTo(ExpectedDaoOrTSql)
 
    Actual = TSqlTools.BuildCriteria("F", SQL_Numeric, RelationalOperator, FilterValue, FilterValue2, IgnoreValue)
-   Assert.That Actual, Iz.EqualTo(ExpectedDaoOrTSql)
+   Assert.That "" & Actual, Iz.EqualTo(ExpectedDaoOrTSql)
 
 End Sub
 
-'AccUnit:Row(2, Null, Null, Null, "", "").Name("Emtpy")
+'AccUnit:Row(2, Null, Null, Null, "", "").Name("Empty")
 'AccUnit:Row(2, System.Convert.ToDateTime("2014-05-16"), Null, Null, "F = #2014-05-16#", "F = '20140516'").Name("Equal")
 'AccUnit:Row(2+8, System.Convert.ToDateTime("2014-05-16"), Null, Null, "F >= #2014-05-16#", "F >= '20140516'").Name("Equal+GreaterThan")
 'AccUnit:Row(2+4, System.Convert.ToDateTime("2014-05-16"), Null, Null, "F <= #2014-05-16#", "F <= '20140516'").Name("Equal+LessThan")
@@ -133,14 +133,14 @@ Public Sub BuildCriteria_DateFilter( _
    Dim Actual As String
 
    Actual = DaoTools.BuildCriteria("F", SQL_Date, RelationalOperator, FilterValue, FilterValue2, IgnoreValue)
-   Assert.That Actual, Iz.EqualTo(ExpectedDao)
+   Assert.That "" & Actual, Iz.EqualTo(ExpectedDao)
 
    Actual = TSqlTools.BuildCriteria("F", SQL_Date, RelationalOperator, FilterValue, FilterValue2, IgnoreValue)
-   Assert.That Actual, Iz.EqualTo(ExpectedTSql)
+   Assert.That "" & Actual, Iz.EqualTo(ExpectedTSql)
 
 End Sub
 
-'AccUnit:Row(2, Null, Null, Null, "").Name("Emtpy")
+'AccUnit:Row(2, Null, Null, Null, "").Name("Empty")
 'AccUnit:Row(2, "a", "b", "c", "F = 'a' Or F = 'b' Or F = 'c'").Name("Equal")
 'AccUnit:Row(2+8, "a", "b", "c", "F >= 'a' Or F >= 'b' Or F >= 'c'").Name("Equal+GreaterThan")
 'AccUnit:Row(256, "a*", "b*", "c*", "F Like 'a*' Or F Like 'b*' Or F Like 'c*'").Name("Like+*")
@@ -155,8 +155,8 @@ Public Sub BuildCriteria_TextValueArrayFilter( _
 
    Dim Actual As String
 
-   Actual = DaoTools.BuildCriteria("F", SQL_Text, RelationalOperator, Array(FilterValue1, FilterValue2, FilterValue3))
-   Assert.That Actual, Iz.EqualTo(Expected)
+   Actual = DaoTools.BuildCriteria("F", SQL_Text, RelationalOperator, Array(FilterValue1, FilterValue2, FilterValue3), , Null)
+   Assert.That "" & Actual, Iz.EqualTo(Expected)
 
 End Sub
 
@@ -172,7 +172,7 @@ Public Sub BuildCriteria_IgnoreValueArray( _
 
    Actual = DaoTools.BuildCriteria("F", SQL_Text, SQL_Equal, FilterValue1, , Array(IgnoreValue1, IgnoreValue2, IgnoreValue3))
    
-   Assert.That Actual, Iz.EqualTo(Expected)
+   Assert.That "" & Actual, Iz.EqualTo(Expected)
 
 End Sub
 
@@ -188,39 +188,39 @@ Public Sub BuildCriteria_InAndIgnoreValueArray( _
 
    Actual = DaoTools.BuildCriteria("F", SQL_Text, SQL_In, Array(FilterValue1, FilterValue2, FilterValue3), , Array(IgnoreValue1, IgnoreValue2, IgnoreValue3))
    
-   Assert.That Actual, Iz.EqualTo(Expected)
+   Assert.That "" & Actual, Iz.EqualTo(Expected)
 
 End Sub
 
 'AccUnit:Row("a ;b; c", "F In ('a','b','c')")
 'AccUnit:Row("a", "F In ('a')")
 'AccUnit:Row(Null, "")
-'AccUnit:Row("", "")
+'AccUnit:Row("", "F In ('')")
 Public Sub BuildCriteria_InAndSplitValueToArray( _
                            ByVal FilterValue As Variant, _
                            ByVal Expected As String)
 
    Dim Actual As String
 
-   Actual = DaoTools.BuildCriteria("F", SQL_Text, SQL_In + SQL_SplitValueToArray, FilterValue)
+   Actual = DaoTools.BuildCriteria("F", SQL_Text, SQL_In + SQL_SplitValueToArray, FilterValue, , Null)
    
-   Assert.That Actual, Iz.EqualTo(Expected)
+   Assert.That "" & Actual, Iz.EqualTo(Expected)
 
 End Sub
 
 'AccUnit:Row("a ;b; c", "F Like 'a*' Or F Like 'b*' Or F Like 'c*'")
 'AccUnit:Row("a", "F Like 'a*'")
 'AccUnit:Row(Null, "")
-'AccUnit:Row("", "")
+'AccUnit:Row("", "F Like '*'")
 Public Sub BuildCriteria_LikeAndSplitValueToArray( _
                            ByVal FilterValue As Variant, _
                            ByVal Expected As String)
 
    Dim Actual As String
 
-   Actual = DaoTools.BuildCriteria("F", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix + SQL_SplitValueToArray, FilterValue)
+   Actual = DaoTools.BuildCriteria("F", SQL_Text, SQL_Like + SQL_Add_WildCardSuffix + SQL_SplitValueToArray, FilterValue, , Null)
    
-   Assert.That Actual, Iz.EqualTo(Expected)
+   Assert.That "" & Actual, Iz.EqualTo(Expected)
 
 End Sub
 
@@ -233,7 +233,7 @@ Public Sub BuildCriteria_EqualNumericAndSplitValueToArray( _
 
    Actual = DaoTools.BuildCriteria("F", SQL_Numeric, SQL_Equal + SQL_SplitValueToArray, FilterValue)
    
-   Assert.That Actual, Iz.EqualTo(Expected)
+   Assert.That "" & Actual, Iz.EqualTo(Expected)
 
 End Sub
 
@@ -246,6 +246,6 @@ Public Sub BuildCriteria_EqualNumericStringArray_VbaSplit( _
 
    Actual = DaoTools.BuildCriteria("F", SQL_Numeric, SQL_Equal, Split(FilterValue, ";"))
    
-   Assert.That Actual, Iz.EqualTo(Expected)
+   Assert.That "" & Actual, Iz.EqualTo(Expected)
 
 End Sub

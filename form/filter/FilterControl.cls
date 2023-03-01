@@ -251,9 +251,9 @@ End Function
 Public Function CriteriaString(ByVal SqlToolsRef As SqlTools) As String
    
    If m_SubFilterControls Is Nothing Then
-      CriteriaString = SqlToolsRef.BuildCriteria(m_DataField, m_DataType, m_RelationalOperator, GetControlValue(Control), GetControlValue(Control2), IgnoreValue)
+      CriteriaString = SqlToolsRef.BuildCriteria(m_DataField, m_DataType, m_RelationalOperator, GetControlValue(Control), GetControlValue(Control2), IgnoreValue, False)
    Else
-      CriteriaString = SqlToolsRef.BuildCriteria(m_DataField, m_DataType, m_RelationalOperator, GetSubControlsValues, , IgnoreValue)
+      CriteriaString = SqlToolsRef.BuildCriteria(m_DataField, m_DataType, m_RelationalOperator, GetSubControlsValues, , IgnoreValue, False)
    End If
 
 End Function

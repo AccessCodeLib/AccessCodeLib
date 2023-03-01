@@ -403,7 +403,7 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
                               ByVal RelationalOperator As SqlRelationalOperators, _
                               ByVal FilterValue As Variant, _
                      Optional ByVal FilterValue2 As Variant = Null, _
-                     Optional ByVal IgnoreValue As Variant = Null, _
+                     Optional ByVal IgnoreValue As Variant, _
                      Optional ByVal DisableIgnoreNullValue As Boolean = False) As String
 
    Dim FilterValueString As String
@@ -412,13 +412,20 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
    Dim Criteria1 As String
    Dim Criteria2 As String
    Dim TempArr() As String
-
+   
    If (RelationalOperator And [_IgnoreAll]) = [_IgnoreAll] Then
       Exit Function
    End If
    
+   If IsMissing(IgnoreValue) Then
+      If Not DisableIgnoreNullValue Then
+         DisableIgnoreNullValue = True
+      End If
+      IgnoreValue = Null
+   End If
+   
    If Not IsArray(FilterValue) Then
-     
+   
       If FilterValue = "{NULL}" Or FilterValue = "{LEER}" Or FilterValue = "{EMPTY}" Then
          FilterValue = Null
          DisableIgnoreNullValue = True
@@ -536,9 +543,9 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
             If (RelationalOperator And SQL_GreaterThan) = SQL_GreaterThan Then
                ' nichts ändern => >= DataValue  / SQL_Add_WildCardSuffix ist nicht logisch
             Else ' ganzen Tag berücksichtigen FieldName >= DateValue and FieldName < DateAdd("d", 1, FilterValue))
-               BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue) & _
+               BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue, , , False) & _
                                SqlAndConcatString & _
-                               BuildCriteria(FieldName, FieldDataType, SQL_LessThan, DateAdd("d", 1, CDate(CLng(FilterValue))))
+                               BuildCriteria(FieldName, FieldDataType, SQL_LessThan, DateAdd("d", 1, CDate(CLng(FilterValue))), , , False)
                Exit Function
             End If
          Else
@@ -563,11 +570,11 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
                   Else
                      FilterValue2 = Replace(FilterValue, "*", vbNullString)
                   End If
-                  Criteria1 = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan, GetNextDigitNumber(FilterValue, True))
-                  Criteria2 = BuildCriteria(FieldName, FieldDataType, SQL_LessThan + SQL_Equal, FilterValue2)
+                  Criteria1 = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan, GetNextDigitNumber(FilterValue, True), , Null, False)
+                  Criteria2 = BuildCriteria(FieldName, FieldDataType, SQL_LessThan + SQL_Equal, FilterValue2, , Null, False)
                Else
-                  Criteria1 = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue)
-                  Criteria2 = BuildCriteria(FieldName, FieldDataType, SQL_LessThan, GetNextDigitNumber(FilterValue))
+                  Criteria1 = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue, , Null, False)
+                  Criteria2 = BuildCriteria(FieldName, FieldDataType, SQL_LessThan, GetNextDigitNumber(FilterValue), , Null, False)
                End If
                BuildCriteria = Criteria1 & SqlAndConcatString & Criteria2
                Exit Function
@@ -793,7 +800,7 @@ Private Function TryBuildArrayCriteria(ByRef FieldName As String, ByVal FieldDat
 
    'Kriterien über Or verbinden
    For Each itm In FilterValue
-      ItmCriteria = BuildCriteria(FieldName, FieldDataType, RelationalOperator, itm, , IgnoreValue)
+      ItmCriteria = BuildCriteria(FieldName, FieldDataType, RelationalOperator, itm, , IgnoreValue, False)
       If Len(ItmCriteria) > 0 Then
          Criteria = Criteria & SqlOrConcatString & ItmCriteria
       End If
@@ -821,8 +828,16 @@ Private Function TryBuildInCriteria(ByRef FieldName As String, ByVal FieldDataTy
 
    If IsArray(FilterValue) Then
       FilterValueString = GetValueArrayString(FilterValue, FieldDataType, ",", IgnoreValue)
-   ElseIf VarType(FilterValue) = vbString Then ' Value ist bereits die Auflistung als String
-      FilterValueString = FilterValue
+   ElseIf VarType(FilterValue) = vbString Then
+      If FieldDataType = SQL_Text Then
+         If Left(FilterValue, 1) = "'" Then ' schon als SQL-Text im FilterString
+            FilterValueString = FilterValue
+         Else
+            FilterValueString = ConvertToSqlText(FilterValue, FieldDataType)
+         End If
+      Else
+         FilterValueString = FilterValue ' Value ist bereits in der Auflistung als String
+      End If
    Else
       FilterValueString = ConvertToSqlText(FilterValue, FieldDataType)
    End If
@@ -865,8 +880,8 @@ Private Function TryBuildBetweenCriteria(ByRef FieldName As String, ByVal FieldD
    End If
    
    If (RelationalOperator And SQL_Not) = SQL_Not Then 'Bedingung umdrehen
-      Criteria1 = BuildCriteria(FieldName, FieldDataType, SQL_LessThan, FilterValue, , IgnoreValue)
-      Criteria2 = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan, FilterValue2, , IgnoreValue)
+      Criteria1 = BuildCriteria(FieldName, FieldDataType, SQL_LessThan, FilterValue, , IgnoreValue, False)
+      Criteria2 = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan, FilterValue2, , IgnoreValue, False)
       Criteria = Criteria1 & SqlAndConcatString & Criteria2
       TryBuildBetweenCriteria = True
       Exit Function
@@ -877,8 +892,8 @@ Private Function TryBuildBetweenCriteria(ByRef FieldName As String, ByVal FieldD
          FilterValue2 = Mid(FilterValue2, 3)
       ElseIf FilterValue2 Like "<*" Then
          FilterValue2 = Mid(FilterValue2, 2)
-         Criteria1 = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue)
-         Criteria2 = BuildCriteria(FieldName, FieldDataType, SQL_LessThan, FilterValue2)
+         Criteria1 = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue, , Null, False)
+         Criteria2 = BuildCriteria(FieldName, FieldDataType, SQL_LessThan, FilterValue2, , Null, False)
          Criteria = Criteria1 & SqlAndConcatString & Criteria2
          TryBuildBetweenCriteria = True
          Exit Function
@@ -892,14 +907,14 @@ Private Function TryBuildBetweenCriteria(ByRef FieldName As String, ByVal FieldD
       FilterValue = FilterValue2
       FilterValue2 = GetCheckedIgnoreValue(IgnoreValue)
    ElseIf (FieldDataType And SQL_Date) = SQL_Date And (RelationalOperator And SQL_Add_WildCardSuffix) Then
-      Criteria1 = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue)
-      Criteria2 = BuildCriteria(FieldName, FieldDataType, SQL_LessThan + SQL_Equal + SQL_Add_WildCardSuffix, FilterValue2)
+      Criteria1 = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue, , Null, False)
+      Criteria2 = BuildCriteria(FieldName, FieldDataType, SQL_LessThan + SQL_Equal + SQL_Add_WildCardSuffix, FilterValue2, , Null, False)
       Criteria = Criteria1 & SqlAndConcatString & Criteria2
       TryBuildBetweenCriteria = True
       Exit Function
    ElseIf (FieldDataType And SQL_Numeric) = SQL_Numeric And (RelationalOperator And SQL_Add_WildCardSuffix) Then
-      Criteria1 = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue)
-      Criteria2 = BuildCriteria(FieldName, FieldDataType, SQL_LessThan + SQL_Equal + SQL_Add_WildCardSuffix, FilterValue2)
+      Criteria1 = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue, , Null, False)
+      Criteria2 = BuildCriteria(FieldName, FieldDataType, SQL_LessThan + SQL_Equal + SQL_Add_WildCardSuffix, FilterValue2, , Null, False)
       Criteria = Criteria1 & SqlAndConcatString & Criteria2
       TryBuildBetweenCriteria = True
       Exit Function
@@ -920,7 +935,7 @@ Private Function GetCheckedIgnoreValue(ByVal IgnoreValue As Variant) As Variant
 End Function
 
 Private Function NullFilterOrEmptyFilter(ByVal FieldName As String, ByVal FieldDataType As SqlFieldDataType, _
-                                          ByVal RelationalOperator As SqlRelationalOperators, _
+                                         ByVal RelationalOperator As SqlRelationalOperators, _
                                          ByVal Value As Variant, ByVal IgnoreValue As Variant, _
                                          ByRef NullFilterString As String, _
                                 Optional ByVal DisableIgnoreNullValue As Boolean = False) As Boolean
