@@ -636,7 +636,7 @@ Public Function Exists(ByVal SourceName As String, _
 
    strSQL = "SELECT 1 FROM " & SourceName
    If Len(Criteria) > 0 Then
-      strSQL = strSQL & " WHERE " & Replace(Criteria, "*", "%", , , vbBinaryCompare)
+      strSQL = strSQL & " WHERE " & Criteria
    End If
    Exists = (LookupSql(strSQL, , 0) = 1)
 
