@@ -51,7 +51,7 @@ Option Explicit
       vbext_ct_MSForm = 3
       vbext_ct_ActiveXDesigner = 11
       vbext_ct_Document = 100
-   End Enum
+   End Enum 
 #End If
 
 '---------------------------------------------------------------------------------------
@@ -106,22 +106,32 @@ End Sub
 Public Sub AddCodeToEventProcedure(ByVal EventName As String, ByVal ObjectName As String, ByVal Code As String)
 
    Dim StartLine As Long
+   Dim CodeExists As Boolean
+   Dim ProcEndLine As Long
+   Dim CodeCheckLineStart As Long
+   Dim CodeCheckLineEnd As Long
    
-   StartLine = FindEventProcedureBodyLine(EventName, ObjectName)
+   StartLine = FindEventProcedureBodyLine(EventName, ObjectName, ProcEndLine)
 
    If StartLine < 0 Then
       StartLine = CreateEmptyEventProcedure(EventName, ObjectName)
+   Else
+      CodeCheckLineStart = StartLine
+      CodeCheckLineEnd = ProcEndLine
+      CodeExists = m_CodeModule.Find(Code, CodeCheckLineStart, 0, CodeCheckLineEnd, 0, True)
    End If
-
-   m_CodeModule.InsertLines StartLine + 1, vbNewLine & Code
-
+   
+   If Not CodeExists Then
+      m_CodeModule.InsertLines StartLine + 1, vbNewLine & Code
+   End If
+   
 End Sub
 
-Private Function FindEventProcedureBodyLine(ByVal EventName As String, ByVal ObjectName As String) As Long
+Private Function FindEventProcedureBodyLine(ByVal EventName As String, ByVal ObjectName As String, _
+                                   Optional ByRef ProcEndLine As Long) As Long
 
    Dim StartLine As Long
    Dim EndLine As Long
-
    Dim ProcedureDeclarationCode As String
 
    ProcedureDeclarationCode = "Sub " & ObjectName & "_" & EventName & "("
@@ -133,6 +143,7 @@ Private Function FindEventProcedureBodyLine(ByVal EventName As String, ByVal Obj
 
    If StartLine > 0 Then
       FindEventProcedureBodyLine = m_CodeModule.ProcBodyLine(ObjectName & "_" & EventName, vbext_pk_Proc)
+      ProcEndLine = FindEventProcedureBodyLine + m_CodeModule.ProcCountLines(ObjectName & "_" & EventName, vbext_pk_Proc) + 1
    Else
       FindEventProcedureBodyLine = -1
    End If
