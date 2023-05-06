@@ -51,7 +51,7 @@ Option Explicit
       vbext_ct_MSForm = 3
       vbext_ct_ActiveXDesigner = 11
       vbext_ct_Document = 100
-   End Enum 
+   End Enum
 #End If
 
 '---------------------------------------------------------------------------------------

@@ -27,7 +27,7 @@ Public Property Get L10n() As L10nDict
    Set L10n = L10nDict
 End Property
 
-Public Function MsgBox(ByVal Prompt As Variant, _
+Public Function L10nMsgBox(ByVal Prompt As Variant, _
               Optional ByVal Buttons As VbMsgBoxStyle = vbOKOnly, _
               Optional ByVal Title As Variant, _
               Optional ByVal HelpFile As Variant, _
@@ -41,6 +41,6 @@ Public Function MsgBox(ByVal Prompt As Variant, _
       Title = L10n.Text(Title)
    End If
    
-   MsgBox = VBA.MsgBox(Prompt, Buttons, Title, HelpFile, Context)
+   L10nMsgBox = VBA.MsgBox(Prompt, Buttons, Title, HelpFile, Context)
    
 End Function

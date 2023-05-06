@@ -34,6 +34,9 @@ Option Explicit
 Private Const LngDictTableName As String = "L10n_Dict"
 Private Const DefaultLangSeparatorChar As String = "|"
 
+Private Const DefaultBaseLongCode As String = "EN"
+Private m_BaseLangCode As String
+
 Private m_LangCode As String
 Private m_LangSeparatorChar As String
 
@@ -147,6 +150,17 @@ Public Property Let LangCode(ByVal NewValue As String)
    RaiseEvent LanguageChanged
 End Property
 
+Public Property Get BaseLangCode() As String
+   If Len(m_BaseLangCode) = 0 Then
+      m_BaseLangCode = DefaultBaseLongCode
+   End If
+   BaseLangCode = m_BaseLangCode
+End Property
+
+Public Property Let BaseLangCode(ByVal NewValue As String)
+   m_BaseLangCode = NewValue
+End Property
+
 Public Property Get LangSeparatorChar() As String
    If Len(m_LangSeparatorChar) = 0 Then
       m_LangSeparatorChar = DefaultLangSeparatorChar
@@ -195,7 +209,7 @@ Private Sub AddTextToTable(ByVal BaseText As String)
    Dim LngText As String
    
    LngText = BaseText
-   If m_LangCode <> "DE" Then
+   If m_LangCode <> BaseLangCode Then
       LngText = m_LangCode & ":" & LngText
    End If
    
@@ -267,10 +281,11 @@ End Sub
 
 Private Function GetControlTextKeys(ByVal CtlRef As Control) As String()
 
-   Dim ControlTextKeys(2) As String
+   Dim ControlTextKeys(3) As String
    Dim CaptionText As String
    Dim ControlTipText As String
    Dim StatusBarText As String
+   Dim FormatText As String
 
    With CtlRef
       ControlTipText = .ControlTipText
@@ -281,6 +296,9 @@ Private Function GetControlTextKeys(ByVal CtlRef As Control) As String()
          Case AcControlType.acCommandButton, AcControlType.acToggleButton
             CaptionText = .Caption
             StatusBarText = .StatusBarText
+         Case AcControlType.acTextBox
+            FormatText = .Format
+            StatusBarText = .StatusBarText
          Case Else
             StatusBarText = .StatusBarText
       End Select
@@ -289,6 +307,7 @@ Private Function GetControlTextKeys(ByVal CtlRef As Control) As String()
    ControlTextKeys(0) = CaptionText
    ControlTextKeys(1) = ControlTipText
    ControlTextKeys(2) = StatusBarText
+   ControlTextKeys(3) = FormatText
    
    GetControlTextKeys = ControlTextKeys
 
@@ -308,6 +327,11 @@ Private Sub SetControlText(ByVal CtlRef As Control, ByRef ControlTextKeys() As S
       If Len(ControlTextKeys(2)) > 0 Then
          .StatusBarText = Text(ControlTextKeys(2))
       End If
+      
+      If Len(ControlTextKeys(3)) > 0 Then
+         .Format = Text(ControlTextKeys(3))
+      End If
+      
    End With
 
 End Sub

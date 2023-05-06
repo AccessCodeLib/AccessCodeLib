@@ -23,15 +23,15 @@ Option Explicit
 
 Private Declare Function CreateSolidBrush _
       Lib "gdi32.dll" ( _
-      ByVal crColor As Long _
+      ByVal CrColor As Long _
       ) As Long
 
 Private Declare Function RedrawWindow _
       Lib "user32" ( _
       ByVal Hwnd As Long, _
-      lprcUpdate As Any, _
-      ByVal hrgnUpdate As Long, _
-      ByVal fuRedraw As Long _
+      LprcUpdate As Any, _
+      ByVal HrgnUpdate As Long, _
+      ByVal FuRedraw As Long _
       ) As Long
 
 Private Declare Function SetClassLong _
