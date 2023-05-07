@@ -269,8 +269,8 @@ Private Sub TranslateControl(ByVal CtlRef As Control)
          .Tag = TagTextPrefix & "LANG:" & LangTextKeyString
       Else
          ControlTextKeys = Split(LangTextKeyString, TextKeySeparatorString)
-         If UBound(ControlTextKeys) < 2 Then
-            ReDim Preserve ControlTextKeys(2)
+         If UBound(ControlTextKeys) < 3 Then
+            ReDim Preserve ControlTextKeys(3)
          End If
       End If
    End With
@@ -335,3 +335,41 @@ Private Sub SetControlText(ByVal CtlRef As Control, ByRef ControlTextKeys() As S
    End With
 
 End Sub
+
+Public Function MsgBox(ByVal Prompt As Variant, _
+              Optional ByVal Buttons As VbMsgBoxStyle = vbOKOnly, _
+              Optional ByVal Title As Variant, _
+              Optional ByVal HelpFile As Variant, _
+              Optional ByVal Context As Variant) As VbMsgBoxResult
+   
+   If Not IsMissing(Prompt) Then
+      Prompt = Me.Text(Prompt)
+   End If
+   
+   If Not IsMissing(Title) Then
+      Title = Me.Text(Title)
+   End If
+   
+   MsgBox = VBA.MsgBox(Prompt, Buttons, Title, HelpFile, Context)
+
+End Function
+
+
+Public Function InputBox(ByVal Prompt As Variant, _
+                Optional ByVal Title As Variant, _
+                Optional ByVal Default As Variant, _
+                Optional ByVal XPos As Variant, Optional ByVal YPos As Variant, _
+                Optional ByVal HelpFile As Variant, _
+                Optional ByVal Context As Variant) As String
+
+   If Not IsMissing(Prompt) Then
+      Prompt = Me.Text(Prompt)
+   End If
+   
+   If Not IsMissing(Title) Then
+      Title = Me.Text(Title)
+   End If
+   
+   InputBox = VBA.InputBox(Prompt, Title, Default, XPos, YPos, HelpFile, Context)
+
+End Function

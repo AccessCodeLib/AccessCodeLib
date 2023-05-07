@@ -29,30 +29,26 @@ Public Property Get L10n() As L10nDict
 End Property
 
 #If L10nMsgBoxReplacement = 1 Then
-   Public Function MsgBox(ByVal Prompt As Variant, _
+
+Public Function MsgBox(ByVal Prompt As Variant, _
               Optional ByVal Buttons As VbMsgBoxStyle = vbOKOnly, _
               Optional ByVal Title As Variant, _
               Optional ByVal HelpFile As Variant, _
               Optional ByVal Context As Variant) As VbMsgBoxResult
-#Else
-Public Function L10nMsgBox(ByVal Prompt As Variant, _
-              Optional ByVal Buttons As VbMsgBoxStyle = vbOKOnly, _
-              Optional ByVal Title As Variant, _
-              Optional ByVal HelpFile As Variant, _
-              Optional ByVal Context As Variant) As VbMsgBoxResult
-#End If
-   If Not IsMissing(Prompt) Then
-      Prompt = L10n.Text(Prompt)
-   End If
-   
-   If Not IsMissing(Title) Then
-      Title = L10n.Text(Title)
-   End If
-   
-#If L10nMsgBoxReplacement = 1 Then
-   MsgBox = VBA.MsgBox(Prompt, Buttons, Title, HelpFile, Context)
-#Else
-   L10nMsgBox = VBA.MsgBox(Prompt, Buttons, Title, HelpFile, Context)
-#End If
+
+   MsgBox = L10n.MsgBox(Prompt, Buttons, Title, HelpFile, Context)
 
 End Function
+
+Public Function InputBox(ByVal Prompt As Variant, _
+              Optional ByVal Title As Variant, _
+              Optional ByVal Default As Variant, _
+              Optional ByVal XPos As Variant, Optional ByVal YPos As Variant, _
+              Optional ByVal HelpFile As Variant, _
+              Optional ByVal Context As Variant) As String
+
+   InputBox = L10n.InputBox(Prompt, Title, Default, XPos, YPos, HelpFile, Context)
+
+End Function
+
+#End If

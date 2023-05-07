@@ -436,8 +436,8 @@ Public Function OpenMenu(Optional ByVal X As Single = 0, Optional ByVal Y As Sin
    Dim RcHelper As RECT
    Dim ButtonLeft As Long
    Dim ButtonTop As Long
-   Dim Xpos As Long
-   Dim Ypos As Long
+   Dim XPos As Long
+   Dim YPos As Long
    
    Dim ParentObj As Object
    Dim AccFormRect As RECT
@@ -487,8 +487,8 @@ Public Function OpenMenu(Optional ByVal X As Single = 0, Optional ByVal Y As Sin
       ButtonTop = LayoutTools.GetPixelFromTwips(m_MenuControl.Top) + LayoutTools.GetPixelFromTwips(Y)
    End If
    '- Miteinander verrechnen
-   Xpos = RcHelper.Left + ButtonLeft - 1
-   Ypos = RcHelper.Top + ButtonTop
+   XPos = RcHelper.Left + ButtonLeft - 1
+   YPos = RcHelper.Top + ButtonTop
    
    'Menü anzeigen
    
@@ -501,7 +501,7 @@ Public Function OpenMenu(Optional ByVal X As Single = 0, Optional ByVal Y As Sin
       End If
    End If
    
-   TrackPopupMenu MenuHwnd, TPM_BOTTOMALIGN, Xpos, Ypos, _
+   TrackPopupMenu MenuHwnd, TPM_BOTTOMALIGN, XPos, YPos, _
                ByVal 0&, ParentObj.Hwnd, ByVal 0&
    
    'Message-Loop (Obacht: für normale Formulare Application.hWndAccessApp, für POPUPS Me.hwnd)
