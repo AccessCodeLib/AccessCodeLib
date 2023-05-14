@@ -8,7 +8,7 @@ Attribute VB_Name = "L10nTools"
 ' Localization (L10n) Functions
 ' </summary>
 ' <remarks>
-' Use compiler constant L10nMsgBoxReplacement to overwrite MsgBox function.
+' Use compiler constant L10nMsgBoxReplacement to overwrite MsgBox and InPutBox functions.
 ' </remarks>
 ' \ingroup localization
 '**/
