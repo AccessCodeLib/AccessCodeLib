@@ -14,9 +14,9 @@ Attribute VB_Exposed = False
 '/**
 ' \author       Josef Poetzl
 ' <summary>
-' Localization dictionary - Hilfsklasse für Spracheinstellung
+' Localization dictionary - Auxiliary class for language setting
 ' </summary>
-' <remarks>Attribute VB_PredeclaredId = True einstellen, damit Klasse ohne Instanzierung genutzt werden kann</remarks>
+' <remarks>Set attributes VB_PredeclaredId = True so that class can be used without instantiation</remarks>
 ''
 ' \ingroup localization
 '**/
@@ -353,7 +353,6 @@ Public Function MsgBox(ByVal Prompt As Variant, _
    MsgBox = VBA.MsgBox(Prompt, Buttons, Title, HelpFile, Context)
 
 End Function
-
 
 Public Function InputBox(ByVal Prompt As Variant, _
                 Optional ByVal Title As Variant, _
