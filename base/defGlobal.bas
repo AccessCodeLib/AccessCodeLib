@@ -59,12 +59,12 @@ Private m_ApplicationName As String         'Zwischenspeicher für Anwendungsname
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get CurrentApplicationName() As String
-' inkl. Notfall-Errorhandler, falls CurrentApplication nicht instanziert ist
+' incl. emergency error handler if CurrentApplication is not instantiated
 
 On Error GoTo HandleErr
 
    CurrentApplicationName = CurrentApplication.ApplicationName
-      
+
 ExitHere:
    Exit Property
 
@@ -76,15 +76,17 @@ End Property
 
 Private Function GetApplicationNameFromDb() As String
 
-   If Len(m_ApplicationName) = 0 Then 'Wert aus Titel-Eigenschaft, da Konstante nicht eingestellt wurde
-          On Error Resume Next
+   If Len(m_ApplicationName) = 0 Then
+On Error Resume Next
+'1. Value from title property
       m_ApplicationName = CodeDb.Properties("AppTitle").Value
-      If Len(m_ApplicationName) = 0 Then 'Wert aus Dateinamen
+      If Len(m_ApplicationName) = 0 Then
+'2. Value from file name
          m_ApplicationName = CodeDb.Name
          m_ApplicationName = Left$(m_ApplicationName, InStrRev(m_ApplicationName, ".") - 1)
       End If
    End If
-   
+
    GetApplicationNameFromDb = m_ApplicationName
-   
+
 End Function

@@ -1,15 +1,14 @@
 Attribute VB_Name = "_initApplication"
 '---------------------------------------------------------------------------------------
-' Modul: _initApplication (2009-07-08)
+' Modul: _initApplication
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' Initialisierungsaufruf der Anwendung
+' Initialising the application
 ' </summary>
 ' <remarks>
 ' </remarks>
 ' \ingroup base
-' @todo StartApplication-Prozedur für allgemeine Verwendung umschreiben => in Klasse verlagern
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
@@ -28,7 +27,7 @@ Option Private Module
 ' Anwendungseinstellungen
 '-------------------------
 '
-' => siehe _config_Application
+' => see _config_Application
 '
 '-------------------------
 
@@ -37,9 +36,9 @@ Option Private Module
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' Prozedur für den Anwendungsstart
+' Procedure for application start-up
 ' </summary>
-' <returns>Boolean</returns>
+' <returns>Boolean (sucess = true)</returns>
 ' <remarks>
 ' </remarks>
 '**/
@@ -55,7 +54,7 @@ ExitHere:
 
 HandleErr:
    StartApplication = False
-   MsgBox "Anwendung kann nicht gestartet werden.", vbCritical, CurrentApplicationName
+   MsgBox "Application can not be started.", vbCritical, CurrentApplicationName
    Application.Quit acQuitSaveNone
    Resume ExitHere
 
