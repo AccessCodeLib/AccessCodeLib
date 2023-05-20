@@ -368,7 +368,7 @@ Public Function BooleanToSqlText(ByVal Value As Variant, _
       Exit Function
    End If
 
-   If Value = True Then
+   If CBool(Value) = True Then ' CBool(Value) to raise error 13 (type mismatch) if Value is not a boolean
       If Len(TrueString) = 0 Then
          TrueString = SqlBooleanTrueString
          If Len(TrueString) = 0 Then

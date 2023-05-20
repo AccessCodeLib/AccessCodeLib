@@ -128,8 +128,44 @@ Public Sub NumberToSqlText_UseNumbers_ReturnsSqlText(ByVal Value As Variant, ByV
    Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
-Public Sub NumberToSqlText_UseText_ReturnsSqlText()
+Public Sub NumberToSqlText_UseText_ThrowsErr13()
    Dim Actual As String
    Assert.Throws 13
    Actual = SqlTools.NumberToSqlText("abc")
+End Sub
+
+'
+' BooleanToSqlText
+'
+
+'AccUnit:Row(Null, "True", "Null")
+'AccUnit:Row(0, "True", "0")
+'AccUnit:Row(12345, "True", "True")
+'AccUnit:Row(1.2345, "True", "True")
+'AccUnit:Row(-1, "True", "True")
+'AccUnit:Row(True, "True", "True")
+'AccUnit:Row(False, "True", "0")
+Public Sub BooleanToSqlText_UseValues_ReturnsSqlText(ByVal Value As Variant, ByVal TrueString As String, ByVal Expected As String)
+   Dim Actual As String
+   Actual = SqlTools.BooleanToSqlText(Value, TrueString)
+   Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+Public Sub BooleanToSqlText_UseText_ThrowsErr13()
+   Dim Actual As String
+   Assert.Throws 13
+   Actual = SqlTools.BooleanToSqlText("abc")
+End Sub
+
+Public Sub BooleanToSqlText_UseTrue_ThrowsErrNOCONFIG()
+   Dim Actual As String
+   Assert.Throws vbObjectError + 1 ' = SqlToolsErrorNumbers.ERRNR_NOCONFIG
+   Actual = SqlTools.BooleanToSqlText(True)
+End Sub
+
+Public Sub BooleanToSqlText_UseTrueSetTrueStringInSqlTools_ReturnSqlText()
+   Const Expected As String = "TrueStringParam"
+   Dim Actual As String
+   Actual = SqlTools.Clone("", Expected, "*").BooleanToSqlText(True)
+   Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
