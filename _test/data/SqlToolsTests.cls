@@ -102,9 +102,17 @@ Public Sub DateToSqlText_UsePublicFormatVariable_ReturnsSqlText(ByVal Value As V
    Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
+Public Sub DateToSqlText_UseNotDateValue_RaiseError()
+   Dim Actual As String
+   Assert.Throws vbObjectError
+   Actual = SqlTools.DateToSqlText("1.1.1.1")
+End Sub
+
+
 Public Sub DateToSqlText_FormatVariableNotDefined_RaiseError()
    Dim Actual As String
    Assert.Throws -2147221503, "DateToSqlText"
+   SqlTools.SqlDateFormat = vbNullString
    Actual = SqlTools.DateToSqlText(Date)
 End Sub
 
@@ -168,4 +176,65 @@ Public Sub BooleanToSqlText_UseTrueSetTrueStringInSqlTools_ReturnSqlText()
    Dim Actual As String
    Actual = SqlTools.Clone("", Expected, "*").BooleanToSqlText(True)
    Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+'
+' ConvertToNumeric
+'
+
+'AccUnit:Row(Null, Null)
+'AccUnit:Row(0, 0)
+'AccUnit:Row("000", 0)
+'AccUnit:Row(12345, 12345)
+'AccUnit:Row("12345", 12345)
+'AccUnit:Row(1.2345, 1.2345)
+'AccUnit:Row("1.2345", 1.2345)
+'AccUnit:Row("1,2345", 1.2345)
+'AccUnit:Row(0.123, 0.123)
+'AccUnit:Row(.123, 0.123)
+'AccUnit:Row("", Null)
+'AccUnit:Row("1.234.5", 1234.5)
+Public Sub ConvertToNumeric_UseValues_ReturnsValue(ByVal Value As Variant, ByVal Expected As Variant)
+   Dim Actual As Variant
+   Actual = SqlTools.ConvertToNumeric(Value)
+   Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+Public Sub ConvertToNumeric_UseText_ThrowsErr13()
+   Dim Actual As String
+   Assert.Throws 13
+   Actual = SqlTools.ConvertToNumeric("abc")
+End Sub
+
+'
+' ConvertToSqlText
+'
+
+'AccUnit:Row(Null, 2, "Null")
+'AccUnit:Row(123.4, 2, "123.4")
+'AccUnit:Row("abc", 3, "'abc'")
+Public Sub ConvertToSqlText_UseValues_ReturnsString(ByVal Value As Variant, ByVal FieldDataType As SqlFieldDataType, ByVal Expected As String)
+   Dim Actual As Variant
+   Actual = SqlTools.ConvertToSqlText(Value, FieldDataType)
+   Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+'AccUnit:Row(True, "True")
+Public Sub ConvertToSqlText_UseBoolean_ReturnsString(ByVal Value As Variant, ByVal Expected As String)
+   Dim Actual As Variant
+   Actual = SqlTools.DAO.ConvertToSqlText(Value, SQL_Boolean)
+   Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+'AccUnit:Row(#12/24/2023#, "#2023-12-24 00:00:00#")
+Public Sub ConvertToSqlText_UseDate_ReturnsString(ByVal Value As Variant, ByVal Expected As String)
+   Dim Actual As Variant
+   Actual = SqlTools.DAO.ConvertToSqlText(Value, SQL_Date)
+   Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+Public Sub ConvertToSqlText_NotExistingSqlFieldDataType_ThrowsErr13()
+   Dim Actual As String
+   Assert.Throws vbObjectError
+   Actual = SqlTools.ConvertToSqlText("abc", -1)
 End Sub

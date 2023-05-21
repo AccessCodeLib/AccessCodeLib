@@ -312,7 +312,7 @@ Public Function NumberToSqlText(ByVal Value As Variant) As String
    
 End Function
 
-Private Function ConvertToNumeric(ByVal Value As Variant) As Variant
+Friend Function ConvertToNumeric(ByVal Value As Variant) As Variant
    
    Const CheckNumber As Double = 1.23
    

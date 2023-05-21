@@ -69,6 +69,7 @@ End Property
 'AccUnit:Row(2+4, "a", Null, Null, "F <= 'a'", "F <= 'a'").Name("Equal+LessThan")
 'AccUnit:Row(256, "a", Null, Null, "F Like 'a'", "F Like 'a'").Name("Like")
 'AccUnit:Row(256, "a*", Null, Null, "F Like 'a*'", "F Like 'a%'").Name("Like+*")
+'AccUnit:Row(256, "a[*]", Null, Null, "F Like 'a[*]'", "F Like 'a*'").Name("Like+[*]")
 'AccUnit:Row(256+2048, "a", Null, Null, "F Like 'a*'", "F Like 'a%'").Name("Like+WildCardSuffix")
 'AccUnit:Row(256+4096, "a", Null, Null, "F Like '*a'", "F Like '%a'").Name("Like+WildCardPrefix")
 'AccUnit:Row(256+2048+4096, "a", Null, Null, "F Like '*a*'", "F Like '%a%'").Name("Like+WildCardSuffix+Prefix")
@@ -96,14 +97,34 @@ Public Sub BuildCriteria_TextFilter( _
 
 End Sub
 
+'AccUnit:Row(256+2048, "a", Null, Null, "F Like 'a%'").Name("Like+WildCardSuffix")
+Public Sub BuildCriteria_TextFilter_DefaultWildCardString( _
+                           ByVal RelationalOperator As SqlRelationalOperators, _
+                           ByVal FilterValue As Variant, ByVal FilterValue2 As Variant, ByVal IgnoreValue As Variant, _
+                           ByVal Expected As String)
+
+   Dim Actual As String
+
+   Actual = SqlTools.BuildCriteria("F", SQL_Text, RelationalOperator, FilterValue, FilterValue2, IgnoreValue)
+   Assert.That "" & Actual, Iz.EqualTo(Expected)
+
+End Sub
+
 'AccUnit:Row(2, Null, Null, Null, "").Name("Empty")
 'AccUnit:Row(2, 123, Null, Null, "F = 123").Name("Equal")
 'AccUnit:Row(2, 1.23, Null, Null, "F = 1.23").Name("Equal")
 'AccUnit:Row(2+8, 123, Null, Null, "F >= 123").Name("Equal+GreaterThan")
 'AccUnit:Row(2+4, 123, Null, Null, "F <= 123").Name("Equal+LessThan")
 'AccUnit:Row(512, 123, 456, Null, "F Between 123 And 456").Name("Between")
+'AccUnit:Row(512, 12.3, "45.*", Null, "F >= 12.3 And F < 46").Name("Between*")
+'AccUnit:Row(2+2048, 12, Null, Null, "F >= 12 And F < 13").Name("Equal+*")
 'AccUnit:Row(512, 123, Null, Null, "F >= 123").Name("Between+V2=Null")
 'AccUnit:Row(512, Null, 456, Null, "F <= 456").Name("Between+V1=Null")
+'AccUnit:Row(2, ">123", Null, Null, "F > 123").Name("Rel op in value: >")
+'AccUnit:Row(2, "{Null}", "{Empty}", Null, "F Is Null").Name("Rel op in value: Is Null")
+'AccUnit:Row(2, "1-4", Null, Null, "F Between 1 And 4").Name("Rel op in value: a-b")
+'AccUnit:Row(2, "1-4*", Null, Null, "F >= 1 And F < 5").Name("Rel op in value: a-b*")
+'AccUnit:Row(2+16384, "{@<>5}", Null, Null, "F<>5").Name("manually expression")
 Public Sub BuildCriteria_NumericFilter( _
                            ByVal RelationalOperator As SqlRelationalOperators, _
                            ByVal FilterValue As Variant, ByVal FilterValue2 As Variant, ByVal IgnoreValue As Variant, _
@@ -117,6 +138,19 @@ Public Sub BuildCriteria_NumericFilter( _
    Actual = TSqlTools.BuildCriteria("F", SQL_Numeric, RelationalOperator, FilterValue, FilterValue2, IgnoreValue)
    Assert.That "" & Actual, Iz.EqualTo(ExpectedDaoOrTSql)
 
+End Sub
+
+'AccUnit:Row(2, "{@<>5}", Null, Null, "F<>5").Name("manually expression not allowed")
+Public Sub BuildCriteria_NumericFilter_ThrowError( _
+                           ByVal RelationalOperator As SqlRelationalOperators, _
+                           ByVal FilterValue As Variant, ByVal FilterValue2 As Variant, ByVal IgnoreValue As Variant, _
+                           ByVal ExpectedDaoOrTSql As String)
+                           
+   Dim Actual As String
+   
+   Assert.Throws 13
+   Actual = DaoTools.BuildCriteria("F", SQL_Numeric, RelationalOperator, FilterValue, FilterValue2, IgnoreValue)
+                           
 End Sub
 
 'AccUnit:Row(2, Null, Null, Null, "", "").Name("Empty")
