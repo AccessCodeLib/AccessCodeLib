@@ -12,7 +12,7 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' AccUnit-Testklasse für SqlTools
+' AccUnit test class for SqlTools
 ' </summary>
 ' <remarks>
 ' </remarks>
@@ -22,8 +22,6 @@ Attribute VB_Exposed = False
 '  <file>_test/data/SqlToolsTests.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>data/SqlTools.cls</use>
-'  <ref><name>SimplyVBUnit</name><major>7</major><minor>0</minor><guid>{AD061B4A-38BF-4847-BA00-0B2F9D60C3FB}</guid></ref>
-'  <ref><name>AccUnit_Integration</name><major>0</major><minor>9</minor><guid>{4D92B0E4-E59B-4DD5-8B52-B1AEF82B8941}</guid></ref>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -31,15 +29,14 @@ Option Compare Text
 Option Explicit
 
 '--------------------------------------------------------------------
-' AccUnit Infrastructure
+' AccUnit Infrastructure (Only required for AccUnit with SimplyVbUnit)
 '--------------------------------------------------------------------
-
-Implements SimplyVBUnit.ITestFixture
-Implements AccUnit_Integration.ITestManagerBridge
-Private TestManager As AccUnit_Integration.TestManager
-Private Sub ITestManagerBridge_InitTestManager(ByVal NewTestManager As AccUnit_Integration.ITestManagerComInterface): Set TestManager = NewTestManager: End Sub
-Private Function ITestManagerBridge_GetTestManager() As AccUnit_Integration.ITestManagerComInterface: Set ITestManagerBridge_GetTestManager = TestManager: End Function
-Private Sub ITestFixture_AddTestCases(ByVal Tests As SimplyVBUnit.TestCaseCollector): TestManager.AddTestCases Tests: End Sub
+'Implements SimplyVBUnit.ITestFixture
+'Implements AccUnit_Integration.ITestManagerBridge
+'Private TestManager As AccUnit_Integration.TestManager
+'Private Sub ITestManagerBridge_InitTestManager(ByVal NewTestManager As AccUnit_Integration.ITestManagerComInterface): Set TestManager = NewTestManager: End Sub
+'Private Function ITestManagerBridge_GetTestManager() As AccUnit_Integration.ITestManagerComInterface: Set ITestManagerBridge_GetTestManager = TestManager: End Function
+'Private Sub ITestFixture_AddTestCases(ByVal Tests As SimplyVBUnit.TestCaseCollector): TestManager.AddTestCases Tests: End Sub
 
 Public Sub Setup()
    SqlTools.SqlDateFormat = vbNullString
@@ -52,7 +49,6 @@ End Sub
 '--------------------------------------------------------------------
 ' Tests
 '--------------------------------------------------------------------
-
 
 '
 ' TextToSqlText
@@ -105,12 +101,18 @@ Public Sub DateToSqlText_UsePublicFormatVariable_ReturnsSqlText(ByVal Value As V
    Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
+Public Sub DateToSqlText_UseNotDateValue_RaiseError()
+   Dim Actual As String
+   Assert.Throws vbObjectError
+   Actual = SqlTools.DateToSqlText("1.1.1.1")
+End Sub
+
 Public Sub DateToSqlText_FormatVariableNotDefined_RaiseError()
    Dim Actual As String
    Assert.Throws -2147221503, "DateToSqlText"
+   SqlTools.SqlDateFormat = vbNullString
    Actual = SqlTools.DateToSqlText(Date)
 End Sub
-
 
 '
 ' NumberToSqlText
@@ -131,8 +133,105 @@ Public Sub NumberToSqlText_UseNumbers_ReturnsSqlText(ByVal Value As Variant, ByV
    Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
-Public Sub NumberToSqlText_UseText_ReturnsSqlText()
+Public Sub NumberToSqlText_UseText_ThrowsErr13()
    Dim Actual As String
    Assert.Throws 13
    Actual = SqlTools.NumberToSqlText("abc")
+End Sub
+
+'
+' BooleanToSqlText
+'
+
+'AccUnit:Row(Null, "True", "Null")
+'AccUnit:Row(0, "True", "0")
+'AccUnit:Row(12345, "True", "True")
+'AccUnit:Row(1.2345, "True", "True")
+'AccUnit:Row(-1, "True", "True")
+'AccUnit:Row(True, "True", "True")
+'AccUnit:Row(False, "True", "0")
+Public Sub BooleanToSqlText_UseValues_ReturnsSqlText(ByVal Value As Variant, ByVal TrueString As String, ByVal Expected As String)
+   Dim Actual As String
+   Actual = SqlTools.BooleanToSqlText(Value, TrueString)
+   Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+Public Sub BooleanToSqlText_UseText_ThrowsErr13()
+   Dim Actual As String
+   Assert.Throws 13
+   Actual = SqlTools.BooleanToSqlText("abc")
+End Sub
+
+Public Sub BooleanToSqlText_UseTrue_ThrowsErrNOCONFIG()
+   Dim Actual As String
+   Assert.Throws vbObjectError + 1 ' = SqlToolsErrorNumbers.ERRNR_NOCONFIG
+   Actual = SqlTools.BooleanToSqlText(True)
+End Sub
+
+Public Sub BooleanToSqlText_UseTrueSetTrueStringInSqlTools_ReturnSqlText()
+   Const Expected As String = "TrueStringParam"
+   Dim Actual As String
+   Actual = SqlTools.Clone("", Expected, "*").BooleanToSqlText(True)
+   Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+'
+' ConvertToNumeric
+'
+
+'AccUnit:Row(Null, Null)
+'AccUnit:Row(0, 0)
+'AccUnit:Row("000", 0)
+'AccUnit:Row(12345, 12345)
+'AccUnit:Row("12345", 12345)
+'AccUnit:Row(1.2345, 1.2345)
+'AccUnit:Row("1.2345", 1.2345)
+'AccUnit:Row("1,2345", 1.2345)
+'AccUnit:Row(0.123, 0.123)
+'AccUnit:Row(.123, 0.123)
+'AccUnit:Row("", Null)
+'AccUnit:Row("1.234.5", 1234.5)
+Public Sub ConvertToNumeric_UseValues_ReturnsValue(ByVal Value As Variant, ByVal Expected As Variant)
+   Dim Actual As Variant
+   Actual = SqlTools.ConvertToNumeric(Value)
+   Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+Public Sub ConvertToNumeric_UseText_ThrowsErr13()
+   Dim Actual As String
+   Assert.Throws 13
+   Actual = SqlTools.ConvertToNumeric("abc")
+End Sub
+
+'
+' ConvertToSqlText
+'
+
+'AccUnit:Row(Null, 2, "Null")
+'AccUnit:Row(123.4, 2, "123.4")
+'AccUnit:Row("abc", 3, "'abc'")
+Public Sub ConvertToSqlText_UseValues_ReturnsString(ByVal Value As Variant, ByVal FieldDataType As SqlFieldDataType, ByVal Expected As String)
+   Dim Actual As Variant
+   Actual = SqlTools.ConvertToSqlText(Value, FieldDataType)
+   Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+'AccUnit:Row(True, "True")
+Public Sub ConvertToSqlText_UseBoolean_ReturnsString(ByVal Value As Variant, ByVal Expected As String)
+   Dim Actual As Variant
+   Actual = SqlTools.DAO.ConvertToSqlText(Value, SQL_Boolean)
+   Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+'AccUnit:Row(#12/24/2023#, "#2023-12-24 00:00:00#")
+Public Sub ConvertToSqlText_UseDate_ReturnsString(ByVal Value As Variant, ByVal Expected As String)
+   Dim Actual As Variant
+   Actual = SqlTools.DAO.ConvertToSqlText(Value, SQL_Date)
+   Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+Public Sub ConvertToSqlText_NotExistingSqlFieldDataType_ThrowsErr13()
+   Dim Actual As String
+   Assert.Throws vbObjectError
+   Actual = SqlTools.ConvertToSqlText("abc", -1)
 End Sub

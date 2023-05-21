@@ -13,7 +13,7 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' AccUnit-Testklasse für SqlTools.BuildCriteria
+' AccUnit test class for SqlTools.BuildCriteria
 ' </summary>
 ' <remarks></remarks>
 '**/
@@ -22,8 +22,6 @@ Attribute VB_Exposed = False
 '  <file>_test/data/SqlToolsBuildCriteriaTests.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>data/SqlTools.cls</use>
-'  <ref><name>SimplyVBUnit</name><major>7</major><minor>0</minor><guid>{AD061B4A-38BF-4847-BA00-0B2F9D60C3FB}</guid></ref>
-'  <ref><name>AccUnit_Integration</name><major>0</major><minor>9</minor><guid>{4D92B0E4-E59B-4DD5-8B52-B1AEF82B8941}</guid></ref>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -34,13 +32,16 @@ Option Explicit
 
 Private m_SqlTools As SqlTools
 
-' AccUnit infrastructure for advanced AccUnit features. Do not remove these lines.
-Implements SimplyVBUnit.ITestFixture
-Implements AccUnit_Integration.ITestManagerBridge
-Private TestManager As AccUnit_Integration.TestManager
-Private Sub ITestManagerBridge_InitTestManager(ByVal NewTestManager As AccUnit_Integration.ITestManagerComInterface): Set TestManager = NewTestManager: End Sub
-Private Function ITestManagerBridge_GetTestManager() As AccUnit_Integration.ITestManagerComInterface: Set ITestManagerBridge_GetTestManager = TestManager: End Function
-Private Sub ITestFixture_AddTestCases(ByVal Tests As SimplyVBUnit.TestCaseCollector): TestManager.AddTestCases Tests: End Sub
+'--------------------------------------------------------------------
+' AccUnit infrastructure for advanced AccUnit features.
+' (Only required for AccUnit with SimplyVbUnit)
+'--------------------------------------------------------------------
+'Implements SimplyVBUnit.ITestFixture
+'Implements AccUnit_Integration.ITestManagerBridge
+'Private TestManager As AccUnit_Integration.TestManager
+'Private Sub ITestManagerBridge_InitTestManager(ByVal NewTestManager As AccUnit_Integration.ITestManagerComInterface): Set TestManager = NewTestManager: End Sub
+'Private Function ITestManagerBridge_GetTestManager() As AccUnit_Integration.ITestManagerComInterface: Set ITestManagerBridge_GetTestManager = TestManager: End Function
+'Private Sub ITestFixture_AddTestCases(ByVal Tests As SimplyVBUnit.TestCaseCollector): TestManager.AddTestCases Tests: End Sub
 
 Public Sub Setup()
    Set m_SqlTools = New SqlTools
@@ -62,12 +63,23 @@ End Property
 ' Tests
 '--------------------------------------------------------------------
 
+
+Public Sub BuildCriteria_IgnoreAll_ReturnEmptyString()
+
+   Dim Actual As String
+
+   Actual = SqlTools.BuildCriteria("F", SQL_Text, [_IgnoreAll], 1, 2)
+   Assert.That "" & Actual, Iz.Empty
+
+End Sub
+
 'AccUnit:Row(2, Null, Null, Null, "", "").Name("Empty")
 'AccUnit:Row(2, "a", Null, Null, "F = 'a'", "F = 'a'").Name("Equal")
 'AccUnit:Row(2+8, "a", Null, Null, "F >= 'a'", "F >= 'a'").Name("Equal+GreaterThan")
 'AccUnit:Row(2+4, "a", Null, Null, "F <= 'a'", "F <= 'a'").Name("Equal+LessThan")
 'AccUnit:Row(256, "a", Null, Null, "F Like 'a'", "F Like 'a'").Name("Like")
 'AccUnit:Row(256, "a*", Null, Null, "F Like 'a*'", "F Like 'a%'").Name("Like+*")
+'AccUnit:Row(256, "a[*]", Null, Null, "F Like 'a[*]'", "F Like 'a*'").Name("Like+[*]")
 'AccUnit:Row(256+2048, "a", Null, Null, "F Like 'a*'", "F Like 'a%'").Name("Like+WildCardSuffix")
 'AccUnit:Row(256+4096, "a", Null, Null, "F Like '*a'", "F Like '%a'").Name("Like+WildCardPrefix")
 'AccUnit:Row(256+2048+4096, "a", Null, Null, "F Like '*a*'", "F Like '%a%'").Name("Like+WildCardSuffix+Prefix")
@@ -95,14 +107,36 @@ Public Sub BuildCriteria_TextFilter( _
 
 End Sub
 
+'AccUnit:Row(256+2048, "a", Null, Null, "F Like 'a%'").Name("Like+WildCardSuffix")
+Public Sub BuildCriteria_TextFilter_DefaultWildCardString( _
+                           ByVal RelationalOperator As SqlRelationalOperators, _
+                           ByVal FilterValue As Variant, ByVal FilterValue2 As Variant, ByVal IgnoreValue As Variant, _
+                           ByVal Expected As String)
+
+   Dim Actual As String
+
+   Actual = SqlTools.BuildCriteria("F", SQL_Text, RelationalOperator, FilterValue, FilterValue2, IgnoreValue)
+   Assert.That "" & Actual, Iz.EqualTo(Expected)
+
+End Sub
+
 'AccUnit:Row(2, Null, Null, Null, "").Name("Empty")
 'AccUnit:Row(2, 123, Null, Null, "F = 123").Name("Equal")
+'AccUnit:Row(1+2, 123, Null, Null, "F <> 123").Name("Not Equal")
 'AccUnit:Row(2, 1.23, Null, Null, "F = 1.23").Name("Equal")
 'AccUnit:Row(2+8, 123, Null, Null, "F >= 123").Name("Equal+GreaterThan")
 'AccUnit:Row(2+4, 123, Null, Null, "F <= 123").Name("Equal+LessThan")
 'AccUnit:Row(512, 123, 456, Null, "F Between 123 And 456").Name("Between")
+'AccUnit:Row(512, 12.3, "45.*", Null, "F >= 12.3 And F < 46").Name("Between*")
+'AccUnit:Row(2+2048, 12, Null, Null, "F >= 12 And F < 13").Name("Equal+*")
 'AccUnit:Row(512, 123, Null, Null, "F >= 123").Name("Between+V2=Null")
 'AccUnit:Row(512, Null, 456, Null, "F <= 456").Name("Between+V1=Null")
+'AccUnit:Row(2, ">123", Null, Null, "F > 123").Name("Rel op in value: >")
+'AccUnit:Row(2, "{Null}", "{Empty}", Null, "F Is Null").Name("Rel op in value: Is Null")
+'AccUnit:Row(2, "1-4", Null, Null, "F Between 1 And 4").Name("Rel op in value: a-b")
+'AccUnit:Row(2, "1-4*", Null, Null, "F >= 1 And F < 5").Name("Rel op in value: a-b*")
+'AccUnit:Row(2, "*", Null, Null, "F Is Not Null").Name("* => Not Null")
+'AccUnit:Row(2+16384, "{@<>5}", Null, Null, "F<>5").Name("manually expression")
 Public Sub BuildCriteria_NumericFilter( _
                            ByVal RelationalOperator As SqlRelationalOperators, _
                            ByVal FilterValue As Variant, ByVal FilterValue2 As Variant, ByVal IgnoreValue As Variant, _
@@ -116,6 +150,19 @@ Public Sub BuildCriteria_NumericFilter( _
    Actual = TSqlTools.BuildCriteria("F", SQL_Numeric, RelationalOperator, FilterValue, FilterValue2, IgnoreValue)
    Assert.That "" & Actual, Iz.EqualTo(ExpectedDaoOrTSql)
 
+End Sub
+
+'AccUnit:Row(2, "{@<>5}", Null, Null, "F<>5").Name("manually expression not allowed")
+Public Sub BuildCriteria_NumericFilter_ThrowError( _
+                           ByVal RelationalOperator As SqlRelationalOperators, _
+                           ByVal FilterValue As Variant, ByVal FilterValue2 As Variant, ByVal IgnoreValue As Variant, _
+                           ByVal ExpectedDaoOrTSql As String)
+                           
+   Dim Actual As String
+   
+   Assert.Throws 13
+   Actual = DaoTools.BuildCriteria("F", SQL_Numeric, RelationalOperator, FilterValue, FilterValue2, IgnoreValue)
+                           
 End Sub
 
 'AccUnit:Row(2, Null, Null, Null, "", "").Name("Empty")
@@ -244,7 +291,20 @@ Public Sub BuildCriteria_EqualNumericStringArray_VbaSplit( _
 
    Dim Actual As String
 
-   Actual = DaoTools.BuildCriteria("F", SQL_Numeric, SQL_Equal, Split(FilterValue, ";"))
+   Actual = SqlTools.BuildCriteria("F", SQL_Numeric, SQL_Equal, Split(FilterValue, ";"))
+   
+   Assert.That "" & Actual, Iz.EqualTo(Expected)
+
+End Sub
+
+'AccUnit:Row("{@=5}", "Not F=5")
+Public Sub BuildCriteria_NotDirectCriteria( _
+                           ByVal FilterValue As Variant, _
+                           ByVal Expected As String)
+
+   Dim Actual As String
+
+   Actual = SqlTools.BuildCriteria("F", SQL_Numeric, SQL_Not + SQL_AllowSqlDirect, FilterValue)
    
    Assert.That "" & Actual, Iz.EqualTo(Expected)
 

@@ -147,16 +147,16 @@ Private Function GetJsonString(ByVal ApiUrl As String) As String
     Dim ApiResponse As String
     Dim json As Object
     
-    Dim xml As MSXML2.XMLHTTP60
-    Set xml = New MSXML2.XMLHTTP60
+    Dim xml As Object ' MSXML2.XMLHTTP60
+    Set xml = CreateObject("MSXML2.XMLHTTP.6.0")
 
     xml.Open "GET", ApiUrl, False
     xml.setRequestHeader "Content-type", "application/json"
     xml.send
-    ApiResponse = xml.responseText
     While xml.ReadyState <> 4
         DoEvents
     Wend
+    ApiResponse = xml.responseText
     
     GetJsonString = ApiResponse
 
