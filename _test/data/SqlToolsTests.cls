@@ -8,11 +8,11 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' AccUnit:TestClass.Ignore
+' AccUnit:TestClass
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' AccUnit-Testklasse für SqlTools
+' AccUnit test class for SqlTools
 ' </summary>
 ' <remarks>
 ' </remarks>
@@ -49,7 +49,6 @@ End Sub
 '--------------------------------------------------------------------
 ' Tests
 '--------------------------------------------------------------------
-
 
 '
 ' TextToSqlText
@@ -108,14 +107,12 @@ Public Sub DateToSqlText_UseNotDateValue_RaiseError()
    Actual = SqlTools.DateToSqlText("1.1.1.1")
 End Sub
 
-
 Public Sub DateToSqlText_FormatVariableNotDefined_RaiseError()
    Dim Actual As String
    Assert.Throws -2147221503, "DateToSqlText"
    SqlTools.SqlDateFormat = vbNullString
    Actual = SqlTools.DateToSqlText(Date)
 End Sub
-
 
 '
 ' NumberToSqlText

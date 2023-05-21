@@ -13,7 +13,7 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' AccUnit-Testklasse für SqlTools.BuildCriteria
+' AccUnit test class for SqlTools.BuildCriteria
 ' </summary>
 ' <remarks></remarks>
 '**/

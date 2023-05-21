@@ -16,9 +16,9 @@ Attribute VB_Exposed = False
 ' <summary>
 ' SQL-Hilfsfunktionen
 ' </summary>
-' <remarks>Attribute VB_PredeclaredId = True einstellen, damit SqlTools ohne explizite Instanzierung genutzt werden kann</remarks>
+' <remarks>Set "Attribute VB_PredeclaredId = True" to enable using SqlTools without explicit instantiation.</remarks>
 '
-' \warning Nicht vergessen: Parameter für Datumsformat, Boolean und WildCard für das DBMS einstellen
+' \warning Don't forget to set parameters for date format, boolean, and wild card for the DBMS.
 '
 ' \ingroup data
 '**/
@@ -41,13 +41,13 @@ End Enum
 
 ' Standard-Werte für Methodenparameter
 Private Const SQL_DEFAULT_TEXTDELIMITER As String = "'"
-Private Const SQL_DEFAULT_DATEFORMAT As String = ""     ' "" => SqlDateFormat-Eigenschaft wird verwenden.
-                                                        '    Zum Deaktivieren Wert eintragen (z. B. "\#yyyy\-mm\-dd\#"),
-                                                        '    dann wird dieser Wert als Standardeintrag verwendet.
-Private Const SQL_DEFAULT_BOOLTRUESTRING As String = "" ' "" => SqlBooleanTrueString wird verwendet.
-                                                        '    Zum Deaktivieren Wert eintragen (z. B. "True oder 1")
-Private Const SQL_DEFAULT_WILDCARD As String = "%"      ' * = Standardwert,
-                                                        ' benötigte Abweichungen über SqlWildCardString einstellen
+Private Const SQL_DEFAULT_DATEFORMAT As String = ""     ' "" => SqlDateFormat property will use.
+                                                        ' To disable, enter value (e.g. "\#yyyy-mm\-dd\#"),
+                                                        ' then this value will be used as the default entry.
+Private Const SQL_DEFAULT_BOOLTRUESTRING As String = "" ' "" => SqlBooleanTrueString is used.
+                                                        ' Enter value to disable (e.g. "True or 1")
+Private Const SQL_DEFAULT_WILDCARD As String = "%"      ' % = default value,
+                                                        ' set required variations via SqlWildCardString
                                                    
 Private Const SqlAndConcatString As String = " And "
 Private Const SqlOrConcatString As String = " Or "
@@ -88,7 +88,7 @@ Public Enum SqlLogicalOperator
    SQL_CommaSeparator = 3
 End Enum
 
-' SQL-Dialekt-Voreinstellungen
+' SQL dialect presets
 Public Property Get DAO() As SqlTools
    Set DAO = Me.Clone("\#yyyy-mm-dd hh:nn:ss\#", "True", "*")
 End Property
@@ -97,7 +97,7 @@ Public Property Get TSql() As SqlTools
    Set TSql = Me.Clone("'yyyymmdd hh:nn:ss'", "1", "%")
 End Property
 
-' Konfiguration für den SQL-Dialekt
+' Configuration for SQL dialect
 Public Property Get SqlWildCardString() As String
    If Len(m_SqlWildCardString) > 0 Then
       SqlWildCardString = m_SqlWildCardString
@@ -139,9 +139,9 @@ End Property
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' Neue Instanz mit Grundeinstellungen der aktuellen Instanz erstellen.
+' Create a new instance with basic settings of the current instance.
 ' </summary>
-' <returns>String</returns>
+' <returns>SqlTools</returns>
 ' <remarks>
 ' </remarks>
 '**/
@@ -159,6 +159,18 @@ Public Function Clone(Optional ByVal NewSqlDateFormat As String = SQL_DEFAULT_DA
 
 End Function
 
+'---------------------------------------------------------------------------------------
+' Function: NewInstance
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Create a new instance
+' </summary>
+' <returns>String</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
 Public Function NewInstance(ByVal NewSqlDateFormat As String, _
                             ByVal NewSqlBooleanTrueString As String, _
                             ByVal NewSqlWildCardString As String) As SqlTools
@@ -174,212 +186,6 @@ Public Function NewInstance(ByVal NewSqlDateFormat As String, _
 
    Set NewInstance = NewInst
 
-End Function
-
-'---------------------------------------------------------------------------------------
-' Function: DateToSqlText
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Werte in String für SQL-Anweisung umwandeln, die per VBA zusammengesetzt wird.
-' </summary>
-' <param name="Value">Übergabewert</param>
-' <param name="FieldDataType">Datentyp des zu konvertierenden Wertes</param>
-' <returns>String</returns>
-'**/
-'---------------------------------------------------------------------------------------
-Public Function ConvertToSqlText(ByVal Value As Variant, _
-                                 ByVal FieldDataType As SqlFieldDataType) As String
-                     
-   Select Case FieldDataType
-      Case SqlFieldDataType.SQL_Text
-         ConvertToSqlText = TextToSqlText(Value)
-      Case SqlFieldDataType.SQL_Numeric
-         ConvertToSqlText = NumberToSqlText(Value)
-      Case SqlFieldDataType.SQL_Date
-         ConvertToSqlText = DateToSqlText(Value)
-      Case SqlFieldDataType.SQL_Boolean
-         ConvertToSqlText = BooleanToSqlText(Value)
-      Case Else
-         Err.Raise vbObjectError, "SqlTools.ConvertToSqlText", "FieldDataType '" & FieldDataType & "' not supported"
-   End Select
-   
-End Function
-
-'---------------------------------------------------------------------------------------
-' Function: TextToSqlText
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Text für SQL-Anweisung aufbereiten.
-' </summary>
-' <param name="Value">Übergabewert</param>
-' <param name="Delimiter">Begrenzungszeichen für Text-Werte. (In den meisten DBMS wird ' als Begrenzungszeichen verwendet.)</param>
-' <param name="WithoutLeftRightDelim">Nur Begrenzungszeichnen innerhalb des Werte verdoppeln, Eingrenzung jedoch nicht setzen.</param>
-' <returns>String</returns>
-' <remarks>
-' Beispiel: strSQL = "select ... from tabelle where Feld = " & TextToSqlText("ab'cd")
-'        => strSQL = "select ... from tabelle where Feld = 'ab''cd'"
-' </remarks>
-'**/
-'---------------------------------------------------------------------------------------
-Public Function TextToSqlText(ByVal Value As Variant, _
-                     Optional ByVal Delimiter As String = SQL_DEFAULT_TEXTDELIMITER, _
-                     Optional ByVal WithoutLeftRightDelim As Boolean = False) As String
-   
-   Dim Result As String
-   
-   If IsNull(Value) Then
-      TextToSqlText = ResultTextIfNull
-      Exit Function
-   End If
-   
-   Result = Replace$(Value, Delimiter, Delimiter & Delimiter)
-   If Not WithoutLeftRightDelim Then
-      Result = Delimiter & Result & Delimiter
-   End If
-   
-   TextToSqlText = Result
-
-End Function
-
-'---------------------------------------------------------------------------------------
-' Function: DateToSqlText
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Datumswert in String für SQL-Anweisung umwandeln, die per VBA zusammengesetzt wird.
-' </summary>
-' <param name="Value">Übergabewert</param>
-' <param name="FormatString">Datumsformat (von DBMS abhängig!)</param>
-' <returns>String</returns>
-'**/
-'---------------------------------------------------------------------------------------
-Public Function DateToSqlText(ByVal Value As Variant, _
-                     Optional ByVal FormatString As String = SQL_DEFAULT_DATEFORMAT) As String
-
-   If IsNull(Value) Then
-      DateToSqlText = ResultTextIfNull
-      Exit Function
-   End If
-   
-   If Not IsDate(Value) Then
-      Err.Raise vbObjectError, "SqlTools.DateToSqlText", "Der Wert '" & Value & "' vom Parameter Value ist kein Datumswert!"
-   End If
-
-   If Len(FormatString) = 0 Then
-      FormatString = SqlDateFormat
-      If Len(FormatString) = 0 Then
-         Err.Raise SqlToolsErrorNumbers.ERRNR_NOCONFIG, "DateToSqlText", "date format is not defined"
-      End If
-   End If
-   
-   DateToSqlText = VBA.Format$(Value, FormatString)
-
-End Function
-
-'---------------------------------------------------------------------------------------
-' Function: NumberToSqlText
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Zahl für SQL-Text aufbereiten
-' </summary>
-' <param name="Value">Übergabewert</param>
-' <returns>String</returns>
-' <remarks>
-' Durch Str-Funktion wird . statt , verwendet.
-' </remarks>
-'**/
-'---------------------------------------------------------------------------------------
-Public Function NumberToSqlText(ByVal Value As Variant) As String
-
-   Dim Result As String
-
-   If IsNull(Value) Then
-      NumberToSqlText = ResultTextIfNull
-      Exit Function
-   End If
-   
-   Value = ConvertToNumeric(Value)
-   
-   Result = Trim$(Str$(Value))
-   If Left(Result, 1) = "." Then
-      Result = "0" & Result
-   End If
-   
-   NumberToSqlText = Result
-   
-End Function
-
-Friend Function ConvertToNumeric(ByVal Value As Variant) As Variant
-   
-   Const CheckNumber As Double = 1.23
-   
-   Dim CheckText As String
-   
-   If IsNull(Value) Then
-      ConvertToNumeric = Null
-      Exit Function
-   ElseIf CStr(Value) = vbNullString Then
-      ConvertToNumeric = Null
-      Exit Function
-   End If
-   
-   CheckText = CStr(CheckNumber)
-   If InStr(1, CheckText, ",") > 0 Then
-      If InStr(1, Value, ".") > 0 Then
-         Value = Replace(Value, ".", ",")
-         Do While Value Like "*,*,*"
-            Value = Replace(Value, ",", vbNullString, 1, 1)
-         Loop
-      End If
-   Else
-      If InStr(1, Value, ",") > 0 Then
-         Value = Replace(Value, ",", ".")
-         Do While Value Like "*.*.*"
-            Value = Replace(Value, ".", vbNullString, 1, 1)
-         Loop
-      End If
-   End If
-   
-   ConvertToNumeric = CDbl(Value)
-   
-End Function
-
-'---------------------------------------------------------------------------------------
-' Function: BooleanToSqlText
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Boolean für SQL-Text aufbereiten
-' </summary>
-' <param name="Value">Übergabewert</param>
-' <returns>String</returns>
-' <remarks>
-' </remarks>
-'**/
-'---------------------------------------------------------------------------------------
-Public Function BooleanToSqlText(ByVal Value As Variant, _
-                        Optional ByVal TrueString As String = SQL_DEFAULT_BOOLTRUESTRING) As String
-
-   If IsNull(Value) Then
-      BooleanToSqlText = ResultTextIfNull
-      Exit Function
-   End If
-
-   If CBool(Value) = True Then ' CBool(Value) to raise error 13 (type mismatch) if Value is not a boolean
-      If Len(TrueString) = 0 Then
-         TrueString = SqlBooleanTrueString
-         If Len(TrueString) = 0 Then
-            Err.Raise SqlToolsErrorNumbers.ERRNR_NOCONFIG, "BooleanToSqlText", "boolean string for true is not defined"
-         End If
-      End If
-      BooleanToSqlText = TrueString
-   Else
-      BooleanToSqlText = "0"
-   End If
-   
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -542,6 +348,212 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
 
    BuildCriteria = Criteria
 
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: DateToSqlText
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Convert values to string for SQL statement assembled by VBA.
+' </summary>
+' <param name="Value">Value to convert</param>
+' <param name="FieldDataType">Data type of the value to be converted</param>
+' <returns>String</returns>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function ConvertToSqlText(ByVal Value As Variant, _
+                                 ByVal FieldDataType As SqlFieldDataType) As String
+                     
+   Select Case FieldDataType
+      Case SqlFieldDataType.SQL_Text
+         ConvertToSqlText = TextToSqlText(Value)
+      Case SqlFieldDataType.SQL_Numeric
+         ConvertToSqlText = NumberToSqlText(Value)
+      Case SqlFieldDataType.SQL_Date
+         ConvertToSqlText = DateToSqlText(Value)
+      Case SqlFieldDataType.SQL_Boolean
+         ConvertToSqlText = BooleanToSqlText(Value)
+      Case Else
+         Err.Raise vbObjectError, "SqlTools.ConvertToSqlText", "FieldDataType '" & FieldDataType & "' not supported"
+   End Select
+   
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: TextToSqlText
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Prepare text for SQL statement
+' </summary>
+' <param name="Value">Value to convert</param>
+' <param name="Delimiter">Delimiter for text values. (In most DBMS ' is used as a delimiter).</param>
+' <param name="WithoutLeftRightDelim">Only double the boundary drawing within the values, but do not set the boundary.</param>
+' <returns>String</returns>
+' <remarks>
+' Example:  strSQL = "select ... from tabelle where Feld = " & TextToSqlText("ab'cd")
+'        => strSQL = "select ... from tabelle where Feld = 'ab''cd'"
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function TextToSqlText(ByVal Value As Variant, _
+                     Optional ByVal Delimiter As String = SQL_DEFAULT_TEXTDELIMITER, _
+                     Optional ByVal WithoutLeftRightDelim As Boolean = False) As String
+   
+   Dim Result As String
+   
+   If IsNull(Value) Then
+      TextToSqlText = ResultTextIfNull
+      Exit Function
+   End If
+   
+   Result = Replace$(Value, Delimiter, Delimiter & Delimiter)
+   If Not WithoutLeftRightDelim Then
+      Result = Delimiter & Result & Delimiter
+   End If
+   
+   TextToSqlText = Result
+
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: DateToSqlText
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Convert date value to string for SQL statement assembled by VBA.
+' </summary>
+' <param name="Value">Value to convert</param>
+' <param name="FormatString">Date format (depends on DBMS!)</param>
+' <returns>String</returns>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function DateToSqlText(ByVal Value As Variant, _
+                     Optional ByVal FormatString As String = SQL_DEFAULT_DATEFORMAT) As String
+
+   If IsNull(Value) Then
+      DateToSqlText = ResultTextIfNull
+      Exit Function
+   End If
+   
+   If Not IsDate(Value) Then
+      Err.Raise vbObjectError, "SqlTools.DateToSqlText", "Der Wert '" & Value & "' vom Parameter Value ist kein Datumswert!"
+   End If
+
+   If Len(FormatString) = 0 Then
+      FormatString = SqlDateFormat
+      If Len(FormatString) = 0 Then
+         Err.Raise SqlToolsErrorNumbers.ERRNR_NOCONFIG, "DateToSqlText", "date format is not defined"
+      End If
+   End If
+   
+   DateToSqlText = VBA.Format$(Value, FormatString)
+
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: NumberToSqlText
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Zahl für SQL-Text aufbereiten
+' </summary>
+' <param name="Value">Value to convert</param>
+' <returns>String</returns>
+' <remarks>
+' Str function ensures ".".
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function NumberToSqlText(ByVal Value As Variant) As String
+
+   Dim Result As String
+
+   If IsNull(Value) Then
+      NumberToSqlText = ResultTextIfNull
+      Exit Function
+   End If
+   
+   Value = ConvertToNumeric(Value)
+   
+   Result = Trim$(Str$(Value))
+   If Left(Result, 1) = "." Then
+      Result = "0" & Result
+   End If
+   
+   NumberToSqlText = Result
+   
+End Function
+
+Friend Function ConvertToNumeric(ByVal Value As Variant) As Variant
+   
+   Const CheckNumber As Double = 1.23
+   
+   Dim CheckText As String
+   
+   If IsNull(Value) Then
+      ConvertToNumeric = Null
+      Exit Function
+   ElseIf CStr(Value) = vbNullString Then
+      ConvertToNumeric = Null
+      Exit Function
+   End If
+   
+   CheckText = CStr(CheckNumber)
+   If InStr(1, CheckText, ",") > 0 Then
+      If InStr(1, Value, ".") > 0 Then
+         Value = Replace(Value, ".", ",")
+         Do While Value Like "*,*,*"
+            Value = Replace(Value, ",", vbNullString, 1, 1)
+         Loop
+      End If
+   Else
+      If InStr(1, Value, ",") > 0 Then
+         Value = Replace(Value, ",", ".")
+         Do While Value Like "*.*.*"
+            Value = Replace(Value, ".", vbNullString, 1, 1)
+         Loop
+      End If
+   End If
+   
+   ConvertToNumeric = CDbl(Value)
+   
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function: BooleanToSqlText
+'---------------------------------------------------------------------------------------
+'/**
+' <summary>
+' Prepare Boolean for SQL text
+' </summary>
+' <param name="Value">Value to convert</param>
+' <returns>String</returns>
+' <remarks>
+' </remarks>
+'**/
+'---------------------------------------------------------------------------------------
+Public Function BooleanToSqlText(ByVal Value As Variant, _
+                        Optional ByVal TrueString As String = SQL_DEFAULT_BOOLTRUESTRING) As String
+
+   If IsNull(Value) Then
+      BooleanToSqlText = ResultTextIfNull
+      Exit Function
+   End If
+
+   If CBool(Value) = True Then ' CBool(Value) to raise error 13 (type mismatch) if Value is not a boolean
+      If Len(TrueString) = 0 Then
+         TrueString = SqlBooleanTrueString
+         If Len(TrueString) = 0 Then
+            Err.Raise SqlToolsErrorNumbers.ERRNR_NOCONFIG, "BooleanToSqlText", "boolean string for true is not defined"
+         End If
+      End If
+      BooleanToSqlText = TrueString
+   Else
+      BooleanToSqlText = "0"
+   End If
+   
 End Function
 
 Private Function ConfigNumericSpecials( _
