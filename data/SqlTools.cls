@@ -409,8 +409,6 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
    Dim FilterValueString As String
    Dim OperatorString As String
    Dim Criteria As String
-   Dim Criteria1 As String
-   Dim Criteria2 As String
    
    If (RelationalOperator And [_IgnoreAll]) = [_IgnoreAll] Then
       Exit Function
@@ -439,6 +437,9 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
       If (RelationalOperator And SQL_AllowSqlDirect) = SQL_AllowSqlDirect Then
          If FilterValue Like "{*@*}" Then ' Idee von Ulrich: Anwender schreibt SQL-Ausdruck
             Criteria = Replace(Mid(FilterValue, 2, Len(FilterValue) - 2), "@", FieldName)
+            If (RelationalOperator And SQL_Not) = SQL_Not Then
+               Criteria = "Not " & Criteria
+            End If
             BuildCriteria = Criteria
             Exit Function
          End If
@@ -507,55 +508,9 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
    End If
 
    If (RelationalOperator And SQL_Add_WildCardSuffix) = SQL_Add_WildCardSuffix Then
-      If (RelationalOperator And SQL_Like) = SQL_Like Then
-         FilterValue = FilterValue & SqlWildCardString
-      ElseIf (FieldDataType And SQL_Date) = SQL_Date Then
-         If (RelationalOperator And SQL_LessThan) = 0 Then ' no < daher:  >, >= or only =
-            If (RelationalOperator And SQL_GreaterThan) = SQL_GreaterThan Then
-               ' change nothing ... >= DataValue  / SQL_Add_WildCardSuffix is not logical
-            Else ' Consider the whole day ... FieldName >= DateValue and FieldName < DateAdd("d", 1, FilterValue))
-               BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue, , , False) & _
-                               SqlAndConcatString & _
-                               BuildCriteria(FieldName, FieldDataType, SQL_LessThan, DateAdd("d", 1, CDate(CLng(FilterValue))), , , False)
-               Exit Function
-            End If
-         Else
-            If (RelationalOperator And SQL_Equal) = SQL_Equal Then
-               RelationalOperator = RelationalOperator - SQL_Equal
-            End If
-            FilterValue = DateAdd("d", 1, CDate(CLng(FilterValue)))
-         End If
-      ElseIf (FieldDataType And SQL_Numeric) = SQL_Numeric Then
-         If (RelationalOperator And SQL_LessThan) = 0 Then ' no < daher:  >, >= or only =
-            If (RelationalOperator And SQL_GreaterThan) = SQL_GreaterThan Then
-               If FilterValue Like "*[,.]*[*]" Then
-                  FilterValue = Replace(FilterValue, "*", 0)
-               ElseIf FilterValue Like "*[*]" Then
-                  FilterValue = Replace(FilterValue, "*", vbNullString)
-               End If
-               ' change nothing => >= Number  / SQL_Add_WildCardSuffix is not logical
-            Else ' Consider following decimal values ... FieldName >= Number and FieldName < (Number + x)
-               If FilterValue Like "-*[*]" Then
-                  If FilterValue Like "*[,.]*[*]" Then
-                     FilterValue2 = Replace(FilterValue, "*", 0)
-                  Else
-                     FilterValue2 = Replace(FilterValue, "*", vbNullString)
-                  End If
-                  Criteria1 = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan, GetNextDigitNumber(FilterValue, True), , Null, False)
-                  Criteria2 = BuildCriteria(FieldName, FieldDataType, SQL_LessThan + SQL_Equal, FilterValue2, , Null, False)
-               Else
-                  Criteria1 = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue, , Null, False)
-                  Criteria2 = BuildCriteria(FieldName, FieldDataType, SQL_LessThan, GetNextDigitNumber(FilterValue), , Null, False)
-               End If
-               BuildCriteria = Criteria1 & SqlAndConcatString & Criteria2
-               Exit Function
-            End If
-         Else
-            If (RelationalOperator And SQL_Equal) = SQL_Equal Then
-               RelationalOperator = RelationalOperator - SQL_Equal
-            End If
-            FilterValue = GetNextDigitNumber(FilterValue)
-         End If
+      If TryBuildWildCardSuffixOrPreBuildParams(FieldName, FieldDataType, RelationalOperator, FilterValue, FilterValue2, IgnoreValue, Criteria) Then
+         BuildCriteria = Criteria
+         Exit Function
       End If
    End If
 
@@ -579,7 +534,9 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
    OperatorString = GetRelationalOperatorString(RelationalOperator)
 
    Criteria = FieldName & " " & OperatorString & " " & FilterValueString
+
    If (RelationalOperator And SQL_Not) = SQL_Not Then
+      '?: will this line be reached?
       Criteria = "Not " & Criteria
    End If
 
@@ -712,7 +669,6 @@ Friend Function GetRelationalOperatorString(ByRef RelationalOperator As SqlRelat
       Exit Function
    End If
    
-   
    If (RelationalOperator And SQL_Not) = SQL_Not Then
       
       op = RelationalOperator Xor SQL_Not
@@ -752,6 +708,71 @@ Friend Function GetRelationalOperatorString(ByRef RelationalOperator As SqlRelat
    End If
 
    GetRelationalOperatorString = OperatorString
+
+End Function
+
+Private Function TryBuildWildCardSuffixOrPreBuildParams(ByVal FieldName As String, ByVal FieldDataType As SqlFieldDataType, _
+                                       ByRef RelationalOperator As SqlRelationalOperators, _
+                                       ByRef FilterValue As Variant, _
+                                       ByRef FilterValue2 As Variant, _
+                                       ByRef IgnoreValue As Variant, _
+                                       ByRef Criteria As String) As Boolean
+
+   Dim Criteria1 As String
+   Dim Criteria2 As String
+
+   If (RelationalOperator And SQL_Like) = SQL_Like Then
+      FilterValue = FilterValue & SqlWildCardString
+   ElseIf (FieldDataType And SQL_Date) = SQL_Date Then
+      If (RelationalOperator And SQL_LessThan) = 0 Then ' no < therefore:  >, >= or only =
+         If (RelationalOperator And SQL_GreaterThan) = SQL_GreaterThan Then
+            ' change nothing ... >= DataValue  / SQL_Add_WildCardSuffix is not logical
+         Else ' Consider the whole day ... FieldName >= DateValue and FieldName < DateAdd("d", 1, FilterValue))
+            Criteria = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue, , , False) & _
+                            SqlAndConcatString & _
+                            BuildCriteria(FieldName, FieldDataType, SQL_LessThan, DateAdd("d", 1, CDate(CLng(FilterValue))), , , False)
+            TryBuildWildCardSuffixOrPreBuildParams = True
+            Exit Function
+         End If
+      Else
+         If (RelationalOperator And SQL_Equal) = SQL_Equal Then
+            RelationalOperator = RelationalOperator - SQL_Equal
+         End If
+         FilterValue = DateAdd("d", 1, CDate(CLng(FilterValue)))
+      End If
+   ElseIf (FieldDataType And SQL_Numeric) = SQL_Numeric Then
+      If (RelationalOperator And SQL_LessThan) = 0 Then ' no < daher:  >, >= or only =
+         If (RelationalOperator And SQL_GreaterThan) = SQL_GreaterThan Then
+            If FilterValue Like "*[,.]*[*]" Then
+               FilterValue = Replace(FilterValue, "*", 0)
+            ElseIf FilterValue Like "*[*]" Then
+               FilterValue = Replace(FilterValue, "*", vbNullString)
+            End If
+            ' change nothing => >= Number  / SQL_Add_WildCardSuffix is not logical
+         Else ' Consider following decimal values ... FieldName >= Number and FieldName < (Number + x)
+            If FilterValue Like "-*[*]" Then
+               If FilterValue Like "*[,.]*[*]" Then
+                  FilterValue2 = Replace(FilterValue, "*", 0)
+               Else
+                  FilterValue2 = Replace(FilterValue, "*", vbNullString)
+               End If
+               Criteria1 = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan, GetNextDigitNumber(FilterValue, True), , Null, False)
+               Criteria2 = BuildCriteria(FieldName, FieldDataType, SQL_LessThan + SQL_Equal, FilterValue2, , Null, False)
+            Else
+               Criteria1 = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue, , Null, False)
+               Criteria2 = BuildCriteria(FieldName, FieldDataType, SQL_LessThan, GetNextDigitNumber(FilterValue), , Null, False)
+            End If
+            Criteria = Criteria1 & SqlAndConcatString & Criteria2
+            TryBuildWildCardSuffixOrPreBuildParams = True
+            Exit Function
+         End If
+      Else
+         If (RelationalOperator And SQL_Equal) = SQL_Equal Then
+            RelationalOperator = RelationalOperator - SQL_Equal
+         End If
+         FilterValue = GetNextDigitNumber(FilterValue)
+      End If
+   End If
 
 End Function
 

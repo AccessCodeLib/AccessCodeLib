@@ -63,6 +63,16 @@ End Property
 ' Tests
 '--------------------------------------------------------------------
 
+
+Public Sub BuildCriteria_IgnoreAll_ReturnEmptyString()
+
+   Dim Actual As String
+
+   Actual = SqlTools.BuildCriteria("F", SQL_Text, [_IgnoreAll], 1, 2)
+   Assert.That "" & Actual, Iz.Empty
+
+End Sub
+
 'AccUnit:Row(2, Null, Null, Null, "", "").Name("Empty")
 'AccUnit:Row(2, "a", Null, Null, "F = 'a'", "F = 'a'").Name("Equal")
 'AccUnit:Row(2+8, "a", Null, Null, "F >= 'a'", "F >= 'a'").Name("Equal+GreaterThan")
@@ -112,6 +122,7 @@ End Sub
 
 'AccUnit:Row(2, Null, Null, Null, "").Name("Empty")
 'AccUnit:Row(2, 123, Null, Null, "F = 123").Name("Equal")
+'AccUnit:Row(1+2, 123, Null, Null, "F <> 123").Name("Not Equal")
 'AccUnit:Row(2, 1.23, Null, Null, "F = 1.23").Name("Equal")
 'AccUnit:Row(2+8, 123, Null, Null, "F >= 123").Name("Equal+GreaterThan")
 'AccUnit:Row(2+4, 123, Null, Null, "F <= 123").Name("Equal+LessThan")
@@ -124,6 +135,7 @@ End Sub
 'AccUnit:Row(2, "{Null}", "{Empty}", Null, "F Is Null").Name("Rel op in value: Is Null")
 'AccUnit:Row(2, "1-4", Null, Null, "F Between 1 And 4").Name("Rel op in value: a-b")
 'AccUnit:Row(2, "1-4*", Null, Null, "F >= 1 And F < 5").Name("Rel op in value: a-b*")
+'AccUnit:Row(2, "*", Null, Null, "F Is Not Null").Name("* => Not Null")
 'AccUnit:Row(2+16384, "{@<>5}", Null, Null, "F<>5").Name("manually expression")
 Public Sub BuildCriteria_NumericFilter( _
                            ByVal RelationalOperator As SqlRelationalOperators, _
@@ -279,7 +291,20 @@ Public Sub BuildCriteria_EqualNumericStringArray_VbaSplit( _
 
    Dim Actual As String
 
-   Actual = DaoTools.BuildCriteria("F", SQL_Numeric, SQL_Equal, Split(FilterValue, ";"))
+   Actual = SqlTools.BuildCriteria("F", SQL_Numeric, SQL_Equal, Split(FilterValue, ";"))
+   
+   Assert.That "" & Actual, Iz.EqualTo(Expected)
+
+End Sub
+
+'AccUnit:Row("{@=5}", "Not F=5")
+Public Sub BuildCriteria_NotDirectCriteria( _
+                           ByVal FilterValue As Variant, _
+                           ByVal Expected As String)
+
+   Dim Actual As String
+
+   Actual = SqlTools.BuildCriteria("F", SQL_Numeric, SQL_Not + SQL_AllowSqlDirect, FilterValue)
    
    Assert.That "" & Actual, Iz.EqualTo(Expected)
 
