@@ -14,7 +14,7 @@ Attribute VB_Exposed = False
 '/**
 ' \author       Josef Poetzl
 ' <summary>
-' SQL-Hilfsfunktionen
+' SQL Tools: Functions to build sql strings
 ' </summary>
 ' <remarks>Set "Attribute VB_PredeclaredId = True" to enable using SqlTools without explicit instantiation.</remarks>
 '
