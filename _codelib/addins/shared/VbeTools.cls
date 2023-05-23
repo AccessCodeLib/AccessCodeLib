@@ -13,7 +13,7 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
-' VBE-Programmierunterstützung
+' VBE Programming Support
 ' </summary>
 ' <remarks>
 ' </remarks>
@@ -22,6 +22,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>_codelib/addins/shared/VbeTools.cls</file>
 '  <license>_codelib/license.bas</license>
+'  <use>file/FileTools.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -31,10 +32,34 @@ Option Explicit
 #Const EARLYBINDING = 0
 #Const DEBUGMODE = 0
 
+Private m_AccessApplication As Access.Application
+
+Friend Property Get AccessApplication() As Access.Application
+   If m_AccessApplication Is Nothing Then
+      Set AccessApplication = Access.Application
+   Else
+      Set AccessApplication = m_AccessApplication
+   End If
+End Property
+
+Friend Property Set AccessApplication(ByVal NewRef As Access.Application)
+   Set m_AccessApplication = NewRef
+End Property
+
 #If EARLYBINDING Then
 Friend Property Get CurrentVbProject() As VBIDE.VBProject
 #Else
 Friend Property Get CurrentVbProject() As Object
+#End If
+
+   Set CurrentVbProject = FindVbProject(AccessApplication.CurrentDb.Name)
+
+End Property
+
+#If EARLYBINDING Then
+Friend Property Get FindVbProject(ByVal FilePath As String) As VBIDE.VBProject
+#Else
+Friend Property Get FindVbProject(ByVal FilePath As String) As Object
 #End If
 
 #If EARLYBINDING Then
@@ -44,26 +69,33 @@ Friend Property Get CurrentVbProject() As Object
    Dim Proj As Object
    Dim Temp As Object
 #End If
-   Dim strCurrentDbName As String
 
-   Set Proj = VBE.ActiveVBProject
-   'Prüfen, ob das richtige VbProject gewählt wurde (muss das von CurrentDb sein)
-   strCurrentDbName = UncPath(CurrentDb.Name)
-   If Proj.FileName <> strCurrentDbName Then
+   Set Proj = AccessApplication.VBE.ActiveVBProject
+   'Check if the correct VbProject has been selected (must be the one from database file)
+   FilePath = UncPath(FilePath)
+   If Proj.FileName <> FilePath Then
       Set Proj = Nothing
       For Each Temp In VBE.VBProjects
-         If Temp.FileName = strCurrentDbName Then
+         If Temp.FileName = FilePath Then
             Set Proj = Temp
             Exit For
          End If
       Next
    End If
    
-   Set CurrentVbProject = Proj
+   Set FindVbProject = Proj
 
 End Property
 
 Public Sub ActivateCurrentProject()
+   ActivateVbProject CurrentVbProject
+End Sub
+
+#If EARLYBINDING = 1 Then
+Public Sub ActivateVbProject(ByVal VbProjectToActivate As VBIDE.VBProject)
+#Else
+Public Sub ActivateVbProject(ByVal VbProjectToActivate As Object)
+#End If
 
    Dim Activated As Boolean
 #If EARLYBINDING Then
@@ -72,24 +104,28 @@ Public Sub ActivateCurrentProject()
    Dim vbc As Object
 #End If
 
-   If CurrentVbProject.VBComponents.Count > 0 Then
-      'zuerst nur Code-Module verwenden, da sonst Formulare/Berichte im Entwurf geöffnet werden
-      For Each vbc In CurrentVbProject.VBComponents
+   If VbProjectToActivate.VBComponents.Count > 0 Then
+      'Only use code modules at first, otherwise forms/reports will be opened in draft form
+      For Each vbc In VbProjectToActivate.VBComponents
          If vbc.Type <> vbext_ct_Document Then
             vbc.Activate
             Activated = True
             Exit For
          End If
       Next
-      'falls nur vbext_ct_Document vorhanden sind, das erste verwenden
+      'if there are only vbext_ct_Document, use the first one
       If Not Activated Then
-         CurrentVbProject.VBComponents(1).Activate
+         VbProjectToActivate.VBComponents(1).Activate
       End If
    End If
 
 End Sub
 
-Public Function CodeModuleExists(ByVal CodeModulName As String) As Boolean
+#If EARLYBINDING = 1 Then
+Public Function CodeModuleExists(ByVal CodeModulName As String, Optional VbProjectToScan As VBIDE.VBProject = Nothing) As Boolean
+#Else
+Public Function CodeModuleExists(ByVal CodeModulName As String, Optional VbProjectToScan As Object = Nothing) As Boolean
+#End If
 
 #If EARLYBINDING = 1 Then
    Dim VbcCol As VBIDE.VBComponents
@@ -98,8 +134,12 @@ Public Function CodeModuleExists(ByVal CodeModulName As String) As Boolean
    Dim VbcCol As Object
    Dim vbc As Object
 #End If
+
+   If VbProjectToScan Is Nothing Then
+      Set VbProjectToScan = CurrentVbProject
+   End If
    
-   Set VbcCol = CurrentVbProject.VBComponents
+   Set VbcCol = VbProjectToScan.VBComponents
    For Each vbc In VbcCol
       If vbc.Name = CodeModulName Then
          CodeModuleExists = True

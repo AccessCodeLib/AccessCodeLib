@@ -23,7 +23,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>_codelib/addins/shared/CodeModuleProcedure.cls</use>
 '  <use>_codelib/addins/shared/CodeModuleHeaderItem.cls</use>
-'  <use>file/modFiles.bas</use>
+'  <use>file/FileTools.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
