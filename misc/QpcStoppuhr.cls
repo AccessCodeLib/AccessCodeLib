@@ -45,8 +45,8 @@ Private p_Timer As Currency
 Private p_Timer_Start As Currency
 
 'Win-API
-Private Declare Function QueryPerformanceCounter Lib "kernel32" (QPC As Currency) As Boolean
-Private Declare Function QueryPerformanceFrequency Lib "kernel32" (QPF As Currency) As Boolean
+Private Declare PtrSafe Function QueryPerformanceCounter Lib "kernel32" (QPC As Currency) As Boolean
+Private Declare PtrSafe Function QueryPerformanceFrequency Lib "kernel32" (QPF As Currency) As Boolean
                         
 'Klasse initialisieren
 Private Sub Class_Initialize()

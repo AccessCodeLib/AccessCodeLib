@@ -31,17 +31,17 @@ Private Type POINTAPI
    Y As Long
 End Type
 
-Private Declare Function ClientToScreen Lib "user32.dll" ( _
-         ByVal Hwnd As Long, _
+Private Declare PtrSafe Function ClientToScreen Lib "user32.dll" ( _
+         ByVal Hwnd As LongPtr, _
          ByRef lpPoint As POINTAPI _
       ) As Long
 
-Private Declare Function FindWindowEx Lib "user32.dll" Alias "FindWindowExA" ( _
-         ByVal HWnd1 As Long, _
-         ByVal HWnd2 As Long, _
+Private Declare PtrSafe Function FindWindowEx Lib "user32.dll" Alias "FindWindowExA" ( _
+         ByVal HWnd1 As LongPtr, _
+         ByVal HWnd2 As LongPtr, _
          ByVal Lpsz1 As String, _
          ByVal Lpsz2 As String _
-      ) As Long
+      ) As LongPtr
 
 '---------------------------------------------------------------------------------------
 ' Function: GetMDI
@@ -55,8 +55,8 @@ Private Declare Function FindWindowEx Lib "user32.dll" Alias "FindWindowExA" ( _
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetMDI() As Long
-   Dim h As Long
+Public Function GetMDI() As LongPtr
+   Dim h As LongPtr
    h = Application.hWndAccessApp
    'Erstes (und einziges) "MDIClient"-Kindfenster des Applikationsfensters suchen
    GetMDI = FindWindowEx(h, 0&, "MDIClient", vbNullString)
@@ -75,8 +75,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetHeaderSection(ByVal fHwnd As Long) As Long
-   Dim h As Long
+Public Function GetHeaderSection(ByVal fHwnd As LongPtr) As LongPtr
+   Dim h As LongPtr
    'Erstes "OFormsub"-Kindfenster des Formulares (fhwnd) ermitteln
    h = FindWindowEx(fHwnd, 0&, "OformSub", vbNullString)
    GetHeaderSection = h
@@ -95,8 +95,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetDetailSection(ByVal fHwnd As Long) As Long
-   Dim h As Long
+Public Function GetDetailSection(ByVal fHwnd As LongPtr) As LongPtr
+   Dim h As LongPtr
    'Erstes "OFormsub"-Kindfenster des Formulares (fhwnd) ermitteln, beginnend
    'nach dem Kopfbereich
    h = GetHeaderSection(fHwnd)
@@ -117,8 +117,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetFooterSection(ByVal fHwnd As Long) As Long
-   Dim h As Long
+Public Function GetFooterSection(ByVal fHwnd As LongPtr) As LongPtr
+   Dim h As LongPtr
    'Erstes "OFormsub"-Kindfenster des Formulares (fhwnd) ermitteln, beginnend
    'nach dem Detailbereich
    h = GetDetailSection(fHwnd)
@@ -142,7 +142,8 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Function GetControl(ByRef frm As Access.Form, ByVal sHwnd As Long, ByVal sClassName As String, ByVal ControlName As String) As Long
+Public Function GetControl(ByRef frm As Access.Form, ByVal sHwnd As LongPtr, _
+                           ByVal sClassName As String, ByVal ControlName As String) As LongPtr
 
    'Ermittelt den Handle eines beliebigen Controls
 
@@ -166,7 +167,7 @@ Public Function GetControl(ByRef frm As Access.Form, ByVal sHwnd As Long, ByVal 
 
 On Error Resume Next
 
-   Dim h As Long
+   Dim h As LongPtr
    Dim obj As Object
    Dim pt As POINTAPI
 
