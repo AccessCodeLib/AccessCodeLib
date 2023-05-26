@@ -34,6 +34,7 @@ Private Enum DbConnectionInfoErrorNumbers
    ERRNR_INACTIVE = vbObjectError + 3
 End Enum
 
+Private Const m_DefaultLoginFormName As String = "LoginForm"
 Private m_LoginFormName As String
 Private m_DbmsConfigFormName As String
 
@@ -86,7 +87,7 @@ Private m_UseLoginForm As Boolean
 Private m_SAVEPWD As Boolean
 
 #If CONFIG_USELOGINFORM = 1 Then
-Private WithEvents m_LoginForm As Form_frmLogin
+Private WithEvents m_LoginForm As Form_LoginForm
 Attribute m_LoginForm.VB_VarHelpID = -1
 #End If
 
@@ -341,10 +342,7 @@ Private Sub ReadDBMSprop(Optional ByVal withoutLoginForm As Boolean = False, Opt
       End If
    
       'm_LoginForm über Property LoginForm zugänglich machen und im LoginForm selbst setzen:
-
-      Set g_TempRef = Me
-      DoCmd.OpenForm m_LoginFormName, acNormal, , , acFormEdit, acDialog, m_CID & "@" & LoginUserName
-      Set g_TempRef = Nothing
+      DoCmd.OpenForm LoginFormName, acNormal, , , acFormEdit, acDialog, ObjPtr(Me) & "@" & m_CID & "@" & LoginUserName
 #Else
    Err.Raise vbObjectError, "DbConnectionInfo", "CONFIG_USELOGINFORM in Projekteigenschaften nicht gesetzt!"
 #End If
@@ -405,7 +403,7 @@ Private Sub m_LoginForm_Logon(ByVal LoginName As String, ByVal Password As Strin
    m_DBUSER = LoginName
    m_DBUSERPWD = Password
    
-   Call setConnectionStrings(False)
+   Call SetConnectionStrings(False)
    
    If CheckAdoConnection(m_OledbConnectionString, ErrMsg) = False Then
       If Len(ErrMsg) > 0 Then ErrMsg = vbNewLine & vbNewLine & ErrMsg
@@ -416,7 +414,7 @@ Private Sub m_LoginForm_Logon(ByVal LoginName As String, ByVal Password As Strin
    End If
 
    If Len(m_DBUSER) > 0 Then
-      CurrentDb.Execute "UPDATE (select * from usys_DbmsConnectionWHERE DBMS='" & m_DBMSNAME & "') SET dbmsUser = '" & m_DBUSER & "'" ' thanks to MSFT (https://support.office.com/en-us/article/access-error-query-is-corrupt-fad205a5-9fd4-49f1-be83-f21636caedec)
+      CurrentDb.Execute "UPDATE (select * from usys_DbmsConnection WHERE DBMS='" & m_DBMSNAME & "') SET dbmsUser = '" & m_DBUSER & "'" ' thanks to MSFT (https://support.office.com/en-us/article/access-error-query-is-corrupt-fad205a5-9fd4-49f1-be83-f21636caedec)
       SaveUserNameToConfigFile m_DBUSER
    End If
 
@@ -426,7 +424,7 @@ Private Sub m_LoginForm_Logon(ByVal LoginName As String, ByVal Password As Strin
 
 End Sub
 
-Private Sub setConnectionStrings(Optional ByVal bWithConnectionCheck As Boolean = True)
+Private Sub SetConnectionStrings(Optional ByVal bWithConnectionCheck As Boolean = True)
 
    Dim myConnectionStrings As DbmsConnectionStrings
    Dim ErrMsg As String
@@ -504,7 +502,7 @@ End Function
 
 Private Function CheckAdoConnection(ByVal sOleDbConnectionstring As String, ByRef Msg As String) As Boolean
 
-   Dim cnn As ADODB.Connection
+   Dim cnn As Object 'ADODB.Connection
    Dim i As Long
 
    If Len(sOleDbConnectionstring) = 0 Then
@@ -512,7 +510,7 @@ Private Function CheckAdoConnection(ByVal sOleDbConnectionstring As String, ByRe
       Exit Function
    End If
    
-   Set cnn = New ADODB.Connection
+   Set cnn = CreateObject("ADODB.Connection")
    With cnn
       .ConnectionString = sOleDbConnectionstring
       .ConnectionTimeout = m_CheckConnectionTimeout
@@ -587,7 +585,7 @@ End Function
 Public Property Get OledbConnectionString() As String
 
    If Len(m_OledbConnectionString) = 0 Then
-      setConnectionStrings
+      SetConnectionStrings
    End If
    OledbConnectionString = m_OledbConnectionString
    
@@ -609,7 +607,7 @@ End Property
 Public Property Get OdbcConnectionString(Optional ByVal bWithoutUserInfo As Boolean = False) As String
 
    If Len(m_OdbcConnectionString) = 0 Then
-      setConnectionStrings
+      SetConnectionStrings
    End If
    If bWithoutUserInfo Then
       OdbcConnectionString = Replace(m_OdbcConnectionString, getOdbcUserInfo(), "")
@@ -634,7 +632,7 @@ End Property
 Public Property Get DatabaseFile() As String
 
    If Len(m_DatabaseFile) = 0 Then
-      setConnectionStrings
+      SetConnectionStrings
    End If
    DatabaseFile = m_DatabaseFile
 
@@ -653,11 +651,11 @@ End Property
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Property Get DbUser(Optional ByVal withoutServerCheck As Boolean = False) As String
+Public Property Get DbUser(Optional ByVal WithoutServerCheck As Boolean = False) As String
 
-   If Not withoutServerCheck Then
+   If Not WithoutServerCheck Then
    If Not m_DbmsInfoReaded Then
-      setConnectionStrings
+      SetConnectionStrings
    End If
    End If
    
@@ -672,7 +670,7 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: DbUserPassword
 '---------------------------------------------------------------------------------------
-'/** 'nicht exportieren (2. * für Export fehlt)
+'/**
 ' <summary>
 ' Passwort des Datenbankbenutzers, das bei Anmeldung eingegeben wurde
 ' </summary>
@@ -682,10 +680,10 @@ End Property
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Property Get DbUserPassword() As String
+Private Property Get DbUserPassword() As String
 
    If Not m_DbmsInfoReaded Then
-      setConnectionStrings
+      SetConnectionStrings
    End If
    DbUserPassword = m_DBUSERPWD
  
@@ -706,7 +704,7 @@ End Property
 Public Property Get SavePassword() As Boolean
 
    If Not m_DbmsInfoReaded Then
-      setConnectionStrings
+      SetConnectionStrings
    End If
    SavePassword = m_SAVEPWD
 
@@ -727,7 +725,7 @@ End Property
 Public Property Get UseLoginForm() As Boolean
 
    If Not m_DbmsInfoReaded Then
-      setConnectionStrings
+      SetConnectionStrings
    End If
    UseLoginForm = m_UseLoginForm
 
@@ -838,7 +836,7 @@ Public Function ChangeDbUserPassword( _
    
       If strLoginName = m_DBUSER Then
          m_DBUSERPWD = NewPassword
-         setConnectionStrings
+         SetConnectionStrings
          RaiseEvent PasswordChanged
       End If
       
@@ -1361,7 +1359,11 @@ End Property
 '**/
 '---------------------------------------------------------------------------------------
 Public Property Get LoginFormName() As String
-   LoginFormName = m_LoginFormName
+   If Len(m_LoginFormName) = 0 Then
+      LoginFormName = m_DefaultLoginFormName
+   Else
+      LoginFormName = m_LoginFormName
+   End If
 End Property
 
 Public Property Let LoginFormName(ByVal NewValue As String)
