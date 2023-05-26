@@ -582,7 +582,7 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Property Get OledbConnectionString() As String
+Friend Property Get OledbConnectionString() As String
 
    If Len(m_OledbConnectionString) = 0 Then
       SetConnectionStrings
@@ -604,7 +604,7 @@ End Property
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Property Get OdbcConnectionString(Optional ByVal bWithoutUserInfo As Boolean = False) As String
+Friend Property Get OdbcConnectionString(Optional ByVal bWithoutUserInfo As Boolean = False) As String
 
    If Len(m_OdbcConnectionString) = 0 Then
       SetConnectionStrings
@@ -911,7 +911,7 @@ End Function
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Property Get ConnectionStrings() As DbmsConnectionStrings
+Friend Property Get ConnectionStrings() As DbmsConnectionStrings
 
    If m_DbmsInfoReaded = False Then
       ReadDBMSprop
@@ -1006,7 +1006,7 @@ Private Function ConnectionStrings_MSSQL() As DbmsConnectionStrings
       strOLEDB = ";Integrated Security = SSPI"
    ElseIf Len(m_DBUSER) > 0 Then 'Verbindung mit User + Pwd
       strODBC = ";Trusted_Connection=No;" & getOdbcUserInfo_MSSQL(m_DBUSER, m_DBUSERPWD)
-      strOLEDB = ";User ID=" & m_DBUSER & ";Password=""" & m_DBUSERPWD & """"
+      strOLEDB = ";User ID=" & m_DBUSER '& ";Password=""" & m_DBUSERPWD & """"
    End If
 
    If Len(m_DBOPTIONS_OLEDB) > 0 Then
