@@ -132,7 +132,7 @@ Public Function CheckCodeModule(ByVal ModulName As String, _
 
 End Function
 
-Private Sub TransferCodeModul(ByVal TargetProject As Access.CurrentProject, _
+Public Sub TransferCodeModul(ByVal TargetProject As Access.CurrentProject, _
                               ByVal ObjType As AcObjectType, ByVal ModulName As String)
 
    Dim FileName As String
