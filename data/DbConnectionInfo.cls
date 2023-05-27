@@ -620,7 +620,7 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: DatabaseFile
 '---------------------------------------------------------------------------------------
-'/** 'nicht exportieren (2. * für Export fehlt)
+'/**
 ' <summary>
 ' Dateiname inkl. Pfad eines dateibasierten Backend
 ' </summary>
@@ -1006,7 +1006,7 @@ Private Function ConnectionStrings_MSSQL() As DbmsConnectionStrings
       strOLEDB = ";Integrated Security = SSPI"
    ElseIf Len(m_DBUSER) > 0 Then 'Verbindung mit User + Pwd
       strODBC = ";Trusted_Connection=No;" & getOdbcUserInfo_MSSQL(m_DBUSER, m_DBUSERPWD)
-      strOLEDB = ";User ID=" & m_DBUSER '& ";Password=""" & m_DBUSERPWD & """"
+      strOLEDB = ";User ID=" & m_DBUSER & ";Password=""" & m_DBUSERPWD & """"
    End If
 
    If Len(m_DBOPTIONS_OLEDB) > 0 Then
