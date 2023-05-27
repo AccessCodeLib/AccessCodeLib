@@ -95,7 +95,7 @@ Private Sub UpdateCodeModuleInTable(ByVal ModuleName As String, ByVal ACLibPath 
    Dim DownLoadUrl As String
    Dim BranchName As String
    
-   TempFile = FileTools.TempPath & ModuleName & ".cls"
+   TempFile = FileTools.TempPath & ModuleName & FileTools.GetFileExtension(ACLibPath, True)
    
    If UseDraftBranch Then
       BranchName = "draft"

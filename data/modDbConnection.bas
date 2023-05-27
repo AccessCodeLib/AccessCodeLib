@@ -95,10 +95,6 @@ Public Sub DisposeDbConnection()
 
 On Error Resume Next
 
-#If CONFIG_USELOGINFORM = 1 Then
-   Set g_TempRef = Nothing
-#End If
-
    If Not (m_DbConnectionManager Is Nothing) Then
       m_DbConnectionManager.Dispose
    End If

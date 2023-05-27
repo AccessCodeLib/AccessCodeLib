@@ -235,7 +235,9 @@ On Error Resume Next
    Me.DbConnection.ODBC.Dispose
    
    'Verbindung zum BE öffnen
-   OpenPermanentBackendRecordset
+   If DefaultSettings.OpenPermanentBackendRecordset Then
+      OpenPermanentBackendRecordset
+   End If
    
 End Sub
 

@@ -21,25 +21,23 @@ Attribute VB_Description = "WinAPI-Funktionen zur Layoutgestaltung"
 Option Compare Text
 Option Explicit
 
-Private Declare Function CreateSolidBrush _
-      Lib "gdi32.dll" ( _
+Private Declare PtrSafe Function CreateSolidBrush Lib "gdi32.dll" ( _
       ByVal CrColor As Long _
-      ) As Long
+) As LongPtr
 
-Private Declare Function RedrawWindow _
-      Lib "user32" ( _
-      ByVal Hwnd As Long, _
+Private Declare PtrSafe Function RedrawWindow Lib "user32" ( _
+      ByVal Hwnd As LongPtr, _
       LprcUpdate As Any, _
       ByVal HrgnUpdate As Long, _
       ByVal FuRedraw As Long _
-      ) As Long
+) As Long
 
-Private Declare Function SetClassLong _
+Private Declare PtrSafe Function SetClassLong _
       Lib "user32.dll" _
       Alias "SetClassLongA" ( _
-      ByVal Hwnd As Long, _
+      ByVal Hwnd As LongPtr, _
       ByVal nIndex As Long, _
-      ByVal dwNewLong As Long _
+      ByVal dwNewLong As LongPtr _
       ) As Long
 
 Private Const GCL_HBRBACKGROUND As Long = -10
@@ -47,11 +45,11 @@ Private Const RDW_INVALIDATE As Long = &H1
 Private Const RDW_ERASE As Long = &H4
 
 '--------------------------------------
-Private Declare Function GetSystemMetrics Lib "user32" (ByVal nIndex As Long) As Long
+Private Declare PtrSafe Function GetSystemMetrics Lib "user32" (ByVal nIndex As Long) As Long
 
-Private Declare Function GetDC Lib "user32" (ByVal Hwnd As Long) As Long
-Private Declare Function ReleaseDC Lib "user32" (ByVal Hwnd As Long, ByVal hDC As Long) As Long
-Private Declare Function GetDeviceCaps Lib "gdi32" (ByVal hDC As Long, ByVal nIndex As Long) As Long
+Private Declare PtrSafe Function GetDC Lib "user32" (ByVal Hwnd As LongPtr) As LongPtr
+Private Declare PtrSafe Function ReleaseDC Lib "user32" (ByVal Hwnd As LongPtr, ByVal hDC As LongPtr) As Long
+Private Declare PtrSafe Function GetDeviceCaps Lib "gdi32" (ByVal hDC As LongPtr, ByVal nIndex As Long) As LongPtr
 Private Const HWND_DESKTOP As Long = 0
 Private Const LOGPIXELSX As Long = 88
 Private Const LOGPIXELSY As Long = 90
@@ -60,7 +58,7 @@ Private Const SM_CXVSCROLL As Long = 2
 
 
 '---------------------------------------------------------------------------------------
-' Sub: SetBackColor (Josef Pötzl, 2010-04-19)
+' Sub: SetBackColor
 '---------------------------------------------------------------------------------------
 '/**
 ' <summary>
@@ -73,9 +71,9 @@ Private Const SM_CXVSCROLL As Long = 2
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Public Sub SetBackColor(ByVal Hwnd As Long, ByVal Color As Long)
+Public Sub SetBackColor(ByVal Hwnd As LongPtr, ByVal Color As Long)
   
-   Dim NewBrush As Long
+   Dim NewBrush As LongPtr
    
    'Brush erzeugen
    NewBrush = CreateSolidBrush(Color)
@@ -101,7 +99,7 @@ End Sub
 '**/
 '---------------------------------------------------------------------------------------
 Public Function TwipsPerPixelX() As Single
-   Dim lngDC As Long
+   Dim lngDC As LongPtr
    lngDC = GetDC(HWND_DESKTOP)
    TwipsPerPixelX = 1440& / GetDeviceCaps(lngDC, LOGPIXELSX)
    ReleaseDC HWND_DESKTOP, lngDC
@@ -121,7 +119,7 @@ End Function
 '**/
 '---------------------------------------------------------------------------------------
 Public Function TwipsPerPixelY() As Single
-   Dim lngDC As Long
+   Dim lngDC As LongPtr
    lngDC = GetDC(HWND_DESKTOP)
    TwipsPerPixelY = 1440& / GetDeviceCaps(lngDC, LOGPIXELSY)
    ReleaseDC HWND_DESKTOP, lngDC
