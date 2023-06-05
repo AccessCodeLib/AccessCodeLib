@@ -8,14 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: DbConnectionSettings
+' Class: data.DbConnectionSettings
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Hilfsklasse zum Zwischenspeichern der Verbindungsparameter
-' </summary>
-' <remarks></remarks>
-'**/
+'
+' Auxiliary class for caching the connection parameters
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>data/DbConnectionSettings.cls</file>
@@ -27,17 +29,60 @@ Attribute VB_Exposed = False
 Option Compare Database
 Option Explicit
 
-'SqlTools-Parameter
+'SqlTools parameter
+
+'---------------------------------------------------------------------------------------
+' Property: SqlDateFormat
+'---------------------------------------------------------------------------------------
+'
+' Date format string
+'
+'---------------------------------------------------------------------------------------
 Public SqlDateFormat As String
+
+'---------------------------------------------------------------------------------------
+' Property: SqlWildCardString
+'---------------------------------------------------------------------------------------
+'
+' SQL wildcard
+'
+'---------------------------------------------------------------------------------------
 Public SqlWildCardString As String
+
+'---------------------------------------------------------------------------------------
+' Property: SqlBooleanTrueString
+'---------------------------------------------------------------------------------------
+'
+' SQL string for boolean true
+'
+'---------------------------------------------------------------------------------------
 Public SqlBooleanTrueString As String
 
-'AdodbHandler-Parameter
+'---------------------------------------------------------------------------------------
+' Property: DefaultAdodbCursorLocation
+'---------------------------------------------------------------------------------------
+'
+' Default parameter value for ADODB.CursorLocationEnum
+'
+'---------------------------------------------------------------------------------------
 Public DefaultAdodbCursorLocation As ADODB.CursorLocationEnum
 
-'Datenzugriffssteuerung
+'---------------------------------------------------------------------------------------
+' Property: OpenPermanentBackendRecordset
+'---------------------------------------------------------------------------------------
+'
+' Open permanent backend recordset if connected
+'
+'---------------------------------------------------------------------------------------
 Public OpenPermanentBackendRecordset As Boolean
 
+'---------------------------------------------------------------------------------------
+' Property: Clone
+'---------------------------------------------------------------------------------------
+'
+' Clone of current config
+'
+'---------------------------------------------------------------------------------------
 Public Function Clone() As DbConnectionSettings
    Dim NewObject As DbConnectionSettings
    Set NewObject = New DbConnectionSettings
@@ -45,6 +90,16 @@ Public Function Clone() As DbConnectionSettings
    Set Clone = NewObject
 End Function
 
+'---------------------------------------------------------------------------------------
+' Property: CopyFrom
+'---------------------------------------------------------------------------------------
+'
+' Copy DbConnectionSettings
+'
+' Parameters:
+'     NewSettings - DbConnectionSettings to copy
+'
+'---------------------------------------------------------------------------------------
 Public Sub CopyFrom(ByVal NewSettings As DbConnectionSettings)
 
    With NewSettings

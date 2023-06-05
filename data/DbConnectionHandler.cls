@@ -8,16 +8,17 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: DbConnectionHandler
+' Class: data.DbConnectionHandler
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Datenbankverbindung per ADO oder DAO (inkl. ODBC)
-' </summary>
-' <remarks>
-' Vereinheitlicht ADO- und DAO-Methoden
-' </remarks>
-'**/
+' Database connection via ADODB or DAO (incl. ODBC)
+'
+' Standardises ADO and DAO methods
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>data/DbConnectionHandler.cls</file>
@@ -41,64 +42,89 @@ Attribute m_AdodbHandler.VB_VarHelpID = -1
 Private WithEvents m_OdbcHandler As OdbcHandler
 Attribute m_OdbcHandler.VB_VarHelpID = -1
 
-'Error-Events für mögliche Fehlerbehandlung über die FE-Anwendung
+' Group: Events
+' Error events for possible error handling via the frontend application
 
-'/**
-' <summary>
-' Ereignis für fehlende CurrentDb-Referenz
-' (Weitergabe des <see cref=DaoHandler#ErrorMissingCurrentDb>DaoHandler</see>- bzw. <see cref=OdbcHandler#ErrorMissingCurrentDb>OdbcHandler</see>-Ereignisses: ErrorMissingCurrentDb)
-' </summary>
-' <param name="Msg">Meldung über Ursache der Ereignisauslösung. (Wird noch nicht genutzt)</param>
-' <param name="NewCurrentDbRef">DAO.Database-Referenz, die für CurrentDb verwendet werden soll</param>
-' <remarks>über den ByRef-Parameter NewCurrentDbRef kann die passende DAO.Database-Referenz weitergegeben werden.</remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: ErrorMissingCurrentDb
+'---------------------------------------------------------------------------------------
+' Event for missing CurrentDb reference
+' (Passing the <data.dao.DaoHandler> or <data.odbc.OdbcHandler> event: ErrorMissingCurrentDb)
+'
+' Parameters:
+'     Msg   -  Message about the cause of the event triggering. (Not yet used)
+'     NewCurrentDbRef - DAO.Database reference to be used for CurrentDb
+'
+' Remarks:
+'     The required DAO.Database reference can be passed on via the ByRef parameter NewCurrentDbRef.
+'
+'---------------------------------------------------------------------------------------
 Public Event ErrorMissingCurrentDb(ByVal Msg As String, ByRef NewCurrentDbRef As DAO.Database)
 
-'/**
-' <summary>
-' Ereignis für fehlende ADODB-Connection-Referenz
-' (Weitergabe des AdodbHandler-Ereignisses: <see cref=AdodbHandler#ErrorMissingCurrentConnection>ErrorMissingCurrentConnection</see>)
-' </summary>
-' <param name="Msg">Meldung über Ursache der Ereignisauslösung. (Wird noch nicht genutzt)</param>
-' <param name="NewCurrentConnection">ADODB.Connection-Referenz, die für CurrentConnection verwendet werden soll</param>
-' <remarks>
-' Über den ByRef-Parameter NewCurrentConnection kann die passende ADODB.Database-Referenz weitergegeben werden.
-' Eine Referenz-Weitergabe ist allerdings nicht zwingend erforderlich,
-' da z. B. in der ADODBHandler-Methode <see cref=AdodbHandler#CurrentConnection>CurrentConnection</see>
-' die Connection dann aus dem <see cref=AdodbHandler#ConnectionString>ConnectionString</see> erstellt wird.
-' </remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: ErrorMissingCurrentConnection
+'---------------------------------------------------------------------------------------
+'
+' Event for missing ADODB connection reference
+' (Passing the AdodbHandler event: <data.adodb.AdodbHandler::ErrorMissingCurrentConnection>)
+'
+' Parameters:
+'     Msg   -  Message about the cause of the event triggering. (Not yet used)
+'     NewCurrentConnection - ADODB.Connectionreference to be used for CurrentConnection
+'
+' Remarks:
+'     The appropriate ADODB.Database reference can be passed on via the ByRef parameter NewCurrentConnection.
+'     However, passing on a reference is not mandatory, since, it is stored in the AdodbHandler property <data.adodb.AdodbHandler::CurrentConnection>.
+'     The connection is then created from the <data.adodb.AdodbHandler::ConnectionString>
+'
+'---------------------------------------------------------------------------------------
 Public Event ErrorMissingCurrentConnection(ByVal Msg As String, ByRef NewCurrentConnection As ADODB.Connection)
 
-'/**
-' <summary>
-' Ereignis für fehlenden OLEDB-Connectionstring
-' (Weitergabe des AdodbHandler-Ereignisses: <see cref=AdodbHandler#ErrorEmptyOledbConnectionString>ErrorEmptyOledbConnectionString</see>)
-' </summary>
-' <param name="Msg">Meldung über Ursache der Ereignisauslösung. (Wird noch nicht genutzt)</param>
-' <param name="NewConnectionString">OLEDB-Connectionstring</param>
-' <remarks>über den ByRef-Parameter NewConnectionString kann der passende OLEDB-Connectionstring weitergegeben werden.</remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: ErrorEmptyOledbConnectionString
+'---------------------------------------------------------------------------------------
+'
+' Event for missing OLEDB connection string
+' (Passing the AdodbHandler event: <data.adodb.AdodbHandler::ErrorEmptyOledbConnectionString> )
+'
+' Parameters:
+'     Msg                  - Message about the cause of the event triggering. (Not yet used)
+'     NewConnectionString  - OLEDB Connectionstring
+'
+' Remarks:
+'     The appropriate OLEDB connection string can be passed on via the ByRef parameter NewConnectionString.
+'
+'---------------------------------------------------------------------------------------
 Public Event ErrorEmptyOledbConnectionString(ByVal Msg As String, ByRef NewConnectionString As String)
 
-'/**
-' <summary>
-' Ereignis für fehlenden ODBC-Connectionstring
-' (Weitergabe des OdbcHandler-Ereignisses: <see cref=OdbcHandler#ErrorEmptyConnectionString>ErrorEmptyConnectionString</see>)
-' </summary>
-' <param name="Msg">Meldung über Ursache der Ereignisauslösung. (Wird noch nicht genutzt)</param>
-' <param name="NewConnectionString">ODBC-Connectionstring</param>
-' <remarks>über den ByRef-Parameter NewConnectionString kann der passende ODBC-Connectionstring weitergegeben werden.</remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: ErrorEmptyOdbcConnectionString
+'---------------------------------------------------------------------------------------
+'
+' Event for missing ODBC connection string
+' (Passing the OdbcHandler event: <data.odbc.OdbcHandler::ErrorEmptyConnectionString>)
+'
+' Parameters:
+'     Msg                  - Message about the cause of the event triggering. (Not yet used)
+'     NewConnectionString  - ODBC-Connectionstring
+'
+' Remarks:
+'     The appropriate ODBC connection string can be passed on via the ByRef parameter NewConnectionString.
+'
+'---------------------------------------------------------------------------------------
 Public Event ErrorEmptyOdbcConnectionString(ByVal Msg As String, ByRef NewConnectionString As String)
 
-'/**
-' <summary>
-' Ereignis-Meldung wenn Objektreferenzen entfernt wurden
-' </summary>
-' <remarks></remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: Disposed
+'---------------------------------------------------------------------------------------
+'
+' Event message when object references have been removed
+'
+'---------------------------------------------------------------------------------------
 Public Event Disposed()
+
+
+' Group: Dispose support
 
 Private m_Disposed As Boolean
 
@@ -115,14 +141,11 @@ Private Sub Class_Terminate()
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Sub: Dispose (06.04.2008)
+' Sub: Dispose
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Objektreferenzen entfernen
-' </summary>
-' <remarks></remarks>
-'**/
+'
+' Remove object references
+'
 '---------------------------------------------------------------------------------------
 Public Sub Dispose()
 
@@ -160,112 +183,19 @@ End Sub
 
 
 '#######################################################################################
-'
-' ADODB-Member
-' ------------
-'/** @name ADO
-' *  ADO-Zugriff
-' */
-'//@{
-
-'---------------------------------------------------------------------------------------
-' Property: ADODB
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' ADODB-Zugriffsmethoden
-' </summary>
-' <returns>AdodbHandler</returns>
-' <remarks></remarks>
-'**/
-'---------------------------------------------------------------------------------------
-Public Property Get ADODB() As AdodbHandler
-   If m_AdodbHandler Is Nothing Then
-      Set m_AdodbHandler = New AdodbHandler
-   End If
-   Set ADODB = m_AdodbHandler
-End Property
-
-'---------------------------------------------------------------------------------------
-' Property: CurrentConnection
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' ADODB-Connection zur akutellen DBSM-Verbindung = <see cref=AdodbHandler#CurrentConnection>Me.ADODB.CurrentConnection</see>
-' </summary>
-' <returns>ADODB.Connection</returns>
-' <remarks></remarks>
-'*/
-'---------------------------------------------------------------------------------------
-Public Property Get CurrentConnection() As ADODB.Connection
-   Set CurrentConnection = Me.ADODB.CurrentConnection
-End Property
-
-'---------------------------------------------------------------------------------------
-' Property: CurrentConnection
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' CurrentConnection = <see cref=AdodbHandler#CurrentConnection>Me.ADODB.CurrentConnection</see>
-' </summary>
-' <param name="NewConnection">Neue ADO-Connection</param>
-' <remarks></remarks>
-'**/
-'---------------------------------------------------------------------------------------
-Public Property Set CurrentConnection(ByRef NewConnection As ADODB.Connection)
-   Set Me.ADODB.CurrentConnection = NewConnection
-End Property
-
-'---------------------------------------------------------------------------------------
-' Property: OledbConnectionString
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' OledbConnectionString = <see cref=AdodbHandler#ConnectionString>Me.ADODB.ConnectionString</see>
-' </summary>
-' <returns>String</returns>
-' <remarks></remarks>
-'**/
-'---------------------------------------------------------------------------------------
-Public Property Get OledbConnectionString() As String
-   OledbConnectionString = Me.ADODB.ConnectionString
-End Property
-
-'---------------------------------------------------------------------------------------
-' Property: OleDBConnectionString
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' OledbConnectionString = <see cref=AdodbHandler#ConnectionString>Me.ADODB.ConnectionString</see>
-' </summary>
-' <remarks></remarks>
-'**/
-'---------------------------------------------------------------------------------------
-Public Property Let OledbConnectionString(ByVal NewConnectionString As String)
-   Me.ADODB.ConnectionString = NewConnectionString
-End Property
-
-'//@}
-
-'#######################################################################################
-'
-' DAO-Member
-' --------------
-'/** @name DAO
-' *  DAO-Zugriff
-' */
-'//@{
+' Group: DAO data connection
+' DAO access methods
+' --------------------------------------------------------------------------------------
 
 '---------------------------------------------------------------------------------------
 ' Property: DAO
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' DAO-Zugriffsmethoden
-' </summary>
-' <returns>DaoHandler</returns>
-' <remarks></remarks>
-'**/
+'
+' Instance of <data.dao.DaoHandler>
+'
+' Returns:
+'     <data.dao.DaoHandler>
+'
 '---------------------------------------------------------------------------------------
 Public Property Get DAO() As DaoHandler
    If m_DaoHandler Is Nothing Then
@@ -277,56 +207,95 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: CurrentDb
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' CurrentDb = <see cref=DaoHandler#CurrentDb>Me.DAO.CurrentDb</see>
-' </summary>
-' <returns>DAO.Database</returns>
-' <remarks></remarks>
-'**/
+'
+' CurrentDb = <data.dao.DaoHandler::CurrentDb>
+'
+' Returns:
+'     DAO.Database
+'
 '---------------------------------------------------------------------------------------
 Public Property Get CurrentDb() As DAO.Database
    Set CurrentDb = Me.DAO.CurrentDb
 End Property
 
-'---------------------------------------------------------------------------------------
-' Property: CurrentDb
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' CurrentDb = <see cref=DaoHandler#CurrentDb>Me.DAO.CurrentDb</see>
-' </summary>
-' <param name="NewCurrentDb">DAO.Database-Referenz die für CurrentDb verwendet werden soll</param>
-' <returns>DAO.Database</returns>
-' <remarks></remarks>
-'**/
-'---------------------------------------------------------------------------------------
 Public Property Set CurrentDb(ByRef NewCurrentDb As DAO.Database)
    Set Me.DAO.CurrentDb = NewCurrentDb
 End Property
 
-'//@}
+
+'#######################################################################################
+' Group: ADODB data connection
+' ADODB access methods
+'---------------------------------------------------------------------------------------
+
+'---------------------------------------------------------------------------------------
+' Property: ADODB
+'---------------------------------------------------------------------------------------
+'
+' Instance of <data.adodb.AdodbHandler>
+'
+' Returns:
+'     <data.adodb.AdodbHandler>
+'
+'---------------------------------------------------------------------------------------
+Public Property Get ADODB() As AdodbHandler
+   If m_AdodbHandler Is Nothing Then
+      Set m_AdodbHandler = New AdodbHandler
+   End If
+   Set ADODB = m_AdodbHandler
+End Property
+
+'---------------------------------------------------------------------------------------
+' Property: CurrentConnection
+'---------------------------------------------------------------------------------------
+'
+' ADODB connection to the current DBMS connection = <data.adodb.AdodbHandler::CurrentConnection>
+'
+' Returns:
+'     ADODB.Connection
+'
+'---------------------------------------------------------------------------------------
+Public Property Get CurrentConnection() As ADODB.Connection
+   Set CurrentConnection = Me.ADODB.CurrentConnection
+End Property
+
+Public Property Set CurrentConnection(ByRef NewConnection As ADODB.Connection)
+   Set Me.ADODB.CurrentConnection = NewConnection
+End Property
+
+'---------------------------------------------------------------------------------------
+' Property: OledbConnectionString
+'---------------------------------------------------------------------------------------
+'
+' OledbConnectionString = <data.adodb.AdodbHandler::ConnectionString>
+'
+' Returns:
+'     String
+'
+'---------------------------------------------------------------------------------------
+Friend Property Get OledbConnectionString() As String
+   OledbConnectionString = Me.ADODB.ConnectionString
+End Property
+
+Public Property Let OledbConnectionString(ByVal NewConnectionString As String)
+   Me.ADODB.ConnectionString = NewConnectionString
+End Property
 
 
 '#######################################################################################
-'
-' ODBC-Member
-' --------------
-'/** @name ODBC
-' *  ODBC-Zugriff
-' */
-'//@{
+' Group: ODBC data connection
+' ODBC access methods
+'---------------------------------------------------------------------------------------
 
 '---------------------------------------------------------------------------------------
 ' Property: ODBC
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' ODBC-Zugriffsmethoden
-' </summary>
-' <returns>OdbcHandler</returns>
-' <remarks></remarks>
-'**/
+'
+' Instance of <data.odbc.OdbcHandler>
+'
+' Returns:
+'     <data.odbc.OdbcHandler>
+'
 '---------------------------------------------------------------------------------------
 Public Property Get ODBC() As OdbcHandler
    If m_OdbcHandler Is Nothing Then
@@ -338,28 +307,17 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: OdbcConnectionString
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' ODBC-ConnectionString = <see cref=OdbcHandler#ConnectionString>Me.ODBC.ConnectionString</see>
-' </summary>
-' <returns>String</returns>
-' <remarks></remarks>
-'**/
+'
+' OdbcConnectionString = <data.odbc.OdbcHandler::ConnectionString>
+'
+' Returns:
+'     String
+'
 '---------------------------------------------------------------------------------------
-Public Property Get OdbcConnectionString() As String
+Friend Property Get OdbcConnectionString() As String
    OdbcConnectionString = Me.ODBC.ConnectionString
 End Property
 
-'---------------------------------------------------------------------------------------
-' Property: OdbcConnectionString
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' ODBC-ConnectionString = <see cref=OdbcHandler#ConnectionString>Me.ODBC.ConnectionString</see>
-' </summary>
-' <remarks></remarks>
-'**/
-'---------------------------------------------------------------------------------------
 Public Property Let OdbcConnectionString(ByVal NewConnectionString As String)
    Me.ODBC.ConnectionString = NewConnectionString
 End Property
@@ -367,44 +325,30 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: CurrentDbBE
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' CurrentDbBE = <see cref=OdbcHandler#CurrentDbBE>Me.ODBC.CurrentDbBE</see>
-' </summary>
-' <returns>DAO.Database auf ODBC-Datenbank</returns>
-' <remarks></remarks>
-'**/
+'
+' CurrentDbBE = <data.odbc.OdbcHandler::CurrentDbBE>
+'
+' Returns:
+'     DAO.Database of ODBC database
+'
 '---------------------------------------------------------------------------------------
 Public Property Get CurrentDbBE() As DAO.Database
    Set CurrentDbBE = Me.ODBC.CurrentDbBE
 End Property
 
-'---------------------------------------------------------------------------------------
-' Property: CurrentDbBE
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' CurrentDbBE = <see cref=OdbcHandler#CurrentDbBE>Me.ODBC.CurrentDbBE</see>
-' </summary>
-' <param name="NewCurrentDbBE">DAO.Database-Referenz auf eine bereits geöffnete Datanbank</param>
-' <returns>DAO.Database</returns>
-' <remarks></remarks>
-'**/
-'---------------------------------------------------------------------------------------
 Public Property Set CurrentDbBE(ByRef NewDb As DAO.Database)
    If Not (NewDb Is Nothing) Then
       Set Me.ODBC.CurrentDbBE = NewDb
    End If
 End Property
 
-'//@}
 
 '#######################################################################################
 '
-' Datenzugriff-Events
+' Data access events
 ' -------------------
 
-' ADODB-Handler-Events
+' AdodbHandler events
 ' --------------------
 Private Sub m_AdodbHandler_ErrorMissingCurrentConnection(ByVal Msg As String, ByRef NewCurrentConnection As ADODB.Connection)
    RaiseEvent ErrorMissingCurrentConnection(Msg, NewCurrentConnection)
@@ -414,15 +358,13 @@ Private Sub m_AdodbHandler_ErrorEmptyConnectionString(ByVal Msg As String, ByRef
    RaiseEvent ErrorEmptyOledbConnectionString(Msg, NewConnectionString)
 End Sub
 
-
-' DAO-Handler-Events
+' DaoHandler events
 ' ------------------
 Private Sub m_DaoHandler_ErrorMissingCurrentDb(ByVal Msg As String, ByRef NewCurrentDbRef As DAO.Database)
    RaiseEvent ErrorMissingCurrentDb(Msg, NewCurrentDbRef)
 End Sub
 
-
-' ODBC-Handler-Events
+' OdbcHandler events
 ' ------------------
 Private Sub m_OdbcHandler_ErrorEmptyConnectionString(ByVal Msg As String, ByRef NewConnectionString As String)
    RaiseEvent ErrorEmptyOdbcConnectionString(Msg, NewConnectionString)
@@ -430,10 +372,10 @@ End Sub
 
 Private Sub m_OdbcHandler_ErrorMissingCurrentDb(ByVal Msg As String, ByRef NewCurrentDbRef As DAO.Database)
 
-   '1. Versuchen aus DAO-Klasse zu übergeben:
+   '1. Try to pass from DAO class:
    Set NewCurrentDbRef = Me.DAO.CurrentDb
    
-   '2. Event auslösen, falls auch Me.DAO.CurrentDb nichts liefert
+   '2. Trigger event if Me.DAO.CurrentDb also returns nothing
    If NewCurrentDbRef Is Nothing Then
       RaiseEvent ErrorMissingCurrentDb(Msg, NewCurrentDbRef)
       If Not NewCurrentDbRef Is Nothing Then

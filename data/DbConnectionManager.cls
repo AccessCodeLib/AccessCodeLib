@@ -8,14 +8,19 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: DbConnectionManager
+' Class: data.DbConnectionManager
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Klasse zur Instanzierung, Terminierung und Basissteuerung von Hilfsklassen
-' </summary>
-' <remarks>In dieser Klasse wird u. a. auf die Ereignisse der <see cref="DbConnectionInfo">DbConnectionInfo</see>- u. <see cref="DbConnectionHandler">DbConnectionHandler</see>-Instanz reagiert</remarks>
-'**/
+'
+' Class for instantiation, termination and basic control of data access classes
+'
+' Author:
+'     Josef Poetzl
+'
+' Remarks:
+'     This class reacts to the events of the <data.DbConnectionInfo> and <data.DbConnectionHandler> instance.
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>data/DbConnectionManager.cls</file>
@@ -24,18 +29,18 @@ Attribute VB_Exposed = False
 '  <use>data/DbConnectionHandler.cls</use>
 '  <use>data/DbConnectionSettings.cls</use>
 '  <use>data/SqlTools.cls</use>
-'  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
+'  <ref><name>DAO</name><major>12</major><minor>0</minor><guid>{4AC9E1DA-5BAD-4AC7-86E3-24F4CDCECA28}</guid></ref>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
 Option Compare Text
 Option Explicit
 
-'Verbindungsparameter
+'Connection parameters
 Private WithEvents m_DbConnectionInfo As DbConnectionInfo
 Attribute m_DbConnectionInfo.VB_VarHelpID = -1
 
-'DB-Verbindung
+'DB connection
 Private WithEvents m_DbConnection As DbConnectionHandler
 Attribute m_DbConnection.VB_VarHelpID = -1
 
@@ -51,6 +56,13 @@ On Error Resume Next
    Dispose
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Sub: Dispose
+'---------------------------------------------------------------------------------------
+'
+' Remove object references
+'
+'---------------------------------------------------------------------------------------
 Public Sub Dispose()
 
 On Error Resume Next
@@ -66,6 +78,34 @@ On Error Resume Next
 
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Function: CheckConnectionStatus
+'---------------------------------------------------------------------------------------
+'
+' Test whether a connection can be established
+'
+' Returns:
+'     Boolean - True if success
+'
+'---------------------------------------------------------------------------------------
+Public Function CheckConnectionStatus() As Boolean
+
+On Error Resume Next
+
+   CheckConnectionStatus = ConnectionInfo.CheckConnection
+
+End Function
+
+'---------------------------------------------------------------------------------------
+' Property: DefaultSettings
+'---------------------------------------------------------------------------------------
+'
+' Test whether a connection can be established
+'
+' Returns:
+'     <data.DbConnectionSettings>
+'
+'---------------------------------------------------------------------------------------
 Public Property Get DefaultSettings() As DbConnectionSettings
    If m_DefaultDbConnecionSettings Is Nothing Then
       Set m_DefaultDbConnecionSettings = New DbConnectionSettings
@@ -74,7 +114,6 @@ Public Property Get DefaultSettings() As DbConnectionSettings
    End If
    Set DefaultSettings = m_DefaultDbConnecionSettings
 End Property
-
 
 Private Sub DisposePermanentBackendRst()
 On Error Resume Next
@@ -85,38 +124,17 @@ On Error Resume Next
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Function: CheckConnectionStatus
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Testen, ob Verbindungsaufbau möglich ist
-' </summary>
-' <returns>Boolean: True = Verbindungsaufbau war erfolgreich</returns>
-' <remarks>
-' </remarks>
-'**/
-'---------------------------------------------------------------------------------------
-Public Function CheckConnectionStatus() As Boolean
-
-On Error Resume Next
-
-   CheckConnectionStatus = ConnectionInfo.CheckConnection
-
-End Function
-
-
-'---------------------------------------------------------------------------------------
 ' Property: ConnectionInfo
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' DbConnectionInfo-Instanz der Anwendung.
-' </summary>
-' <returns>DbConnectionInfo</returns>
-' <remarks>
-' Dient zum Ausgeben von Informationen zur Datenbankverbindung
-' </remarks>
-'**/
+'
+' DbConnectionInfo instance
+'
+' Returns:
+'     <data.DbConnectionInfo>
+'
+' Remarks:
+'     Used to output information on the database connection
+'
 '---------------------------------------------------------------------------------------
 Public Property Get ConnectionInfo() As DbConnectionInfo
 
@@ -131,15 +149,15 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: DbConnection
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' DbConnectionHandler-Instanz = oberste Ebene der Zugriffsstruktur
-' </summary>
-' <returns>DbConnectionHandler</returns>
-' <remarks>
-' Kapselt ADODB- und DAO-Methoden sowie ODBC-Zugriffe
-' </remarks>
-'**/
+'
+' DbConnectionHandler instance = Top level of the data access structure
+'
+' Returns:
+'     <data.DbConnectionHandler>
+'
+' Remarks:
+'     Encapsulates ADODB and DAO methods as well as ODBC accesses
+'
 '---------------------------------------------------------------------------------------
 Public Property Get DbConnection() As DbConnectionHandler
 
@@ -217,9 +235,9 @@ Private Sub OpenPermanentBackendRecordset()
 End Sub
 
 
-' ########################################################################################
+'########################################################################################
 '
-' Ereignisbehandlung
+' Event handling
 '
 ' DbConnectioninfo
 '

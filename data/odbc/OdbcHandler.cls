@@ -8,16 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class: OdbcHandler
+' Class: data.odbc.OdbcHandler
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Poetzl
-' <summary>
-' ODBC-Zugriffsmethoden
-' </summary>
-' <remarks></remarks>
-'\ingroup data_odbc
-'**/
+'
+' ODBC data connection methods
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>data/odbc/OdbcHandler.cls</file>
@@ -32,74 +32,105 @@ Option Explicit
 
 Private Const ERRNR_NOCONFIG As Long = vbObjectError + 1002
 
-'ODBC-Connectionstring
+'ODBC connection string
 Private m_OdbcConnectionString As String
 
-'DAO-Database
-Private m_DaoDb As DAO.Database    'lokale Database-Instanz ... z. B. zum Erstellen von Temp-QueryDef
-Private m_DaoDbBE As DAO.Database  'BE (Database-Instanz über ODBC-Connection)
+'DAO Database
+Private m_DaoDb As DAO.Database    'local database instance ... e.g. to create Temp-QueryDef
+Private m_DaoDbBE As DAO.Database  'Backend (database instance via ODBC connection)
 
-'Error-Events für mögliche Fehlerbehandlung über die FE-Anwendung
-'/**
-' <summary>
-' Ereignis für fehlende CurrentDb-Referenz
-' </summary>
-' <param name="Msg">Meldung über Ursache der Ereignisauslösung. (Wird noch nicht genutzt)</param>
-' <param name="NewCurrentDbRef">DAO.Database-Referenz, die für CurrentDb verwendet werden soll</param>
-' <remarks>über den ByRef-Parameter NewCurrentDbRef kann die passende DAO.Database-Referenz weitergegeben werden.</remarks>
-'**/
+'#############################################################
+' Group: Events
+
+'---------------------------------------------------------------------------------------
+' Event: ErrorMissingCurrentDb
+'---------------------------------------------------------------------------------------
+' Event for missing CurrentDb reference
+'
+' Parameters:
+'     Msg             - Message about the cause of the event triggering. (Not yet used)
+'     NewCurrentDbRef - DAO.Database reference to be used for CurrentDb
+'
+' Remarks:
+'     The required DAO.Database reference can be passed on via the ByRef parameter NewCurrentDbRef.
+'
+'---------------------------------------------------------------------------------------
 Public Event ErrorMissingCurrentDb(ByVal Msg As String, ByRef NewCurrentDbRef As DAO.Database)
 
-'/**
-' <summary>
-' Ereignis für fehlenden ODBC-Connectionstring
-' </summary>
-' <param name="Msg">Meldung über Ursache der Ereignisauslösung. (Wird noch nicht genutzt)</param>
-' <param name="NewConnectionString">ODBC-Connectionstring</param>
-' <remarks>
-' Über den ByRef-Parameter NewConnectionString kann der passende ODBC-Connectionstring weitergegeben werden.
-' <remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: ErrorEmptyConnectionString
+'---------------------------------------------------------------------------------------
+'
+' Event for missing ODBC connection string
+'
+' Parameters:
+'     Msg                  - Message about the cause of the event triggering. (Not yet used)
+'     NewConnectionString  - ODBC Connectionstring
+'
+' Remarks:
+'     The appropriate ODBC connection string can be passed on via the ByRef parameter NewConnectionString.
+'
+'---------------------------------------------------------------------------------------
 Public Event ErrorEmptyConnectionString(ByVal Msg As String, ByRef NewConnectionString As String)
 
-'Informations-Ereignisse
-'/**
-' <summary>
-' Info über das zuletzt verknüpfte Element
-' </summary>
-' <param name="LastDbObjectName">Meldung über Ursache der Ereignisauslösung. (Wird noch nicht genutzt)</param>
-' <param name="lCounter">Anzahl der verknüpften Elemente seit Aufruf der Methode</param>
-' <remarks>Wird in der Methode #RelinkTablesAndQueries genutzt.</remarks>
-'**/
-Public Event DbObjectRelinked(ByVal LastDbObjectName As String, ByVal lCounter As Long)
+'---------------------------------------------------------------------------------------
+' Event: DbObjectRelinked
+'---------------------------------------------------------------------------------------
+'
+' Info about the last linked element
+'
+' Parameters:
+'     LastDbObjectName  - the last linked table or view
+'     Counter           - Number of linked elements since the method was called
+'
+' Remarks:
+'     Used in the RelinkTablesAndQueries method.
+'
+'---------------------------------------------------------------------------------------
+Public Event DbObjectRelinked(ByVal LastDbObjectName As String, ByVal Counter As Long)
 
-'/**
-' <summary>
-' Info über das zuletzt gelöschte Element
-' </summary>
-' <param name="LastDbObjectName">Name des zuletzt gelöschten Elements</param>
-' <param name="lCounter">Anzahl der gelöschten Elemente seit Aufruf der Methode</param>
-' <remarks>Wird in der Methode #DeleteOdbcTableDefs genutzt.</remarks>
-'**/
-Public Event DbObjectDeleted(ByVal LastDbObjectName As String, ByVal lCounter As Long)
+'---------------------------------------------------------------------------------------
+' Event: DbObjectDeleted
+'---------------------------------------------------------------------------------------
+'
+' Info about the last deleted element
+'
+' Parameters:
+'     LastDbObjectName  - the last deleted table or view
+'     Counter           - Number of deleted elements since the method was called
+'
+' Remarks:
+'     Used in the RelinkTablesAndQueries method.
+'
+'---------------------------------------------------------------------------------------
+Public Event DbObjectDeleted(ByVal LastDbObjectName As String, ByVal Counter As Long)
 
-'/**
-' <summary>
-' Event zum Anfagen von InsertIdentityReturn um die Sql-Anweisung zu ändern bzw. Ergebnis von außen einfließen zu lassen
-' </summary>
-' <param name="InsertSQL">Insert-SQL-Anweisung (kann mittels Hook geändert werden)</param>
-' <param name="ActiveDb">Aktuell genutzte Datenbank</param>
-' <param name="IdentitySelectString">SQL-Anweisung zum Auswerten des letzen Identity-Wertes (kann mittels Hook geändert werden)</param>
-' <param name="ResponseMode">Anweisung für die Weiterarbeit in der Prozedur</param>
-' <param name="ResponseMessage">Rückgabewert</param>
-' <remarks>Wird in der Methode #DeleteOdbcTableDefs genutzt.</remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: HookInsertIdentityReturn
+'---------------------------------------------------------------------------------------
+'
+' Event for missing OLEDB connection string
+'
+' Parameters:
+'     InsertSql            - SQL text of insert statement
+'     ActiveDb             - ADODB Connection to use
+'     IdentitySelectString - Input string to use
+'     HookResponseMode     - resume action after event call: 0 ... code resume after event, 1 exit function after event
+'     HookResponseMessage  - return value of function (e.g. InsertIdentityReturn) when HookResponseMode <> 0
+'
+' Remarks:
+'     New values can be passed on via the ByRef parameters.
+'
+'---------------------------------------------------------------------------------------
 Public Event HookInsertIdentityReturn(ByRef InsertSql As String, _
                                       ByRef ActiveDb As DAO.Database, _
                                       ByRef IdentitySelectString As String, _
-                                      ByRef ResponseMode As Long, ByRef ResponseMessage As Variant)
+                                      ByRef ResponseMode As Long, ByRef HookResponseMessage As Variant)
 
 Private m_HooksEnabled As Boolean
+
+'#############################################################
+' Group: Class control
 
 '
 ' Init / Terminate
@@ -126,6 +157,15 @@ On Error Resume Next
 
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Property: HooksEnabled
+'---------------------------------------------------------------------------------------
+' Active Hooks
+'
+' Remarks:
+'     Used in InsertIdentityReturn
+'
+'---------------------------------------------------------------------------------------
 Friend Property Get HooksEnabled() As Boolean
    HooksEnabled = m_HooksEnabled
 End Property
@@ -134,16 +174,15 @@ Friend Property Let HooksEnabled(ByVal NewValue As Boolean)
    m_HooksEnabled = NewValue
 End Property
 
+'#############################################################
+' Group: Data Connection
+
 '---------------------------------------------------------------------------------------
 ' Property: CurrentDb
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' DAO.Database-Instanz des Frontends bzw. jener Jet-DB in der die Pass-Through-Abfragen erstellt werden sollen
-' </summary>
-' <returns>DAO.Database</returns>
-' <remarks></remarks>
-'**/
+'
 '---------------------------------------------------------------------------------------
 Public Property Get CurrentDb() As DAO.Database
    If (m_DaoDb Is Nothing) Then
@@ -153,18 +192,6 @@ Public Property Get CurrentDb() As DAO.Database
    Set CurrentDb = m_DaoDb
 End Property
 
-'---------------------------------------------------------------------------------------
-' Property: CurrentDb
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' DAO.Database-Instanz des Frontends bzw. jener Jet-DB in der die Pass-Through-Abfragen erstellt werden sollen
-' </summary>
-' <param name="NewCurrentDb">DAO.Database-Referenz die für CurrentDb verwendet werden soll</param>
-' <returns>DAO.Database</returns>
-' <remarks></remarks>
-'**/
-'---------------------------------------------------------------------------------------
 Public Property Set CurrentDb(ByRef NewCurrentDb As DAO.Database)
    Set m_DaoDb = NewCurrentDb
 End Property
@@ -172,13 +199,12 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: CurrentDbBE
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Database-Referenz zum Backend
-' </summary>
-' <returns>DAO.Database</returns>
-' <remarks>DAO.Database wird über DBEngine.OpenDatabase("", dbDriverComplete, False, <see cref=OdbcHandler#ConnectionString>ConnectionString</see>) geöffnet.</remarks>
-'**/
+'
+' Remarks
+'     DAO.Database wird über DBEngine.OpenDatabase("", dbDriverComplete, False, <ConnectionString>) geöffnet.
+'
 '---------------------------------------------------------------------------------------
 Public Property Get CurrentDbBE() As DAO.Database
    Dim tempOdbConnectionstring As String
@@ -191,18 +217,6 @@ Public Property Get CurrentDbBE() As DAO.Database
    Set CurrentDbBE = m_DaoDbBE
 End Property
 
-'---------------------------------------------------------------------------------------
-' Property: CurrentDbBE
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Database-Referenz zum Backend
-' </summary>
-' <param name="NewCurrentDbBE">DAO.Database-Referenz auf eine bereits geöffnete Datanbank</param>
-' <returns>DAO.Database</returns>
-' <remarks>Diese Set-Property-Prozedur ist normalerweise nicht erforderlich, da die Datanbank überlicherweise mittels angegebenen ODBC-Connectionstring geöffnet wird.</remarks>
-'**/
-'---------------------------------------------------------------------------------------
 Public Property Set CurrentDbBE(ByRef NewCurrentDbBE As DAO.Database)
    CloseDaoDbBE
    Set m_DaoDbBE = NewCurrentDbBE
@@ -215,13 +229,12 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: ConnectionString
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' ODBC-ConnectionString
-' </summary>
-' <returns>String</returns>
-' <remarks></remarks>
-'**/
+'
+' ODBC Connection string
+'
+' Remarks:
+'     Example - "ODBC;DRIVER={SQL Server};DATABASE=testdb;SERVER=(local)\SQL2005;Trusted_Connection=Yes;"
+'
 '---------------------------------------------------------------------------------------
 Public Property Get ConnectionString() As String
    If Len(m_OdbcConnectionString) = 0 Then
@@ -237,17 +250,6 @@ On Error GoTo 0
    ConnectionString = m_OdbcConnectionString
 End Property
 
-'---------------------------------------------------------------------------------------
-' Property: ConnectionString
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' ODBC-ConnectionString
-' </summary>
-' <param name="Value">ODBC-Connectionstring für Verbindungsaufbau</param>
-' <remarks>Beispiel: "ODBC;DRIVER={SQL Server};DATABASE=testdb;SERVER=(local)\SQL2005;Trusted_Connection=Yes;"</remarks>
-'**/
-'---------------------------------------------------------------------------------------
 Public Property Let ConnectionString(ByVal Value As String)
    If m_OdbcConnectionString = Value Then
       Exit Property
@@ -259,17 +261,20 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Function: OpenRecordset
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' openRecordset
-' </summary>
-' <param name="Quelle">SQL-Anweisung</param>
-' <param name="RecordsetType">DAO.RecordsetTypeEnum (Standard: dbOpenForwardOnly)</param>
-' <param name="RecordsetOptions">DAO.RecordsetOptionEnum (Standard: dbSeeChanges)</param>
-' <param name="LockEdit">DAO.LockTypeEnum (Standard: dbOptimistic)</param>
-' <returns>DAO.Recordset</returns>
-' <remarks></remarks>
-'**/
+'
+' Open DAO.Recordset
+'
+' Parameters:
+'     Source            - SQL statement or table or query name
+'     RecordsetType     - DAO.RecordsetTypeEnum (Standard: dbOpenDynaset)
+'     RecordsetOptions  - DAO.RecordsetOptionEnum (Standard: dbSeeChanges)
+'     LockEdit          - DAO.LockTypeEnum (Standard: dbOptimistic)
+'
+' Returns:
+'     DAO.Recordset
+'
+' Remarks:
+'     Uses <CurrentDbBE> to open the recordset.
 '---------------------------------------------------------------------------------------
 Public Function OpenRecordset(ByVal Source As String, _
                      Optional ByVal RecordsetType As DAO.RecordsetTypeEnum = dbOpenForwardOnly, _
@@ -283,21 +288,23 @@ Public Function OpenRecordset(ByVal Source As String, _
 
 End Function
 
-
 '---------------------------------------------------------------------------------------
 ' Function: OpenRecordsetPT
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' OpenRecordsetPT
-' </summary>
-' <param name="Source">SQL-Anweisung</param>
-' <param name="RecordsetType">DAO.RecordsetTypeEnum (Standard: dbOpenForwardOnly)</param>
-' <param name="RecordsetOptions">DAO.RecordsetOptionEnum (Standard: dbSeeChanges+dbSQLPassThrough)</param>
-' <param name="LockEdit">DAO.LockTypeEnum (Standard: dbOptimistic)</param>
-' <returns>DAO.Recordset</returns>
-' <remarks></remarks>
-'**/
+'
+' Open Pass Through DAO.Recordset
+'
+' Parameters:
+'     Source            - SQL statement or table or query name
+'     RecordsetType     - DAO.RecordsetTypeEnum (Standard: dbOpenDynaset)
+'     RecordsetOptions  - DAO.RecordsetOptionEnum (Standard: dbSeeChanges+dbSQLPassThrough)
+'     LockEdit          - DAO.LockTypeEnum (Standard: dbOptimistic)
+'
+' Returns:
+'     DAO.Recordset
+'
+' Remarks:
+'     Uses <CurrentDbBE> to open the recordset.
 '---------------------------------------------------------------------------------------
 Public Function OpenRecordsetPT(ByVal Source As String, _
                   Optional ByVal RecordsetType As DAO.RecordsetTypeEnum = dbOpenForwardOnly, _
@@ -330,14 +337,16 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: Execute
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' DAO.Execute-Anweisung über #CurrentDbBE
-' </summary>
-' <param name="CommandText">SQL-Anweisung im Jet-SQL-Dialekt</param>
-' <param name="Options">Werte von RecordsetOptionEnum analog DAO.Database.Execute</param>
-' <returns>Long (Anzahl der betroffenen Datensätze)</returns>
-'**/
+'
+' Execute SQL statement (CurrentDbBE.Execute)
+'
+' Parameters:
+'     CommandText - SQL statement (String)
+'     Options     - DAO.RecordsetOptionEnum
+'
+' Returns:
+'     RecordsAffected (Long)
+'
 '---------------------------------------------------------------------------------------
 Public Function Execute(ByVal CommandText As String, _
                Optional ByVal Options As DAO.RecordsetOptionEnum) As Long
@@ -357,15 +366,16 @@ End Function
 
 '---------------------------------------------------------------------------------------
 ' Sub: ExecutePT
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Execute-Anweisung über eine Pass-Through-Abfrage.
-' </summary>
-' <param name="CommandText">SQL-Anweisung im SQL-Dialekt des DBMS</param>
-' <param name="Options">Werte von RecordsetOptionEnum analog DAO.CreateQueryDef.Execute</param>
-' <returns>Long (Anzahl der betroffenen Datensätze)</returns>
-'**/
+'---------------------------------------------------------------------------------------'
+' Execute SQL statement with Pass Trough Query
+'
+' Parameters:
+'     CommandText - SQL statement (String)
+'     Options     - DAO.RecordsetOptionEnum (Default: DAO.RecordsetOptionEnum.dbSQLPassThrough)
+'
+' Returns:
+'     RecordsAffected (Long)
+'
 '---------------------------------------------------------------------------------------
 Public Function ExecutePT(ByVal CommandText As String, _
                  Optional ByVal Options As DAO.RecordsetOptionEnum = DAO.RecordsetOptionEnum.dbSQLPassThrough _
@@ -397,16 +407,21 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: LookupSQL
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Lookup-Recordset-Ersatzfunktion für die Übergabe einer kompletten SQL-Anweisung
-' </summary>
-' <param name="SqlText">SQL-Anweisung</param>
-' <param name="Index">Feldauswahl, falls nicht das erste Feld des Recordsets zurückgegeben werden soll</param>
-' <param name="ValueIfNull">Rückgabewert bei fehlendem Datensatz oder NULL-Feldwert (Standard: Null</param>
-' <returns>Variant</returns>
-' <remarks></remarks>
-'**/
+'
+' Lookup DAO.Recordset replacement function for DLookup (passing a SQL statement) via CurrentDbBE
+'
+' Parameters:
+'     SqlText     - SQL statement
+'     Index       - Field selection if the first field of the recordset is not to be returned.
+'                   The index is passed in the same way as ADODB.Recordset.Fields(index).
+'     ValueIfNull - Return value if record is missing or data field value is Null (default: Null).
+'
+' Returns:
+'     Variant  - Null, if SQL statement does not return a record.
+'
+' Remarks:
+'     The SQL statement must be written in the Jet/ACE SQL dialect.
+'
 '---------------------------------------------------------------------------------------
 Public Function LookupSql(ByVal SqlText As String, _
                  Optional ByVal Index As Variant = 0&, _
@@ -443,16 +458,21 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: LookupSqlPT
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Lookup-Recordset-Ersatzfunktion für die Übergabe einer kompletten SQL-Anweisung
-' </summary>
-' <param name="SqlText">SQL-Anweisung</param>
-' <param name="Index">Feldauswahl, falls nicht das erste Feld des Recordsets zurückgegeben werden soll</param>
-' <param name="ValueIfNull">Rückgabewert bei fehlendem Datensatz oder NULL-Feldwert (Standard: Null</param>
-' <returns>Variant</returns>
-' <remarks></remarks>
-'**/
+'
+' Lookup DAO.Recordset replacement function for DLookup (passing a SQL statement) via Pass Through Query
+'
+' Parameters:
+'     SqlText     - SQL statement
+'     Index       - Field selection if the first field of the recordset is not to be returned.
+'                   The index is passed in the same way as ADODB.Recordset.Fields(index).
+'     ValueIfNull - Return value if record is missing or data field value is Null (default: Null).
+'
+' Returns:
+'     Variant  - Null, if SQL statement does not return a record.
+'
+' Remarks:
+'     The SQL statement must be written in the SQL dialect of backend (e. g. T-SQL for SQL-Server)
+'
 '---------------------------------------------------------------------------------------
 Public Function LookupSqlPT(ByVal SqlText As String, _
                    Optional ByVal Index As Variant = 0&, _
@@ -489,16 +509,18 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: Lookup
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Lookup-Recordset-Ersatzfunktion
-' </summary>
-' <param name="Expr">Feldname oder berechneter Ausdruck (Select-Teil)</param>
-' <param name="Domain">Tabelle, Abfrage oder SQL-Ausdruck für Sub-Abfrage (FROM-Teil)</param>
-' <param name="Criteria">Filter (WHERE-Teil)</param>
-' <returns>Variant</returns>
-' <remarks></remarks>
-'**/
+'
+' DAO.Recordset replacement function for DLookup (via CurrentDbBE)
+'
+' Parameters:
+'     Expr        - Field name or calculated expression (select part)
+'     Domain      - Table, query or SQL expression for sub-query (FROM part)
+'     Criteria    - (Optional) Criteria string (WHERE part)
+'     ValueIfNull - Return value if record is missing or data field value is Null (default: Null).
+'
+' Returns:
+'     Variant
+'
 '---------------------------------------------------------------------------------------
 Public Function Lookup(ByVal Expr As String, ByVal Domain As String, _
               Optional ByVal Criteria As Variant, _
@@ -519,16 +541,17 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: Count
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' DCount-Recordset-Ersatzfunktion
-' </summary>
-' <param name="Expr">Feldname oder berechneter Ausdruck (Select-Teil)</param>
-' <param name="Domain">Tabelle, Abfrage oder SQL-Ausdruck für Sub-Abfrage (FROM-Teil)</param>
-' <param name="Criteria">Filter (WHERE-Teil)</param>
-' <returns>Long</returns>
-' <remarks></remarks>
-'**/
+'
+' DAO.Recordset replacement function for DCount (via CurrentDbBE)
+'
+' Parameters:
+'     Expr        - Field name or calculated expression (select part)
+'     Domain      - Table, query or SQL expression for sub-query (FROM part)
+'     Criteria    - (optional) Criteria string (WHERE part)
+'
+' Returns:
+'     Long
+'
 '---------------------------------------------------------------------------------------
 Public Function Count(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
    Count = Nz(Me.Lookup("Count(" & Expr & ")", Domain, Criteria), 0)
@@ -537,16 +560,17 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: Max
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' DMax-Recordset-Ersatzfunktion
-' </summary>
-' <param name="Expr">Feldname oder berechneter Ausdruck (Select-Teil)</param>
-' <param name="Domain">Tabelle, Abfrage oder SQL-Ausdruck für Sub-Abfrage (FROM-Teil)</param>
-' <param name="Criteria">Filter (WHERE-Teil)</param>
-' <returns>Variant</returns>
-' <remarks></remarks>
-'**/
+'
+' DAO.Recordset replacement function for DMax (via CurrentDbBE)
+'
+' Parameters:
+'     Expr        - Field name or calculated expression (select part)
+'     Domain      - Table, query or SQL expression for sub-query (FROM part)
+'     Criteria    - (Optional) Criteria string (WHERE part)
+'
+' Returns:
+'     Variant
+'
 '---------------------------------------------------------------------------------------
 Public Function Max(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
    Max = Me.Lookup("Max(" & Expr & ")", Domain, Criteria)
@@ -555,16 +579,17 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: Min
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' DMin-Recordset-Ersatzfunktion
-' </summary>
-' <param name="Expr">Feldname oder berechneter Ausdruck (Select-Teil)</param>
-' <param name="Domain">Tabelle, Abfrage oder SQL-Ausdruck für Sub-Abfrage (FROM-Teil)</param>
-' <param name="Criteria">Filter (WHERE-Teil)</param>
-' <returns>Variant</returns>
-' <remarks></remarks>
-'**/
+'
+' DAO.Recordset replacement function for DMin (via CurrentDbBE)
+'
+' Parameters:
+'     Expr        - Field name or calculated expression (select part)
+'     Domain      - Table, query or SQL expression for sub-query (FROM part)
+'     Criteria    - (Optional) Criteria string (WHERE part)
+'
+' Returns:
+'     Variant
+'
 '---------------------------------------------------------------------------------------
 Public Function Min(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
     Min = Me.Lookup("Min(" & Expr & ")", Domain, Criteria)
@@ -573,16 +598,17 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: Sum
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' DSum-Recordset-Ersatzfunktion
-' </summary>
-' <param name="Expr">Feldname oder berechneter Ausdruck (Select-Teil)</param>
-' <param name="Domain">Tabelle, Abfrage oder SQL-Ausdruck für Sub-Abfrage (FROM-Teil)</param>
-' <param name="Criteria">Filter (WHERE-Teil)</param>
-' <returns>Variant</returns>
-' <remarks></remarks>
-'**/
+'
+' DAO.Recordset replacement function for DSum (via CurrentDbBE)
+'
+' Parameters:
+'     Expr        - Field name or calculated expression (select part)
+'     Domain      - Table, query or SQL expression for sub-query (FROM part)
+'     Criteria    - (Optional) Criteria string (WHERE part)
+'
+' Returns:
+'     Variant
+'
 '---------------------------------------------------------------------------------------
 Public Function Sum(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
    Sum = Me.Lookup("Sum(" & Expr & ")", Domain, Criteria)
@@ -591,14 +617,18 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: InsertIdentityReturn
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Insert-SQL-Anweisung ausführen und letzten Identity-Wert (Autowert) zurückgeben
-' </summary>
-' <param name="InsertSQL">Insert-SQL-Anweisung (INSERT ...)</param>
-' <returns>Identity-Wert oder NULL falls kein Datensatz angefügt wurde</returns>
-' <remarks>Funktioniert erst ab Jet 4.0 (Access 2000) und ist vom DBMS abhängig. Bei MySQL-Tabellen wird z. B. 0 zurückgegeben</remarks>
-'**/
+'
+' Execute insert SQL statement and return last identity value (via CurrentDbBE)
+'
+' Parameters:
+'     InsertSQL   - Insert SQL statement
+'
+' Returns:
+'     Identity value or NULL if no record was appended
+'
+' Remarks:
+'     Works for Jet only from Jet 4.0 (Access 2000), IdentityTable is only applicable for MSSQL, under MySQL the IDENT_CURRENT function does not exist.
+'     If HooksEnabled: event HookInsertIdentityReturn will be raised
 '---------------------------------------------------------------------------------------
 Public Function InsertIdentityReturn(ByVal InsertSql As String) As Variant
 
@@ -658,19 +688,24 @@ HandleErr:
 
 End Function
 
+'#############################################################
+' Group: Linked Table Support
+
 '---------------------------------------------------------------------------------------
 ' Sub: LinkTable
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Backend-Tabelle im Access-Frontend verknüpfen
-' </summary>
-' <param name="SourceTableName">Tabelle im Backend</param>
-' <param name="LinkedTableName">Tabelle im Frontend</param>
-' <param name="SavePWD">ODBC-Passwort in Tabellenverknüpfung speichern</param>
-' <param name="RemoveSchemaName">Schema-Kennung entfernen</param>
-' <remarks>Sollten eine 2-geteilte Tabellenkennung wie "dbo.Tabelle123" im BE vorliegen und  bRemoveSchemaName auf false gesetzt sein, wird der Punkt durch "_" ersetzt.</remarks>
-'**/
+'
+' Link backend table in Access frontend
+'
+' Parameters:
+'     SourceTableName   - Table or view in the backend
+'     LinkedTableName   - Table in frontend
+'     SavePWD           - Save ODBC password in linked table
+'     RemoveSchemaName  - Remove schema identifier
+'
+' Remarks:
+'     If there is a 2-part table identifier like "dbo.Table123" in the BE and bRemoveSchemaName is set to false, the dot is replaced by "_".
+'
 '---------------------------------------------------------------------------------------
 Public Sub LinkTable(ByVal SourceTableName As String, _
             Optional ByVal LinkedTableName As String = vbNullString, _
@@ -685,7 +720,7 @@ Public Sub LinkTable(ByVal SourceTableName As String, _
    NewConnectionString = Me.ConnectionString
    If Len(NewConnectionString) = 0 Then
       Err.Raise ERRNR_NOCONFIG, _
-              "LinkTable", "ODBC-Connectionstring fehlt!"
+              "LinkTable", "Missing ODBC connection string!"
    End If
    
    If Len(LinkedTableName) = 0 Then
@@ -693,7 +728,7 @@ Public Sub LinkTable(ByVal SourceTableName As String, _
       If RemoveSchemaName Then
          Pos = InStr(1, LinkedTableName, ".")
          If Pos > 0 Then
-            LinkedTableName = Mid$(LinkedTableName, Pos + 1) ' nur Text nach Punkt verwenden
+            LinkedTableName = Mid$(LinkedTableName, Pos + 1) ' use only text after point
          End If
       End If
       LinkedTableName = Replace(LinkedTableName, ".", "_")
@@ -701,15 +736,16 @@ Public Sub LinkTable(ByVal SourceTableName As String, _
    
    Set dbs = Me.CurrentDb
    dbs.TableDefs.Refresh
-   'Prüfen ob Tabelle bereits vorhanden und verknüpft ist.
+   'Check if table already exists and is linked.
+' TODO: refactor for-each
    For Each tdf In dbs.TableDefs
       If tdf.Name = LinkedTableName Then
          If tdf.SourceTableName = SourceTableName Then
             RelinkTableDef tdf, NewConnectionString, SavePWD
             Exit Sub
          Else
-            If MsgBox("Der SourceTableName der vorhandene Tabelle '" & LinkedTableName & "' ist '" & tdf.SourceTableName & "' und nicht " & SourceTableName & "'" & vbNewLine & _
-                      "Soll die vorhandene Tabelle mit der neuen Datenherkunft verknüpft werden?", vbCritical + vbYesNo + vbDefaultButton2) = vbYes Then
+            If MsgBox("The SourceTableName of the existing table '" & LinkedTableName & "' is '" & tdf.SourceTableName & "' and not '" & SourceTableName & "'" & vbNewLine & _
+                      "Should the existing table be linked to the new data origin?", vbCritical + vbYesNo + vbDefaultButton2) = vbYes Then
                dbs.TableDefs.Delete tdf.Name
             Else
                Exit Sub
@@ -737,20 +773,20 @@ End Sub
 '---------------------------------------------------------------------------------------
 ' Function: RelinkTables
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' RelinkTables
-' </summary>
-' <param name="SavePWD">ODBC-Passwort in Tabellenverknüpfung speichern</param>
-' <param name="EventPeriod">Hilfsparamter für Wertübergabe: Anzahl der Verknüpften Elemente für DbObjectRelinked-Ereignisaufruf</param>
-' <returns>Long (Anzahl der verknüpften Tabellen)</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Relink existing tables
+'
+' Parameters:
+'     SavePWD     - Save ODBC password in linked table
+'     EventPeriod - Number of linked elements when the DbObjectRelinked event is to be called. (Default: 0 ... no event call).
+'
+' Returns:
+'     Long  - Number of linked tables
+'
 '---------------------------------------------------------------------------------------
 Public Function RelinkTables(Optional ByVal SavePWD As Boolean = False, _
                              Optional ByVal EventPeriod As Long = 0) As Long
-'EventPeriod = 0 ... Rückgabe ist deaktiviert
+'EventPeriod = 0 ... Return is disabled
 
    Dim NewConnectionString As String
    Dim RelinkedItemCnt As Long
@@ -758,7 +794,7 @@ Public Function RelinkTables(Optional ByVal SavePWD As Boolean = False, _
    NewConnectionString = Me.ConnectionString
    If Len(NewConnectionString) = 0 Then
       Err.Raise ERRNR_NOCONFIG, _
-              "RelinkTable", "ODBC-Connectionstring fehlt!"
+              "RelinkTable", "Missing ODBC connection string!"
    End If
    
    RelinkTablesWorker NewConnectionString, SavePWD, EventPeriod, RelinkedItemCnt
@@ -771,10 +807,11 @@ Private Sub RelinkTablesWorker(ByVal NewConnectionString As String, _
                                ByVal SavePWD As Boolean, _
                                ByVal EventPeriod As Long, _
                                ByRef RelinkedTableCounter As Long)
-'EventPeriod = 0 ... Rückgabe ist deaktiviert
+'EventPeriod = 0 ... Return is disabled
 
    Dim dbs As DAO.Database
    Dim tdf As DAO.TableDef
+   Dim LastTdfName As String
    
    Set dbs = Me.CurrentDb
    dbs.TableDefs.Refresh
@@ -784,28 +821,39 @@ Private Sub RelinkTablesWorker(ByVal NewConnectionString As String, _
       If RelinkTableDef(tdf, NewConnectionString, SavePWD) Then
          RelinkedTableCounter = RelinkedTableCounter + 1
          If EventPeriod > 0 Then
+            LastTdfName = tdf.Name
             If RelinkedTableCounter Mod EventPeriod = 0 Then
-               RaiseEvent DbObjectRelinked(tdf.Name, RelinkedTableCounter)
+               RaiseEvent DbObjectRelinked(LastTdfName, RelinkedTableCounter)
             End If
          End If
       End If
    
    Next tdf
+   
+   If EventPeriod > 0 Then
+      If RelinkedTableCounter Mod EventPeriod > 0 Then
+         RaiseEvent DbObjectRelinked(LastTdfName, RelinkedTableCounter)
+      End If
+   End If
 
 End Sub
 
 '---------------------------------------------------------------------------------------
 ' Sub: RelinkTable
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Verküpfte Tabelle mit möglicher Änderung der Server-Daten neu verknüpfen
-' </summary>
-' <param name="LinkedTableName">Tabelle im Frontend</param>
-' <param name="SavePWD">ODBC-Passwort in Tabellenverknüpfung speichern</param>
-' <returns>Boolean</returns>
-' <remarks>Die TableDef-Eigenschaften SourceTableName wird nicht geändert</remarks>
-'**/
+'
+' Relink linked table with possible change of server data
+'
+' Parameters:
+'     LinkedTableName   - Table in frontend
+'     SavePWD           - Save ODBC password in linked table
+'
+' Returns:
+'     Boolean  - success
+'
+' Remarks:
+'     The TableDef property SourceTableName is not changed.
+'
 '---------------------------------------------------------------------------------------
 Public Function RelinkTable(ByVal LinkedTableName As String, _
                    Optional ByVal SavePWD As Boolean = False) As Boolean
@@ -817,7 +865,7 @@ Public Function RelinkTable(ByVal LinkedTableName As String, _
    NewConnectionString = Me.ConnectionString
    If Len(NewConnectionString) = 0 Then
       Err.Raise ERRNR_NOCONFIG, _
-              "RelinkTable", "ODBC-Connectionstring fehlt!"
+              "RelinkTable", "Missing ODBC connection string!"
    End If
 
    Set dbs = Me.CurrentDb
@@ -857,20 +905,20 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: RelinkPassThroughQueries
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Alle Pass-Through-Abfragen neu verknüpfen
-' </summary>
-' <param name="SavePWD">ODBC-Passwort in QueryDef speichern</param>
-' <param name="EventPeriod">Hilfsparamter für Wertübergabe: Anzahl der Verknüpften Elemente für DbObjectRelinked-Ereignisaufruf</param>
-' <returns>Long (Anzahl der verknüpften Abfragen)</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Parameters:
+'     SavePWD     - Save ODBC password in linked table
+'     EventPeriod - Number of linked elements when the DbObjectRelinked event is to be called. (Default: 0 ... no event call).
+'
+' Returns:
+'     Long        - Number of linked pass through queries
+'
 '---------------------------------------------------------------------------------------
 Public Function RelinkPassThroughQueries(Optional ByVal SavePWD As Boolean = False, _
                                          Optional ByVal EventPeriod As Long = 0) As Long
-'EventPeriod = 0 ... Rückgabe ist deaktiviert
+'EventPeriod = 0 ... Return is disabled
 
    Dim NewConnectionString As String
    Dim RelinkedItems As Long
@@ -878,7 +926,7 @@ Public Function RelinkPassThroughQueries(Optional ByVal SavePWD As Boolean = Fal
    NewConnectionString = Me.ConnectionString
    If Len(NewConnectionString) = 0 Then
       Err.Raise ERRNR_NOCONFIG, _
-              "RelinkTable", "ODBC-Connectionstring fehlt!"
+              "RelinkTable", "Missing ODBC connection string!"
    End If
    
    RelinkPassThroughQueriesWorker NewConnectionString, SavePWD, EventPeriod, RelinkedItems
@@ -891,10 +939,11 @@ Private Sub RelinkPassThroughQueriesWorker(ByVal NewConnectionString As String, 
                                           ByVal SavePWD As Boolean, _
                                           ByVal EventPeriod As Long, _
                                           ByRef RelinkCounter As Long)
-'EventPeriod = 0 ... Rückgabe ist deaktiviert
+'EventPeriod = 0 ... Return is disabled
    
    Dim dbs As DAO.Database
    Dim qdf As DAO.QueryDef
+   Dim LastQdfName As String
    
    Set dbs = Me.CurrentDb
    dbs.QueryDefs.Refresh
@@ -907,27 +956,36 @@ Private Sub RelinkPassThroughQueriesWorker(ByVal NewConnectionString As String, 
       If RelinkPassThroughQueryDef(qdf, NewConnectionString) Then
          RelinkCounter = RelinkCounter + 1
          If EventPeriod > 0 Then
+            LastQdfName = qdf.Name
             If RelinkCounter Mod EventPeriod = 0 Then
-               RaiseEvent DbObjectRelinked(qdf.Name, RelinkCounter)
+               RaiseEvent DbObjectRelinked(LastQdfName, RelinkCounter)
             End If
          End If
       End If
       qdf.Close
    Next qdf
+   
+   If EventPeriod > 0 Then
+      If RelinkCounter Mod EventPeriod > 0 Then
+         RaiseEvent DbObjectRelinked(LastQdfName, RelinkCounter)
+      End If
+   End If
 
 End Sub
 
 '---------------------------------------------------------------------------------------
 ' Sub: RelinkPassThroughQuery
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Pass-Through-Abfrage neu verknüpfen
-' </summary>
-' <param name="QueryName">Abfragename im Frontend</param>
-' <param name="SavePWD">ODBC-Passwort in QueryDef speichern</param>
-' <remarks>Mit ConnectionString kann vermieden werden, dass Benutzer u. Passwort gespeichert werden.</remarks>
-'**/
+'
+' Relink pass through query
+'
+' Parameters:
+'     QueryName   - Table in frontend
+'     SavePWD     - Save ODBC password in pass throug query
+'
+' Returns:
+'     Boolean  - success
+'
 '---------------------------------------------------------------------------------------
 Public Function RelinkPassThroughQuery(ByVal QueryName As String, _
                               Optional ByVal SavePWD As Boolean = False) As Boolean
@@ -940,7 +998,7 @@ Public Function RelinkPassThroughQuery(ByVal QueryName As String, _
    
    If Len(NewConnectionString) = 0 Then
       Err.Raise ERRNR_NOCONFIG, _
-              "RelinkPassThroughQuery", "ODBC-Connectionstring fehlt!"
+              "RelinkPassThroughQuery", "Missing ODBC connection string!"
    End If
    
    If Not SavePWD Then
@@ -971,55 +1029,55 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Sub: RelinkTablesAndQueries
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Alle verknüpften Tabellen und Pass-Through-Abfragen neu verknüpfen
-' </summary>
-' <param name="SavePWD">ODBC-Passwort in Tabellenverknüpfung bzw. QueryDef speichern</param>
-' <param name="EventPeriod">Hilfsparamter für Wertübergabe: Anzahl der Verknüpften Elemente für DbObjectRelinked-Ereignisaufruf</param>
-' <returns>Long (Anzahl der verknüpften Tabellen und Abfragen)</returns>
-' <remarks>
-'  Je nach Einstellung von EventPeriod wird das Ereignis #DbObjectRelinked ausgelöst (0 = kein Ereignisaufruf, 1 = nach jedem Element Ereignis auslösen, 5 nach jedem 5. Element Ereignis auslösen,...).
-' </remarks>
-'**/
+'
+' Relink all linked tables and pass-through queries
+'
+' Parameters:
+'     SavePWD     - Save ODBC password in linked table
+'     EventPeriod - Number of linked elements when the DbObjectRelinked event is to be called. (Default: 0 ... no event call).
+'
+' Returns:
+'     Long  - Number of linked tables and queries
+'
 '---------------------------------------------------------------------------------------
 Public Function RelinkTablesAndQueries( _
                         Optional ByVal SavePWD As Boolean = False, _
                         Optional ByVal EventPeriod As Long = 0) As Long
    
    Dim NewConnectionString As String
-   Dim RelinkedTableCounter As Long
+   Dim RelinkedCounter As Long
 
    NewConnectionString = Me.ConnectionString
    If Len(NewConnectionString) = 0 Then
       Err.Raise ERRNR_NOCONFIG, _
-              "RelinkTablesAndQueries", "ODBC-Connectionstring fehlt!"
+              "RelinkTablesAndQueries", "Missing ODBC connection string!"
    End If
    
-   'Tabellen
-   RelinkTablesWorker NewConnectionString, SavePWD, EventPeriod, RelinkedTableCounter
+   'Tables
+   RelinkTablesWorker NewConnectionString, SavePWD, EventPeriod, RelinkedCounter
    
-   'Pass-Through-Abfragen
-   RelinkPassThroughQueriesWorker NewConnectionString, SavePWD, EventPeriod, RelinkedTableCounter
+   'Pass through queries
+   RelinkPassThroughQueriesWorker NewConnectionString, SavePWD, EventPeriod, RelinkedCounter
 
-   RelinkTablesAndQueries = RelinkedTableCounter
+   RelinkTablesAndQueries = RelinkedCounter
 
 End Function
 
 '---------------------------------------------------------------------------------------
 ' Function: DeleteOdbcTableDefs
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Alle verknüpften Tabelle im Frontend löschen. (Hat keine Auswirkung auf die Backend-Tabellen.)
-' </summary>
-' <param name="lEventCounter">Hilfsparamter für Wertübergabe: Anzahl der gelöschen Elemente für DbObjectDeleted-Ereignisaufruf</param>
-' <returns>Long (Anzahl der gelöschten Tabellen)</returns>
-' <remarks>
-' Je nach Einstellung von lEventCounter wird das Ereignis #DbObjectDeleted ausgelöst
-' (0 = kein Ereignisaufruf, 1 = nach jedem Element Ereignis auslösen, 5 nach jedem 5. Element Ereignis auslösen,...).
-' </remarks>
-'**/
+'
+' Delete all linked table in the frontend. (Has no effect on the backend tables).
+'
+' Parameters:
+'     EventPeriod - Number of linked elements when the DbObjectRelinked event is to be called. (Default: 0 ... no event call).
+'
+' Returns:
+'     Long  - Number of deleted tables
+'
+' Remarks:
+'     Depending on the setting of EventPeriod the event DbObjectDeleted is triggered
+'
 '---------------------------------------------------------------------------------------
 Public Function DeleteOdbcTableDefs(Optional ByVal EventPeriod As Long = 0) As Long
    
@@ -1101,10 +1159,36 @@ Private Sub AddTableDefAttribut(ByRef TdfRef As DAO.TableDef, ByRef Attr As Tabl
 
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Function: IsLinkedTable
+'---------------------------------------------------------------------------------------
+'
+' Check if TableDef is a linked table
+'
+' Parameters:
+'     TableToCheck   - TableDef reference to Access table in frontend
+'
+' Returns:
+'     Boolean
+'
+'---------------------------------------------------------------------------------------
 Public Function IsLinkedTable(ByVal TableToCheck As DAO.TableDef) As Boolean
    IsLinkedTable = (Len(Trim$(TableToCheck.Connect)) > 0)
 End Function
 
+'---------------------------------------------------------------------------------------
+' Function: IsPassThroughQuery
+'---------------------------------------------------------------------------------------
+'
+' Check if QueryDef is a pass through query
+'
+' Parameters:
+'     QueryToCheck   - QueryDef reference to Access query in frontend
+'
+' Returns:
+'     Boolean
+'
+'---------------------------------------------------------------------------------------
 Public Function IsPassThroughQuery(ByVal QueryToCheck As DAO.QueryDef) As Boolean
    IsPassThroughQuery = (Len(Trim$(QueryToCheck.Connect)) > 0)
 End Function

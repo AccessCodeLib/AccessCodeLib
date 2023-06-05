@@ -1,14 +1,12 @@
 Attribute VB_Name = "defDbConnection"
 '---------------------------------------------------------------------------------------
-' Modul: defDbConnection
+' Package: data.defDbConnection
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Sammlung von globalen Typen, Enums usw. für die DbConnection-Klassen
-' </summary>
-' <remarks></remarks>
-'\ingroup data
-'**/
+'
+' Set of global types, enums etc. for the DbConnection classes
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>data/defDbConnection.bas</file>
@@ -20,25 +18,19 @@ Option Compare Database
 Option Explicit
 
 '---------------------------------------------------------------------------------------
-'
-' Type + Enums
+' Group: Types
 '
 
 '---------------------------------------------------------------------------------------
 ' Type: DbmsConnectionStrings
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Type für die gleichzeitige Übergabe der Connectionsstrings
-' </summary>
-' <list type="table">
-'   <item><term>OledbConnectionString</term><description>OLEDB-Connectionstring für ADODB-Verbindung</description></item>
-'   <item><term>OdbcConnectionString</term><description>ODBC-Connectionstring für DAO-Verbindung</description></item>
-'   <item><term>DatabaseFile</term><description>Datenbankdateiname inkl. Pfad falls ein File-Backend eingesetzt wird</description></item>
-' </list>
-' <remarks>
-' </remarks>
-'**/
+'
+' Type for the simultaneous transfer of the connection strings
+'
+'     OledbConnectionString   - OLEDB connectionstring for ADODB connection
+'     OdbcConnectionString    - ODBC connectionstring for DAO connection
+'     DatabaseFile            - Database file name incl. path if a file backend is used
+'
 '---------------------------------------------------------------------------------------
 Public Type DbmsConnectionStrings
    OledbConnectionString As String
@@ -48,20 +40,17 @@ End Type
 
 
 '---------------------------------------------------------------------------------------
+' Group: Enums
+'
+
+'---------------------------------------------------------------------------------------
 ' Enum: DbmsConnectionModes
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' DbmsConnectionModes
-' </summary>
-' <list type="table">
-'   <item><term>DMBS_DSNless (1)</term><description>ohne DSN</description></item>
-'   <item><term>DMBS_DSN (2)</term><description>mit DSN</description></item>
-'   <item><term>aDBMS_USERDEF (128)</term><description>benutzerdefinierte Connectionstrings</description></item>
-' </list>
-' <remarks>
-' </remarks>
-'**/
+'
+'     DMBS_DSNless   - (1)    without DSN
+'     DMBS_DSN       - (2)    with DSN
+'     DBMS_USERDEF   - (128)  User-defined connection strings
+'
 '---------------------------------------------------------------------------------------
 Public Enum DbmsConnectionModes
    DMBS_DSNless = 1   'ohne DSN

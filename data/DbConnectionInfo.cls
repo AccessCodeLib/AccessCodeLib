@@ -8,19 +8,23 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: DbConnectionInfo
+' Class: data.DbConnectionInfo
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Hilfsklasse zur Einstellung der Verbindungsparameter
-' </summary>
-' <remarks></remarks>
-'**/
+' Auxiliary class for setting the connection parameters
+'
+' Author:
+'     Josef Poetzl
+'
+' Remarks:
+'     Uses table usys_DbmsConnection (create table with DBMS Connection Wizard)
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>data/DbConnectionInfo.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <ref><name>DAO</name><major>12</major><minor>0</minor><guid>{4AC9E1DA-5BAD-4AC7-86E3-24F4CDCECA28}</guid></ref>
+'  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
 '  <use>data/defDbConnection.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -111,39 +115,68 @@ Private m_DSN As String
 'Other auxiliary variables:
 Private m_DbmsInfoReaded As Boolean
 
-'Events
-'/**
-' <summary>
-' Ereignis wenn sich die Verbindung ändert
-' </summary>
-' <param name="NewCID">New DBMS connection identifier</param>
+'###################################################
+'
+' Group: Events
+'
 
-' <remarks>Kann nützlich sein, wenn in Abhängigkeit der Verbindung Anzeigen aktualisiert werden usw.</remarks>
-'**/
-Public Event DbmsConnectionChanged(ByVal NewCID As String)
-
-'Events
-'/**
-' <summary>
+'---------------------------------------------------------------------------------------
+'Event: DbmsConnectionChanged
+'---------------------------------------------------------------------------------------
+'
 ' Event when the connection changes
-' </summary>
+'
+' Parameters:
+'     NewConnectionIdentifier - new used connection identifier (from table data field CID)
+'
+' Remarks:
+'     Can be useful if displays are updated depending on the connection, etc.
+'
+'---------------------------------------------------------------------------------------
+Public Event DbmsConnectionChanged(ByVal NewConnectionIdentifier As String)
 
-
-'**/
+'---------------------------------------------------------------------------------------
+'Event: DbmsConnectionInfoCleared
+'---------------------------------------------------------------------------------------
+'
+' Event raised when the connection parameters have been reset
+'
+'---------------------------------------------------------------------------------------
 Public Event DbmsConnectionInfoCleared()
 
-'/**
-' <summary>
-' Ereignis zur Weitergabe von Informationen
-' </summary>
-' <param name="Source">Source of the message</param> 
-' <param name="Msg">Message</param>
-' <param name="MsgStyle">VbMsgBoxStyle</param>
-' <remarks>Dient zur Weitergabe von Infos (ähnlich debug.print)</remarks>
-'**/
+'---------------------------------------------------------------------------------------
+'Event: DbmsInfoMessage
+'---------------------------------------------------------------------------------------
+'
+' Information sharing event
+'
+' Parameters:
+'     Source         - Source of the message
+'     Msg            - Message
+'     MsgStyle       - VbMsgBoxStyle
+'
+' Remarks:
+'     Used to pass on info (similar to debug.print)
+'
+'---------------------------------------------------------------------------------------
 Public Event DbmsInfoMessage(ByVal Source As String, ByVal Msg As String, ByVal MsgStyle As VbMsgBoxStyle)
 
+'---------------------------------------------------------------------------------------
+'Event: PasswordChanged
+'---------------------------------------------------------------------------------------
+'
+' Event raised when the password has been changed
+'
+'---------------------------------------------------------------------------------------
 Public Event PasswordChanged()
+
+'---------------------------------------------------------------------------------------
+'Event: Disposed
+'---------------------------------------------------------------------------------------
+'
+' Event raised when disposed
+'
+'---------------------------------------------------------------------------------------
 Public Event Disposed()
 
 
@@ -562,23 +595,26 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Function: CheckConnection
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Verbindung zum Server bzw. Datenbank prüfen
-' </summary>
-' <param name="ErrMsg">Fehlermeldung vom ADODB- bzw. ODBC-Verbindungsaufbau</param>
-' <returns>Boolean: True = Ado- und ODBC-Verbindung konnten aufgebaut werden</returns>
-' <remarks>
-' Als erster Test erfolgt der ADO-Verbindungsaufbau. Sobald dieser erfolgreich war, wird der ODBC-Verbindungsaufbau getestet.
-' </remarks>
-'**/
+'
+' Check connection to server and database
+'
+' Parameters:
+'     ErrMsg      - Error message from ADODB or ODBC connection
+'
+' Returns:
+'     Boolean     - True = Ado- and ODBC-connection could be established
+'
+' Remarks:
+'     The first test is to establish the ADO connection.
+'     As soon as this is successful, the ODBC connection is tested.
+'
 '---------------------------------------------------------------------------------------
 Public Function CheckConnection(Optional ByRef ErrMsg As String = vbNullString) As Boolean
    
    Dim checkOk As Boolean
 
    checkOk = CheckAdoConnection(OledbConnectionString, ErrMsg)
-   If checkOk Then ' test ODBC (if ADO connection don't failed)
+   If checkOk Then ' test ODBC testen (if ADO connection don't failed)
       If m_DBMSNAME <> "MSJET" Then
          checkOk = checkOk And CheckOdbcConnection(OdbcConnectionString, ErrMsg)
       End If
@@ -661,14 +697,12 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Sub: ClearConnectionInfo
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Eingestellte Verbindungsparameter löschen
-' </summary>
-' <remarks>
-' Erfordert erneutes Einlesen aus Tabelle, wenn die Verbidnungsdaten angefordert werden.
-' </remarks>
-'**/
+'
+' Delete set connection parameters
+'
+' Remarks:
+'     Requires re-reading from table when connection data is requested.
+'
 '---------------------------------------------------------------------------------------
 Public Sub ClearConnectionInfo()
 
@@ -707,15 +741,16 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 ' Datenbankpasswort des Benutzers ändern
-' </summary>
-' <param name="NewPassword">Neues Passwort</param>
-' <param name="OldPassword">Altes Passwort</param>
-' <param name="LoginName">Benutzername (Falls kein Benutzername übergeben wird, wird der aktuelle Benutzer eingesetzt)</param>
-' <param name="Msg">ByRef-Parameter zur Rückgabe einer Fehlermeldung, falls das Passwort nicht geändert werden könnte</param>
-' <returns>Boolean: True = Passwort wurde geändert</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Parameters:
+'     NewPassword - New passwort
+'     OldPassword - old passwort
+'     LoginName   - Login name (If no login name is passed, the current login name is used).
+'     Msg         - ByRef parameter to return an error message if the password could not be changed
+'
+' Returns:
+'     Boolean     - True = Password has been changed
+'
 '---------------------------------------------------------------------------------------
 Public Function ChangeDbUserPassword( _
                ByVal NewPassword As String, _
@@ -780,15 +815,12 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Property: PermanentBackendRstSqlText
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Select-Anweisung für ODBC-Recordsetverbindung zum Aufrechterhalten der Verbindung
-' </summary>
-' <returns>String</returns>
-' <remarks>
-' Diese Prozedur muss erweitert werden, wenn weitere DBMS (wie Oracle) eingesetzt werden sollen.
-' </remarks>
-'**/
+'
+' Select statement for ODBC recordset connection to maintain connection
+'
+' Remarks:
+'     This procedure must be extended if other DBMSs (such as Oracle) are to be used.
+'
 '---------------------------------------------------------------------------------------
 Public Property Get PermanentBackendRstSqlText() As String
 On Error Resume Next
@@ -1085,15 +1117,12 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Property: TableListSqlText
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' SQL-Anweisung im SQL-Dialtekt des DBMS zur Auflistung der im DBS enthaltenen Tabellen
-' </summary>
-' <returns>String</returns>
-' <remarks>
-' Diese Prozedur muss erweitert werden, wenn weitere DBMS (wie Oracle) eingesetzt werden sollen.
-' </remarks>
-'**/
+'
+' Remarks:
+'     This procedure must be extended if further DBMS are to be used.
+'
 '---------------------------------------------------------------------------------------
 Public Property Get TableListSqlText() As String
    
@@ -1155,16 +1184,18 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: ParseTableName
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Hilfsprozedur zum Anpassen des Tabellennamens
-' </summary>
-' <param name="sTabName">Tabellename</param>
-' <returns>String</returns>
-' <remarks>
-' Bei manchen DBMS muss Groß- o. Kleinschreibung beachtet bzw. der Name mit Sonderzeichen eingeklammert werden.
-' </remarks>
-'**/
+'
+' Auxiliary procedure for adjusting the table name
+'
+' Parameters:
+'     TableName  -  Table name to parse
+'
+' Returns:
+'     Table name for the specific DBMS
+'
+' Remarks:
+'     With some DBMS, the name must be case-sensitive or bracketed with special characters.
+'
 '---------------------------------------------------------------------------------------
 Public Function ParseTableName(ByVal TableName As String) As String
    Select Case m_DBMSNAME
@@ -1260,15 +1291,12 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: LoginFormName
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Name des Login-Formulars
-' </summary>
-' <returns>String</returns>
-' <remarks>
-' Beispiel aus ACLib: \base\login\frmLogin.frm
-' </remarks>
-'**/
+'
+' Name of the login form
+'
+' Remarks:
+'     Example from ACLib: user/login/LoginForm.frm
+'
 '---------------------------------------------------------------------------------------
 Public Property Get LoginFormName() As String
    If Len(m_LoginFormName) = 0 Then
@@ -1287,14 +1315,9 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: DbmsConfigFormName
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Name des Formulars zur DBMS-Konfiguration
-' </summary>
-' <returns>String</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Name of the DBMS configuration form
+'
 '---------------------------------------------------------------------------------------
 Public Property Get DbmsConfigFormName() As String
    DbmsConfigFormName = m_DbmsConfigFormName
