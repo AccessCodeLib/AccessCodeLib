@@ -5,8 +5,11 @@ Attribute VB_Name = "modDbConnection"
 '
 ' Collection of procedures for the DbConnectionManager class
 '
+' Author:
+'     Josef Poetzl
+'
 ' Remarks:
-'     Used to instantiate DbConnectionManager and access the main elements of DbConnectionManager.</remarks>
+'     Used to instantiate DbConnectionManager and access the main elements of DbConnectionManager.
 '
 '---------------------------------------------------------------------------------------
 

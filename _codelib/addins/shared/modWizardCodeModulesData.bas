@@ -1,15 +1,15 @@
 Attribute VB_Name = "modWizardCodeModulesData"
 '---------------------------------------------------------------------------------------
-' Modul: modWizardCodeModulesData
+' Package: _codelib.addins.shared.modWizardCodeModulesData
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' SCC file data in usys_AppFiles
-' </summary>
-' <remarks>
-' </remarks>
-' \ingroup addins_shared
-'**/
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/shared/modWizardCodeModulesData.bas</file>

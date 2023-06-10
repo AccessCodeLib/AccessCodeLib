@@ -8,15 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klasse: AppFileCodeModulTransfer
+' Class: _codelib.addins.shared.AppFileCodeModulTransfer
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Poetzl
-' <summary>
-' Codemodule aus AppFile-Tabelle importieren
-' </summary>
-' <remarks></remarks>
-'**/
+'
+' Import codemodules from AppFile table
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/shared/AppFileCodeModulTransfer.cls</file>
@@ -40,6 +41,9 @@ Private m_CurrentVbProject As Object
 Private m_CodeModuleWriter As CodeModuleWriter
 Private m_UseVbComponentsImport As Boolean
 
+'---------------------------------------------------------------------------------------
+' Property: UseVbComponentsImport
+'---------------------------------------------------------------------------------------
 Public Property Get UseVbComponentsImport() As Boolean
    UseVbComponentsImport = m_UseVbComponentsImport
 End Property
@@ -49,41 +53,59 @@ Public Property Let UseVbComponentsImport(ByVal NewValue As Boolean)
 End Property
 
 
-'Module u. Klassen übertragen
-Public Sub TransferCodeModules(ParamArray ModulNames() As Variant)
+'---------------------------------------------------------------------------------------
+' Sub: TransferCodeModules
+'---------------------------------------------------------------------------------------
+'
+' Transfer modules & classes
+'
+' Parameters:
+'     CodeModulNames - (ParamArray) Name of CodeModule(s) to transfer
+'
+'---------------------------------------------------------------------------------------
+Public Sub TransferCodeModules(ParamArray CodeModulNames() As Variant)
    
    Dim i As Long
    Dim ArrSize As Long
 
-   ArrSize = UBound(ModulNames)
+   ArrSize = UBound(CodeModulNames)
    For i = 0 To ArrSize
-      CheckCodeModule ModulNames(i), True
+      CheckCodeModule CodeModulNames(i), True
    Next
 
 End Sub
 
-'Module u. Klassen erneuern
-Public Function ReplaceCodeModules(ParamArray ModulNames() As Variant) As Boolean
+'---------------------------------------------------------------------------------------
+' Function: ReplaceCodeModules
+'---------------------------------------------------------------------------------------
+'
+' Renew modules & classes
+'
+' Parameters:
+'     CodeModulNames - (ParamArray) Name of CodeModule(s) to renew
+'
+'---------------------------------------------------------------------------------------
+Public Function ReplaceCodeModules(ParamArray CodeModulNames() As Variant) As Boolean
    
    Dim i As Long
    Dim ArrSize As Long
    Dim vbp As Object 'VBProject
  
-   'VBProject der Anwendung:
+   'VBProject of the application:
    Set vbp = VbeTools.CurrentVbProject
 
-   'Module erneuern:
+   'Renew modules:
    If Not (vbp Is Nothing) Then
-      ArrSize = UBound(ModulNames)
+      ArrSize = UBound(CodeModulNames)
       For i = 0 To ArrSize
       
-         If CheckCodeModule(ModulNames(i)) And (UseVbComponentsImport = False) Then
+         If CheckCodeModule(CodeModulNames(i)) And (UseVbComponentsImport = False) Then
             'Modul löschen
-            vbp.VBComponents.Remove vbp.VBComponents(ModulNames(i))
+            vbp.VBComponents.Remove vbp.VBComponents(CodeModulNames(i))
          End If
          
          'Module aktualisieren
-         TransferCodeModul CurrentProject, acModule, ModulNames(i)
+         TransferCodeModul CurrentProject, acModule, CodeModulNames(i)
          
       Next
       ReplaceCodeModules = True
@@ -93,38 +115,62 @@ Public Function ReplaceCodeModules(ParamArray ModulNames() As Variant) As Boolea
 
 End Function
 
-
-'Module u. Klassen auf Existenz prüfen. Es erfolgt keine inhaltliche Prüfung!
-Public Function CheckCodeModules(ParamArray ModulNames() As Variant) As Boolean
+'---------------------------------------------------------------------------------------
+' Function: CheckCodeModules
+'---------------------------------------------------------------------------------------
+'
+' Check modules and classes for existence.
+'
+' Parameters:
+'     CodeModulNames - (ParamArray) Name of CodeModule(s) to check
+'
+' Remarks:
+'     There is no content check.
+'
+'---------------------------------------------------------------------------------------
+Public Function CheckCodeModules(ParamArray CodeModulNames() As Variant) As Boolean
    
    Dim i As Long
    Dim ModulesExists As Boolean
    Dim ArrSize As Long
 
-   ArrSize = UBound(ModulNames)
+   ArrSize = UBound(CodeModulNames)
    ModulesExists = True
    For i = 0 To ArrSize
-      ModulesExists = ModulesExists And CheckCodeModule(ModulNames(i), False)
+      ModulesExists = ModulesExists And CheckCodeModule(CodeModulNames(i), False)
    Next
    
    CheckCodeModules = ModulesExists
 
 End Function
 
-'Modul oder Klasse auf Existenz prüfen. Es erfolgt keine inhaltliche Prüfung!
-Public Function CheckCodeModule(ByVal ModulName As String, _
+'---------------------------------------------------------------------------------------
+' Function: CheckCodeModule
+'---------------------------------------------------------------------------------------
+'
+' Check codemodule for existence.
+'
+' Parameters:
+'     CodeModulName           - Name of CodeModule to check
+'     TransferMissingModule   - Insert CodeModule if missing
+'
+' Remarks:
+'     There is no content check.
+'
+'---------------------------------------------------------------------------------------
+Public Function CheckCodeModule(ByVal CodeModulName As String, _
                        Optional ByVal TransferMissingModule As Boolean = False) As Boolean
    
    Dim rst As DAO.Recordset
    Dim IsMissing As Boolean
 
-   Set rst = CurrentDb.OpenRecordset("Select O.Name from MSysObjects O where O.Name = '" & ModulName & "' and O.Type=-32761", dbOpenForwardOnly, dbReadOnly)
+   Set rst = CurrentDb.OpenRecordset("Select O.Name from MSysObjects O where O.Name = '" & CodeModulName & "' and O.Type=-32761", dbOpenForwardOnly, dbReadOnly)
    IsMissing = rst.EOF
    rst.Close
    Set rst = Nothing
    
    If IsMissing And TransferMissingModule Then
-      TransferCodeModul CurrentProject, acModule, ModulName
+      TransferCodeModul CurrentProject, acModule, CodeModulName
       IsMissing = False
    End If
    
@@ -132,16 +178,28 @@ Public Function CheckCodeModule(ByVal ModulName As String, _
 
 End Function
 
+'---------------------------------------------------------------------------------------
+' Sub: TransferCodeModul
+'---------------------------------------------------------------------------------------
+'
+' Check codemodule for existence.
+'
+' Parameters:
+'     TargetProject  - Access.CurrentProject of target application
+'     ObjType        - AcObjectType of CodeModule to transfer (e. g. acModule or acForm)
+'     CodeModulName  - Name of CodeModule to transfer
+'
+'---------------------------------------------------------------------------------------
 Public Sub TransferCodeModul(ByVal TargetProject As Access.CurrentProject, _
-                              ByVal ObjType As AcObjectType, ByVal ModulName As String)
+                             ByVal ObjType As AcObjectType, ByVal CodeModulName As String)
 
    Dim FileName As String
    
    FileName = FileTools.GetNewTempFileName
-   CurrentApplication.CreateAppFile ModulName, FileName
+   CurrentApplication.CreateAppFile CodeModulName, FileName
    If UseVbComponentsImport And ObjType = acModule Then
-      If VbeTools.CodeModuleExists(ModulName) Then
-         CurrentCodeModulWriter.ImportVbComponent 0, ModulName, FileName
+      If VbeTools.CodeModuleExists(CodeModulName) Then
+         CurrentCodeModulWriter.ImportVbComponent 0, CodeModulName, FileName
          VbeTools.ActivateCurrentProject
          On Error Resume Next ' Bei mde-Add-In weigert sich Access manchmal die eigentliche Anwendung zu kompilieren
          TargetProject.Application.DoCmd.RunCommand acCmdCompileAndSaveAllModules
@@ -151,10 +209,10 @@ Public Sub TransferCodeModul(ByVal TargetProject As Access.CurrentProject, _
          On Error GoTo 0
       Else
          ConvertToSaveAsTextFile FileName
-         TargetProject.Application.LoadFromText ObjType, ModulName, FileName
+         TargetProject.Application.LoadFromText ObjType, CodeModulName, FileName
       End If
    Else
-      TargetProject.Application.LoadFromText ObjType, ModulName, FileName
+      TargetProject.Application.LoadFromText ObjType, CodeModulName, FileName
    End If
    Kill FileName
    

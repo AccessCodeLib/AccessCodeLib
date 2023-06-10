@@ -1,15 +1,16 @@
 Attribute VB_Name = "FileTools"
 Attribute VB_Description = "Funktionen für Dateioperationen"
 '---------------------------------------------------------------------------------------
-' Module: FileTools
+' Package: file.FileTools
 '---------------------------------------------------------------------------------------
-'/**
-'\author    Josef Poetzl
-'\short     File operation functions
-' <remarks>
-' </remarks>
-'\ingroup file
-'**/
+'
+' File operation functions
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>file/FileTools.bas</file>
@@ -93,19 +94,19 @@ Private Declare Function API_ShellExecuteA Lib "shell32.dll" ( _
 '---------------------------------------------------------------------------------------
 ' Function: SelectFile
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Select file using dialogue
-' </summary>
-' <param name="InitDir">Initial Folder</param>
-' <param name="DlgTitle">Title of dialogue</param>
-' <param name="FilterString">Filter settings - Example: "(*.*)" oder "All (*.*)|text files (*.txt)|Images (*.png;*.jpg;*.gif)</param>
-' <param name="MultiSelect">Multi-selection</param>
-' <param name="ViewMode">View mode (0: Detail view, 1: Preview, 2: Properties, 3: List, 4: Thumbnail, 5: Large symbols, 6: Small symbols)</param>
-' <returns>String (in case of multiple selection, the files are separated by chr(9))</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Parameters:
+'     InitDir        - Initial Folder
+'     DlgTitle       - Title of dialogue
+'     FilterString   - Filter settings - Example: "(*.*)" oder "All (*.*)|text files (*.txt)|Images (*.png;*.jpg;*.gif)
+'     MultiSelect    - Multi-selection
+'     ViewMode       - View mode (0: Detail view, 1: Preview, 2: Properties, 3: List, 4: Thumbnail, 5: Large symbols, 6: Small symbols)
+'
+' Returns:
+'     String   - in case of multiple selection, the files are separated by chr(9))
+'
 '---------------------------------------------------------------------------------------
 Public Function SelectFile(Optional ByVal InitialDir As String = vbNullString, _
                            Optional ByVal DlgTitle As String = SELECTBOX_FILE_DIALOG_TITLE, _
@@ -120,19 +121,19 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: SelectFolder
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Folder selection dialogue
-' </summary>
-' <param name="InitDir">Initial Folder</param>
-' <param name="DlgTitle">Title of dialogue</param>
-' <param name="FilterString">Filter settings, Default:*</param>
-' <param name="MultiSelect">Multi-selection</param>
-' <param name="ViewMode">View mode (0: Detail view, 1: Preview, 2: Properties, 3: List, 4: Thumbnail, 5: Large symbols, 6: Small symbols)</param>
-' <returns>String (in case of multiple selection, folders are separated by chr(9))</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Parameters:
+'     InitDir        - Initial Folder
+'     DlgTitle       - Title of dialogue
+'     FilterString   - Filter settings, Default:*
+'     MultiSelect    - Multi-selection
+'     ViewMode       - View mode (0: Detail view, 1: Preview, 2: Properties, 3: List, 4: Thumbnail, 5: Large symbols, 6: Small symbols)
+'
+' Returns:
+'     String   - in case of multiple selection, folders are separated by chr(9))
+'
 '---------------------------------------------------------------------------------------
 Public Function SelectFolder(Optional ByVal InitialDir As String = vbNullString, _
                              Optional ByVal DlgTitle As String = SELECTBOX_FOLDER_DIALOG_TITLE, _
@@ -201,16 +202,16 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: UNCPath
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Returns the UNC path
-' </summary>
-' <param name="Path">Path to convert</param>
-' <param name="IgnoreErrors">true = ignore API errors</param>
-' <returns>String</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Parameters:
+'     Path           - Path to convert
+'     IgnoreErrors   - true = ignore API errors
+'
+' Returns:
+'     String
+'
 '---------------------------------------------------------------------------------------
 Public Function UncPath(ByVal Path As String, Optional ByVal IgnoreErrors As Boolean = True) As String
    
@@ -227,8 +228,7 @@ Public Function UncPath(ByVal Path As String, Optional ByVal IgnoreErrors As Boo
       End If
    
    Else
-   
-      ' Ergebnis zurückgeben:
+
       UncPath = VBA.Left$(UNC, VBA.InStr(UNC, vbNullChar) - 1) & VBA.Mid$(Path, 3)
    
    End If
@@ -238,15 +238,15 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Property: TempPath
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Determine Temp folder
-' </summary>
-' <returns>String</returns>
-' <remarks>
-' Uses API GetTempPathA
-' </remarks>
-'**/
+'
+' Returns:
+'     String
+'
+' Remarks:
+'     Uses API GetTempPathA
+'
 '---------------------------------------------------------------------------------------
 Public Property Get TempPath() As String
 
@@ -263,16 +263,19 @@ Public Property Get TempPath() As String
 End Property
 
 '---------------------------------------------------------------------------------------
-' Function: TempPath
+' Function: GetNewTempFileName
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Generate temp. file name
-' </summary>
-' <returns>String</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Generate temporary file name
+'
+' Parameters:
+'     PathToUse
+'     FilePrefix
+'     FileExtension
+'
+' Returns:
+'     String
+'
 '---------------------------------------------------------------------------------------
 Public Function GetNewTempFileName(Optional ByVal PathToUse As String = "", _
                          Optional ByVal FilePrefix As String = "", _
@@ -303,18 +306,20 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: ShortenFileName
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Shorten file path to n characters
-' </summary>
-' <param name="FullFileName">Full path</param>
-' <param name="MaxLen">required length</param>
-' <returns>String</returns>
-' <remarks>
-' Helpful for the displays in narrow textboxes \n
-' Example: <source>C:\Programms\...\Folder\File.txt</source>
-' </remarks>
-'**/
+'
+' Parameters:
+'     FullFileName   - Full path
+'     MaxLen         - required length
+'
+' Returns:
+'     String
+'
+' Remarks:
+'     Helpful for the displays in narrow textboxes
+'     Example: C:\Programms\...\Folder\File.txt
+'
 '---------------------------------------------------------------------------------------
 Public Function ShortenFileName(ByVal FullFileName As Variant, ByVal MaxLen As Long) As String
 
@@ -347,15 +352,15 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: FileNameWithoutPath
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Extract file name from complete path specification
-' </summary>
-' <param name="FullPath">File name incl. directory</param>
-' <returns>String</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Parameters:
+'     FullPath">File name incl. directory
+'
+' Returns:
+'     String
+'
 '---------------------------------------------------------------------------------------
 Public Function FileNameWithoutPath(ByVal FullPath As Variant) As String
 
@@ -375,20 +380,33 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: GetDirFromFullFileName
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Determines the directory from the complete path of a file.
-' </summary>
-' <param name="FullFileName">complete file path</param>
-' <returns>String</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Parameters:
+'     FullFileName - complete file path
+'
+' Returns:
+'     String
+'
 '---------------------------------------------------------------------------------------
 Public Function GetDirFromFullFileName(ByVal FullFileName As String) As String
    GetDirFromFullFileName = PathFromFullFileName(FullFileName)
 End Function
 
+'---------------------------------------------------------------------------------------
+' Function: PathFromFullFileName
+'---------------------------------------------------------------------------------------
+'
+' Extract file path
+'
+' Parameters:
+'     FullFileName - complete file path
+'
+' Returns:
+'     String
+'
+'---------------------------------------------------------------------------------------
 Public Function PathFromFullFileName(ByVal FullFileName As Variant) As String
 
    Dim DirPath As String
@@ -409,15 +427,15 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: CreateDirectory
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Creates a directory including all missing parent directories
-' </summary>
-' <param name="FullPath">Directory to be created</param>
-' <returns>Boolean: True = directory/folder created</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Parameters:
+'     FullPath - Directory to be created
+'
+' Returns:
+'     Boolean  - True = directory/folder created
+'
 '---------------------------------------------------------------------------------------
 Public Function CreateDirectory(ByVal FullPath As String) As Boolean
 
@@ -453,15 +471,15 @@ End Sub
 '---------------------------------------------------------------------------------------
 ' Function: FileExists
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Check: file exists
-' </summary>
-' <param name="FullPath">Full path specification</param>
-' <returns>Boolean</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Parameters:
+'     FullPath - Full path specification
+'
+' Returns:
+'     Boolean
+'
 '---------------------------------------------------------------------------------------
 Public Function FileExists(ByVal FullPath As String) As Boolean
 
@@ -477,15 +495,15 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: DirExists
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Check: directory/folder exists
-' </summary>
-' <param name="FullPath">Full path specification</param>
-' <returns>Boolean</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Parameters:
+'     FullPath - Full path specification
+'
+' Returns:
+'     Boolean
+'
 '---------------------------------------------------------------------------------------
 Public Function DirExists(ByVal FullPath As String) As Boolean
 
@@ -501,16 +519,18 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: GetFileUpdateDate
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Last modified date of a file
-' </summary>
-' <param name="FullFileName">Full path specification</param>
-' <returns>Variant</returns>
-' <remarks>
-' Errors from API function are ignored
-' </remarks>
-'**/
+'
+' Parameters:
+'     FullFileName   - Full path specification
+'
+' Returns:
+'     Variant
+'
+' Remarks:
+'     Errors from API function are ignored
+'
 '---------------------------------------------------------------------------------------
 Public Function GetFileUpdateDate(ByVal FullFileName As String) As Variant
    If FileExists(FullFileName) Then
@@ -524,19 +544,21 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: ConvertStringToFileName
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Creates a file name from a string (replaces special characters)
-' </summary>
-' <param name="Text">Initial string for file names</param>
-' <param name="ReplaceWith">Characters as a substitute for special characters</param>
-' <param name="CharsToReplace">Characters that are replaced with ReplaceWith</param>
-' <param name="CharsToDelete">Characters that will be removed</param>
-' <returns>String</returns>
-' <remarks>
-' special characters: ? * " / ' : ( )
-' </remarks>
-'**/
+'
+' Parameters:
+'     Text           - Initial string for file names
+'     ReplaceWith    - Characters as a substitute for special characters
+'     CharsToReplace - Characters that are replaced with ReplaceWith
+'     CharsToDelete  - Characters that will be removed
+'
+' Returns:
+'     String
+'
+' Remarks:
+'     special characters: ? * " / ' : ( )
+'
 '---------------------------------------------------------------------------------------
 Public Function ConvertStringToFileName(ByVal Text As String, _
                                    Optional ByVal ReplaceWith As String = "_", _
@@ -563,18 +585,19 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: GetFullPathFromRelativPath
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Creates a complete path specification from relative path specification and "base directory".
-' </summary>
-' <param name="RelativPath">relative path</param>
-' <param name="BaseDir">Base directory</param>
-' <returns>String</returns>
-' <remarks>
+'
+' Parameters:
+'     RelativPath">relative path
+'     BaseDir">Base directory
+'
+' Returns:
+'     String
+'
 ' Example:
-' GetFullPathFromRelativPath("..\..\Test.txt", "C:\Programms\xxx\") => "C:\test.txt"
-' </remarks>
-'**/
+'     GetFullPathFromRelativPath("..\..\Test.txt", "C:\Programms\xxx\") => "C:\test.txt"
+'
 '---------------------------------------------------------------------------------------
 Public Function GetFullPathFromRelativPath(ByVal RelativPath As String, _
                                            ByVal BaseDir As String) As String
@@ -619,22 +642,21 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: GetRelativPathFromFullPath
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Creates a relative path from the complete path specification and source directory
-' </summary>
-' <param name="FullPath">Full path specification</param>
-' <param name="BaseDir">Base directory</param>
-' <param name="RelativePrefix">Add ".\" as relative path identifier</param>
-' <returns>String</returns>
-' <remarks>
+'
+' Parameters:
+'     FullPath       - Full path specification
+'     BaseDir        - Base directory
+'     RelativePrefix - Add ".\" as relative path identifier
+'
+' Returns:
+'     String
+'
 ' Example:
-' <code>
-' GetRelativPathFromFullPath("C:\test.txt", "C:\Programms\xxx\", True)
-' => ".\..\..\test.txt"
-' </code>
-' </remarks>
-'**/
+'     GetRelativPathFromFullPath("C:\test.txt", "C:\Programms\xxx\", True)
+'     => ".\..\..\test.txt"
+'
 '---------------------------------------------------------------------------------------
 Public Function GetRelativPathFromFullPath(ByVal FullPath As String, _
                                            ByVal BaseDir As String, _
@@ -712,16 +734,16 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Sub: AddToZipFile
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Add file to Zip file
-' </summary>
-' <param name="ZipFile">Zip file</param>
-' <param name="FullFileName">file to append</param>
-' <remarks>
-' CreateObject("Shell.Application").Namespace(zipFile & "").CopyHere sFile & ""
-' </remarks>
-'**/
+'
+' Parameters:
+'     ZipFile        - Zip file
+'     FullFileName   - file to append
+'
+' Remarks:
+'     CreateObject("Shell.Application").Namespace(zipFile & "").CopyHere sFile & ""
+'
 '---------------------------------------------------------------------------------------
 Public Sub AddToZipFile(ByVal ZipFile As String, ByVal FullFileName As String)
 
@@ -738,16 +760,16 @@ End Sub
 '---------------------------------------------------------------------------------------
 ' Function: ExtractFromZipFile
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Extract file from zip file
-' </summary>
-' <param name="ZipFile">Zip file</param>
-' <param name="Destination">Destination folder</param>
-' <returns>String</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Parameters:
+'     ZipFile     - Zip file
+'     Destination - Destination folder
+'
+' Returns:
+'     String
+'
 '---------------------------------------------------------------------------------------
 Public Function ExtractFromZipFile(ByVal ZipFile As String, ByVal Destination As String) As String
 
@@ -761,16 +783,16 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: CreateZipFile
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Creates an empty zip file
-' </summary>
-' <param name="ZipFile">Zip file (full path)</param>
-' <param name="DeleteExistingFile">Delete existing Zip file</param>
-' <returns>Boolean</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Parameters:
+'     ZipFile              - Zip file (full path)
+'     DeleteExistingFile   - Delete existing Zip file
+'
+' Returns:
+'     Boolean
+'
 '---------------------------------------------------------------------------------------
 Public Function CreateZipFile(ByVal ZipFile As String, Optional ByRef DeleteExistingFile As Boolean = False) As Boolean
 
@@ -797,16 +819,16 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: GetFileExtension
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Returns the file extension of a file returns.
-' </summary>
-' <param name="FilePath">File path or file name</param>
-' <param name="WithDotBeforeExtension">True: returns extension excl. separator</param>
-' <returns>File extension (String)</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Parameters:
+'     FilePath                - File path or file name
+'     WithDotBeforeExtension  - True: returns extension excl. separator
+'
+' Returns:
+'     String - File extension
+'
 '---------------------------------------------------------------------------------------
 Public Function GetFileExtension(ByVal FilePath As String, Optional ByVal WithDotBeforeExtension As Boolean = False) As String
    GetFileExtension = VBA.Strings.Mid$(FilePath, VBA.Strings.InStrRev(FilePath, ".") + (1 - Abs(WithDotBeforeExtension)))
@@ -816,15 +838,15 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: OpenFile
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Open file with API ShellExecute
-' </summary>
-' <param name="FileName">File path or file name</param>
-' <returns>Boolean</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Parameters:
+'     FileName - File path or file name
+'
+' Returns:
+'     Boolean
+'
 '---------------------------------------------------------------------------------------
 Public Function OpenFile(ByVal FilePath As String, Optional ByVal ReadOnlyMode As Boolean = False) As Boolean
 
@@ -849,15 +871,15 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: OpenFilePath
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Open folder with API ShellExecute
-' </summary>
-' <param name="FilePath">folder path or file name</param>
-' <returns>Boolean</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Parameters:
+'     FilePath - folder path or file name
+'
+' Returns:
+'     Boolean
+'
 '---------------------------------------------------------------------------------------
 Public Function OpenFilePath(ByVal FolderPath As String) As Boolean
 

@@ -7,19 +7,20 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'Attribute VB_PredeclaredId = True
 '---------------------------------------------------------------------------------------
-' Klasse: L10nDict
+' Class: localization.L10nDict
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Poetzl
-' <summary>
+'
 ' Localization dictionary - Auxiliary class for language setting
-' </summary>
-' <remarks>Set attributes VB_PredeclaredId = True so that class can be used without instantiation</remarks>
-''
-' \ingroup localization
-'**/
+'
+' Author:
+'     Josef Poetzl
+'
+' Remarks:
+'     Set attributes VB_PredeclaredId = True so that class can be used without instantiation
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>localization/L10nDict.cls</file>

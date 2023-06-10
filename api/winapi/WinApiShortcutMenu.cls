@@ -8,19 +8,23 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: WinApiShortcutMenu
+' Class: api.winapi.WinApiShortcutMenu
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' ShortcutMenu über Win-API
-' </summary>
-' <remarks>
-' </remarks>
-'\ingroup WinAPI
 '
-' @todo Code aufräumen und Doxygen-Doku erstellen
+' ShortcutMenu via Win API
 '
-'**/
+' Author:
+'     Josef Poetzl
+'
+' @todo Clean up code and create doc
+'
+' Remarks:
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+' | Adapted variant from API example by Jörg Ostendorp of AEK10
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>api/winapi/WinApiShortcutMenu.cls</file>
@@ -32,10 +36,6 @@ Attribute VB_Exposed = False
 '
 Option Compare Text
 Option Explicit
-
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-'Angepasste Variante aus API-Beispiel von Jörg Ostendorp der AEK10
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Private Type POINTAPI
    X As Long
@@ -51,7 +51,7 @@ End Type
 
 #If VBA7 Then
 
-Private m_Helper As LongPtr 'Hilfsfenster-Handle
+Private m_Helper As LongPtr 'Auxiliary window handle
 
 Private Type APIMSG
    Hwnd As LongPtr
@@ -62,7 +62,7 @@ Private Type APIMSG
    pt As POINTAPI
 End Type
 
-'Hilfsfenster
+'Auxiliary window
 Private Declare PtrSafe Function CreateWindowEx _
       Lib "user32.dll" _
       Alias "CreateWindowExA" ( _
@@ -79,7 +79,7 @@ Private Declare PtrSafe Function CreateWindowEx _
       ByVal hInstance As LongPtr, _
       ByRef lpParam As Any) As Long
 
-'Menü-Standardfunktionen
+'Standard menu functions
 Private Declare PtrSafe Function CreatePopupMenu _
       Lib "user32.dll" () As Long
 
@@ -108,7 +108,7 @@ Private Declare PtrSafe Function DestroyMenu _
          ByVal hMenu As LongPtr _
       ) As Long
 
-'Message-Loop
+'Message Loop
 Private Declare PtrSafe Function GetMessage _
       Lib "user32.dll" _
       Alias "GetMessageA" ( _
@@ -142,7 +142,7 @@ Private Declare PtrSafe Function SetMenuDefaultItem _
       
 #Else
 
-Private m_Helper As Long 'Hilfsfenster-Handle
+Private m_Helper As Long 'Auxiliary window handle
 
 Private Type APIMSG
    Hwnd As Long
@@ -153,7 +153,7 @@ Private Type APIMSG
    pt As POINTAPI
 End Type
 
-'Hilfsfenster
+'Auxiliary window
 Private Declare Function CreateWindowEx _
       Lib "user32.dll" _
       Alias "CreateWindowExA" ( _
@@ -170,7 +170,7 @@ Private Declare Function CreateWindowEx _
       ByVal hInstance As Long, _
       ByRef lpParam As Any) As Long
 
-'Menü-Standardfunktionen
+'Standard menu functions
 Private Declare Function CreatePopupMenu _
       Lib "user32.dll" () As Long
 
@@ -199,7 +199,7 @@ Private Declare Function DestroyMenu _
          ByVal hMenu As Long _
       ) As Long
 
-'Message-Loop
+'Message Loop
 Private Declare Function GetMessage _
       Lib "user32.dll" _
       Alias "GetMessageA" ( _
@@ -237,7 +237,7 @@ Private Declare Function SetMenuDefaultItem _
 Private Const WM_COMMAND As Long = &H111
 Private Const WM_MOUSELEAVE As Long = &H2A3
 
-'Menü- bzw. Item-Styles
+'Menu or item styles
 
 Public Enum MenuItemStyle
    MF_SEPARATOR = &H800&
@@ -251,14 +251,14 @@ Public Enum MenuItemStyle
    MF_CHECKED = &H8&
 End Enum
 
-'Menü-Ausrichtung
+'Menu alignment
 Private Const TPM_BOTTOMALIGN As Long = &H20&
 'Private Const TPM_TOPALIGN As Long = &H0&
 
-'Hilfsfenster
+'Auxiliary window
 Private Const WS_CHILD As Long = &H40000000
 
-'---- Ergänzung
+'---- additions:
 
 Private Type WinAPIMenuHandlerItem
    ItemNumber As Long
@@ -376,17 +376,15 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Sub: AddMenuItem
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Menü-Eintrag erstellen
-' </summary>
-' <param name="lMenuItemNumber">Nummer des Menüeintrags</param>
-' <param name="sItemText">Text des Menüeintrags</param>
-' <param name="lItemType">Art des Menüeintrags</param>
-' <param name="lSubMenu">Nummer des zugeordneten Untermenüs</param>
-' <remarks>
-' </remarks>
-'**/
+'
+' Create menu item
+'
+' Parameters:
+'     MenuItemNumber - Number of the menu item
+'     ItemText       - Menu item text
+'     ItemType       - Menu item type
+'     SubMenu        - Number of the assigned submenu
+'
 '---------------------------------------------------------------------------------------
 Public Sub AddMenuItem(ByVal MenuItemNumber As Long, ByVal ItemText As String, _
               Optional ByVal ItemType As MenuItemStyle = MF_STRING, _
@@ -409,16 +407,16 @@ End Sub
 '---------------------------------------------------------------------------------------
 ' Function: OpenMenu
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Öffnet das Popup-Menü
-' </summary>
-' <param name="X">gewünschte X-Positon .. kann entfallen, wenn Control angegeben wurde</param>
-' <param name="X">gewünschte Y-Positon .. kann entfallen, wenn Control angegeben wurde</param>
-' <returns>Nummer des ausgewählten Menüeintrags</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Parameters:
+'     X - desired X position ... can be omitted if Control was specified
+'     X - desired Y-position ... can be omitted if Control was specified
+'
+' Returns:
+'     Long - Number of the selected menu item
+'
 '---------------------------------------------------------------------------------------
 Public Function OpenMenu(Optional ByVal X As Single = 0, Optional ByVal Y As Single = 0) As Long
 
@@ -442,13 +440,13 @@ Public Function OpenMenu(Optional ByVal X As Single = 0, Optional ByVal Y As Sin
    Dim ParentObj As Object
    Dim AccFormRect As RECT
 
-   'Sonst wird bei ENTER nix angezeigt:
+   'Otherwise, nothing is displayed when ENTER is pressed:
    DoEvents
    
-   'Leeres Menü erstellen
+   'Create empty menu
    MenuHwnd = CreatePopupMenu
    
-   'Einträge hinzufügen
+   'Add entries
    Dim i As Long
    
    For i = 1 To m_ItemCnt
@@ -473,8 +471,8 @@ Public Function OpenMenu(Optional ByVal X As Single = 0, Optional ByVal Y As Sin
       
    Next i
 
-   'Position ermitteln
-   '- Hilfsfenster (~Sektionsfenster) absolut
+   'Determine position
+   '- Auxiliary window (~section window) absolute
    GetWindowRect m_Helper, RcHelper
    
    If m_MenuControl Is Nothing Then
@@ -482,15 +480,15 @@ Public Function OpenMenu(Optional ByVal X As Single = 0, Optional ByVal Y As Sin
       ButtonLeft = LayoutTools.GetPixelFromTwips(X) + AccFormRect.Left
       ButtonTop = LayoutTools.GetPixelFromTwips(Y) + AccFormRect.Top
    Else
-   '- Buttom relativ zum Sektionsfenster
+   '- Buttom relative to the section window
       ButtonLeft = LayoutTools.GetPixelFromTwips(m_MenuControl.Left) + LayoutTools.GetPixelFromTwips(X)
       ButtonTop = LayoutTools.GetPixelFromTwips(m_MenuControl.Top) + LayoutTools.GetPixelFromTwips(Y)
    End If
-   '- Miteinander verrechnen
+   '- calc with each other
    XPos = RcHelper.Left + ButtonLeft - 1
    YPos = RcHelper.Top + ButtonTop
    
-   'Menü anzeigen
+   'Show menu
    
    If m_MenuControl Is Nothing Then
       Set ParentObj = m_AccessForm
@@ -504,7 +502,7 @@ Public Function OpenMenu(Optional ByVal X As Single = 0, Optional ByVal Y As Sin
    TrackPopupMenu MenuHwnd, TPM_BOTTOMALIGN, XPos, YPos, _
                ByVal 0&, ParentObj.Hwnd, ByVal 0&
    
-   'Message-Loop (Obacht: für normale Formulare Application.hWndAccessApp, für POPUPS Me.hwnd)
+   'Message-Loop (Attention: for normal forms Application.hWndAccessApp, for POPUPS Form.Hwnd)
    
    If m_AccessForm.PopUp = True Then
       Hwnd = m_AccessForm.Hwnd
@@ -513,13 +511,13 @@ Public Function OpenMenu(Optional ByVal X As Single = 0, Optional ByVal Y As Sin
    End If
    
    Dim RepeatGetMessage As Boolean
-   Do 'Sicherheitsschliefe, falls es Probleme mit Windows-Message gibt. (WM_MOUSELEAVE)
+   Do ' Security sleep in case there are problems with windows message. (WM_MOUSELEAVE]
       RepeatGetMessage = False
       GetMessage Message, Hwnd, ByVal 0&, ByVal 0&
       TranslateMessage Message
       DispatchMessage Message
       
-      'Message auswerten
+      'Evaluate message
       If Message.Message = WM_COMMAND Then
          OpenMenu = Message.wParam
       ElseIf Message.Message = WM_MOUSELEAVE Then
@@ -529,7 +527,7 @@ Public Function OpenMenu(Optional ByVal X As Single = 0, Optional ByVal Y As Sin
       End If
    Loop While RepeatGetMessage
    
-   'Menü zerstören
+   'Destroy menu
    DestroyMenu MenuHwnd
 
 End Function

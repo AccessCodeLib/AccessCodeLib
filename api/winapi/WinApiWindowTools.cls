@@ -8,27 +8,28 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Module: WinApiWindowTools
+' Class: api.winapi.WinApiWindowTools
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' WinAPI-Funktionen: Window Handle & Co.
-' </summary>
-' <remarks>
-' </remarks>
-' \ingroup WinAPI
-'**/
+'
+' WinAPI functions: Window Handle & Co.
+'
+' Author:
+'     Josef Poetzl
+'
+' Source info:
+'---------------------------------------------------------------------------------------
+'| The procedures GetMDI, GetHeaderSection, GetDetailSection, GetFooterSection and GetControl
+'| are taken from the AEK10 lecture by Jörg Ostendorp
+'---------------------------------------------------------------------------------------
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>api/winapi/WinApiWindowTools.cls</file>
 '  <license>_codelib/license.bas</license>
 '</codelib>
 '---------------------------------------------------------------------------------------
-'
-' Die Prozeduren (GetMDI, GetHeaderSection, GetDetailSection, GetFooterSection und GetControl
-' stammen aus dem AEK10-Vortrag von Jörg Ostendorp
-'
-'----------------------------------------------------------------------------------------
 '
 Option Compare Text
 Option Explicit
@@ -53,38 +54,36 @@ Private Declare PtrSafe Function FindWindowEx Lib "user32.dll" Alias "FindWindow
 '---------------------------------------------------------------------------------------
 ' Function: GetMDI
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Ermittelt den Handle des MDI-Client-Fensters.
-' </summary>
-' <returns>Handle (Long)</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Determines the handle of the MDI client window
+'
+' Returns:
+'     Handle (LongPtr)
+'
 '---------------------------------------------------------------------------------------
 Public Function GetMDI() As LongPtr
    Dim h As LongPtr
    h = Application.hWndAccessApp
-   'Erstes (und einziges) "MDIClient"-Kindfenster des Applikationsfensters suchen
+   'Find the first (and only) "MDIClient" child window of the application window.
    GetMDI = FindWindowEx(h, 0&, "MDIClient", vbNullString)
 End Function
 
 '---------------------------------------------------------------------------------------
 ' Function: GetHeaderSection
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Ermittelt den Handle für den Kopfbereich eines Formulares
-' </summary>
-' <param name="fHwnd">Handle des Formulars (Form.Hwnd)</param>
-' <returns>Long</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Determines the handle for the header area of a form
+'
+' Parameters:
+'     Hwnd - Handle of the form (Form.Hwnd)
+'
+' Returns:
+'     LongPtr
+'
 '---------------------------------------------------------------------------------------
 Public Function GetHeaderSection(ByVal Hwnd As LongPtr) As LongPtr
    Dim h As LongPtr
-   'Erstes "OFormsub"-Kindfenster des Formulares (fhwnd) ermitteln
+   'Determine first "OFormsub" child window of the form (fhwnd)
    h = FindWindowEx(Hwnd, 0&, "OformSub", vbNullString)
    GetHeaderSection = h
 End Function
@@ -92,20 +91,19 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: GetDetailSection
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Ermittelt den Handle für den Detailbereich eines Formulares
-' </summary>
-' <param name="fHwnd">Handle des Formulars (Form.Hwnd)</param>
-' <returns>Long</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Determines the handle for the detail area of a form
+'
+' Parameters:
+'     Hwnd - Handle of the form (Form.Hwnd)
+'
+' Returns:
+'     LongPtr
+'
 '---------------------------------------------------------------------------------------
 Public Function GetDetailSection(ByVal Hwnd As LongPtr) As LongPtr
    Dim h As LongPtr
-   'Erstes "OFormsub"-Kindfenster des Formulares (fhwnd) ermitteln, beginnend
-   'nach dem Kopfbereich
+   'Determine first "OFormsub" child window of the form (fhwnd), starting after the header area.
    h = GetHeaderSection(Hwnd)
    h = FindWindowEx(Hwnd, h, "OformSub", vbNullString)
    GetDetailSection = h
@@ -114,20 +112,19 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: GetFooterSection
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Ermittelt den Handle für den Fußbereich eines Formulares
-' </summary>
-' <param name="fHwnd">Handle des Formulars (Form.Hwnd)</param>
-' <returns>Long</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Determines the handle for the footer of a form
+'
+' Parameters:
+'     Hwnd - Handle of the form (Form.Hwnd)
+'
+' Returns:
+'     LongPtr
+'
 '---------------------------------------------------------------------------------------
 Public Function GetFooterSection(ByVal Hwnd As Long) As LongPtr
    Dim h As LongPtr
-   'Erstes "OFormsub"-Kindfenster des Formulares (fhwnd) ermitteln, beginnend
-   'nach dem Detailbereich
+   'Determine first "OFormsub" child window of the form (fhwnd), starting after the detail area.
    h = GetDetailSection(Hwnd)
    h = FindWindowEx(Hwnd, h, "OformSub", vbNullString)
    GetFooterSection = h
@@ -136,30 +133,21 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: GetControl
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Ermittelt den Handle eines beliebigen Controls
-' </summary>
-' <param name="frm">Formular-Referenz</param>
-' <param name="sHwnd">Handle des Bereichs, auf dem sich das Control befindet (Header, Detail, Footer)</param>
-' <param name="ClassName">Name der Fensterklasse des Controls</param>
-' <param name="ControlName">Name des Controls</param>
-' <returns>Long</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Determines the handle of any control
+'
+' Parameters:
+'     FormRef     - Form reference
+'     Hwnd        - Handle of the area on which the control is located (Header, Detail, Footer)
+'     ClassName   - Name of the window class of the control
+'     ControlName - Name des Controls
+'
+' Returns:
+'     LongPtr
+'
 '---------------------------------------------------------------------------------------
-Public Function GetControl(ByRef FrmRef As Access.Form, ByVal Hwnd As LongPtr, _
+Public Function GetControl(ByRef FormRef As Access.Form, ByVal Hwnd As LongPtr, _
                            ByVal ClassName As String, ByVal ControlName As String) As LongPtr
-
-   'Ermittelt den Handle eines beliebigen Controls
-
-   'Parameter:
-   ' frm - Formular
-   ' Handle des Bereichs, auf dem sich das Control befindet (Header, Detail, Footer)
-   ' ControName - Name der Fensterklasse des Controls
-   ' ControlName - Name des Controls
-
 
    'Exitieren mehrere Controls der gleichen Klasse auf einem Formular, z.B. TabControls, besteht das Problem, daß
    'deren Reihenfolge nicht definiert ist (anders also als bei den Sektionsfenstern)
@@ -191,7 +179,7 @@ On Error Resume Next
       ClientToScreen h, pt
 
       'Objekt bei den Koordinaten ermitteln
-      Set obj = FrmRef.accHitTest(pt.X, pt.Y)
+      Set obj = FormRef.accHitTest(pt.X, pt.Y)
 
       'Wenn Objektname = Tabname Ausstieg aus der Schleife
       If obj.Name = ControlName Then

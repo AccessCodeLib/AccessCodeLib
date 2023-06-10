@@ -8,16 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: ACLibGitHubImporter
+' Class: _codelib.addins.shared.ACLibGitHubImporter
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Import GitHub files
-' </summary>
-' <remarks>
-' </remarks>
-'\ingroup addins_shared
-'**/
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/shared/ACLibGitHubImporter.cls</file>
@@ -28,8 +28,8 @@ Attribute VB_Exposed = False
 Option Compare Database
 Option Explicit
 
-Const GitHubContentBaseUrl As String = "https://raw.githubusercontent.com/AccessCodeLib/AccessCodeLib/{branch}/{path}"
-Const GitHubApiBaseUrl As String = "https://api.github.com/repos/AccessCodeLib/AccessCodeLib/"
+Private Const GitHubContentBaseUrl As String = "https://raw.githubusercontent.com/AccessCodeLib/AccessCodeLib/{branch}/{path}"
+Private Const GitHubApiBaseUrl As String = "https://api.github.com/repos/AccessCodeLib/AccessCodeLib/"
 
 Private m_LastCommit As Date
 Private m_UseDraftBranch As Boolean
@@ -42,6 +42,9 @@ Private Declare Function DeleteUrlCacheEntry Lib "wininet.dll" Alias "DeleteUrlC
 Private Declare Function URLDownloadToFile Lib "urlmon" Alias "URLDownloadToFileA" (ByVal pCaller As Long, ByVal szURL As String, ByVal szFileName As String, ByVal dwReserved As Long, ByVal lpfnCB As Long) As Long
 #End If
 
+'---------------------------------------------------------------------------------------
+' Property: UseDraftBranch
+'---------------------------------------------------------------------------------------
 Public Property Get UseDraftBranch() As Boolean
    UseDraftBranch = m_UseDraftBranch
 End Property
@@ -50,6 +53,9 @@ Public Property Let UseDraftBranch(ByVal NewValue As Boolean)
    m_UseDraftBranch = NewValue
 End Property
 
+'---------------------------------------------------------------------------------------
+' Property: RevisionString
+'---------------------------------------------------------------------------------------
 Public Property Get RevisionString(Optional ByVal Requery As Boolean = False) As String
    RevisionString = Format(LastCommit, "yyyymmddhhnnss")
    If UseDraftBranch Then
@@ -57,6 +63,9 @@ Public Property Get RevisionString(Optional ByVal Requery As Boolean = False) As
    End If
 End Property
 
+'---------------------------------------------------------------------------------------
+' Property: LastCommit
+'---------------------------------------------------------------------------------------
 Public Property Get LastCommit(Optional ByVal Requery As Boolean = False) As String
    If m_LastCommit = 0 Or Requery Then
       m_LastCommit = GetLastCommitFromWeb()
@@ -64,6 +73,9 @@ Public Property Get LastCommit(Optional ByVal Requery As Boolean = False) As Str
    LastCommit = m_LastCommit
 End Property
 
+'---------------------------------------------------------------------------------------
+' Sub: UpdateCodeModules
+'---------------------------------------------------------------------------------------
 Public Sub UpdateCodeModules()
    
    Dim SelectSql As String
