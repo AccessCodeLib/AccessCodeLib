@@ -15,7 +15,6 @@ Attribute VB_Name = "_initApplication"
 '  <file>base/_initApplication.bas</file>
 '  <license>_codelib/license.bas</license>
 '  <use>base/modApplication.bas</use>
-'  <use>base/defGlobal.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

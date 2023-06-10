@@ -8,20 +8,20 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: ApplicationHandler_Version (Josef Pötzl, 2015-11-08)
+' Class: base.ApplicationHandler_Version
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Erweiterung für ApplicationHandler-Klasse: Anwendungsversion prüfen
-' </summary>
-' <remarks>
-' Aktivierung im _config_Application-Modul:\n
-' <code>modApplication.AddApplicationHandlerExtension New ApplicationHandler_AppFile</code>
-' oder mittels ExtensionCollection:\n
+'
+' Extension for ApplicationHandler class: Check application version
+'
+' Author:
+'     Josef Poetzl
+'
+' Remarks:
+'     Activation in the _config_Application module:
 ' <code>ExtensionsCollectionReferenz.Add New ApplicationHandler_AppFile</code>
-' </remarks>
-'\ingroup base
-'**/
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>base/ApplicationHandler_Version.cls</file>
@@ -44,7 +44,7 @@ Private Const EXTENSION_KEY As String = "AppVersion"
 Private m_XmlVersionCheckFile As String
 
 '---------------------------------------------------------------------------------------
-' Standard-Initialisierung von Erweiterungen
+' Standard initialization of extensions
 '---------------------------------------------------------------------------------------
 
 Private WithEvents m_ApplicationHandler As ApplicationHandler
@@ -59,7 +59,7 @@ Public Property Get ExtensionKey() As String
 End Property
 
 '---------------------------------------------------------------------------------------
-' Standard-Ereignisbehandlung von Erweiterungen
+' Standard event handling of extensions
 '---------------------------------------------------------------------------------------
 
 ' CheckExtension
@@ -113,7 +113,7 @@ End Sub
 
 ' AfterDispose
 Private Sub m_ApplicationHandler_AfterDispose(ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
-'=> Referenz in m_ApplicationHandler auf Nothing setzen
+'=> Set reference in m_ApplicationHandler to Nothing
    Set m_ApplicationHandler = Nothing
 End Sub
 
@@ -125,7 +125,7 @@ End Function
 
 
 '---------------------------------------------------------------------------------------
-' Ergänzungen für Erweiterung: ApplicationHandler_AppVersion
+' Additions for extension: ApplicationHandler_AppVersion
 '---------------------------------------------------------------------------------------
 '
 Private Sub GetExtensionPropertyLookup(ByVal PropertyName As String, _
@@ -136,7 +136,7 @@ Private Sub GetExtensionPropertyLookup(ByVal PropertyName As String, _
 
    Select Case PropertyName
    
-      Case Else 'Property wurde nicht erkannt
+      Case Else 'Property was not recognized
          ResumeMode = AppResumeMode_Error
          ResumeMessage = "Property '" & PropertyName & "' is not supported"
          
@@ -147,16 +147,16 @@ End Sub
 '---------------------------------------------------------------------------------------
 ' Function: CheckVersion
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Version überprüfen
-' </summary>
-' <param name="NewVersion"></param>
-' <param name="VersionRemarks"></param>
-' <returns>AppVersionState</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Check version
+'
+' Parameters:
+'     NewVersion     - ByRef return of new version
+'     VersionRemarks - ByRef return of new version remarks
+'
+' Returns:
+'     AppVersionState
+'
 '---------------------------------------------------------------------------------------
 Public Function CheckVersion(Optional ByRef NewVersion As Variant, Optional ByRef VersionRemarks As Variant) As AppVersionState
 
@@ -164,7 +164,7 @@ Public Function CheckVersion(Optional ByRef NewVersion As Variant, Optional ByRe
    Dim DownloadVersionRemarks As String
    
    DownloadVersion = GetVersionFromDownloadSource(XmlVersionCheckFile, DownloadVersionRemarks)
-   CheckVersion = CompareVersions(CurrentApplication.Version, DownloadVersion)
+   CheckVersion = CompareVersions(m_ApplicationHandler.Version, DownloadVersion)
    
    If CheckVersion = VerState_Newer Then
       NewVersion = DownloadVersion
@@ -172,7 +172,6 @@ Public Function CheckVersion(Optional ByRef NewVersion As Variant, Optional ByRe
    End If
 
 End Function
-
 
 Public Property Get XmlVersionCheckFile() As String
    XmlVersionCheckFile = m_XmlVersionCheckFile

@@ -1,0 +1,7 @@
+
+ Datenzugriff mit ADODB
+
+'/** 
+' @defgroup data_adodb Datenzugriff mit ADODB
+' \ingroup data
+'**/

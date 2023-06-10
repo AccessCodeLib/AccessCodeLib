@@ -8,14 +8,18 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: DbConnectionInfo
+' Class: data.DbConnectionInfo
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Hilfsklasse zur Einstellung der Verbindungsparameter
-' </summary>
-' <remarks></remarks>
-'**/
+' Auxiliary class for setting the connection parameters
+'
+' Author:
+'     Josef Poetzl
+'
+' Remarks:
+'     Uses table usys_DbmsConnection (create table with DBMS Connection Wizard)
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>data/DbConnectionInfo.cls</file>
@@ -34,17 +38,29 @@ Private Enum DbConnectionInfoErrorNumbers
    ERRNR_INACTIVE = vbObjectError + 3
 End Enum
 
+Private Const ConnDataSelectSql As String = _
+                     "SELECT CID, DBMS, dbmsConnectionMode, dbmsDatabase, dbmsUseTrustedConnection, dbmsUser, dbmsPwd, dbmsUseLoginForm, " & _
+                     " dbmsServer, dbmsPort, dbmsOleDbProvider, dbmsOdbcDriver, dbmsOptionsOLEDB, dbmsOptionsODBC," & _
+                     " dbmsDSN, dbmsConStrOLEDB, dbmsConStrODBC FROM usys_DbmsConnection"
+
+Private Const ActivatedConnDataSelectSql As String = _
+                     ConnDataSelectSql & " WHERE ActiveConnection=-1"
+
+Private Const SelectConnectionIdentifierConnDataSelectSql As String = _
+                     ConnDataSelectSql & " WHERE CID={ConnectionIdentifier}"
+
+
 Private Const m_DefaultLoginFormName As String = "LoginForm"
 Private m_LoginFormName As String
 Private m_DbmsConfigFormName As String
 
-Private Const m_CheckConnectionTimeout As Long = 5 'Connectiontimeout für Verbindungsprüfung (Standard wäre 15 sec)
+Private Const m_CheckConnectionTimeoutSeconds As Long = 5 'Connection timeout [sec] for connection check (default would be 15 sec)
 
-'Verbindungskennung
-Private m_CID As String 'kann als Konstante verwendet werden, wenn nur eine Verbindungseinstellung genutzt werden soll
+'Connection identifier
+Private m_ConnectionIdentifier As String
 
-'DBMS-Bezeichnung
-Private m_DBMSNAME As String 'Variable, damit mit mehreren DBMS gearbeitet werden kann
+'DBMS Name
+Private m_DBMSNAME As String
 
 Private Const m_DBMSNAME_MSJET As String = "MSJET"
 Private Const m_DBMSNAME_MSSQL As String = "MSSQL"
@@ -52,37 +68,37 @@ Private Const m_DBMSNAME_MYSQL As String = "MySQL"
 Private Const m_DBMSNAME_ORACLE As String = "ORACLE"
 Private Const m_DBMSNAME_ODBC As String = "ODBC"
                              
-'DBMS-Provider/Driver
+'DBMS Provider/Driver
 Private m_DBODBCDRIVER As String
 Private m_DBOLEDBPROVIDER As String
 
-'DB-Server (Anm.: inkl. Instanz beim SQL-Server):
+'Database Server (Note: incl. instance of SQL server & co.)
 Private m_DBSERVER As String
 
-'Port (z. B. zur Unterscheidung vorhandener Server-Instanzen)
+'Port (e.g. to identify existing server instances)
 Private m_PORT As String
 
-'DB-Name
-Private m_DBNAME As String  'muss vorhanden sein!
+'Database Name
+Private m_DBNAME As String  'required!
 
-'ConnectionMode (1 .. DNS less, 2 .. mit DSN, 128 .. benutzerdefinierter Connectionstring)
-Private m_CONNECTIONMODE As Long 'Enum DbmsConnectionModes
+'Connection modes (1 .. DNS less, 2 .. with DSN, 128 .. usedefined connection string)
+Private m_CONNECTIONMODE As DbmsConnectionModes
 
-'Benutzer-Kennung
+'User identifier
 Private m_DBUSER As String
 Private m_DBUSERPWD As String
 Private m_TRUSTEDCONNECTION As Boolean
 
-'Weitere Optionen
+'Other Options
 Private m_DBOPTIONS_ODBC As String
 Private m_DBOPTIONS_OLEDB As String
 
-'ConnectionString
+'Connection string
 Private m_OledbConnectionString As String
 Private m_OdbcConnectionString As String
 Private m_DatabaseFile As String 'für dateibasierte DBS
 
-'Login-Formular
+'Login form
 Private m_UseLoginForm As Boolean
 Private m_SAVEPWD As Boolean
 
@@ -96,59 +112,71 @@ Private m_LoginCancelled As Boolean
 'DSN
 Private m_DSN As String
 
+'Other auxiliary variables:
 Private m_DbmsInfoReaded As Boolean
 
-'Events
-'/**
-' <summary>
-' Ereignis wenn sich die Verbindung ändert
-' </summary>
-' <param name="ErrNumber">Fehlernummer</param>
-' <param name="Source">Prozedur(en) in der der Fehler auftrat</param>
-' <param name="ErrDescription">Fehlerbeschreibung</param>
-' <param name="Response">AcUtilErrorResumeMode-Wert (ermöglich Fehlersteuerung als Reaktion auf das Ereignis)</param>
-' <remarks>Kann nützlich sein, wenn in Abhängigkeit der Verbindung Anzeigen aktualisiert werden usw.</remarks>
-'**/
-Public Event DbmsConnectionChanged(ByVal newCID As String)
+'###################################################
+'
+' Group: Events
+'
 
-'Events
-'/**
-' <summary>
-' Ereignis wenn sich die Verbindung ändert
-' </summary>
-' <param name="ErrNumber">Fehlernummer</param>
-' <param name="Source">Prozedur(en) in der der Fehler auftrat</param>
-' <param name="ErrDescription">Fehlerbeschreibung</param>
-' <param name="Response">AcUtilErrorResumeMode-Wert (ermöglich Fehlersteuerung als Reaktion auf das Ereignis)</param>
-' <remarks>Kann nützlich sein, wenn in Abhängigkeit der Verbindung Anzeigen aktualisiert werden usw.</remarks>
-'**/
+'---------------------------------------------------------------------------------------
+'Event: DbmsConnectionChanged
+'---------------------------------------------------------------------------------------
+'
+' Event when the connection changes
+'
+' Parameters:
+'     NewConnectionIdentifier - new used connection identifier (from table data field CID)
+'
+' Remarks:
+'     Can be useful if displays are updated depending on the connection, etc.
+'
+'---------------------------------------------------------------------------------------
+Public Event DbmsConnectionChanged(ByVal NewConnectionIdentifier As String)
+
+'---------------------------------------------------------------------------------------
+'Event: DbmsConnectionInfoCleared
+'---------------------------------------------------------------------------------------
+'
+' Event raised when the connection parameters have been reset
+'
+'---------------------------------------------------------------------------------------
 Public Event DbmsConnectionInfoCleared()
 
-'/**
-' <summary>
-' Ereignis zur Weitergabe von Informationen
-' </summary>
-' <param name="ErrNumber">Fehlernummer</param>
-' <param name="Source">Prozedur(en) in der der Fehler auftrat</param>
-' <param name="ErrDescription">Fehlerbeschreibung</param>
-' <param name="Response">AcUtilErrorResumeMode-Wert (ermöglich Fehlersteuerung als Reaktion auf das Ereignis)</param>
-' <remarks>Dient zur Weitergabe von Infos (ähnlich debug.print)</remarks>
-'**/
+'---------------------------------------------------------------------------------------
+'Event: DbmsInfoMessage
+'---------------------------------------------------------------------------------------
+'
+' Information sharing event
+'
+' Parameters:
+'     Source         - Source of the message
+'     Msg            - Message
+'     MsgStyle       - VbMsgBoxStyle
+'
+' Remarks:
+'     Used to pass on info (similar to debug.print)
+'
+'---------------------------------------------------------------------------------------
 Public Event DbmsInfoMessage(ByVal Source As String, ByVal Msg As String, ByVal MsgStyle As VbMsgBoxStyle)
 
-''/**
-'' <summary>
-'' Ereignis für Fehlermeldungen
-'' </summary>
-'' <param name="ErrNumber">Fehlernummer</param>
-'' <param name="Source">Prozedur(en) in der der Fehler auftrat</param>
-'' <param name="ErrDescription">Fehlerbeschreibung</param>
-'' <param name="Response">AcUtilErrorResumeMode-Wert (ermöglich Fehlersteuerung als Reaktion auf das Ereignis)</param>
-'' <remarks>Ermöglich die Behebung bzw. die Behandlung des Fehlers</remarks>
-''**/
-'Public Event DbConnectionInfoError(ByVal ErrNumber As Long, ByVal Source As String, ByVal ErrDescription As String, ByRef Response As AcUtilErrorResumeMode)
-
+'---------------------------------------------------------------------------------------
+'Event: PasswordChanged
+'---------------------------------------------------------------------------------------
+'
+' Event raised when the password has been changed
+'
+'---------------------------------------------------------------------------------------
 Public Event PasswordChanged()
+
+'---------------------------------------------------------------------------------------
+'Event: Disposed
+'---------------------------------------------------------------------------------------
+'
+' Event raised when disposed
+'
+'---------------------------------------------------------------------------------------
 Public Event Disposed()
 
 
@@ -168,44 +196,7 @@ Private Declare PtrSafe Function WritePrivateProfileString Lib "kernel32" _
   ByVal lpKeyName As Any, _
   ByVal lpString As Any, _
   ByVal lpFileName As String) As Long
-
-Public Property Get CID() As String
-On Error Resume Next
-   CID = m_CID
-End Property
-
-Public Property Let CID(ByVal selectCID As String)
-On Error Resume Next
-   
-   ClearConnectionInfo
-   m_CID = selectCID
-   
-   If Len(m_CID) > 0 Then
-      ReadDBMSprop RaiseDbmsConnectionChangedEvent:=True
-   Else
-      RaiseEvent DbmsConnectionChanged(vbNullString)
-   End If
-   
-End Property
-
-Public Property Get DbmsName() As String
-On Error Resume Next
-   If StrPtr(m_DBMSNAME) = 0 Then
-      ReadDBMSprop
-   End If
-   DbmsName = m_DBMSNAME
-End Property
-
-Public Property Get DbServer() As String
-On Error Resume Next
-   DbServer = m_DBSERVER
-End Property
-
-Public Property Get DbName() As String
-On Error Resume Next
-   DbName = m_DBNAME
-End Property
-
+  
 Private Sub Class_Terminate()
 On Error Resume Next
    Dispose
@@ -220,168 +211,141 @@ On Error Resume Next
    RaiseEvent Disposed
 End Sub
 
-Private Sub ReadDBMSprop(Optional ByVal withoutLoginForm As Boolean = False, Optional ByVal RaiseDbmsConnectionChangedEvent As Boolean = False)
+  
+'###################################################
+'
+' Group: DBMS Connection Parameters
+'
+  
+'---------------------------------------------------------------------------------------
+'Property: ConnectionIdentifier
+'---------------------------------------------------------------------------------------
+'
+' Connection identifier - value from data field CID
+'
+'---------------------------------------------------------------------------------------
+Public Property Get ConnectionIdentifier() As String
+On Error Resume Next
+   ConnectionIdentifier = m_ConnectionIdentifier
+End Property
 
-   Dim strSQL As String
-   Dim rst As DAO.Recordset
-   Dim bolCancel As Boolean
-
-   Dim tempCID As String
-
-   tempCID = m_CID
-
+Public Property Let ConnectionIdentifier(ByVal ConnectionIdentifierToUse As String)
+On Error Resume Next
+   
    ClearConnectionInfo
+   m_ConnectionIdentifier = ConnectionIdentifierToUse
    
-   If Len(m_CID) = 0 Then 'jenen DS auswählen, der als "Aktiv" gekennzeichnet wurde
-      strSQL = "SELECT CID, DBMS, dbmsConnectionMode, dbmsDatabase, dbmsUseTrustedConnection, dbmsUser, dbmsPwd, dbmsUseLoginForm, " & _
-                     " dbmsServer, dbmsPort, dbmsOleDbProvider, dbmsOdbcDriver, dbmsOptionsOLEDB, dbmsOptionsODBC," & _
-                     " dbmsDSN, dbmsConStrOLEDB, dbmsConStrODBC FROM usys_DbmsConnection WHERE ActiveConnection=-1"
+   If Len(m_ConnectionIdentifier) > 0 Then
+      LoadConnectionData RaiseDbmsConnectionChangedEvent:=True
    Else
-      strSQL = "SELECT CID, DBMS, dbmsConnectionMode, dbmsDatabase, dbmsUseTrustedConnection, dbmsUser, dbmsPwd, dbmsUseLoginForm, " & _
-                     " dbmsServer, dbmsPort, dbmsOleDbProvider, dbmsOdbcDriver, dbmsOptionsOLEDB, dbmsOptionsODBC," & _
-                     " dbmsDSN, dbmsConStrOLEDB, dbmsConStrODBC FROM usys_DbmsConnection WHERE CID=" & SqlTools.TextToSqlText(m_CID)
-   End If
-             
-   Set rst = CurrentDb.OpenRecordset(strSQL, dbOpenSnapshot)
-   If rst.EOF Then
-      
-      rst.Close
-      
-      If Len(m_CID) = 0 Then 'es wurde noch keine Verbindung aktiviert
-         bolCancel = True
-         If MsgBox("Es wurde noch keine Verbindung aktiviert." & vbNewLine & _
-                     "Bitte überprüfen Sie die Verbindungsparameter und aktivieren Sie die gewünschte Verbindung.", _
-                     vbInformation + vbOKCancel) = vbOK Then
-            
-            If Len(DbmsConfigFormName) > 0 Then
-               DoCmd.OpenForm DbmsConfigFormName, , , , , acDialog
-            End If
-            
-            'Abbruch, falls über Formular bereits initialisiert wurde
-            If m_DbmsInfoReaded Then
-               Exit Sub
-            End If
-            
-            Set rst = CurrentDb.OpenRecordset(strSQL, dbOpenSnapshot)
-            If Not rst.EOF Then
-               m_CID = Nz(rst.Fields("CID"), vbNullString)
-               bolCancel = (Len(m_CID) = 0)
-            End If
-         End If
-         
-         If bolCancel Then
-            rst.Close
-            Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NODBMS, "DbConnectionInfo.readDBMSprop", "Es wurde keine Verbindung aktiviert."
-            Exit Sub
-         End If
-      Else
-         Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NODBMS, "DbConnectionInfo.readDBMSprop", "Kein Eintrag für '" & m_CID & "' gefunden"
-         Exit Sub
-      End If
+      RaiseEvent DbmsConnectionChanged(vbNullString)
    End If
    
-   
-   'Einstellungen auslesen
-   With rst
-   
-      If Len(m_CID) = 0 Then
-         m_CID = Nz(rst.Fields("CID"), vbNullString)
-         If Len(m_CID) = 0 Then
-            Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NODBMS, "DbConnectionInfo.readDBMSprop", "Es wurde keine Verbindung übergeben."
-            Exit Sub
-         End If
-      End If
-      
-      m_DBMSNAME = Nz(rst.Fields("DBMS"), vbNullString)
-      m_CONNECTIONMODE = Nz(.Fields("dbmsConnectionMode"), 0) '1 = DNS less, 2 = DSN, 4 = benutzerdefiniert
-   
-      m_DBNAME = .Fields("dbmsDatabase") & vbNullString
-      
-      m_DBSERVER = .Fields("dbmsServer") & vbNullString
-      m_PORT = .Fields("dbmsPort") & vbNullString
-      
-      m_TRUSTEDCONNECTION = Nz(.Fields("dbmsUseTrustedConnection"), False)
-      m_UseLoginForm = Nz(.Fields("dbmsUseLoginForm"), False)
-      m_DBUSER = .Fields("dbmsUser") & vbNullString
-      m_DBUSERPWD = .Fields("dbmsPwd") & vbNullString
-      
-      'Falls kein Name angegeben ist, Loginform aktivieren
-      If Not (m_UseLoginForm Or m_TRUSTEDCONNECTION) And Len(m_DBUSER) = 0 Then
-         m_UseLoginForm = (m_DBMSNAME <> "MSJET")
-      End If
-      
-      m_DSN = .Fields("dbmsDSN") & vbNullString
-      
-      m_DBOLEDBPROVIDER = .Fields("dbmsOleDbProvider") & vbNullString
-      m_DBOPTIONS_OLEDB = .Fields("dbmsOptionsOLEDB") & vbNullString
-      
-      m_DBODBCDRIVER = .Fields("dbmsOdbcDriver") & vbNullString
-      m_DBOPTIONS_ODBC = .Fields("dbmsOptionsODBC") & vbNullString
-      
-      m_OledbConnectionString = .Fields("dbmsConStrOLEDB") & vbNullString
-      m_OdbcConnectionString = .Fields("dbmsConStrODBC") & vbNullString
+End Property
 
-      .Close
-   End With
-   Set rst = Nothing
+Public Property Get CID() As String
+   Stop 'Deprecated: use ConnectionIdentifier
+   CID = ConnectionIdentifier
+End Property
 
-   m_DbmsInfoReaded = True
-   m_SAVEPWD = (Len(m_DBUSERPWD) > 0) And (m_UseLoginForm = False)
-   
-   If m_DBMSNAME = "MSJET" Then
-      m_DatabaseFile = m_DBNAME
-   End If
+Public Property Let CID(ByVal SelectCID As String)
+   Stop 'Deprecated: use ConnectionIdentifier
+   ConnectionIdentifier = SelectCID
+End Property
 
-   If Not withoutLoginForm Then
-   If m_UseLoginForm Then 'ergibt Anmeldung, daher nicht für Vorabeinstellungen nutzen! (=>withoutLoginForm=true)
-#If CONFIG_USELOGINFORM = 1 Then
-      Dim LoginUserName As String
-      LoginUserName = GetUserNameFromConfigFile
-      If Len(LoginUserName) = 0 Then
-         LoginUserName = m_DBUSER
-      End If
-   
-      'm_LoginForm über Property LoginForm zugänglich machen und im LoginForm selbst setzen:
-      DoCmd.OpenForm LoginFormName, acNormal, , , acFormEdit, acDialog, ObjPtr(Me) & "@" & m_CID & "@" & LoginUserName
-#Else
-   Err.Raise vbObjectError, "DbConnectionInfo", "CONFIG_USELOGINFORM in Projekteigenschaften nicht gesetzt!"
-#End If
-   End If
-   End If
-   
-   If (tempCID <> m_CID) Or RaiseDbmsConnectionChangedEvent Then
-      RaiseEvent DbmsConnectionChanged(m_CID)
-   End If
 
-End Sub
-
-Private Function GetUserNameFromConfigFile() As String
-
-   Dim ReturnStr As String * 1280
-   Dim RetVal As Long
-   
+'---------------------------------------------------------------------------------------
+'Property: DbmsName
+'---------------------------------------------------------------------------------------
+'
+' Name of DBMS (MSJET, MSSQL, MySQL, ORACLE, ODBC)
+'
+'---------------------------------------------------------------------------------------
+Public Property Get DbmsName() As String
 On Error Resume Next
+   If StrPtr(m_DBMSNAME) = 0 Then
+      LoadConnectionData
+   End If
+   DbmsName = m_DBMSNAME
+End Property
 
-   RetVal = GetPrivateProfileString("Login", "UserName", vbNullString & vbNullChar, ReturnStr, Len(ReturnStr), CurrentProject.Path & "\" & m_CID & ".ini")
-   GetUserNameFromConfigFile = Trim(Left(ReturnStr, RetVal))
-
-End Function
-
-Private Sub SaveUserNameToConfigFile(ByVal UserName As String)
+'---------------------------------------------------------------------------------------
+'Property: DbServer
+'---------------------------------------------------------------------------------------
+'
+' Name of Database Server
+'
+' Remarks:
+'     Incl. instance of SQL Server & co.
+'
+'---------------------------------------------------------------------------------------
+Public Property Get DbServer() As String
 On Error Resume Next
-   WritePrivateProfileString "Login", "UserName", UserName, CurrentProject.Path & "\" & m_CID & ".ini"
-End Sub
+   DbServer = m_DBSERVER
+End Property
+
+'---------------------------------------------------------------------------------------
+'Property: DbName
+'---------------------------------------------------------------------------------------
+'
+' Name of Database
+'
+'---------------------------------------------------------------------------------------
+Public Property Get DbName() As String
+On Error Resume Next
+   DbName = m_DBNAME
+End Property
+
+'---------------------------------------------------------------------------------------
+' Property: DatabaseFile
+'---------------------------------------------------------------------------------------
+'
+' File name incl. path of a file-based backend
+'
+'---------------------------------------------------------------------------------------
+Public Property Get DatabaseFile() As String
+
+   If Len(m_DatabaseFile) = 0 Then
+      SetConnectionStrings
+   End If
+   DatabaseFile = m_DatabaseFile
+
+End Property
+
+'---------------------------------------------------------------------------------------
+' Property: UseLoginForm
+'---------------------------------------------------------------------------------------
+'
+' Setting from the connection parameters whether to use the login form when logging in.
+'
+'---------------------------------------------------------------------------------------
+Public Property Get UseLoginForm() As Boolean
+
+   If Not m_DbmsInfoReaded Then
+      SetConnectionStrings
+   End If
+   UseLoginForm = m_UseLoginForm
+
+End Property
+
 
 #If CONFIG_USELOGINFORM = 1 Then
 
+'---------------------------------------------------------------------------------------
+'Property: LoginForm
+'---------------------------------------------------------------------------------------
+'
+' Form reference to LoginForm
+'
+'---------------------------------------------------------------------------------------
 Public Property Get LoginForm() As Form
 On Error Resume Next
    Set LoginForm = m_LoginForm
 End Property
 
-Public Property Set LoginForm(ByRef ref As Form)
+Public Property Set LoginForm(ByVal NewRef As Form)
 On Error Resume Next
-   Set m_LoginForm = ref
+   Set m_LoginForm = NewRef
 End Property
 
 Private Sub m_LoginForm_Cancelled()
@@ -392,8 +356,6 @@ Private Sub m_LoginForm_Cancelled()
    m_LoginCancelled = True
 
 End Sub
-
-#End If
 
 Private Sub m_LoginForm_Logon(ByVal LoginName As String, ByVal Password As String, Cancel As Boolean)
    
@@ -418,11 +380,11 @@ Private Sub m_LoginForm_Logon(ByVal LoginName As String, ByVal Password As Strin
       SaveUserNameToConfigFile m_DBUSER
    End If
 
-#If CONFIG_USELOGINFORM = 1 Then
    Set m_LoginForm = Nothing
-#End If
 
 End Sub
+
+#End If
 
 Private Sub SetConnectionStrings(Optional ByVal bWithConnectionCheck As Boolean = True)
 
@@ -430,7 +392,7 @@ Private Sub SetConnectionStrings(Optional ByVal bWithConnectionCheck As Boolean 
    Dim ErrMsg As String
 
    If Not m_DbmsInfoReaded Then
-      ReadDBMSprop
+      LoadConnectionData
       If m_LoginCancelled Or ((Len(m_DBSERVER) + Len(m_DBNAME)) = 0) Then
          Exit Sub
       End If
@@ -449,7 +411,7 @@ Private Sub SetConnectionStrings(Optional ByVal bWithConnectionCheck As Boolean 
 
       If Not m_DbmsInfoReaded Then
       If Len(m_DBUSER) = 0 Then
-         ReadDBMSprop
+         LoadConnectionData
       End If
       End If
 
@@ -472,25 +434,187 @@ Private Sub SetConnectionStrings(Optional ByVal bWithConnectionCheck As Boolean 
 End Sub
 
 '---------------------------------------------------------------------------------------
+' Property: DbUser
+'---------------------------------------------------------------------------------------
+'
+' Name des Datenbankbenutzers
+'
+' Parameters:
+'     WithoutServerCheck   -  True = Do not check whether connection data has already been read in.
+'
+'---------------------------------------------------------------------------------------
+Public Property Get DbUser(Optional ByVal WithoutServerCheck As Boolean = False) As String
+
+   If Not WithoutServerCheck Then
+   If Not m_DbmsInfoReaded Then
+      SetConnectionStrings
+   End If
+   End If
+   
+   If m_TRUSTEDCONNECTION Then
+      DbUser = GetDbUserName
+   Else
+      DbUser = m_DBUSER
+   End If
+
+End Property
+
+'---------------------------------------------------------------------------------------
+' Property: DbUserPassword
+'---------------------------------------------------------------------------------------
+'
+' Password of the database user
+'
+' Remarks:
+'     The password should normally never need to be requested and should only be used for sharing within the class structure.
+'
+'---------------------------------------------------------------------------------------
+Private Property Get DbUserPassword() As String
+
+   If Not m_DbmsInfoReaded Then
+      SetConnectionStrings
+   End If
+   DbUserPassword = m_DBUSERPWD
+ 
+End Property
+
+Friend Property Let DbUserPassword(ByVal NewValue As String)
+
+   m_DBUSERPWD = NewValue
+ 
+End Property
+
+'---------------------------------------------------------------------------------------
+' Property: SavePassword
+'---------------------------------------------------------------------------------------
+'
+' Setting from the connection parameters whether password should be saved for linked tables
+'
+'---------------------------------------------------------------------------------------
+Public Property Get SavePassword() As Boolean
+
+   If Not m_DbmsInfoReaded Then
+      SetConnectionStrings
+   End If
+   SavePassword = m_SAVEPWD
+
+End Property
+
+'###################################################
+'
+' Group: DBMS Connection
+'
+
+'---------------------------------------------------------------------------------------
+' Property: ConnectionStrings
+'---------------------------------------------------------------------------------------
+'
+' ODBC and OLEDB Connectionstring
+'
+' Returns:
+'     <data.defDbConnection::DbmsConnectionStrings>
+'
+' Remarks:
+'     This procedure must be extended if other DBMSs (such as Oracle) are to be used.
+'
+'---------------------------------------------------------------------------------------
+Friend Property Get ConnectionStrings() As DbmsConnectionStrings
+
+   If m_DbmsInfoReaded = False Then
+      LoadConnectionData
+   End If
+
+   Select Case m_DBMSNAME
+      Case m_DBMSNAME_MSSQL
+         ConnectionStrings = ConnectionStrings_MSSQL
+      Case m_DBMSNAME_MSJET
+         ConnectionStrings = ConnectionStrings_MSJET
+      Case m_DBMSNAME_MYSQL
+         ConnectionStrings = ConnectionStrings_MySQL
+      Case m_DBMSNAME_ORACLE
+         ConnectionStrings = ConnectionStrings_ORACLE
+      Case m_DBMSNAME_ODBC
+         ConnectionStrings = ConnectionStrings_ODBC
+      Case Else
+         Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NODBMS, "ConnectionStrings", "Für '" & m_DBMSNAME & "' können keine Connectionstrings erzeugt werden. (Auswahl nicht möglich.)"
+   End Select
+
+End Property
+
+
+'---------------------------------------------------------------------------------------
+' Property: OledbConnectionString
+'---------------------------------------------------------------------------------------
+'
+' OledbConnectionString
+'
+' Returns:
+'     String
+'
+'---------------------------------------------------------------------------------------
+Friend Property Get OledbConnectionString() As String
+
+   If Len(m_OledbConnectionString) = 0 Then
+      SetConnectionStrings
+   End If
+   OledbConnectionString = m_OledbConnectionString
+   
+End Property
+
+'---------------------------------------------------------------------------------------
+' Property: OdbcConnectionString
+'---------------------------------------------------------------------------------------
+'
+' OdbcConnectionString
+'
+' Parameters:
+'     WithoutUserInfo - False = user ID incl. password is contained in the ODBC connection string,
+'                       True = without user data
+'
+' Returns:
+'     String
+'
+' Remarks:
+'     Setting the parameter WithoutUserInfo is normally not necessary,
+'     but can be helpful if the ODBC connection string is required without a password.
+'
+'---------------------------------------------------------------------------------------
+Friend Property Get OdbcConnectionString(Optional ByVal WithoutUserInfo As Boolean = False) As String
+
+   If Len(m_OdbcConnectionString) = 0 Then
+      SetConnectionStrings
+   End If
+   If WithoutUserInfo Then
+      OdbcConnectionString = Replace(m_OdbcConnectionString, GetOdbcUserInfo(), "")
+   Else
+      OdbcConnectionString = m_OdbcConnectionString
+   End If
+
+End Property
+
+'---------------------------------------------------------------------------------------
 ' Function: CheckConnection
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Verbindung zum Server bzw. Datenbank prüfen
-' </summary>
-' <param name="ErrMsg">Fehlermeldung vom ADODB- bzw. ODBC-Verbindungsaufbau</param>
-' <returns>Boolean: True = Ado- und ODBC-Verbindung konnten aufgebaut werden</returns>
-' <remarks>
-' Als erster Test erfolgt der ADO-Verbindungsaufbau. Sobald dieser erfolgreich war, wird der ODBC-Verbindungsaufbau getestet.
-' </remarks>
-'**/
+'
+' Check connection to server and database
+'
+' Parameters:
+'     ErrMsg      - Error message from ADODB or ODBC connection
+'
+' Returns:
+'     Boolean     - True = Ado- and ODBC-connection could be established
+'
+' Remarks:
+'     The first test is to establish the ADO connection.
+'     As soon as this is successful, the ODBC connection is tested.
+'
 '---------------------------------------------------------------------------------------
 Public Function CheckConnection(Optional ByRef ErrMsg As String = vbNullString) As Boolean
    
    Dim checkOk As Boolean
 
    checkOk = CheckAdoConnection(OledbConnectionString, ErrMsg)
-   If checkOk Then ' ODBC testen (außer ADO-Verbindung schlug bereits fehl)
+   If checkOk Then ' test ODBC testen (if ADO connection don't failed)
       If m_DBMSNAME <> "MSJET" Then
          checkOk = checkOk And CheckOdbcConnection(OdbcConnectionString, ErrMsg)
       End If
@@ -513,7 +637,7 @@ Private Function CheckAdoConnection(ByVal sOleDbConnectionstring As String, ByRe
    Set cnn = CreateObject("ADODB.Connection")
    With cnn
       .ConnectionString = sOleDbConnectionstring
-      .ConnectionTimeout = m_CheckConnectionTimeout
+      .ConnectionTimeout = m_CheckConnectionTimeoutSeconds
       
 On Error Resume Next
       .Open
@@ -571,177 +695,14 @@ On Error Resume Next
 End Function
 
 '---------------------------------------------------------------------------------------
-' Property: OledbConnectionString
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' OledbConnectionString
-' </summary>
-' <returns>String</returns>
-' <remarks>
-' </remarks>
-'**/
-'---------------------------------------------------------------------------------------
-Friend Property Get OledbConnectionString() As String
-
-   If Len(m_OledbConnectionString) = 0 Then
-      SetConnectionStrings
-   End If
-   OledbConnectionString = m_OledbConnectionString
-   
-End Property
-
-'---------------------------------------------------------------------------------------
-' Property: OdbcConnectionString
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' OdbcConnectionString
-' </summary>
-' <param name="bWithoutUserInfo">False = Benutzerkennung ist im ODBC-Connectionstring nethalten, True = ohne Benutzerkennung</param>
-' <returns>String</returns>
-' <remarks>Das Einstellen des Parameters bWithoutUserInfo ist normalerweise nicht erforderlich, kann jedoch hilfreich sein, falls der ODBC-Connectionstring ohne Passwort angezeigt werden soll.
-' </remarks>
-'**/
-'---------------------------------------------------------------------------------------
-Friend Property Get OdbcConnectionString(Optional ByVal bWithoutUserInfo As Boolean = False) As String
-
-   If Len(m_OdbcConnectionString) = 0 Then
-      SetConnectionStrings
-   End If
-   If bWithoutUserInfo Then
-      OdbcConnectionString = Replace(m_OdbcConnectionString, getOdbcUserInfo(), "")
-   Else
-      OdbcConnectionString = m_OdbcConnectionString
-   End If
-
-End Property
-
-'---------------------------------------------------------------------------------------
-' Property: DatabaseFile
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Dateiname inkl. Pfad eines dateibasierten Backend
-' </summary>
-' <returns>String</returns>
-' <remarks>
-' </remarks>
-'**/
-'---------------------------------------------------------------------------------------
-Public Property Get DatabaseFile() As String
-
-   If Len(m_DatabaseFile) = 0 Then
-      SetConnectionStrings
-   End If
-   DatabaseFile = m_DatabaseFile
-
-End Property
-
-'---------------------------------------------------------------------------------------
-' Property: DbUser
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Name des Datenbankbenutzers
-' </summary>
-' <param name="withoutServerCheck">True = Keine Prüfung durchführen, ob Verbidnungsdaten bereits eingelesen wurden</param>
-' <returns>String</returns>
-' <remarks>
-' </remarks>
-'**/
-'---------------------------------------------------------------------------------------
-Public Property Get DbUser(Optional ByVal WithoutServerCheck As Boolean = False) As String
-
-   If Not WithoutServerCheck Then
-   If Not m_DbmsInfoReaded Then
-      SetConnectionStrings
-   End If
-   End If
-   
-   If m_TRUSTEDCONNECTION Then
-      DbUser = getDbUserName
-   Else
-      DbUser = m_DBUSER
-   End If
-
-End Property
-
-'---------------------------------------------------------------------------------------
-' Property: DbUserPassword
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Passwort des Datenbankbenutzers, das bei Anmeldung eingegeben wurde
-' </summary>
-' <returns>String</returns>
-' <remarks>
-' Das Passwort sollte normalerweise nie abgefragt werden müssen und nur zur Weitergabe innerhalb der Klassenstruktur benutzt werden.
-' </remarks>
-'**/
-'---------------------------------------------------------------------------------------
-Private Property Get DbUserPassword() As String
-
-   If Not m_DbmsInfoReaded Then
-      SetConnectionStrings
-   End If
-   DbUserPassword = m_DBUSERPWD
- 
-End Property
-
-'---------------------------------------------------------------------------------------
-' Property: SavePassword
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Einstellung aus den Verbindungsparametern, ob Passwort bei verknüpften Tabellen gespeichert werden soll
-' </summary>
-' <returns>Boolean</returns>
-' <remarks>
-' </remarks>
-'**/
-'---------------------------------------------------------------------------------------
-Public Property Get SavePassword() As Boolean
-
-   If Not m_DbmsInfoReaded Then
-      SetConnectionStrings
-   End If
-   SavePassword = m_SAVEPWD
-
-End Property
-
-'---------------------------------------------------------------------------------------
-' Property: UseLoginForm
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Einstellung aus den Verbindungsparametern, ob beim Anmelden das Login-Formular verwendet werden soll
-' </summary>
-' <returns>Boolean</returns>
-' <remarks>
-' </remarks>
-'**/
-'---------------------------------------------------------------------------------------
-Public Property Get UseLoginForm() As Boolean
-
-   If Not m_DbmsInfoReaded Then
-      SetConnectionStrings
-   End If
-   UseLoginForm = m_UseLoginForm
-
-End Property
-
-'---------------------------------------------------------------------------------------
 ' Sub: ClearConnectionInfo
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Eingestellte Verbindungsparameter löschen
-' </summary>
-' <remarks>
-' Erfordert erneutes Einlesen aus Tabelle, wenn die Verbidnungsdaten angefordert werden.
-' </remarks>
-'**/
+'
+' Delete set connection parameters
+'
+' Remarks:
+'     Requires re-reading from table when connection data is requested.
+'
 '---------------------------------------------------------------------------------------
 Public Sub ClearConnectionInfo()
 
@@ -769,7 +730,7 @@ On Error Resume Next
    m_LoginCancelled = False
    m_DbmsInfoReaded = False
    
-   If bolRaiseEvent Then 'Ereignis nur beim ersten Leeren auslösen
+   If bolRaiseEvent Then
       RaiseEvent DbmsConnectionInfoCleared
    End If
    
@@ -778,18 +739,18 @@ End Sub
 '---------------------------------------------------------------------------------------
 ' Function: ChangeDbUserPassword
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Datenbankpasswort des Benutzers ändern
-' </summary>
-' <param name="NewPassword">Neues Passwort</param>
-' <param name="OldPassword">Altes Passwort</param>
-' <param name="LoginName">Benutzername (Falls kein Benutzername übergeben wird, wird der aktuelle Benutzer eingesetzt)</param>
-' <param name="Msg">ByRef-Parameter zur Rückgabe einer Fehlermeldung, falls das Passwort nicht geändert werden könnte</param>
-' <returns>Boolean: True = Passwort wurde geändert</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Parameters:
+'     NewPassword - New passwort
+'     OldPassword - old passwort
+'     LoginName   - Login name (If no login name is passed, the current login name is used).
+'     Msg         - ByRef parameter to return an error message if the password could not be changed
+'
+' Returns:
+'     Boolean     - True = Password has been changed
+'
 '---------------------------------------------------------------------------------------
 Public Function ChangeDbUserPassword( _
                ByVal NewPassword As String, _
@@ -848,28 +809,25 @@ End Function
 
 '#################################
 '
-' DMBS-spezifische Prozeduren
+' Group: DMBS specific
 '
 
 '---------------------------------------------------------------------------------------
 ' Property: PermanentBackendRstSqlText
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Select-Anweisung für ODBC-Recordsetverbindung zum Aufrechterhalten der Verbindung
-' </summary>
-' <returns>String</returns>
-' <remarks>
-' Diese Prozedur muss erweitert werden, wenn weitere DBMS (wie Oracle) eingesetzt werden sollen.
-' </remarks>
-'**/
+'
+' Select statement for ODBC recordset connection to maintain connection
+'
+' Remarks:
+'     This procedure must be extended if other DBMSs (such as Oracle) are to be used.
+'
 '---------------------------------------------------------------------------------------
 Public Property Get PermanentBackendRstSqlText() As String
 On Error Resume Next
    PermanentBackendRstSqlText = "select 1"
 End Property
 
-Private Function getDbUserName() As String
+Private Function GetDbUserName() As String
 
    Dim cnn As ADODB.Connection
    Dim rst As ADODB.Recordset
@@ -892,54 +850,18 @@ Private Function getDbUserName() As String
    
    Set rst = cnn.Execute(strSQL)
    
-   getDbUserName = Nz(rst.Fields(0), "N/A")
+   GetDbUserName = Nz(rst.Fields(0), "N/A")
    rst.Close
    cnn.Close
 
 End Function
 
-'---------------------------------------------------------------------------------------
-' Property: ConnectionStrings
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' ODBC- und OLEDB-Connectionstring
-' </summary>
-' <returns>DbmsConnectionStrings</returns>
-' <remarks>
-' Diese Prozedur muss erweitert werden, wenn weitere DBMS (wie Oracle) eingesetzt werden sollen.
-' </remarks>
-'**/
-'---------------------------------------------------------------------------------------
-Friend Property Get ConnectionStrings() As DbmsConnectionStrings
-
-   If m_DbmsInfoReaded = False Then
-      ReadDBMSprop
-   End If
-
-   Select Case m_DBMSNAME
-      Case m_DBMSNAME_MSSQL
-         ConnectionStrings = ConnectionStrings_MSSQL
-      Case m_DBMSNAME_MSJET
-         ConnectionStrings = ConnectionStrings_MSJET
-      Case m_DBMSNAME_MYSQL
-         ConnectionStrings = ConnectionStrings_MySQL
-      Case m_DBMSNAME_ORACLE
-         ConnectionStrings = ConnectionStrings_ORACLE
-      Case m_DBMSNAME_ODBC
-         ConnectionStrings = ConnectionStrings_ODBC
-      Case Else
-         Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NODBMS, "ConnectionStrings", "Für '" & m_DBMSNAME & "' können keine Connectionstrings erzeugt werden. (Auswahl nicht möglich.)"
-   End Select
-
-End Property
-
-Private Function getOdbcUserInfo(Optional ByVal sUID As String = vbNullString, _
+Private Function GetOdbcUserInfo(Optional ByVal sUID As String = vbNullString, _
                                  Optional ByVal sPWD As String = vbNullString) As String
    
    If Len(sUID) = 0 Then
       If m_DbmsInfoReaded = False Then
-         ReadDBMSprop
+         LoadConnectionData
       End If
       sUID = m_DBUSER
       sPWD = m_DBUSERPWD
@@ -947,11 +869,11 @@ Private Function getOdbcUserInfo(Optional ByVal sUID As String = vbNullString, _
    
    Select Case m_DBMSNAME
       Case m_DBMSNAME_MSSQL
-         getOdbcUserInfo = getOdbcUserInfo_MSSQL(sUID, sPWD)
+         GetOdbcUserInfo = getOdbcUserInfo_MSSQL(sUID, sPWD)
       Case m_DBMSNAME_MYSQL
-         getOdbcUserInfo = getOdbcUserInfo_MySQL(sUID, sPWD)
+         GetOdbcUserInfo = getOdbcUserInfo_MySQL(sUID, sPWD)
       Case m_DBMSNAME_ORACLE
-         getOdbcUserInfo = getOdbcUserInfo_ORACLE(sUID, sPWD)
+         GetOdbcUserInfo = getOdbcUserInfo_ORACLE(sUID, sPWD)
       Case Else
          On Error GoTo 0
          Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NODBMS, "DbConnectionInfo.getOdbcUserInfo", "Für '" & m_DBMSNAME & "' kann keine OdbcUserInfo erzeugt werden. (Auswahl nicht möglich.)"
@@ -1059,7 +981,7 @@ Private Function ConnectionStrings_MySQL() As DbmsConnectionStrings
 
    If m_TRUSTEDCONNECTION Then 'Wie würde das bei MySQL funktionieren?
       m_TRUSTEDCONNECTION = False
-      If setLoginData Then
+      If SetLoginData Then
          strODBC = getOdbcUserInfo_MySQL(m_DBUSER, m_DBUSERPWD) & ";"
       Else
          On Error GoTo 0
@@ -1195,15 +1117,12 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Property: TableListSqlText
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' SQL-Anweisung im SQL-Dialtekt des DBMS zur Auflistung der im DBS enthaltenen Tabellen
-' </summary>
-' <returns>String</returns>
-' <remarks>
-' Diese Prozedur muss erweitert werden, wenn weitere DBMS (wie Oracle) eingesetzt werden sollen.
-' </remarks>
-'**/
+'
+' Remarks:
+'     This procedure must be extended if further DBMS are to be used.
+'
 '---------------------------------------------------------------------------------------
 Public Property Get TableListSqlText() As String
    
@@ -1226,7 +1145,7 @@ Public Property Get TableListSqlText() As String
 
 End Property
 
-Private Function setLoginData() As Boolean
+Private Function SetLoginData() As Boolean
    
    Dim cnn As ADODB.Connection
    Dim cmd As ADODB.Command
@@ -1249,11 +1168,11 @@ Private Function setLoginData() As Boolean
    If rst.EOF Then
       m_DBUSER = strWindowUser
       m_DBUSERPWD = vbNullString
-      setLoginData = False
+      SetLoginData = False
    Else
       m_DBUSER = rst.Fields(0)
       m_DBUSERPWD = rst.Fields(1)
-      setLoginData = True
+      SetLoginData = True
    End If
    
    rst.Close
@@ -1265,32 +1184,44 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: ParseTableName
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Hilfsprozedur zum Anpassen des Tabellennamens
-' </summary>
-' <param name="sTabName">Tabellename</param>
-' <returns>String</returns>
-' <remarks>
-' Bei manchen DBMS muss Groß- o. Kleinschreibung beachtet bzw. der Name mit Sonderzeichen eingeklammert werden.
-' </remarks>
-'**/
+'
+' Auxiliary procedure for adjusting the table name
+'
+' Parameters:
+'     TableName  -  Table name to parse
+'
+' Returns:
+'     Table name for the specific DBMS
+'
+' Remarks:
+'     With some DBMS, the name must be case-sensitive or bracketed with special characters.
+'
 '---------------------------------------------------------------------------------------
-Public Function ParseTableName(ByVal sTabName As String) As String
+Public Function ParseTableName(ByVal TableName As String) As String
    Select Case m_DBMSNAME
       Case m_DBMSNAME_MSJET
-         ParseTableName = "[" & sTabName & "]"
-      Case m_DBMSNAME_MSSQL 'keine Änderung erforderlich - zur Sicherheint in Anführugnszeichen einklammern, damit auch  Tabellennamen mit Leerzeichen verwendet werden können
-         ParseTableName = """" & sTabName & """"
-      Case m_DBMSNAME_MYSQL 'zur Sicherheit in "`" einklammern.
-         ParseTableName = "`" & sTabName & "`"
+         ParseTableName = "[" & TableName & "]"
+      Case m_DBMSNAME_MSSQL ' No change required - for safety, enclose in inverted commas so that table names with spaces can also be used.
+         ParseTableName = """" & TableName & """"
+      Case m_DBMSNAME_MYSQL 'bracket in "`" for safety.
+         ParseTableName = "`" & TableName & "`"
       Case m_DBMSNAME_ORACLE
-         ParseTableName = """" & sTabName & """"
+         ParseTableName = """" & TableName & """"
       Case Else
-         ParseTableName = sTabName
+         ParseTableName = TableName
    End Select
 End Function
 
+'---------------------------------------------------------------------------------------
+' Property: DateFormat
+'---------------------------------------------------------------------------------------
+'
+' DBMS specific date format
+'
+' Returns:
+'     Format string
+'
+'---------------------------------------------------------------------------------------
 Public Property Get DateFormat() As String
    Select Case m_DBMSNAME
       Case m_DBMSNAME_MSJET
@@ -1308,6 +1239,13 @@ Public Property Get DateFormat() As String
    End Select
 End Property
 
+'---------------------------------------------------------------------------------------
+' Property: WildCardString
+'---------------------------------------------------------------------------------------
+'
+' DBMS specific wildcard (like *)
+'
+'---------------------------------------------------------------------------------------
 Public Property Get WildCardString() As String
    Select Case m_DBMSNAME
       Case m_DBMSNAME_MSJET
@@ -1325,6 +1263,13 @@ Public Property Get WildCardString() As String
    End Select
 End Property
 
+'---------------------------------------------------------------------------------------
+' Property: BooleanTrueString
+'---------------------------------------------------------------------------------------
+'
+' DBMS specific string for true
+'
+'---------------------------------------------------------------------------------------
 Public Property Get BooleanTrueString() As String
    Select Case m_DBMSNAME
       Case m_DBMSNAME_MSJET
@@ -1342,21 +1287,16 @@ Public Property Get BooleanTrueString() As String
    End Select
 End Property
 
-
-
 #If CONFIG_USELOGINFORM = 1 Then
 '---------------------------------------------------------------------------------------
 ' Property: LoginFormName
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Name des Login-Formulars
-' </summary>
-' <returns>String</returns>
-' <remarks>
-' Beispiel aus ACLib: \base\login\frmLogin.frm
-' </remarks>
-'**/
+'
+' Name of the login form
+'
+' Remarks:
+'     Example from ACLib: user/login/LoginForm.frm
+'
 '---------------------------------------------------------------------------------------
 Public Property Get LoginFormName() As String
    If Len(m_LoginFormName) = 0 Then
@@ -1375,14 +1315,9 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: DbmsConfigFormName
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Name des Formulars zur DBMS-Konfiguration
-' </summary>
-' <returns>String</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Name of the DBMS configuration form
+'
 '---------------------------------------------------------------------------------------
 Public Property Get DbmsConfigFormName() As String
    DbmsConfigFormName = m_DbmsConfigFormName
@@ -1391,3 +1326,175 @@ End Property
 Public Property Let DbmsConfigFormName(ByVal NewValue As String)
     m_DbmsConfigFormName = NewValue
 End Property
+
+
+Private Sub LoadConnectionData(Optional ByVal WithoutLoginForm As Boolean = False, Optional ByVal RaiseDbmsConnectionChangedEvent As Boolean = False)
+   
+   Dim tempConnID As String
+
+   tempConnID = m_ConnectionIdentifier
+
+   ClearConnectionInfo
+   
+   LoadConnectionDataFromTable
+   
+   m_DbmsInfoReaded = True
+   m_SAVEPWD = (Len(m_DBUSERPWD) > 0) And (m_UseLoginForm = False)
+   
+   If m_DBMSNAME = "MSJET" Then
+      m_DatabaseFile = m_DBNAME
+   End If
+
+   If Not WithoutLoginForm Then
+   If m_UseLoginForm Then 'ergibt Anmeldung, daher nicht für Vorabeinstellungen nutzen! (=>withoutLoginForm=true)
+#If CONFIG_USELOGINFORM = 1 Then
+      Dim LoginUserName As String
+      LoginUserName = GetUserNameFromConfigFile
+      If Len(LoginUserName) = 0 Then
+         LoginUserName = m_DBUSER
+      End If
+   
+      'm_LoginForm über Property LoginForm zugänglich machen und im LoginForm selbst setzen:
+      DoCmd.OpenForm LoginFormName, acNormal, , , acFormEdit, acDialog, ObjPtr(Me) & "@" & m_ConnectionIdentifier & "@" & LoginUserName
+#Else
+   Err.Raise vbObjectError, "DbConnectionInfo", "CONFIG_USELOGINFORM in Projekteigenschaften nicht gesetzt!"
+#End If
+   End If
+   End If
+   
+   If (tempConnID <> m_ConnectionIdentifier) Or RaiseDbmsConnectionChangedEvent Then
+      RaiseEvent DbmsConnectionChanged(m_ConnectionIdentifier)
+   End If
+
+End Sub
+
+Private Sub LoadConnectionDataFromTable()
+
+   Dim rst As DAO.Recordset
+   Dim SelectSql As String
+   Dim Loa
+   
+   If Len(m_ConnectionIdentifier) = 0 Then 'jenen DS auswählen, der als "Aktiv" gekennzeichnet wurde
+      SelectSql = ActivatedConnDataSelectSql
+   Else
+      SelectSql = Replace(SelectConnectionIdentifierConnDataSelectSql, "{ConnectionIdentifier}", SqlTools.TextToSqlText(m_ConnectionIdentifier))
+   End If
+
+   Set rst = CurrentDb.OpenRecordset(SelectSql, dbOpenSnapshot)
+   If rst.EOF Then
+      
+      rst.Close
+      Set rst = Nothing
+      
+      If Len(m_ConnectionIdentifier) = 0 Then 'es wurde noch keine Verbindung aktiviert
+         If Not TryGetConnectionDataWithConfigForm(rst) Then
+            Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NODBMS, "DbConnectionInfo.LoadDbmsConnectionDataFromTable", "Es wurde keine Verbindung aktiviert."
+            Exit Sub
+         ElseIf m_DbmsInfoReaded Then
+            Exit Sub
+         End If
+      Else
+         Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NODBMS, "DbConnectionInfo.LoadDbmsConnectionDataFromTable", "Kein Eintrag für '" & m_ConnectionIdentifier & "' gefunden"
+         Exit Sub
+      End If
+      
+   End If
+   
+   'Read settings
+   LoadConnectionDataFromRecordset rst
+   rst.Close
+   Set rst = Nothing
+
+End Sub
+
+Private Function TryGetConnectionDataWithConfigForm(ByRef rst As DAO.Recordset) As Boolean
+
+   If Len(DbmsConfigFormName) > 0 Then
+   
+      If MsgBox("Es wurde noch keine Verbindung aktiviert." & vbNewLine & _
+                     "Bitte überprüfen Sie die Verbindungsparameter und aktivieren Sie die gewünschte Verbindung.", _
+                     vbInformation + vbOKCancel) = vbOK Then
+                     
+         DoCmd.OpenForm DbmsConfigFormName, , , , , acDialog
+         'Abbruch, falls über Formular bereits initialisiert wurde
+         If m_DbmsInfoReaded Then
+            TryGetConnectionDataWithConfigForm = True
+            Exit Function
+         End If
+         
+      End If
+      
+      Set rst = CurrentDb.OpenRecordset(ActivatedConnDataSelectSql, dbOpenSnapshot)
+      If Not rst.EOF Then
+         m_ConnectionIdentifier = Nz(rst.Fields("CID"), vbNullString)
+         TryGetConnectionDataWithConfigForm = True
+      Else
+         rst.Close
+         Set rst = Nothing
+         TryGetConnectionDataWithConfigForm = False
+      End If
+      
+   End If
+   
+End Function
+
+Private Sub LoadConnectionDataFromRecordset(ByVal rst As DAO.Recordset)
+
+   With rst
+      If Len(m_ConnectionIdentifier) = 0 Then
+         m_ConnectionIdentifier = Nz(rst.Fields("CID"), vbNullString)
+         If Len(m_ConnectionIdentifier) = 0 Then
+            Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NODBMS, "DbConnectionInfo.readDBMSprop", "Es wurde keine Verbindung übergeben."
+            Exit Sub
+         End If
+      End If
+      
+      m_DBMSNAME = Nz(rst.Fields("DBMS"), vbNullString)
+      m_CONNECTIONMODE = Nz(.Fields("dbmsConnectionMode"), 0) '1 = DNS less, 2 = DSN, 4 = benutzerdefiniert
+   
+      m_DBNAME = .Fields("dbmsDatabase") & vbNullString
+      
+      m_DBSERVER = .Fields("dbmsServer") & vbNullString
+      m_PORT = .Fields("dbmsPort") & vbNullString
+      
+      m_TRUSTEDCONNECTION = Nz(.Fields("dbmsUseTrustedConnection"), False)
+      m_UseLoginForm = Nz(.Fields("dbmsUseLoginForm"), False)
+      m_DBUSER = .Fields("dbmsUser") & vbNullString
+      m_DBUSERPWD = .Fields("dbmsPwd") & vbNullString
+      
+      'Falls kein Name angegeben ist, Loginform aktivieren
+      If Not (m_UseLoginForm Or m_TRUSTEDCONNECTION) And Len(m_DBUSER) = 0 Then
+         m_UseLoginForm = (m_DBMSNAME <> "MSJET")
+      End If
+      
+      m_DSN = .Fields("dbmsDSN") & vbNullString
+      
+      m_DBOLEDBPROVIDER = .Fields("dbmsOleDbProvider") & vbNullString
+      m_DBOPTIONS_OLEDB = .Fields("dbmsOptionsOLEDB") & vbNullString
+      
+      m_DBODBCDRIVER = .Fields("dbmsOdbcDriver") & vbNullString
+      m_DBOPTIONS_ODBC = .Fields("dbmsOptionsODBC") & vbNullString
+      
+      m_OledbConnectionString = .Fields("dbmsConStrOLEDB") & vbNullString
+      m_OdbcConnectionString = .Fields("dbmsConStrODBC") & vbNullString
+
+   End With
+   
+End Sub
+
+Private Function GetUserNameFromConfigFile() As String
+
+   Dim ReturnStr As String * 1280
+   Dim RetVal As Long
+   
+On Error Resume Next
+
+   RetVal = GetPrivateProfileString("Login", "UserName", vbNullString & vbNullChar, ReturnStr, Len(ReturnStr), CurrentProject.Path & "\" & m_ConnectionIdentifier & ".ini")
+   GetUserNameFromConfigFile = Trim(Left(ReturnStr, RetVal))
+
+End Function
+
+Private Sub SaveUserNameToConfigFile(ByVal UserName As String)
+On Error Resume Next
+   WritePrivateProfileString "Login", "UserName", UserName, CurrentProject.Path & "\" & m_ConnectionIdentifier & ".ini"
+End Sub

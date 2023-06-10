@@ -7,17 +7,17 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'Attribute VB_PredeclaredId = True
 '---------------------------------------------------------------------------------------
-' Class Module: VbeTools
+' Class: _codelib.addins.shared.VbeTools
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' VBE Programming Support
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/shared/VbeTools.cls</file>

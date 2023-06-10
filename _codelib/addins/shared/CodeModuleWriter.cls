@@ -8,15 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: CodeModuleWriter
+' Class: CodeModuleWriter
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Code-Module erstellen
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Create CodeModules
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/shared/CodeModuleWriter.cls</file>
@@ -28,10 +29,10 @@ Attribute VB_Exposed = False
 Option Compare Database
 Option Explicit
 
-#Const EARLYBINDING = 0
+#Const VBIDE_EARLYBINDING = 0
 #Const DEBUGMODE = 0
 
-#If EARLYBINDING Then
+#If VBIDE_EARLYBINDING Then
    Private m_CodeModule As VBIDE.CodeModule
    Private m_CurrentVbProject As VBIDE.VBProject
 #Else
@@ -57,16 +58,11 @@ Option Explicit
 '---------------------------------------------------------------------------------------
 ' Property: CodeModule
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Code-Modul, das geändert werden soll
-' </summary>
-' <returns>VBIDE.CodeModule</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' CodeModule to be changed
+'
 '---------------------------------------------------------------------------------------
-#If EARLYBINDING Then
+#If VBIDE_EARLYBINDING Then
 Public Property Get CodeModule() As VBIDE.CodeModule
 #Else
 Public Property Get CodeModule() As Object
@@ -76,18 +72,7 @@ Public Property Get CodeModule() As Object
    
 End Property
 
-'---------------------------------------------------------------------------------------
-' Property: CodeModule
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Code-Modul, das geändert werden soll
-' </summary>
-' <remarks>
-' </remarks>
-'**/
-'---------------------------------------------------------------------------------------
-#If EARLYBINDING Then
+#If VBIDE_EARLYBINDING Then
 Public Property Set CodeModule(ByVal NewRef As VBIDE.CodeModule)
 #Else
 Public Property Set CodeModule(ByVal NewRef As Object)
@@ -155,7 +140,7 @@ Private Function CreateEmptyEventProcedure(ByVal EventName As String, ByVal Obje
    CreateEmptyEventProcedure = m_CodeModule.ProcBodyLine(ObjectName & "_" & EventName, vbext_pk_Proc)
 End Function
 
-#If EARLYBINDING Then
+#If VBIDE_EARLYBINDING Then
 Friend Property Set CurrentVbProject(ByVal NewRef As VBIDE.VBProject)
 #Else
 Friend Property Set CurrentVbProject(ByVal NewRef As Object)
@@ -163,13 +148,13 @@ Friend Property Set CurrentVbProject(ByVal NewRef As Object)
    Set m_CurrentVbProject = NewRef
 End Property
 
-#If EARLYBINDING Then
+#If VBIDE_EARLYBINDING Then
 Friend Property Get CurrentVbProject() As VBIDE.VBProject
 #Else
 Friend Property Get CurrentVbProject() As Object
 #End If
 
-#If EARLYBINDING Then
+#If VBIDE_EARLYBINDING Then
    Dim Proj As VBProject
 #Else
    Dim Proj As Object
@@ -186,7 +171,7 @@ End Property
 
 Public Sub ImportVbComponent(ByVal ComponentType As vbext_ComponentType, ByVal CodeModulName As String, ByVal ImportFile As String)
 
-#If EARLYBINDING = 1 Then
+#If VBIDE_EARLYBINDING = 1 Then
    Dim VbcCol As VBIDE.VBComponents
    Dim vbc As VBIDE.VBComponent
    Dim cm As VBIDE.CodeModule
@@ -273,13 +258,13 @@ Private Function GetComponentTypeFromFile(ByVal FilePath As String) As vbext_Com
 
 End Function
 
-#If EARLYBINDING = 1 Then
+#If VBIDE_EARLYBINDING = 1 Then
 Private Sub DeleteClassHeaderLinesFromCodeModul(ByRef cm As CodeModule)
 #Else
 Private Sub DeleteClassHeaderLinesFromCodeModul(ByRef cm As Object)
 #End If
 '
-'Header sieht so aus:
+'Header looks like this:
 '--
 'VERSION 1.0 CLASS
 'BEGIN

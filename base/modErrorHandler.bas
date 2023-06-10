@@ -1,15 +1,16 @@
 Attribute VB_Name = "modErrorHandler"
 Attribute VB_Description = "Prozeduren für die Fehlerbehandlung"
 '---------------------------------------------------------------------------------------
-' Modul: modErrorHandler
+' Package: base.modErrorHandler
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Error handling procedures
-' </summary>
-' <remarks></remarks>
-'\ingroup base
-'**/
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>base/modErrorHandler.bas</file>
@@ -24,21 +25,18 @@ Option Private Module
 '---------------------------------------------------------------------------------------
 ' Enum: ACLibErrorHandlerMode
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' ErrorHandler Modes (error handling variants)
-' </summary>
-' <list type="table">
-'   <item><term>aclibErrRaise (0)</term><description>Pass error to application</description></item>
-'   <item><term>aclibErrMsgBox (1)</term><description>Show error in MsgBox</description></item>
-'   <item><term>aclibErrIgnore (2)</term><description>ignore error, do not display any message</description></item>
-'   <item><term>aclibErrFile (4)</term><description>Write error information to file</description></item>
-' </list>
-' <remarks>
+'
+'   aclibErrRaise    - (0) Pass error to application
+'   aclibErrMsgBox   - (1) Show error in MsgBox
+'   aclibErrIgnore   - (2) Ignore error, do not display any message
+'   aclibErrFile     - (4) Write error information to file
+'
+' Remarks:
 '   The values {0,1,2} exclude each other. The value 4 (aclibErrFile) can be added arbitrarily to {0,1,2}.
 '   Example: Init aclibErrRaise + aclibErrFile
-' </remarks>
-'**/
+'
 Public Enum ACLibErrorHandlerMode
    [_aclibErr_default] = -1
    aclibErrRaise = 0&    'Pass error to application
@@ -50,17 +48,16 @@ End Enum
 '---------------------------------------------------------------------------------------
 ' Enum: ACLibErrorResumeMode
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Processing parameters in case of errors
-' </summary>
-' <list type="table">
-'   <item><term>aclibErrExit (0)</term><description>Termination (function exit)</description></item>
-'   <item><term>aclibErrResume (1)</term><description>Resume, Problem fixed externally</description></item>
-'   <item><term>aclibErrResumeNext (2)</term><description>Resume next, continue working in the code at the next point</description></item>
-' </list>
-' <remarks>Used for error events</remarks>
-'**/
+'
+'     aclibErrExit         - (0) Termination (function exit)
+'     aclibErrResume       - (1) Resume, Problem fixed externally
+'     aclibErrResumeNext   - (2) Resume next, continue working in the code at the next point
+'
+' Remarks:
+'     Used for error events
+'
 Public Enum ACLibErrorResumeMode
    aclibErrExit = 0       'Termination (function exit)
    aclibErrResume = 1     'Resume, Problem fixed externally
@@ -70,10 +67,6 @@ End Enum
 '---------------------------------------------------------------------------------------
 ' Enum: ACLibErrorNumbers
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' </summary>
-'**/
 Public Enum ACLibErrorNumbers
    ERRNR_NOOBJECT = vbObjectError + 1001
    ERRNR_NOCONFIG = vbObjectError + 1002
@@ -94,27 +87,15 @@ Private m_ErrorHandlerLogFile As String
 '---------------------------------------------------------------------------------------
 ' Property: DefaultErrorHandlerMode
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Default behaviour of error handling
-' </summary>
-'**/
+'
 '---------------------------------------------------------------------------------------
 Public Property Get DefaultErrorHandlerMode() As ACLibErrorHandlerMode
 On Error Resume Next
     DefaultErrorHandlerMode = m_DefaultErrorHandlerMode
 End Property
 
-'---------------------------------------------------------------------------------------
-' Property: DefaultErrorHandlerMode
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Default behaviour of error handling
-' </summary>
-' <param name="ErrMode">ACLibErrorHandlerMode</param>
-'**/
-'---------------------------------------------------------------------------------------
 Public Property Let DefaultErrorHandlerMode(ByVal ErrMode As ACLibErrorHandlerMode)
     m_DefaultErrorHandlerMode = ErrMode
 End Property
@@ -122,26 +103,14 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: ErrorHandlerLogFile
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Log file for error message
-' </summary>
-'**/
+'
 '---------------------------------------------------------------------------------------
 Public Property Get ErrorHandlerLogFile() As String
     ErrorHandlerLogFile = m_ErrorHandlerLogFile
 End Property
 
-'---------------------------------------------------------------------------------------
-' Property: ErrorHandlerLogFile
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Log file for error message
-' </summary>
-' <param name="Path">Full file path</param>
-'**/
-'---------------------------------------------------------------------------------------
 Public Property Let ErrorHandlerLogFile(ByVal Path As String)
 '/**
 ' * @todo: Checking for the existence of the file or at least the directory
@@ -152,21 +121,24 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Function: HandleError
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Standard procedure for error handling
-' </summary>
-' <param name="ErrNumber"></param>
-' <param name="ErrSource"></param>
-' <param name="ErrDescription"></param>
-' <param name="ErrHandlerMode"></param>
-' <returns>ACLibErrorResumeMode</returns>
-' <remarks>
-'Beispiel:
-'==<code>
-'Private Sub ExampleProc() \n
-'\n
-'On Error GoTo HandleErr \n
+'
+' Parameters:
+'     ErrNumber"></param>
+'     ErrSource"></param>
+'     ErrDescription"></param>
+'     ErrHandlerMode"></param>
+'
+' Returns:
+'     ACLibErrorResumeMode
+'
+' Remarks:
+'Example:
+'<code>
+'Private Sub ExampleProc()
+'
+'On Error GoTo HandleErr
 '
 '[...]
 '
@@ -185,9 +157,8 @@ End Property
 '   End Select
 '
 'End Sub
-'<code>==
-' </remarks>
-'**/
+'<code>
+'
 '---------------------------------------------------------------------------------------
 Public Function HandleError(ByVal ErrNumber As Long, ByVal ErrSource As String, _
                    Optional ByVal ErrDescription As String, _

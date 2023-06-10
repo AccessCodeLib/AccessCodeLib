@@ -8,16 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class: AdodbHandler
+' Class: data.adodb.AdodbHandler
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Poetzl
-' <summary>
-' ADODB-Zugriffsmethoden
-' </summary>
-' <remarks></remarks>
-'\ingroup data_adodb
-'**/
+'
+' ADODB data connection methods
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>data/ado/AdodbHandler.cls</file>
@@ -36,49 +36,76 @@ Private m_AdoConnection As ADODB.Connection
 'ADO-Connectionstring
 Private m_AdoConnectionString As String
 
-'Error-Events für mögliche Fehlerbehandlung über die FE-Anwendung
-'/**
-' <summary>
-' Ereignis für fehlende ADODB-Connection-Referenz
-' </summary>
-' <param name="Msg">Meldung über Ursache der Ereignisauslösung. (Wird noch nicht genutzt)</param>
-' <param name="NewCurrentConnection">ADODB.Connection-Referenz, die für CurrentConnection verwendet werden soll</param>
-' <remarks>
-' Über den ByRef-Parameter NewCurrentConnection kann die passende ADODB.Database-Referenz weitergegeben werden.
-' Eine Referenz-Weitergabe ist allerdings nicht zwingend erforderlich, da z. B. in der Methode #CurrentConnection
-' die Connection dann aus dem #ConnectionString erstellt wird.
-' </remarks>
-'**/
+'#############################################################
+' Group: Events
+
+'---------------------------------------------------------------------------------------
+' Event: ErrorMissingCurrentConnection
+'---------------------------------------------------------------------------------------
+'
+' Event for missing ADODB connection reference
+' (Passing the AdodbHandler event: <data.adodb.AdodbHandler::ErrorMissingCurrentConnection>)
+'
+' Parameters:
+'     Msg   -  Message about the cause of the event triggering. (Not yet used)
+'     NewCurrentConnection - ADODB.Connectionreference to be used for CurrentConnection
+'
+' Remarks:
+'     The appropriate ADODB.Database reference can be passed on via the ByRef parameter NewCurrentConnection.
+'     However, passing on a reference is not mandatory, since, it is stored in the AdodbHandler property <data.adodb.AdodbHandler::CurrentConnection>.
+'     The connection is then created from the <data.adodb.AdodbHandler::ConnectionString>
+'
+'---------------------------------------------------------------------------------------
 Public Event ErrorMissingCurrentConnection(ByVal Msg As String, ByRef NewCurrentConnection As ADODB.Connection)
 
-'/**
-' <summary>
-' Ereignis für fehlenden OLEDB-Connectionstring
-' </summary>
-' <param name="Msg">Meldung über Ursache der Ereignisauslösung. (Wird noch nicht genutzt)</param>
-' <param name="NewConnectionString">OLEDB-Connectionstring</param>
-' <remarks>über den ByRef-Parameter NewConnectionString kann der passende OLEDB-Connectionstring weitergegeben werden.</remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: ErrorEmptyOledbConnectionString
+'---------------------------------------------------------------------------------------
+'
+' Event for missing OLEDB connection string
+'
+' Parameters:
+'     Msg                  - Message about the cause of the event triggering. (Not yet used)
+'     NewConnectionString  - OLEDB Connectionstring
+'
+' Remarks:
+'     The appropriate OLEDB connection string can be passed on via the ByRef parameter NewConnectionString.
+'
+'---------------------------------------------------------------------------------------
 Public Event ErrorEmptyConnectionString(ByVal Msg As String, ByRef NewConnectionString As String)
 
-
+'---------------------------------------------------------------------------------------
+' Event: HookInsertIdentityReturn
+'---------------------------------------------------------------------------------------
+'
+' Event for missing OLEDB connection string
+'
+' Parameters:
+'     InsertSql            - SQL text of insert statement
+'     IdentityTable        - Identity table
+'     ActiveConnection     - ADODB Connection to use
+'     IdentitySelectString - Input string to use
+'     HookResponseMode       - resume action after event call: 0 ... code resume after event, 1 exit function after event
+'     HookResponseMessage    - return value of function (e.g. InsertIdentityReturn) when HookResumeMode <> 0
+'
+' Remarks:
+'     New values can be passed on via the ByRef parameters.
+'
+'---------------------------------------------------------------------------------------
 Public Event HookInsertIdentityReturn(ByRef InsertSql As String, ByRef IdentityTable As String, _
                                       ByRef ActiveConnection As ADODB.Connection, ByRef IdentitySelectString As String, _
-                                      ByRef HookResumeMode As Long, ByRef HookResumeMessage As Variant)
+                                      ByRef HookResponseMode As Long, ByRef HookResponseMessage As Variant)
 
 Private m_HooksEnabled As Boolean
 
 Private m_DefaultCursorLocation As ADODB.CursorLocationEnum
 
-'Private Type AdodbCommandParamDef
-'   ParamName As String
-'   ParamValue As Variant
-'End Type
+'#############################################################
+' Group: Class control
 
 '
 ' Init / Terminate
 ' ----------------
-
 Private Sub Class_Initialize()
    m_DefaultCursorLocation = adUseServer
 End Sub
@@ -91,6 +118,15 @@ Public Sub Dispose()
    Set m_AdoConnection = Nothing
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Property: HooksEnabled
+'---------------------------------------------------------------------------------------
+' Active Hooks
+'
+' Remarks:
+'     Used in InsertIdentityReturn
+'
+'---------------------------------------------------------------------------------------
 Public Property Get HooksEnabled() As Boolean
    HooksEnabled = m_HooksEnabled
 End Property
@@ -107,36 +143,38 @@ Public Property Let DefaultCursorLocation(ByVal NewValue As ADODB.CursorLocation
    m_DefaultCursorLocation = NewValue
 End Property
 
-
+'#############################################################
+' Group: Data Connection
 
 '---------------------------------------------------------------------------------------
-' Property: CurrentConnection (2009-08-06)
+' Property: CurrentConnection
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Aktuell eingestellte ADODB-Connction
-' </summary>
-' <returns>ADODB.Connection</returns>
-' <remarks>
-' Falls noch keine ADODB-Connection vorhanden ist, wird eine neue ADODB-Verbindung erstellt.
-' Ablauf der Instanzieren:
-' 1. RaiseEvent #ErrorMissingCurrentConnection ... falls keine Connection übergeben wurde:
-' 2. Neue ADODB-Connection auf Basis des OLEDB-Connectionstring erzeugen (Einsatz der Eigenschaft #ConnectionString)
 '
-' Falls bereits eine Referenz zu einer ADODB-Connection vorhanden ist, wird geprüft, ob diese geschlossen ist und im Bedarfsfall geöffnet.
-' </remarks>
-'**/
+' Get:
+'     Currently set ADODB connection
+'
+' Set:
+'     Set new ADODB connection
+'
+' Remarks:
+'     If there is no ADODB connection yet, a new ADODB connection will be created.
+'     Instantiation flow:
+'        1. raiseEvent #ErrorMissingCurrentConnection ... if no connection was passed:
+'        2. create new ADODB connection based on the OLEDB connection string (use property <data.adodb.AdodbHandler::ConnectionString>)
+'
+'     If a reference to an ADODB connection already exists, it will be checked if it is closed and opened if necessary.
+'
 '---------------------------------------------------------------------------------------
 Public Property Get CurrentConnection() As ADODB.Connection
 
    Dim strConnString As String
 
    If (m_AdoConnection Is Nothing) Then
-      'Connection über Event anfordern.
+      'Request connection via event.
       RaiseEvent ErrorMissingCurrentConnection("Unavailable CurrentConnection", m_AdoConnection)
       If (m_AdoConnection Is Nothing) Then
-         'Neue Verbindung einstellen, falls durch Event keine Connection übergeben wurde
-         strConnString = ConnectionString '... siehe Property ConnectionString
+         'Set new connection if no connection was passed by event
+         strConnString = ConnectionString
          If Len(strConnString) > 0 Then
             Set m_AdoConnection = New ADODB.Connection
             m_AdoConnection.Open strConnString
@@ -145,7 +183,7 @@ Public Property Get CurrentConnection() As ADODB.Connection
    ElseIf (m_AdoConnection.State <> ObjectStateEnum.adStateOpen) Then
       If Len(m_AdoConnection.ConnectionString) > 0 Then
          m_AdoConnection.Open
-      Else 'neu verbinden
+      Else '(re)open connection
          m_AdoConnection.Open ConnectionString
       End If
    End If
@@ -153,17 +191,6 @@ Public Property Get CurrentConnection() As ADODB.Connection
 
 End Property
 
-'---------------------------------------------------------------------------------------
-' Property: CurrentConnection
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Übergabe einer ADODB-Connection
-' </summary>
-' <param name="NewConnection">Neue ADODB-Connection</param>
-' <remarks></remarks>
-'**/
-'---------------------------------------------------------------------------------------
 Public Property Set CurrentConnection(ByRef NewConnection As ADODB.Connection)
    If Not (m_AdoConnection Is Nothing) Then
       If m_AdoConnection.State <> adStateClosed Then
@@ -177,13 +204,9 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: ConnectionString
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' OLEDB-Connectionstring
-' </summary>
-' <returns>OLEDB-Connectionstring</returns>
-' <remarks></remarks>
-'**/
+'
+' OLEDB connection string
+'
 '---------------------------------------------------------------------------------------
 Public Property Get ConnectionString() As String
    If Len(m_AdoConnectionString) = 0 Then
@@ -191,42 +214,37 @@ Public Property Get ConnectionString() As String
          m_AdoConnectionString = m_AdoConnection.ConnectionString
       End If
       If Len(m_AdoConnectionString) = 0 Then
-         'Connectiostring mittels Event abfragen
-         RaiseEvent ErrorEmptyConnectionString("DbConnection.ConnectionString", m_AdoConnectionString)
+         RaiseEvent ErrorEmptyConnectionString("AdodbHandler.ConnectionString", m_AdoConnectionString)
       End If
    End If
    ConnectionString = m_AdoConnectionString
 End Property
 
-'---------------------------------------------------------------------------------------
-' Property: ConnectionString
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' OLEDB-Connectionstring
-' </summary>
-' <param name="Value">OLEDB-Connectionstring für den Verbindungaufbau</param>
-' <remarks></remarks>
-'**/
-'---------------------------------------------------------------------------------------
 Public Property Let ConnectionString(ByVal Value As String)
    Set CurrentConnection = Nothing
    m_AdoConnectionString = Value
 End Property
 
+'#############################################################
+' Group: Data Operations
+
 '---------------------------------------------------------------------------------------
 ' Function: Execute
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Sql-Anweisung ausführen
-' </summary>
-' <param name="CommandText">SQL-Anweisung</param>
-' <param name="RecordsAffected">ByRef-Parameter zur Rückgabe der Anzahl der von der Execute-Anweisung betroffenen Datensätze</param>
-' <param name="Options">zusätztliche Optionen der ADODB.Connection-Execute-Methode</param>
-' <returns>ADODB.Recordset</returns>
-' <remarks>Kapselung der ADODB.Connection.Execute-Methode (Parameter werden 1:1 weitergereicht)</remarks>
-'**/
+'
+' Execute SQL statement
+'
+' Parameters:
+'     CommandText       - SQL statement
+'     RecordsAffected   - ByRef parameter to return the number of records affected by the Execute statement.
+'     Options           - additional options of the ADODB.Connection.Execute method
+'
+' Returns:
+'     ADODB.Recordset
+'
+' Remarks:
+'     Encapsulation of the ADODB.Connection.Execute method (parameters are passed on 1:1)
+'
 '---------------------------------------------------------------------------------------
 Public Function Execute(ByVal CommandText As String, _
                Optional ByRef RecordsAffected As Long, _
@@ -237,26 +255,31 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: ExecuteCommand
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Sql-Anweisung mittels ADODB.Command ausführen
-' </summary>
-' <param name="CmdText">ADODB.CommandText-Wert</param>
-' <param name="CmdType">ADODB.CommandType-Wert</param>
-' <param name="commandParamDefs">2-dimensionales Parameter-Array (Array(n,1) ... x(n,0) = Parametername, x(n,1) = Parameterwert)</param>
-' <param name="RecordsAffected">ByRef-Parameter zur Rückgabe der Anzahl der von der Execute-Anweisung betroffenen Datensätze</param>
-' <param name="Options">zusätztliche Optionen der ADODB.Connection-Execute-Methode</param>
-' <returns>ADODB.Recordset</returns>
-' <remarks>Mit dieser Variante kann sehr einfach SQL-Injection vermieden werden, da die Parameter nicht direkt in der SQL-Anweisung eingebaut sind und somit ein Parameterwert (der z. B. von einer Benutzereingabe stammt) keine SQL-Anweisung einschleusen kann.</remarks>
-'**/
+'
+' Execute sql statement using ADODB.Command
+'
+' Parameters:
+'     CmdText           - ADODB.CommandText value
+'     CmdType           - ADODB.CommandType value
+'     CmdParamDefs      - 2-dimensional parameter array (Array(n,1) ... x(n,0) = parameter name, x(n,1) = parameter value)
+'     RecordsAffected   - ByRef parameter to return the number of records affected by the Execute statement.
+'     Options           - additional options of the ADODB.Command.Execute method
+'
+' Returns:
+'     ADODB.Recordset
+'
+' Remarks:
+'     With this variant, SQL injection can be avoided very easily,
+'     since the parameters are not built directly into the SQL statement
+'     and thus a parameter value (which comes from a user input, for example) cannot inject an SQL statement.
+'
 '---------------------------------------------------------------------------------------
 Public Function ExecuteCommand(ByVal CmdText As String, _
                                ByVal CmdType As ADODB.CommandTypeEnum, _
                       Optional ByVal CmdParamDefs As Variant, _
                       Optional ByRef RecordsAffected As Long, _
                       Optional ByVal Options As Long = -1) As ADODB.Recordset
-'gibt geöffnetes ADODB-Recordset zurück
-
+                      
    Dim cmd As ADODB.Command
    Dim ParamDefsArraySize As Long
    Dim i As Long
@@ -287,28 +310,27 @@ Public Function ExecuteCommand(ByVal CmdText As String, _
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: OpenRecordset (2009-07-25)
+' Function: OpenRecordset
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' OpenRecordset
-' </summary>
-' <param name="Source">Datenquelle (z.B. SQL-Anweisung)</param>
-' <param name="CursorType">ADODB.CursorTypeEnum-Wert</param>
-' <param name="LockType">ADODB.LockTypeEnum-Wert</param>
-' <param name="CursorLocation">ADODB.CursorLocationEnum-Wert</param>
-' <param name="DisconnectedRecordset">True: Verbindung nach Öffnen des Recordset kappen ... verbindungsloses Recordset</param>
-' <returns>ADODB.Recordset</returns>
-' <remarks></remarks>
-'**/
+'
+' Optimizes ADODB.Recordset.Open method
+'
+' Parameters:
+'     Source                  - Data source (e.g. SQL statement)
+'     CursorType              - ADODB.CursorTypeEnum value
+'     LockType                - ADODB.LockTypeEnum value
+'     CursorLocation          - ADODB.CursorLocationEnum value
+'     DisconnectedRecordset   - True: disconnect connection from recordset after opening
+'
+' Returns:
+'     ADODB.Recordset
+'
 '---------------------------------------------------------------------------------------
 Public Function OpenRecordset(ByVal Source As String, _
                      Optional ByVal CursorType As ADODB.CursorTypeEnum = ADODB.CursorTypeEnum.adOpenForwardOnly, _
                      Optional ByVal LockType As ADODB.LockTypeEnum = ADODB.LockTypeEnum.adLockReadOnly, _
                      Optional ByVal CursorLocation As ADODB.CursorLocationEnum = -1, _
                      Optional ByVal DisconnectedRecordset As Boolean = False) As ADODB.Recordset
-' gibt geöffnetes ADO-Recordset zurück
-' Source = SQL-Anweisung
 
    Dim rst As ADODB.Recordset
    
@@ -342,68 +364,62 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: OpenRecordsetCommandParam
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Recocordset mittels ADODB.Command öffnen
-' </summary>
-' <param name="CmdText">ADODB.CommandText-Wert</param>
-' <param name="CmdType">ADODB.CommandType-Wert</param>
-' <param name="commandParamDefs">2-dimensionales Parameter-Array (Array(n,1) ... x(n,0) = Parametername, x(n,0) = Parameterwert) ... abwechselnd Paramtername und Parameterwert einstellen</param>
-' <returns>ADODB.Recordset</returns>
-' <remarks>Mit dieser Variante kann sehr einfach SQL-Injection vermieden werden, da die Parameter nicht direkt in der SQL-Anweisung eingebaut sind und somit ein Parameterwert (der z. B. von einer Benutzereingabe stammt) keine SQL-Anweisung einschleusen kann.</remarks>
-'**/
+'
+' Open recordset using ADODB.Command
+'
+' Parameters:
+'     CmdText                 - ADODB.CommandText value
+'     CmdType                 - ADODB.CommandType value
+'     CmdParamDefs            - 2-dimensional parameter array (Array(n,1) ... x(n,0) = parameter name, x(n,1) = parameter value)
+'     RecordsAffected         - ByRef parameter to return the number of records affected by the Execute statement.
+'     Options                 - additional options of the ADODB.Command.Execute method
+'     DisconnectedRecordset   - True: disconnect connection from recordset after opening
+'
+' Returns:
+'     ADODB.Recordset
+'
+' Remarks:
+'     With this variant, SQL injection can be avoided very easily,
+'     since the parameters are not built directly into the SQL statement
+'     and thus a parameter value (which comes from a user input, for example) cannot inject an SQL statement.
+'
 '---------------------------------------------------------------------------------------
 Public Function OpenRecordsetCommandParam(ByVal CmdText As String, _
                                           ByVal CmdType As ADODB.CommandTypeEnum, _
-                                 Optional ByVal commandParamDefs As Variant) As ADODB.Recordset
-'gibt geöffnetes ADO-Recordset zurück
+                                 Optional ByVal CmdParamDefs As Variant, _
+                                 Optional ByRef RecordsAffected As Long, _
+                                 Optional ByVal Options As Long = -1, _
+                                 Optional ByVal DisconnectedRecordset As Boolean = False) As ADODB.Recordset
 
-   Dim cmd As ADODB.Command
-
-   Dim ParamDefsArraySize As Long
-   Dim i As Long
-   Dim strParamName As String
-
-   Set cmd = New ADODB.Command
-
-   With cmd
-
-      Set .ActiveConnection = Me.CurrentConnection
-      .CommandText = CmdText
-      .CommandType = CmdType
-
-      If Not IsMissing(commandParamDefs) Then
-         ParamDefsArraySize = UBound(commandParamDefs, 1)
-         For i = 0 To ParamDefsArraySize
-         strParamName = Nz(commandParamDefs(i, 0), vbNullString)
-         If Len(strParamName) > 0 Then
-            .Parameters(commandParamDefs(i, 0)).Value = commandParamDefs(i, 1)
-         End If
-         Next i
-      End If
-
-      Set OpenRecordsetCommandParam = .Execute()
-
-   End With
-
-   Set cmd = Nothing
-
+   Dim rst As ADODB.Recordset
+   
+   Set rst = ExecuteCommand(CmdText, CmdType, CmdParamDefs, RecordsAffected, Options)
+   If DisconnectedRecordset Then
+      Set rst.ActiveConnection = Nothing
+   End If
+   
+   Set OpenRecordsetCommandParam = rst
 
 End Function
 
 '---------------------------------------------------------------------------------------
 ' Function: LookupSQL
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Lookup-Recordset-Ersatzfunktion für Übergabe einer vollständigen SQL-Anweisung
-' </summary>
-' <param name="SqlText">SQL-Anweisung</param>
-' <param name="Index">Feldauswahl, falls nicht das erste Feld des Recordsets zurückgeliefert werden soll. Die Index-Übergabe erfolgt analaog ADODB.Recordset.Fields(index)</param>
-' <param name="ValueIfNull">Rückgabewert bei fehlendem Datensatz oder NULL-Feldwert (Standard: Null</param>
-' <returns>Variant (NULL, falls SQL-Anweisung keinen Datensatz liefert.)</returns>
-' <remarks>Die SQL-Anweisung ist im SQL-Dialekt des betroffenen DBMS zu schreiben.</remarks>
-'**/
+'
+' Lookup ADODB.Recordset replacement function for DLookup (passing a SQL statement)
+'
+' Parameters:
+'     SqlText     - SQL statement
+'     Index       - Field selection if the first field of the recordset is not to be returned.
+'                   The index is passed in the same way as ADODB.Recordset.Fields(index).
+'     ValueIfNull - Return value if record is missing or data field value is Null (default: Null).
+'
+' Returns:
+'     Variant  - Null, if SQL statement does not return a record.
+'
+' Remarks:
+'     The SQL statement must be written in the SQL dialect of the DBMS concerned.
+'
 '---------------------------------------------------------------------------------------
 Public Function LookupSql(ByVal SqlText As String, _
                  Optional ByVal Index As Variant = 0&, _
@@ -440,16 +456,18 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: Lookup
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Lookup-Recordset-Ersatzfunktion
-' </summary>
-' <param name="Expr">Feldname oder berechneter Ausdruck (Select-Teil)</param>
-' <param name="Domain">Tabelle, Abfrage oder SQL-Ausdruck für Sub-Abfrage (FROM-Teil)</param>
-' <param name="Criteria">Filter (WHERE-Teil)</param>
-' <returns>Variant</returns>
-' <remarks></remarks>
-'**/
+'
+' ADODB.Recordset replacement function for DLookup
+'
+' Parameters:
+'     Expr        - Field name or calculated expression (select part)
+'     Domain      - Table, query or SQL expression for sub-query (FROM part)
+'     Criteria    - (Optional) Criteria string (WHERE part)
+'     ValueIfNull - Return value if record is missing or data field value is Null (default: Null).
+'
+' Returns:
+'     Variant
+'
 '---------------------------------------------------------------------------------------
 Public Function Lookup(ByVal Expr As String, ByVal Domain As String, _
               Optional ByVal Criteria As Variant, _
@@ -468,18 +486,19 @@ Public Function Lookup(ByVal Expr As String, ByVal Domain As String, _
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: DCount
+' Function: Count
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' DCount-Recordset-Ersatzfunktion
-' </summary>
-' <param name="Expr">Feldname oder berechneter Ausdruck (Select-Teil)</param>
-' <param name="Domain">Tabelle, Abfrage oder SQL-Ausdruck für Sub-Abfrage (FROM-Teil)</param>
-' <param name="Criteria">Filter (WHERE-Teil)</param>
-' <returns>Long</returns>
-' <remarks></remarks>
-'**/
+'
+' ADODB.Recordset replacement function for DCount
+'
+' Parameters:
+'     Expr        - Field name or calculated expression (select part)
+'     Domain      - Table, query or SQL expression for sub-query (FROM part)
+'     Criteria    - (Optional) Criteria string (WHERE part)
+'
+' Returns:
+'     Long
+'
 '---------------------------------------------------------------------------------------
 Public Function Count(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Long
    Count = Nz(Me.Lookup("Count(" & Expr & ")", Domain, Criteria), 0)
@@ -488,16 +507,17 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: Max
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' DMax-Recordset-Ersatzfunktion
-' </summary>
-' <param name="Expr">Feldname oder berechneter Ausdruck (Select-Teil)</param>
-' <param name="Domain">Tabelle, Abfrage oder SQL-Ausdruck für Sub-Abfrage (FROM-Teil)</param>
-' <param name="Criteria">Filter (WHERE-Teil)</param>
-' <returns>Variant</returns>
-' <remarks></remarks>
-'**/
+'
+' ADODB.Recordset replacement function for DMax
+'
+' Parameters:
+'     Expr        - Field name or calculated expression (select part)
+'     Domain      - Table, query or SQL expression for sub-query (FROM part)
+'     Criteria    - (Optional) Criteria string (WHERE part)
+'
+' Returns:
+'     Variant
+'
 '---------------------------------------------------------------------------------------
 Public Function Max(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
    Max = Me.Lookup("Max(" & Expr & ")", Domain, Criteria)
@@ -506,16 +526,17 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: Min
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' DMin-Recordset-Ersatzfunktion
-' </summary>
-' <param name="Expr">Feldname oder berechneter Ausdruck (Select-Teil)</param>
-' <param name="Domain">Tabelle, Abfrage oder SQL-Ausdruck für Sub-Abfrage (FROM-Teil)</param>
-' <param name="Criteria">Filter (WHERE-Teil)</param>
-' <returns>Variant</returns>
-' <remarks></remarks>
-'**/
+'
+' ADODB.Recordset replacement function for DMin
+'
+' Parameters:
+'     Expr        - Field name or calculated expression (select part)
+'     Domain      - Table, query or SQL expression for sub-query (FROM part)
+'     Criteria    - (Optional) Criteria string (WHERE part)
+'
+' Returns:
+'     Variant
+'
 '---------------------------------------------------------------------------------------
 Public Function Min(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
    Min = Me.Lookup("Min(" & Expr & ")", Domain, Criteria)
@@ -524,32 +545,64 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: Sum
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' DSum-Recordset-Ersatzfunktion
-' </summary>
-' <param name="Expr">Feldname oder berechneter Ausdruck (Select-Teil)</param>
-' <param name="Domain">Tabelle, Abfrage oder SQL-Ausdruck für Sub-Abfrage (FROM-Teil)</param>
-' <param name="Criteria">Filter (WHERE-Teil)</param>
-' <returns>Variant</returns>
-' <remarks></remarks>
-'**/
+'
+' ADODB.Recordset replacement function for DSum
+'
+' Parameters:
+'     Expr        - Field name or calculated expression (select part)
+'     Domain      - Table, query or SQL expression for sub-query (FROM part)
+'     Criteria    - (Optional) Criteria string (WHERE part)
+'
+' Returns:
+'     Variant
+'
 '---------------------------------------------------------------------------------------
 Public Function Sum(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
    Sum = Me.Lookup("Sum(" & Expr & ")", Domain, Criteria)
 End Function
 
 '---------------------------------------------------------------------------------------
+' Function: Exists
+'---------------------------------------------------------------------------------------
+'
+' Check if record exists
+'
+' Parameters:
+'     Domain   - data source (FROM part)
+'     Criteria - (Optional) Criteria string (WHERE part)
+'
+' Returns:
+'     Boolean
+'
+'---------------------------------------------------------------------------------------
+Public Function Exists(ByVal Domain As String, _
+              Optional ByVal Criteria As String = vbNullString) As Boolean
+
+   Dim strSQL As String
+
+   strSQL = "SELECT 1 FROM " & Domain
+   If Len(Criteria) > 0 Then
+      strSQL = strSQL & " WHERE " & Criteria
+   End If
+   Exists = (LookupSql(strSQL, , 0) = 1)
+
+End Function
+
+'---------------------------------------------------------------------------------------
 ' Function: InsertIdentityReturn
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Insert-SQL-Anweisung ausführen und letzten Identity-Wert (Autowert) zurückgeben
-' </summary>
-' <param name="InsertSQL">Insert-SQL-Anweisung (INSERT ...)</param>
-' <returns>Identity-Wert oder NULL falls kein Datensatz angefügt wurde</returns>
-' <remarks>Funktioniert für Jet erst ab Jet 4.0 (Access 2000), IdentityTable ist nur für MSSQL anwendbar, unter MySQL gibt es die Funktion IDENT_CURRENT nicht.</remarks>
-'**/
+'
+' Execute insert SQL statement and return last identity value (auto value)
+'
+' Parameters:
+'     InsertSQL   - Insert SQL statement
+'
+' Returns:
+'     Identity value or NULL if no record was appended
+'
+' Remarks:
+'     Works for Jet only from Jet 4.0 (Access 2000), IdentityTable is only applicable for MSSQL, under MySQL the IDENT_CURRENT function does not exist.
+'
 '---------------------------------------------------------------------------------------
 Public Function InsertIdentityReturn(ByVal InsertSql As String, Optional ByVal IdentityTable As String = vbNullString) As Variant
 
@@ -613,7 +666,24 @@ HandleErr:
 
 End Function
 
-Public Function InsertValuesIdentityReturn(ByVal sSource As String, ParamArray InsertFields() As Variant) As Variant
+'---------------------------------------------------------------------------------------
+' Function: InsertValuesIdentityReturn
+'---------------------------------------------------------------------------------------
+'
+' Create and execute insert SQL statement and return last identity value (auto value)
+'
+' Parameters:
+'     Source         - Table order query name
+'     InsertFields   - ParamArray: "Field1", Value1, "Field2", Value2, ....
+'
+' Returns:
+'     Identity value or NULL if no record was appended
+'
+' Remarks:
+'     Works for Jet only from Jet 4.0 (Access 2000), IdentityTable is only applicable for MSSQL, under MySQL the IDENT_CURRENT function does not exist.
+'
+'---------------------------------------------------------------------------------------
+Public Function InsertValuesIdentityReturn(ByVal Source As String, ParamArray InsertFields() As Variant) As Variant
 
    Dim strInsert As String
    Dim strValues As String
@@ -623,25 +693,27 @@ Public Function InsertValuesIdentityReturn(ByVal sSource As String, ParamArray I
       strInsert = strInsert & ", " & InsertFields(i)
       strValues = strValues & ", " & InsertFields(i + 1)
    Next i
-   strInsert = "INSERT INTO " & sSource & " (" & Mid(strInsert, 3) & ") VALUES (" & Mid(strValues, 3) & ")"
+   strInsert = "INSERT INTO " & Source & " (" & Mid(strInsert, 3) & ") VALUES (" & Mid(strValues, 3) & ")"
 
-   InsertValuesIdentityReturn = InsertIdentityReturn(strInsert, sSource)
-
-End Function
-
-Public Function Exists(ByVal SourceName As String, _
-              Optional ByVal Criteria As String = vbNullString) As Boolean
-
-   Dim strSQL As String
-
-   strSQL = "SELECT 1 FROM " & SourceName
-   If Len(Criteria) > 0 Then
-      strSQL = strSQL & " WHERE " & Criteria
-   End If
-   Exists = (LookupSql(strSQL, , 0) = 1)
+   InsertValuesIdentityReturn = InsertIdentityReturn(strInsert, Source)
 
 End Function
 
+'---------------------------------------------------------------------------------------
+' Function: ValueList
+'---------------------------------------------------------------------------------------
+'
+' Generate concat string from recordset result
+'
+' Parameters:
+'     SqlSource         - Select statement
+'     ListConcatString  - (optional) Character to join results, Default = ", "
+'     ValueIfNull       - (optional) Value if no results, Default = Null
+'
+' Returns:
+'     Variant           - result exists: string, no result exists: ValueIfNull
+'
+'---------------------------------------------------------------------------------------
 Public Function ValueList(ByVal SqlSource As String, Optional ByVal ListConcatString As String = ", ", Optional ValueIfNull As Variant = Null) As Variant
 
    Dim ListString As String
@@ -662,19 +734,26 @@ Public Function ValueList(ByVal SqlSource As String, Optional ByVal ListConcatSt
 
 End Function
 
+'---------------------------------------------------------------------------------------
+' Function: LookupSqlValueCollection
+'---------------------------------------------------------------------------------------
+'
+' Generate collection from recordset result
+'
+' Parameters:
+'     SqlSource         - Select statement
+'     ValueIfNull       - (optional) Value if no results, Default = Null
+'
+' Returns:
+'     Collection
+'
+'---------------------------------------------------------------------------------------
 Public Function LookupSqlValueCollection(ByVal SqlSource As String, Optional ByVal ValueIfNull As Variant = Null) As Collection
 
-'   Dim lngWherePos As Long
    Dim Results As Collection
    Dim rst As ADODB.Recordset
    Dim fld As ADODB.Field
 
-'   lngWherePos = InStr(1, SqlSource, "WHERE", vbTextCompare)
-'   If lngWherePos > 0 Then
-'      SqlSource = Left$(SqlSource, lngWherePos + 5) & Replace(SqlSource, "*", "%", lngWherePos + 6, , vbBinaryCompare)
-'      SqlSource = Replace(SqlSource, "Count(%)", "Count(*)")
-'   End If
-   
    Set rst = OpenRecordset(SqlSource, adOpenKeyset, adLockOptimistic, adUseClient, True)
 
    Set Results = New Collection

@@ -1,14 +1,12 @@
 Attribute VB_Name = "modWinApi_Mouse"
 '---------------------------------------------------------------------------------------
-' Module: modWinApi_Mouse
+' Package: api.winapi.modWinApi_Mouse
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Maus-Zeiger einstellen
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Set mouse cursor
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>api/winapi/modWinAPI_Mouse.bas</file>
@@ -39,28 +37,28 @@ Public Enum IDC_MouseCursor
 End Enum
 
 #If VBA7 Then
-   Private Declare PtrSafe Function LoadCursorBynum Lib "user32" Alias "LoadCursorA" (ByVal Instance As Long, ByVal LpCursorName As Long) As Long
-   Private Declare PtrSafe Function SetCursor Lib "user32" (ByVal Cursor As Long) As Long
+   Private Declare PtrSafe Function LoadCursorBynum Lib "user32" Alias "LoadCursorA" (ByVal hInstance As LongPtr, ByVal LpCursorName As Long) As LongPtr
+   Private Declare PtrSafe Function SetCursor Lib "user32" (ByVal hCursor As LongPtr) As LongPtr
 #Else
-   Private Declare Function LoadCursorBynum Lib "user32" Alias "LoadCursorA" (ByVal Instance As Long, ByVal LpCursorName As Long) As Long
+   Private Declare Function LoadCursorBynum Lib "user32" Alias "LoadCursorA" (ByVal hInstance As Long, ByVal LpCursorName As Long) As Long
    Private Declare Function SetCursor Lib "user32" (ByVal Cursor As Long) As Long
 #End If
 
 '---------------------------------------------------------------------------------------
 ' Sub: MouseCursor
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Mauszeiger einstellen
-' </summary>
-' <param name="CursorType">Gewünschter Mauszeiger</param>
-' <returns>Variant</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Set mouse cursor
+'
+' Parameters:
+'     CursorType  - Desired mouse cursor
+'
 '---------------------------------------------------------------------------------------
 Public Sub MouseCursor(ByVal CursorType As IDC_MouseCursor)
-  Dim Ret As Long
-  Ret = LoadCursorBynum(0&, CursorType)
-  Ret = SetCursor(Ret)
+  
+  Dim CursorPtr As LongPtr
+  
+  CursorPtr = LoadCursorBynum(0&, CursorType)
+  SetCursor CursorPtr
+  
 End Sub

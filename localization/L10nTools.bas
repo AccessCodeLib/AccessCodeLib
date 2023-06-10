@@ -1,17 +1,18 @@
 Attribute VB_Name = "L10nTools"
 '---------------------------------------------------------------------------------------
-' Modul: L10nTools
+' Package: localization.L10nTools
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Pötzl
-' <summary>
+'
 ' Localization (L10n) Functions
-' </summary>
-' <remarks>
-' Use compiler constant L10nMsgBoxReplacement to overwrite MsgBox and InPutBox functions.
-' </remarks>
-' \ingroup localization
-'**/
+'
+' Author:
+'     Josef Pötzl
+'
+' Remarks:
+'     Use compiler constant L10nMsgBoxReplacement to overwrite MsgBox and InPutBox functions.
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>localization/L10nTools.bas</file>
