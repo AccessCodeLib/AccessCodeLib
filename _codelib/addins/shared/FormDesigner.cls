@@ -8,14 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Module: FormDesigner
+' Class: _codelib.addins.shared.FormDesigner
 '---------------------------------------------------------------------------------------
-'/**
-'\author    Josef Poetzl
-'\short     Klasse zum Entwerfen von Formularen
-' <remarks>
-' </remarks>
-'**/
+'
+' Form design class
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/shared/FormDesigner.cls</file>

@@ -30,7 +30,7 @@ Private m_ApplicationName As String  ' Cache for application names
 ' Property: CurrentApplication
 '---------------------------------------------------------------------------------------
 '
-' Property für ApplicationHandler-Instanz (diese Property im Code verwenden)
+' Property for ApplicationHandler instance (use this property in code)
 '
 '---------------------------------------------------------------------------------------
 Public Property Get CurrentApplication() As ApplicationHandler
@@ -44,10 +44,10 @@ End Property
 ' Property: CurrentApplicationName
 '---------------------------------------------------------------------------------------
 '
-' Name der aktuellen Anwendung
+' Name of the current application
 '
 ' Remarks:
-'     Verwendet CurrentApplication.ApplicationName
+'     Uses CurrentApplication.ApplicationName
 '
 '---------------------------------------------------------------------------------------
 Public Property Get CurrentApplicationName() As String
@@ -90,8 +90,8 @@ End Function
 ' TraceLog
 '
 ' Parameters:
-'     Msg
-'     Args
+'     Msg   - Message text
+'     Args  - (ParamArray)
 '
 '---------------------------------------------------------------------------------------
 Public Sub TraceLog(ByRef Msg As String, ParamArray Args() As Variant)
@@ -100,10 +100,7 @@ End Sub
 
 Private Sub InitApplication()
 
-   ' Hauptinstanz erzeugen
    Set m_ApplicationHandler = New ApplicationHandler
-   
-   'Einstellungen initialisieren
    Call InitConfig(m_ApplicationHandler)
 
 End Sub
@@ -112,13 +109,9 @@ End Sub
 '---------------------------------------------------------------------------------------
 ' Sub: DisposeCurrentApplicationHandler
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Instanz von ApplicationHandler und den Erweiterungen zerstören
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Destroy instance of ApplicationHandler and the extensions
+'
 '---------------------------------------------------------------------------------------
 Public Sub DisposeCurrentApplicationHandler()
 
@@ -137,7 +130,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 '
-' Hilfsprozeduren
+' Auxiliary procedures
 Public Sub WriteApplicationLogEntry(ByVal Msg As String, _
            Optional LogType As ApplicationHandlerLogType, _
            Optional ByVal Args As Variant)
