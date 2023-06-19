@@ -1,7 +1,7 @@
 Attribute VB_Name = "StringTools"
 Attribute VB_Description = "String-Hilfsfunktionen"
 '---------------------------------------------------------------------------------------
-' Modul: text.StringTools
+' Package: text.StringTools
 '---------------------------------------------------------------------------------------
 '
 ' Text functions

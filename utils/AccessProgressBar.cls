@@ -8,13 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: AccessProgressBar
+' Class: utils.AccessProgressBar
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' \brief        Hilfsklasse zur Verwendung der integrierten Access ProgressBar ("Meter")
-' \ingroup utils
-'**/
+'
+' Helper class for using the integrated Access ProgressBar ("Meter")
+'
+' Author:
+'     Sten Schmidt
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>utils/AccessProgressBar.cls</file>
@@ -37,18 +40,17 @@ Private m_ProgressBarText As String
 '---------------------------------------------------------------------------------------
 ' Function: Init
 '---------------------------------------------------------------------------------------
-'/**                                            '<-- Start Doxygen-Block
-' <summary>
-' Initialisiert die Progressbar für einen neuen Vorgang
-' </summary>
-' <param name="Text">Text der neben der Progressbar angezeigt werden soll</param>
-' <param name="StepCount">Gesamtanzahl der Schritte, Default 100</param>
-' <param name="Step">Schrittweite, Default: 1</param>
-' <returns></returns>
-' <remarks>
-' Im Anschluss kann die PerformStep() Methode aufgerufen werden
-' </remarks>
-'**/                                            '<-- Ende Doxygen-Block
+'
+' Initializes the progress bar for a new operation
+'
+' Parameters:
+'     Text        - Text to be displayed next to the progress bar
+'     StepCount   - Total number of steps, default: 100
+'     Step        - Step size, default: 1
+'
+' Remarks:
+'     Afterwards the PerformStep() method can be called
+'
 '---------------------------------------------------------------------------------------
 Public Function Init(ByVal Text As String, Optional ByVal StepCount As Long = 100, Optional ByVal Step As Integer = 1) As Boolean
     AccessProgressBar.Clear
@@ -63,15 +65,15 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: Start
 '---------------------------------------------------------------------------------------
-'/**                                            '<-- Start Doxygen-Block
-' <summary>
-' Startet einen Vorgang
-' </summary>
-' <returns>Boolean</returns>
-' <remarks>
-' Optional, wird bei Bedarf durch die Methode PerformStep() ausgeführt.
-' </remarks>
-'**/                                            '<-- Ende Doxygen-Block
+'
+' Starts an operation
+'
+' Returns:
+'     Boolean
+'
+' Remarks:
+'     Optional, executed by the PerformStep() method if required.
+'
 '---------------------------------------------------------------------------------------
 Public Function Start() As Boolean
     If Not m_IsInitialized Then
@@ -87,18 +89,20 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: PerformStep
 '---------------------------------------------------------------------------------------
-'/**                                            '<-- Start Doxygen-Block
-' <summary>
-' Führt einen Iterationsschritt aus und "bewegt" die Progressbar einen Schritt weiter.
-' </summary>
-' <param name="ClearOnLastStep">Soll beim letzten Schritt automatisch die Clear() Methode aufgerufen werden?</param>
-' <returns>Aktuellen Schritt als Long</returns>
-' <remarks>
-' Ruft automatisch die Start() Methode auf, sofern die Progressbar noch nicht initialisiert worden ist.
-' Der in der Eigenschaft ValueMax angegebene Maximalwert kann nicht überschritten werden.
-' Sofern nicht anders angegeben, wird beim letzten Schritt automatisch die Clear() Methode aufgerufen.
-' </remarks>
-'**/                                            '<-- Ende Doxygen-Block
+'
+' Executes an iteration step and "moves" the progressbar one step further.
+'
+' Parameters:
+'     ClearOnLastStep - Should the Clear() method be called automatically at the last step?
+'
+' Returns:
+'     Long - Current step
+'
+' Remarks:
+'     Automatically calls the Start() method if the progressbar has not yet been initialized.
+'     The maximum value specified in the ValueMax property cannot be exceeded.
+'     Unless otherwise specified, the Clear() method is automatically called at the last step.
+'
 '---------------------------------------------------------------------------------------
 Public Function PerformStep(Optional ByVal ClearOnLastStep = True) As Long
     
@@ -117,15 +121,15 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: Clear
 '---------------------------------------------------------------------------------------
-'/**                                            '<-- Start Doxygen-Block
-' <summary>
-' Zurücksetzen der ProgressBar und ggf. Abbrechen laufender Vorgänge
-' </summary>
-' <returns>Boolean</returns>
-' <remarks>
-' Alle Eigenschaften werden auf die Standard-Vorgaben zurückgesetzt
-' </remarks>
-'**/                                            '<-- Ende Doxygen-Block
+'
+' Resetting the ProgressBar and, if necessary, canceling running processes
+'
+' Returns:
+'     Boolean
+'
+' Remarks:
+'     All properties are reset to the default settings
+'
 '---------------------------------------------------------------------------------------
 Public Function Clear() As Boolean
     m_Result = Access.Application.SysCmd(acSysCmdClearStatus)
@@ -141,16 +145,16 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Property: IsInitialized
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Gibt an ob die Access Progressbar initialisiert ist
-' </summary>
-' <returns>Boolean</returns>
-' <remarks>
-' Bei True wird die Progressbar gerade verwendet. Der aktuell laufende Vorgang kann
-' durch Aufruf der Clear() Methode beendet werden.
-' </remarks>
-'**/
+'
+' Indicates whether the Access Progressbar is initialized.
+'
+' Returns:
+'     Boolean
+'
+' Remarks:
+'     If True, the progress bar is currently being used.
+'     The currently running operation can be terminated by calling the Clear() method.
+'
 '---------------------------------------------------------------------------------------
 Public Property Get IsInitialized() As Boolean
     IsInitialized = m_IsInitialized
@@ -159,29 +163,14 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: Step
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Schrittweite
-' </summary>
-' <returns>Long</returns>
-' <remarks></remarks>
-'**/
+'
+' Step size
+'
 '---------------------------------------------------------------------------------------
 Public Property Get Step() As Long
     Step = m_ProgressBarStep
 End Property
 
-'---------------------------------------------------------------------------------------
-' Property: Step
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Schrittweite
-' </summary>
-' <param name="Value">Schrittweite die verwendet werden soll</param>
-' <remarks></remarks>
-'**/
-'---------------------------------------------------------------------------------------
 Public Property Let Step(ByVal Value As Long)
     m_ProgressBarStep = Value
 End Property
@@ -189,29 +178,14 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: ValueMax
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Maximalwert der Progressbar bzw. Endwert
-' </summary>
-' <returns>Long</returns>
-' <remarks></remarks>
-'**/
+'
+' Maximum value of the progress bar or final value
+'
 '---------------------------------------------------------------------------------------
 Public Property Get ValueMax() As Long
     ValueMax = m_ProgressBarValueMax
 End Property
 
-'---------------------------------------------------------------------------------------
-' Property: ValueMax
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Maximalwert der Progressbar bzw. Endwert
-' </summary>
-' <param name="Value">Maximalwert der Progressbar bzw. Endwert der verwendet werden soll</param>
-' <remarks></remarks>
-'**/
-'---------------------------------------------------------------------------------------
 Public Property Let ValueMax(ByVal Value As Long)
     m_ProgressBarValueMax = Value
 End Property
@@ -219,29 +193,14 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: ValueMin
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Minimalwet der Progressbar bzw. Startwert
-' </summary>
-' <returns>Long</returns>
-' <remarks></remarks>
-'**/
+'
+' Minimum value of the progress bar or start value
+'
 '---------------------------------------------------------------------------------------
 Public Property Get ValueMin() As Long
     ValueMin = m_ProgressBarValueMin
 End Property
 
-'---------------------------------------------------------------------------------------
-' Property: ValueMin
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Minimalwet der Progressbar bzw. Startwert
-' </summary>
-' <param name="Value">Minimalwet der Progressbar bzw. Startwert der verwendet werden soll</param>
-' <remarks></remarks>
-'**/
-'---------------------------------------------------------------------------------------
 Public Property Let ValueMin(ByVal Value As Long)
     m_ProgressBarValueMin = Value
 End Property
@@ -249,32 +208,14 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: Text
 '---------------------------------------------------------------------------------------
-'/**                                            '<-- Start Doxygen-Block
-' <summary>
-' Beschreibungstext
-' </summary>
-' <returns>String</returns>
-' <remarks>
-' Wird links neben der Progressbar angezeigt
-' </remarks>
-'**/                                            '<-- Ende Doxygen-Block
+'
+' Description text
+'
 '---------------------------------------------------------------------------------------
 Public Property Get Text() As String
     Text = m_ProgressBarText
 End Property
 
-'---------------------------------------------------------------------------------------
-' Property: Text
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Beschreibungstext
-' </summary>
-' <param name="Value">Beschreibungstext der angezeigt werden soll</param>
-' <returns>String</returns>
-' <remarks>Wird links neben der Progressbar angezeigt</remarks>
-'**/
-'---------------------------------------------------------------------------------------
 Public Property Let Text(ByVal Value As String)
     m_ProgressBarText = Value
 End Property

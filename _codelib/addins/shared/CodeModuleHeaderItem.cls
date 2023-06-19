@@ -8,15 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: CodeModuleHeaderItem (Josef Pötzl, 2010-02-11)
+' Class: _codelib.addins.shared.CodeModuleHeaderItem
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Konstanten, Variablen, Types und Enums
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Auxiliary class for processing the CodeModule header
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/shared/CodeModuleHeaderItem.cls</file>
@@ -58,7 +59,7 @@ Public Property Get SearchStrings() As String()
    
    ModulName = HeaderItemVBComponent.Name
    If HeaderItemVBComponent.Type = vbext_ct_Document Then
-      'eigentlich nicht notwendig, da Klassen nicht nach Procs durchsucht werden müssen
+      'actually not necessary, because classes do not have to be searched for procs
       If ModulName Like "Form_" Then
          ModulName = Mid(ModulName, 6)
       ElseIf ModulName Like "Report_" Then

@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class: CodeModuleWriter
+' Class: _codelib.addins.shared.CodeModuleWriter
 '---------------------------------------------------------------------------------------
 '
 ' Create CodeModules

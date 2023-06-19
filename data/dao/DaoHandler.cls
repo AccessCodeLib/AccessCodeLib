@@ -766,7 +766,7 @@ End Function
 ' Parameters:
 '     SqlText     - SQL statement
 '     Index       - Field selection if the first field of the recordset is not to be returned.
-'                   The index is passed in the same way as ADODB.Recordset.Fields(index).
+'                   The index is passed in the same way as DAO.Recordset.Fields(index).
 '     ValueIfNull - Return value if record is missing or data field value is Null (default: Null).
 '
 ' Returns:
