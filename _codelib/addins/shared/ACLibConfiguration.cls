@@ -9,16 +9,16 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Attribute VB_Description = "Konfigurationseinstellungen der CodeLib verwalten"
 '---------------------------------------------------------------------------------------
-' Klassenmodul: ACLibConfiguration (Josef Pötzl, 2009-12-11)
+' Class: _codelib.addins.shared.ACLibConfiguration
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Konfigurationseinstellungen der CodeLib verwalten
-' </summary>
-' <remarks>
-' </remarks>
-'\ingroup addins_shared
-'**/
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/shared/ACLibConfiguration.cls</file>

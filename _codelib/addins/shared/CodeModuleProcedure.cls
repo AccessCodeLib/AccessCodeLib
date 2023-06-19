@@ -8,15 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: CodeModuleProcedure (Josef Pötzl)
+' Class: CodeModuleProcedure
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' CodeModuleProcedure
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Auxiliary class for processing a CodeModule procedure
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/shared/CodeModuleProcedure.cls</file>
@@ -48,7 +49,7 @@ Public Function SearchStrings(Optional ByVal OnlyWithModulePrefix As Boolean = F
    
    ModulName = ProcVbComponent.Name
    If ProcVbComponent.Type = vbext_ct_Document Then
-      'eigentlich nicht notwendig, da Klassen nicht nach Procs durchsucht werden müssen
+      'actually not necessary, because classes do not have to be searched for procs
       If ModulName Like "Form_" Then
          ModulName = Mid(ModulName, 6)
       ElseIf ModulName Like "Report_" Then
@@ -72,7 +73,7 @@ Public Function SearchStrings(Optional ByVal OnlyWithModulePrefix As Boolean = F
    End If
 
    SearchStringArray(0) = " " & Me.Name & " "
-   SearchStringArray(1) = " " & Me.Name & "[.,:(]" 'für like-Suche ist das so in Ordnung
+   SearchStringArray(1) = " " & Me.Name & "[.,:(]" 'for like search this is ok
    SearchStringArray(2) = " " & Me.Name & vbNewLine
    MaxCnt = 2
 

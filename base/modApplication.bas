@@ -6,6 +6,9 @@ Attribute VB_Description = "Standard-Prozeduren für die Arbeit mit ApplicationHa
 '
 ' Standard procedures for working with ApplicationHandler
 '
+' Author:
+'     Josef Poetzl
+'
 '---------------------------------------------------------------------------------------
 
 '---------------------------------------------------------------------------------------

@@ -8,16 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: TempDbHandler
+' Class: data.dao.TempDbHandler
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Poetzl
-' <summary>
-' Erzeugt und verwaltet eine mdb/accdb für temporaere Tabellen
-' </summary>
-' <remarks></remarks>
-'\ingroup data_dao
-'**/
+'
+' Creates and manages an mdb/accdb for temporary tables
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>data/dao/TempDbHandler.cls</file>
@@ -35,7 +35,7 @@ Private Const ClassName As String = "TempDbHandler"
 Private m_DaoHandler As DaoHandler
 
 Private Const FILE_PREFIX As String = "TDB"
-Private Const FILE_EXTENSION As String = vbNullString 'Dateinamenerweiterung: vbNullString ... Standard von GetTempFileNameA wird verwendet ("tmp")
+Private Const FILE_EXTENSION As String = vbNullString 'File name extension: vbNullString ... Default of GetTempFileNameA is used ("tmp")
 Private Const MAX_PATH_LEN As Long = 255
 
 Private m_TempDbFile As String
@@ -75,28 +75,30 @@ Private Declare Function API_GetTempFilename Lib "kernel32" Alias "GetTempFileNa
 
 #End If
 
+'#############################################################
+' Group: Events
+
 '---------------------------------------------------------------------------------------
-' Event: ErrorMissingDbConnection (24.02.2008)
+' Event: ErrorMissingDbConnection
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Ereignis-Meldung wenn DbConnection fehlt
-' </summary>
-' <remarks>Ermöglicht Fehlerbehandlung vom FE aus</remarks>
-'**/
+'
+' Event message when DbConnection is missing
+'
+' Remarks:
+'     Enables error handling from the frontend
+'
 Public Event ErrorMissingClientDatabase(ByVal ErrMsg As String, ByVal ErrNumber As Long, ByRef NewClientDatabaseRef As DAO.Database)
 
 '---------------------------------------------------------------------------------------
-' Event: Disposed (24.02.2008)
+' Event: Disposed
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Ereignis-Meldung wenn Objektreferenzen entfernt wurden
-' </summary>
-' <remarks></remarks>
-'**/
+'
+' Event message when object references were removed
+'
 Public Event Disposed()
 
+'#############################################################
+' Group: TempDb configuration
 
 Private Sub Class_Initialize()
    Set m_DaoHandler = New DaoHandler
@@ -108,15 +110,11 @@ On Error Resume Next
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Sub: Dispose (06.04.2008)
+' Sub: Dispose
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Dispose
-' </summary>
-' <param name="Param"></param>
-' <remarks></remarks>
-'**/
+'
+' Dispose objects, reset members, delete file
+'
 '---------------------------------------------------------------------------------------
 Public Sub Dispose()
 
@@ -124,7 +122,7 @@ Public Sub Dispose()
 
 On Error Resume Next
 
-   'aktuelle TempDb löschen
+   '
    If m_DeleteFileOnTerminiate Then DeleteCurrentDatabase
 
    ClearObjectReferences
@@ -154,15 +152,14 @@ On Error Resume Next
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Property: ClientDatabase (2009-12-21)
+' Property: ClientDatabase
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Gibt die aktuelle Database-Instanz der Client-Anwendung (FE) zurück.
-' </summary>
-' <returns>DAO.Database</returns>
-' <remarks></remarks>
-'**/
+'
+' Database instance of the client application (frontend)
+'
+' Returns:
+'     DAO.Database
+'
 '---------------------------------------------------------------------------------------
 Public Property Get ClientDatabase() As DAO.Database
 
@@ -177,31 +174,19 @@ Public Property Get ClientDatabase() As DAO.Database
 
 End Property
 
-'---------------------------------------------------------------------------------------
-' Property: ClientDatabase (2009-12-21)
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Gibt die aktuelle Database-Instanz der Client-Anwendung (FE) zurück.
-' </summary>
-' <returns>DAO.Database</returns>
-' <remarks></remarks>
-'**/
-'---------------------------------------------------------------------------------------
 Public Property Set ClientDatabase(ByRef db As DAO.Database)
    Set m_ClientDatabase = db
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: CurrentDatabase (24.02.2008)
+' Property: CurrentDatabase
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Gibt die aktuelle Database-Instanz der TempDB zurück.
-' </summary>
-' <returns>DAO.Database</returns>
-' <remarks></remarks>
-'**/
+'
+' Database instance of TempDB
+'
+' Returns:
+'     DAO.Database
+'
 '---------------------------------------------------------------------------------------
 Public Property Get CurrentDatabase() As DAO.Database
    CheckCurrentDatabase
@@ -209,14 +194,11 @@ Public Property Get CurrentDatabase() As DAO.Database
 End Property
 
 '---------------------------------------------------------------------------------------
-' Sub: CloseCurrentDatabase (25.02.2008)
+' Sub: CloseCurrentDatabase
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Schließt Datenbank, löscht sie aber nicht ... DB wird beim nächsten Zugriffsversuch wieder geöffnet
-' </summary>
-' <remarks></remarks>
-'**/
+'
+' Closes database but does not delete it ... DB is opened again at the next access attempt
+'
 '---------------------------------------------------------------------------------------
 Public Sub CloseCurrentDatabase()
 
@@ -228,7 +210,6 @@ On Error Resume Next
    End If
 
 End Sub
-
 
 Private Sub CheckCurrentDatabase()
 
@@ -249,12 +230,12 @@ On Error Resume Next
       End If
    Else
       Err.Clear
-      FilePath = m_DaoHandler.CurrentDb.Name 'Zugriff testen
+      FilePath = m_DaoHandler.CurrentDb.Name 'Test access
       If Err.Number <> 0 Then
          Err.Clear
          If Len(m_TempDbFile) > 0 And Len(Dir$(m_TempDbFile)) > 0 Then
             Set m_DaoHandler.CurrentDb = Access.DBEngine.OpenDatabase(m_TempDbFile, Not m_SharedMode, False)
-            FilePath = m_DaoHandler.CurrentDb.Name 'Zugriff testen
+            FilePath = m_DaoHandler.CurrentDb.Name 'Test access
             If Err.Number <> 0 Then
                Err.Clear
                Me.CreateDatabase
@@ -268,17 +249,18 @@ On Error Resume Next
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Function: CreateDatabase (24.02.2008)
+' Function: CreateDatabase
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Erzeugt neue mdb im %Temp%-Verzeichnis
-' </summary>
-' <param name="OpenSharedMode">True: öffnet die Datenbank im geteilten Modus, False: öffnet die Datenbank im Exklusivmodus. Standard: False</param>
-' <param name="DeleteFileOnTerminate">True: Datei wird bei Class_Terminate gelöscht. Standard: True</param>
-' <returns>DAO.Database</returns>
-' <remarks></remarks>
-'**/
+'
+' Parameters:
+'     OpenSharedMode          - True: opens the database in split mode, False: opens the database in exclusive mode. Default: False
+'     DeleteFileOnTerminate   - True: File will be deleted at Class_Terminate. Default: True
+'
+' Returns:
+'     DAO.Database
+'
 '---------------------------------------------------------------------------------------
 Public Function CreateDatabase(Optional ByVal OpenSharedMode As Boolean = False, _
                                Optional ByVal DeleteFileOnTerminate As Boolean = True) As DAO.Database
@@ -286,16 +268,15 @@ Public Function CreateDatabase(Optional ByVal OpenSharedMode As Boolean = False,
    m_TempDbFile = GetTempFileName(, FILE_PREFIX, FILE_EXTENSION)
    
    If CurrentDb.Version = "4.0" Then
-      'Set m_tempDb = Access.DBEngine.CreateDatabase(m_TempDbFile, dbLangGeneral, dbVersion40)
       Set m_DaoHandler.CurrentDb = DBEngine.Workspaces(0).CreateDatabase(m_TempDbFile, dbLangGeneral, dbVersion40)
    Else
       Set m_DaoHandler.CurrentDb = Access.DBEngine.CreateDatabase(m_TempDbFile, dbLangGeneral)
-   End If ' => DB wird exklusiv geöffnet!
+   End If ' => DB is opened exclusively!
    
    m_SharedMode = OpenSharedMode
    m_DeleteFileOnTerminiate = DeleteFileOnTerminate
    
-   'schließen und wieder öffnen, um nicht mehr im Exclusiv-Modus zu sein.
+   'close and reopen to no longer be in exclusive mode.
    If m_SharedMode Then
       m_DaoHandler.CurrentDb.Close
       Set m_DaoHandler.CurrentDb = Access.DBEngine.OpenDatabase(m_TempDbFile, False, False)
@@ -306,18 +287,19 @@ Public Function CreateDatabase(Optional ByVal OpenSharedMode As Boolean = False,
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: OpenDatabase (24.02.2008)
+' Function: OpenDatabase
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Öffnet bestehende Datenbank (mdb) als Temp-DB.
-' </summary>
-' <param name="DatabaseFile">Die zu öffnende Datei</param>
-' <param name="Exclusive">True: öffnet die Datenbank im Exklusivmodus, False: öffnet die Datenbank im geteilten Modus. Standard: False</param>
-' <param name="ReadOnly">öffnet die Datenbank schreibgeschützt</param>
-' <returns>DAO.Database</returns>
-' <remarks></remarks>
-'**/
+'
+' Opens existing database (mdb) as temp DB.
+'
+' Parameters:
+'     DatabaseFile   - The file to open
+'     Exclusive      - True: opens the database in exclusive mode, False: opens the database in split mode. Default: False
+'     ReadOnly       - opens the database read-only
+'
+' Returns:
+'     DAO.Database
+'
 '---------------------------------------------------------------------------------------
 Public Function OpenDatabase(ByVal DatabaseFile As String, _
                   Optional ByVal Exclusive As Boolean = False, _
@@ -326,26 +308,26 @@ Public Function OpenDatabase(ByVal DatabaseFile As String, _
    m_TempDbFile = DatabaseFile
    m_SharedMode = Not Exclusive
    Set m_DaoHandler.CurrentDb = Access.DBEngine.OpenDatabase(DatabaseFile, Exclusive, ReadOnly)
-   m_DeleteFileOnTerminiate = False 'DB nicht löschen, da nicht von Klasse erstellt
+   m_DeleteFileOnTerminiate = False 'Do not delete DB because not created by class
    Set OpenDatabase = m_DaoHandler.CurrentDb
 
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: DeleteCurrentDatabase (24.02.2008)
+' Function: DeleteCurrentDatabase
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Löscht mdb-Datei der aktuellen Database-Instanz.
-' </summary>
-' <remarks>Wird automatisch bei Class_Terminate ausgeführt, wenn Datei per TempDbHandler.CreateNewDatabase erzeugt wurde.</remarks>
-'**/
+'
+' Deletes mdb file of the current database instance
+'
+' Remarks:
+'     Will be executed automatically at Class_Terminate if file was created by TempDbHandler.CreateNewDatabase.
+'
 '---------------------------------------------------------------------------------------
 Public Sub DeleteCurrentDatabase()
 
    Dim DbFile As String
    
-On Error Resume Next ' Da hier eine Fehlermeldung nutzlos ist.
+On Error Resume Next ' Since an error message is useless here.
    
    If Not (m_DaoHandler.CurrentDb Is Nothing) Then
       DbFile = m_DaoHandler.CurrentDb.Name
@@ -358,7 +340,7 @@ On Error Resume Next ' Da hier eine Fehlermeldung nutzlos ist.
    End If
    
    If Len(DbFile) > 0 Then
-      'Falls Datei noch im Zugriff ist, kann es sein, dass sie nicht gelöscht werden kann
+      'If file is still in access, it may not be possible to delete it
       Kill DbFile
    End If
    
@@ -367,22 +349,23 @@ On Error Resume Next ' Da hier eine Fehlermeldung nutzlos ist.
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Function: CheckTempTable (24.02.2008)
+' Function: CheckTempTable
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' CheckTempTable
-' </summary>
-' <param name="SourceTableDefName">Tabellenname im TempDB (Backend)</param>
-' <param name="CreateTableDDL">DDL-Anweisung zum Erstellen der Tabelle, falls Tabelle nicht vorhanden ist.</param>
-' <param name="LinkedTableDefName">Tabellenname im Frontend</param>
-' <returns>Boolean</returns>
-' <remarks></remarks>
-'**/
+'
+' Parameters:
+'     SourceTableDefName   - Table name in TempDB (backend)
+'     CreateTableDDL       - (optional) DDL statement to create the table if table does not exist.
+'     LinkedTableDefName   - (optional) Table name in frontend (no linked table if empty)
+'
+' Returns:
+'     Boolean
+'
 '---------------------------------------------------------------------------------------
 Public Function CheckTable(ByVal SourceTableDefName As String, _
-              Optional ByVal CreateTableSql As String, _
-              Optional ByVal LinkedTableDefName As String) As Boolean
+              Optional ByVal CreateTableSql As String = vbNullString, _
+              Optional ByVal LinkedTableDefName As String = vbNullString) As Boolean
 
    If Not SourceTableDefExists(SourceTableDefName) Then
       If Len(CreateTableSql) > 0 Then
@@ -405,20 +388,20 @@ Public Function CheckTable(ByVal SourceTableDefName As String, _
 
 End Function
 
-
 '---------------------------------------------------------------------------------------
-' Function: CreateTable (03.05.2008)
+' Function: CreateTable
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Erstellt Tabelle per DDL-Anweisung
-' </summary>
-' <param name="SourceTableDefName">Tabellenname im TempDB (Backend)</param>
-' <param name="CreateTableDDL">DDL-Anweisung zum Erstellen der Tabelle</param>
-' <param name="LinkedTableDefName">Tabellenname im Frontend</param>
-' <returns>Boolean</returns>
-' <remarks></remarks>
-'**/
+'
+' Parameters:
+'     SourceTableDefName   - Table name in TempDB (backend)
+'     CreateTableDDL       - DDL statement to create the table if table does not exist.
+'     LinkedTableDefName   - (optional) Table name in frontend (no linked table if empty)
+'
+' Returns:
+'     Boolean
+'
 '---------------------------------------------------------------------------------------
 Public Function CreateTable(ByVal SourceTableDefName As String, _
                             ByVal CreateTableSql As String, _
@@ -426,7 +409,7 @@ Public Function CreateTable(ByVal SourceTableDefName As String, _
                      ) As Boolean
 
    CheckCurrentDatabase
-   If SourceTableDefExists(SourceTableDefName) Then 'zur Sicherheit löschen, falls unterschiedliche DDL-Anweisung
+   If SourceTableDefExists(SourceTableDefName) Then 'delete for safety, if different DDL statement
       Err.Raise ErrorNumbers.ErrTableCanNotBeCreatedTableExists, ClassName & CreateTable, "Table '" & SourceTableDefName & "' exists"
    End If
    
@@ -444,18 +427,19 @@ Public Function CreateTable(ByVal SourceTableDefName As String, _
 
 End Function
 
-
 '---------------------------------------------------------------------------------------
-' Function: DropTable (03.05.2008)
+' Function: DropTable
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Löscht Tabelle
-' </summary>
-' <param name="Param"></param>
-' <returns>Boolean</returns>
-' <remarks></remarks>
-'**/
+'
+' Deletes table
+'
+' Parameters:
+'     SourceTableDefName   - Table name in TempDB (backend)
+'     LinkedTableDefName   - (optional) Table name in frontend (no linked table if empty)
+'
+' Returns:
+'     Boolean
+'
 '---------------------------------------------------------------------------------------
 Public Function DropTable(ByVal SourceTableDefName As String, _
              Optional ByVal LinkedTableDefName As String = vbNullString) As Boolean
@@ -473,14 +457,11 @@ Public Function DropTable(ByVal SourceTableDefName As String, _
 End Function
 
 '---------------------------------------------------------------------------------------
-' Sub: DropLinkedTableDefs (03.05.2008)
+' Sub: DropLinkedTableDefs
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Entfernt TableDef-Objekte, die mit Tabellen der TempDb verknüpft sind
-' </summary>
-' <remarks></remarks>
-'**/
+'
+' Removes TableDef objects linked to tables of TempDb
+'
 '---------------------------------------------------------------------------------------
 Public Sub DropLinkedTableDefs()
 
@@ -512,16 +493,17 @@ Public Sub DropLinkedTableDefs()
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Property: LinkedTableDefExists (03.05.2008)
+' Property: LinkedTableDefExists
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Prüft ob Tabelle im FE vorhanden ist
-' </summary>
-' <param name="TableDefName">Tabellenname</param>
-' <returns>Boolean</returns>
-' <remarks></remarks>
-'**/
+'
+' Checks if table is present in the frontend
+'
+' Parameters:
+'     TableDefName - Table name in frontend
+'
+' Returns:
+'     Boolean
+'
 '---------------------------------------------------------------------------------------
 Public Property Get LinkedTableDefExists(ByVal TableDefName As String) As Boolean
    
@@ -529,7 +511,7 @@ Public Property Get LinkedTableDefExists(ByVal TableDefName As String) As Boolea
    Dim tdf As DAO.TableDef
    
    Set db = ClientDatabase
-   db.TableDefs.Refresh 'zur Sicherheit, falls im FE Tab gelöscht wurde
+   db.TableDefs.Refresh 'for safety, if table was deleted in frontend
    
    LinkedTableDefExists = False
    
@@ -543,16 +525,17 @@ Public Property Get LinkedTableDefExists(ByVal TableDefName As String) As Boolea
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: SourceTableDefExists (24.02.2008)
+' Property: SourceTableDefExists
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Prüft ob Tabelle in Temp-Datenbank (BE) vorhanden ist
-' </summary>
-' <param name="TableDefName">Tabellenname</param>
-' <returns>Boolean</returns>
-' <remarks></remarks>
-'**/
+'
+' Checks if table exists in temp database (backend)
+'
+' Parameters:
+'     TableDefName - Table name in backend
+'
+' Returns:
+'     Boolean
+'
 '---------------------------------------------------------------------------------------
 Public Property Get SourceTableDefExists(ByVal TableDefName As String) As Boolean
    
@@ -560,7 +543,7 @@ Public Property Get SourceTableDefExists(ByVal TableDefName As String) As Boolea
 
    SourceTableDefExists = False
 
-   '1. Aufruf über CurrentDatabase, damit Existenz der Datei sichergestellt ist
+   '1. call via CurrentDatabase, so that existence of the file is ensured
    Me.CurrentDatabase.TableDefs.Refresh
    
    For Each tdf In m_DaoHandler.CurrentDb.TableDefs
@@ -574,7 +557,7 @@ End Property
 
 Private Sub DropLinkedTableDef(ByVal TdfName As String)
 
-On Error Resume Next '... damit muss nicht unbedingt auf Existenz geprüft werden
+On Error Resume Next '... with it does not necessarily have to be checked for existence
    ClientDatabase.TableDefs.Refresh
    ClientDatabase.TableDefs.Delete TdfName
 
@@ -647,30 +630,35 @@ Private Function GetTempFileName(Optional ByRef TempPath As String = "", _
    
    TempFileName = Left$(TempFileName, InStr(TempFileName, Chr$(0)) - 1)
    
-   'Datei wieder löschen, da nur Name benötigt wird
+   'Delete file again, because only name is needed
    Call Kill(TempFileName)
    
-   If Len(FileExtension) > 0 Then 'Fileextension umschreiben
+   If Len(FileExtension) > 0 Then 'Rewrite file extension
      TempFileName = Left$(TempFileName, Len(TempFileName) - 3) & FileExtension
    End If
    GetTempFileName = TempFileName
 
 End Function
 
+
+'#############################################################
+' Group: Data Operations
+
 '---------------------------------------------------------------------------------------
-' Function: OpenRecordset (03.05.2007)
+' Function: OpenRecordset
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' openRecordset
-' </summary>
-' <param name="Quelle">SQL-Anweisung</param>
-' <param name="RecordsetType">DAO.RecordsetTypeEnum (Standard: dbOpenForwardOnly)</param>
-' <param name="RecordsetOptions">DAO.RecordsetOptionEnum (Standard: dbSeeChanges)</param>
-' <param name="LockEdit">DAO.LockTypeEnum (Standard: dbOptimistic)</param>
-' <returns>DAO.Recordset</returns>
-' <remarks></remarks>
-'**/
+'
+' Open DAO.Recordset
+'
+' Parameters:
+'     Source            - SQL statement or table or query name
+'     RecordsetType     - DAO.RecordsetTypeEnum (Standard: dbOpenDynaset)
+'     RecordsetOptions  - DAO.RecordsetOptionEnum (Standard: dbSeeChanges)
+'     LockEdit          - DAO.LockTypeEnum (Standard: dbOptimistic)
+'
+' Returns:
+'     DAO.Recordset
+'
 '---------------------------------------------------------------------------------------
 Public Function OpenRecordset(ByVal Source As String, _
                        Optional ByVal RecordsetType As DAO.RecordsetTypeEnum = dbOpenForwardOnly, _
@@ -680,36 +668,42 @@ Public Function OpenRecordset(ByVal Source As String, _
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: Execute (03.05.2007)
+' Function: Execute
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Execute
-' </summary>
-' <param name="sSQL">SQL-Anweisung</param>
-' <param name="Options"></param>
-' <returns>Long (Anzahl der betroffenen Datensätze)</returns>
-' <remarks></remarks>
-'**/
+'
+' Execute SQL statement
+'
+' Parameters:
+'     CommandText - SQL statement (String)
+'     Options     - DAO.RecordsetOptionEnum
+'
+' Returns:
+'     RecordsAffected (Long)
+'
 '---------------------------------------------------------------------------------------
 Public Function Execute(ByVal Query As String, _
           Optional ByVal Options As DAO.RecordsetOptionEnum) As Long
    Execute = m_DaoHandler.Execute(Query, Options)
 End Function
 
-
 '---------------------------------------------------------------------------------------
-' Function: DLookupSQL (03.05.2007)
+' Function: LookupSQL
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' DLookup-Recordset-Ersatzfunktion für die Übergabe einer kompletten SQL-Anweisung
-' </summary>
-' <param name="sSQL">SQL-Anweisung</param>
-' <param name="Index">Feldauswahl, falls nicht das erste Feld des Recordsets zurückgelieert werden soll</param>
-' <returns>Variant</returns>
-' <remarks></remarks>
-'**/
+'
+' Lookup DAO.Recordset replacement function for DLookup (passing a SQL statement)
+'
+' Parameters:
+'     SqlText     - SQL statement
+'     Index       - Field selection if the first field of the recordset is not to be returned.
+'                   The index is passed in the same way as DAO.Recordset.Fields(index).
+'     ValueIfNull - Return value if record is missing or data field value is Null (default: Null).
+'
+' Returns:
+'     Variant  - Null, if SQL statement does not return a record.
+'
+' Remarks:
+'     The SQL statement must be written in the Jet/ACE SQL dialect.
+'
 '---------------------------------------------------------------------------------------
 Public Function LookupSql(ByVal SqlText As String, Optional ByVal Index As Variant = 0&, _
                  Optional ByVal ValueIfNull As Variant = Null) As Variant

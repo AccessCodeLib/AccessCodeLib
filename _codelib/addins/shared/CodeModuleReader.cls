@@ -8,15 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: CodeModuleReader
+' Class: _codelib.addins.shared.CodeModuleReader
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Inhalt von Code-Modul auswerten
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Evaluate content of CodeModule
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/shared/CodeModuleReader.cls</file>
@@ -68,14 +69,9 @@ Private Const ERRDESCRIPTION_CHECKDEPENDENCY_NOTRUN As String = "CheckDependency
 '---------------------------------------------------------------------------------------
 ' Property: CodeModule
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Code-Modul, dessen Text ausgewertet werden soll
-' </summary>
-' <returns>VBIDE.CodeModule</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Code module whose text is to be evaluated
+'
 '---------------------------------------------------------------------------------------
 #If EARLYBINDING Then
 Public Property Get CodeModule() As VBIDE.CodeModule
@@ -87,17 +83,6 @@ Public Property Get CodeModule() As Object
    
 End Property
 
-'---------------------------------------------------------------------------------------
-' Property: CodeModule
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Code-Modul, dessen Text ausgewertet werden soll
-' </summary>
-' <remarks>
-' </remarks>
-'**/
-'---------------------------------------------------------------------------------------
 #If EARLYBINDING Then
 Public Property Set CodeModule(ByRef NewRef As VBIDE.CodeModule)
 #Else
@@ -109,16 +94,14 @@ Public Property Set CodeModule(ByRef NewRef As Object)
 End Property
 
 '---------------------------------------------------------------------------------------
-' Function: Copy (Josef Pötzl, 2010-03-23)
+' Function: Copy
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Instanz kopieren
-' </summary>
-' <returns>CodeModuleReader</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Copy instance
+'
+' Returns:
+'     CodeModuleReader
+'
 '---------------------------------------------------------------------------------------
 Public Function Copy() As CodeModuleReader
 
@@ -131,18 +114,14 @@ Public Function Copy() As CodeModuleReader
 End Function
 
 '---------------------------------------------------------------------------------------
-' Property: Name (Josef Pötzl, 2010-03-23)
+' Property: Name
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Name von VBComponent des Code-Moduls
-' </summary>
-' <param name="Param"></param>
-' <returns>String</returns>
-' <remarks>
-' Name = CodeModule.Parent.Name
-' </remarks>
-'**/
+'
+' Name of VBComponent of the code module
+'
+' Remarks:
+'     Name = CodeModule.Parent.Name
+'
 '---------------------------------------------------------------------------------------
 Public Property Get Name() As String
 
@@ -151,16 +130,14 @@ Public Property Get Name() As String
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: RequiredModules (Josef Pötzl, 2010-03-23)
+' Property: RequiredModules
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Collection der erforderlichen Module
-' </summary>
-' <returns>Collection</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Collection of the required modules
+'
+' Returns:
+'     Collection
+'
 '---------------------------------------------------------------------------------------
 Public Property Get RequiredModules() As Collection
 
@@ -173,18 +150,18 @@ Public Property Get RequiredModules() As Collection
 End Property
 
 '---------------------------------------------------------------------------------------
-' Function: CheckDependency (Josef Pötzl, 2010-03-23)
+' Function: CheckDependency
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Abhängigkeiten prüfen
-' </summary>
-' <param name="vbp">VBProject, bei Nothing wird aktives VBProject verwendet</param>
-' <param name="oModulReaderCollection">Collection der möglichen Abhängigkeiten, bei Nothing werden alle Code-Module aus VBProject verwendet,</param>
-' <returns>Anzahl der Abhängigkeiten</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Parameters:
+'     VbpRef                  - VBProject, with Nothing active VBProject is used
+'     ModulReaderCollection   - Collection of possible dependencies, with Nothing all code modules from VBProject are used
+'
+' Returns:
+'     Anzahl der Abhängigkeiten
+'
 '---------------------------------------------------------------------------------------
 #If EARLYBINDING Then
 Public Function CheckDependency(Optional ByVal VbpRef As VBIDE.VBProject = Nothing, _
@@ -230,7 +207,7 @@ Public Function CheckDependency(Optional ByVal VbpRef As Object = Nothing, _
       If Not (TempModuleReader.Name = Me.Name) Then
          AddModule = False
       
-         'Bei einem Standard-Modul müssen die Prozeduren und die Modul-Konstanten/Variablen geprüft werden
+         'For a standard module, the procedures and the module constants/variables must be checked
          If TempModuleReader.CodeModule.Parent.Type = vbext_ComponentType.vbext_ct_StdModule Then
             Set CheckCollection = TempModuleReader.Procedures
             For Each TempProc In CheckCollection
@@ -250,12 +227,12 @@ Public Function CheckDependency(Optional ByVal VbpRef As Object = Nothing, _
                Next
             End If
             
-         Else 'bei Klassen reicht es aus, die Verwendung der Klasse zu prüfen
+         Else 'for classes it is enough to check the usage of the class
             If Me.ClassUsed(TempModuleReader.CodeModule.Parent.Name) Then
                AddModule = True
             End If
             
-            If Not AddModule Then ' bei Klassen nur Enums prüfen
+            If Not AddModule Then ' check only enums for classes
                Set CheckCollection = TempModuleReader.HeaderItems
                For Each TempHeaderItem In CheckCollection
                   If TempHeaderItem.ItemType = CodeModuleHeaderItemType.cmItemType_Enum Then
@@ -271,8 +248,8 @@ Public Function CheckDependency(Optional ByVal VbpRef As Object = Nothing, _
          
          If AddModule Then
             m_RequiredModules.Add TempModuleReader.Copy, TempModuleReader.Name
-            'kann hier ein Zirkelbezug entstehen, wenn tempModuleReader-Referenz gespeichert wird?
-            ' => zur Sicherheit Kopie übergeben
+            'can there be a circular reference here if tempModuleReader reference is stored?
+            ' => create a copy for security
          End If
          
       End If
@@ -285,17 +262,17 @@ End Function
 
 
 '---------------------------------------------------------------------------------------
-' Function: ClassUsed (Josef Pötzl, 2010-03-23)
+' Function: ClassUsed
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Prüft, ob Klasse im Code-Modul verwendet/benötigt wird
-' </summary>
-' <param name="ClassName">Name der Klasse</param>
-' <returns>Boolean</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Checks if class is used/needed in code module
+'
+' Parameters:
+'     ClassName - Class name
+'
+' Returns:
+'     Boolean
+'
 '---------------------------------------------------------------------------------------
 Public Function ClassUsed(ByVal ClassName As String) As Boolean
    
@@ -329,17 +306,17 @@ Public Function ClassUsed(ByVal ClassName As String) As Boolean
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: ProcedureUsed (Josef Pötzl, 2010-03-23)
+' Function: ProcedureUsed
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Prüft, ob Prozedur im Code-Modul verwendet/benötigt wird
-' </summary>
-' <param name="cmp">CodeModuleProcedure-Referenz</param>
-' <returns>Boolean</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Checks if procedure is used/needed in code module
+'
+' Parameters:
+'     CodeModuleProc - CodeModuleProcedure reference
+'
+' Returns:
+'     Boolean
+'
 '---------------------------------------------------------------------------------------
 Public Function ProcedureUsed(ByRef CodeModuleProc As CodeModuleProcedure) As Boolean
    
@@ -349,8 +326,8 @@ Public Function ProcedureUsed(ByRef CodeModuleProc As CodeModuleProcedure) As Bo
    Dim Proc As CodeModuleProcedure
    Dim OnlyWithModulePrefix As Boolean
 
-   'bei Überlappung von internen Prozedurnamen mit der zu prüfenden,
-   'gilt nur bei der Kombination modulname.prozedur eine Übereinstimmung als Treffer
+   'if internal procedure names overlap with the one to be checked,
+   'a match is considered a hit only for the combination modulename.procedure
    For Each Proc In Me.Procedures(True, True)
       If Proc.Name = CodeModuleProc.Name Then
          OnlyWithModulePrefix = True
@@ -388,17 +365,17 @@ Public Function ProcedureUsed(ByRef CodeModuleProc As CodeModuleProcedure) As Bo
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: HeaderItemUsed (Josef Pötzl, 2010-03-23)
+' Function: HeaderItemUsed
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Prüft, ob CodeModuleHeaderItem (Variable, Konstante, ...) im Code-Modul verwendet/benötigt wird
-' </summary>
-' <param name="hdrItm">CodeModuleHeaderItem-Referenz</param>
-' <returns>Boolean</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Parameters:
+'     HdrItm - CodeModuleHeaderItem reference
+'
+' Returns:
+'     Boolean
+'
 '---------------------------------------------------------------------------------------
 Public Function HeaderItemUsed(ByRef HdrItm As CodeModuleHeaderItem) As Boolean
    
@@ -407,8 +384,7 @@ Public Function HeaderItemUsed(ByRef HdrItm As CodeModuleHeaderItem) As Boolean
    Dim IsUsed As Boolean
    
    '/**
-   ' * @bug Wenn sich eine Public-Variable mit einer interner (private Variable im Kopf oder in einer Proc)
-   ' *      des zu durchsuchenden Codemoduls überlagert, wird die Public-Variable als Treffer angesehen
+   ' * @bug If a public variable overlaps with an internal (private variable in the header or in a proc) of the code module to be searched, the public variable is considered a hit
    '**/
 
    SearchStringArray = HdrItm.SearchStrings
@@ -438,17 +414,17 @@ Public Function HeaderItemUsed(ByRef HdrItm As CodeModuleHeaderItem) As Boolean
 End Function
 
 '---------------------------------------------------------------------------------------
-' Property: PlainCodeText (Josef Pötzl, 2010-03-23)
+' Property: PlainCodeText
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Gibt bereinigten Code des Code-Moduls zurück
-' </summary>
-' <returns>String</returns>
-' <remarks>
-' Entfernt Kommentarzeilen
-' </remarks>
-'**/
+'
+' Returns cleaned code of the code module
+'
+' Returns:
+'     String
+'
+' Remarks:
+'     Removes comment lines
+'
 '---------------------------------------------------------------------------------------
 Public Property Get PlainCodeText() As String
    
@@ -478,12 +454,12 @@ Private Function GetPlainCodeLine(ByVal CodeLine As String) As String
       If PosDoubleQuote = 0 Or PosSingleQuote < PosDoubleQuote Then
          GetPlainCodeLine = Left$(CodeLine, PosSingleQuote - 1)
       Else ' posSingleQuote > posDoubleQuote and posDoubleQuote > 0 Then
-         'schließendes Anführungszeichen:
+         'closing quotation mark:
          PosDoubleQuote = InStr(PosDoubleQuote + 1, CodeLine, """")
          If PosDoubleQuote > 0 Then
             GetPlainCodeLine = Left$(CodeLine, PosDoubleQuote) & _
                             GetPlainCodeLine(Mid$(CodeLine, PosDoubleQuote + 1))
-         Else ' kann es eigentlich nicht geben
+         Else ' can not actually exist
             GetPlainCodeLine = CodeLine
          End If
       End If
@@ -492,18 +468,18 @@ Private Function GetPlainCodeLine(ByVal CodeLine As String) As String
 End Function
 
 '---------------------------------------------------------------------------------------
-' Property: Procedures (Josef Pötzl, 2010-03-23)
+' Property: Procedures
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Collection aller Prozeduren (CodeModuleProcedure-Referenzen)
-' </summary>
-' <param name="bRefresh">True = Collection neu aufbauen; False = falls bereits eine Collection ermittelt wurde, wird diese verwendet und nicht noch einmal neu geprüft</param>
-' <param name="includePrivateProc">True = inkl. als private deklarierten Prozeduren</param>
-' <returns>Collection der CodeModuleProcedure-Referenzen</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Collection of all procedures (CodeModuleProcedure references)
+'
+' Parameters:
+'     Refresh              - True = rebuild collection; False = if a collection has already been determined, it will be used and not checked again
+'     IncludePrivateProc   - True = incl. procedures declared as private
+'
+' Returns
+'     Collection - CodeModuleProcedure references
+'
 '---------------------------------------------------------------------------------------
 Public Property Get Procedures(Optional ByVal Refresh As Boolean = False, _
                                Optional ByVal IncludePrivateProc As Boolean = False) As Collection
@@ -544,13 +520,13 @@ Public Property Get Procedures(Optional ByVal Refresh As Boolean = False, _
             End If
          Next
          
-         If AddProc Then 'nur Public-Elemente anfügen
+         If AddProc Then 'Append only public elements
             TempProcLine = Trim(m_CodeModule.Lines(m_CodeModule.ProcBodyLine(TempProcName & "", TempProcKind), 1))
             If IncludePrivateProc Then
                AddProc = True
-            ElseIf m_CodeModule.Parent.Type = vbext_ct_StdModule Then 'kein Private
+            ElseIf m_CodeModule.Parent.Type = vbext_ct_StdModule Then 'No Private
                AddProc = Not (Left(TempProcLine, 8) = "Private ")
-            Else 'nur Public oder Friend
+            Else 'Public or Friend only
                AddProc = (Left(TempProcLine, 7) = "Public ") Or (Left(TempProcLine, 7) = "Friend ")
             End If
             
@@ -567,8 +543,8 @@ Public Property Get Procedures(Optional ByVal Refresh As Boolean = False, _
          End If
          
          CurrentLine = m_CodeModule.ProcStartLine(TempProcName & "", TempProcKind) + m_CodeModule.ProcCountLines(TempProcName, TempProcKind)
-         ' Anm.: ProcCountLines ist inkl. Kommentar oberhalb der Prozedur
-         '       => ProcStartLine + ProcCountLines und nicht ProcBodyLine + ProcCountLines
+         ' Note: ProcCountLines is incl. comment above the procedure
+         '       => ProcStartLine + ProcCountLines and not ProcBodyLine + ProcCountLines
          
       End If
       CurrentLine = CurrentLine + 1 'm_CodeModule.ProcCountLines(procName, procKind)
@@ -579,18 +555,20 @@ Public Property Get Procedures(Optional ByVal Refresh As Boolean = False, _
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: HeaderItems (Josef Pötzl, 2010-03-23)
+' Property: HeaderItems
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Einträge des Deklarationsbereits des Code-Moduls (Variablen, Kostanten, Type- und Enum-Definitionen, ..)
-' </summary>
-' <param name="bRefresh">True = Collection neu aufbauen; False = falls bereits eine Collection ermittelt wurde, wird diese verwendet und nicht noch einmal neu geprüft</param>
-' <returns>Collection der CodeModuleHeaderItem-Referenzen</returns>
-' <remarks>
-' siehe auch CodeModuleHeaderItemType
-' </remarks>
-'**/
+'
+' Entries of the declaration ready of the code module (variables, costants, type and enum definitions, ..)
+'
+' Parameters:
+'     Refresh - True = rebuild collection; False = if a collection has already been determined, it is used and not checked again
+'
+' Returns:
+'     Collection - CodeModuleHeaderItem references
+'
+' Remarks:
+'     see also CodeModuleHeaderItemType
+'
 '---------------------------------------------------------------------------------------
 Public Property Get HeaderItems(Optional ByVal Refresh As Boolean = False) As Collection
 
@@ -623,7 +601,7 @@ Public Property Get HeaderItems(Optional ByVal Refresh As Boolean = False) As Co
    Next
    strCheckString = Join(strCheckLines, vbNewLine)
    
-   'Zeilenumbrüche mit "_" entfernen
+   'Remove line breaks with "_"
    strCheckString = Replace(strCheckString, "_" & vbNewLine, vbNewLine)
    Do While InStr(1, strCheckString, vbNewLine & vbNewLine) > 0
       strCheckString = Replace(strCheckString, vbNewLine & vbNewLine, vbNewLine)
@@ -644,7 +622,7 @@ Public Property Get HeaderItems(Optional ByVal Refresh As Boolean = False) As Co
          Set TempHeaderItem = New CodeModuleHeaderItem
          
          '/**
-         ' * @todo "Public x as long, y as long, ..." wird noch nicht berücksichtigt
+         ' * @todo "Public x as long, y as long, ..." is not yet considered
          '**/
          
          If strCheckString Like "const *" Then
@@ -708,7 +686,7 @@ Private Property Get CurrentVbProject() As Object
 
    If m_CurrentVbProject Is Nothing Then
       Set m_CurrentVbProject = VBE.ActiveVBProject
-      'Prüfen, ob das richtige VbProject gewählt wurde (muss das von CurrentDb sein)
+      'Check if the correct VbProject is selected (must be the one from CurrentDb):
       strCurrentDbName = UncPath(CurrentDb.Name)
       If m_CurrentVbProject.FileName <> strCurrentDbName Then
          Set m_CurrentVbProject = Nothing

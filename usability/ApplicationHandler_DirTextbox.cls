@@ -9,28 +9,38 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Attribute VB_Description = "Erweiterung für ApplicationHandler-Klasse: Verzeichnis mittels Textbox durchsuchen"
 '---------------------------------------------------------------------------------------
-' Klassenmodul: ApplicationHandler_DirTextbox (Josef Pötzl, 2009-12-18)
+' Class: usability.ApplicationHandler_DirTextbox
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Erweiterung für ApplicationHandler-Klasse: Verzeichnis mittels Textbox durchsuchen
-' </summary>
-' <remarks>
-' </remarks>
-'\ingroup usability
-' Aktivierung im _config_Application-Modul:\n
-' <code>modApplication.AddApplicationHandlerExtension New ApplicationHandler_DirTextbox</code>
 '
-' Aktivierung für eine Textbox in einem Formular:\n
-'<code>
-'With CurrentApplication!DirTextbox
+' Extension for ApplicationHandler class: Search directory using textbox
+'
+' Author:
+'     Josef Poetzl
+'
+' Note:
+'     Class can create instances of itself and keep them "alive".
+'
+' Remarks:
+' Activation in the _config_Application module:
+' <code>
+'   Set m_Extensions = New ApplicationHandler_ExtensionCollection
+'   ...
+'   m_Extensions.Add New ApplicationHandler_DirTextbox
+'   ...
+' </code>
+'
+' Activation for a text box in a form:
+' <code>
+' With CurrentApplication!DirTextbox
 '   .Textbox = Me.%TextboxSteuerelement%
 '   .BaseFolderPath = %Voreingestellter Pfad%
-'End With
-'</code>
+' End With
+' </code>
 '
-' @todo Filtermöglichkeit ergänzen, dass nur Verzeichnisse ausgewählt werden können.
-'**/
+' @todo Add filter option so that only directories can be selected.
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>usability/ApplicationHandler_DirTextbox.cls</file>
@@ -41,7 +51,7 @@ Attribute VB_Description = "Erweiterung für ApplicationHandler-Klasse: Verzeichn
 '---------------------------------------------------------------------------------------
 '
 '---------------------------------------------------------------------------------------
-' Beispiel
+' Example
 '---------------------------------------------------------------------------------------
 '/**
 '\class ApplicationHandler_DirTextbox
@@ -93,10 +103,6 @@ Attribute VB_Description = "Erweiterung für ApplicationHandler-Klasse: Verzeichn
 '**/
 '---------------------------------------------------------------------------------------
 '
-' Hinweis:
-' Klasse kann von sich selbst Instanzen erzeugen und diese "am Leben" erhalten.
-'
-'
 Option Compare Database
 Option Explicit
 
@@ -132,14 +138,13 @@ End Property
 
 Private Sub m_AccessForm_Unload(ByRef Cancel As Integer)
 On Error Resume Next
-   'Referenzen entfernen
    Set m_Textbox = Nothing
    Set m_AccessForm = Nothing
-   m_InstanceKey = vbNullString 'damit wird beim nächsten Durchlauf der Collection aufgeräumt
+   m_InstanceKey = vbNullString 'this will be used to clean up the next time the collection is run
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Standard-Ereignisbehandlung von Erweiterungen
+' Standard event handling of extensions
 '---------------------------------------------------------------------------------------
 
 ' CheckExtension
@@ -174,7 +179,7 @@ Private Sub GetInstance(ByVal Key As String, ByRef ExtensionReference As Object)
       Key = EXTENSION_KEY & "." & ObjPtr(Me)
    End If
    
-   'Nach vorhandenem InstanceKey suchen und gleichzeitig aufräumen
+   'Search for existing InstanceKey and clean up at the same time
    For i = col.Count To 1 Step -1
       Set TempRef = col(i)
       If TempRef.Textbox Is Nothing And Len(TempRef.InstanceKey) = 0 Then ' Col-Eintrag kann entfernt werden
@@ -185,7 +190,7 @@ Private Sub GetInstance(ByVal Key As String, ByRef ExtensionReference As Object)
       End If
    Next
    
-   'Bei Bedarf neu anlegen
+   'Create new if required
    If InstanceRef Is Nothing Then
       Set InstanceRef = New ApplicationHandler_DirTextbox
       InstanceRef.InstanceKey = Key
@@ -223,13 +228,12 @@ End Sub
 
 ' AfterDispose
 Private Sub m_ApplicationHandler_AfterDispose(ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
-'=> Referenz in m_ApplicationHandler auf Nothing setzen
    Set m_ApplicationHandler = Nothing
 End Sub
 
 
 '---------------------------------------------------------------------------------------
-' Ergänzungen für Ereiterung: ApplicationHandler_DirTextbox
+' Additions for extension: ApplicationHandler_DirTextbox
 '---------------------------------------------------------------------------------------
 '
 Private Sub GetExtensionPropertyLookup(ByVal PropertyName As String, ByRef ResumeMode As ApplicationHandlerResumeModes, ByRef ResumeMessage As Variant)
@@ -238,40 +242,32 @@ Private Sub GetExtensionPropertyLookup(ByVal PropertyName As String, ByRef Resum
    Select Case PropertyName
       'case ...
           
-      Case Else 'Property wurde nicht erkannt
+      Case Else 'Property was not recognized
          ResumeMessage = "Property '" & PropertyName & "' is not supported"
    End Select
 
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Property: BaseFolderPath (Josef Pötzl, 2009-12-18)
+' Property: BaseFolderPath
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Ausgangsverzeichnis (wird vor den Text in der TextBox angehängt)
-' </summary>
-' <remarks>
-' String endet immer mit einem "\", auch wenn bei der Einstellung kein abschließender "\"
-' eingegeben wurde.
-' </remarks>
-'**/
+'
+' Remarks:
+'     String always ends with a "\", even if no final "\" was entered in the setting.
+'
 '---------------------------------------------------------------------------------------
 Public Property Get BaseFolderPath() As String
    BaseFolderPath = m_BaseFolderPath
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: BaseFolderPath (Josef Pötzl, 2009-12-18)
+' Property: BaseFolderPath
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Ausgangsverzeichnis (wird vor den Text in der TextBox angehängt)
-' </summary>
-' <remarks>
 '
-' </remarks>
-'**/
+' Output directory (will be appended in front of the text in the TextBox)
+'
 '---------------------------------------------------------------------------------------
 Public Property Let BaseFolderPath(ByVal NewPath As String)
    m_BaseFolderPath = NewPath
@@ -283,37 +279,22 @@ Public Property Let BaseFolderPath(ByVal NewPath As String)
 End Property
 
 Private Sub InitNewFileSearch()
-'Zwischenspeicher löschen
+'Clear cache
    m_TabMode = False
    m_FolderPath = vbNullString
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Property: Textbox (Josef Pötzl, 2009-12-18)
+' Property: Textbox
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Die Textbox in der der Pfad eingegeben wird
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' The text box in which the path is entered
+'
 '---------------------------------------------------------------------------------------
 Public Property Get Textbox() As Access.Textbox
    Set Textbox = m_Textbox
 End Property
 
-'---------------------------------------------------------------------------------------
-' Property: Textbox (Josef Pötzl, 2009-12-18)
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Die Textbox in der der Pfad eingegeben wird
-' </summary>
-' <remarks>
-' </remarks>
-'**/
-'---------------------------------------------------------------------------------------
 Public Property Set Textbox(ByVal NewRef As Access.Textbox)
    
    Dim parentObject As Object
@@ -324,7 +305,7 @@ Public Property Set Textbox(ByVal NewRef As Access.Textbox)
    With m_Textbox
       Set parentObject = m_Textbox.Parent
       If Not (TypeOf parentObject Is Access.Form) Then
-         'Falls objParent kein Formular, sondern eine Registerseite zurückgibt
+         'If objParent does not return a form but a tab page
          If TypeOf parentObject Is Access.Page Then
             Set parentObject = parentObject.Parent
          End If
@@ -348,10 +329,10 @@ Public Property Set Textbox(ByVal NewRef As Access.Textbox)
 End Property
 
 Private Sub m_Textbox_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
-' Auf Tastendruck in der Textbox reagieren
+' Respond to keystrokes in the text box
 
 '/**
-' * @todo Code aufräumen
+' * @todo Clean up code
 '**/
 
    Static SearchString As String
@@ -363,7 +344,7 @@ Private Sub m_Textbox_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
    BaseFolder = BaseFolderPath
    TextBoxString = m_Textbox.Text
    
-   ' "\" abfangen und prüfen, ob der Einsatz sinnvoll/möglich ist
+   ' Intercept "\" and check if the use is reasonable/possible
    If Shift > 0 And KeyCode = 219 Then
       SearchString = GetFullPathFromRelativPath(TextBoxString, BaseFolder)
       If Right$(SearchString, 1) = ":" Then
@@ -384,7 +365,7 @@ Private Sub m_Textbox_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
       If Right$(SearchString, 3) = "\.." Then
          m_FolderPath = FileTools.GetDirFromFullFileName(Left$(SearchString, Len(SearchString) - 3))
       Else
-         'hier Event auslösen, dass Auswahl bestätigt wurde
+         'Trigger event here that selection was confirmed
          Exit Sub
       End If
       
@@ -402,12 +383,12 @@ Private Sub m_Textbox_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
       If m_TabMode Then
       
          MatchString = Dir$(, vbDirectory)
-         Do While Left$(MatchString, 1) = "." ' eins weiter
+         Do While Left$(MatchString, 1) = "." ' one more
             MatchString = Dir$(, vbDirectory)
          Loop
-         If Len(MatchString) = 0 Then 'wieder von vorne anfangen
+         If Len(MatchString) = 0 Then 'start over again
             MatchString = Dir$(SearchString, vbDirectory)
-            Do While MatchString = "." ' eins weiter
+            Do While MatchString = "." ' one more
                MatchString = Dir$(, vbDirectory)
             Loop
          End If
@@ -428,7 +409,7 @@ Private Sub m_Textbox_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
          End If
          
          MatchString = Dir$(SearchString, vbDirectory)
-         If Len(MatchString) = 0 Then ' "*" anhängen
+         If Len(MatchString) = 0 Then ' append "*"
             If Right$(SearchString, 1) <> "*" Then
                SearchString = SearchString & "*"
             End If
@@ -437,7 +418,7 @@ Private Sub m_Textbox_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
          
          If Len(MatchString) > 0 Then
          
-            If MatchString = "." Then 'Verzeichnis, Suchstring hat mit "\" geendet
+            If MatchString = "." Then 'Directory, search string ended with "\".
                m_FolderPath = TextBoxString
                MatchString = ""
             Else
