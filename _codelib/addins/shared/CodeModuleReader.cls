@@ -63,7 +63,7 @@ Private m_RequiredModules As Collection
 Private m_RequiredModulesChecked As Boolean
 
 Private Const ERRNUMBER_CHECKDEPENDENCY_NOTRUN As Long = vbObjectError + 5001
-Private Const ERRDESCRIPTION_CHECKDEPENDENCY_NOTRUN As String = "CheckDependency wurde noch nicht ausgeführt"
+Private Const ERRDESCRIPTION_CHECKDEPENDENCY_NOTRUN As String = "CheckDependency has not been executed yet"
 
 
 '---------------------------------------------------------------------------------------

@@ -11,7 +11,7 @@ Attribute VB_Exposed = False
 ' Class: data.dao.TempDbHandler
 '---------------------------------------------------------------------------------------
 '
-' Creates and manages an mdb/accdb for temporary tables
+' Creates and manages a database file (mdb/accb) for temporary tables
 '
 ' Author:
 '     Josef Poetzl
@@ -24,6 +24,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>data/dao/DaoHandler.cls</use>
 '  <test>_test/data/dao/TempDbHandlerTests.cls</test>
+'  <description>Creates and manages an database file for temporary tables</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
