@@ -76,6 +76,25 @@ Public Property Get CurrentConnectionInfo() As DbConnectionInfo
 
 End Property
 
+'---------------------------------------------------------------------------------------
+' Property: DbConnectionManager
+'---------------------------------------------------------------------------------------
+'
+' Access to DbConnectionManager instance
+'
+' Returns:
+'     DbConnectionManager
+'
+'---------------------------------------------------------------------------------------
+Public Property Get DbConnectionManager() As DbConnectionManager
+
+   If m_DbConnectionManager Is Nothing Then
+      Set m_DbConnectionManager = New DbConnectionManager
+   End If
+   Set DbConnectionManager = m_DbConnectionManager
+
+End Property
+
 '#######################################################################################
 ' Group: Global Procedures
 
@@ -118,7 +137,7 @@ End Sub
 
 '############################
 '
-' Hilfsfunktionen
+' Support functions
 
 '---------------------------------------------------------------------------------------
 ' Function: TableDefExists

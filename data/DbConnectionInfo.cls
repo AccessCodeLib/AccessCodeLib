@@ -162,6 +162,19 @@ Public Event DbmsConnectionInfoCleared()
 Public Event DbmsInfoMessage(ByVal Source As String, ByVal Msg As String, ByVal MsgStyle As VbMsgBoxStyle)
 
 '---------------------------------------------------------------------------------------
+'Event: LoginDataRequired
+'---------------------------------------------------------------------------------------
+'
+' Event raised when username and password required
+'
+' Remarks:
+'     The event is useful to set a password by code
+'     so that it is not stored in the table and is easily readable.
+'
+'---------------------------------------------------------------------------------------
+Public Event LoginDataRequired(ByRef UserName As String, ByRef Password As String)
+
+'---------------------------------------------------------------------------------------
 'Event: PasswordChanged
 '---------------------------------------------------------------------------------------
 '
@@ -350,7 +363,7 @@ End Property
 
 Private Sub m_LoginForm_Cancelled()
 
-   RaiseEvent DbmsInfoMessage(m_DBMSNAME, "Login wurde abgebrochen", vbExclamation)
+   RaiseEvent DbmsInfoMessage(m_DBMSNAME, "Login was canceled", vbExclamation)
    Set m_LoginForm = Nothing
    ClearConnectionInfo
    m_LoginCancelled = True
@@ -401,22 +414,10 @@ Private Sub SetConnectionStrings(Optional ByVal bWithConnectionCheck As Boolean 
    End If
    
    If m_CONNECTIONMODE = DbmsConnectionModes.DBMS_USERDEF Then
-      'benutzerdefinierter String => kein Ermitteln über Dbms-Klasse erforderlich
+      'user-defined string => no determination via dbms class required
       Exit Sub
    End If
    
-   If Not m_TRUSTEDCONNECTION Then 'Verbindung mit User + Pwd
-
-      m_TRUSTEDCONNECTION = False
-
-      If Not m_DbmsInfoReaded Then
-      If Len(m_DBUSER) = 0 Then
-         LoadConnectionData
-      End If
-      End If
-
-   End If
-
    myConnectionStrings = Me.ConnectionStrings
 
    m_OledbConnectionString = myConnectionStrings.OledbConnectionString
@@ -426,7 +427,7 @@ Private Sub SetConnectionStrings(Optional ByVal bWithConnectionCheck As Boolean 
    If bWithConnectionCheck Then
    If CheckConnection(ErrMsg) = False Then
       If Len(ErrMsg) > 0 Then ErrMsg = vbNewLine & vbNewLine & ErrMsg
-      MsgBox "Verbindung konnte nicht hergestellt werden" & ErrMsg, vbExclamation
+      MsgBox "Connection could not be established" & ErrMsg, vbExclamation
       ClearConnectionInfo
    End If
    End If
@@ -536,7 +537,7 @@ Friend Property Get ConnectionStrings() As DbmsConnectionStrings
       Case m_DBMSNAME_ODBC
          ConnectionStrings = ConnectionStrings_ODBC
       Case Else
-         Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NODBMS, "ConnectionStrings", "Für '" & m_DBMSNAME & "' können keine Connectionstrings erzeugt werden. (Auswahl nicht möglich.)"
+         Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NODBMS, "ConnectionStrings", "Connection strings cannot be created for '" & m_DBMSNAME & "'. (Selection not possible.)"
    End Select
 
 End Property
@@ -845,7 +846,7 @@ Private Function GetDbUserName() As String
          strSQL = "select user from dual"
       Case Else
          On Error GoTo 0
-         Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NODBMS, "DbConnectionInfo.DbUserName", "Für '" & m_DBMSNAME & "' kann der UserName nicht ermittelt werden. (Auswahl nicht möglich.)"
+         Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NODBMS, "DbConnectionInfo.DbUserName", "For '" & m_DBMSNAME & "' the UserName cannot be determined. (Selection not possible.)"
    End Select
    
    Set rst = cnn.Execute(strSQL)
@@ -876,7 +877,7 @@ Private Function GetOdbcUserInfo(Optional ByVal sUID As String = vbNullString, _
          GetOdbcUserInfo = getOdbcUserInfo_ORACLE(sUID, sPWD)
       Case Else
          On Error GoTo 0
-         Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NODBMS, "DbConnectionInfo.getOdbcUserInfo", "Für '" & m_DBMSNAME & "' kann keine OdbcUserInfo erzeugt werden. (Auswahl nicht möglich.)"
+         Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NODBMS, "DbConnectionInfo.getOdbcUserInfo", "No OdbcUserInfo can be created for '" & m_DBMSNAME & "'. (Selection not possible.)"
    End Select
 
 End Function
@@ -979,13 +980,13 @@ Private Function ConnectionStrings_MySQL() As DbmsConnectionStrings
    Dim strODBC As String
    Dim strSrvCon As String
 
-   If m_TRUSTEDCONNECTION Then 'Wie würde das bei MySQL funktionieren?
+   If m_TRUSTEDCONNECTION Then 'How would this work with MySQL?
       m_TRUSTEDCONNECTION = False
       If SetLoginData Then
          strODBC = getOdbcUserInfo_MySQL(m_DBUSER, m_DBUSERPWD) & ";"
       Else
          On Error GoTo 0
-         Err.Raise ERRNR_INACTIVE, "ConnectionStrings_MySQL", "Der Windowsbenutzer wurde für die Datenbank nicht freigegeben!"
+         Err.Raise ERRNR_INACTIVE, "ConnectionStrings_MySQL", "The Windows user was not released for the database!"
       End If
    Else 'Verbindung mit User + Pwd
       strODBC = getOdbcUserInfo_MySQL(m_DBUSER, m_DBUSERPWD) & ";"
@@ -1027,7 +1028,7 @@ Private Function ConnectionStrings_ORACLE() As DbmsConnectionStrings
    Dim strODBC As String, strOLEDB As String
    Dim strSrvCon As String
 
-   If m_TRUSTEDCONNECTION Then 'Wie funktioiniert das bei Oracle?
+   If m_TRUSTEDCONNECTION Then 'How does this work with Oracle?
      strODBC = "Trusted_Connection=Yes;"
      strOLEDB = "Integrated Security = SSPI;"
    Else 'Verbindung mit User + Pwd
@@ -1043,7 +1044,6 @@ Private Function ConnectionStrings_ORACLE() As DbmsConnectionStrings
    End If
    
    'Microsoft ODBC for Oracle:
-   'strSrvCon = "(DESCRIPTION=(ADDRESS=(COMMUNITY=192.168.0)(PROTOCOL=TCP)(Host=" & m_DBSERVER & ")(Port=" & m_PORT & "))(CONNECT_DATA=(SID=" & m_DBNAME & ")))"
    strSrvCon = "(DESCRIPTION=(ADDRESS=(COMMUNITY=)(PROTOCOL=TCP)(Host=" & m_DBSERVER & ")(Port=" & m_PORT & "))(CONNECT_DATA=(SID=" & m_DBNAME & ")))"
       
    If Len(m_DBOLEDBPROVIDER) = 0 Then
@@ -1055,8 +1055,7 @@ Private Function ConnectionStrings_ORACLE() As DbmsConnectionStrings
       strODBC = "DSN=" & m_DSN & ";" & strODBC
    Else
       If Len(m_DBODBCDRIVER) = 0 Then
-        m_DBODBCDRIVER = "Microsoft ODBC for Oracle" '"Oracle in OraDb10g_home1" oder "Microsoft ODBC for Oracle"
-        'sDBODBCDRIVER = "Oracle in OraDb10g_home1"
+        m_DBODBCDRIVER = "Microsoft ODBC for Oracle" '"Oracle in OraDb10g_home1" or "Microsoft ODBC for Oracle"
       End If
       strODBC = "DRIVER={" & m_DBODBCDRIVER & "};SERVER=" & strSrvCon & ";" & strODBC
    End If
@@ -1080,7 +1079,7 @@ Private Function ConnectionStrings_ODBC() As DbmsConnectionStrings
    Dim strSrvCon As String
    
    If Len(m_DBODBCDRIVER) = 0 Then
-      Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NOCONFIG, "ConnectionStrings_ODBC", "Es wurde kein ODBC-Treiber angegeben"
+      Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NOCONFIG, "ConnectionStrings_ODBC", "No ODBC driver was specified"
    End If
 
    If m_TRUSTEDCONNECTION Then
@@ -1118,7 +1117,7 @@ End Function
 ' Property: TableListSqlText
 '---------------------------------------------------------------------------------------
 '
-' SQL-Anweisung im SQL-Dialtekt des DBMS zur Auflistung der im DBS enthaltenen Tabellen
+' SQL statement in the SQL dialect of the DBMS to list the tables contained in the DBS.
 '
 ' Remarks:
 '     This procedure must be extended if further DBMS are to be used.
@@ -1346,7 +1345,7 @@ Private Sub LoadConnectionData(Optional ByVal WithoutLoginForm As Boolean = Fals
    End If
 
    If Not WithoutLoginForm Then
-   If m_UseLoginForm Then 'ergibt Anmeldung, daher nicht für Vorabeinstellungen nutzen! (=>withoutLoginForm=true)
+   If m_UseLoginForm Then 'results in login, therefore do not use for pre-settings! (=>withoutLoginForm=true)
 #If CONFIG_USELOGINFORM = 1 Then
       Dim LoginUserName As String
       LoginUserName = GetUserNameFromConfigFile
@@ -1354,7 +1353,7 @@ Private Sub LoadConnectionData(Optional ByVal WithoutLoginForm As Boolean = Fals
          LoginUserName = m_DBUSER
       End If
    
-      'm_LoginForm über Property LoginForm zugänglich machen und im LoginForm selbst setzen:
+      'Make m_LoginForm accessible via Property LoginForm and set it in the LoginForm itself:
       DoCmd.OpenForm LoginFormName, acNormal, , , acFormEdit, acDialog, ObjPtr(Me) & "@" & m_ConnectionIdentifier & "@" & LoginUserName
 #Else
    Err.Raise vbObjectError, "DbConnectionInfo", "CONFIG_USELOGINFORM in Projekteigenschaften nicht gesetzt!"
@@ -1374,7 +1373,7 @@ Private Sub LoadConnectionDataFromTable()
    Dim SelectSql As String
    Dim Loa
    
-   If Len(m_ConnectionIdentifier) = 0 Then 'jenen DS auswählen, der als "Aktiv" gekennzeichnet wurde
+   If Len(m_ConnectionIdentifier) = 0 Then 'Select the DS that has been marked as "Active".
       SelectSql = ActivatedConnDataSelectSql
    Else
       SelectSql = Replace(SelectConnectionIdentifierConnDataSelectSql, "{ConnectionIdentifier}", SqlTools.TextToSqlText(m_ConnectionIdentifier))
@@ -1386,7 +1385,7 @@ Private Sub LoadConnectionDataFromTable()
       rst.Close
       Set rst = Nothing
       
-      If Len(m_ConnectionIdentifier) = 0 Then 'es wurde noch keine Verbindung aktiviert
+      If Len(m_ConnectionIdentifier) = 0 Then 'no connection has been activated yet
          If Not TryGetConnectionDataWithConfigForm(rst) Then
             Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NODBMS, "DbConnectionInfo.LoadDbmsConnectionDataFromTable", "Es wurde keine Verbindung aktiviert."
             Exit Sub
@@ -1411,12 +1410,12 @@ Private Function TryGetConnectionDataWithConfigForm(ByRef rst As DAO.Recordset) 
 
    If Len(DbmsConfigFormName) > 0 Then
    
-      If MsgBox("Es wurde noch keine Verbindung aktiviert." & vbNewLine & _
-                     "Bitte überprüfen Sie die Verbindungsparameter und aktivieren Sie die gewünschte Verbindung.", _
+      If MsgBox("No connection has been activated yet." & vbNewLine & _
+                "Please check the connection parameters and activate the desired connection.", _
                      vbInformation + vbOKCancel) = vbOK Then
                      
          DoCmd.OpenForm DbmsConfigFormName, , , , , acDialog
-         'Abbruch, falls über Formular bereits initialisiert wurde
+         'Abort, if already initialized via form
          If m_DbmsInfoReaded Then
             TryGetConnectionDataWithConfigForm = True
             Exit Function
@@ -1444,13 +1443,13 @@ Private Sub LoadConnectionDataFromRecordset(ByVal rst As DAO.Recordset)
       If Len(m_ConnectionIdentifier) = 0 Then
          m_ConnectionIdentifier = Nz(rst.Fields("CID"), vbNullString)
          If Len(m_ConnectionIdentifier) = 0 Then
-            Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NODBMS, "DbConnectionInfo.readDBMSprop", "Es wurde keine Verbindung übergeben."
+            Err.Raise DbConnectionInfoErrorNumbers.ERRNR_NODBMS, "DbConnectionInfo.readDBMSprop", "No connection was passed."
             Exit Sub
          End If
       End If
       
       m_DBMSNAME = Nz(rst.Fields("DBMS"), vbNullString)
-      m_CONNECTIONMODE = Nz(.Fields("dbmsConnectionMode"), 0) '1 = DNS less, 2 = DSN, 4 = benutzerdefiniert
+      m_CONNECTIONMODE = Nz(.Fields("dbmsConnectionMode"), 0) '1 = DNS less, 2 = DSN, 4 = custom
    
       m_DBNAME = .Fields("dbmsDatabase") & vbNullString
       
@@ -1462,9 +1461,23 @@ Private Sub LoadConnectionDataFromRecordset(ByVal rst As DAO.Recordset)
       m_DBUSER = .Fields("dbmsUser") & vbNullString
       m_DBUSERPWD = .Fields("dbmsPwd") & vbNullString
       
-      'Falls kein Name angegeben ist, Loginform aktivieren
-      If Not (m_UseLoginForm Or m_TRUSTEDCONNECTION) And Len(m_DBUSER) = 0 Then
-         m_UseLoginForm = (m_DBMSNAME <> "MSJET")
+      If Not m_TRUSTEDCONNECTION Then
+      
+         'Try get login data by Event (to get password from vba code)
+         If Len(m_DBUSER) = 0 Or Len(m_DBUSERPWD) = 0 Then
+            RaiseEvent LoginDataRequired(m_DBUSER, m_DBUSERPWD)
+            If m_UseLoginForm Then
+               If Len(m_DBUSER) > 0 And Len(m_DBUSERPWD) > 0 Then
+                  m_UseLoginForm = False
+               End If
+            End If
+         End If
+         
+         'Falls kein Name angegeben ist, Loginform aktivieren
+         If Not (m_UseLoginForm Or m_TRUSTEDCONNECTION) And Len(m_DBUSER) = 0 Then
+            m_UseLoginForm = (m_DBMSNAME <> "MSJET")
+         End If
+      
       End If
       
       m_DSN = .Fields("dbmsDSN") & vbNullString
