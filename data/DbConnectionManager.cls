@@ -51,6 +51,9 @@ Private m_DefaultDbConnecionSettings As DbConnectionSettings
 Private m_PermanentBackendRst As DAO.Recordset
 Private m_Disposed As Boolean
 
+Private m_DbmsUserName As String
+Private m_DbmsUserPassword As String
+
 Private Sub Class_Terminate()
 On Error Resume Next
    Dispose
@@ -76,6 +79,11 @@ On Error Resume Next
 
    m_Disposed = (0 = Err.Number)
 
+End Sub
+
+Public Sub SetUserData(ByVal UserName As String, ByVal Password As String)
+   m_DbmsUserName = UserName
+   m_DbmsUserPassword = Password
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -278,10 +286,17 @@ On Error Resume Next
    Set m_DbConnectionInfo = Nothing
 End Sub
 
+Private Sub m_DbConnectionInfo_LoginDataRequired(UserName As String, Password As String)
+   If Len(m_DbmsUserName) > 0 Then
+      UserName = m_DbmsUserName
+      Password = m_DbmsUserPassword
+   End If
+End Sub
+
 Private Sub m_DbConnectionInfo_PasswordChanged()
 
-   MsgBox "Für die ODBC-Verbindung der verknüpften Tabellen ist ein Neustart erforderlich!" & vbNewLine & _
-          "Die Verbindung über ADODB/OLEDB reagiert ab sofort auf das neue Passwort."
+   MsgBox "A restart is required for the ODBC connection of the linked tables!" & vbNewLine & _
+          "The connection via ADODB/OLEDB responds to the new password from now on."
 
    'DbConnection neu einstellen
    InitDbConnection
@@ -305,8 +320,8 @@ Private Sub m_DbConnection_ErrorEmptyOledbConnectionString(ByVal Msg As String, 
 End Sub
 
 Private Sub m_DbConnection_ErrorMissingCurrentConnection(ByVal Msg As String, NewCurrentConnection As ADODB.Connection)
-' kein Neusetzen erforderlich, Connection wird über OledbConnectionString eingestellt
-' sollte dieser auch fehlen, wird ErrorEmptyOledbConnectionString ausgelöst.
+' No reset required, connection is set via OledbConnectionString.
+' Should this also be missing, ErrorEmptyOledbConnectionString is triggered.
 End Sub
 
 Private Sub m_DbConnection_ErrorMissingCurrentDb(ByVal Msg As String, NewCurrentDbRef As DAO.Database)
