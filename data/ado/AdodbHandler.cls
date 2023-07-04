@@ -92,7 +92,7 @@ Public Event ErrorEmptyConnectionString(ByVal Msg As String, ByRef NewConnection
 '     New values can be passed on via the ByRef parameters.
 '
 '---------------------------------------------------------------------------------------
-Public Event HookInsertIdentityReturn(ByRef InsertSql As String, ByRef IdentityTable As String, _
+Public Event HookInsertIdentityReturn(ByRef InsertSQL As String, ByRef IdentityTable As String, _
                                       ByRef ActiveConnection As ADODB.Connection, ByRef IdentitySelectString As String, _
                                       ByRef HookResponseMode As Long, ByRef HookResponseMessage As Variant)
 
@@ -473,15 +473,30 @@ Public Function Lookup(ByVal Expr As String, ByVal Domain As String, _
               Optional ByVal Criteria As Variant, _
               Optional ByVal ValueIfNull As Variant = Null) As Variant
 
-   Dim SelectSqlText As String
+   Dim SelectSql As String
 
-   SelectSqlText = "SELECT " & Expr & " FROM " & Domain
+   SelectSql = BuildSelectSql(Expr, Domain, Criteria, False)
+   Lookup = Me.LookupSql(SelectSql, , ValueIfNull)
+
+End Function
+
+Private Function BuildSelectSql(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant, _
+                       Optional ByVal Distinct As Boolean = False)
+
+   Dim SelectSql As String
+
+   SelectSql = "SELECT "
+   If Distinct Then
+      SelectSql = SelectSql & "Distinct "
+   End If
+   SelectSql = SelectSql & Expr & " FROM (" & Domain & ")"
    If Not (VarType(Criteria) = vbError) Then
       If Len(Criteria) > 0 Then
-         SelectSqlText = SelectSqlText & " WHERE " & Criteria
+         SelectSql = SelectSql & " WHERE " & Criteria
       End If
    End If
-   Lookup = Me.LookupSql(SelectSqlText, , ValueIfNull)
+   
+   BuildSelectSql = SelectSql
 
 End Function
 
@@ -500,8 +515,18 @@ End Function
 '     Long
 '
 '---------------------------------------------------------------------------------------
-Public Function Count(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Long
+Public Function Count(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant, _
+             Optional ByVal Distinct As Boolean = False) As Long
+             
+   If Distinct Then
+      If Expr <> "*" Then
+         Domain = "(" & BuildSelectSql(Expr, Domain, Criteria, True) & ")"
+         Criteria = vbNullString
+      End If
+   End If
+   
    Count = Nz(Me.Lookup("Count(" & Expr & ")", Domain, Criteria), 0)
+   
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -604,7 +629,7 @@ End Function
 '     Works for Jet only from Jet 4.0 (Access 2000), IdentityTable is only applicable for MSSQL, under MySQL the IDENT_CURRENT function does not exist.
 '
 '---------------------------------------------------------------------------------------
-Public Function InsertIdentityReturn(ByVal InsertSql As String, Optional ByVal IdentityTable As String = vbNullString) As Variant
+Public Function InsertIdentityReturn(ByVal InsertSQL As String, Optional ByVal IdentityTable As String = vbNullString) As Variant
 
    Dim cnn As ADODB.Connection
    Dim rst As ADODB.Recordset
@@ -617,14 +642,14 @@ Public Function InsertIdentityReturn(ByVal InsertSql As String, Optional ByVal I
    Set cnn = Me.CurrentConnection
    
    If m_HooksEnabled Then
-      RaiseEvent HookInsertIdentityReturn(InsertSql, IdentityTable, cnn, IdentitySql, CurrentHookResumeMode, CurrentHookResumeMessage)
+      RaiseEvent HookInsertIdentityReturn(InsertSQL, IdentityTable, cnn, IdentitySql, CurrentHookResumeMode, CurrentHookResumeMessage)
       If CurrentHookResumeMode <> 0 Then 'Hook ermittelte bereits das Ergebnis
          InsertIdentityReturn = CurrentHookResumeMessage
          Exit Function
       End If
    End If
    
-   cnn.Execute InsertSql, RecordsAffected
+   cnn.Execute InsertSQL, RecordsAffected
    
    If RecordsAffected = 0 Then
       InsertIdentityReturn = Null 'es wurde kein neuer DS angefügt

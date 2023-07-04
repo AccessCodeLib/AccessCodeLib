@@ -780,21 +780,21 @@ Public Function LookupSql(ByVal SqlText As String, _
                  Optional ByVal Index As Variant = 0&, _
                  Optional ByVal ValueIfNull As Variant = Null) As Variant
 
-    Dim rst As DAO.Recordset
+   Dim rst As DAO.Recordset
 
 On Error GoTo HandleErr
 
-    Set rst = Me.OpenRecordset(SqlText, dbOpenForwardOnly, dbSeeChanges, dbReadOnly)
-    With rst
-        If .EOF Then
-            LookupSql = ValueIfNull
-        Else
-            LookupSql = Nz(.Fields(Index), ValueIfNull)
-        End If
-        .Close
-    End With
-    Set rst = Nothing
-
+   Set rst = Me.OpenRecordset(SqlText, dbOpenForwardOnly, dbSeeChanges, dbReadOnly)
+   With rst
+      If .EOF Then
+         LookupSql = ValueIfNull
+      Else
+         LookupSql = Nz(.Fields(Index), ValueIfNull)
+      End If
+      .Close
+   End With
+   Set rst = Nothing
+   
 ExitHere:
    Exit Function
    
@@ -803,7 +803,7 @@ HandleErr:
       rst.Close
       Set rst = Nothing
    End If
-
+   
    Err.Raise Err.Number, "LookupSQL:" & Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
 
 End Function
@@ -828,15 +828,30 @@ Public Function Lookup(ByVal Expr As String, ByVal Domain As String, _
               Optional ByVal Criteria As Variant, _
               Optional ByVal ValueIfNull As Variant = Null) As Variant
 
-    Dim SelectSql As String
+   Dim SelectSql As String
 
-    SelectSql = "SELECT " & Expr & " FROM (" & Domain & ")"
-    If Not (VarType(Criteria) = vbError) Then
-        If Len(Criteria) > 0 Then
-            SelectSql = SelectSql & " WHERE " & Criteria
-        End If
-    End If
-    Lookup = LookupSql(SelectSql, , ValueIfNull)
+   SelectSql = BuildSelectSql(Expr, Domain, Criteria, False)
+   Lookup = LookupSql(SelectSql, , ValueIfNull)
+
+End Function
+
+Private Function BuildSelectSql(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant, _
+                       Optional ByVal Distinct As Boolean = False)
+
+   Dim SelectSql As String
+
+   SelectSql = "SELECT "
+   If Distinct Then
+      SelectSql = SelectSql & "Distinct "
+   End If
+   SelectSql = SelectSql & Expr & " FROM (" & Domain & ")"
+   If Not (VarType(Criteria) = vbError) Then
+      If Len(Criteria) > 0 Then
+         SelectSql = SelectSql & " WHERE " & Criteria
+      End If
+   End If
+   
+   BuildSelectSql = SelectSql
 
 End Function
 
@@ -855,8 +870,18 @@ End Function
 '     Long
 '
 '---------------------------------------------------------------------------------------
-Public Function Count(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Long
-    Count = Nz(Me.Lookup("Count(" & Expr & ")", Domain, Criteria), 0)
+Public Function Count(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant, _
+             Optional ByVal Distinct As Boolean = False) As Long
+             
+   If Distinct Then
+      If Expr <> "*" Then
+         Domain = "(" & BuildSelectSql(Expr, Domain, Criteria, True) & ")"
+         Criteria = vbNullString
+      End If
+   End If
+             
+   Count = Nz(Me.Lookup("Count(" & Expr & ")", Domain, Criteria), 0)
+   
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -959,7 +984,7 @@ End Function
 '     Works for Jet only from Jet 4.0 (Access 2000), IdentityTable is only applicable for MSSQL, under MySQL the IDENT_CURRENT function does not exist.
 '     (<data.adodb.AdodbHandler::InsertIdentityReturn> is more suitable regarding use for active DBMS.)
 '---------------------------------------------------------------------------------------
-Public Function InsertIdentityReturn(ByVal InsertSql As String) As Variant
+Public Function InsertIdentityReturn(ByVal InsertSQL As String) As Variant
 
     Dim db As DAO.Database
     Dim rst As DAO.Recordset
@@ -968,7 +993,7 @@ Public Function InsertIdentityReturn(ByVal InsertSql As String) As Variant
 On Error GoTo HandleErr
 
     Set db = Me.CurrentDb
-    db.Execute InsertSql
+    db.Execute InsertSQL
     RecordsAffected = db.RecordsAffected
     
     If RecordsAffected = 0 Then
