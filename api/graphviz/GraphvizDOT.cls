@@ -348,18 +348,18 @@ Private Function ToBinaryGraphExe(OutputType As DOT_OutputGraphType, _
    'DOT ermitteln
    'If p_lngGraphMode = DOT_GraphMode.DOT Then
       strExe = "-Gcharset=latin1 -Tdot -o """ & strDotFile & """ """ & strDotFile & """"
-      runDotExe strExe
+      RunDotExe strExe
    'End If
    
    'Image-Map zwischenspeichern
    strFile = TempPath & Me.GraphName & ".cmap"
    strExe = "-Tcmap -o " & strFile & " " & strDotFile
    
-   runDotExe strExe
+   RunDotExe strExe
    
    strFile = TempPath & Me.GraphName & strFileExtension
    strExe = "-Gcharset=latin1 -T" & Mid(strFileExtension, 2) & " -o """ & strFile & """ """ & strDotFile & """"
-   runDotExe strExe
+   RunDotExe strExe
 
    If show Then
       ShellExecuteOpenFile strFile, "open"
@@ -369,7 +369,7 @@ Private Function ToBinaryGraphExe(OutputType As DOT_OutputGraphType, _
 
 End Function
 
-Private Function runDotExe(sDotCmd As String)
+Private Function RunDotExe(sDotCmd As String)
 
    Static strDotPath As String
    Dim bolReadPath As Boolean
@@ -384,24 +384,17 @@ Private Function runDotExe(sDotCmd As String)
    
    If bolReadPath Then
 
-      If modWinAPI_Registry.RegValueGet(HKEY_LOCAL_MACHINE, "SOFTWARE\AT&T Research Labs\Graphviz", "InstallPath", strDotPath) = 0 Then
-         strDotPath = Trim$(strDotPath)
-         If Right$(strDotPath, 1) <> "\" Then
-            strDotPath = strDotPath & "\"
-         End If
-         strDotPath = strDotPath & "bin\"
-         If Len(Dir$(strDotPath & "dot.exe")) = 0 Then
-            strDotPath = CodeProject.Path & "\bin\graphviz\bin\"
-         End If
-      Else
-         strDotPath = CodeProject.Path & "\bin\graphviz\bin\"
+      If Not TryGetGraphVizPathFromRegistry(strDotPath) Then
+         strDotPath = CodeProject.Path & "\bin\graphviz\"
       End If
       
-      If Len(Dir(strDotPath & "dot.exe")) = 0 Then
-         strDotPath = CodeProject.Path & "\bin\graphviz\"
-         If Len(Dir$(strDotPath & "dot.exe")) = 0 Then
-            Err.Raise vbObjectError, "RunDotExe", "Graphviz-Execute-Dateien wurde nicht gefunden"
-         End If
+      strDotPath = strDotPath & "bin\"
+      If Len(Dir$(strDotPath & "dot.exe")) = 0 Then
+         strDotPath = CodeProject.Path & "\bin\graphviz\bin\"
+      End If
+   
+      If Len(Dir$(strDotPath & "dot.exe")) = 0 Then
+         Err.Raise vbObjectError, "RunDotExe", "Graphviz Execute files was not found"
       End If
    
    End If
@@ -419,6 +412,26 @@ Private Function runDotExe(sDotCmd As String)
 
 End Function
 
+Public Function TryGetGraphVizPathFromRegistry(ByRef GraphVizPath As String) As Boolean
+   
+   If modWinAPI_Registry.RegValueGet(HKEY_LOCAL_MACHINE, "SOFTWARE\WOW6432Node\Graphviz\Graphviz", "", GraphVizPath) = 0 Then
+   '
+   ElseIf modWinAPI_Registry.RegValueGet(HKEY_LOCAL_MACHINE, "SOFTWARE\Graphviz\Graphviz", "", GraphVizPath) = 0 Then
+   '
+   Else
+      GraphVizPath = vbNullString
+      TryGetGraphVizPathFromRegistry = False
+      Exit Function
+   End If
+   
+   GraphVizPath = Trim$(GraphVizPath)
+   If Right$(GraphVizPath, 1) <> "\" Then
+      GraphVizPath = GraphVizPath & "\"
+   End If
+
+   TryGetGraphVizPathFromRegistry = True
+
+End Function
 
 Public Function ToTextGraph(lType As Long, _
                      Optional show As Boolean = False) As String 'Rückgabe = Dateiname

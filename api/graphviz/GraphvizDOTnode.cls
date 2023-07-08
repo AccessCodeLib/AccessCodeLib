@@ -49,7 +49,7 @@ Private Const EXPORTHTMLFILEEXTENSION As String = ".html"
 Private Const p_conWordWrapMinLen As Long = 16
 Private m_lngWordWrapMinLen As Long
 
-Public Event ReceiveGraphvizSetting(ByVal propName As String, ByRef newValue As Variant)
+Public Event ReceiveGraphvizSetting(ByVal PropName As String, ByRef NewValue As Variant)
 
 
 Public Property Let LayoutMode(LayoutID As Long)
