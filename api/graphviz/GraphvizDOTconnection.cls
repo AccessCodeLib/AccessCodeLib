@@ -8,15 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: GraphvizDOTconnection (Josef Pötzl)
+' Class: api.graphviz.GraphvizDOTconnection
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Graphviz-Verbindung zw. zwei Knoten
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Graphviz connection between two nodes
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>api/graphviz/GraphvizDOTconnection.cls</file>

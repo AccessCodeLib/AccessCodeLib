@@ -8,18 +8,17 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: GraphvizStructViewer (Josef Pötzl, 2010-03-23)
+' Class: _codelib.addins.StructViewer.GraphvizStructViewer
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' GraphvizStructViewer
-' </summary>
-' <remarks>
-' </remarks>
 '
-'  @todo Einstellung der Graphviz-Parameter fehlt noch (es gibt noch zu viele Konstanten)
+' Remarks:
 '
-'**/
+'  @todo Setting of Graphviz parameters is still missing (there are still too many constants)
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/StructViewer/GraphvizStructViewer.cls</file>
@@ -89,11 +88,11 @@ Public Sub ReadStruct()
    
 End Sub
 
-Private Function modulReaderExistsInCollection(col As Collection, cmr As CodeModuleReader) As Boolean
+Private Function ModulReaderExistsInCollection(col As Collection, cmr As CodeModuleReader) As Boolean
    Dim TempModuleReader As CodeModuleReader
    For Each TempModuleReader In col
       If TempModuleReader.Name = cmr.Name Then
-         modulReaderExistsInCollection = True
+         ModulReaderExistsInCollection = True
          Exit For
       End If
    Next
@@ -138,7 +137,7 @@ Private Sub addDOTobjects(ByVal markFirstItem As Boolean)
       If collectionItem.Name = "modErrorHandler" Then
          strColor = "gray"
       End If
-      m_DOT.AddNode strNodeID, collectionItem.Name, , strColor, strStyle, , , getLink(collectionItem)
+      m_DOT.AddNode strNodeID, collectionItem.Name, , strColor, strStyle, , , GetLink(collectionItem)
       m_DOT.Node(strNodeID).LayoutMode = collectionItem.CodeModule.Parent.Type
       
       If Len(strColor) > 0 Then strColor = vbNullString
@@ -149,7 +148,7 @@ Private Sub addDOTobjects(ByVal markFirstItem As Boolean)
    
 End Sub
 
-Private Function getLink(cmr As CodeModuleReader) As String
+Private Function GetLink(cmr As CodeModuleReader) As String
    
    Dim strName As String
    Dim i As Long
@@ -180,7 +179,7 @@ Private Function getLink(cmr As CodeModuleReader) As String
          ' lassen
    End Select
    
-   getLink = LCase(strName) & ".html"
+   GetLink = LCase(strName) & ".html"
    
 End Function
 

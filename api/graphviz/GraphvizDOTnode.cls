@@ -8,15 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: GraphvizDOTnode (Josef Pötzl)
+' Class: api.graphviz.GraphvizDOTnode
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Graphviz-Knoten
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Graphviz node
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>api/graphviz/GraphvizDOTnode.cls</file>

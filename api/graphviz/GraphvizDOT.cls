@@ -8,15 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: GraphvizDOT (Josef Pötzl)
+' Class: api.graphviz.GraphvizDOT
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' GraphvizDOT
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>api/graphviz/GraphvizDOT.cls</file>

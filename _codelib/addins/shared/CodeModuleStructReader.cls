@@ -122,7 +122,7 @@ Public Sub ReadStruct()
    Dim vbc As Object
 #End If
    Dim TempModuleReader As CodeModuleReader
-   Dim baseModuleReader As CodeModuleReader
+   Dim BaseModuleReader As CodeModuleReader
    
    Dim strBaseCodeModuleName As String
    Dim lngCount As Long
@@ -137,7 +137,7 @@ Public Sub ReadStruct()
       Set TempModuleReader = New CodeModuleReader
       Set TempModuleReader.CodeModule = vbc.CodeModule
       m_CodeModuleReaderCollection.Add TempModuleReader, TempModuleReader.Name
-      If TempModuleReader.Name = strBaseCodeModuleName Then Set baseModuleReader = TempModuleReader
+      If TempModuleReader.Name = strBaseCodeModuleName Then Set BaseModuleReader = TempModuleReader
    Next
    
    'Abhängigkeiten ermitteln
@@ -147,7 +147,7 @@ Public Sub ReadStruct()
       Next
    Else
    
-      If baseModuleReader Is Nothing Then
+      If BaseModuleReader Is Nothing Then
          Err.Raise vbObjectError, "ReadStruct", "Das Code-Modul '" & strBaseCodeModuleName & "' wurde nicht gefunden!"
       End If
    
@@ -156,15 +156,15 @@ Public Sub ReadStruct()
       Dim checkReader As CodeModuleReader
       
       Set newCol = New Collection
-      Call baseModuleReader.CheckDependency(, m_CodeModuleReaderCollection)
-      newCol.Add baseModuleReader, baseModuleReader.Name
+      Call BaseModuleReader.CheckDependency(, m_CodeModuleReaderCollection)
+      newCol.Add BaseModuleReader, BaseModuleReader.Name
       
       lngCount = 1
       Do While lngCount <= newCol.Count
          Set TempModuleReader = newCol(lngCount)
          lngCount = lngCount + 1
          For Each checkReader In TempModuleReader.RequiredModules
-            If Not modulReaderExistsInCollection(newCol, checkReader) Then
+            If Not ModulReaderExistsInCollection(newCol, checkReader) Then
                Call checkReader.CheckDependency(, m_CodeModuleReaderCollection)
                newCol.Add checkReader, checkReader.Name
             End If
@@ -180,18 +180,17 @@ Public Sub ReadStruct()
    
 End Sub
 
-Private Function modulReaderExistsInCollection(col As Collection, cmr As CodeModuleReader) As Boolean
+Private Function ModulReaderExistsInCollection(col As Collection, cmr As CodeModuleReader) As Boolean
    Dim TempModuleReader As CodeModuleReader
    For Each TempModuleReader In col
       If TempModuleReader.Name = cmr.Name Then
-         modulReaderExistsInCollection = True
+         ModulReaderExistsInCollection = True
          Exit For
       End If
    Next
 End Function
 
-
-Private Function getLink(cmr As CodeModuleReader) As String
+Private Function GetLink(cmr As CodeModuleReader) As String
    
    Dim strName As String
    Dim i As Long
@@ -222,7 +221,7 @@ Private Function getLink(cmr As CodeModuleReader) As String
          ' lassen
    End Select
    
-   getLink = LCase(strName) & ".html"
+   GetLink = LCase(strName) & ".html"
    
 End Function
 
