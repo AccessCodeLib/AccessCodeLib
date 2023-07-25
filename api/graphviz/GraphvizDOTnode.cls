@@ -8,15 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: GraphvizDOTnode (Josef Pötzl)
+' Class: api.graphviz.GraphvizDOTnode
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Graphviz-Knoten
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Graphviz node
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>api/graphviz/GraphvizDOTnode.cls</file>
@@ -49,7 +50,7 @@ Private Const EXPORTHTMLFILEEXTENSION As String = ".html"
 Private Const p_conWordWrapMinLen As Long = 16
 Private m_lngWordWrapMinLen As Long
 
-Public Event ReceiveGraphvizSetting(ByVal propName As String, ByRef newValue As Variant)
+Public Event ReceiveGraphvizSetting(ByVal PropName As String, ByRef NewValue As Variant)
 
 
 Public Property Let LayoutMode(LayoutID As Long)

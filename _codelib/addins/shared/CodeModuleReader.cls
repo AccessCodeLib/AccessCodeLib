@@ -276,19 +276,21 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Function ClassUsed(ByVal ClassName As String) As Boolean
    
-   Dim SearchString(5) As String
+   Dim SearchString(6) As String
    Dim i As Long
    Dim IsUsed As Boolean
-   Dim MaxCnt As Long
+   Dim MaxIndex As Long
 
    SearchString(0) = " As " & Trim$(ClassName) & vbNewLine
    SearchString(1) = " As " & Trim$(ClassName) & ","
    SearchString(2) = " As " & Trim$(ClassName) & " "
    
-   MaxCnt = 2
-   For i = 0 To MaxCnt
-      SearchString(MaxCnt + 1 + i) = " New " & Mid(SearchString(i), 5)
+   MaxIndex = 2
+   For i = 0 To MaxIndex
+      SearchString(MaxIndex + 1 + i) = " New " & Mid(SearchString(i), 5)
    Next
+   
+   SearchString(6) = " " & Trim$(ClassName) & "." ' to detect the use of static classes
    
    If StrPtr(m_CodeModuleText) = 0 Then
       m_CodeModuleText = PlainCodeText
@@ -340,14 +342,14 @@ Public Function ProcedureUsed(ByRef CodeModuleProc As CodeModuleProcedure) As Bo
    If StrPtr(m_CodeModuleText) = 0 Then
       m_CodeModuleText = PlainCodeText
    End If
-   
+
    'Text durchsuchen
    For i = LBound(SearchStringArray) To UBound(SearchStringArray)
-#If USEREGEX = 1 Then
-      With RegEx
+#If USEREGEXP = 1 Then
+      With RegExp
          .Pattern = SearchStringArray(i)
          .Global = False
-         IsUsed = .test(m_CodeModuleText)
+         IsUsed = .Test(m_CodeModuleText)
          If IsUsed Then
             Exit For
          End If
@@ -395,10 +397,10 @@ Public Function HeaderItemUsed(ByRef HdrItm As CodeModuleHeaderItem) As Boolean
    
    For i = LBound(SearchStringArray) To UBound(SearchStringArray)
 #If USEREGEX = 1 Then
-      With RegEx
+      With RegExp
          .Pattern = SearchStringArray(i)
          .Global = False
-         IsUsed = .test(m_CodeModuleText)
+         IsUsed = .Test(m_CodeModuleText)
          If IsUsed Then Exit For
       End With
 #Else

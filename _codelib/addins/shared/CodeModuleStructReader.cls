@@ -95,6 +95,7 @@ Public Property Let BaseCodeModuleName(ByVal CmName As String)
    If CmName <> m_BaseCodeModuleName Then
       m_RefreshStruct = True
       m_BaseCodeModuleName = CmName
+      Set m_CodeModuleReaderCollection = New Collection
    End If
 End Property
 
@@ -120,8 +121,8 @@ Public Sub ReadStruct()
    Dim vbp As Object
    Dim vbc As Object
 #End If
-   Dim tempModuleReader As CodeModuleReader
-   Dim baseModuleReader As CodeModuleReader
+   Dim TempModuleReader As CodeModuleReader
+   Dim BaseModuleReader As CodeModuleReader
    
    Dim strBaseCodeModuleName As String
    Dim lngCount As Long
@@ -133,20 +134,20 @@ Public Sub ReadStruct()
    'alle Module sammeln
    Set m_CodeModuleReaderCollection = New Collection
    For Each vbc In vbp.VBComponents
-      Set tempModuleReader = New CodeModuleReader
-      Set tempModuleReader.CodeModule = vbc.CodeModule
-      m_CodeModuleReaderCollection.Add tempModuleReader, tempModuleReader.Name
-      If tempModuleReader.Name = strBaseCodeModuleName Then Set baseModuleReader = tempModuleReader
+      Set TempModuleReader = New CodeModuleReader
+      Set TempModuleReader.CodeModule = vbc.CodeModule
+      m_CodeModuleReaderCollection.Add TempModuleReader, TempModuleReader.Name
+      If TempModuleReader.Name = strBaseCodeModuleName Then Set BaseModuleReader = TempModuleReader
    Next
    
    'Abhängigkeiten ermitteln
    If Len(strBaseCodeModuleName) = 0 Then 'alle Abhängigkeiten
-      For Each tempModuleReader In m_CodeModuleReaderCollection
-         Call tempModuleReader.CheckDependency(, m_CodeModuleReaderCollection)
+      For Each TempModuleReader In m_CodeModuleReaderCollection
+         Call TempModuleReader.CheckDependency(, m_CodeModuleReaderCollection)
       Next
    Else
    
-      If baseModuleReader Is Nothing Then
+      If BaseModuleReader Is Nothing Then
          Err.Raise vbObjectError, "ReadStruct", "Das Code-Modul '" & strBaseCodeModuleName & "' wurde nicht gefunden!"
       End If
    
@@ -155,15 +156,15 @@ Public Sub ReadStruct()
       Dim checkReader As CodeModuleReader
       
       Set newCol = New Collection
-      Call baseModuleReader.CheckDependency(, m_CodeModuleReaderCollection)
-      newCol.Add baseModuleReader, baseModuleReader.Name
+      Call BaseModuleReader.CheckDependency(, m_CodeModuleReaderCollection)
+      newCol.Add BaseModuleReader, BaseModuleReader.Name
       
       lngCount = 1
       Do While lngCount <= newCol.Count
-         Set tempModuleReader = newCol(lngCount)
+         Set TempModuleReader = newCol(lngCount)
          lngCount = lngCount + 1
-         For Each checkReader In tempModuleReader.RequiredModules
-            If Not modulReaderExistsInCollection(newCol, checkReader) Then
+         For Each checkReader In TempModuleReader.RequiredModules
+            If Not ModulReaderExistsInCollection(newCol, checkReader) Then
                Call checkReader.CheckDependency(, m_CodeModuleReaderCollection)
                newCol.Add checkReader, checkReader.Name
             End If
@@ -179,18 +180,17 @@ Public Sub ReadStruct()
    
 End Sub
 
-Private Function modulReaderExistsInCollection(col As Collection, cmr As CodeModuleReader) As Boolean
-   Dim tempModuleReader As CodeModuleReader
-   For Each tempModuleReader In col
-      If tempModuleReader.Name = cmr.Name Then
-         modulReaderExistsInCollection = True
+Private Function ModulReaderExistsInCollection(col As Collection, cmr As CodeModuleReader) As Boolean
+   Dim TempModuleReader As CodeModuleReader
+   For Each TempModuleReader In col
+      If TempModuleReader.Name = cmr.Name Then
+         ModulReaderExistsInCollection = True
          Exit For
       End If
    Next
 End Function
 
-
-Private Function getLink(cmr As CodeModuleReader) As String
+Private Function GetLink(cmr As CodeModuleReader) As String
    
    Dim strName As String
    Dim i As Long
@@ -221,7 +221,7 @@ Private Function getLink(cmr As CodeModuleReader) As String
          ' lassen
    End Select
    
-   getLink = LCase(strName) & ".html"
+   GetLink = LCase(strName) & ".html"
    
 End Function
 
@@ -266,21 +266,21 @@ Public Property Get CurrentVbProject() As Object
 #End If
 
 #If EARLYBINDING Then
-   Dim proj As VBProject
+   Dim Proj As VBProject
 #Else
-   Dim proj As Object
+   Dim Proj As Object
 #End If
    Dim strCurrentDbName As String
 
    If m_CurrentVbProject Is Nothing Then
       Set m_CurrentVbProject = VBE.ActiveVBProject
       'Prüfen, ob das richtige VbProject gewählt wurde (muss das von CurrentDb sein)
-      strCurrentDbName = UNCPath(CurrentDb.Name)
+      strCurrentDbName = UncPath(CurrentDb.Name)
       If m_CurrentVbProject.FileName <> strCurrentDbName Then
          Set m_CurrentVbProject = Nothing
-         For Each proj In VBE.VBProjects
-            If proj.FileName = strCurrentDbName Then
-               Set m_CurrentVbProject = proj
+         For Each Proj In VBE.VBProjects
+            If Proj.FileName = strCurrentDbName Then
+               Set m_CurrentVbProject = Proj
                Exit For
             End If
          Next

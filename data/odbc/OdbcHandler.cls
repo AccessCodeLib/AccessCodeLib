@@ -122,7 +122,7 @@ Public Event DbObjectDeleted(ByVal LastDbObjectName As String, ByVal Counter As 
 '     New values can be passed on via the ByRef parameters.
 '
 '---------------------------------------------------------------------------------------
-Public Event HookInsertIdentityReturn(ByRef InsertSql As String, _
+Public Event HookInsertIdentityReturn(ByRef InsertSQL As String, _
                                       ByRef ActiveDb As DAO.Database, _
                                       ByRef IdentitySelectString As String, _
                                       ByRef ResponseMode As Long, ByRef HookResponseMessage As Variant)
@@ -526,15 +526,30 @@ Public Function Lookup(ByVal Expr As String, ByVal Domain As String, _
               Optional ByVal Criteria As Variant, _
               Optional ByVal ValueIfNull As Variant = Null) As Variant
 
-   Dim SqlText As String
+   Dim SelectSql As String
 
-   SqlText = "SELECT " & Expr & " FROM " & Domain
+   SelectSql = BuildSelectSql(Expr, Domain, Criteria, False)
+   Lookup = LookupSql(SelectSql, , ValueIfNull)
+
+End Function
+
+Private Function BuildSelectSql(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant, _
+                       Optional ByVal Distinct As Boolean = False)
+
+   Dim SelectSql As String
+
+   SelectSql = "SELECT "
+   If Distinct Then
+      SelectSql = SelectSql & "Distinct "
+   End If
+   SelectSql = SelectSql & Expr & " FROM (" & Domain & ")"
    If Not (VarType(Criteria) = vbError) Then
       If Len(Criteria) > 0 Then
-         SqlText = SqlText & " WHERE " & Criteria
+         SelectSql = SelectSql & " WHERE " & Criteria
       End If
    End If
-   Lookup = Me.LookupSql(SqlText, , ValueIfNull)
+   
+   BuildSelectSql = SelectSql
 
 End Function
 
@@ -553,8 +568,18 @@ End Function
 '     Long
 '
 '---------------------------------------------------------------------------------------
-Public Function Count(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant) As Variant
+Public Function Count(ByVal Expr As String, ByVal Domain As String, Optional ByVal Criteria As Variant, _
+             Optional ByVal Distinct As Boolean = False) As Long
+             
+   If Distinct Then
+      If Expr <> "*" Then
+         Domain = "(" & BuildSelectSql(Expr, Domain, Criteria, True) & ")"
+         Criteria = vbNullString
+      End If
+   End If
+             
    Count = Nz(Me.Lookup("Count(" & Expr & ")", Domain, Criteria), 0)
+   
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -630,7 +655,7 @@ End Function
 '     Works for Jet only from Jet 4.0 (Access 2000), IdentityTable is only applicable for MSSQL, under MySQL the IDENT_CURRENT function does not exist.
 '     If HooksEnabled: event HookInsertIdentityReturn will be raised
 '---------------------------------------------------------------------------------------
-Public Function InsertIdentityReturn(ByVal InsertSql As String) As Variant
+Public Function InsertIdentityReturn(ByVal InsertSQL As String) As Variant
 
    Dim db As DAO.Database
    Dim rst As DAO.Recordset
@@ -642,7 +667,7 @@ Public Function InsertIdentityReturn(ByVal InsertSql As String) As Variant
    Set db = Me.CurrentDbBE
    
    If m_HooksEnabled Then
-      RaiseEvent HookInsertIdentityReturn(InsertSql, db, IdentitySql, HookResponseMode, HookResponseMessage)
+      RaiseEvent HookInsertIdentityReturn(InsertSQL, db, IdentitySql, HookResponseMode, HookResponseMessage)
       If HookResponseMode <> 0 Then 'Hook ermittelte bereits das Ergebnis
          InsertIdentityReturn = HookResponseMessage
          Exit Function
@@ -651,7 +676,7 @@ Public Function InsertIdentityReturn(ByVal InsertSql As String) As Variant
    
 On Error GoTo HandleErr
 
-   db.Execute InsertSql, dbFailOnError
+   db.Execute InsertSQL, dbFailOnError
    RecordsAffected = db.RecordsAffected
    
    If RecordsAffected = 0 Then

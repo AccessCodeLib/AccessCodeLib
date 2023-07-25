@@ -8,15 +8,17 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: GraphvizDOTgraph (Josef Pötzl)
+' Class: api.graphviz.GraphvizDOTgraph
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Klasse zum Erstellen der Graphviz-Graph-Definition
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Class for creating the graphviz graph definition
+'
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>api/graphviz/GraphvizDOTgraph.cls</file>

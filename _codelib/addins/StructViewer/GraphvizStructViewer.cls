@@ -8,18 +8,17 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: GraphvizStructViewer (Josef Pötzl, 2010-03-23)
+' Class: _codelib.addins.StructViewer.GraphvizStructViewer
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' GraphvizStructViewer
-' </summary>
-' <remarks>
-' </remarks>
 '
-'  @todo Einstellung der Graphviz-Parameter fehlt noch (es gibt noch zu viele Konstanten)
+' Remarks:
 '
-'**/
+'  @todo Setting of Graphviz parameters is still missing (there are still too many constants)
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/StructViewer/GraphvizStructViewer.cls</file>
@@ -55,7 +54,7 @@ Private Const conDefaultObjGrpFontsizeFu As Long = 8 '10
 Private Const conDefaultObjGrpFontsizeObjGrpDiff As Long = 2 'diese Zahlt wird zu Fu-Size addiert
 
 Private Const conDOT_GraphProp As String = _
-                  "graph [bgcolor=""#FFFFFF"", margin=0.05,overlap=false, splines=true, concentrade=true, fontname=""" & conDefaultFontname & """, size=""15,6""ratio=compress];" & _
+                  "graph [bgcolor=""#FFFFFF"", margin=0.05,overlap=false, splines=true, concentrade=true, fontname=""" & conDefaultFontname & """, ratio=compress];" & _
                   "node[color=""#000000"",fontname=""" & conDefaultFontname & """];" & _
                   "edge[color=""#000000"", arrowsize=0.8, labelangle=60, labelfontsize=" & conDefaultObjGrpFontsizeFu & ",labelfontname=""" & conDefaultFontname & """];"
                
@@ -89,11 +88,11 @@ Public Sub ReadStruct()
    
 End Sub
 
-Private Function modulReaderExistsInCollection(col As Collection, cmr As CodeModuleReader) As Boolean
-   Dim tempModuleReader As CodeModuleReader
-   For Each tempModuleReader In col
-      If tempModuleReader.Name = cmr.Name Then
-         modulReaderExistsInCollection = True
+Private Function ModulReaderExistsInCollection(col As Collection, cmr As CodeModuleReader) As Boolean
+   Dim TempModuleReader As CodeModuleReader
+   For Each TempModuleReader In col
+      If TempModuleReader.Name = cmr.Name Then
+         ModulReaderExistsInCollection = True
          Exit For
       End If
    Next
@@ -138,7 +137,7 @@ Private Sub addDOTobjects(ByVal markFirstItem As Boolean)
       If collectionItem.Name = "modErrorHandler" Then
          strColor = "gray"
       End If
-      m_DOT.AddNode strNodeID, collectionItem.Name, , strColor, strStyle, , , getLink(collectionItem)
+      m_DOT.AddNode strNodeID, collectionItem.Name, , strColor, strStyle, , , GetLink(collectionItem)
       m_DOT.Node(strNodeID).LayoutMode = collectionItem.CodeModule.Parent.Type
       
       If Len(strColor) > 0 Then strColor = vbNullString
@@ -149,7 +148,7 @@ Private Sub addDOTobjects(ByVal markFirstItem As Boolean)
    
 End Sub
 
-Private Function getLink(cmr As CodeModuleReader) As String
+Private Function GetLink(cmr As CodeModuleReader) As String
    
    Dim strName As String
    Dim i As Long
@@ -180,18 +179,18 @@ Private Function getLink(cmr As CodeModuleReader) As String
          ' lassen
    End Select
    
-   getLink = LCase(strName) & ".html"
+   GetLink = LCase(strName) & ".html"
    
 End Function
 
 Private Sub addDOTconnections(ByRef cmr As CodeModuleReader)
 
-   Dim tempModuleReader As CodeModuleReader
+   Dim TempModuleReader As CodeModuleReader
 
-   For Each tempModuleReader In cmr.RequiredModules
-      If tempModuleReader.Name <> "modErrorHandler" Then  ' Errorhandler ignorieren
+   For Each TempModuleReader In cmr.RequiredModules
+      If TempModuleReader.Name <> "modErrorHandler" Then  ' Errorhandler ignorieren
          'm_DOT.AddConnection cmr.Name, tempModuleReader.Name
-         m_DOT.AddConnection tempModuleReader.Name, cmr.Name
+         m_DOT.AddConnection TempModuleReader.Name, cmr.Name
       End If
    Next
 

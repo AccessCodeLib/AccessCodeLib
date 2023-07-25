@@ -10,11 +10,17 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 ' AccUnit:TestClass
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' AccUnit-Testklasse für TempDbHandler
-' </summary>
-'**/
+'
+' Test class for TempDbHandler
+'
+' Author:
+'     Josef Poetzl
+'
+' Call:
+'     TestSuite.AddByClassName("TempDbHandlerTests").Run
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_test/data/dao/TempDbHandlerTests.cls</file>
@@ -30,20 +36,9 @@ Option Explicit
 
 Private m_TempDbHandler As TempDbHandler
 Private Const TestTableName As String = "Test"
-Private Const TestTableDDL As String = "CREATE TABLE " & TestTableName & " (id counter(1,1), T varchar(255), Z int)"
-Private Const InsertSQL As String = "Insert INTO " & TestTableName & " (T, Z) VALUES ('{0}', {1})"
+Private Const TestTableDDL As String = "CREATE TABLE " & TestTableName & " (id counter(1,1), T varchar(255), N int)"
+Private Const InsertSQL As String = "Insert INTO " & TestTableName & " (T, N) VALUES ('{0}', {1})"
 Private Const DeleteRecordsSQL As String = "DELETE FROM " & TestTableName
-
-'--------------------------------------------------------------------
-' AccUnit Infrastructure
-'--------------------------------------------------------------------
-
-Implements SimplyVBUnit.ITestFixture
-Implements AccUnit_Integration.ITestManagerBridge
-Private TestManager As AccUnit_Integration.TestManager
-Private Sub ITestManagerBridge_InitTestManager(ByVal NewTestManager As AccUnit_Integration.ITestManagerComInterface): Set TestManager = NewTestManager: End Sub
-Private Function ITestManagerBridge_GetTestManager() As AccUnit_Integration.ITestManagerComInterface: Set ITestManagerBridge_GetTestManager = TestManager: End Function
-Private Sub ITestFixture_AddTestCases(ByVal Tests As SimplyVBUnit.TestCaseCollector): TestManager.AddTestCases Tests: End Sub
 
 Public Sub Setup()
    Set m_TempDbHandler = New TempDbHandler
@@ -93,29 +88,16 @@ End Sub
 
 Public Sub DropLinkedTableDefs_TableMissing_NoError()
    
-On Error GoTo HandleErr
-
    m_TempDbHandler.DropTable TestTableName
-
-ExitHere:
-   Exit Sub
-
-HandleErr:
-   Select Case Err.Number
-   Case 3376 'Table does not exist.
-      Assert.Fail "Error 3376 raised"
-   Case Else
-      Assert.Pass
-   End Select
    
 End Sub
 
 'AccUnit:Row("ID", 2, 2)
 'AccUnit:Row("T", 2, "b")
-'AccUnit:Row("Z", 2, 2)
+'AccUnit:Row("N", 2, 2)
 Public Sub OpenRecordset_FilterRecordWithID_ReturnFieldValues(ByVal FieldName As String, ByVal lId As Long, ByVal Expected As Variant)
    
-   Const SelectDDLTemplate As String = "select ID, T, Z from " & TestTableName & " where ID={0}"
+   Const SelectDDLTemplate As String = "select ID, T, N from " & TestTableName & " where ID={0}"
    Dim Actual As Variant
    Dim rst As DAO.Recordset
    
@@ -132,19 +114,19 @@ End Sub
 
 'AccUnit:Row("ID", 2, 2)
 'AccUnit:Row("T", 2, "b")
-'AccUnit:Row("Z", 2, 2)
+'AccUnit:Row("N", 2, 2)
 'AccUnit:Row(0, 2, 2)
 'AccUnit:Row(1, 2, "b")
 'AccUnit:Row(2, 2, 2)
 Public Sub DLookupSQL_FilterRecordWithID_ReturnValuesFromFieldIndex(ByVal FieldIndex As Variant, ByVal lId As Long, ByVal Expected As Variant)
 
-   Const SelectDDLTemplate As String = "select ID, T, Z from " & TestTableName & " where ID={0}"
+   Const SelectDDLTemplate As String = "select ID, T, N from " & TestTableName & " where ID={0}"
    Dim Actual As Variant
    
    CreateTestTableInTempDB
    InsertRecordsInTestTable
    
-   Actual = m_TempDbHandler.LookupSQL(FormatString(SelectDDLTemplate, lId), FieldIndex)
+   Actual = m_TempDbHandler.LookupSql(FormatString(SelectDDLTemplate, lId), FieldIndex)
 
    Assert.That Actual, Iz.EqualTo(Expected)
    

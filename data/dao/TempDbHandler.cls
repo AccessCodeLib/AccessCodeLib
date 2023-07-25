@@ -576,7 +576,6 @@ ExitHere:
 HandleErr:
    Select Case Err.Number
    Case 3376 'Table does not exist.
-      Err.Raise 123, Err.Source, Err.Description
       Resume ExitHere
    Case Else
       Err.Raise Err.Number, Err.Source, Err.Description
