@@ -13,12 +13,13 @@ Attribute VB_Exposed = False
 '
 ' Call: TestSuite.AddByClassName("StringToolsTests").Run
 '
+'--------------------------------------------------------------------
 
 '--------------------------------------------------------------------
 '<codelib>
 '  <file>_test/text/StringToolsTests.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>text/StringTools.bas</use>
+'  <use>text/StringTools.cls</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -90,7 +91,7 @@ End Sub
 'AccUnit:Row(#12/29/1899 14:34:56#, "[hh]:nn:ss", "-38:34:56")
 Public Sub Format_DateTime_FormattedDateTime(ByVal Expression As Variant, ByVal FormatString As Variant, ByVal Expected As String)
    Dim Actual As String
-   Actual = StringTools.FormatX(Expression, FormatString)
+   Actual = StringTools.Format(Expression, FormatString)
    Assert.AreEqual Expected, Actual
 End Sub
 
@@ -98,7 +99,7 @@ End Sub
 'AccUnit:Row(2, 0, "[hh]:nn:ss", "48:00:00")
 Public Sub Format_CalculatedDateTime_FormattedDateTime(ByVal Date1 As Variant, ByVal Date2 As Variant, ByVal FormatString As Variant, ByVal Expected As String)
    Dim Actual As String
-   Actual = StringTools.FormatX(Date1 - Date2, FormatString)
+   Actual = StringTools.Format(Date1 - Date2, FormatString)
    Assert.AreEqual Expected, Actual
 End Sub
 
