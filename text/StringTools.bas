@@ -9,6 +9,10 @@ Attribute VB_Description = "String-Hilfsfunktionen"
 ' Author:
 '     Josef Poetzl, Sten Schmidt
 '
+' Remarks:
+'     Use DisableReplaceVbaStringFunctions = 1 in conditional compilation arguments (in vbe project properties)
+'     to disable replacement of VBA.Format function
+'
 '---------------------------------------------------------------------------------------
 
 '---------------------------------------------------------------------------------------
@@ -124,7 +128,7 @@ End Function
 '     String
 '
 '---------------------------------------------------------------------------------------
-#If ReplaceVbaFormat = 1 Then
+#If DisableReplaceVbaStringFunctions = 0 Then
 Public Function Format(ByVal Expression As Variant, Optional ByVal FormatString As Variant, _
               Optional ByVal FirstDayOfWeek As VbDayOfWeek = vbSunday, _
               Optional ByVal FirstWeekOfYear As VbFirstWeekOfYear = vbFirstJan1) As String
