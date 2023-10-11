@@ -191,6 +191,7 @@ End Sub
 'AccUnit:Row(.123, 0.123)
 'AccUnit:Row("", Null)
 'AccUnit:Row("1.234.5", 1234.5)
+'AccUnit:Row("1.234,5", 1234.5)
 Public Sub ConvertToNumeric_UseValues_ReturnsValue(ByVal Value As Variant, ByVal Expected As Variant)
    Dim Actual As Variant
    Actual = SqlTools.ConvertToNumeric(Value)

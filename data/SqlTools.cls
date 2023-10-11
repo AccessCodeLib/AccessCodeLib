@@ -553,6 +553,8 @@ Friend Function ConvertToNumeric(ByVal Value As Variant) As Variant
    Const CheckNumber As Double = 1.23
    
    Dim CheckText As String
+   Dim DecimalSeparatorToReplace As String
+   Dim NewDecimalSeparator As String
    
    If IsNull(Value) Then
       ConvertToNumeric = Null
@@ -564,20 +566,19 @@ Friend Function ConvertToNumeric(ByVal Value As Variant) As Variant
    
    CheckText = CStr(CheckNumber)
    If InStr(1, CheckText, ",") > 0 Then
-      If InStr(1, Value, ".") > 0 Then
-         Value = Replace(Value, ".", ",")
-         Do While Value Like "*,*,*"
-            Value = Replace(Value, ",", vbNullString, 1, 1)
-         Loop
-      End If
+      DecimalSeparatorToReplace = "."
+      NewDecimalSeparator = ","
    Else
-      If InStr(1, Value, ",") > 0 Then
-         Value = Replace(Value, ",", ".")
-         Do While Value Like "*.*.*"
-            Value = Replace(Value, ".", vbNullString, 1, 1)
-         Loop
-      End If
+      DecimalSeparatorToReplace = ","
+      NewDecimalSeparator = "."
    End If
+   
+   If InStr(1, Value, DecimalSeparatorToReplace) > 0 Then
+       Value = Replace(Value, DecimalSeparatorToReplace, NewDecimalSeparator)
+       Do While Value Like "*" & NewDecimalSeparator & "*" & NewDecimalSeparator & "*"
+          Value = Replace(Value, NewDecimalSeparator, vbNullString, 1, 1)
+       Loop
+    End If
    
    ConvertToNumeric = CDbl(Value)
    
