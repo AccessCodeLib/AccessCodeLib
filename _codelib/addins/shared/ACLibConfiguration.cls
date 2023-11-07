@@ -12,7 +12,7 @@ Attribute VB_Description = "Konfigurationseinstellungen der CodeLib verwalten"
 ' Class: _codelib.addins.shared.ACLibConfiguration
 '---------------------------------------------------------------------------------------
 '
-' Konfigurationseinstellungen der CodeLib verwalten
+' Manage AccessCodeLib configuration settings
 '
 ' Author:
 '     Josef Poetzl
