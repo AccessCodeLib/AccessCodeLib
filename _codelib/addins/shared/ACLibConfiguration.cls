@@ -65,11 +65,13 @@ Private Const SQL_CREATETABLE_CONFIGTABLE As String = _
 Private Const PROPNAME_LOCALREPOSITORYROOT As String = "LocalRepositoryRoot"
 Private Const PROPNAME_PRIVATEREPOSITORYROOT As String = "PrivateRepositoryRoot"
 Private Const PROPNAME_IMPORTTESTDEFAULTVALUE As String = "ImportTestDefaultValue"
+Private Const PROPNAME_GITHUBAUTHPERSONALACCESSTOKEN As String = "GitHubAuthPersonalAccessToken"
 
 ' Hilfsvariablen
 Private m_LocalRepositoryPath As String   ' allg. Repository-Verzeichnis
 Private m_PrivateRepositoryPath As String ' privates Verzeichnis (nicht in CodeLib enthalten)
 Private m_ImportTestDefaultValue As Long
+Private m_GitHubAuthPersonalAccessToken As String
 Private m_ACLibPropertyDb As DAO.Database
 
 '---------------------------------------------------------------------------------------
@@ -222,6 +224,23 @@ Public Property Let ImportTestsDefaultValue(ByVal NewValue As Boolean)
 
    m_ImportTestDefaultValue = Abs(NewValue) + 1
    SetACLibGlobalProperty PROPNAME_IMPORTTESTDEFAULTVALUE, Abs(NewValue)
+
+End Property
+
+Public Property Get GitHubAuthPersonalAccessToken() As String
+'m_GitHubAuthPersonalAccessToken: vbnullstring = noch nicht abgefragt
+
+   If StrPtr(m_GitHubAuthPersonalAccessToken) = 0 Then
+      m_GitHubAuthPersonalAccessToken = GetACLibGlobalProperty(PROPNAME_GITHUBAUTHPERSONALACCESSTOKEN) & ""
+   End If
+   GitHubAuthPersonalAccessToken = m_GitHubAuthPersonalAccessToken
+
+End Property
+
+Public Property Let GitHubAuthPersonalAccessToken(ByVal NewValue As String)
+
+   m_GitHubAuthPersonalAccessToken = NewValue
+   SetACLibGlobalProperty PROPNAME_GITHUBAUTHPERSONALACCESSTOKEN, m_GitHubAuthPersonalAccessToken
 
 End Property
 
