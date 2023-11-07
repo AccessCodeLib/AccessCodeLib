@@ -306,6 +306,7 @@ Private Function CheckConfigTableDef() As Boolean
 
    Dim db As DAO.Database
    Dim tdf As DAO.TableDef
+   Dim ConfigDataPath As String
 
    Set db = CodeDb
    
@@ -316,12 +317,15 @@ Private Function CheckConfigTableDef() As Boolean
       tdf.SourceTableName = ACLIB_CONFIG_TABLEDEFNAME
       db.TableDefs.Append tdf
       
-   ElseIf Len(Dir$(Mid$(db.TableDefs(ACLIB_CONFIG_TABLEDEFNAME).Connect, Len(";Database=") + 1))) = 0 Then
+   Else
    
-      With db.TableDefs(ACLIB_CONFIG_TABLEDEFNAME)
-         .Connect = ";Database=" & ACLibConfigDatabaseFile
-         .RefreshLink
-      End With
+      ConfigDataPath = Mid$(db.TableDefs(ACLIB_CONFIG_TABLEDEFNAME).Connect, Len(";Database=") + 1)
+      If ConfigDataPath <> ACLibConfigDatabaseFile Then
+         With db.TableDefs(ACLIB_CONFIG_TABLEDEFNAME)
+            .Connect = ";Database=" & ACLibConfigDatabaseFile
+            .RefreshLink
+         End With
+      End If
       
    End If
    
