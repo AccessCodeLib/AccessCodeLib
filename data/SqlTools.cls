@@ -10,6 +10,7 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 ' Class: data.sql.SqlTools
 '---------------------------------------------------------------------------------------
+'
 ' Functions to build sql strings
 '
 ' Author:
@@ -702,11 +703,11 @@ End Function
 Private Property Get DecimalMarker() As String
 
    Static DecChar As String
-   Dim X As String
+   Dim x As String
    
    If Len(DecChar) = 0 Then
-      X = Trim(CStr(1.2))
-      DecChar = Mid(X, 2, 1)
+      x = Trim(CStr(1.2))
+      DecChar = Mid(x, 2, 1)
    End If
    
    DecimalMarker = DecChar

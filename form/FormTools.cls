@@ -8,16 +8,18 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: FormTools
+' Class: FormTools
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Prozedursammlung für Formulare
-' </summary>
-' <remarks>
-' Vereinfacht die Steuerung von Access-Formularen
-' </remarks>
-'**/
+' Procedure collection for forms
+'
+' Author:
+'     Josef Poetzl
+'
+' Remarks:
+'   Simplifies the control of Access forms
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>form/FormTools.cls</file>
@@ -35,6 +37,13 @@ Private Const WM_SWP_NOZORDER = &H4
 Private Const WM_SWP_SHOWWINDOW = &H40
 Private Const WM_LOGPIXELSY = 90
 
+Private Type Rect
+  Left As Long
+  Top As Long
+  Right As Long
+  Bottom As Long
+End Type
+
 #If VBA7 Then
 
 Private Declare PtrSafe Function SendMessage Lib "user32" Alias "SendMessageA" ( _
@@ -46,7 +55,7 @@ Private Declare PtrSafe Function GetDesktopWindow Lib "user32" () As Long
 Private Declare PtrSafe Function GetDC Lib "user32" (ByVal Hwnd As Long) As Long
 Private Declare PtrSafe Function ReleaseDC Lib "user32" (ByVal Hwnd As Long, ByVal hDC As Long) As Long
 Private Declare PtrSafe Function GetDeviceCaps Lib "gdi32" (ByVal hDC As Long, ByVal nIndex As Long) As Long
-Private Declare PtrSafe Function GetWindowRect Lib "user32" (ByVal Hwnd As Long, lpRect As RECT) As Long
+Private Declare PtrSafe Function GetWindowRect Lib "user32" (ByVal Hwnd As Long, lpRect As Rect) As Long
 
 #Else
 
@@ -59,7 +68,7 @@ Private Declare Function GetDesktopWindow Lib "user32" () As Long
 Private Declare Function GetDC Lib "user32" (ByVal Hwnd As Long) As Long
 Private Declare Function ReleaseDC Lib "user32" (ByVal Hwnd As Long, ByVal hDC As Long) As Long
 Private Declare Function GetDeviceCaps Lib "gdi32" (ByVal hDC As Long, ByVal nIndex As Long) As Long
-Private Declare Function GetWindowRect Lib "user32" (ByVal Hwnd As Long, lpRect As RECT) As Long
+Private Declare Function GetWindowRect Lib "user32" (ByVal Hwnd As Long, lpRect As Rect) As Long
 
 #End If
 
@@ -116,7 +125,7 @@ Public Sub GotoBookmark(ByRef FormRef As Form, ByVal BookmarkID_Name As String, 
       End With
    Else 'If TypeOf rst Is ADODB.Recordset Then
       With rst
-         .Find strCriteria, , adSearchForward
+         .Find strCriteria, , 1 'adSearchForward
          If Not .EOF Then
             FormRef.Bookmark = .Bookmark
          End If
@@ -190,8 +199,8 @@ End Sub
 Public Sub ResizeWindow(ByVal FormRef As Form, Optional ByVal newWidth As Long = -1, Optional ByVal NewHeight As Long = -1)
 'Einheit TWIPS !!!
 
-   Dim rctForm As RECT
-   Dim rctMain As RECT
+   Dim rctForm As Rect
+   Dim rctMain As Rect
    
    Dim intNewWith As Integer
    Dim intNewHeight As Integer
