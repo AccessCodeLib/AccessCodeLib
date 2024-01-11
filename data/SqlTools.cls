@@ -10,6 +10,7 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 ' Class: data.sql.SqlTools
 '---------------------------------------------------------------------------------------
+'
 ' Functions to build sql strings
 '
 ' Author:
@@ -318,7 +319,7 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
    'Special cases (part 2):
    If Not IsArray(FilterValue) Then
      
-      If FieldDataType = SQL_Numeric Then
+      If FieldDataType = SQL_Numeric Or FieldDataType = SQL_Date Then
       
          If FilterValue = "*" And RelationalOperator = SQL_Equal Then
             BuildCriteria = BuildCriteria(FieldName, FieldDataType, SQL_Not, Null, Null, 0, True)
