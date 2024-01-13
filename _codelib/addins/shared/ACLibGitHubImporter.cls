@@ -5,7 +5,7 @@ END
 Attribute VB_Name = "ACLibGitHubImporter"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
-Attribute VB_PredeclaredId = False
+Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 ' Class: _codelib.addins.shared.ACLibGitHubImporter
@@ -28,11 +28,15 @@ Attribute VB_Exposed = False
 Option Compare Database
 Option Explicit
 
-Private Const GitHubContentBaseUrl As String = "https://raw.githubusercontent.com/AccessCodeLib/AccessCodeLib/{branch}/{path}"
-Private Const GitHubApiBaseUrl As String = "https://api.github.com/repos/AccessCodeLib/AccessCodeLib/"
+Private Const GitHubContentBaseUrl As String = "https://raw.githubusercontent.com/{owner}/{repo}/{branch}/{path}"
+Private Const GitHubApiBaseUrl As String = "https://api.github.com/repos/{owner}/{repo}/"
 
+Private m_GitHubApiAuthorizationToken As String
 Private m_LastCommit As Date
-Private m_UseDraftBranch As Boolean
+
+Private m_RepositoryOwner As String
+Private m_RepositoryName As String
+Private m_BranchName As String
 
 #If VBA7 Then
 Private Declare PtrSafe Function DeleteUrlCacheEntry Lib "wininet.dll" Alias "DeleteUrlCacheEntryA" (ByVal lpszUrlName As String) As Long
@@ -43,14 +47,59 @@ Private Declare Function URLDownloadToFile Lib "urlmon" Alias "URLDownloadToFile
 #End If
 
 '---------------------------------------------------------------------------------------
-' Property: UseDraftBranch
+' Property: GitHubAuthorizationubAuthToken
 '---------------------------------------------------------------------------------------
-Public Property Get UseDraftBranch() As Boolean
-   UseDraftBranch = m_UseDraftBranch
+Public Property Get GitHubApiAuthorizationToken() As String
+   GitHubApiAuthorizationToken = m_GitHubApiAuthorizationToken
 End Property
 
-Public Property Let UseDraftBranch(ByVal NewValue As Boolean)
-   m_UseDraftBranch = NewValue
+Public Property Let GitHubApiAuthorizationToken(ByVal NewValue As String)
+   m_GitHubApiAuthorizationToken = NewValue
+End Property
+
+'---------------------------------------------------------------------------------------
+' Property: RepositoryOwner
+'---------------------------------------------------------------------------------------
+Public Property Get RepositoryOwner() As String
+   If Len(m_RepositoryOwner) > 0 Then
+      RepositoryOwner = m_RepositoryOwner
+   Else ' Default: AccessCodeLib
+      RepositoryOwner = "AccessCodeLib"
+   End If
+End Property
+
+Public Property Let RepositoryOwner(ByVal NewValue As String)
+   m_RepositoryOwner = NewValue
+End Property
+
+'---------------------------------------------------------------------------------------
+' Property: RepositoryName
+'---------------------------------------------------------------------------------------
+Public Property Get RepositoryName() As String
+   If Len(m_RepositoryName) > 0 Then
+      RepositoryName = m_RepositoryName
+   Else ' Default: AccessCodeLib
+      RepositoryName = "AccessCodeLib"
+   End If
+End Property
+
+Public Property Let RepositoryName(ByVal NewValue As String)
+   m_RepositoryName = NewValue
+End Property
+
+'---------------------------------------------------------------------------------------
+' Property: BranchName
+'---------------------------------------------------------------------------------------
+Public Property Get BranchName() As String
+   If Len(m_BranchName) > 0 Then
+      BranchName = m_BranchName
+   Else ' Default: master
+      BranchName = "master"
+   End If
+End Property
+
+Public Property Let BranchName(ByVal NewValue As String)
+   m_BranchName = NewValue
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -58,8 +107,8 @@ End Property
 '---------------------------------------------------------------------------------------
 Public Property Get RevisionString(Optional ByVal Requery As Boolean = False) As String
    RevisionString = Format(LastCommit, "yyyymmddhhnnss")
-   If UseDraftBranch Then
-      RevisionString = RevisionString & "-draft"
+   If BranchName <> "master" Then
+      RevisionString = RevisionString & "-" & BranchName
    End If
 End Property
 
@@ -104,24 +153,38 @@ End Sub
 Private Sub UpdateCodeModuleInTable(ByVal ModuleName As String, ByVal ACLibPath As String, Optional ByVal Requery As Boolean = False)
 
    Dim TempFile As String
-   Dim DownLoadUrl As String
-   Dim BranchName As String
+   
    
    TempFile = FileTools.TempPath & ModuleName & FileTools.GetFileExtension(ACLibPath, True)
+   DownloadACLibFileFromWeb ACLibPath, TempFile
    
-   If UseDraftBranch Then
-      BranchName = "draft"
-   Else
-      BranchName = "master"
-   End If
-   DownLoadUrl = Replace(GitHubContentBaseUrl, "{branch}", BranchName)
-   DownLoadUrl = Replace(DownLoadUrl, "{path}", ACLibPath)
-   
-   DownloadFileFromWeb DownLoadUrl, TempFile
    CurrentApplication.SaveAppFile ModuleName, TempFile, False, "SccRev", Me.RevisionString(Requery)
    Kill TempFile
 
 End Sub
+
+Friend Sub DownloadACLibFileFromWeb(ByVal ACLibPath As String, ByVal TargetFilePath As String)
+
+   Dim DownLoadUrl As String
+
+   DownLoadUrl = FillRepositoryData(GitHubContentBaseUrl)
+   DownLoadUrl = Replace(DownLoadUrl, "{path}", ACLibPath)
+   
+   DownloadFileFromWeb DownLoadUrl, TargetFilePath
+
+End Sub
+
+Private Function FillRepositoryData(ByVal StringWithPlaceHolder As String) As String
+   
+   Dim TempValue As String
+   
+   TempValue = Replace(StringWithPlaceHolder, "{owner}", RepositoryOwner)
+   TempValue = Replace(TempValue, "{repo}", RepositoryName)
+   TempValue = Replace(TempValue, "{branch}", BranchName)
+   
+   FillRepositoryData = TempValue
+   
+End Function
 
 Private Function GetLastCommitFromWeb() As Date
 
@@ -131,14 +194,9 @@ Private Function GetLastCommitFromWeb() As Date
 
    Dim CommitUrl As String
    Dim LastCommitInfo As String
-   CommitUrl = GitHubApiBaseUrl & "commits/"
-
-   If UseDraftBranch Then
-      CommitUrl = CommitUrl & "draft"
-   Else
-      CommitUrl = CommitUrl & "master"
-   End If
    
+   CommitUrl = FillRepositoryData(GitHubApiBaseUrl) & "commits/" & BranchName
+
    Const RevisionTag As String = "Revision "
 
    Dim JsonString As String
@@ -154,23 +212,31 @@ Private Function GetLastCommitFromWeb() As Date
 
 End Function
 
-Private Function GetJsonString(ByVal ApiUrl As String) As String
+Friend Function GetJsonString(ByVal ApiUrl As String) As String
 
-    Dim ApiResponse As String
-    Dim json As Object
-    
-    Dim xml As Object ' MSXML2.XMLHTTP60
-    Set xml = CreateObject("MSXML2.XMLHTTP.6.0")
+   Dim ApiResponse As String
+   Dim ApiAuthToken As String
+   Dim json As Object
+   Dim xml As Object 'MSXML2.XMLHTTP6
+   
+   ApiUrl = FillRepositoryData(ApiUrl)
+   
+   ApiAuthToken = GitHubApiAuthorizationToken
 
-    xml.Open "GET", ApiUrl, False
-    xml.setRequestHeader "Content-type", "application/json"
-    xml.send
-    While xml.ReadyState <> 4
-        DoEvents
-    Wend
-    ApiResponse = xml.responseText
-    
-    GetJsonString = ApiResponse
+   Set xml = CreateObject("MSXML2.XMLHTTP.6.0")
+   
+   xml.Open "GET", ApiUrl, False
+   If Len(ApiAuthToken) > 0 Then
+     xml.setRequestHeader "Authorization", ApiAuthToken
+   End If
+   xml.setRequestHeader "Content-type", "application/json"
+   xml.send
+   While xml.ReadyState <> 4
+       DoEvents
+   Wend
+   ApiResponse = xml.responseText
+   
+   GetJsonString = ApiResponse
 
 End Function
 

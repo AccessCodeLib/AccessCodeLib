@@ -8,16 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klasse: FilterStringBuilder
+' Class: FilterStringBuilder
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Poetzl
-' <summary>
-' SQL-Filter-Ausdruck erstellen
-' </summary>
-' <remarks></remarks>
-' \ingroup data
-'**/
+'
+' Create SQL criteria (filter) expression
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>data/FilterStringBuilder.cls</file>

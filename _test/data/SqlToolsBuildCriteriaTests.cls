@@ -187,6 +187,24 @@ Public Sub BuildCriteria_DateFilter( _
 
 End Sub
 
+'AccUnit:Row(2, "01.12.2023-05.12.2023", Null, Null, "F Between #2023-12-01# And #2023-12-05#", "F Between '20231201' And '20231205'").Name("1.- 5.12.")
+'AccUnit:Row(2, "<=2023-12-10", Null, Null, "F <= #2023-12-10#", "F <= '20231210'").Name("<=2023-12-10")
+'AccUnit:Row(2, "<=2023-12-10", Null, Null, "F <= #2023-12-10#", "F <= '20231210'").Name("<=2023-12-10")
+Public Sub BuildCriteria_DateFilter_SpecialFeatures( _
+                           ByVal RelationalOperator As SqlRelationalOperators, _
+                           ByVal FilterValue As Variant, ByVal FilterValue2 As Variant, ByVal IgnoreValue As Variant, _
+                           ByVal ExpectedDao As String, ByVal ExpectedTSql As String)
+
+   Dim Actual As String
+
+   Actual = DaoTools.BuildCriteria("F", SQL_Date, RelationalOperator, FilterValue, FilterValue2, IgnoreValue)
+   Assert.That "" & Actual, Iz.EqualTo(ExpectedDao)
+
+   Actual = TSqlTools.BuildCriteria("F", SQL_Date, RelationalOperator, FilterValue, FilterValue2, IgnoreValue)
+   Assert.That "" & Actual, Iz.EqualTo(ExpectedTSql)
+
+End Sub
+
 'AccUnit:Row(2, Null, Null, Null, "").Name("Empty")
 'AccUnit:Row(2, "a", "b", "c", "F = 'a' Or F = 'b' Or F = 'c'").Name("Equal")
 'AccUnit:Row(2+8, "a", "b", "c", "F >= 'a' Or F >= 'b' Or F >= 'c'").Name("Equal+GreaterThan")

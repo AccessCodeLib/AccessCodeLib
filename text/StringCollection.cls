@@ -11,7 +11,7 @@ Attribute VB_Exposed = False
 ' Class: text.StringCollection
 '---------------------------------------------------------------------------------------
 '
-' Collection-Funktionen für Strings
+' Collection functions for strings
 '
 ' Author:
 '     Josef Poetzl
