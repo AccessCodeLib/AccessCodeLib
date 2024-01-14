@@ -1,0 +1,1 @@
+﻿NDContentPage.OnToolTipsLoaded({93:"<div class=\"NDToolTip TProperty LVisualBasic\"><div class=\"TTSummary\">Database-Referenz zum Backend</div></div>",94:"<div class=\"NDToolTip TProperty LVisualBasic\"><div class=\"TTSummary\">ODBC Connection string</div></div>"});

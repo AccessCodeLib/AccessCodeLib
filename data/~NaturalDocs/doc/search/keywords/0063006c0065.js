@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("cle",["Function"],[["ClearConnectionInfo",,[["data.DbConnectionInfo",,,,0,"File:DbConnectionInfo.cls:data.DbConnectionInfo.ClearConnectionInfo","VisualBasicClass:data.DbConnectionInfo:ClearConnectionInfo"]]]]);

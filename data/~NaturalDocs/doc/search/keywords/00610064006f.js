@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("ado",["Property","Class"],[["ADODB",,[["data.DbConnectionHandler",,,,0,"File:DbConnectionHandler.cls:data.DbConnectionHandler.ADODB","VisualBasicClass:data.DbConnectionHandler:ADODB"]]],["AdodbHandler",,[["data.adodb",,,,1,"File:ado/AdodbHandler.cls:data.adodb.AdodbHandler","VisualBasicClass:data.adodb.AdodbHandler"]]]]);

@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("wil",["Property"],[["WildCardString",,[["data.DbConnectionInfo",,,,0,"File:DbConnectionInfo.cls:data.DbConnectionInfo.WildCardString","VisualBasicClass:data.DbConnectionInfo:WildCardString"]]]]);

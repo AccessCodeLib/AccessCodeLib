@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("sel",["Property"],[["Self",,[["data.sql.FilterStringBuilder",,,,0,"File:FilterStringBuilder.cls:data.sql.FilterStringBuilder.Self","VisualBasicClass:data.sql.FilterStringBuilder:Self"]]]]);

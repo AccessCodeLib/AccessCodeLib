@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("que",["Function"],[["QueryDefExists",,[["data.dao.DaoTools",,,,0,"File:dao/DaoTools.bas:data.dao.DaoTools.QueryDefExists","VisualBasicClass:data.dao.DaoTools:QueryDefExists"],["data.modDbConnection",,,,0,"File:modDbConnection.bas:data.modDbConnection.QueryDefExists","VisualBasicClass:data.modDbConnection:QueryDefExists"]]]]);

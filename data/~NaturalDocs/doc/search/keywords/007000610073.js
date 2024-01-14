@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("pas",["Event"],[["PasswordChanged",,[["data.DbConnectionInfo",,,,0,"File:DbConnectionInfo.cls:data.DbConnectionInfo.PasswordChanged","VisualBasicClass:data.DbConnectionInfo:PasswordChanged"]]]]);

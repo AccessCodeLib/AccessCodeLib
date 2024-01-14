@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("sou",["Property"],[["SourceTableDefExists",,[["data.dao.TempDbHandler",,,,0,"File:dao/TempDbHandler.cls:data.dao.TempDbHandler.SourceTableDefExists","VisualBasicClass:data.dao.TempDbHandler:SourceTableDefExists"]]]]);

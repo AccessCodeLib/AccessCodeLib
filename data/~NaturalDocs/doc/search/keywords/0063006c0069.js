@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("cli",["Property"],[["ClientDatabase",,[["data.dao.TempDbHandler",,,,0,"File:dao/TempDbHandler.cls:data.dao.TempDbHandler.ClientDatabase","VisualBasicClass:data.dao.TempDbHandler:ClientDatabase"]]]]);
