@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("val",["Function"],[["ValueList",,[["data.adodb.AdodbHandler",,,,0,"File:ado/AdodbHandler.cls:data.adodb.AdodbHandler.ValueList","VisualBasicClass:data.adodb.AdodbHandler:ValueList"]]]]);

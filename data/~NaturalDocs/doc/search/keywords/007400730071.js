@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("tsq",["Property"],[["TSql",,[["data.sql.SqlTools",,,,0,"File:SqlTools.cls:data.sql.SqlTools.TSql","VisualBasicClass:data.sql.SqlTools:TSql"]]]]);

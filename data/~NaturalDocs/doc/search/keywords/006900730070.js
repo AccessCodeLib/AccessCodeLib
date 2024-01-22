@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("isp",["Function"],[["IsPassThroughQuery",,[["data.odbc.OdbcHandler",,,,0,"File:odbc/OdbcHandler.cls:data.odbc.OdbcHandler.IsPassThroughQuery","VisualBasicClass:data.odbc.OdbcHandler:IsPassThroughQuery"]]]]);

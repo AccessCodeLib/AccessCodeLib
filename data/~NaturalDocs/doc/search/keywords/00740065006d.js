@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("tem",["Class"],[["TempDbHandler",,[["data.dao",,,,0,"File:dao/TempDbHandler.cls:data.dao.TempDbHandler","VisualBasicClass:data.dao.TempDbHandler"]]]]);

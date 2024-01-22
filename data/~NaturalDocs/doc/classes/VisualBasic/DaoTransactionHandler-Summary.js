@@ -1,0 +1,1 @@
+﻿NDFramePage.OnPageTitleLoaded("VisualBasicClass:DaoTransactionHandler","DaoTransactionHandler");NDSummary.OnSummaryLoaded("VisualBasicClass:DaoTransactionHandler",[["Visual Basic","VisualBasic"]],[["Classes","Class"]],[[1,0,0,"DaoTransactionHandler"]]);

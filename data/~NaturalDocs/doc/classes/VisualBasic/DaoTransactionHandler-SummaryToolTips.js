@@ -1,0 +1,1 @@
+﻿NDSummary.OnToolTipsLoaded("VisualBasicClass:DaoTransactionHandler",{1:"<div class=\"NDToolTip TClass LVisualBasic\"><div class=\"TTSummary\">/** \\author&nbsp; Sten Schmidt &lt;summary&gt; Behandlung von Dao Transaktionen &lt;/summary&gt; &lt;remarks&gt;&lt;/remarks&gt; \\ingroup data_dao **/</div></div>"});

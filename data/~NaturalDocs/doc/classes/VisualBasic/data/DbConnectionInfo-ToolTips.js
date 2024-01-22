@@ -1,0 +1,1 @@
+﻿NDContentPage.OnToolTipsLoaded({155:"<div class=\"NDToolTip TType LVisualBasic\"><div class=\"TTSummary\">Type for the simultaneous transfer of the connection strings</div></div>"});

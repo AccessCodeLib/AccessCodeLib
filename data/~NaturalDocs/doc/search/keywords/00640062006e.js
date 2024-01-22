@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("dbn",["Property"],[["DbName",,[["data.DbConnectionInfo",,,,0,"File:DbConnectionInfo.cls:data.DbConnectionInfo.DbName","VisualBasicClass:data.DbConnectionInfo:DbName"]]]]);

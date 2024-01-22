@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("fil",["Class"],[["FilterStringBuilder",,[["data.sql",,,,0,"File:FilterStringBuilder.cls:data.sql.FilterStringBuilder","VisualBasicClass:data.sql.FilterStringBuilder"]]]]);
