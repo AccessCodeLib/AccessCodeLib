@@ -354,7 +354,7 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
       Exit Function
    End If
 
-   If (RelationalOperator And SQL_Like) = SQL_Like Then
+   If (RelationalOperator And SQL_Like) = SQL_Like Or (RelationalOperator And SQL_UseLikeBehavior) = SQL_UseLikeBehavior Then
       If SqlWildCardString <> "*" Then
          If InStr(1, FilterValue, "*") > 0 Then
             FilterValue = Replace(FilterValue, "[*]", "@@@|||STAR|||@@@")
@@ -372,7 +372,7 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
    End If
 
    If (RelationalOperator And SQL_Add_WildCardPrefix) = SQL_Add_WildCardPrefix Then
-      If (RelationalOperator And SQL_Like) = SQL_Like Then
+      If (RelationalOperator And SQL_Like) = SQL_Like Or (RelationalOperator And SQL_UseLikeBehavior) = SQL_UseLikeBehavior Then
          FilterValue = SqlWildCardString & FilterValue
       End If
    End If
@@ -798,9 +798,9 @@ Private Function TryBuildWildCardSuffixOrPreBuildParams(ByVal FieldName As Strin
    Dim Criteria1 As String
    Dim Criteria2 As String
 
-   If (RelationalOperator And SQL_Like) = SQL_Like Then
+   If (RelationalOperator And SQL_Like) = SQL_Like Or (RelationalOperator And SQL_UseLikeBehavior) = SQL_UseLikeBehavior Then
       FilterValue = FilterValue & SqlWildCardString
-   ElseIf (FieldDataType And SQL_Date) = SQL_Date Then
+   ElseIf FieldDataType = SQL_Date Then
       If (RelationalOperator And SQL_LessThan) = 0 Then ' no < therefore:  >, >= or only =
          If (RelationalOperator And SQL_GreaterThan) = SQL_GreaterThan Then
             ' change nothing ... >= DataValue  / SQL_Add_WildCardSuffix is not logical
@@ -817,7 +817,7 @@ Private Function TryBuildWildCardSuffixOrPreBuildParams(ByVal FieldName As Strin
          End If
          FilterValue = DateAdd("d", 1, CDate(CLng(FilterValue)))
       End If
-   ElseIf (FieldDataType And SQL_Numeric) = SQL_Numeric Then
+   ElseIf FieldDataType = SQL_Numeric Then
       If (RelationalOperator And SQL_LessThan) = 0 Then ' no < daher:  >, >= or only =
          If (RelationalOperator And SQL_GreaterThan) = SQL_GreaterThan Then
             If FilterValue Like "*[,.]*[*]" Then
@@ -865,8 +865,10 @@ Private Function TryBuildNumericSpecialCasesCriteria(ByRef FieldName As String, 
    
    Const FilterValue2 As Variant = Null
 
-   FilterValue = Trim(FilterValue)
-            
+   If VarType(FilterValue) = vbString Then
+      FilterValue = Trim(FilterValue)
+   End If
+   
    If FilterValue Like "[0-9]*..*[0-9]*" Or FilterValue Like "[+-][0-9]*..*[0-9]*" Then
       TempArr = Split(FilterValue, "..")
       Criteria = BuildCriteria(FieldName, FieldDataType, SQL_Between, Trim(TempArr(0)), Trim(TempArr(1)), IgnoreValue, DisableIgnoreNullValue)

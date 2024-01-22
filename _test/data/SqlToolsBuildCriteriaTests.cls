@@ -92,6 +92,7 @@ End Sub
 'AccUnit:Row(1+2+4, "a", Null, Null, "F > 'a'", "F > 'a'").Name("Not <=")
 'AccUnit:Row(1+4, "a", Null, Null, "F >= 'a'", "F >= 'a'").Name("Not <")
 'AccUnit:Row(1+2+8, "a", Null, Null, "F < 'a'", "F < 'a'").Name("Not >=")
+'AccUnit:Row(67586, "a", Null, Null, "F = 'a*'", "F = 'a%'").Name("Equal + SQL_Add_WildCardSuffix + SQL_UseLikeBehavior")
 Public Sub BuildCriteria_TextFilter( _
                            ByVal RelationalOperator As SqlRelationalOperators, _
                            ByVal FilterValue As Variant, ByVal FilterValue2 As Variant, ByVal IgnoreValue As Variant, _
