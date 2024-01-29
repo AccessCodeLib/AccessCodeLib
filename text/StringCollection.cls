@@ -11,7 +11,7 @@ Attribute VB_Exposed = False
 ' Class: text.StringCollection
 '---------------------------------------------------------------------------------------
 '
-' Collection functions for strings
+' Collection for strings
 '
 ' Author:
 '     Josef Poetzl
@@ -39,27 +39,85 @@ Private Sub Class_Terminate()
    Set m_Items = Nothing
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Property: Self
+'---------------------------------------------------------------------------------------
+'
+' Reference to self (Me)
+'
+' Remarks:
+'     Useful for with-block
+'
+' Returns:
+'     Database.StringCollection
+'
+'---------------------------------------------------------------------------------------
 Public Property Get Self() As StringCollection
    Set Self = Me
 End Property
 
+'---------------------------------------------------------------------------------------
+' Property: Items
+'---------------------------------------------------------------------------------------
+'
+' Collection with items
+'
+' Returns:
+'     VBA.Collection
+'
+'---------------------------------------------------------------------------------------
 Public Property Get Items() As Collection
    Set Items = m_Items
 End Property
 
+'---------------------------------------------------------------------------------------
+' Property: Item
+'---------------------------------------------------------------------------------------
+'
+' Item of Collection
+'
+' Parameters:
+'     Index - (Variant)
+'
+' Returns:
+'     Item string - (String)
+'
+'---------------------------------------------------------------------------------------
 Public Property Get Item(ByVal Index As Variant) As String
    Item = m_Items.Item(Index)
 End Property
 
 Public Property Let Item(ByVal Index As Variant, ByVal NewValue As String)
+Attribute Item.VB_UserMemId = 0
    m_Items.Add NewValue, , , Index
    m_Items.Remove Index
 End Property
 
+'---------------------------------------------------------------------------------------
+' Sub: Add
+'---------------------------------------------------------------------------------------
+'
+' Add string to collection
+'
+' Parameters:
+'     Item to add - (String)
+'
+'---------------------------------------------------------------------------------------
 Public Sub Add(ByVal Item As String)
    m_Items.Add Item
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Sub: AddFromArray
+'---------------------------------------------------------------------------------------
+'
+' Add items form an array to collection
+'
+' Parameters:
+'     ArrayToAdd - (Variant)
+'     ItemStringFormat - (String) Format each item of Array with ItemStringFormat before add to collection
+'
+'---------------------------------------------------------------------------------------
 Public Sub AddFromArray(ByRef ArrayToAdd As Variant, Optional ByVal ItemStringFormat As String = vbNullString)
 
    Dim i As Long
@@ -70,17 +128,44 @@ Public Sub AddFromArray(ByRef ArrayToAdd As Variant, Optional ByVal ItemStringFo
 
 End Sub
 
-Public Sub AddFromCollection(ByVal CollectionRef As Object, Optional ByVal ItemStringFormat As String = vbNullString)
-'Object, damit alle Collections mit Enumarable- u. Item(index)-Interface durchlaufen werden können
+'---------------------------------------------------------------------------------------
+' Sub: AddFromCollection
+'---------------------------------------------------------------------------------------
+'
+' Add items form a collection to string collection
+'
+' Parameters:
+'     CollectionToAppend - (Object) .. so that all collections with Enumarable and Item(index) interface can be run through
+'     ItemStringFormat   - (String) Format each item of collection with ItemStringFormat before add to collection
+'
+'---------------------------------------------------------------------------------------
+Public Sub AddFromCollection(ByVal CollectionToAppend As Object, Optional ByVal ItemStringFormat As String = vbNullString)
 
    Dim itm As Variant
 
-   For Each itm In CollectionRef
+   For Each itm In CollectionToAppend
       m_Items.Add Format(itm, ItemStringFormat)
    Next
 
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Function: ToString
+'---------------------------------------------------------------------------------------
+'
+' Return Collection items as joined String
+'
+' Parameters:
+'     Delimiter             - (String) Example: ", " => "Item1, Item2, Item3"
+'     ItemPrefix            - (String) Prefix for each item
+'     ItemSuffix            - (String) Suffix for each item
+'     IgnoreEmptyValue      - (Boolean) don't output an empty item
+'     IgnoreDuplicateValues - (Boolean) True = don't output duplicate items
+'
+' Returns:
+'     String
+'
+'---------------------------------------------------------------------------------------
 Public Function ToString(Optional ByVal Delimiter As String = ", ", _
                          Optional ByVal ItemPrefix As String = vbNullString, _
                          Optional ByVal ItemSuffix As String = vbNullString, _
@@ -96,6 +181,20 @@ Public Function ToString(Optional ByVal Delimiter As String = ", ", _
 
 End Function
 
+'---------------------------------------------------------------------------------------
+' Function: ToStringArray
+'---------------------------------------------------------------------------------------
+'
+' Return Collection items as String array
+'
+' Parameters:
+'     IgnoreEmptyValue      - (Boolean) don't output an empty item
+'     IgnoreDuplicateValues - (Boolean) True = don't output duplicate items
+'
+' Returns:
+'     String array
+'
+'---------------------------------------------------------------------------------------
 Public Function ToStringArray(Optional ByVal IgnoreEmptyValue As Boolean = False, _
                               Optional ByVal IgnoreDuplicateValues As Boolean = False) As String()
 

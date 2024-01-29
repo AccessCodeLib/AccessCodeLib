@@ -703,11 +703,11 @@ End Function
 Private Property Get DecimalMarker() As String
 
    Static DecChar As String
-   Dim x As String
+   Dim CheckString As String
    
    If Len(DecChar) = 0 Then
-      x = Trim(CStr(1.2))
-      DecChar = Mid(x, 2, 1)
+      CheckString = Trim(CStr(1.2))
+      DecChar = Mid(CheckString, 2, 1)
    End If
    
    DecimalMarker = DecChar
