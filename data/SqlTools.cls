@@ -309,11 +309,9 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
       Exit Function
    End If
    
-   If (RelationalOperator And SQL_SplitValueToArray) = SQL_SplitValueToArray Then
-      If InStr(1, FilterValue, ";") > 0 Then
-         FilterValue = Split(CharTrim(FilterValue, ";"), ";")
-      End If
-      RelationalOperator = RelationalOperator Xor SQL_SplitValueToArray
+   If TryBuildSplitToArrayCriteria(FieldName, FieldDataType, RelationalOperator, FilterValue, IgnoreValue, Criteria) Then
+      BuildCriteria = Criteria
+      Exit Function
    End If
    
    'Special cases (part 2):
@@ -703,11 +701,11 @@ End Function
 Private Property Get DecimalMarker() As String
 
    Static DecChar As String
-   Dim x As String
+   Dim CheckString As String
    
    If Len(DecChar) = 0 Then
-      x = Trim(CStr(1.2))
-      DecChar = Mid(x, 2, 1)
+      CheckString = Trim(CStr(1.2))
+      DecChar = Mid(CheckString, 2, 1)
    End If
    
    DecimalMarker = DecChar
@@ -897,11 +895,63 @@ Private Function TryBuildNumericSpecialCasesCriteria(ByRef FieldName As String, 
 
 End Function
 
-Private Function TryBuildArrayCriteria(ByRef FieldName As String, ByVal FieldDataType As SqlFieldDataType, _
+
+Private Function TryBuildSplitToArrayCriteria(ByRef FieldName As String, ByVal FieldDataType As SqlFieldDataType, _
                                        ByRef RelationalOperator As SqlRelationalOperators, _
                                        ByRef FilterValue As Variant, _
                                        ByRef IgnoreValue As Variant, _
                                        ByRef Criteria As String) As Boolean
+                              
+   Dim ValueSplitted As Boolean
+   Dim CriteriaConcatString As String
+                           
+   If (RelationalOperator And SQL_SplitValueToArray) = SQL_SplitValueToArray Then
+      
+      RelationalOperator = RelationalOperator Xor SQL_SplitValueToArray
+      
+      If InStr(1, FilterValue, SqlOrConcatString, vbTextCompare) > 0 Then
+         FilterValue = Replace(FilterValue, SqlOrConcatString, ";")
+      End If
+      
+      If InStr(1, FilterValue, SqlAndConcatString, vbTextCompare) > 0 Then
+         FilterValue = Replace(FilterValue, SqlAndConcatString, "+")
+      End If
+      
+      If InStr(1, FilterValue, ";") > 0 Then
+         If InStr(1, FilterValue, "+") > 0 Then
+            RelationalOperator = RelationalOperator Or SQL_SplitValueToArray
+         End If
+         CriteriaConcatString = SqlOrConcatString
+         FilterValue = Split(CharTrim(FilterValue, ";"), ";")
+         ValueSplitted = True
+      ElseIf InStr(1, FilterValue, "+") > 0 Then
+         CriteriaConcatString = SqlAndConcatString
+         FilterValue = Split(CharTrim(FilterValue, "+"), "+")
+         ValueSplitted = True
+      End If
+   End If
+   
+   If ValueSplitted Then
+   
+      If CriteriaConcatString = SqlOrConcatString Then
+      If TryBuildInCriteria(FieldName, FieldDataType, RelationalOperator, FilterValue, IgnoreValue, Criteria) Then
+         Exit Function
+      End If
+      End If
+   
+      TryBuildSplitToArrayCriteria = TryBuildArrayCriteria(FieldName, FieldDataType, RelationalOperator, FilterValue, IgnoreValue, Criteria, CriteriaConcatString)
+   
+   End If
+   
+End Function
+
+
+Private Function TryBuildArrayCriteria(ByRef FieldName As String, ByVal FieldDataType As SqlFieldDataType, _
+                                       ByRef RelationalOperator As SqlRelationalOperators, _
+                                       ByRef FilterValue As Variant, _
+                                       ByRef IgnoreValue As Variant, _
+                                       ByRef Criteria As String, _
+                              Optional ByVal CriteriaConcatString As String = SqlOrConcatString) As Boolean
    Dim itm As Variant
    Dim ItmCriteria As String
    
@@ -915,11 +965,11 @@ Private Function TryBuildArrayCriteria(ByRef FieldName As String, ByVal FieldDat
    For Each itm In FilterValue
       ItmCriteria = BuildCriteria(FieldName, FieldDataType, RelationalOperator, itm, , IgnoreValue, False)
       If Len(ItmCriteria) > 0 Then
-         Criteria = Criteria & SqlOrConcatString & ItmCriteria
+         Criteria = Criteria & CriteriaConcatString & ItmCriteria
       End If
    Next
    If Len(Criteria) > 0 Then
-      Criteria = Mid(Criteria, Len(SqlOrConcatString) + 1) ' 1. Or wegschneiden
+      Criteria = Mid(Criteria, Len(CriteriaConcatString) + 1) ' 1. Or wegschneiden
    End If
 
    TryBuildArrayCriteria = True

@@ -274,6 +274,9 @@ Public Sub BuildCriteria_InAndSplitValueToArray( _
 
 End Sub
 
+'AccUnit:Row("*a and *b AND *c", "F Like '*a*' And F Like '*b*' And F Like '*c*'")
+'AccUnit:Row("*a + *b + *c", "F Like '*a*' And F Like '*b*' And F Like '*c*'")
+'AccUnit:Row("a or b or c", "F Like 'a*' Or F Like 'b*' Or F Like 'c*'")
 'AccUnit:Row("a ;b; c", "F Like 'a*' Or F Like 'b*' Or F Like 'c*'")
 'AccUnit:Row("a", "F Like 'a*'")
 'AccUnit:Row(Null, "")
@@ -291,6 +294,9 @@ Public Sub BuildCriteria_LikeAndSplitValueToArray( _
 End Sub
 
 'AccUnit:Row("1,2 ;2; 3", "F = 1.2 Or F = 2 Or F = 3")
+'AccUnit:Row("<2 ;>3", "F < 2 Or F > 3")
+'AccUnit:Row("<2 or >3", "F < 2 Or F > 3")
+'AccUnit:Row(">=2 and <=3", "F >= 2 And F <= 3")
 Public Sub BuildCriteria_EqualNumericAndSplitValueToArray( _
                            ByVal FilterValue As Variant, _
                            ByVal Expected As String)

@@ -137,7 +137,7 @@ End Sub
 ' Function: ConfigSqlStatement
 '---------------------------------------------------------------------------------------
 '
-' Auxiliary function for setting SQL texts if this class is used in other filter builder classes. 
+' Auxiliary function for setting SQL texts if this class is used in other filter builder classes.
 ' (e.g. in form.filter.FilterControlCollection)
 '
 ' Parameters:
@@ -286,7 +286,7 @@ End Function
 '
 ' Returns:
 '
-'     FilterStringBuilder instance for new sub select group 
+'     FilterStringBuilder instance for new sub select group
 '
 '---------------------------------------------------------------------------------------
 Public Function AddSubSelectCriteria( _
@@ -343,7 +343,7 @@ End Function
 '
 ' Returns:
 '
-'     FilterStringBuilder instance for new exists group 
+'     FilterStringBuilder instance for new exists group
 '
 '---------------------------------------------------------------------------------------
 Public Function AddExistsCriteria( _
@@ -445,4 +445,3 @@ Private Property Get ConditionGroups() As Collection
    End If
    Set ConditionGroups = m_ConditionGroups
 End Property
-
