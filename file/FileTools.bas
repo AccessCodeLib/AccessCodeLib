@@ -58,7 +58,7 @@ Private Declare PtrSafe Function API_GetTempFilename Lib "kernel32" Alias "GetTe
          ByVal wUnique As Long, _
          ByVal lpTempFileName As String) As Long
          
-Private Declare PtrSafe Function API_ShellExecuteA Lib "shell32.dll" ( _
+Private Declare PtrSafe Function API_ShellExecuteA Lib "shell32.dll" Alias "ShellExecuteA" ( _
          ByVal Hwnd As LongPtr, _
          ByVal lOperation As String, _
          ByVal lpFile As String, _
@@ -81,7 +81,7 @@ Private Declare Function API_GetTempFilename Lib "kernel32" Alias "GetTempFileNa
          ByVal wUnique As Long, _
          ByVal lpTempFileName As String) As Long
 
-Private Declare Function API_ShellExecuteA Lib "shell32.dll" ( _
+Private Declare Function API_ShellExecuteA Lib "shell32.dll" Alias "ShellExecuteA" ( _
          ByVal Hwnd As Long, _
          ByVal lOperation As String, _
          ByVal lpFile As String, _
@@ -848,25 +848,59 @@ End Function
 '     Boolean
 '
 '---------------------------------------------------------------------------------------
-Public Function OpenFile(ByVal FilePath As String, Optional ByVal ReadOnlyMode As Boolean = False) As Boolean
+Public Function OpenFile(ByVal FilePath As String, Optional ByVal ReadOnlyMode As Boolean = False, _
+                Optional ByVal DefaultFileFolderIfFileNameOnly As String = vbNullString) As Boolean
 
    Const FileNotFoundErrorTextTemplate As String = "File '{FilePath}' not found."
    Dim FileNotFoundErrorText As String
+   Dim FilePath2Open As String
 
-   If Len(VBA.Dir(FilePath)) = 0 Then
+   If Len(DefaultFileFolderIfFileNameOnly) > 0 Then
+      FilePath2Open = BuildFullFileName(FilePath, DefaultFileFolderIfFileNameOnly)
+   Else
+      FilePath2Open = FilePath
+   End If
+
+   If Len(VBA.Dir(FilePath2Open)) = 0 Then
    
 #If USELOCALIZATION = 1 Then
-      FileNotFoundErrorText = Replace(L10n.Text(FileNotFoundErrorTextTemplate), "{FilePath}", FilePath)
+      FileNotFoundErrorText = Replace(L10n.Text(FileNotFoundErrorTextTemplate), "{FilePath}", FilePath2Open)
 #Else
-      FileNotFoundErrorText = Replace(FileNotFoundErrorTextTemplate, "{FilePath}", FilePath)
+      FileNotFoundErrorText = Replace(FileNotFoundErrorTextTemplate, "{FilePath}", FilePath2Open)
 #End If
       Err.Raise VbaErrNo_FileNotFound, "FileTools.OpenFile", FileNotFoundErrorText
       Exit Function
    End If
 
-   OpenFile = ShellExecute(FilePath, "open")
+   OpenFile = ShellExecute(FilePath2Open, "open")
    
 End Function
+
+Public Function BuildFullFileName(ByVal FileName As String, ByVal DefaultFileFolderIfFileNameOnly As String) As String
+
+   If Len(DefaultFileFolderIfFileNameOnly) = 0 Then
+      BuildFullFileName = FileName
+      Exit Function
+   End If
+
+   If Left(FileName, 2) = "\\" Then 'Win-Share
+      BuildFullFileName = FileName
+      Exit Function
+   End If
+
+   If Mid(FileName, 2, 1) = ":" Then 'Laufwerksbuchstabe
+      BuildFullFileName = FileName
+      Exit Function
+   End If
+
+   If Left(FileName, 1) <> "\" And Right(DefaultFileFolderIfFileNameOnly, 1) <> "\" Then
+      DefaultFileFolderIfFileNameOnly = DefaultFileFolderIfFileNameOnly & "\"
+   End If
+
+   BuildFullFileName = DefaultFileFolderIfFileNameOnly & FileName
+
+End Function
+
 
 '---------------------------------------------------------------------------------------
 ' Function: OpenFilePath

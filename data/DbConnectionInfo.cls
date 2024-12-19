@@ -612,16 +612,16 @@ End Property
 '---------------------------------------------------------------------------------------
 Public Function CheckConnection(Optional ByRef ErrMsg As String = vbNullString) As Boolean
    
-   Dim checkOk As Boolean
+   Dim CheckOk As Boolean
 
-   checkOk = CheckAdoConnection(OledbConnectionString, ErrMsg)
-   If checkOk Then ' test ODBC testen (if ADO connection don't failed)
+   CheckOk = CheckAdoConnection(OledbConnectionString, ErrMsg)
+   If CheckOk Then ' test ODBC testen (if ADO connection don't failed)
       If m_DBMSNAME <> "MSJET" Then
-         checkOk = checkOk And CheckOdbcConnection(OdbcConnectionString, ErrMsg)
+         CheckOk = CheckOk And CheckOdbcConnection(OdbcConnectionString, ErrMsg)
       End If
    End If
    
-   CheckConnection = checkOk
+   CheckConnection = CheckOk
 
 End Function
 
@@ -667,7 +667,7 @@ End Function
 Private Function CheckOdbcConnection(ByVal sOdbcConnectionstring As String, ByRef Msg As String) As Boolean
 
    Dim db As DAO.Database
-   Dim checkOk As Boolean
+   Dim CheckOk As Boolean
    Dim i As Long
 
    If Len(sOdbcConnectionstring) = 0 Then
@@ -684,14 +684,14 @@ On Error Resume Next
          Msg = Msg & vbNewLine & DBEngine.Errors(i).Description
       Next
       Err.Clear
-      checkOk = False
+      CheckOk = False
    Else
-      checkOk = True
+      CheckOk = True
       db.Close
    End If
    Set db = Nothing
    
-   CheckOdbcConnection = checkOk
+   CheckOdbcConnection = CheckOk
 
 End Function
 

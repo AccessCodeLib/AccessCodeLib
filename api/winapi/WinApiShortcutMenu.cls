@@ -42,7 +42,7 @@ Private Type POINTAPI
    Y As Long
 End Type
 
-Private Type RECT
+Private Type Rect
    Left As Long
    Top As Long
    Right As Long
@@ -130,7 +130,7 @@ Private Declare PtrSafe Function TranslateMessage _
 Private Declare PtrSafe Function GetWindowRect _
       Lib "user32.dll" ( _
          ByVal Hwnd As LongPtr, _
-         ByRef lpRect As RECT _
+         ByRef lpRect As Rect _
       ) As LongPtr
       
 Private Declare PtrSafe Function SetMenuDefaultItem _
@@ -431,14 +431,14 @@ Public Function OpenMenu(Optional ByVal X As Single = 0, Optional ByVal Y As Sin
 #End If
 
    Dim Message As APIMSG
-   Dim RcHelper As RECT
+   Dim RcHelper As Rect
    Dim ButtonLeft As Long
    Dim ButtonTop As Long
    Dim XPos As Long
    Dim YPos As Long
    
    Dim ParentObj As Object
-   Dim AccFormRect As RECT
+   Dim AccFormRect As Rect
 
    'Otherwise, nothing is displayed when ENTER is pressed:
    DoEvents

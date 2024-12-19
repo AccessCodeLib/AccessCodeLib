@@ -187,7 +187,9 @@ Private m_Disposed As Boolean
 
 Private m_SelectionReturnDataSourceFieldName As String
 
+#If UseMouseWheelFix Then
 Private m_MouseWheelFix As FormMouseWheelFix
+#End If
 
 'Init/Terminate
 Private Sub Class_Initialize()
@@ -468,11 +470,13 @@ Private Sub InitListForm(ByRef NewForm As Access.Form)
       Set m_fsecDetail = m_ListForm.Section(0)
    End If
    
+#If UseMouseWheelFix Then
    With New FormMouseWheelFix
       If .Init(m_ListForm) Then
          Set m_MouseWheelFix = .Self
       End If
    End With
+#End If
    
 End Sub
 
@@ -754,7 +758,7 @@ Private Sub m_SelectCommandButton_Click()
    SelectItem 0&
 End Sub
 
-Private Sub m_SelectCommandButton_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub m_SelectCommandButton_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
    ShiftMode = Shift
 End Sub
 
@@ -773,7 +777,7 @@ Private Sub m_ListForm_DblClick(Cancel As Integer)
    SelectItem
 End Sub
 
-Private Sub m_ListForm_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub m_ListForm_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
    ShiftMode = Shift
 End Sub
 

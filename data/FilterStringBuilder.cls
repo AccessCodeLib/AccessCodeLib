@@ -350,24 +350,38 @@ Public Function AddExistsCriteria( _
                         ByVal SelectFromText As String, _
                Optional ByVal IgnoreIfExistsStatementHasNoCriteria As Boolean = False, _
                Optional ByVal SubSelectConcatOperator As SqlLogicalOperator = SqlLogicalOperator.SQL_And, _
-               Optional ByVal UseNotExists As Boolean = False _
+               Optional ByVal UseNotExists As Boolean = False, _
+               Optional ByVal UseWhereReplacementTextInFromText As Boolean = False _
       ) As FilterStringBuilder
 
    Dim NewBuilder As FilterStringBuilder
    Dim ExistsSqlPrefix As String
+   Dim WhereReplacementPos As Long
+   Dim ExistsSqlSuffix As String
+   
+   ExistsSqlPrefix = "Exists ("
+   If UseNotExists Then ExistsSqlPrefix = "Not " & ExistsSqlPrefix
+
+   If UseWhereReplacementTextInFromText Then
+      WhereReplacementPos = InStr(1, SelectFromText, WhereReplacementText, vbTextCompare)
+   End If
+
+   If WhereReplacementPos > 0 Then
+      ExistsSqlSuffix = " " & Trim$(Mid$(SelectFromText, WhereReplacementPos + Len(WhereReplacementText))) & ")"
+      SelectFromText = Trim$(Left(SelectFromText, WhereReplacementPos - 1))
+   Else
+      ExistsSqlSuffix = ")"
+   End If
    
    Set NewBuilder = New FilterStringBuilder
    NewBuilder.DefaultConcatOperator = SubSelectConcatOperator
    Set NewBuilder.SqlTool = m_SqlTool
-   
-   ExistsSqlPrefix = "Exists ("
-   If UseNotExists Then ExistsSqlPrefix = "Not " & ExistsSqlPrefix
-   
+
    NewBuilder.ConfigSqlStatement SqlPrefix:=ExistsSqlPrefix & SelectFromText, _
-                                 SqlSuffix:=")", ConditionPrefix:=" Where ", IgnoreSqlPreSuffixIfEmptyFilter:=IgnoreIfExistsStatementHasNoCriteria
-   
+                                 SqlSuffix:=ExistsSqlSuffix, ConditionPrefix:=" Where ", IgnoreSqlPreSuffixIfEmptyFilter:=IgnoreIfExistsStatementHasNoCriteria
+
    ConditionGroups.Add NewBuilder
-   
+
    Set AddExistsCriteria = NewBuilder
    
 End Function
