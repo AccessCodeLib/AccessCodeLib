@@ -95,7 +95,7 @@ Private Const DT_NOCLIP = &H100
 Private Const CLIP_LH_ANGLES = 16
 Private Const LF_FACESIZE = 32
 
-Private Type RECT
+Private Type Rect
         Left As Long
         Top As Long
         Right As Long
@@ -126,7 +126,7 @@ End Type
    Private Declare PtrSafe Function apiGetDeviceCaps Lib "gdi32" Alias "GetDeviceCaps" (ByVal hDC As LongPtr, ByVal nIndex As Long) As Long
    Private Declare PtrSafe Function apiGetDC Lib "user32" Alias "GetDC" (ByVal Hwnd As LongPtr) As Long
    Private Declare PtrSafe Function apiReleaseDC Lib "user32" Alias "ReleaseDC" (ByVal Hwnd As LongPtr, ByVal hDC As LongPtr) As Long
-   Private Declare PtrSafe Function apiDrawText Lib "user32" Alias "DrawTextA" (ByVal hDC As LongPtr, ByVal lpStr As String, ByVal nCount As Long, lpRect As RECT, ByVal wFormat As Long) As Long
+   Private Declare PtrSafe Function apiDrawText Lib "user32" Alias "DrawTextA" (ByVal hDC As LongPtr, ByVal lpStr As String, ByVal nCount As Long, lpRect As Rect, ByVal wFormat As Long) As Long
 #Else
    Private Declare Function apiCreateFontIndirect Lib "gdi32" Alias "CreateFontIndirectA" (lpLogFont As LOGFONT) As Long
    Private Declare Function apiSelectObject Lib "gdi32" Alias "SelectObject" (ByVal hDC As Long, ByVal hObject As Long) As Long
@@ -260,7 +260,7 @@ End Sub
 
 Public Property Let Transparency(ByVal NewTransparency As Byte)
    
-   Dim RetVal As Long
+   Dim RetVal As LongPtr
    Dim TransparencyValue As Long
    Dim bAlpha As Byte
    
@@ -557,7 +557,7 @@ Private Function GetTextHeight(ByVal ctl As Control) As Long
    Dim strText As String
    
    ' Structure for DrawText calc
-   Dim sRect As RECT
+   Dim sRect As Rect
    
    ' Reports Device Context
    Dim hDC As Long

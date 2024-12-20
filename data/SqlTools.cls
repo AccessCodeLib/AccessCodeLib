@@ -805,7 +805,7 @@ Private Function TryBuildWildCardSuffixOrPreBuildParams(ByVal FieldName As Strin
          Else ' Consider the whole day ... FieldName >= DateValue and FieldName < DateAdd("d", 1, FilterValue))
             Criteria = BuildCriteria(FieldName, FieldDataType, SQL_GreaterThan + SQL_Equal, FilterValue, , , False) & _
                             SqlAndConcatString & _
-                            BuildCriteria(FieldName, FieldDataType, SQL_LessThan, DateAdd("d", 1, CDate(CLng(FilterValue))), , , False)
+                            BuildCriteria(FieldName, FieldDataType, SQL_LessThan, DateAdd("d", 1, CDate(CLng(CDate(FilterValue)))), , , False)
             TryBuildWildCardSuffixOrPreBuildParams = True
             Exit Function
          End If
@@ -813,7 +813,7 @@ Private Function TryBuildWildCardSuffixOrPreBuildParams(ByVal FieldName As Strin
          If (RelationalOperator And SQL_Equal) = SQL_Equal Then
             RelationalOperator = RelationalOperator - SQL_Equal
          End If
-         FilterValue = DateAdd("d", 1, CDate(CLng(FilterValue)))
+         FilterValue = DateAdd("d", 1, CDate(CLng(CDate(FilterValue))))
       End If
    ElseIf FieldDataType = SQL_Numeric Then
       If (RelationalOperator And SQL_LessThan) = 0 Then ' no < daher:  >, >= or only =

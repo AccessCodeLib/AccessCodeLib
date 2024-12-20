@@ -1048,8 +1048,8 @@ End Property
 Private Sub SetFilterControlMngerDataMode(ByVal DataSourceType As FH_DataSourceType)
    
    If m_FilterControlMngr Is Nothing Then
-      Dim x As FilterControlManager
-      Set x = FilterControlManager
+      Dim X As FilterControlManager
+      Set X = FilterControlManager
       Exit Sub
    End If
    
@@ -1148,7 +1148,7 @@ Private Sub m_UseFilterCommandButton_Click()
    UseFilter True
 End Sub
 
-Private Sub m_UseFilterCommandButton_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub m_UseFilterCommandButton_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
    ShiftMode = Shift
 End Sub
 
@@ -1179,7 +1179,7 @@ Private Sub m_ClearFilterCommandButton_Click()
    ClearFilters FF_ViewModeNoFilter.VM_ShowAll
 End Sub
 
-Private Sub m_ClearFilterCommandButton_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub m_ClearFilterCommandButton_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
    ShiftMode = Shift
 End Sub
 
