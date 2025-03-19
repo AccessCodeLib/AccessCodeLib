@@ -109,13 +109,20 @@ Private Sub CheckEventProcedureProperties()
 End Sub
 
 Private Sub m_TextBox_KeyPress(KeyAscii As Integer)
+
    Const KeyAsciiEquals As Integer = 61 ' Asc("=") = 61
    Const KeyAsciiEscape As Integer = 27 ' Asc("=") = 61
+   
+   Dim TbText As String
+   
    If KeyAscii = KeyAsciiEquals Then
       If Len(Trim(m_TextBox.Text)) = 0 Then
          ActivateCalcMode
       ElseIf m_TextBox.SelLength = Len(m_TextBox.Text) Then
          ActivateCalcMode
+      ElseIf m_TextBox.SelStart = 0 And m_TextBox.SelLength = 0 Then
+         ActivateCalcMode
+         m_TextBox.SelStart = 0
       End If
    ElseIf KeyAscii = KeyAsciiEscape Then
       DeactivateCalcMode
