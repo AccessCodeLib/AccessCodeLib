@@ -104,6 +104,29 @@ Friend Property Set SqlTool(ByVal NewRef As SqlTools)
 End Property
 
 '---------------------------------------------------------------------------------------
+' Function: SelectSqlDialect
+'---------------------------------------------------------------------------------------
+'
+' Config sql text output format for specific sql dialect
+'
+' Parameters:
+'
+'     UseDialect - sql dialect .. use setting of dialect (as base)
+'     SqlDateFormat - output string format for date values
+'     SqlBooleanTrueString - output string format for boolean values
+'     SqlWildCardString - wildcard string (e.g. * .. dao, % .. T-SQL)
+'
+'---------------------------------------------------------------------------------------
+Friend Sub SelectSqlDialect(ByVal UseDialect As SqlDialect, _
+                   Optional ByVal SqlDateFormat As String, _
+                   Optional ByVal SqlBooleanTrueString As String, _
+                   Optional ByVal SqlWildCardString As String)
+   
+   Set m_SqlTool = SqlTools.SelectDialect(UseDialect, SqlDateFormat, SqlBooleanTrueString, SqlWildCardString)
+
+End Sub
+
+'---------------------------------------------------------------------------------------
 ' Function: ConfigSqlFormat
 '---------------------------------------------------------------------------------------
 '

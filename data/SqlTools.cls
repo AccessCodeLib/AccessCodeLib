@@ -91,8 +91,62 @@ Public Enum SqlLogicalOperator
    SQL_CommaSeparator = 3
 End Enum
 
+Public Enum SqlDialect
+   SQL_Custom = 0
+   SQL_DAO = 1
+   SQL_TSQL = 2
+End Enum
+
 '##################################
 ' Group: Class support
+
+'---------------------------------------------------------------------------------------
+' Function: SelectDialect
+'---------------------------------------------------------------------------------------
+'
+' Create a new instance with basic settings of the selected dialect
+'
+' Parameters:
+'
+'     UseDialect - use setting of dialect (as base)
+'     NewSqlDateFormat - use this date format instead of base dialect
+'     NewSqlBooleanTrueString - use this text for true instead of base dialect
+'     NewSqlWildCardString - use this wildcard string instead of base dialect
+'
+' Returns:
+'
+'     SqlTools instance with config form base
+'
+' See Also:
+'     NewInstance
+'
+'---------------------------------------------------------------------------------------
+Public Function SelectDialect(ByVal UseDialect As SqlDialect, _
+                     Optional ByVal NewSqlDateFormat As String = SQL_DEFAULT_DATEFORMAT, _
+                     Optional ByVal NewSqlBooleanTrueString As String = SQL_DEFAULT_BOOLTRUESTRING, _
+                     Optional ByVal NewSqlWildCardString As String = SQL_DEFAULT_WILDCARD) As SqlTools
+Attribute SelectDialect.VB_UserMemId = 0
+
+   Dim NewSlqToolsInstance As SqlTools
+   
+   Select Case UseDialect
+      Case SqlDialect.SQL_DAO
+         Set NewSlqToolsInstance = Me.DAO
+      Case SqlDialect.SQL_TSQL
+         Set NewSlqToolsInstance = Me.TSql
+      Case Else
+         Set NewSlqToolsInstance = Me.Clone
+   End Select
+
+
+   If Len(NewSqlDateFormat) > 0 Then NewSlqToolsInstance.SqlDateFormat = NewSqlDateFormat
+   If Len(NewSqlBooleanTrueString) > 0 Then NewSlqToolsInstance.SqlBooleanTrueString = NewSqlBooleanTrueString
+   If Len(NewSqlWildCardString) > 0 Then NewSlqToolsInstance.SqlWildCardString = NewSqlWildCardString
+
+   Set SelectDialect = NewSlqToolsInstance
+
+End Function
+
 
 '---------------------------------------------------------------------------------------
 ' Function: Clone
@@ -117,7 +171,6 @@ End Enum
 Public Function Clone(Optional ByVal NewSqlDateFormat As String = SQL_DEFAULT_DATEFORMAT, _
                       Optional ByVal NewSqlBooleanTrueString As String = SQL_DEFAULT_BOOLTRUESTRING, _
                       Optional ByVal NewSqlWildCardString As String = SQL_DEFAULT_WILDCARD) As SqlTools
-
 
    If Len(NewSqlDateFormat) = 0 Then NewSqlDateFormat = Me.SqlDateFormat
    If Len(NewSqlBooleanTrueString) = 0 Then NewSqlBooleanTrueString = Me.SqlBooleanTrueString
