@@ -50,8 +50,21 @@ Private m_Format As String
 Private m_ForeColor As Long
 Private m_TextAlign As Byte
 Private m_IsBoundControl As Boolean
+Private m_InitialValue As Variant
 
 Private m_CalcModeIsOn As Boolean
+Private m_DisableRaiseErrorEvent As Boolean
+Private m_DisableRaiseErrorEventResponse As CalculationErrorResponseMode
+
+Public Enum CalculationErrorResponseMode
+   [_CallErr_Undefined] = -1
+   CalErr_Cancel = 1
+   CalErr_Undo = 2
+   CalErr_ShowMessage = 256
+End Enum
+
+Public Event Calculated(ByVal Expression As String, ByVal Value As Variant, ByRef Cancel As Boolean)
+Public Event CalculationError(ByVal Expression As String, ByVal ErrMsg As String, Response As CalculationErrorResponseMode)
 
 Public Function Init(ByVal TextBoxRef As TextBox) As CalculationTextBox
 Attribute Init.VB_UserMemId = 0
@@ -80,6 +93,7 @@ Private Sub SaveInitialProperties()
    m_ForeColor = m_TextBox.ForeColor
    m_TextAlign = m_TextBox.TextAlign
    m_IsBoundControl = Len(m_TextBox.ControlSource) > 0
+   m_InitialValue = m_TextBox.Value
 End Sub
 
 Private Sub CheckEventProcedureProperties()
@@ -100,6 +114,10 @@ Private Sub CheckEventProcedureProperties()
    
    Else
    
+      If Len(m_TextBox.BeforeUpdate) = 0 Then
+         m_TextBox.BeforeUpdate = EventProcedurePropertyTag
+      End If
+   
       If Len(m_TextBox.AfterUpdate) = 0 Then
          m_TextBox.AfterUpdate = EventProcedurePropertyTag
       End If
@@ -107,6 +125,10 @@ Private Sub CheckEventProcedureProperties()
    End If
    
 End Sub
+
+Public Property Get TextBox() As TextBox
+   Set TextBox = m_TextBox
+End Property
 
 Private Sub m_TextBox_KeyPress(KeyAscii As Integer)
 
@@ -153,6 +175,9 @@ End Sub
 
 Private Sub m_TextBox_KeyDown(KeyCode As Integer, Shift As Integer)
    
+   Dim Result As Variant
+   Dim Response As CalculationErrorResponseMode
+   
    If m_CalcModeIsOn Then
    
       If Not m_IsBoundControl Then
@@ -160,15 +185,25 @@ Private Sub m_TextBox_KeyDown(KeyCode As Integer, Shift As Integer)
       End If
    
       If KeyCode = vbKeyReturn Or KeyCode = vbKeyTab Then
-         m_TextBox.Text = Calculate(GetCalcStatement(m_TextBox.Text))
-         DeactivateCalcMode
+         Result = Calculate(GetCalcStatement(m_TextBox.Text), Response)
+         If (Response And CalErr_Cancel) = CalErr_Cancel Then
+            KeyCode = 0
+         ElseIf (Response And CalErr_Undo) = CalErr_Undo Then
+            m_TextBox.Text = m_InitialValue
+            DeactivateCalcMode
+         Else
+            m_TextBox.Text = Result
+            DeactivateCalcMode
+         End If
       End If
       
    End If
    
 End Sub
 
-Private Sub m_TextBox_AfterUpdate()
+Private Sub m_TextBox_BeforeUpdate(Cancel As Integer)
+
+   Dim Response As CalculationErrorResponseMode
 
    If m_CalcModeIsOn Then
    
@@ -176,8 +211,40 @@ Private Sub m_TextBox_AfterUpdate()
          Exit Sub ' => see KeyDown
       End If
    
-      m_TextBox.Value = Calculate(GetCalcStatement(m_TextBox.Value))
-      DeactivateCalcMode
+      Calculate GetCalcStatement(m_TextBox.Value), Response, True
+      If (Response And CalErr_Cancel) = CalErr_Cancel Then
+         Cancel = True
+      ElseIf (Response And CalErr_Undo) = CalErr_Undo Then
+         m_DisableRaiseErrorEvent = True
+         m_DisableRaiseErrorEventResponse = Response
+      End If
+  
+   End If
+   
+End Sub
+
+Private Sub m_TextBox_AfterUpdate()
+
+   Dim Result As Variant
+   Dim Response As CalculationErrorResponseMode
+   
+   If m_CalcModeIsOn Then
+   
+      If m_IsBoundControl Then
+         Exit Sub ' => see KeyDown
+      End If
+   
+      Result = Calculate(GetCalcStatement(m_TextBox.Value), Response)
+      If (Response And CalErr_Cancel) = CalErr_Cancel Then
+         m_TextBox.SetFocus
+         m_TextBox.SelStart = Len(m_TextBox.Text)
+      ElseIf (Response And CalErr_Undo) = CalErr_Undo Then
+         m_TextBox.Value = m_InitialValue
+         DeactivateCalcMode
+      Else
+         m_TextBox.Value = Result
+         DeactivateCalcMode
+      End If
       
    End If
 
@@ -191,9 +258,70 @@ Private Function GetCalcStatement(ByVal InputValue As Variant) As String
 
 End Function
 
-Private Function Calculate(ByVal CalcStatement As String) As Variant
+Private Function Calculate(ByVal CalcStatement As String, ByRef Response As CalculationErrorResponseMode, Optional ByVal IgnoreShowMessageIfUndo As Boolean = False) As Variant
+
+   Dim Result As Variant
+   Dim ErrMsg As String
+   Dim Cancel As Boolean
+
    CalcStatement = Replace(CalcStatement, DecimalSeparator, ".")
-   Calculate = Eval(CalcStatement)
+   If Not TryEval(CalcStatement, Result, ErrMsg) Then
+   
+      Response = [_CallErr_Undefined] '
+      
+      If m_DisableRaiseErrorEvent Then
+         m_DisableRaiseErrorEvent = False
+         Response = m_DisableRaiseErrorEventResponse
+         m_DisableRaiseErrorEventResponse = 0
+      Else
+         RaiseEvent CalculationError(CalcStatement, ErrMsg, Response)
+      End If
+      If Response = [_CallErr_Undefined] Then
+         Response = CalErr_Cancel + CalErr_ShowMessage
+      End If
+      
+      If (Response And CalErr_Undo) = CalErr_Undo Then
+         If IgnoreShowMessageIfUndo Then
+            Response = Response Or CalErr_ShowMessage Xor CalErr_ShowMessage
+         End If
+      End If
+      
+      If (Response And CalErr_ShowMessage) = CalErr_ShowMessage Then
+         MsgBox ErrMsg, vbExclamation, "Error in expression: " & CalcStatement
+         Response = Response - CalErr_ShowMessage
+      End If
+      
+      If Response > 0 Then
+         Exit Function
+      End If
+      
+   End If
+   
+   RaiseEvent Calculated(CalcStatement, Result, Cancel)
+   If Cancel Then
+      Response = CalErr_Undo
+   End If
+   
+   Calculate = Result
+   
+End Function
+
+Private Function TryEval(ByVal CalcStatement As String, ByRef Result As Variant, ByRef ErrMsg As String) As Boolean
+
+   On Error GoTo HandleErr
+   
+   Result = Eval(CalcStatement)
+   
+   TryEval = True
+   
+ExitHere:
+   Exit Function
+   
+HandleErr:
+   TryEval = False
+   ErrMsg = Err.Description
+   Resume ExitHere
+
 End Function
 
 Private Property Get DecimalSeparator() As String
