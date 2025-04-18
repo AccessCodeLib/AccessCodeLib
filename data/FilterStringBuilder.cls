@@ -122,7 +122,7 @@ Friend Sub SelectSqlDialect(ByVal UseDialect As SqlDialect, _
                    Optional ByVal SqlBooleanTrueString As String, _
                    Optional ByVal SqlWildCardString As String)
    
-   Set m_SqlTool = SqlTools.SelectDialect(UseDialect, SqlDateFormat, SqlBooleanTrueString, SqlWildCardString)
+   Set m_SqlTool = SqlTools.FromDialect(UseDialect, SqlDateFormat, SqlBooleanTrueString, SqlWildCardString)
 
 End Sub
 
@@ -148,7 +148,7 @@ Friend Sub ConfigSqlFormat(ByVal SqlDateFormat As String, _
       Exit Sub
    End If
 
-   With SqlTool
+   With m_SqlTool
       .SqlDateFormat = SqlDateFormat
       .SqlBooleanTrueString = SqlBooleanTrueString
       .SqlWildCardString = SqlWildCardString

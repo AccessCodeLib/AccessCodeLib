@@ -55,9 +55,13 @@ Private Const SQL_DEFAULT_WILDCARD As String = "%"      ' % = default value,
 Private Const SqlAndConcatString As String = " And "
 Private Const SqlOrConcatString As String = " Or "
 
-Private m_SqlDateFormat As String
-Private m_SqlBooleanTrueString As String
-Private m_SqlWildCardString As String
+Private Type SqlFormatSettings
+   SqlDateFormat As String
+   SqlBooleanTrueString As String
+   SqlWildCardString As String
+End Type
+
+Private m_SqlFormat As SqlFormatSettings
 
 Private Const ResultTextIfNull As String = "Null"
 
@@ -121,11 +125,10 @@ End Enum
 '     NewInstance
 '
 '---------------------------------------------------------------------------------------
-Public Function SelectDialect(ByVal UseDialect As SqlDialect, _
+Public Function FromDialect(ByVal UseDialect As SqlDialect, _
                      Optional ByVal NewSqlDateFormat As String = SQL_DEFAULT_DATEFORMAT, _
                      Optional ByVal NewSqlBooleanTrueString As String = SQL_DEFAULT_BOOLTRUESTRING, _
                      Optional ByVal NewSqlWildCardString As String = SQL_DEFAULT_WILDCARD) As SqlTools
-Attribute SelectDialect.VB_UserMemId = 0
 
    Dim NewSlqToolsInstance As SqlTools
    
@@ -138,12 +141,11 @@ Attribute SelectDialect.VB_UserMemId = 0
          Set NewSlqToolsInstance = Me.Clone
    End Select
 
-
    If Len(NewSqlDateFormat) > 0 Then NewSlqToolsInstance.SqlDateFormat = NewSqlDateFormat
    If Len(NewSqlBooleanTrueString) > 0 Then NewSlqToolsInstance.SqlBooleanTrueString = NewSqlBooleanTrueString
    If Len(NewSqlWildCardString) > 0 Then NewSlqToolsInstance.SqlWildCardString = NewSqlWildCardString
 
-   Set SelectDialect = NewSlqToolsInstance
+   Set FromDialect = NewSlqToolsInstance
 
 End Function
 
@@ -204,6 +206,66 @@ Public Function NewInstance(ByVal NewSqlDateFormat As String, _
 
 End Function
 
+'---------------------------------------------------------------------------------------
+' Function: InitSqlDialect
+'---------------------------------------------------------------------------------------
+'
+' Config sql text output format for specific sql dialect
+'
+' Parameters:
+'
+'     SqlDateFormat - output string format for date values
+'     SqlBooleanTrueString - output string format for boolean values
+'     SqlWildCardString - wildcard string (e.g. * .. dao, % .. T-SQL)
+'
+'---------------------------------------------------------------------------------------
+Friend Sub InitSqlDialect(ByVal UseDialect As SqlDialect, _
+                     Optional ByVal NewSqlDateFormat As String = SQL_DEFAULT_DATEFORMAT, _
+                     Optional ByVal NewSqlBooleanTrueString As String = SQL_DEFAULT_BOOLTRUESTRING, _
+                     Optional ByVal NewSqlWildCardString As String = SQL_DEFAULT_WILDCARD)
+                           
+   Dim SqlFormat As SqlFormatSettings
+   
+   Select Case UseDialect
+      Case SqlDialect.SQL_DAO
+         SqlFormat = DaoSqlFormat
+      Case SqlDialect.SQL_TSQL
+         SqlFormat = TSqlSqlFormat
+      Case Else
+         ' set nothing => use NewSql* parameter
+   End Select
+
+   If Len(NewSqlDateFormat) > 0 Then SqlFormat.SqlDateFormat = NewSqlDateFormat
+   If Len(NewSqlBooleanTrueString) > 0 Then SqlFormat.SqlBooleanTrueString = NewSqlBooleanTrueString
+   If Len(NewSqlWildCardString) > 0 Then SqlFormat.SqlWildCardString = NewSqlWildCardString
+
+   InitSqlFormat SqlFormat.SqlDateFormat, SqlFormat.SqlBooleanTrueString, SqlFormat.SqlWildCardString
+                           
+
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Function: InitSqlFormat
+'---------------------------------------------------------------------------------------
+'
+' Config sql text output format for specific sql dialect
+'
+' Parameters:
+'
+'     SqlDateFormat - output string format for date values
+'     SqlBooleanTrueString - output string format for boolean values
+'     SqlWildCardString - wildcard string (e.g. * .. dao, % .. T-SQL)
+'
+'---------------------------------------------------------------------------------------
+Friend Sub InitSqlFormat(ByVal SqlDateFormat As String, _
+                           ByVal SqlBooleanTrueString As String, _
+                           ByVal SqlWildCardString As String)
+                           
+   Me.SqlDateFormat = SqlDateFormat
+   Me.SqlBooleanTrueString = SqlBooleanTrueString
+   Me.SqlWildCardString = SqlWildCardString
+
+End Sub
 
 '##################################
 ' Group: SQL dialect preferences
@@ -216,7 +278,21 @@ End Function
 '
 '---------------------------------------------------------------------------------------
 Public Property Get DAO() As SqlTools
-   Set DAO = Me.NewInstance("\#yyyy-mm-dd hh:nn:ss\#", "True", "*")
+   With DaoSqlFormat
+      Set DAO = Me.NewInstance(.SqlDateFormat, .SqlBooleanTrueString, .SqlWildCardString)
+   End With
+End Property
+
+Private Property Get DaoSqlFormat() As SqlFormatSettings
+
+   Dim SqlFormat As SqlFormatSettings
+   
+   SqlFormat.SqlDateFormat = "\#yyyy-mm-dd hh:nn:ss\#"
+   SqlFormat.SqlBooleanTrueString = "True"
+   SqlFormat.SqlWildCardString = "*"
+   
+   DaoSqlFormat = SqlFormat
+
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -227,7 +303,21 @@ End Property
 '
 '---------------------------------------------------------------------------------------
 Public Property Get TSql() As SqlTools
-   Set TSql = Me.NewInstance("'yyyymmdd hh:nn:ss'", "1", "%")
+   With TSqlSqlFormat
+      Set TSql = Me.NewInstance(.SqlDateFormat, .SqlBooleanTrueString, .SqlWildCardString)
+   End With
+End Property
+
+Private Property Get TSqlSqlFormat() As SqlFormatSettings
+
+   Dim SqlFormat As SqlFormatSettings
+   
+   SqlFormat.SqlDateFormat = "'yyyymmdd hh:nn:ss'"
+   SqlFormat.SqlBooleanTrueString = "1"
+   SqlFormat.SqlWildCardString = "%"
+   
+   TSqlSqlFormat = SqlFormat
+
 End Property
 
 ' Configuration for SQL dialect
@@ -240,15 +330,15 @@ End Property
 '
 '---------------------------------------------------------------------------------------
 Public Property Get SqlWildCardString() As String
-   If Len(m_SqlWildCardString) > 0 Then
-      SqlWildCardString = m_SqlWildCardString
+   If Len(m_SqlFormat.SqlWildCardString) > 0 Then
+      SqlWildCardString = m_SqlFormat.SqlWildCardString
    Else
       SqlWildCardString = SQL_DEFAULT_WILDCARD
    End If
 End Property
 
 Public Property Let SqlWildCardString(ByVal NewValue As String)
-   m_SqlWildCardString = NewValue
+   m_SqlFormat.SqlWildCardString = NewValue
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -259,15 +349,15 @@ End Property
 '
 '---------------------------------------------------------------------------------------
 Public Property Get SqlDateFormat() As String
-   If Len(m_SqlDateFormat) > 0 Then
-      SqlDateFormat = m_SqlDateFormat
+   If Len(m_SqlFormat.SqlDateFormat) > 0 Then
+      SqlDateFormat = m_SqlFormat.SqlDateFormat
    Else
       SqlDateFormat = SQL_DEFAULT_DATEFORMAT
    End If
 End Property
 
 Public Property Let SqlDateFormat(ByVal NewValue As String)
-   m_SqlDateFormat = NewValue
+   m_SqlFormat.SqlDateFormat = NewValue
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -278,15 +368,15 @@ End Property
 '
 '---------------------------------------------------------------------------------------
 Public Property Get SqlBooleanTrueString() As String
-   If Len(m_SqlBooleanTrueString) > 0 Then
-      SqlBooleanTrueString = m_SqlBooleanTrueString
+   If Len(m_SqlFormat.SqlBooleanTrueString) > 0 Then
+      SqlBooleanTrueString = m_SqlFormat.SqlBooleanTrueString
    Else
       SqlBooleanTrueString = SQL_DEFAULT_BOOLTRUESTRING
    End If
 End Property
 
 Public Property Let SqlBooleanTrueString(ByVal NewValue As String)
-   m_SqlBooleanTrueString = NewValue
+   m_SqlFormat.SqlBooleanTrueString = NewValue
 End Property
 
 '##################################
@@ -706,20 +796,20 @@ Private Function ConfigNumericSpecials( _
 
 End Function
 
-Private Function GetNextDigitNumber(ByVal Z As Variant, Optional AddToAbsoluteValue As Boolean = False) As Double
+Private Function GetNextDigitNumber(ByVal NumValue As Variant, Optional AddToAbsoluteValue As Boolean = False) As Double
    
    Dim TestString As String
-   Dim KommaPos As Long
-   Dim digits As Long
+   Dim DecSignPos As Long
+   Dim Digits As Long
    Dim IsNegativ As Boolean
 
    Const AdditionalDecDigit As String = "1"
    Const AdditionalDecDigitKorr As Double = 0.1
    
-   TestString = Trim(CStr(ConvertToNumeric(Replace(CStr(Z), "*", AdditionalDecDigit))))
+   TestString = Trim(CStr(ConvertToNumeric(Replace(CStr(NumValue), "*", AdditionalDecDigit))))
    
    If Left(TestString, 1) = "-" And (Not AddToAbsoluteValue) Then
-      GetNextDigitNumber = CDbl(Replace(CStr(Z), "*", vbNullString))
+      GetNextDigitNumber = CDbl(Replace(CStr(NumValue), "*", vbNullString))
       Exit Function
    End If
    
@@ -727,26 +817,26 @@ Private Function GetNextDigitNumber(ByVal Z As Variant, Optional AddToAbsoluteVa
       IsNegativ = True
    End If
    
-   KommaPos = InStrRev(TestString, DecimalMarker)
-   If KommaPos = 0 Then ' next integer
+   DecSignPos = InStrRev(TestString, DecimalMarker)
+   If DecSignPos = 0 Then ' next integer
       If AddToAbsoluteValue And IsNegativ Then
-         GetNextDigitNumber = CDbl(Replace(CStr(Z), "*", vbNullString)) - 1
+         GetNextDigitNumber = CDbl(Replace(CStr(NumValue), "*", vbNullString)) - 1
       Else
-         GetNextDigitNumber = CDbl(Replace(CStr(Z), "*", vbNullString)) + 1
+         GetNextDigitNumber = CDbl(Replace(CStr(NumValue), "*", vbNullString)) + 1
       End If
       Exit Function
    End If
    
-   digits = Len(TestString) - KommaPos - 1
+   Digits = Len(TestString) - DecSignPos - 1
    
    If Left(TestString, 1) = "-" Then
       IsNegativ = True
    End If
    
    If AddToAbsoluteValue And IsNegativ Then
-      GetNextDigitNumber = CDbl(TestString) + AdditionalDecDigitKorr / 10 ^ digits - AdditionalDecDigitKorr / 10 ^ (digits - 1)
+      GetNextDigitNumber = CDbl(TestString) + AdditionalDecDigitKorr / 10 ^ Digits - AdditionalDecDigitKorr / 10 ^ (Digits - 1)
    Else
-      GetNextDigitNumber = CDbl(TestString) + (1 - AdditionalDecDigitKorr) / 10 ^ digits
+      GetNextDigitNumber = CDbl(TestString) + (1 - AdditionalDecDigitKorr) / 10 ^ Digits
    End If
    
 End Function
