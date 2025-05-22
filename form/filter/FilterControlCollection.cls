@@ -24,6 +24,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>form/filter/FilterControl.cls</use>
 '  <use>form/filter/FilterControlEventBridge.cls</use>
+'  <use>data/FilterStringBuilder.cls</use>
 '  <use>data/SqlTools.cls</use>
 '  <test>_test/form/filter/FilterControlCollectionTests.cls</test>
 '</codelib>
@@ -315,9 +316,6 @@ Public Function AddExistsCriteria( _
       SqlPrefix = SqlPrefix & Trim$(Left(SelectFromText, WhereReplacementPos - 1))
       SqlSuffix = ") " & Trim$(Mid$(SelectFromText, WhereReplacementPos + Len(m_WhereReplacementText) + 1)) & SqlSuffix
       ConditionPrefix = ConditionPrefix & "("
-      Debug.Print "SqlPrefix", "|" & SqlPrefix & "|"
-      Debug.Print "SqlSuffix", "|" & SqlSuffix & "|"
-      Debug.Print "ConditionPrefix", "|" & ConditionPrefix & "|"
    Else
       SqlPrefix = SqlPrefix & SelectFromText
    End If
