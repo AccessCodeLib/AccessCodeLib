@@ -25,6 +25,7 @@ Attribute VB_Exposed = False
 '  <use>form/filter/FilterControl.cls</use>
 '  <use>form/filter/FilterControlEventBridge.cls</use>
 '  <use>data/SqlTools.cls</use>
+'  <test>_test/form/filter/FilterControlCollectionTests.cls</test>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -267,7 +268,7 @@ Public Function AddSubSelectCriteria( _
    If WhereReplacementPos > 0 Then
       SqlPrefix = SqlPrefix & Trim$(Left(SelectFromText, WhereReplacementPos - 1))
       SqlSuffix = ") " & Trim$(Mid$(SelectFromText, WhereReplacementPos + Len(m_WhereReplacementText) + 1)) & SqlSuffix
-      ConditionPrefix = ConditionPrefix & " ("
+      ConditionPrefix = ConditionPrefix & "("
    Else
       SqlPrefix = SqlPrefix & SelectFromText
    End If
@@ -292,18 +293,39 @@ Public Function AddExistsCriteria( _
                         ByVal SelectFromText As String, _
                Optional ByVal IgnoreIfExistsStatementHasNoCriteria As Boolean = False, _
                Optional ByVal SubSelectConcatOperator As SqlLogicalOperator = SqlLogicalOperator.SQL_And, _
-               Optional ByVal UseNotExists As Boolean = False _
+               Optional ByVal UseNotExists As Boolean = False, _
+               Optional ByVal UseWhereReplacementTextInFromText As Boolean = False _
       ) As FilterControlCollection
 
-   Dim ExistsSqlPrefix As String
+   Dim SqlPrefix As String
+   Dim SqlSuffix As String
+   Dim WhereReplacementPos As Long
+   Dim ConditionPrefix As String
+   ConditionPrefix = " Where "
    
-   ExistsSqlPrefix = "Exists ("
-   If UseNotExists Then ExistsSqlPrefix = "Not " & ExistsSqlPrefix
+   SqlPrefix = "Exists ("
+   SqlSuffix = ")"
+   If UseNotExists Then SqlPrefix = "Not " & SqlPrefix
+   
+   If UseWhereReplacementTextInFromText Then
+      WhereReplacementPos = InStr(1, SelectFromText, m_WhereReplacementText, vbTextCompare)
+   End If
+   
+   If WhereReplacementPos > 0 Then
+      SqlPrefix = SqlPrefix & Trim$(Left(SelectFromText, WhereReplacementPos - 1))
+      SqlSuffix = ") " & Trim$(Mid$(SelectFromText, WhereReplacementPos + Len(m_WhereReplacementText) + 1)) & SqlSuffix
+      ConditionPrefix = ConditionPrefix & "("
+      Debug.Print "SqlPrefix", "|" & SqlPrefix & "|"
+      Debug.Print "SqlSuffix", "|" & SqlSuffix & "|"
+      Debug.Print "ConditionPrefix", "|" & ConditionPrefix & "|"
+   Else
+      SqlPrefix = SqlPrefix & SelectFromText
+   End If
 
    With New FilterControlCollection
       .ItemConcatOperator = SubSelectConcatOperator
-      .ConfigSqlStatement SqlPrefix:=ExistsSqlPrefix & SelectFromText, _
-                          SqlSuffix:=")", ConditionPrefix:=" Where ", IgnoreSqlPreSuffixIfEmptyFilter:=IgnoreIfExistsStatementHasNoCriteria
+      .ConfigSqlStatement SqlPrefix:=SqlPrefix, _
+                          SqlSuffix:=SqlSuffix, ConditionPrefix:=ConditionPrefix, IgnoreSqlPreSuffixIfEmptyFilter:=IgnoreIfExistsStatementHasNoCriteria
       
       Set .EventBridge = m_EventBridge
       m_FilterControls.Add .Self
