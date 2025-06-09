@@ -50,7 +50,7 @@ Private Declare PtrSafe Function SendMessage Lib "user32" Alias "SendMessageA" (
                               ByVal Hwnd As Long, ByVal wMsg As Long, _
                               ByVal wParam As Long, lParam As Any) As Long
                               
-Private Declare PtrSafe Function SetWindowPos Lib "user32" (ByVal Hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Private Declare PtrSafe Function SetWindowPos Lib "user32" (ByVal Hwnd As Long, ByVal hWndInsertAfter As Long, ByVal X As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 Private Declare PtrSafe Function GetDesktopWindow Lib "user32" () As Long
 Private Declare PtrSafe Function GetDC Lib "user32" (ByVal Hwnd As Long) As Long
 Private Declare PtrSafe Function ReleaseDC Lib "user32" (ByVal Hwnd As Long, ByVal hDC As Long) As Long
@@ -196,7 +196,7 @@ Public Sub SetFormMinSize(ByVal FormRef As Form, ByVal lStaticBaseInsideHeigth A
 
 End Sub
 
-Public Sub ResizeWindow(ByVal FormRef As Form, Optional ByVal newWidth As Long = -1, Optional ByVal NewHeight As Long = -1)
+Public Sub ResizeWindow(ByVal FormRef As Form, Optional ByVal NewWidth As Long = -1, Optional ByVal NewHeight As Long = -1)
 'Einheit TWIPS !!!
 
    Dim rctForm As Rect
@@ -230,10 +230,10 @@ Public Sub ResizeWindow(ByVal FormRef As Form, Optional ByVal newWidth As Long =
    WMTwipsPerPixel = 1440 / DisplayLogPixelsY
    
    With rctForm
-      If newWidth < 0 Then
+      If NewWidth < 0 Then
          intNewWith = .Right - .Left
       Else
-         intNewWith = Fix(newWidth / WMTwipsPerPixel)
+         intNewWith = Fix(NewWidth / WMTwipsPerPixel)
       End If
 
       If NewHeight < 0 Then
@@ -255,12 +255,13 @@ End Function
 Public Sub RequeryData(ByVal FormRef As Form, Optional ByVal BookmarkFieldName As String = vbNullString)
 
    Dim varIDValue As Variant
-   Dim lngPos As Long, lngPosDiff As Long
+   Dim lngPosInit As Long, lngPos As Long, lngPosDiff As Long
    Dim lngDirection As Long
    Dim i As Long, lngRet As Long
    Dim bolIsListForm As Boolean
-   
+
    Dim SetPainting As Boolean
+   Dim InitRecordsetPos As Long
 
 On Error GoTo 0
 
@@ -274,15 +275,16 @@ On Error GoTo 0
 On Error Resume Next
    If bolIsListForm Then
    With FormRef
-      lngPos = (.CurrentSectionTop - .Section(acHeader).Height) \ .Section(0).Height
+      lngPosInit = (.CurrentSectionTop - .Section(acHeader).Height) \ .Section(0).Height
+      InitRecordsetPos = .Recordset.AbsolutePosition
    End With
    End If
-   
+
    varIDValue = Null
    If Len(BookmarkFieldName) > 0 Then
        varIDValue = FormRef.Controls(BookmarkFieldName).Value
    End If
-   
+
    If Err.Number <> 0 Then
       Err.Clear
    End If
@@ -291,21 +293,29 @@ On Error GoTo HandleErr
 
    FormRef.Requery
 
-   If IsNull(varIDValue) = False Then
-      'zu Bookmark springen
-      
+   If Not IsNull(varIDValue) Then
       If FormRef.Painting = True Then
          FormRef.Painting = False
          SetPainting = True
       End If
-      
+
       GotoBookmark FormRef, BookmarkFieldName, varIDValue
 
-      'letzte Position wieder herstellen
+      'restore last position
       If bolIsListForm Then
 On Error Resume Next
          With FormRef
-            lngPosDiff = lngPos - ((.CurrentSectionTop - .Section(acHeader).Height) \ .Section(0).Height)
+            If .CurrentSectionTop = 0 Then ' Access bug? ... why is CurrentSectionTop = 0?
+               If InitRecordsetPos <= Round(((.InsideHeight - .Section(0).Height) / .Section(0).Height), 0) + 1 Then
+                  lngPos = InitRecordsetPos - 1
+               Else
+                  lngPos = 0
+               End If
+            Else
+               lngPos = (.CurrentSectionTop - .Section(acHeader).Height) \ .Section(0).Height
+            End If
+            lngPosDiff = lngPosInit - lngPos
+            Debug.Print "N", .CurrentSectionTop, lngPosInit, lngPos, lngPosDiff, .Recordset.AbsolutePosition
          End With
 On Error GoTo HandleErr
          If lngPosDiff <> 0 Then

@@ -104,6 +104,29 @@ Friend Property Set SqlTool(ByVal NewRef As SqlTools)
 End Property
 
 '---------------------------------------------------------------------------------------
+' Function: SelectSqlDialect
+'---------------------------------------------------------------------------------------
+'
+' Config sql text output format for specific sql dialect
+'
+' Parameters:
+'
+'     UseDialect - sql dialect .. use setting of dialect (as base)
+'     SqlDateFormat - output string format for date values
+'     SqlBooleanTrueString - output string format for boolean values
+'     SqlWildCardString - wildcard string (e.g. * .. dao, % .. T-SQL)
+'
+'---------------------------------------------------------------------------------------
+Friend Sub SelectSqlDialect(ByVal UseDialect As SqlDialect, _
+                   Optional ByVal SqlDateFormat As String, _
+                   Optional ByVal SqlBooleanTrueString As String, _
+                   Optional ByVal SqlWildCardString As String)
+   
+   Set m_SqlTool = SqlTools.FromDialect(UseDialect, SqlDateFormat, SqlBooleanTrueString, SqlWildCardString)
+
+End Sub
+
+'---------------------------------------------------------------------------------------
 ' Function: ConfigSqlFormat
 '---------------------------------------------------------------------------------------
 '
@@ -125,7 +148,7 @@ Friend Sub ConfigSqlFormat(ByVal SqlDateFormat As String, _
       Exit Sub
    End If
 
-   With SqlTool
+   With m_SqlTool
       .SqlDateFormat = SqlDateFormat
       .SqlBooleanTrueString = SqlBooleanTrueString
       .SqlWildCardString = SqlWildCardString
@@ -350,24 +373,38 @@ Public Function AddExistsCriteria( _
                         ByVal SelectFromText As String, _
                Optional ByVal IgnoreIfExistsStatementHasNoCriteria As Boolean = False, _
                Optional ByVal SubSelectConcatOperator As SqlLogicalOperator = SqlLogicalOperator.SQL_And, _
-               Optional ByVal UseNotExists As Boolean = False _
+               Optional ByVal UseNotExists As Boolean = False, _
+               Optional ByVal UseWhereReplacementTextInFromText As Boolean = False _
       ) As FilterStringBuilder
 
    Dim NewBuilder As FilterStringBuilder
    Dim ExistsSqlPrefix As String
+   Dim WhereReplacementPos As Long
+   Dim ExistsSqlSuffix As String
+   
+   ExistsSqlPrefix = "Exists ("
+   If UseNotExists Then ExistsSqlPrefix = "Not " & ExistsSqlPrefix
+
+   If UseWhereReplacementTextInFromText Then
+      WhereReplacementPos = InStr(1, SelectFromText, WhereReplacementText, vbTextCompare)
+   End If
+
+   If WhereReplacementPos > 0 Then
+      ExistsSqlSuffix = " " & Trim$(Mid$(SelectFromText, WhereReplacementPos + Len(WhereReplacementText))) & ")"
+      SelectFromText = Trim$(Left(SelectFromText, WhereReplacementPos - 1))
+   Else
+      ExistsSqlSuffix = ")"
+   End If
    
    Set NewBuilder = New FilterStringBuilder
    NewBuilder.DefaultConcatOperator = SubSelectConcatOperator
    Set NewBuilder.SqlTool = m_SqlTool
-   
-   ExistsSqlPrefix = "Exists ("
-   If UseNotExists Then ExistsSqlPrefix = "Not " & ExistsSqlPrefix
-   
+
    NewBuilder.ConfigSqlStatement SqlPrefix:=ExistsSqlPrefix & SelectFromText, _
-                                 SqlSuffix:=")", ConditionPrefix:=" Where ", IgnoreSqlPreSuffixIfEmptyFilter:=IgnoreIfExistsStatementHasNoCriteria
-   
+                                 SqlSuffix:=ExistsSqlSuffix, ConditionPrefix:=" Where ", IgnoreSqlPreSuffixIfEmptyFilter:=IgnoreIfExistsStatementHasNoCriteria
+
    ConditionGroups.Add NewBuilder
-   
+
    Set AddExistsCriteria = NewBuilder
    
 End Function
@@ -444,4 +481,20 @@ Private Property Get ConditionGroups() As Collection
       Set m_ConditionGroups = New Collection
    End If
    Set ConditionGroups = m_ConditionGroups
+End Property
+
+'---------------------------------------------------------------------------------------
+' Property: WhereReplacementTextPlaceholder
+'---------------------------------------------------------------------------------------
+'
+' Returns the placeholder text used in SQL subselects to dynamically insert the WHERE condition.
+' Used in AddSubSelectCriteria and AddExistsCriteria to replace "[WhereStatement]" in the SQL text
+' with the actual generated filter condition.
+'
+' Example:
+'   SELECT ... FROM ... [WhereStatement] ...
+'
+'---------------------------------------------------------------------------------------
+Public Property Get WhereReplacementTextPlaceholder() As String
+    WhereReplacementTextPlaceholder = WhereReplacementText
 End Property

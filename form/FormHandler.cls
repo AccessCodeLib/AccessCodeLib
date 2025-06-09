@@ -96,6 +96,7 @@ Public Enum FH_EditMode
    EM_Edit = 1
    EM_New = 2
    EM_Locked = 3
+   EM_EditSync = 11
 End Enum
 
 
