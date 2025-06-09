@@ -482,3 +482,19 @@ Private Property Get ConditionGroups() As Collection
    End If
    Set ConditionGroups = m_ConditionGroups
 End Property
+
+'---------------------------------------------------------------------------------------
+' Property: WhereReplacementTextPlaceholder
+'---------------------------------------------------------------------------------------
+'
+' Returns the placeholder text used in SQL subselects to dynamically insert the WHERE condition.
+' Used in AddSubSelectCriteria and AddExistsCriteria to replace "[WhereStatement]" in the SQL text
+' with the actual generated filter condition.
+'
+' Example:
+'   SELECT ... FROM ... [WhereStatement] ...
+'
+'---------------------------------------------------------------------------------------
+Public Property Get WhereReplacementTextPlaceholder() As String
+    WhereReplacementTextPlaceholder = WhereReplacementText
+End Property
