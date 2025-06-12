@@ -25,7 +25,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Build with NaturalDocs
-        uses: Vba-actions/NaturalDocs-build-pages@main
+        uses: josef-poetzl/NaturalDocs-build-pages@main
         with:
           config: '.nd\config\Project.txt'
       - name: Upload artifact
