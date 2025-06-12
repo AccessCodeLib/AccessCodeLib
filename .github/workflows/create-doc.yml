@@ -27,7 +27,7 @@ jobs:
       - name: Build with NaturalDocs
         uses: Vba-actions/NaturalDocs-build-pages@main
       - name: Upload artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           path: './doc'
       - name: Deploy to GitHub Pages
