@@ -6,8 +6,10 @@
 # Project Information
 # ------------------------------------------------------------------------
 
-Title: Access Code Library - data
+Title: Access Code Library
+Subtitle: Reusable VBA code for Microsoft Access Applications
 
+Timestamp: Last updated
 
 # This is where you put general information about your project.  None of these
 # settings are required, though Title is recommended.
