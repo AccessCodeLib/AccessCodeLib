@@ -146,7 +146,7 @@ Source Folder: ..\..
 # Generated Documentation
 # ------------------------------------------------------------------------
 
-HTML Output Folder: ..\doc
+HTML Output Folder: ..\docs
 
 
 # This is where you tell Natural Docs what kind of documentation you want
