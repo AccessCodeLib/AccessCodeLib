@@ -28,8 +28,6 @@ jobs:
         uses: josef-poetzl/NaturalDocs-build-pages@main
         with:
           config: '.nd/config/Project.txt'
-      - name: List docs directory
-        run: ls -lR ./docs
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
