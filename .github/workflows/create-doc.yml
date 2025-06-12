@@ -2,7 +2,7 @@ name: Deploy Natural Docs content to Pages
 
 on:
   push:
-    branches: master
+    branches: [master]
   workflow_dispatch:
 
 permissions:
@@ -28,7 +28,7 @@ jobs:
         uses: josef-poetzl/NaturalDocs-build-pages@main
         with:
           config: '.nd/config/Project.txt'
-      - name: Upload artifact
+      - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: './docs'
