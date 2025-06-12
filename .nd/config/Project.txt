@@ -7,7 +7,8 @@
 # ------------------------------------------------------------------------
 
 Title: Access Code Library
-Subtitle: Reusable VBA code<br />for Microsoft Access Applications
+Subtitle: Reusable VBA code
+    for Microsoft Access Applications
 
 Timestamp: Last updated yyyy-mm-dd
 
