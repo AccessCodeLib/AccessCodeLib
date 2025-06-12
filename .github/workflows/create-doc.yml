@@ -27,7 +27,7 @@ jobs:
       - name: Build with NaturalDocs
         uses: josef-poetzl/NaturalDocs-build-pages@main
         with:
-          config: '.nd\config\Project.txt'
+          config: '.nd/config/Project.txt'
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
