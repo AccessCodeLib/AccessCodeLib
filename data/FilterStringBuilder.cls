@@ -304,7 +304,7 @@ End Function
 '     RelationalOperator - Relational operator for sub select: usually In(...)
 '     SelectFromText - Sql text for sub select (without where, except UseWhereReplacementTextInFromText is used)
 '     IgnoreIfSubSelectHasNoCriteria - True = Ignore subselect criterion if no filter values were transferred
-'     UseWhereReplacementTextInFromText - Replace [Where] with Where condition string ... is required for Group By-SQL, for example.
+'     UseWhereReplacementTextInFromText - Replace [WhereStatement] with Where condition string ... is required for Group By-SQL, for example.
 '     SubSelectConcatOperator - [SQL_And (default), SQL_Or, SQL_CommaSeparator] .. valid within the new group
 '
 ' Returns:
@@ -363,6 +363,7 @@ End Function
 '     IgnoreIfExistsStatementHasNoCriteria - True = Ignore subselect criterion if no filter values were transferred
 '     SubSelectConcatOperator - [SQL_And (default), SQL_Or, SQL_CommaSeparator] .. valid within the new group
 '     UseNotExists - use not exists (..): default: false = exists (...)
+'     UseWhereReplacementTextInFromText - Replace [WhereStatement] with Where condition string ... is required for Group By-SQL, for example.
 '
 ' Returns:
 '
@@ -408,6 +409,23 @@ Public Function AddExistsCriteria( _
    Set AddExistsCriteria = NewBuilder
    
 End Function
+
+'---------------------------------------------------------------------------------------
+' Property: WhereReplacementTextPlaceholder
+'---------------------------------------------------------------------------------------
+'
+' Returns the placeholder text used in SQL subselects to dynamically insert the WHERE condition.
+' Used in AddSubSelectCriteria and AddExistsCriteria to replace "[WhereStatement]" in the SQL text
+' with the actual generated filter condition.
+'
+' Example:
+'   SELECT ... FROM ... [WhereStatement] ...
+'
+'---------------------------------------------------------------------------------------
+Public Property Get WhereReplacementTextPlaceholder() As String
+    WhereReplacementTextPlaceholder = WhereReplacementText
+End Property
+
 
 '##################################
 ' Group: Output
@@ -481,20 +499,4 @@ Private Property Get ConditionGroups() As Collection
       Set m_ConditionGroups = New Collection
    End If
    Set ConditionGroups = m_ConditionGroups
-End Property
-
-'---------------------------------------------------------------------------------------
-' Property: WhereReplacementTextPlaceholder
-'---------------------------------------------------------------------------------------
-'
-' Returns the placeholder text used in SQL subselects to dynamically insert the WHERE condition.
-' Used in AddSubSelectCriteria and AddExistsCriteria to replace "[WhereStatement]" in the SQL text
-' with the actual generated filter condition.
-'
-' Example:
-'   SELECT ... FROM ... [WhereStatement] ...
-'
-'---------------------------------------------------------------------------------------
-Public Property Get WhereReplacementTextPlaceholder() As String
-    WhereReplacementTextPlaceholder = WhereReplacementText
 End Property

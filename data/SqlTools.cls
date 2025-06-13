@@ -105,7 +105,7 @@ End Enum
 ' Group: Class support
 
 '---------------------------------------------------------------------------------------
-' Function: SelectDialect
+' Function: FromDialect
 '---------------------------------------------------------------------------------------
 '
 ' Create a new instance with basic settings of the selected dialect
@@ -891,9 +891,9 @@ Friend Function GetRelationalOperatorString(ByRef RelationalOperator As SqlRelat
       
       op = RelationalOperator Xor SQL_Not
       
-      If op = SqlRelationalOperators.SQL_Equal Then ' => "=" zu "<>" .. null berücksichtigen?
+      If op = SqlRelationalOperators.SQL_Equal Then ' => "=" zu "<>" .. null berï¿½cksichtigen?
          RelationalOperator = SQL_LessThan + SQL_GreaterThan
-      ElseIf op = SQL_GreaterThan + SQL_LessThan Then ' => "<>" zu "=" .. null berücksichtigen?
+      ElseIf op = SQL_GreaterThan + SQL_LessThan Then ' => "<>" zu "=" .. null berï¿½cksichtigen?
          RelationalOperator = SQL_Equal
       Else
          RelationalOperator = RelationalOperator Xor SQL_Not
