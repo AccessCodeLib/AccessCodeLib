@@ -296,7 +296,8 @@ End Function
 ' Function: AddSubSelectCriteria
 '---------------------------------------------------------------------------------------
 '
-' New filter condition group for a sub select - e.g. ( a = 1 and x In (select n  from tab123) )
+' New filter condition group for a sub select. 
+'     e.g. ( a = 1 and x In (select n from tab123) )
 '
 ' Parameters:
 '
@@ -355,7 +356,8 @@ End Function
 ' Function: AddExistsCriteria
 '---------------------------------------------------------------------------------------
 '
-' New filter condition group for a exits sub select - e.g. ( a = 1 and exists (select * from tab123 where t = a and y = 123) )
+' New filter condition group for a exits sub select 
+'     e.g. ( a = 1 and exists (select * from tab123 where t = a and y = 123) )
 '
 ' Parameters:
 '
