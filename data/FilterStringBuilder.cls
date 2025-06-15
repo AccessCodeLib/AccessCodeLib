@@ -25,6 +25,7 @@ Attribute VB_Exposed = False
 '  <use>text/StringCollection.cls</use>
 '  <use>data/SqlTools.cls</use>
 '  <test>_test/data/FilterStringBuilderTests.cls</test>
+'  <example>data/FilterStringBuilder_Examples.bas</example>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

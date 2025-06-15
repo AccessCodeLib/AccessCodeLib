@@ -1,10 +1,10 @@
 Attribute VB_Name = "FilterStringBuilder_Examples"
 '---------------------------------------------------------------------------------------
-' Beispiel-Modul: FilterStringBuilder_Examples
+' Example Module: FilterStringBuilder_Examples
 '---------------------------------------------------------------------------------------
 '/**
 ' \author       Josef Poetzl
-' \brief        Beispiel zur Verwendung der FilterStringBuilder-Klasse
+' \brief        Example for using the FilterStringBuilder class
 ' \ingroup data
 '**/
 '---------------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ Option Compare Text
 Option Explicit
 
 ' --------------------------
-' Beispiele
+' Examples
 ' --------------------------
 
 Private Sub EqualFilter()
@@ -228,7 +228,7 @@ End With
 End Sub
 
 ' --------------------------
-' Hilfsprozeduren
+' Helper procedures
 ' --------------------------
 Private Function NewFilterStringBuilder() As FilterStringBuilder
    With New FilterStringBuilder
