@@ -65,43 +65,44 @@ Public Function InstallAddIn(ByVal AddInConfigData As AddInConfiguration, _
 
 End Function
 
-Public Property Get AddInName() As String
+Private Property Get AddInName() As String
    AddInName = m_ConfigData.AddInRegPathName
 End Property
 
-Public Property Get AddInFileName() As String
+Private Property Get AddInFileName() As String
    AddInFileName = m_ConfigData.FileName
 End Property
 
-Public Property Get MsgBoxTitle() As String
+Private Property Get MsgBoxTitle() As String
    MsgBoxTitle = "Install " & AddInName
 End Property
 
-Function GetSourceFileFullName()
+Private Function GetSourceFileFullName()
    GetSourceFileFullName = CurrentDb.Name
 End Function
 
-Function GetDestFileFullName()
+Private Function GetDestFileFullName()
    GetDestFileFullName = GetAddInLocation & AddInFileName
 End Function
 
-Function GetAddInLocation()
+Friend Function GetAddInLocation()
    GetAddInLocation = GetAppDataLocation & "Microsoft\AddIns\"
 End Function
 
-Function GetAppDataLocation()
+Private Function GetAppDataLocation()
    GetAppDataLocation = Environ("APPDATA") & "\"
 End Function
 
-Function DeleteAddInFiles()
+Private Function DeleteAddInFiles()
 
    Dim DestFile As String
+   
    DestFile = GetDestFileFullName()
    DeleteFile DestFile
 
 End Function
 
-Function DeleteFile(File2Delete)
+Private Function DeleteFile(File2Delete)
    If FileTools.FileExists(File2Delete) Then
       Kill File2Delete
    End If
@@ -127,7 +128,7 @@ On Error Resume Next
 
 End Function
 
-Function CreateAccde(ByVal SourceFilePath As String, ByVal DestFilePath As String) As Boolean
+Friend Function CreateAccde(ByVal SourceFilePath As String, ByVal DestFilePath As String) As Boolean
 
    Dim FileToCompile As String
    Dim AccessApp As Access.Application
@@ -152,7 +153,7 @@ End Function
 '##################################################
 ' Register Menu Add-In
 
-Function RegisterAddIn(AddInFile)
+Private Function RegisterAddIn(AddInFile)
 
    Dim AddInDb As DAO.Database
    Dim rst As DAO.Recordset
@@ -179,7 +180,7 @@ Function RegisterAddIn(AddInFile)
 
 End Function
 
-Function RegisterMenuAddInItem(wsh, ByVal SubKey, ByVal ItemValName, ByVal RegType, ByVal ItemValue)
+Private Function RegisterMenuAddInItem(wsh, ByVal SubKey, ByVal ItemValName, ByVal RegType, ByVal ItemValue)
     Dim RegName
     RegName = GetRegistryPath(SubKey)
     With wsh
@@ -190,7 +191,7 @@ Function RegisterMenuAddInItem(wsh, ByVal SubKey, ByVal ItemValName, ByVal RegTy
     End With
 End Function
 
-Function GetRegTypeString(ByVal RegType)
+Private Function GetRegTypeString(ByVal RegType)
     Select Case RegType
         Case 1
             GetRegTypeString = "REG_SZ"
@@ -203,10 +204,10 @@ Function GetRegTypeString(ByVal RegType)
     End Select
 End Function
 
-Function GetRegistryPath(SubKey)
+Private Function GetRegistryPath(SubKey)
     GetRegistryPath = Replace(SubKey, "HKEY_CURRENT_ACCESS_PROFILE", HkeyCurrentAccessProfileRegistryPath())
 End Function
 
-Function HkeyCurrentAccessProfileRegistryPath()
+Private Function HkeyCurrentAccessProfileRegistryPath()
     HkeyCurrentAccessProfileRegistryPath = "HKCU\SOFTWARE\Microsoft\Office\" & Access.Application.Version & "\Access"
 End Function
