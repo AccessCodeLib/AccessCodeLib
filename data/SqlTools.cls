@@ -891,9 +891,9 @@ Friend Function GetRelationalOperatorString(ByRef RelationalOperator As SqlRelat
       
       op = RelationalOperator Xor SQL_Not
       
-      If op = SqlRelationalOperators.SQL_Equal Then ' => "=" zu "<>" .. null ber�cksichtigen?
+      If op = SqlRelationalOperators.SQL_Equal Then ' => "=" zu "<>" .. check for Null required?
          RelationalOperator = SQL_LessThan + SQL_GreaterThan
-      ElseIf op = SQL_GreaterThan + SQL_LessThan Then ' => "<>" zu "=" .. null ber�cksichtigen?
+      ElseIf op = SQL_GreaterThan + SQL_LessThan Then ' => "<>" zu "=" .. check for Null required?
          RelationalOperator = SQL_Equal
       Else
          RelationalOperator = RelationalOperator Xor SQL_Not
