@@ -484,6 +484,7 @@ Private Sub SetAppDbProperty(ByVal PropName As String, ByVal PropType As Long, B
    
    Set db = AppDb
    Set PropCol = db.Properties
+   PropCol.Refresh
    If DbPropertyExists(PropCol, PropName) Then
       If Len(PropValue) = 0 Or IsNull(PropValue) Then
          db.Properties.Delete PropName
