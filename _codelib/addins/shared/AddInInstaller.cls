@@ -212,4 +212,3 @@ End Function
 Private Function HkeyCurrentAccessProfileRegistryPath()
     HkeyCurrentAccessProfileRegistryPath = "HKCU\SOFTWARE\Microsoft\Office\" & Access.Application.Version & "\Access"
 End Function
-
