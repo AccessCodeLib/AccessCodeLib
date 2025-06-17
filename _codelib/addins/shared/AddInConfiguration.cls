@@ -249,8 +249,10 @@ Private Sub SetDbProperty(ByVal PropDb As DAO.Database, PropertyName As String, 
 
 On Error GoTo HandleErr
 
-   PropDb.Properties(PropertyName).Value = Nz(NewValue, vbNullString)
-
+   If Len(NewValue) > 0 Then
+      PropDb.Properties(PropertyName).Value = Nz(NewValue, vbNullString)
+   End If
+   
 ExitHere:
    Exit Sub
 
@@ -268,8 +270,10 @@ Private Sub SetDocProperty(ByVal PropDb As DAO.Database, PropertyName As String,
 
 On Error GoTo HandleErr
 
-   PropDb.Containers("Databases").Documents("SummaryInfo").Properties(PropertyName).Value = Nz(NewValue, vbNullString)
-
+   If Len(NewValue) > 0 Then
+      PropDb.Containers("Databases").Documents("SummaryInfo").Properties(PropertyName).Value = Nz(NewValue, vbNullString)
+   End If
+   
 ExitHere:
    Exit Sub
 

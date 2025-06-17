@@ -112,7 +112,7 @@ Private m_AppDb As DAO.Database              ' Replacement for CurrentDb or Code
 
 Private m_ApplicationName As String          ' Application name cache (short)
 Private m_ApplicationFullName As String      ' Application name cache (long)
-Private m_APPLICATIONVERSION As String       ' Version number to be displayed
+Private m_ApplicationVersion As String       ' Version number to be displayed
 
 Private m_TransferValue As Variant
 Private m_PublicPath As String               ' Default directory for file explorer
@@ -351,19 +351,19 @@ End Property
 '---------------------------------------------------------------------------------------
 Public Property Get Version() As String
 
-   If Len(m_APPLICATIONVERSION) = 0 Then ' ... aus Properties lesen?
+   If Len(m_ApplicationVersion) = 0 Then ' ... aus Properties lesen?
 '/**
 ' @todo Versionskennung aus DB-Eigenschaften bzw. aus den Dateieigenschaften lesen
 '**/
-      m_APPLICATIONVERSION = ""
+      m_ApplicationVersion = ""
    End If
    
-   Version = m_APPLICATIONVERSION
+   Version = m_ApplicationVersion
    
 End Property
 
 Public Property Let Version(ByVal AppVersion As String)
-    m_APPLICATIONVERSION = AppVersion
+    m_ApplicationVersion = AppVersion
 End Property
 
 '---------------------------------------------------------------------------------------
