@@ -50,7 +50,7 @@ Const m_DefaultErrorHandlerMode = ACLibErrorHandlerMode.aclibErrMsgBox
 
 Private Const m_ApplicationStartFormName As String = ""
 
-#Const USE_EXTENSIONS = True
+#Const USE_EXTENSIONS = False
 #If USE_EXTENSIONS = True Then
 Private m_Extensions As ApplicationHandler_ExtensionCollection
 #End If
