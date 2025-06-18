@@ -35,7 +35,7 @@ Private Const EnumKeyFieldName As String = "strKey"
 Private Const EnumValueFieldName As String = "strValue"
 Private Const EnumName As String = "SettingKeys"
 
-Private Declare Sub GetSafeArrayPointer Lib "msvbvm60.dll" Alias "GetMem4" (pArray() As Any, Ptr As Long)
+Private Declare PtrSafe Sub GetSafeArrayPointer Lib "msvbvm60.dll" Alias "GetMem4" (pArray() As Any, Ptr As Long)
 
 '***************************************************************************
 '****** Zentrale Property Setting zum Holen und Setzen eines Wertes ********

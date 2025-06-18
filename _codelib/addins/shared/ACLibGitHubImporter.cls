@@ -40,7 +40,7 @@ Private m_BranchName As String
 
 #If VBA7 Then
 Private Declare PtrSafe Function DeleteUrlCacheEntry Lib "wininet.dll" Alias "DeleteUrlCacheEntryA" (ByVal lpszUrlName As String) As Long
-Private Declare PtrSafe Function URLDownloadToFile Lib "urlmon" Alias "URLDownloadToFileA" (ByVal pCaller As Long, ByVal szURL As String, ByVal szFileName As String, ByVal dwReserved As Long, ByVal lpfnCB As Long) As Long
+Private Declare PtrSafe Function URLDownloadToFile Lib "urlmon" Alias "URLDownloadToFileA" (ByVal pCaller As LongPtr, ByVal szURL As String, ByVal szFileName As String, ByVal dwReserved As Long, ByVal lpfnCB As LongPtr) As Long
 #Else
 Private Declare Function DeleteUrlCacheEntry Lib "wininet.dll" Alias "DeleteUrlCacheEntryA" (ByVal lpszUrlName As String) As Long
 Private Declare Function URLDownloadToFile Lib "urlmon" Alias "URLDownloadToFileA" (ByVal pCaller As Long, ByVal szURL As String, ByVal szFileName As String, ByVal dwReserved As Long, ByVal lpfnCB As Long) As Long
@@ -298,7 +298,59 @@ On Error GoTo 0
 End Sub
 
 Private Sub DownloadFileFromWeb(ByVal Url As String, ByVal TargetPath As String)
+
    If FileExists(TargetPath) Then Kill TargetPath
    DeleteUrlCacheEntry Url
    URLDownloadToFile 0, Url, TargetPath, 0, 0
+   
+   If IsUTF16(TargetPath) Then 'Forms/Reports
+      Exit Sub
+   End If
+   
+   NormalizeDownloadFile TargetPath ' fix issues with import as module instead of Class
+   
+End Sub
+
+Function IsUTF16(ByVal InputFile As String) As Boolean
+
+    Dim FileNumber As Integer
+    Dim CheckByte(1 To 2) As Byte
+    FileNumber = FreeFile
+    Open InputFile For Binary Access Read As #FileNumber
+    If LOF(FileNumber) >= 2 Then
+        Get #FileNumber, , CheckByte
+        If (CheckByte(1) = &HFF And CheckByte(2) = &HFE) Or (CheckByte(1) = &HFE And CheckByte(2) = &HFF) Then
+            IsUTF16 = True
+        End If
+    End If
+    Close #FileNumber
+    
+End Function
+
+Sub NormalizeDownloadFile(ByVal InputFile As String)
+
+   Dim TextStreamIn As Scripting.TextStream, TextStreamOut As Scripting.TextStream
+   Dim TempFile As String
+   Dim TextLine As String
+   
+   TempFile = InputFile & ".temp"
+
+   With New Scripting.FileSystemObject
+   
+      Set TextStreamIn = .OpenTextFile(InputFile, ForReading, False)
+      Set TextStreamOut = .OpenTextFile(TempFile, ForWriting, True, TristateUseDefault)
+    
+      Do While Not TextStreamIn.AtEndOfStream
+         TextLine = TextStreamIn.ReadLine
+         TextStreamOut.Write TextLine & vbCrLf
+      Loop
+      
+      TextStreamIn.Close
+      TextStreamOut.Close
+      
+      .DeleteFile InputFile
+      .MoveFile TempFile, InputFile
+    
+   End With
+
 End Sub

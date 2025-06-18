@@ -1,0 +1,13 @@
+'---------------------------------------------------------------------------------------
+' Package: Access Add-in Template
+'---------------------------------------------------------------------------------------
+'<codelib>
+'  <package>Access Add-in Template</package>
+'  <description>Install form, config class, ...</description>
+'  <use>base/_initApplication.bas</use>
+'  <use>_codelib/addins/shared/InstallAddInForm.frm</use>
+'  <execute>%addins%\ACLibAccessAddInBuilder.LoadAddIn</execute>
+'</codelib>
+'---------------------------------------------------------------------------------------
+' Note: If ACLibAccessAddInBuilder add-in is installed, it will be called after import
+'---------------------------------------------------------------------------------------
