@@ -103,9 +103,11 @@ Private Function DeleteAddInFiles()
 End Function
 
 Private Function DeleteFile(File2Delete)
-   If Len(Dir(File2Delete)) > 0 Then
-      Kill File2Delete
-   End If
+   With CreateObject("Scripting.FileSystemObject")
+      If .FileExists(File2Delete) Then
+         .DeleteFile File2Delete, True
+      End If
+   End With
 End Function
 
 Private Function TryFileCopy(ByVal SourceFilePath As String, ByVal DestFilePath As String) As Boolean
