@@ -22,7 +22,6 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>_codelib/addins/shared/AddInConfiguration.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>base/ApplicationHandler.cls</use>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -249,10 +248,8 @@ Private Sub SetDbProperty(ByVal PropDb As DAO.Database, PropertyName As String, 
 
 On Error GoTo HandleErr
 
-   If Len(NewValue) > 0 Then
-      PropDb.Properties(PropertyName).Value = Nz(NewValue, vbNullString)
-   End If
-   
+   PropDb.Properties(PropertyName).Value = Nz(NewValue, vbNullString)
+
 ExitHere:
    Exit Sub
 
@@ -262,7 +259,7 @@ HandleErr:
       Resume ExitHere
    End If
 
-   HandleError Err.Number, Err.Source, Err.Description, aclibErrRaise
+   Err.Raise Err.Number, "AddInConfiguration.SetDbProperty->" & Err.Source, Err.Description
 
 End Sub
 
@@ -270,10 +267,8 @@ Private Sub SetDocProperty(ByVal PropDb As DAO.Database, PropertyName As String,
 
 On Error GoTo HandleErr
 
-   If Len(NewValue) > 0 Then
-      PropDb.Containers("Databases").Documents("SummaryInfo").Properties(PropertyName).Value = Nz(NewValue, vbNullString)
-   End If
-   
+   PropDb.Containers("Databases").Documents("SummaryInfo").Properties(PropertyName).Value = Nz(NewValue, vbNullString)
+
 ExitHere:
    Exit Sub
 
@@ -285,7 +280,7 @@ HandleErr:
       Resume ExitHere
    End If
 
-   HandleError Err.Number, Err.Source, Err.Description, aclibErrRaise
+   Err.Raise Err.Number, "AddInConfiguration.SetDocProperty->" & Err.Source, Err.Description
 
 End Sub
 

@@ -23,7 +23,6 @@ Attribute VB_Exposed = False
 '  <file>_codelib/addins/shared/AddInInstaller.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>_codelib/addins/shared/AddInConfiguration.cls</use>
-'  <use>file/FileTools.bas</use>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -104,7 +103,7 @@ Private Function DeleteAddInFiles()
 End Function
 
 Private Function DeleteFile(File2Delete)
-   If FileTools.FileExists(File2Delete) Then
+   If Len(Dir(File2Delete)) > 0 Then
       Kill File2Delete
    End If
 End Function
