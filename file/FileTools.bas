@@ -26,12 +26,12 @@ Option Private Module
 #If USELOCALIZATION_DE = 1 Then
 Private Const SELECTBOX_FILE_DIALOG_TITLE As String = "Datei auswählen"
 Private Const SELECTBOX_FOLDER_DIALOG_TITLE As String = "Ordner auswählen"
-Private Const SELECTBOX_OPENTITLE As String = "auswählen"
+Private Const SELECTBOX_OPENTITLE As String = "Auswählen"
 Private Const FILTERSTRING_ALL_FILES As String = "Alle Dateien (*.*)"
 #Else
 Private Const SELECTBOX_FILE_DIALOG_TITLE As String = "Select file"
 Private Const SELECTBOX_FOLDER_DIALOG_TITLE As String = "Select folder"
-Private Const SELECTBOX_OPENTITLE As String = "auswählen"
+Private Const SELECTBOX_OPENTITLE As String = "Select"
 Private Const FILTERSTRING_ALL_FILES As String = "All Files (*.*)"
 #End If
 
@@ -42,8 +42,6 @@ Private Const SE_ERR_NOTFOUND As Long = 2
 Private Const SE_ERR_NOASSOC  As Long = 31
 
 Private Const VbaErrNo_FileNotFound As Long = 53
-
-#If VBA7 Then
 
 Private Declare PtrSafe Function WNetGetConnection Lib "mpr.dll" Alias "WNetGetConnectionA" ( _
          ByVal lpszLocalName As String, ByVal lpszRemoteName As String, cbRemoteName As Long) As Long
@@ -57,7 +55,7 @@ Private Declare PtrSafe Function API_GetTempFilename Lib "kernel32" Alias "GetTe
          ByVal lpPrefixString As String, _
          ByVal wUnique As Long, _
          ByVal lpTempFileName As String) As Long
-         
+
 Private Declare PtrSafe Function API_ShellExecuteA Lib "shell32.dll" Alias "ShellExecuteA" ( _
          ByVal Hwnd As LongPtr, _
          ByVal lOperation As String, _
@@ -66,30 +64,6 @@ Private Declare PtrSafe Function API_ShellExecuteA Lib "shell32.dll" Alias "Shel
          ByVal lpDirectory As String, _
          ByVal nShowCmd As Long) As Long
 
-#Else
-
-Private Declare Function WNetGetConnection Lib "mpr.dll" Alias "WNetGetConnectionA" ( _
-         ByVal lpszLocalName As String, ByVal lpszRemoteName As String, cbRemoteName As Long) As Long
-
-Private Declare Function API_GetTempPath Lib "kernel32" Alias "GetTempPathA" ( _
-         ByVal nBufferLength As Long, _
-         ByVal lpBuffer As String) As Long
-
-Private Declare Function API_GetTempFilename Lib "kernel32" Alias "GetTempFileNameA" ( _
-         ByVal lpszPath As String, _
-         ByVal lpPrefixString As String, _
-         ByVal wUnique As Long, _
-         ByVal lpTempFileName As String) As Long
-
-Private Declare Function API_ShellExecuteA Lib "shell32.dll" Alias "ShellExecuteA" ( _
-         ByVal Hwnd As Long, _
-         ByVal lOperation As String, _
-         ByVal lpFile As String, _
-         ByVal lpParameters As String, _
-         ByVal lpDirectory As String, _
-         ByVal nShowCmd As Long) As Long
-
-#End If
 
 '---------------------------------------------------------------------------------------
 ' Function: SelectFile
@@ -156,6 +130,7 @@ Private Function WizHook_GetFileName( _
                            Optional ByVal SelectFolderFlag As Boolean = False, _
                            Optional ByVal AppName As String) As String
 
+
 'Summary of WizHook.GetFileName parameters: http://www.team-moeller.de/?Tipps_und_Tricks:Wizhook-Objekt:GetFileName
 'View  0: Detailansicht
 '      1: Vorschauansicht
@@ -214,25 +189,25 @@ End Function
 '
 '---------------------------------------------------------------------------------------
 Public Function UncPath(ByVal Path As String, Optional ByVal IgnoreErrors As Boolean = True) As String
-   
+
    Dim UNC As String * 512
-   
+
    If VBA.Len(Path) = 1 Then Path = Path & ":"
-   
+
    If WNetGetConnection(VBA.Left$(Path, 2), UNC, VBA.Len(UNC)) Then
-   
+
       If IgnoreErrors Then
          UncPath = Path
       Else
          Err.Raise 5 ' Invalid procedure call or argument
       End If
-   
+
    Else
 
       UncPath = VBA.Left$(UNC, VBA.InStr(UNC, vbNullChar) - 1) & VBA.Mid$(Path, 3)
-   
+
    End If
-   
+
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -282,7 +257,7 @@ Public Function GetNewTempFileName(Optional ByVal PathToUse As String = "", _
                          Optional ByVal FileExtension As String = "") As String
 
    Dim NewTempFileName As String
-   
+
    If Len(PathToUse) = 0 Then
       PathToUse = TempPath
    End If
@@ -513,7 +488,7 @@ Public Function DirExists(ByVal FullPath As String) As Boolean
 
    DirExists = (VBA.Dir$(FullPath, vbDirectory Or vbReadOnly Or vbHidden Or vbSystem) = ".")
    VBA.Dir$ "\" ' Avoiding error: issue #109
-   
+
 End Function
 
 '---------------------------------------------------------------------------------------
@@ -664,7 +639,7 @@ Public Function GetRelativPathFromFullPath(ByVal FullPath As String, _
                                   Optional ByVal DisableDecreaseBaseDir As Boolean = False) As String
 
    Dim RelativPath As String
-   
+
    If FullPath = BaseDir Then
       GetRelativPathFromFullPath = "."
       Exit Function
@@ -675,7 +650,7 @@ Public Function GetRelativPathFromFullPath(ByVal FullPath As String, _
       GetRelativPathFromFullPath = "."
       Exit Function
    End If
-   
+
    If Not DisableDecreaseBaseDir Then
       RelativPath = TryGetRelativPathWithDecreaseBaseDir(FullPath, BaseDir, EnableRelativePrefix)
    Else
@@ -690,7 +665,7 @@ Public Function GetRelativPathFromFullPath(ByVal FullPath As String, _
          End If
       End If
    End If
-   
+
    GetRelativPathFromFullPath = RelativPath
 
 End Function
@@ -701,7 +676,7 @@ Private Function TryGetRelativPathWithDecreaseBaseDir(ByVal FullPath As String, 
    Dim DecreaseCounter As Long
    Dim Pos As Long
    Dim i As Long
-   
+
    RelativPath = BaseDir
 
    Do While InStr(1, FullPath, RelativPath) = 0
@@ -713,7 +688,7 @@ Private Function TryGetRelativPathWithDecreaseBaseDir(ByVal FullPath As String, 
          Exit Do
       End If
    Loop
-   
+
    If Len(RelativPath) > 0 Then
       RelativPath = Replace(FullPath, RelativPath, vbNullString)
       For i = 1 To DecreaseCounter
@@ -752,7 +727,7 @@ Public Sub AddToZipFile(ByVal ZipFile As String, ByVal FullFileName As String)
    End If
 
    With CreateObject("Shell.Application")
-      .NameSpace(ZipFile & "").CopyHere FullFileName & ""
+      .Namespace(ZipFile & "").CopyHere FullFileName & ""
    End With
 
 End Sub
@@ -774,8 +749,8 @@ End Sub
 Public Function ExtractFromZipFile(ByVal ZipFile As String, ByVal Destination As String) As String
 
    With CreateObject("Shell.Application")
-      .NameSpace(Destination & "").CopyHere .NameSpace(ZipFile & "").Items
-      ExtractFromZipFile = .NameSpace(ZipFile & "").Items.Item(0).Name
+      .Namespace(Destination & "").CopyHere .Namespace(ZipFile & "").Items
+      ExtractFromZipFile = .Namespace(ZipFile & "").Items.Item(0).Name
    End With
 
 End Function
@@ -862,7 +837,7 @@ Public Function OpenFile(ByVal FilePath As String, Optional ByVal ReadOnlyMode A
    End If
 
    If Len(VBA.Dir(FilePath2Open)) = 0 Then
-   
+
 #If USELOCALIZATION = 1 Then
       FileNotFoundErrorText = Replace(L10n.Text(FileNotFoundErrorTextTemplate), "{FilePath}", FilePath2Open)
 #Else
@@ -873,7 +848,7 @@ Public Function OpenFile(ByVal FilePath As String, Optional ByVal ReadOnlyMode A
    End If
 
    OpenFile = ShellExecute(FilePath2Open, "open")
-   
+
 End Function
 
 Public Function BuildFullFileName(ByVal FileName As String, ByVal DefaultFileFolderIfFileNameOnly As String) As String
@@ -921,7 +896,7 @@ Public Function OpenFilePath(ByVal FolderPath As String) As Boolean
    Dim FolderNotFoundErrorText As String
 
    If Len(VBA.Dir(FolderPath, vbDirectory)) = 0 Then
-   
+
 #If USELOCALIZATION = 1 Then
       FolderNotFoundErrorText = Replace(L10n.Text(FolderNotFoundErrorTextTemplate), "{FolderPath}", FolderPath)
 #Else
@@ -932,7 +907,7 @@ Public Function OpenFilePath(ByVal FolderPath As String) As Boolean
    End If
 
    OpenFilePath = ShellExecute(FolderPath, "open")
-   
+
 End Function
 
 Private Function ShellExecute(ByVal FilePath As String, _
@@ -951,7 +926,7 @@ Private Function ShellExecute(ByVal FilePath As String, _
       DeskWin = Application.hWndAccessApp
       Ret = API_ShellExecuteA(DeskWin, ApiOperation, FilePath, vbNullString, vbNullString, vbNormalFocus)
    End If
-   
+
    If Ret = SE_ERR_NOTFOUND Then
 #If USELOCALIZATION = 1 Then
       FileNotFoundErrorText = Replace(L10n.Text(FileNotFoundErrorTextTemplate), "{FilePath}", FilePath)
@@ -973,7 +948,7 @@ Private Function ShellExecute(ByVal FilePath As String, _
 '      Call ShellExecuteA(DeskWin, vbNullString, "RUNDLL32.EXE", "shell32.dll, OpenAs_RunDLL " & _
 '         FilePath, Directory, vbNormalFocus)
    End If
-   
+
    ShellExecute = True
 
 End Function
