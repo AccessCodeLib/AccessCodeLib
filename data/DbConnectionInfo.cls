@@ -390,7 +390,7 @@ Private Sub m_LoginForm_Logon(ByVal LoginName As String, ByVal Password As Strin
    End If
 
    If Len(m_DBUSER) > 0 Then
-      CurrentDb.Execute "UPDATE (select * from usys_DbmsConnection WHERE DBMS='" & m_DBMSNAME & "') SET dbmsUser = '" & m_DBUSER & "'" ' thanks to MSFT (https://support.office.com/en-us/article/access-error-query-is-corrupt-fad205a5-9fd4-49f1-be83-f21636caedec)
+      CurrentDb.Execute "UPDATE (select * from usys_DbmsConnection WHERE DBMS='" & Replace(m_DBMSNAME, "'", "''") & "') SET dbmsUser = '" & Replace(m_DBUSER, "'", "''") & "'" ' thanks to MSFT (https://support.office.com/en-us/article/access-error-query-is-corrupt-fad205a5-9fd4-49f1-be83-f21636caedec)
       SaveUserNameToConfigFile m_DBUSER
    End If
 
