@@ -4,7 +4,7 @@
 > Details (dependencies, used-by, references, tests, public members): `catalog.json`.
 > Task-oriented guides: `../recipes/`. Import with the ACLib Import Wizard (path = repository path below).
 
-Modules: 122 | Packages: 1
+Modules: 120 | Packages: 1
 
 Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (usable without `New`),
 `same object name as` = variant, cannot be imported together (see description for the use case).
@@ -184,11 +184,6 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 - `ribbon/ribbon_RibbonWatcher.bas` (module) - Global ribbon callback procedures for RibbonWatcher (onLoad, onAction, getLabel, ...) | uses: RibbonWatcher
 - `ribbon/RibbonControlInfo.cls` (class) - Data of a ribbon control used by RibbonWatcher
 - `ribbon/RibbonWatcher.cls` (class) - Shows the most recently used ribbon controls in a ribbon group or tab | uses: RibbonControlInfo, ribbon_RibbonWatcher
-
-## test/simplyvbunit
-
-- `test/simplyvbunit/_VBATestSuite.bas` (module) - Hilfsmodul für den Aufruf einer anwendungsweiten Instanz von VBATestSuite | uses: VBATestSuite
-- `test/simplyvbunit/VBATestSuite.cls` (class) - Anpassung (Kapselung) von SimplyVBUnit für VBA | uses: _VBATestSuite
 
 ## text
 

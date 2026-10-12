@@ -4,9 +4,9 @@
 
 | | Count |
 |---|---|
-| Modules in catalog | 122 |
+| Modules in catalog | 120 |
 | with `<description>` tag | 120 |
-| header summary only | 2 |
+| header summary only | 0 |
 | no description | 0 |
 | Header issues | 2 |
 
@@ -26,8 +26,3 @@ Cannot be imported together; the description names the use case of each file.
 - `StringTools`: `text/StringTools.bas`, `text/StringTools.cls`
 
 ## Modules without `<description>` tag
-
-### test/simplyvbunit
-
-- `test/simplyvbunit/_VBATestSuite.bas` - header: Hilfsmodul für den Aufruf einer anwendungsweiten Instanz von VBATestSuite
-- `test/simplyvbunit/VBATestSuite.cls` - header: Anpassung (Kapselung) von SimplyVBUnit für VBA

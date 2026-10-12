@@ -21,15 +21,12 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>_test/base/log/ApplicationHandler_TracingTest.cls</file>
 '  <use>base/log/ApplicationHandler_Tracing.cls</use>
-'  <use>test/simplyvbunit/VBATestSuite.cls</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
 Option Compare Database
 Option Explicit
 
-'Aktivierung für TestSuite.RunAll
-'<VBATestSuite><testclass>true</testclass></VBATestSuite>
 
 
 '---------------------------------------------------------------------------------------
