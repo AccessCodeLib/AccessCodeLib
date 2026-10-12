@@ -25,6 +25,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -77,6 +78,7 @@
         "api/graphviz/GraphvizDOTgraph.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -105,6 +107,7 @@
         "api/graphviz/GraphvizDOTnode.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -135,6 +138,7 @@
         "api/graphviz/GraphvizDOTgraph.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -166,6 +170,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -185,6 +190,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -212,6 +218,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [
         "_test/api/pdfcreator/LibPdfCreatorConverterTests.cls"
@@ -238,6 +245,7 @@
         "api/pdfcreator/LibPdfCreatorTools.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [
         "_test/api/pdfcreator/LibPdfCreatorEnumsTests.cls"
@@ -263,6 +271,7 @@
         "api/pdfcreator/LibPdfCreatorConverter.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -290,6 +299,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [
         "_test/api/pdfcreator/LibPdfCreatorFactoryTests.cls"
@@ -318,6 +328,7 @@
         "api/pdfcreator/LibPdfCreatorJob.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [
         "_test/api/pdfcreator/LibPdfCreatorInstanceTests.cls"
@@ -430,6 +441,7 @@
         "api/pdfcreator/LibPdfCreatorTools.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [
         "_test/api/pdfcreator/LibPdfCreatorJobTests.cls"
@@ -460,6 +472,7 @@
         "api/pdfcreator/LibPdfCreatorTools.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -849,7 +862,7 @@
         "api/pdfcreator/LibPdfCreatorOptions.cls",
         "api/pdfcreator/LibPdfCreatorJob.cls",
         "file/FileTools.bas",
-        "text/StringTools.bas"
+        "text/StringTools.cls"
       ],
       "usesTransitive": [
         "api/pdfcreator/LibPdfCreatorEnums.cls",
@@ -857,10 +870,11 @@
         "api/pdfcreator/LibPdfCreatorJob.cls",
         "api/pdfcreator/LibPdfCreatorOptions.cls",
         "file/FileTools.bas",
-        "text/StringTools.bas"
+        "text/StringTools.cls"
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [
         "_test/api/pdfcreator/LibPdfCreatorToolsTests.cls"
@@ -890,6 +904,7 @@
         "api/graphviz/GraphvizDOT.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -912,6 +927,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -931,6 +947,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -954,6 +971,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -978,6 +996,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1000,6 +1019,7 @@
         "api/graphviz/GraphvizDOT.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1021,6 +1041,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1043,6 +1064,7 @@
         "base/ApplicationHandler_AppFile.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1064,6 +1086,7 @@
         "api/winapi/WinApiTools.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1086,6 +1109,7 @@
         "form/sort/FormSortingExtension.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1112,6 +1136,7 @@
         "api/winapi/WinApiTools.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [
@@ -1142,6 +1167,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1177,6 +1203,7 @@
         "api/winapi/WinApiToolsFactory.bas"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1203,6 +1230,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1224,6 +1252,7 @@
         "api/winapi/WinApiShortcutMenu.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1255,6 +1284,7 @@
         "base/modApplication.bas"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1282,6 +1312,7 @@
         "_packages/Access-Add-In-Template.package"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1315,6 +1346,7 @@
         "usability/ApplicationHandler_DirTextbox.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "DAO",
@@ -1389,6 +1421,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "DAO",
@@ -1433,6 +1466,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1463,6 +1497,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1490,6 +1525,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1517,6 +1553,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1548,6 +1585,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1569,6 +1607,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1597,6 +1636,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1629,6 +1669,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [
         "_test/base/log/ApplicationHandler_TracingTest.cls"
@@ -1667,6 +1708,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1702,6 +1744,7 @@
         "base/login/ApplicationHandler_AppLogin_Win.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1733,6 +1776,7 @@
         "base/login/frmLogin.frm"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1760,6 +1804,7 @@
         "base/login/ApplicationHandler_AppLogin_Win.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1787,6 +1832,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1806,6 +1852,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "mscoree",
@@ -1846,6 +1893,7 @@
         "base/license/ApplicationHandler_LicenseVerifier.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -1867,6 +1915,7 @@
         "data/DbConnectionHandler.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "ADODB",
@@ -1926,6 +1975,7 @@
         "data/DbConnectionHandler.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "DAO",
@@ -1987,6 +2037,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "DAO",
@@ -2016,6 +2067,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "DAO",
@@ -2056,6 +2108,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [
         "_test/data/dao/TempDbHandlerTests.cls"
@@ -2106,6 +2159,7 @@
         "form/FormHandler.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "DAO",
@@ -2160,6 +2214,7 @@
         "data/DbConnectionManager.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "DAO",
@@ -2234,6 +2289,7 @@
         "data/modDbConnection.bas"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "DAO",
@@ -2269,6 +2325,7 @@
         "data/DbConnectionManager.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "ADODB",
@@ -2298,6 +2355,7 @@
         "data/DbConnectionInfo.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -2327,6 +2385,7 @@
         "form/filter/FilterControlManager.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [
         "_test/data/FilterStringBuilderTests.cls"
@@ -2371,6 +2430,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -2398,6 +2458,7 @@
         "data/DbConnectionHandler.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "DAO",
@@ -2462,6 +2523,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -2489,6 +2551,7 @@
       "replaces": [
         "data/SqlTools.bas"
       ],
+      "sameObjectName": [],
       "references": [],
       "tests": [
         "_test/data/SqlToolsTests.cls",
@@ -2542,6 +2605,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [
         "_test/data/SqlTools_DotNetLibTests.cls"
@@ -2565,6 +2629,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [
         "_test/datetime/DateTime2Tests.cls"
@@ -2634,6 +2699,7 @@
         "usability/ApplicationHandler_DirTextbox.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [
         "_test/file/FileToolsTests.cls"
@@ -2678,6 +2744,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "DAO",
@@ -2709,6 +2776,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -2731,6 +2799,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "ADODB",
@@ -2757,6 +2826,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "DAO",
@@ -2797,6 +2867,9 @@
         "form/filter/FilterControlEventBridge.cls"
       ],
       "replaces": [],
+      "sameObjectName": [
+        "form/filter/FilterControl_DotNetLib.cls"
+      ],
       "references": [],
       "tests": [],
       "examples": [],
@@ -2839,6 +2912,9 @@
         "form/filter/FilterControlEventBridge_DotNetLib.cls"
       ],
       "replaces": [],
+      "sameObjectName": [
+        "form/filter/FilterControl.cls"
+      ],
       "references": [],
       "tests": [],
       "examples": [],
@@ -2888,6 +2964,9 @@
         "form/filter/FilterControlTagConverter.cls"
       ],
       "replaces": [],
+      "sameObjectName": [
+        "form/filter/FilterControlCollection_DotNetLib.cls"
+      ],
       "references": [],
       "tests": [
         "_test/form/filter/FilterControlCollectionTests.cls"
@@ -2932,6 +3011,9 @@
         "form/filter/FilterControlManager_DotNetLib.cls"
       ],
       "replaces": [],
+      "sameObjectName": [
+        "form/filter/FilterControlCollection.cls"
+      ],
       "references": [],
       "tests": [],
       "examples": [],
@@ -2969,6 +3051,9 @@
         "form/filter/FilterControlCollection.cls"
       ],
       "replaces": [],
+      "sameObjectName": [
+        "form/filter/FilterControlEventBridge_DotNetLib.cls"
+      ],
       "references": [],
       "tests": [],
       "examples": [],
@@ -2996,6 +3081,9 @@
         "form/filter/FilterControlCollection_DotNetLib.cls"
       ],
       "replaces": [],
+      "sameObjectName": [
+        "form/filter/FilterControlEventBridge.cls"
+      ],
       "references": [],
       "tests": [],
       "examples": [],
@@ -3025,6 +3113,9 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [
+        "form/filter/FilterControlManager_DotNetLib.cls"
+      ],
       "references": [],
       "tests": [],
       "examples": [],
@@ -3066,6 +3157,9 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [
+        "form/filter/FilterControlManager.cls"
+      ],
       "references": [],
       "tests": [],
       "examples": [],
@@ -3101,6 +3195,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -3130,6 +3225,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -3217,6 +3313,7 @@
         "form/ListFormHandler.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -3269,6 +3366,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -3298,6 +3396,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [
@@ -3330,6 +3429,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [
@@ -3365,6 +3465,7 @@
         "form/InfoMessageBox.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -3391,6 +3492,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -3427,6 +3529,7 @@
         "form/FilterFormHandler.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -3482,6 +3585,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "DAO",
@@ -3520,6 +3624,7 @@
         "form/sort/FormSortingExtension.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -3557,6 +3662,7 @@
         "form/sort/FormSortingExtension.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -3585,6 +3691,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -3615,6 +3722,7 @@
         "localization/L10nTools.bas"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -3652,6 +3760,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -3671,19 +3780,20 @@
       "predeclaredId": true,
       "uses": [
         "math/MathTools.bas",
-        "text/StringTools.bas",
+        "text/StringTools.cls",
         "text/String2.cls"
       ],
       "usesTransitive": [
         "math/MathTools.bas",
         "text/String2.cls",
-        "text/StringTools.bas"
+        "text/StringTools.cls"
       ],
       "usedBy": [
         "math/MathConstants.bas",
         "math/MathTools.bas"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [
         "_test/math/Decimal2Tests.cls"
@@ -3713,10 +3823,11 @@
         "math/Decimal2.cls",
         "math/MathTools.bas",
         "text/String2.cls",
-        "text/StringTools.bas"
+        "text/StringTools.cls"
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -3744,12 +3855,13 @@
       "usesTransitive": [
         "math/Decimal2.cls",
         "text/String2.cls",
-        "text/StringTools.bas"
+        "text/StringTools.cls"
       ],
       "usedBy": [
         "math/Decimal2.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [
         "_test/math/MathToolsTests.cls"
@@ -3773,6 +3885,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -3798,6 +3911,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -3830,6 +3944,7 @@
         "ribbon/RibbonWatcher.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "Office",
@@ -3872,6 +3987,7 @@
         "ribbon/RibbonWatcher.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "Office",
@@ -3904,6 +4020,7 @@
         "ribbon/ribbon_RibbonWatcher.bas"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "Office",
@@ -3985,6 +4102,7 @@
         "test/simplyvbunit/VBATestSuite.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -4010,6 +4128,7 @@
         "test/simplyvbunit/_VBATestSuite.bas"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "SimplyVBUnit",
@@ -4043,6 +4162,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [
         "_test/text/Base64Tests.cls"
@@ -4064,15 +4184,16 @@
       "descriptionSource": "none",
       "predeclaredId": true,
       "uses": [
-        "text/StringTools.bas"
+        "text/StringTools.cls"
       ],
       "usesTransitive": [
-        "text/StringTools.bas"
+        "text/StringTools.cls"
       ],
       "usedBy": [
         "math/Decimal2.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [
         "_test/text/String2Tests.cls"
@@ -4113,6 +4234,7 @@
         "data/FilterStringBuilder.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [
         "_test/text/StringCollectionTests.cls"
@@ -4137,17 +4259,16 @@
       "path": "text/StringTools.bas",
       "name": "StringTools",
       "kind": "module",
-      "description": "Text functions",
-      "descriptionSource": "header",
+      "description": "Text functions as standard module; use only to override VBA functions such as Format project-wide (calls without prefix), otherwise prefer text/StringTools.cls",
+      "descriptionSource": "tag",
       "predeclaredId": false,
       "uses": [],
       "usesTransitive": [],
-      "usedBy": [
-        "api/pdfcreator/LibPdfCreatorTools.cls",
-        "math/Decimal2.cls",
-        "text/String2.cls"
-      ],
+      "usedBy": [],
       "replaces": [],
+      "sameObjectName": [
+        "text/StringTools.cls"
+      ],
       "references": [],
       "tests": [
         "_test/text/StringToolsTests.cls"
@@ -4177,13 +4298,20 @@
       "path": "text/StringTools.cls",
       "name": "StringTools",
       "kind": "class",
-      "description": "Text functions",
-      "descriptionSource": "header",
+      "description": "Text functions (IsNullOrEmpty, Format, PadLeft/PadRight, Contains, StartsWith/EndsWith, Trim, SubString, Concat, Replicate) as predeclared class module (StringTools.Xxx); preferred variant, no name conflicts with VBA functions",
+      "descriptionSource": "tag",
       "predeclaredId": true,
       "uses": [],
       "usesTransitive": [],
-      "usedBy": [],
+      "usedBy": [
+        "api/pdfcreator/LibPdfCreatorTools.cls",
+        "math/Decimal2.cls",
+        "text/String2.cls"
+      ],
       "replaces": [],
+      "sameObjectName": [
+        "text/StringTools.bas"
+      ],
       "references": [],
       "tests": [
         "_test/text/StringToolsTests.cls"
@@ -4219,6 +4347,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [
         "_test/text/UnicodeToolsTests.cls"
@@ -4247,6 +4376,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -4271,6 +4401,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -4294,6 +4425,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "DAO",
@@ -4332,6 +4464,7 @@
         "usability/OptionManagerSetup.bas"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "DAO",
@@ -4374,6 +4507,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [
         {
           "name": "VBIDE",
@@ -4408,6 +4542,7 @@
         "user/login/LoginFormBridge.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -4432,6 +4567,7 @@
       ],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -4454,6 +4590,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -4485,6 +4622,7 @@
         "user/UserRoles.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [
         "_test/user/UserHandlerTests.cls"
@@ -4519,6 +4657,7 @@
         "user/UserHandler.cls"
       ],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],
@@ -4539,6 +4678,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [
         "_test/utils/AccessProgressBarTests.cls"
@@ -4572,6 +4712,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [
         "_test/utils/AccessStatusBarTests.cls"
@@ -4595,6 +4736,7 @@
       "usesTransitive": [],
       "usedBy": [],
       "replaces": [],
+      "sameObjectName": [],
       "references": [],
       "tests": [],
       "examples": [],

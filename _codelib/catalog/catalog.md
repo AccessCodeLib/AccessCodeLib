@@ -6,7 +6,8 @@
 
 Modules: 122 | Packages: 1
 
-Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (usable without `New`).
+Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (usable without `New`),
+`same object name as` = variant, cannot be imported together (see description for the use case).
 
 ## api/graphviz
 
@@ -145,14 +146,14 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 
 ## form/filter
 
-- `form/filter/FilterControl.cls` (class) - Helper class for FilterControlManager: binds a form control (optionally a second one for ranges) to a data field, type and operator | uses: SqlTools, FilterControlEventBridge
-- `form/filter/FilterControl_DotNetLib.cls` (class) - FilterControl variant using the .NET SqlTools (ACLib DotNetLib); alternative to FilterControl.cls | uses: FilterControlEventBridge
-- `form/filter/FilterControlCollection.cls` (class) - Collection of FilterControls that combines their values into one criteria string (groups, multi-control, sub-selects) | uses: FilterControl, FilterControlEventBridge, FilterStringBuilder, SqlTools
-- `form/filter/FilterControlCollection_DotNetLib.cls` (class) - FilterControlCollection variant using the .NET SqlTools (ACLib DotNetLib) | uses: FilterControl, FilterControlEventBridge
-- `form/filter/FilterControlEventBridge.cls` (class) - Internal helper that forwards value-change events from the FilterControls to the collection | uses: FilterControl
-- `form/filter/FilterControlEventBridge_DotNetLib.cls` (class) - Internal event helper for the .NET (ACLib DotNetLib) filter controls | uses: FilterControl
-- `form/filter/FilterControlManager.cls` (class) - Builds a form filter from filter controls (e.g. in the form header) and applies or removes it, optionally on every change | uses: FilterControlCollection, FilterStringBuilder
-- `form/filter/FilterControlManager_DotNetLib.cls` (class) - FilterControlManager variant using the .NET SqlTools (ACLib DotNetLib) | uses: DotNetLibsSetup, FilterControlCollection
+- `form/filter/FilterControl.cls` (class) - Helper class for FilterControlManager: binds a form control (optionally a second one for ranges) to a data field, type and operator | uses: SqlTools, FilterControlEventBridge | same object name as: `form/filter/FilterControl_DotNetLib.cls`
+- `form/filter/FilterControl_DotNetLib.cls` (class) - FilterControl variant using the .NET SqlTools (ACLib DotNetLib); alternative to FilterControl.cls | uses: FilterControlEventBridge | same object name as: `form/filter/FilterControl.cls`
+- `form/filter/FilterControlCollection.cls` (class) - Collection of FilterControls that combines their values into one criteria string (groups, multi-control, sub-selects) | uses: FilterControl, FilterControlEventBridge, FilterStringBuilder, SqlTools | same object name as: `form/filter/FilterControlCollection_DotNetLib.cls`
+- `form/filter/FilterControlCollection_DotNetLib.cls` (class) - FilterControlCollection variant using the .NET SqlTools (ACLib DotNetLib) | uses: FilterControl, FilterControlEventBridge | same object name as: `form/filter/FilterControlCollection.cls`
+- `form/filter/FilterControlEventBridge.cls` (class) - Internal helper that forwards value-change events from the FilterControls to the collection | uses: FilterControl | same object name as: `form/filter/FilterControlEventBridge_DotNetLib.cls`
+- `form/filter/FilterControlEventBridge_DotNetLib.cls` (class) - Internal event helper for the .NET (ACLib DotNetLib) filter controls | uses: FilterControl | same object name as: `form/filter/FilterControlEventBridge.cls`
+- `form/filter/FilterControlManager.cls` (class) - Builds a form filter from filter controls (e.g. in the form header) and applies or removes it, optionally on every change | uses: FilterControlCollection, FilterStringBuilder | same object name as: `form/filter/FilterControlManager_DotNetLib.cls`
+- `form/filter/FilterControlManager_DotNetLib.cls` (class) - FilterControlManager variant using the .NET SqlTools (ACLib DotNetLib) | uses: DotNetLibsSetup, FilterControlCollection | same object name as: `form/filter/FilterControlManager.cls`
 - `form/filter/FilterControlTagConverter.cls` (class) - Creates FilterControls for all form controls named fctl*, configured by their Tag (field|type|operator) or the data source | uses: FilterControlCollection, SqlTools
 
 ## form/sort
@@ -194,8 +195,8 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 - `text/Base64.cls` (class) [P]
 - `text/String2.cls` (class) [P] | uses: StringTools
 - `text/StringCollection.cls` (class) - Collection for strings
-- `text/StringTools.bas` (module) - Text functions
-- `text/StringTools.cls` (class) [P] - Text functions
+- `text/StringTools.bas` (module) - Text functions as standard module; use only to override VBA functions such as Format project-wide (calls without prefix), otherwise prefer text/StringTools.cls | same object name as: `text/StringTools.cls`
+- `text/StringTools.cls` (class) [P] - Text functions (IsNullOrEmpty, Format, PadLeft/PadRight, Contains, StartsWith/EndsWith, Trim, SubString, Concat, Replicate) as predeclared class module (StringTools.Xxx); preferred variant, no name conflicts with VBA functions | same object name as: `text/StringTools.bas`
 - `text/UnicodeTools.cls` (class) [P]
 
 ## usability

@@ -19,7 +19,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>math/Decimal2.cls</file>
 '  <use>math/MathTools.bas</use>
-'  <use>text/StringTools.bas</use>
+'  <use>text/StringTools.cls</use>
 '  <use>text/String2.cls</use>
 '  <test>_test/math/Decimal2Tests.cls</test>
 '  <license>_codelib/license.bas</license>

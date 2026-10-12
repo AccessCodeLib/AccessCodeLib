@@ -22,7 +22,7 @@ Attribute VB_Exposed = False
 '  <use>api/pdfcreator/LibPdfCreatorOptions.cls</use>
 '  <use>api/pdfcreator/LibPdfCreatorJob.cls</use>
 '  <use>file/FileTools.bas</use>
-'  <use>text/StringTools.bas</use>
+'  <use>text/StringTools.cls</use>
 '  <test>_test/api/pdfcreator/LibPdfCreatorToolsTests.cls</test>
 '  <license>_codelib/license.bas</license>
 '  <example>_examples/api/pdfcreator/PdfCreatorExample.frm</example>

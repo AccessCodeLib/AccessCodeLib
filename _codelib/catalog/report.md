@@ -5,22 +5,25 @@
 | | Count |
 |---|---|
 | Modules in catalog | 122 |
-| with `<description>` tag | 25 |
-| header summary only | 73 |
+| with `<description>` tag | 27 |
+| header summary only | 71 |
 | no description | 24 |
-| Header issues | 9 |
+| Header issues | 2 |
 
 ## Header issues
 
-- `_dotnetlib/integration/DotNetLibs.cls`: <file> tag missing
-- `_dotnetlib/integration/DotNetLibs.cls`: malformed tag line: `'  <file>_dotnetlib/integration/DotNetLibs.cls<file>`
 - `_dotnetlib/samples/_config_Application.bas`: malformed tag line: `'  <replace>base/_config_Application.bas</replace> 'dieses Modul mit <file> ersetzen ... es darf nur ein Konfig-Datei geben`
 - `_examples/data/FilterStringBuilderNet_Examples.bas`: example not linked by an <example> tag of a library module
-- object name `FilterControl` used by several files (alternatives, cannot be imported together): `form/filter/FilterControl.cls`, `form/filter/FilterControl_DotNetLib.cls`
-- object name `FilterControlCollection` used by several files (alternatives, cannot be imported together): `form/filter/FilterControlCollection.cls`, `form/filter/FilterControlCollection_DotNetLib.cls`
-- object name `FilterControlEventBridge` used by several files (alternatives, cannot be imported together): `form/filter/FilterControlEventBridge.cls`, `form/filter/FilterControlEventBridge_DotNetLib.cls`
-- object name `FilterControlManager` used by several files (alternatives, cannot be imported together): `form/filter/FilterControlManager.cls`, `form/filter/FilterControlManager_DotNetLib.cls`
-- object name `StringTools` used by several files (alternatives, cannot be imported together): `text/StringTools.bas`, `text/StringTools.cls`
+
+## Variants (same object name)
+
+Cannot be imported together; the description names the use case of each file.
+
+- `FilterControl`: `form/filter/FilterControl.cls`, `form/filter/FilterControl_DotNetLib.cls`
+- `FilterControlCollection`: `form/filter/FilterControlCollection.cls`, `form/filter/FilterControlCollection_DotNetLib.cls`
+- `FilterControlEventBridge`: `form/filter/FilterControlEventBridge.cls`, `form/filter/FilterControlEventBridge_DotNetLib.cls`
+- `FilterControlManager`: `form/filter/FilterControlManager.cls`, `form/filter/FilterControlManager_DotNetLib.cls`
+- `StringTools`: `text/StringTools.bas`, `text/StringTools.cls`
 
 ## Modules without `<description>` tag
 
@@ -170,8 +173,6 @@
 - `text/Base64.cls` - (no header summary)
 - `text/String2.cls` - (no header summary)
 - `text/StringCollection.cls` - header: Collection for strings
-- `text/StringTools.bas` - header: Text functions
-- `text/StringTools.cls` - header: Text functions
 - `text/UnicodeTools.cls` - (no header summary)
 
 ### usability

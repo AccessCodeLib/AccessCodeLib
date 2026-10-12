@@ -6,7 +6,7 @@
     Scans all code files (*.cls, *.bas, *.frm, *.rpt, *.package) and writes:
       catalog.md   - one line per module, grouped by folder (overview for humans and AI agents)
       catalog.json - details: dependencies (direct/transitive), used-by, references, tests,
-                     examples, executes, public members
+                     same object name, examples, executes, public members
       report.md    - modules without <description> tag and header issues
 
     Files in _test, _examples, _codelib, _dotnetlib and _tools are not listed in the catalog,
@@ -473,10 +473,16 @@ foreach ($Module in $CheckedModules) {
     Test-Reference $Module 'example' $Module.examples
 }
 
+# variants: several files with the same object name (cannot be imported together, the description names the use case)
+$SameObjectName = @{}
+$Variants = New-Object System.Collections.Generic.List[string]
 $CodeModulesByName = $CatalogModules | Where-Object { $_.kind -ne 'package' } | Group-Object { $_.name.ToLowerInvariant() } | Where-Object { $_.Count -gt 1 }
 foreach ($Group in $CodeModulesByName) {
+    foreach ($Module in $Group.Group) {
+        $SameObjectName[(ConvertTo-PathKey $Module.path)] = @($Group.Group | Where-Object { $_ -ne $Module } | ForEach-Object { $_.path } | Sort-Object)
+    }
     $Paths = ($Group.Group | ForEach-Object { "``$($_.path)``" }) -join ', '
-    $Issues.Add("object name ``$($Group.Group[0].name)`` used by several files (alternatives, cannot be imported together): $Paths")
+    $Variants.Add("``$($Group.Group[0].name)``: $Paths")
 }
 
 $LinkedExamples = @{}
@@ -536,6 +542,7 @@ $JsonModules = foreach ($Module in $CodeModules) {
         usesTransitive = (Get-TransitiveUses $Module)
         usedBy        = @(if ($UsedBy.ContainsKey($Key)) { $UsedBy[$Key] | Sort-Object })
         replaces      = $Module.replaces
+        sameObjectName = @(if ($SameObjectName.ContainsKey($Key)) { $SameObjectName[$Key] })
         references    = $Module.references
         tests         = $Module.tests
         examples      = $Module.examples
@@ -572,7 +579,8 @@ $Md.Add('> Task-oriented guides: `../recipes/`. Import with the ACLib Import Wiz
 $Md.Add('')
 $Md.Add("Modules: $($CodeModules.Count) | Packages: $($Packages.Count)")
 $Md.Add('')
-$Md.Add('Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (usable without `New`).')
+$Md.Add('Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (usable without `New`),')
+$Md.Add('`same object name as` = variant, cannot be imported together (see description for the use case).')
 foreach ($Group in ($CodeModules | Group-Object { Get-FolderTitle $_.path } | Sort-Object Name)) {
     $Md.Add('')
     $Md.Add("## $($Group.Name)")
@@ -587,6 +595,11 @@ foreach ($Group in ($CodeModules | Group-Object { Get-FolderTitle $_.path } | So
                 if ($Target) { $Target.name } else { [System.IO.Path]::GetFileNameWithoutExtension($Use) }
             }
             $Line += " | uses: $($UseNames -join ', ')"
+        }
+        $SameNameKey = ConvertTo-PathKey $Module.path
+        if ($SameObjectName.ContainsKey($SameNameKey)) {
+            $SameNamePaths = foreach ($SameNamePath in $SameObjectName[$SameNameKey]) { '`' + $SameNamePath + '`' }
+            $Line += " | same object name as: $($SameNamePaths -join ', ')"
         }
         $Md.Add($Line)
     }
@@ -625,6 +638,13 @@ $Report.Add('## Header issues')
 $Report.Add('')
 if ($Issues.Count -eq 0) { $Report.Add('None.') }
 foreach ($Issue in ($Issues | Sort-Object)) { $Report.Add("- $Issue") }
+$Report.Add('')
+$Report.Add('## Variants (same object name)')
+$Report.Add('')
+$Report.Add('Cannot be imported together; the description names the use case of each file.')
+$Report.Add('')
+if ($Variants.Count -eq 0) { $Report.Add('None.') }
+foreach ($Variant in ($Variants | Sort-Object)) { $Report.Add("- $Variant") }
 $Report.Add('')
 $Report.Add('## Modules without `<description>` tag')
 foreach ($Group in (@($HeaderOnly + $NoDescription) | Sort-Object { $_.path } | Group-Object { Get-FolderTitle $_.path } | Sort-Object Name)) {

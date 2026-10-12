@@ -27,6 +27,7 @@ Attribute VB_Exposed = False
 '  <file>text/StringTools.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <test>_test/text/StringToolsTests.cls</test>
+'  <description>Text functions (IsNullOrEmpty, Format, PadLeft/PadRight, Contains, StartsWith/EndsWith, Trim, SubString, Concat, Replicate) as predeclared class module (StringTools.Xxx); preferred variant, no name conflicts with VBA functions</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
