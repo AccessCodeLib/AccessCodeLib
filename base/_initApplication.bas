@@ -15,6 +15,7 @@ Attribute VB_Name = "_initApplication"
 '  <file>base/_initApplication.bas</file>
 '  <license>_codelib/license.bas</license>
 '  <use>base/modApplication.bas</use>
+'  <description>Start procedure of the ApplicationHandler framework (StartApplication, e.g. called from AutoExec) and restore of default settings</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

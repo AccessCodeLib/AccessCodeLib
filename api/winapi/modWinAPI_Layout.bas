@@ -15,6 +15,7 @@ Attribute VB_Description = "WinAPI-Funktionen zur Layoutgestaltung"
 '<codelib>
 '  <file>api/winapi/modWinAPI_Layout.bas</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Standard module version: set window back color, convert twips/pixels, get scrollbar width; prefer WinApiLayoutTools.cls</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

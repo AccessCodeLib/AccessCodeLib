@@ -29,6 +29,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>form/FormHandler.cls</use>
 '  <use>form/ListFormHandler.cls</use>
+'  <description>Form controller for a search form with unbound filter controls and a continuous (list) form that shows the filtered data; based on FormHandler/ListFormHandler</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

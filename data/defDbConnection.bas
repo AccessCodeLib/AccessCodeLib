@@ -11,6 +11,7 @@ Attribute VB_Name = "defDbConnection"
 '<codelib>
 '  <file>data/defDbConnection.bas</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Shared types and enums for the DbConnection classes</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

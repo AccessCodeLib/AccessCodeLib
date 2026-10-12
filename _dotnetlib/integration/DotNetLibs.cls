@@ -17,9 +17,9 @@ Attribute VB_Exposed = False
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>_dotnetlib/integration/DotNetLibs.cls<file>
+'  <file>_dotnetlib/integration/DotNetLibs.cls</file>
 '  <use>_dotnetlib/integration/DotNetLibsSetup.bas</use>
-'  <use>COM/NetComDomain.cls</use>
+'  <use>com/NetComDomain.cls</use>
 '  <license>_codelib/license.bas</license>
 '</codelib>
 '---------------------------------------------------------------------------------------

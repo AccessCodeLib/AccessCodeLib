@@ -22,8 +22,10 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>api/graphviz/GraphvizDOT.cls</file>
 '  <use>api/graphviz/GraphvizDOTgraph.cls</use>
-'  <use>file/modFiles.bas</use>
+'  <use>file/FileTools.bas</use>
 '  <use>api/winapi/modWinAPI.bas</use>
+'  <use>api/winapi/modWinAPI_Registry.bas</use>
+'  <description>Creates graphs with Graphviz: builds the DOT definition (nodes, connections, subgraphs, layout) and renders it to an image file or image map (Graphviz exe or OCX); main entry of the Graphviz package</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

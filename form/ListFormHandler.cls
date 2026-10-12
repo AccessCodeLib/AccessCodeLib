@@ -26,6 +26,7 @@ Attribute VB_Exposed = False
 '  <file>form/ListFormHandler.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>form/FormHandler.cls</use>
+'  <description>Form controller for list/continuous forms based on FormHandler: list mode, default sort order, selection event</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

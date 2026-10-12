@@ -13,12 +13,12 @@ Option Explicit
 'AccUnit:TestClass
 
 ' AccUnit infrastructure for advanced AccUnit features. Do not remove these lines.
-Implements SimplyVBUnit.ITestFixture
-Implements AccUnit_Integration.ITestManagerBridge
-Private TestManager As AccUnit_Integration.TestManager
-Private Sub ITestManagerBridge_InitTestManager(ByVal NewTestManager As AccUnit_Integration.ITestManagerComInterface): Set TestManager = NewTestManager: End Sub
-Private Function ITestManagerBridge_GetTestManager() As AccUnit_Integration.ITestManagerComInterface: Set ITestManagerBridge_GetTestManager = TestManager: End Function
-Private Sub ITestFixture_AddTestCases(ByVal Tests As SimplyVBUnit.TestCaseCollector): TestManager.AddTestCases Tests: End Sub
+'Implements SimplyVBUnit.ITestFixture
+'Implements AccUnit_Integration.ITestManagerBridge
+'Private TestManager As AccUnit_Integration.TestManager
+'Private Sub ITestManagerBridge_InitTestManager(ByVal NewTestManager As AccUnit_Integration.ITestManagerComInterface): Set TestManager = NewTestManager: End Sub
+'Private Function ITestManagerBridge_GetTestManager() As AccUnit_Integration.ITestManagerComInterface: Set ITestManagerBridge_GetTestManager = TestManager: End Function
+'Private Sub ITestFixture_AddTestCases(ByVal Tests As SimplyVBUnit.TestCaseCollector): TestManager.AddTestCases Tests: End Sub
 
 '--------------------------------------------------------------------
 ' Tests
@@ -168,14 +168,20 @@ End Sub
 
 'AccUnit:Row("", 0)
 'AccUnit:Row("1234567890", 10)
-Public Sub Lenght_String_HasLenght(ByVal checkValue As String, Expected As Integer)
+Public Sub Length_String_HasLength(ByVal checkValue As String, Expected As Integer)
     
    With New String2
-        Assert.AreEqual Expected, .NewValue(checkValue).Lenght
+        Assert.AreEqual Expected, .NewValue(checkValue).Length
    End With
    
-   Assert.AreEqual Expected, String2.NewValue(checkValue).Lenght
+   Assert.AreEqual Expected, String2.NewValue(checkValue).Length
    
+End Sub
+
+'AccUnit:Row("", 0)
+'AccUnit:Row("1234567890", 10)
+Public Sub Lenght_String_ForwardsToLength(ByVal checkValue As String, Expected As Integer)
+   Assert.AreEqual Expected, String2.NewValue(checkValue).Lenght
 End Sub
 
 'AccUnit:Row("", "", "")

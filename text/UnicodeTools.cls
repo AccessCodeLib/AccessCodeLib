@@ -18,8 +18,9 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>text/UnicodeTools.cls</file>
-'  <test>_test\text\UnicodeToolsTests.cls</test>
+'  <test>_test/text/UnicodeToolsTests.cls</test>
 '  <license>_codelib/license.bas</license>
+'  <description>Experimental: checks whether a string contains Unicode text (WinAPI IsTextUnicode)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 
@@ -173,7 +174,7 @@ End Enum
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Private Declare Function IsTextUnicode Lib "advapi32" (ByRef lpv As Any, ByVal iSize As Long, ByRef lpiResult As Long) As Boolean
+Private Declare PtrSafe Function IsTextUnicode Lib "advapi32" (ByRef lpv As Any, ByVal iSize As Long, ByRef lpiResult As Long) As Boolean
 
 '---------------------------------------------------------------------------------------
 ' Function: IsUnicode

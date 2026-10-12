@@ -16,6 +16,7 @@ Attribute VB_Name = "modDirectCOM"
 '<codelib>
 '  <file>com/modDirectCOM.bas</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Creates an instance of a class from an unregistered (native) COM dll; 32-bit Office only</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -28,15 +29,15 @@ Option Explicit
 '/** \addtogroup COM
 '@{ **/
 
-Private Declare Function CallWindowProc Lib "user32" Alias "CallWindowProcA" (ByVal adr As Long, ByVal p1 As Long, ByVal p2 As Long, ByVal p3 As Long, ByVal p4 As Long) As Long
-Private Declare Function LoadLibrary Lib "kernel32" Alias "LoadLibraryA" (ByVal szLib As String) As Long
-Private Declare Function GetProcAddress Lib "kernel32" (ByVal hModule As Long, ByVal szFnc As String) As Long
-Private Declare Function GetModuleHandle Lib "kernel32" Alias "GetModuleHandleA" (ByVal szModule As String) As Long
-Private Declare Function LoadTypeLib Lib "oleaut32" (ByVal szFile As Long, pptlib As Any) As Long
-Private Declare Function StringFromGUID2 Lib "ole32" (tGUID As Any, ByVal lpszString As String, ByVal lMax As Long) As Long
-Private Declare Function CLSIDFromString Lib "ole32" (ByVal lpszProgID As Long, pCLSID As Any) As Long
-Private Declare Function ProgIDFromCLSID Lib "ole32" (pCLSID As Any, lpszProgID As Long) As Long
-Private Declare Sub CpyMem Lib "kernel32" Alias "RtlMoveMemory" (pDst As Any, pSrc As Any, ByVal dlen As Long)
+Private Declare PtrSafe Function CallWindowProc Lib "user32" Alias "CallWindowProcA" (ByVal adr As Long, ByVal p1 As Long, ByVal p2 As Long, ByVal p3 As Long, ByVal p4 As Long) As Long
+Private Declare PtrSafe Function LoadLibrary Lib "kernel32" Alias "LoadLibraryA" (ByVal szLib As String) As Long
+Private Declare PtrSafe Function GetProcAddress Lib "kernel32" (ByVal hModule As Long, ByVal szFnc As String) As Long
+Private Declare PtrSafe Function GetModuleHandle Lib "kernel32" Alias "GetModuleHandleA" (ByVal szModule As String) As Long
+Private Declare PtrSafe Function LoadTypeLib Lib "oleaut32" (ByVal szFile As Long, pptlib As Any) As Long
+Private Declare PtrSafe Function StringFromGUID2 Lib "ole32" (tGUID As Any, ByVal lpszString As String, ByVal lMax As Long) As Long
+Private Declare PtrSafe Function CLSIDFromString Lib "ole32" (ByVal lpszProgID As Long, pCLSID As Any) As Long
+Private Declare PtrSafe Function ProgIDFromCLSID Lib "ole32" (pCLSID As Any, lpszProgID As Long) As Long
+Private Declare PtrSafe Sub CpyMem Lib "kernel32" Alias "RtlMoveMemory" (pDst As Any, pSrc As Any, ByVal dlen As Long)
 
 Private Type IUnknown2
     QueryInterface As Long
@@ -159,6 +160,11 @@ End Type
 '**/
 '---------------------------------------------------------------------------------------
 Public Function getInstance(ByVal LibraryString As String, ByVal ProgIdString As String) As stdole.IUnknown
+
+#If Win64 Then
+    Err.Raise vbObjectError, "modDirectCOM.getInstance", "modDirectCOM supports 32-bit Office only (COM vtable calls via CallWindowProc)."
+#End If
+
     Dim newobj As stdole.IUnknown
     Dim TFactory As IClassFactory
 

@@ -17,6 +17,7 @@ Attribute VB_Description = "Standard-Prozeduren für die Arbeit mit ApplicationHa
 '  <license>_codelib/license.bas</license>
 '  <use>base/ApplicationHandler.cls</use>
 '  <use>base/_config_Application.bas</use>
+'  <description>Standard procedures for the ApplicationHandler framework: CurrentApplication instance, application name, trace and log entries, dispose on shutdown</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

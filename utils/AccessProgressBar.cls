@@ -23,6 +23,7 @@ Attribute VB_Exposed = False
 '  <file>utils/AccessProgressBar.cls</file>
 '  <test>_test/utils/AccessProgressBarTests.cls</test>
 '  <license>_codelib/license.bas</license>
+'  <description>Uses the built-in Access progress bar in the status bar (SysCmd meter): init, steps, text, clear</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

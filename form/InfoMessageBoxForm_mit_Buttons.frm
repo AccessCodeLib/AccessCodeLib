@@ -277,6 +277,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>form/InfoMessageBoxForm_mit_Buttons.frm</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Alternative helper form for InfoMessageBox with buttons; replaces InfoMessageBoxForm</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

@@ -161,7 +161,7 @@ End Sub
 
 'AccUnit:Row("", 0)
 'AccUnit:Row("1234567890", 10)
-Public Sub Lenght_String_HasLenght(ByVal CheckValue As String, Expected As Integer)
+Public Sub Length_String_HasLength(ByVal CheckValue As String, Expected As Integer)
     Assert.That StringTools.Length(CheckValue), Iz.EqualTo(Expected)
 End Sub
 

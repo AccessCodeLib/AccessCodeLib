@@ -23,6 +23,8 @@ Attribute VB_Exposed = False
 '  <file>text/StringCollection.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <test>_test/text/StringCollectionTests.cls</test>
+'  <example>_examples/text/StringCollection_Examples.bas</example>
+'  <description>Collection of strings: add items from arrays or collections (optional item format), join them to a delimited string (ToString) or convert to a string array</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

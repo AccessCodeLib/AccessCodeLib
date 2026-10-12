@@ -47,6 +47,7 @@ Attribute VB_Description = "Erweiterung für ApplicationHandler-Klasse: Verzeichn
 '  <license>_codelib/license.bas</license>
 '  <use>base/ApplicationHandler.cls</use>
 '  <use>file/FileTools.bas</use>
+'  <description>ApplicationHandler extension: directory path completion in a text box while typing (Tab/key navigation through matching folders)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

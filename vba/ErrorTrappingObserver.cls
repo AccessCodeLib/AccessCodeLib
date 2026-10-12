@@ -21,6 +21,7 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>vba/ErrorTrappingObserver.cls</file>
+'  <description>Temporarily changes the VBA error trapping option and restores the previous value on terminate</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 Option Compare Database

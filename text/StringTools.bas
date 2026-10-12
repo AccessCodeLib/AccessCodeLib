@@ -20,6 +20,7 @@ Attribute VB_Description = "String-Hilfsfunktionen"
 '  <file>text/StringTools.bas</file>
 '  <license>_codelib/license.bas</license>
 '  <test>_test/text/StringToolsTests.cls</test>
+'  <description>Text functions as standard module; use only to override VBA functions such as Format project-wide (calls without prefix), otherwise prefer text/StringTools.cls</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

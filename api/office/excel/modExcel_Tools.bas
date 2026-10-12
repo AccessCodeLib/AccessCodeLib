@@ -15,6 +15,7 @@ Attribute VB_Name = "modExcel_Tools"
 '  <file>api/office/excel/modExcel_Tools.bas</file>
 '  <license>_codelib/license.bas</license>
 '  <use>base/modErrorHandler.bas</use>
+'  <description>Exports a DAO or ADODB recordset to a new Excel workbook via automation (late binding, no Excel reference required)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

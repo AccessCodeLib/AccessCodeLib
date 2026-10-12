@@ -22,6 +22,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>api/graphviz/GraphvizDOTnode.cls</file>
 '  <use>api/graphviz/GraphvizDOTgraph.cls</use>
+'  <description>Node of a Graphviz DOT graph (label, color, shape, optional subgraph)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 Option Compare Text

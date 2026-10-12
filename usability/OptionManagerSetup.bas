@@ -20,6 +20,7 @@ Attribute VB_Name = "OptionManagerSetup"
 '  <execute>OptionManagerSetup_SetupTable()</execute>
 '  <execute>OptionManagerSetup_CreateHelperModule()</execute>
 '  <execute>OptionManagerSetup_RemoveSelf()</execute>
+'  <description>Setup for OptionManager: creates the table tabOptions and a helper module with the option Enum, then removes itself</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

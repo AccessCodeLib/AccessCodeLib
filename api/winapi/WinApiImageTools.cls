@@ -22,6 +22,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>api/winapi/WinApiImageTools.cls</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Sets the window icon of an Access form from an icon file; class version of SetFormIconFromFile in modWinAPI.bas</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

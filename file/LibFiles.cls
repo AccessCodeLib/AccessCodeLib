@@ -20,6 +20,7 @@ Attribute VB_Exposed = False
 '  <file>file/LibFiles.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
+'  <description>Stores library files (e.g. DLLs) in the table usys_AppFiles, exports them to the application lib folder and updates the VBA references (with version check)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

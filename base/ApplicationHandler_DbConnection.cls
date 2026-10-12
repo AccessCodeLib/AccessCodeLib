@@ -28,6 +28,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>base/ApplicationHandler.cls</use>
 '  <use>data/DbConnectionManager.cls</use>
+'  <description>ApplicationHandler extension: provides the DbConnectionManager (backend connection, connection info and status)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

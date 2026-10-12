@@ -18,6 +18,7 @@ Attribute VB_Name = "modDbConnection"
 '  <file>data/modDbConnection.bas</file>
 '  <license>_codelib/license.bas</license>
 '  <use>data/DbConnectionManager.cls</use>
+'  <description>Global access to DbConnectionManager (DbCon) and helper procedures for the current backend connection</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

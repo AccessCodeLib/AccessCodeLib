@@ -23,6 +23,7 @@ Attribute VB_Exposed = False
 '  <file>ribbon/RibbonControlInfo.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <ref><name>Office</name><major>2</major><minor>4</minor><guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</guid></ref>
+'  <description>Data of a ribbon control used by RibbonWatcher</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

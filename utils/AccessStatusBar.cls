@@ -17,9 +17,10 @@ Attribute VB_Exposed = False
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>utils\AccessStatusBar.cls</file>
-'  <test>_test\utils\AccessStatusBarTests.cls</test>
-'  <license>_codelib\license.bas</license>
+'  <file>utils/AccessStatusBar.cls</file>
+'  <test>_test/utils/AccessStatusBarTests.cls</test>
+'  <license>_codelib/license.bas</license>
+'  <description>Sets and clears the text of the Access status bar</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

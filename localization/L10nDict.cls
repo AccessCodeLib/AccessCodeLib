@@ -26,6 +26,7 @@ Attribute VB_Exposed = False
 '  <file>localization/L10nDict.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>data/SqlTools.cls</use>
+'  <description>Localization dictionary: translates texts, form controls, MsgBox and InputBox by language code</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

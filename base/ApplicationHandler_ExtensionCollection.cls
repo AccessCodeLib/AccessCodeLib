@@ -36,6 +36,7 @@ Attribute VB_Exposed = False
 '  <file>base/ApplicationHandler_ExtensionCollection.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>base/ApplicationHandler.cls</use>
+'  <description>Collection that holds and initializes the ApplicationHandler extensions (Add, Dispose)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

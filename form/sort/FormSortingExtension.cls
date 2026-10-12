@@ -25,6 +25,7 @@ Attribute VB_Exposed = False
 '  <use>form/sort/FormSortingControl.cls</use>
 '  <use>form/sort/FormSortingControlEventBridge.cls</use>
 '  <use>api/winapi/WinApiLayoutTools.cls</use>
+'  <description>Sorts a continuous form by clicking on header controls: builds the OrderBy string and shows a sort symbol</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -50,12 +51,12 @@ Private m_SortSymbolLabel As Label
 Private WithEvents m_SortSymbolForm As Form
 Attribute m_SortSymbolForm.VB_VarHelpID = -1
 
-Private Declare Function FindWindowEx Lib "USER32.DLL" Alias "FindWindowExA" ( _
-         ByVal hWnd1 As Long, _
-         ByVal hWnd2 As Long, _
+Private Declare PtrSafe Function FindWindowEx Lib "USER32.DLL" Alias "FindWindowExA" ( _
+         ByVal hWnd1 As LongPtr, _
+         ByVal hWnd2 As LongPtr, _
          ByVal lpsz1 As String, _
          ByVal lpsz2 As String _
-      ) As Long
+      ) As LongPtr
    
 
 Private Type Rect
@@ -65,7 +66,7 @@ Private Type Rect
   Bottom As Long
 End Type
 
-Private Declare Function GetWindowRect Lib "user32" (ByVal Hwnd As Long, ByRef lpRect As Rect) As Long
+Private Declare PtrSafe Function GetWindowRect Lib "user32" (ByVal Hwnd As LongPtr, ByRef lpRect As Rect) As Long
 ' / API
 '---------------------------------------------------
 
@@ -224,7 +225,7 @@ Private Function ScrollbarIsVisible(ByVal frm As Form) As Boolean
       Exit Function
    End If
    
-   Dim scHwnd As Long
+   Dim scHwnd As LongPtr
    scHwnd = FindWindowEx(frm.Hwnd, 0&, "NUIScrollbar", "Vertikal") '
    If scHwnd = 0 Then
       scHwnd = FindWindowEx(frm.Hwnd, 0&, "NUIScrollbar", "Vertical")

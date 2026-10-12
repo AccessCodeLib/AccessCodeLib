@@ -24,6 +24,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>form/filter/FilterControlCollection.cls</use>
 '  <use>data/SqlTools.cls</use>
+'  <description>Creates FilterControls for all form controls named fctl*, configured by their Tag (field|type|operator) or the data source</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

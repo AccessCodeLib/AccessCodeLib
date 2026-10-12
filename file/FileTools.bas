@@ -16,6 +16,7 @@ Attribute VB_Description = "Funktionen für Dateioperationen"
 '  <file>file/FileTools.bas</file>
 '  <license>_codelib/license.bas</license>
 '  <test>_test/file/FileToolsTests.cls</test>
+'  <description>File and folder functions: file/folder selection dialogs, temp path and temp file names, path handling (UNC, relative/absolute paths, file name, extension), create folders, existence checks, zip files, open files with the associated application</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

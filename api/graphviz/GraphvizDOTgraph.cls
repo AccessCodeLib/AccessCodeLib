@@ -24,6 +24,7 @@ Attribute VB_Exposed = False
 '  <file>api/graphviz/GraphvizDOTgraph.cls</file>
 '  <use>api/graphviz/GraphvizDOTnode.cls</use>
 '  <use>api/graphviz/GraphvizDOTconnection.cls</use>
+'  <description>Graph or subgraph of a Graphviz DOT definition: add nodes and connections, DOT string</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 Option Compare Text
