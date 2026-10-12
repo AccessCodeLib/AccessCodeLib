@@ -19,6 +19,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>api/pdfcreator/LibPdfCreatorOptions.cls</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Options of a PDFCreator 1.x job (autosave directory, file format, Ghostscript parameters, ...)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

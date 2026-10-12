@@ -19,6 +19,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>api/pdfcreator/LibPdfCreatorComFactory.cls</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Factory for the COM objects of PDFCreator 1.x (clsPDFCreator, clsPDFCreatorOptions, clsPDFCreatorError)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

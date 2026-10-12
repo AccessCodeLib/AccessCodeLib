@@ -11,26 +11,26 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 
 ## api/graphviz
 
-- `api/graphviz/GraphvizDOT.cls` (class) - GraphvizDOT | uses: GraphvizDOTgraph, FileTools, modWinAPI, modWinAPI_Registry
-- `api/graphviz/GraphvizDOTconnection.cls` (class) - Graphviz connection between two nodes
-- `api/graphviz/GraphvizDOTgraph.cls` (class) - Class for creating the graphviz graph definition | uses: GraphvizDOTnode, GraphvizDOTconnection
-- `api/graphviz/GraphvizDOTnode.cls` (class) - Graphviz node | uses: GraphvizDOTgraph
+- `api/graphviz/GraphvizDOT.cls` (class) - Creates graphs with Graphviz: builds the DOT definition (nodes, connections, subgraphs, layout) and renders it to an image file or image map (Graphviz exe or OCX); main entry of the Graphviz package | uses: GraphvizDOTgraph, FileTools, modWinAPI, modWinAPI_Registry
+- `api/graphviz/GraphvizDOTconnection.cls` (class) - Connection (edge) between two nodes of a Graphviz DOT graph
+- `api/graphviz/GraphvizDOTgraph.cls` (class) - Graph or subgraph of a Graphviz DOT definition: add nodes and connections, DOT string | uses: GraphvizDOTnode, GraphvizDOTconnection
+- `api/graphviz/GraphvizDOTnode.cls` (class) - Node of a Graphviz DOT graph (label, color, shape, optional subgraph) | uses: GraphvizDOTgraph
 
 ## api/office/excel
 
-- `api/office/excel/modExcel_Tools.bas` (module) - Hilfsfunktionen für Excel | uses: modErrorHandler
+- `api/office/excel/modExcel_Tools.bas` (module) - Exports a DAO or ADODB recordset to a new Excel workbook via automation (late binding, no Excel reference required) | uses: modErrorHandler
 
 ## api/pdfcreator
 
-- `api/pdfcreator/LibPdfCreatorComFactory.cls` (class) [P]
-- `api/pdfcreator/LibPdfCreatorConverter.cls` (class) [P] | uses: LibPdfCreatorOptions, LibPdfCreatorError
-- `api/pdfcreator/LibPdfCreatorEnums.cls` (class) [P]
-- `api/pdfcreator/LibPdfCreatorError.cls` (class)
-- `api/pdfcreator/LibPdfCreatorFactory.cls` (class) [P] | uses: LibPdfCreatorInstance
-- `api/pdfcreator/LibPdfCreatorInstance.cls` (class) | uses: LibPdfCreatorOptions
-- `api/pdfcreator/LibPdfCreatorJob.cls` (class) | uses: LibPdfCreatorOptions, LibPdfCreatorInstance, FileTools
-- `api/pdfcreator/LibPdfCreatorOptions.cls` (class)
-- `api/pdfcreator/LibPdfCreatorTools.cls` (class) [P] | uses: LibPdfCreatorEnums, LibPdfCreatorOptions, LibPdfCreatorJob, FileTools, StringTools
+- `api/pdfcreator/LibPdfCreatorComFactory.cls` (class) [P] - Factory for the COM objects of PDFCreator 1.x (clsPDFCreator, clsPDFCreatorOptions, clsPDFCreatorError)
+- `api/pdfcreator/LibPdfCreatorConverter.cls` (class) [P] - Converts PDFCreator 1.x COM option and error objects to the library classes and back | uses: LibPdfCreatorOptions, LibPdfCreatorError
+- `api/pdfcreator/LibPdfCreatorEnums.cls` (class) [P] - Enums of the PdfCreator package: file formats, option flags, error numbers
+- `api/pdfcreator/LibPdfCreatorError.cls` (class) - Error object of the PdfCreator package (number, description)
+- `api/pdfcreator/LibPdfCreatorFactory.cls` (class) [P] - Factory for the PDFCreator 1.x process instance (LibPdfCreatorInstance) | uses: LibPdfCreatorInstance
+- `api/pdfcreator/LibPdfCreatorInstance.cls` (class) - Wrapper for the PDFCreator 1.x process (clsPDFCreator): printers, profiles, options, print state | uses: LibPdfCreatorOptions
+- `api/pdfcreator/LibPdfCreatorJob.cls` (class) - PDFCreator 1.x print job: sets the options and runs the print job of a report | uses: LibPdfCreatorOptions, LibPdfCreatorInstance, FileTools
+- `api/pdfcreator/LibPdfCreatorOptions.cls` (class) - Options of a PDFCreator 1.x job (autosave directory, file format, Ghostscript parameters, ...)
+- `api/pdfcreator/LibPdfCreatorTools.cls` (class) [P] - Converts an Access report to PDF (or other formats) with PDFCreator 1.x (COM clsPDFCreator): output path, filter, metadata, open viewer; main entry of the PdfCreator package. For a simple PDF export the built-in DoCmd.OutputTo ... acFormatPDF (Access 2007 SP2 or later) is sufficient | uses: LibPdfCreatorEnums, LibPdfCreatorOptions, LibPdfCreatorJob, FileTools, StringTools
 
 ## api/winapi
 
@@ -83,8 +83,8 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 
 ## com
 
-- `com/modDirectCOM.bas` (module) - Instanz aus unregistrierter COM-dll erzeugen
-- `com/NetComDomain.cls` (class)
+- `com/modDirectCOM.bas` (module) - Creates an instance of a class from an unregistered (native) COM dll
+- `com/NetComDomain.cls` (class) - Creates objects from a .NET COM library without registration (loads the dll into an AppDomain via mscoree)
 
 ## crypt/md5
 

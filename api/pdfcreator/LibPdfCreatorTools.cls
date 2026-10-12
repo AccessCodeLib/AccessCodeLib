@@ -26,6 +26,7 @@ Attribute VB_Exposed = False
 '  <test>_test/api/pdfcreator/LibPdfCreatorToolsTests.cls</test>
 '  <license>_codelib/license.bas</license>
 '  <example>_examples/api/pdfcreator/PdfCreatorExample.frm</example>
+'  <description>Converts an Access report to PDF (or other formats) with PDFCreator 1.x (COM clsPDFCreator): output path, filter, metadata, open viewer; main entry of the PdfCreator package. For a simple PDF export the built-in DoCmd.OutputTo ... acFormatPDF (Access 2007 SP2 or later) is sufficient</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

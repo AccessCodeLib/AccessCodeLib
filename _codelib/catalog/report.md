@@ -5,9 +5,9 @@
 | | Count |
 |---|---|
 | Modules in catalog | 122 |
-| with `<description>` tag | 79 |
-| header summary only | 25 |
-| no description | 18 |
+| with `<description>` tag | 95 |
+| header summary only | 19 |
+| no description | 8 |
 | Header issues | 2 |
 
 ## Header issues
@@ -26,34 +26,6 @@ Cannot be imported together; the description names the use case of each file.
 - `StringTools`: `text/StringTools.bas`, `text/StringTools.cls`
 
 ## Modules without `<description>` tag
-
-### api/graphviz
-
-- `api/graphviz/GraphvizDOT.cls` - header: GraphvizDOT
-- `api/graphviz/GraphvizDOTconnection.cls` - header: Graphviz connection between two nodes
-- `api/graphviz/GraphvizDOTgraph.cls` - header: Class for creating the graphviz graph definition
-- `api/graphviz/GraphvizDOTnode.cls` - header: Graphviz node
-
-### api/office/excel
-
-- `api/office/excel/modExcel_Tools.bas` - header: Hilfsfunktionen für Excel
-
-### api/pdfcreator
-
-- `api/pdfcreator/LibPdfCreatorComFactory.cls` - (no header summary)
-- `api/pdfcreator/LibPdfCreatorConverter.cls` - (no header summary)
-- `api/pdfcreator/LibPdfCreatorEnums.cls` - (no header summary)
-- `api/pdfcreator/LibPdfCreatorError.cls` - (no header summary)
-- `api/pdfcreator/LibPdfCreatorFactory.cls` - (no header summary)
-- `api/pdfcreator/LibPdfCreatorInstance.cls` - (no header summary)
-- `api/pdfcreator/LibPdfCreatorJob.cls` - (no header summary)
-- `api/pdfcreator/LibPdfCreatorOptions.cls` - (no header summary)
-- `api/pdfcreator/LibPdfCreatorTools.cls` - (no header summary)
-
-### com
-
-- `com/modDirectCOM.bas` - header: Instanz aus unregistrierter COM-dll erzeugen
-- `com/NetComDomain.cls` - (no header summary)
 
 ### crypt/md5
 

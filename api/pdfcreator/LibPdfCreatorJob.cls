@@ -23,6 +23,7 @@ Attribute VB_Exposed = False
 '  <use>file/FileTools.bas</use>
 '  <test>_test/api/pdfcreator/LibPdfCreatorJobTests.cls</test>
 '  <license>_codelib/license.bas</license>
+'  <description>PDFCreator 1.x print job: sets the options and runs the print job of a report</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

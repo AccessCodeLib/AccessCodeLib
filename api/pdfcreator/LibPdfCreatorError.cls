@@ -19,6 +19,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>api/pdfcreator/LibPdfCreatorError.cls</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Error object of the PdfCreator package (number, description)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

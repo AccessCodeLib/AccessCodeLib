@@ -21,6 +21,7 @@ Attribute VB_Exposed = False
 '  <use>api/pdfcreator/LibPdfCreatorOptions.cls</use>
 '  <test>_test/api/pdfcreator/LibPdfCreatorInstanceTests.cls</test>
 '  <license>_codelib/license.bas</license>
+'  <description>Wrapper for the PDFCreator 1.x process (clsPDFCreator): printers, profiles, options, print state</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

@@ -22,6 +22,7 @@ Attribute VB_Exposed = False
 '  <use>api/pdfcreator/LibPdfCreatorError.cls</use>
 '  <test>_test/api/pdfcreator/LibPdfCreatorConverterTests.cls</test>
 '  <license>_codelib/license.bas</license>
+'  <description>Converts PDFCreator 1.x COM option and error objects to the library classes and back</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

@@ -20,6 +20,7 @@ Attribute VB_Exposed = False
 '  <file>api/pdfcreator/LibPdfCreatorEnums.cls</file>
 '  <test>_test/api/pdfcreator/LibPdfCreatorEnumsTests.cls</test>
 '  <license>_codelib/license.bas</license>
+'  <description>Enums of the PdfCreator package: file formats, option flags, error numbers</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

@@ -16,6 +16,7 @@ Attribute VB_Name = "modDirectCOM"
 '<codelib>
 '  <file>com/modDirectCOM.bas</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Creates an instance of a class from an unregistered (native) COM dll</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
