@@ -514,6 +514,30 @@ foreach ($Folder in ($UpperCaseFolders.Keys | Sort-Object)) {
     $Issues.Add("folder name not lower case: ``$Folder``")
 }
 
+# recipes: code file paths in backticks and links to other recipes must exist
+$RecipeFolder = Join-Path $RepositoryRoot '_codelib\recipes'
+if (Test-Path $RecipeFolder) {
+    foreach ($Recipe in (Get-ChildItem -Path $RecipeFolder -Filter '*.md' | Sort-Object Name)) {
+        $RecipeText = Read-SourceFile $Recipe.FullName
+        $RecipePath = "_codelib/recipes/$($Recipe.Name)"
+        foreach ($Match in [regex]::Matches($RecipeText, '`([A-Za-z0-9_./\\-]+\.(?:cls|bas|frm|rpt|package))`')) {
+            $Path = $Match.Groups[1].Value
+            $Key = ConvertTo-PathKey $Path
+            if (-not $ExistingPaths.ContainsKey($Key)) {
+                $Issues.Add("``$RecipePath``: file not found: ``$Path``")
+            }
+            elseif ($Path -cne $ExistingPaths[$Key].path) {
+                $Issues.Add("``$RecipePath``: path differs from file system spelling: ``$Path`` (expected ``$($ExistingPaths[$Key].path)``)")
+            }
+        }
+        foreach ($Match in [regex]::Matches($RecipeText, '\]\(([A-Za-z0-9_./-]+\.md)\)')) {
+            if (-not (Test-Path (Join-Path $Recipe.DirectoryName $Match.Groups[1].Value))) {
+                $Issues.Add("``$RecipePath``: link target not found: ``$($Match.Groups[1].Value)``")
+            }
+        }
+    }
+}
+
 #endregion
 
 #region Build output
