@@ -37,6 +37,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>file/RecursiveFileSearcher.cls</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Searches a folder tree recursively for one or more file names or patterns (FileSystemObject); modes: stop at first match, one match per item, all matches</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

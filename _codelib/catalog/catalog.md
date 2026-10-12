@@ -124,9 +124,9 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 
 ## file
 
-- `file/FileTools.bas` (module) - File operation functions
-- `file/LibFiles.cls` (class) [P]
-- `file/RecursiveFileSearcher.cls` (class) - Verzeichnisstruktur nach einer oder mehreren Dateien durchsuchen
+- `file/FileTools.bas` (module) - File and folder functions: file/folder selection dialogs, temp path and temp file names, path handling (UNC, relative/absolute paths, file name, extension), create folders, existence checks, zip files, open files with the associated application
+- `file/LibFiles.cls` (class) [P] - Stores library files (e.g. DLLs) in the table usys_AppFiles, exports them to the application lib folder and updates the VBA references (with version check)
+- `file/RecursiveFileSearcher.cls` (class) - Searches a folder tree recursively for one or more file names or patterns (FileSystemObject); modes: stop at first match, one match per item, all matches
 
 ## form
 
@@ -192,12 +192,12 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 
 ## text
 
-- `text/Base64.cls` (class) [P]
-- `text/String2.cls` (class) [P] | uses: StringTools
-- `text/StringCollection.cls` (class) - Collection for strings
+- `text/Base64.cls` (class) [P] - Encodes strings to Base64 and decodes Base64 to strings or byte arrays (via MSXML2.DOMDocument), optional Unicode conversion
+- `text/String2.cls` (class) [P] - Extended string type with chainable methods (PadLeft/PadRight, Trim, Substring, Append, InsertAt, Contains, StartsWith/EndsWith, Length, ToString with format); based on StringTools | uses: StringTools
+- `text/StringCollection.cls` (class) - Collection of strings: add items from arrays or collections (optional item format), join them to a delimited string (ToString) or convert to a string array
 - `text/StringTools.bas` (module) - Text functions as standard module; use only to override VBA functions such as Format project-wide (calls without prefix), otherwise prefer text/StringTools.cls | same object name as: `text/StringTools.cls`
 - `text/StringTools.cls` (class) [P] - Text functions (IsNullOrEmpty, Format, PadLeft/PadRight, Contains, StartsWith/EndsWith, Trim, SubString, Concat, Replicate) as predeclared class module (StringTools.Xxx); preferred variant, no name conflicts with VBA functions | same object name as: `text/StringTools.bas`
-- `text/UnicodeTools.cls` (class) [P]
+- `text/UnicodeTools.cls` (class) [P] - Experimental: checks whether a string contains Unicode text (WinAPI IsTextUnicode)
 
 ## usability
 

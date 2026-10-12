@@ -5,9 +5,9 @@
 | | Count |
 |---|---|
 | Modules in catalog | 122 |
-| with `<description>` tag | 27 |
-| header summary only | 71 |
-| no description | 24 |
+| with `<description>` tag | 34 |
+| header summary only | 68 |
+| no description | 20 |
 | Header issues | 2 |
 
 ## Header issues
@@ -112,12 +112,6 @@ Cannot be imported together; the description names the use case of each file.
 
 - `datetime/DateTime2.cls` - (no header summary)
 
-### file
-
-- `file/FileTools.bas` - header: File operation functions
-- `file/LibFiles.cls` - (no header summary)
-- `file/RecursiveFileSearcher.cls` - header: Verzeichnisstruktur nach einer oder mehreren Dateien durchsuchen
-
 ### form
 
 - `form/FilterFormHandler.cls` - header: Formularsteuerungsklasse für Formulare mit ungebundnen Filtersteuerelementen und einem Endlosformular für die Anzeige der gefilterten Daten
@@ -167,13 +161,6 @@ Cannot be imported together; the description names the use case of each file.
 
 - `test/simplyvbunit/_VBATestSuite.bas` - header: Hilfsmodul für den Aufruf einer anwendungsweiten Instanz von VBATestSuite
 - `test/simplyvbunit/VBATestSuite.cls` - header: Anpassung (Kapselung) von SimplyVBUnit für VBA
-
-### text
-
-- `text/Base64.cls` - (no header summary)
-- `text/String2.cls` - (no header summary)
-- `text/StringCollection.cls` - header: Collection for strings
-- `text/UnicodeTools.cls` - (no header summary)
 
 ### usability
 

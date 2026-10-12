@@ -22,6 +22,7 @@ Attribute VB_Exposed = False
 '  <test>_test/text/String2Tests.cls</test>
 '  <license>_codelib/license.bas</license>
 '  <example>_examples/text/String2_Example.bas</example>
+'  <description>Extended string type with chainable methods (PadLeft/PadRight, Trim, Substring, Append, InsertAt, Contains, StartsWith/EndsWith, Length, ToString with format); based on StringTools</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

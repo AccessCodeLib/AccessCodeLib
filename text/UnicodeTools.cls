@@ -20,6 +20,7 @@ Attribute VB_Exposed = False
 '  <file>text/UnicodeTools.cls</file>
 '  <test>_test/text/UnicodeToolsTests.cls</test>
 '  <license>_codelib/license.bas</license>
+'  <description>Experimental: checks whether a string contains Unicode text (WinAPI IsTextUnicode)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 
