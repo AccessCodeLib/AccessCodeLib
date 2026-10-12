@@ -4214,6 +4214,7 @@
         "Property Get Contains(ByVal searchValue As String) As Boolean",
         "Property Get EndsWith(ByVal searchValue As String) As Boolean",
         "Property Get StartsWith(ByVal searchValue As String) As Boolean",
+        "Property Get Length() As Long",
         "Property Get Lenght() As Long",
         "Property Get Append(ByVal Value As Variant) As String2",
         "Property Get Trim(Optional ByVal TrimType As TrimOption = TrimOption.TrimBoth) As String2",

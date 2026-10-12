@@ -84,8 +84,13 @@ Public Property Get StartsWith(ByVal searchValue As String) As Boolean
     StartsWith = StringTools.StartsWith(m_Value, searchValue)
 End Property
 
+Public Property Get Length() As Long
+    Length = StringTools.Length(m_Value)
+End Property
+
+' Obsolete: misspelled, use Length (kept for compatibility)
 Public Property Get Lenght() As Long
-    Lenght = StringTools.Lenght(m_Value)
+    Lenght = Length
 End Property
 
 Public Property Get Append(ByVal Value As Variant) As String2

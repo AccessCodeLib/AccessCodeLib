@@ -22,19 +22,19 @@ Option Explicit
 Public Sub String2_Example()
 
     'Verwendung als statische Klasse
-    Debug.Print String2.NewValue("   Hello").Append(" ").Append("World  ").Trim().Lenght '11
+    Debug.Print String2.NewValue("   Hello").Append(" ").Append("World  ").Trim().Length '11
 
     'Verwendung als Objektvariable
     Dim Message As String2
     Set Message = String2.NewValue("Hello World")
     
-    Debug.Print "Der String " & Message & " besteht aus " & Message.Lenght & " Zeichen."
+    Debug.Print "Der String " & Message & " besteht aus " & Message.Length & " Zeichen."
     Message = Message.Append("!")
     
     If Message.EndsWith("!") Then
         
         Message = Message.Substring(0, 11)
-        Debug.Print Message.Lenght '11
+        Debug.Print Message.Length '11
         
     End If
     

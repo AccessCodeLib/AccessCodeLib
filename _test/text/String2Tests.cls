@@ -168,14 +168,20 @@ End Sub
 
 'AccUnit:Row("", 0)
 'AccUnit:Row("1234567890", 10)
-Public Sub Lenght_String_HasLenght(ByVal checkValue As String, Expected As Integer)
+Public Sub Length_String_HasLength(ByVal checkValue As String, Expected As Integer)
     
    With New String2
-        Assert.AreEqual Expected, .NewValue(checkValue).Lenght
+        Assert.AreEqual Expected, .NewValue(checkValue).Length
    End With
    
-   Assert.AreEqual Expected, String2.NewValue(checkValue).Lenght
+   Assert.AreEqual Expected, String2.NewValue(checkValue).Length
    
+End Sub
+
+'AccUnit:Row("", 0)
+'AccUnit:Row("1234567890", 10)
+Public Sub Lenght_String_ForwardsToLength(ByVal checkValue As String, Expected As Integer)
+   Assert.AreEqual Expected, String2.NewValue(checkValue).Lenght
 End Sub
 
 'AccUnit:Row("", "", "")
