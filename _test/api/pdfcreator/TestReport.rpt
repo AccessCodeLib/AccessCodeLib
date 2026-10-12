@@ -398,7 +398,7 @@ Attribute VB_Exposed = False
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>_test/api/PdfCreator/TestReport.rpt</file>
+'  <file>_test/api/pdfcreator/TestReport.rpt</file>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

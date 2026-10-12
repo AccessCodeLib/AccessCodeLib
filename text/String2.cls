@@ -19,7 +19,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>text/String2.cls</file>
 '  <use>text/StringTools.bas</use>
-'  <test>_test\text\String2Tests.cls</test>
+'  <test>_test/text/String2Tests.cls</test>
 '  <license>_codelib/license.bas</license>
 '  <example>_examples/text/String2_Example.bas</example>
 '</codelib>

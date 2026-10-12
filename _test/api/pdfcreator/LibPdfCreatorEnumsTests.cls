@@ -2,7 +2,7 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "LibPdfCreatorFactoryTests"
+Attribute VB_Name = "LibPdfCreatorEnumsTests"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
@@ -11,15 +11,15 @@ Attribute VB_Exposed = False
 ' AccUnit:TestClass
 '---------------------------------------------------------------------------------------
 '/**
-'\short     AccUnit-Testklasse für LibPdfCreatorFactoryTests
+'\short     AccUnit-Testklasse für LibPdfCreatorEnums
 ' <remarks>
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>_test/api/PdfCreator/LibPdfCreatorFactoryTests.cls</file>
+'  <file>_test/api/pdfcreator/LibPdfCreatorEnumsTests.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>api/PdfCreator/LibPdfCreatorFactory.cls</use>
+'  <use>api/pdfcreator/LibPdfCreatorEnums.cls</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 
@@ -40,35 +40,14 @@ Private Sub ITestFixture_AddTestCases(ByVal Tests As SimplyVBUnit.TestCaseCollec
 ' Tests
 '--------------------------------------------------------------------
 
-Public Sub PdfCreatorInstance__NoError_After_Start_Multiple_Instances()
 
-    Dim instance As LibPdfCreatorInstance
-    Set instance = LibPdfCreatorFactory.PdfCreatorInstance()
+Public Sub ErrorNummers_EnumCheck()
 
-    Assert.That instance.cError.Number, Iz.EqualTo(0)
-
-    '2. instance, Error = 2 should be catched by Factory
-    Set instance = LibPdfCreatorFactory.PdfCreatorInstance()
-
-    Assert.That instance.cError.Number, Iz.EqualTo(0)
-
-        instance.cClose
-    Set instance = Nothing
-End Sub
-
-
-Public Sub PdfCreatorInstance_Correct_Type()
-
-    Dim test As LibPdfCreatorInstance
-    Set test = LibPdfCreatorFactory.PdfCreatorInstance()
-    
-    Dim b As Boolean: b = False
-    
-    If TypeOf test Is LibPdfCreatorInstance Then _
-        b = True
-    
-    Assert.That b, Iz.True
-        test.cClose
-    Set test = Nothing
+    Assert.That LibPdfCreatorErrorNumer.WarteSchlangeNichtLeer, Iz.EqualTo(6000)
+    Assert.That LibPdfCreatorErrorNumer.UnexpectedPdfCreatorError, Iz.EqualTo(6001)
+    Assert.That LibPdfCreatorErrorNumer.ZielDateiSchreibgeschützt, Iz.EqualTo(6002)
+    Assert.That LibPdfCreatorErrorNumer.NotSupportedPdfCreatorFileFormat, Iz.EqualTo(6003)
+    Assert.That LibPdfCreatorErrorNumer.ReportDoesNotExist, Iz.EqualTo(6004)
+    Assert.That LibPdfCreatorErrorNumer.ReportNameIsEmpty, Iz.EqualTo(6005)
 
 End Sub

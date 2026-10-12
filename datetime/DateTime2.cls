@@ -18,7 +18,7 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>datetime/DateTime2.cls</file>
-'  <test>_test\datetime\DateTime2Tests.cls</test>
+'  <test>_test/datetime/DateTime2Tests.cls</test>
 '  <license>_codelib/license.bas</license>
 '  <example>_examples/datetime/DateTime2_Example.bas</example>
 '</codelib>

@@ -18,7 +18,7 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>text/UnicodeTools.cls</file>
-'  <test>_test\text\UnicodeToolsTests.cls</test>
+'  <test>_test/text/UnicodeToolsTests.cls</test>
 '  <license>_codelib/license.bas</license>
 '</codelib>
 '---------------------------------------------------------------------------------------

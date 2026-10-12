@@ -175,7 +175,7 @@
       ]
     },
     {
-      "path": "api/PdfCreator/LibPdfCreatorComFactory.cls",
+      "path": "api/pdfcreator/LibPdfCreatorComFactory.cls",
       "name": "LibPdfCreatorComFactory",
       "kind": "class",
       "description": "",
@@ -196,25 +196,25 @@
       ]
     },
     {
-      "path": "api/PdfCreator/LibPdfCreatorConverter.cls",
+      "path": "api/pdfcreator/LibPdfCreatorConverter.cls",
       "name": "LibPdfCreatorConverter",
       "kind": "class",
       "description": "",
       "descriptionSource": "none",
       "predeclaredId": true,
       "uses": [
-        "api/PdfCreator/LibPdfCreatorOptions.cls",
-        "api/PdfCreator/LibPdfCreatorError.cls"
+        "api/pdfcreator/LibPdfCreatorOptions.cls",
+        "api/pdfcreator/LibPdfCreatorError.cls"
       ],
       "usesTransitive": [
-        "api/PdfCreator/LibPdfCreatorError.cls",
-        "api/PdfCreator/LibPdfCreatorOptions.cls"
+        "api/pdfcreator/LibPdfCreatorError.cls",
+        "api/pdfcreator/LibPdfCreatorOptions.cls"
       ],
       "usedBy": [],
       "replaces": [],
       "references": [],
       "tests": [
-        "_test/api/PdfCreator/LibPdfCreatorConverterTests.cls"
+        "_test/api/pdfcreator/LibPdfCreatorConverterTests.cls"
       ],
       "examples": [],
       "executes": [],
@@ -226,7 +226,7 @@
       ]
     },
     {
-      "path": "api/PdfCreator/LibPdfCreatorEnums.cls",
+      "path": "api/pdfcreator/LibPdfCreatorEnums.cls",
       "name": "LibPdfCreatorEnums",
       "kind": "class",
       "description": "",
@@ -235,12 +235,12 @@
       "uses": [],
       "usesTransitive": [],
       "usedBy": [
-        "api/PdfCreator/LibPdfCreatorTools.cls"
+        "api/pdfcreator/LibPdfCreatorTools.cls"
       ],
       "replaces": [],
       "references": [],
       "tests": [
-        "_test/api/PdfCreator/LibPdfCreatorEnumsTests.cls"
+        "_test/api/pdfcreator/LibPdfCreatorEnumsTests.cls"
       ],
       "examples": [],
       "executes": [],
@@ -251,7 +251,7 @@
       ]
     },
     {
-      "path": "api/PdfCreator/LibPdfCreatorError.cls",
+      "path": "api/pdfcreator/LibPdfCreatorError.cls",
       "name": "LibPdfCreatorError",
       "kind": "class",
       "description": "",
@@ -260,7 +260,7 @@
       "uses": [],
       "usesTransitive": [],
       "usedBy": [
-        "api/PdfCreator/LibPdfCreatorConverter.cls"
+        "api/pdfcreator/LibPdfCreatorConverter.cls"
       ],
       "replaces": [],
       "references": [],
@@ -275,24 +275,24 @@
       ]
     },
     {
-      "path": "api/PdfCreator/LibPdfCreatorFactory.cls",
+      "path": "api/pdfcreator/LibPdfCreatorFactory.cls",
       "name": "LibPdfCreatorFactory",
       "kind": "class",
       "description": "",
       "descriptionSource": "none",
       "predeclaredId": true,
       "uses": [
-        "api/PdfCreator/LibPdfCreatorInstance.cls"
+        "api/pdfcreator/LibPdfCreatorInstance.cls"
       ],
       "usesTransitive": [
-        "api/PdfCreator/LibPdfCreatorInstance.cls",
-        "api/PdfCreator/LibPdfCreatorOptions.cls"
+        "api/pdfcreator/LibPdfCreatorInstance.cls",
+        "api/pdfcreator/LibPdfCreatorOptions.cls"
       ],
       "usedBy": [],
       "replaces": [],
       "references": [],
       "tests": [
-        "_test/api/PdfCreator/LibPdfCreatorFactoryTests.cls"
+        "_test/api/pdfcreator/LibPdfCreatorFactoryTests.cls"
       ],
       "examples": [],
       "executes": [],
@@ -301,26 +301,26 @@
       ]
     },
     {
-      "path": "api/PdfCreator/LibPdfCreatorInstance.cls",
+      "path": "api/pdfcreator/LibPdfCreatorInstance.cls",
       "name": "LibPdfCreatorInstance",
       "kind": "class",
       "description": "",
       "descriptionSource": "none",
       "predeclaredId": false,
       "uses": [
-        "api/PdfCreator/LibPdfCreatorOptions.cls"
+        "api/pdfcreator/LibPdfCreatorOptions.cls"
       ],
       "usesTransitive": [
-        "api/PdfCreator/LibPdfCreatorOptions.cls"
+        "api/pdfcreator/LibPdfCreatorOptions.cls"
       ],
       "usedBy": [
-        "api/PdfCreator/LibPdfCreatorFactory.cls",
-        "api/PdfCreator/LibPdfCreatorJob.cls"
+        "api/pdfcreator/LibPdfCreatorFactory.cls",
+        "api/pdfcreator/LibPdfCreatorJob.cls"
       ],
       "replaces": [],
       "references": [],
       "tests": [
-        "_test/api/PdfCreator/LibPdfCreatorInstanceTests.cls"
+        "_test/api/pdfcreator/LibPdfCreatorInstanceTests.cls"
       ],
       "examples": [],
       "executes": [],
@@ -410,29 +410,29 @@
       ]
     },
     {
-      "path": "api/PdfCreator/LibPdfCreatorJob.cls",
+      "path": "api/pdfcreator/LibPdfCreatorJob.cls",
       "name": "LibPdfCreatorJob",
       "kind": "class",
       "description": "",
       "descriptionSource": "none",
       "predeclaredId": false,
       "uses": [
-        "api/PdfCreator/LibPdfCreatorOptions.cls",
-        "api/PdfCreator/LibPdfCreatorInstance.cls",
+        "api/pdfcreator/LibPdfCreatorOptions.cls",
+        "api/pdfcreator/LibPdfCreatorInstance.cls",
         "file/FileTools.bas"
       ],
       "usesTransitive": [
-        "api/PdfCreator/LibPdfCreatorInstance.cls",
-        "api/PdfCreator/LibPdfCreatorOptions.cls",
+        "api/pdfcreator/LibPdfCreatorInstance.cls",
+        "api/pdfcreator/LibPdfCreatorOptions.cls",
         "file/FileTools.bas"
       ],
       "usedBy": [
-        "api/PdfCreator/LibPdfCreatorTools.cls"
+        "api/pdfcreator/LibPdfCreatorTools.cls"
       ],
       "replaces": [],
       "references": [],
       "tests": [
-        "_test/api/PdfCreator/LibPdfCreatorJobTests.cls"
+        "_test/api/pdfcreator/LibPdfCreatorJobTests.cls"
       ],
       "examples": [],
       "executes": [],
@@ -445,7 +445,7 @@
       ]
     },
     {
-      "path": "api/PdfCreator/LibPdfCreatorOptions.cls",
+      "path": "api/pdfcreator/LibPdfCreatorOptions.cls",
       "name": "LibPdfCreatorOptions",
       "kind": "class",
       "description": "",
@@ -454,10 +454,10 @@
       "uses": [],
       "usesTransitive": [],
       "usedBy": [
-        "api/PdfCreator/LibPdfCreatorConverter.cls",
-        "api/PdfCreator/LibPdfCreatorInstance.cls",
-        "api/PdfCreator/LibPdfCreatorJob.cls",
-        "api/PdfCreator/LibPdfCreatorTools.cls"
+        "api/pdfcreator/LibPdfCreatorConverter.cls",
+        "api/pdfcreator/LibPdfCreatorInstance.cls",
+        "api/pdfcreator/LibPdfCreatorJob.cls",
+        "api/pdfcreator/LibPdfCreatorTools.cls"
       ],
       "replaces": [],
       "references": [],
@@ -838,24 +838,24 @@
       ]
     },
     {
-      "path": "api/PdfCreator/LibPdfCreatorTools.cls",
+      "path": "api/pdfcreator/LibPdfCreatorTools.cls",
       "name": "LibPdfCreatorTools",
       "kind": "class",
       "description": "",
       "descriptionSource": "none",
       "predeclaredId": true,
       "uses": [
-        "api/PdfCreator/LibPdfCreatorEnums.cls",
-        "api/PdfCreator/LibPdfCreatorOptions.cls",
-        "api/PdfCreator/LibPdfCreatorJob.cls",
+        "api/pdfcreator/LibPdfCreatorEnums.cls",
+        "api/pdfcreator/LibPdfCreatorOptions.cls",
+        "api/pdfcreator/LibPdfCreatorJob.cls",
         "file/FileTools.bas",
         "text/StringTools.bas"
       ],
       "usesTransitive": [
-        "api/PdfCreator/LibPdfCreatorEnums.cls",
-        "api/PdfCreator/LibPdfCreatorInstance.cls",
-        "api/PdfCreator/LibPdfCreatorJob.cls",
-        "api/PdfCreator/LibPdfCreatorOptions.cls",
+        "api/pdfcreator/LibPdfCreatorEnums.cls",
+        "api/pdfcreator/LibPdfCreatorInstance.cls",
+        "api/pdfcreator/LibPdfCreatorJob.cls",
+        "api/pdfcreator/LibPdfCreatorOptions.cls",
         "file/FileTools.bas",
         "text/StringTools.bas"
       ],
@@ -863,10 +863,10 @@
       "replaces": [],
       "references": [],
       "tests": [
-        "_test/api/PdfCreator/LibPdfCreatorToolsTests.cls"
+        "_test/api/pdfcreator/LibPdfCreatorToolsTests.cls"
       ],
       "examples": [
-        "_examples/api/PdfCreator/PdfCreatorExample.frm"
+        "_examples/api/pdfcreator/PdfCreatorExample.frm"
       ],
       "executes": [],
       "publicMembers": [
@@ -2567,7 +2567,7 @@
       "replaces": [],
       "references": [],
       "tests": [
-        "_test\\datetime\\DateTime2Tests.cls"
+        "_test/datetime/DateTime2Tests.cls"
       ],
       "examples": [
         "_examples/datetime/DateTime2_Example.bas"
@@ -2629,8 +2629,8 @@
       "usesTransitive": [],
       "usedBy": [
         "api/graphviz/GraphvizDOT.cls",
-        "api/PdfCreator/LibPdfCreatorJob.cls",
-        "api/PdfCreator/LibPdfCreatorTools.cls",
+        "api/pdfcreator/LibPdfCreatorJob.cls",
+        "api/pdfcreator/LibPdfCreatorTools.cls",
         "usability/ApplicationHandler_DirTextbox.cls"
       ],
       "replaces": [],
@@ -3686,7 +3686,7 @@
       "replaces": [],
       "references": [],
       "tests": [
-        "_test\\math\\Decimal2Tests.cls"
+        "_test/math/Decimal2Tests.cls"
       ],
       "examples": [],
       "executes": [],
@@ -4045,7 +4045,7 @@
       "replaces": [],
       "references": [],
       "tests": [
-        "_test\\text\\Base64Tests.cls"
+        "_test/text/Base64Tests.cls"
       ],
       "examples": [],
       "executes": [],
@@ -4075,7 +4075,7 @@
       "replaces": [],
       "references": [],
       "tests": [
-        "_test\\text\\String2Tests.cls"
+        "_test/text/String2Tests.cls"
       ],
       "examples": [
         "_examples/text/String2_Example.bas"
@@ -4143,7 +4143,7 @@
       "uses": [],
       "usesTransitive": [],
       "usedBy": [
-        "api/PdfCreator/LibPdfCreatorTools.cls",
+        "api/pdfcreator/LibPdfCreatorTools.cls",
         "math/Decimal2.cls",
         "text/String2.cls"
       ],
@@ -4221,7 +4221,7 @@
       "replaces": [],
       "references": [],
       "tests": [
-        "_test\\text\\UnicodeToolsTests.cls"
+        "_test/text/UnicodeToolsTests.cls"
       ],
       "examples": [],
       "executes": [],
@@ -4574,7 +4574,7 @@
       "replaces": [],
       "references": [],
       "tests": [
-        "_test\\utils\\AccessStatusBarTests.cls"
+        "_test/utils/AccessStatusBarTests.cls"
       ],
       "examples": [],
       "executes": [],

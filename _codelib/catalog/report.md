@@ -8,21 +8,14 @@
 | with `<description>` tag | 25 |
 | header summary only | 73 |
 | no description | 24 |
-| Header issues | 16 |
+| Header issues | 9 |
 
 ## Header issues
 
+- `_dotnetlib/integration/DotNetLibs.cls`: <file> tag missing
+- `_dotnetlib/integration/DotNetLibs.cls`: malformed tag line: `'  <file>_dotnetlib/integration/DotNetLibs.cls<file>`
+- `_dotnetlib/samples/_config_Application.bas`: malformed tag line: `'  <replace>base/_config_Application.bas</replace> 'dieses Modul mit <file> ersetzen ... es darf nur ein Konfig-Datei geben`
 - `_examples/data/FilterStringBuilderNet_Examples.bas`: example not linked by an <example> tag of a library module
-- `com/NetComDomain.cls`: <file> tag differs from file system spelling: `COM/NetComDomain.cls`
-- `data/SqlTools_DotNetLib.bas`: <file> tag differs from file system spelling: `/data/SqlTools_DotNetLib.bas`
-- `datetime/DateTime2.cls`: <test> path differs from file system spelling: `_test\datetime\DateTime2Tests.cls` (expected `_test/datetime/DateTime2Tests.cls`)
-- `math/Decimal2.cls`: <test> path differs from file system spelling: `_test\math\Decimal2Tests.cls` (expected `_test/math/Decimal2Tests.cls`)
-- `text/Base64.cls`: <test> path differs from file system spelling: `_test\text\Base64Tests.cls` (expected `_test/text/Base64Tests.cls`)
-- `text/String2.cls`: <test> path differs from file system spelling: `_test\text\String2Tests.cls` (expected `_test/text/String2Tests.cls`)
-- `text/UnicodeTools.cls`: <test> path differs from file system spelling: `_test\text\UnicodeToolsTests.cls` (expected `_test/text/UnicodeToolsTests.cls`)
-- `utils/AccessStatusBar.cls`: <file> tag differs from file system spelling: `utils\AccessStatusBar.cls`
-- `utils/AccessStatusBar.cls`: <license> path differs from file system spelling: `_codelib\license.bas` (expected `_codelib/license.bas`)
-- `utils/AccessStatusBar.cls`: <test> path differs from file system spelling: `_test\utils\AccessStatusBarTests.cls` (expected `_test/utils/AccessStatusBarTests.cls`)
 - object name `FilterControl` used by several files (alternatives, cannot be imported together): `form/filter/FilterControl.cls`, `form/filter/FilterControl_DotNetLib.cls`
 - object name `FilterControlCollection` used by several files (alternatives, cannot be imported together): `form/filter/FilterControlCollection.cls`, `form/filter/FilterControlCollection_DotNetLib.cls`
 - object name `FilterControlEventBridge` used by several files (alternatives, cannot be imported together): `form/filter/FilterControlEventBridge.cls`, `form/filter/FilterControlEventBridge_DotNetLib.cls`
@@ -42,17 +35,17 @@
 
 - `api/office/excel/modExcel_Tools.bas` - header: Hilfsfunktionen für Excel
 
-### api/PdfCreator
+### api/pdfcreator
 
-- `api/PdfCreator/LibPdfCreatorComFactory.cls` - (no header summary)
-- `api/PdfCreator/LibPdfCreatorConverter.cls` - (no header summary)
-- `api/PdfCreator/LibPdfCreatorEnums.cls` - (no header summary)
-- `api/PdfCreator/LibPdfCreatorError.cls` - (no header summary)
-- `api/PdfCreator/LibPdfCreatorFactory.cls` - (no header summary)
-- `api/PdfCreator/LibPdfCreatorInstance.cls` - (no header summary)
-- `api/PdfCreator/LibPdfCreatorJob.cls` - (no header summary)
-- `api/PdfCreator/LibPdfCreatorOptions.cls` - (no header summary)
-- `api/PdfCreator/LibPdfCreatorTools.cls` - (no header summary)
+- `api/pdfcreator/LibPdfCreatorComFactory.cls` - (no header summary)
+- `api/pdfcreator/LibPdfCreatorConverter.cls` - (no header summary)
+- `api/pdfcreator/LibPdfCreatorEnums.cls` - (no header summary)
+- `api/pdfcreator/LibPdfCreatorError.cls` - (no header summary)
+- `api/pdfcreator/LibPdfCreatorFactory.cls` - (no header summary)
+- `api/pdfcreator/LibPdfCreatorInstance.cls` - (no header summary)
+- `api/pdfcreator/LibPdfCreatorJob.cls` - (no header summary)
+- `api/pdfcreator/LibPdfCreatorOptions.cls` - (no header summary)
+- `api/pdfcreator/LibPdfCreatorTools.cls` - (no header summary)
 
 ### api/winapi
 

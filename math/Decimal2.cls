@@ -21,7 +21,7 @@ Attribute VB_Exposed = False
 '  <use>math/MathTools.bas</use>
 '  <use>text/StringTools.bas</use>
 '  <use>text/String2.cls</use>
-'  <test>_test\math\Decimal2Tests.cls</test>
+'  <test>_test/math/Decimal2Tests.cls</test>
 '  <license>_codelib/license.bas</license>
 '</codelib>
 '---------------------------------------------------------------------------------------

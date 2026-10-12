@@ -18,7 +18,7 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>text/Base64.cls</file>
-'  <test>_test\text\Base64Tests.cls</test>
+'  <test>_test/text/Base64Tests.cls</test>
 '  <license>_codelib/license.bas</license>
 '</codelib>
 '---------------------------------------------------------------------------------------

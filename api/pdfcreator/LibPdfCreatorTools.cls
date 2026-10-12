@@ -17,15 +17,15 @@ Attribute VB_Exposed = False
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>api/PdfCreator/LibPdfCreatorTools.cls</file>
-'  <use>api/PdfCreator/LibPdfCreatorEnums.cls</use>
-'  <use>api/PdfCreator/LibPdfCreatorOptions.cls</use>
-'  <use>api/PdfCreator/LibPdfCreatorJob.cls</use>
+'  <file>api/pdfcreator/LibPdfCreatorTools.cls</file>
+'  <use>api/pdfcreator/LibPdfCreatorEnums.cls</use>
+'  <use>api/pdfcreator/LibPdfCreatorOptions.cls</use>
+'  <use>api/pdfcreator/LibPdfCreatorJob.cls</use>
 '  <use>file/FileTools.bas</use>
 '  <use>text/StringTools.bas</use>
-'  <test>_test/api/PdfCreator/LibPdfCreatorToolsTests.cls</test>
+'  <test>_test/api/pdfcreator/LibPdfCreatorToolsTests.cls</test>
 '  <license>_codelib/license.bas</license>
-'  <example>_examples/api/PdfCreator/PdfCreatorExample.frm</example>
+'  <example>_examples/api/pdfcreator/PdfCreatorExample.frm</example>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

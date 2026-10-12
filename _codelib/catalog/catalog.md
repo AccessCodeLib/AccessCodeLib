@@ -19,17 +19,17 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 
 - `api/office/excel/modExcel_Tools.bas` (module) - Hilfsfunktionen für Excel | uses: modErrorHandler
 
-## api/PdfCreator
+## api/pdfcreator
 
-- `api/PdfCreator/LibPdfCreatorComFactory.cls` (class) [P]
-- `api/PdfCreator/LibPdfCreatorConverter.cls` (class) [P] | uses: LibPdfCreatorOptions, LibPdfCreatorError
-- `api/PdfCreator/LibPdfCreatorEnums.cls` (class) [P]
-- `api/PdfCreator/LibPdfCreatorError.cls` (class)
-- `api/PdfCreator/LibPdfCreatorFactory.cls` (class) [P] | uses: LibPdfCreatorInstance
-- `api/PdfCreator/LibPdfCreatorInstance.cls` (class) | uses: LibPdfCreatorOptions
-- `api/PdfCreator/LibPdfCreatorJob.cls` (class) | uses: LibPdfCreatorOptions, LibPdfCreatorInstance, FileTools
-- `api/PdfCreator/LibPdfCreatorOptions.cls` (class)
-- `api/PdfCreator/LibPdfCreatorTools.cls` (class) [P] | uses: LibPdfCreatorEnums, LibPdfCreatorOptions, LibPdfCreatorJob, FileTools, StringTools
+- `api/pdfcreator/LibPdfCreatorComFactory.cls` (class) [P]
+- `api/pdfcreator/LibPdfCreatorConverter.cls` (class) [P] | uses: LibPdfCreatorOptions, LibPdfCreatorError
+- `api/pdfcreator/LibPdfCreatorEnums.cls` (class) [P]
+- `api/pdfcreator/LibPdfCreatorError.cls` (class)
+- `api/pdfcreator/LibPdfCreatorFactory.cls` (class) [P] | uses: LibPdfCreatorInstance
+- `api/pdfcreator/LibPdfCreatorInstance.cls` (class) | uses: LibPdfCreatorOptions
+- `api/pdfcreator/LibPdfCreatorJob.cls` (class) | uses: LibPdfCreatorOptions, LibPdfCreatorInstance, FileTools
+- `api/pdfcreator/LibPdfCreatorOptions.cls` (class)
+- `api/pdfcreator/LibPdfCreatorTools.cls` (class) [P] | uses: LibPdfCreatorEnums, LibPdfCreatorOptions, LibPdfCreatorJob, FileTools, StringTools
 
 ## api/winapi
 

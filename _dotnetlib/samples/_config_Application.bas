@@ -13,7 +13,7 @@ Attribute VB_Name = "_config_Application"
 '  <use>base/modErrorHandler.bas</use>
 '  <use>_dotnetlib/integration/DotNetLibsSetup.bas</use>
 '  <use>_dotnetlib/integration/DotNetLibRepair.frm</use>
-'  <use>/data/SqlTools_DotNetLib.bas</use>
+'  <use>data/SqlTools_DotNetLib.bas</use>
 '  <use>_examples/data/SqlTools_DotNetLib_Examples.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------

@@ -2,7 +2,7 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "LibPdfCreatorInstanceTests"
+Attribute VB_Name = "LibPdfCreatorJobTests"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
@@ -11,15 +11,15 @@ Attribute VB_Exposed = False
 ' AccUnit:TestClass
 '---------------------------------------------------------------------------------------
 '/**
-'\short     AccUnit-Testklasse für LibPdfCreatorInstanceTests
+'\short     AccUnit-Testklasse für LibPdfCreatorJobTests
 ' <remarks>
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>_test/api/PdfCreator/LibPdfCreatorInstanceTests.cls</file>
+'  <file>_test/api/pdfcreator/LibPdfCreatorJobTests.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>api/PdfCreator/LibPdfCreatorInstance.cls</use>
+'  <use>api/pdfcreator/LibPdfCreatorJob.cls</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 
@@ -41,25 +41,16 @@ Private Sub ITestFixture_AddTestCases(ByVal Tests As SimplyVBUnit.TestCaseCollec
 '--------------------------------------------------------------------
 
 
-Public Sub CreatorInstance_MultipleInstanceOfPdfCreatortError_HasErrorNr_2()
+Public Sub CreatorOptions_Option_IsStandardOption()
     
-    Dim CreatorInstance As New LibPdfCreatorInstance
-        CreatorInstance.cStart ("/NoProcessingAtStartup")
-        CreatorInstance.cStart ("/NoProcessingAtStartup")
-        
-        Assert.That CreatorInstance.cError.Number, Iz.EqualTo(2)
+    'Test ob job.CreatorOptions tatsächlich die StandardOptions liefert
     
-        CreatorInstance.cErrorClear
+    Dim job As LibPdfCreatorJob
+    Set job = New LibPdfCreatorJob
     
-        Assert.That CreatorInstance.cError.Number, Iz.EqualTo(0)
-        
-        CreatorInstance.cClose
-        CreatorInstance.cStart ("/NoProcessingAtStartup")
-        
-        Assert.That CreatorInstance.cError.Number, Iz.EqualTo(0)
+    Assert.That job.CreatorOptions.AutosaveDirectory, Iz.EqualTo("<MyFiles>\")
+    Assert.That job.CreatorOptions.AutosaveFilename, Iz.EqualTo("<DateTime>")
     
-        CreatorInstance.cClose
-    Set CreatorInstance = Nothing
-    
+    Set job = Nothing
     
 End Sub

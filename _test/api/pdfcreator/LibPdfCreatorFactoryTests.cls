@@ -2,7 +2,7 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "LibPdfCreatorJobTests"
+Attribute VB_Name = "LibPdfCreatorFactoryTests"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
@@ -11,15 +11,15 @@ Attribute VB_Exposed = False
 ' AccUnit:TestClass
 '---------------------------------------------------------------------------------------
 '/**
-'\short     AccUnit-Testklasse für LibPdfCreatorJobTests
+'\short     AccUnit-Testklasse für LibPdfCreatorFactoryTests
 ' <remarks>
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>_test/api/PdfCreator/LibPdfCreatorJobTests.cls</file>
+'  <file>_test/api/pdfcreator/LibPdfCreatorFactoryTests.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>api/PdfCreator/LibPdfCreatorJob.cls</use>
+'  <use>api/pdfcreator/LibPdfCreatorFactory.cls</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 
@@ -40,17 +40,35 @@ Private Sub ITestFixture_AddTestCases(ByVal Tests As SimplyVBUnit.TestCaseCollec
 ' Tests
 '--------------------------------------------------------------------
 
+Public Sub PdfCreatorInstance__NoError_After_Start_Multiple_Instances()
 
-Public Sub CreatorOptions_Option_IsStandardOption()
+    Dim instance As LibPdfCreatorInstance
+    Set instance = LibPdfCreatorFactory.PdfCreatorInstance()
+
+    Assert.That instance.cError.Number, Iz.EqualTo(0)
+
+    '2. instance, Error = 2 should be catched by Factory
+    Set instance = LibPdfCreatorFactory.PdfCreatorInstance()
+
+    Assert.That instance.cError.Number, Iz.EqualTo(0)
+
+        instance.cClose
+    Set instance = Nothing
+End Sub
+
+
+Public Sub PdfCreatorInstance_Correct_Type()
+
+    Dim test As LibPdfCreatorInstance
+    Set test = LibPdfCreatorFactory.PdfCreatorInstance()
     
-    'Test ob job.CreatorOptions tatsächlich die StandardOptions liefert
+    Dim b As Boolean: b = False
     
-    Dim job As LibPdfCreatorJob
-    Set job = New LibPdfCreatorJob
+    If TypeOf test Is LibPdfCreatorInstance Then _
+        b = True
     
-    Assert.That job.CreatorOptions.AutosaveDirectory, Iz.EqualTo("<MyFiles>\")
-    Assert.That job.CreatorOptions.AutosaveFilename, Iz.EqualTo("<DateTime>")
-    
-    Set job = Nothing
-    
+    Assert.That b, Iz.True
+        test.cClose
+    Set test = Nothing
+
 End Sub

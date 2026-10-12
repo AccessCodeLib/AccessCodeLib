@@ -11,7 +11,7 @@ Option Compare Text
 Option Explicit
 
 '<codelib>
-'  <file>_test\datetime\DateTime2Tests.cls</file>
+'  <file>_test/datetime/DateTime2Tests.cls</file>
 '  <license>_codelib/license.bas</license>
 '</codelib>
 

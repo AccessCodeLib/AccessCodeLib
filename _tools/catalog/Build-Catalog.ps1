@@ -444,7 +444,14 @@ function Test-Reference {
 # example modules are not in the catalog, but their headers are checked as well
 $ExampleModules = @($AllModules | Where-Object { $_.hasCodeLibBlock -and $_.path.StartsWith('_examples/') })
 
-foreach ($Module in ($CatalogModules + $ExampleModules)) {
+# headers of all importable modules are checked (library, tests, examples, DotNetLib integration);
+# add-in sources, templates and samples in _codelib and the tools in _tools are not checked
+$CheckedTopFolders = @('_test', '_examples', '_dotnetlib')
+$CheckedModules = @($AllModules | Where-Object {
+    $_.hasCodeLibBlock -and ((Test-InCatalogScope $_.path) -or ($CheckedTopFolders -contains $_.path.Split('/')[0]))
+})
+
+foreach ($Module in $CheckedModules) {
     if ($Module.kind -ne 'package') {
         if (-not $Module.fileTag) {
             $Issues.Add("``$($Module.path)``: <file> tag missing")
@@ -485,6 +492,20 @@ foreach ($Module in $CatalogModules) {
     if ($Module.name -match '_(Example|Examples|Beispiel|Beispiele)(_|$)' -or $Module.name -match 'Example$') {
         $Issues.Add("``$($Module.path)``: example module outside _examples")
     }
+}
+
+# folder names of library, tests and examples are lower case (GitHub paths are case-sensitive)
+$UpperCaseFolders = @{}
+foreach ($Module in $AllModules) {
+    $Folder = $Module.path.Substring(0, [Math]::Max(0, $Module.path.LastIndexOf('/')))
+    if (-not $Folder) { continue }
+    $TopFolder = $Folder.Split('/')[0]
+    if ((Test-InCatalogScope $Module.path) -or $TopFolder -eq '_test' -or $TopFolder -eq '_examples') {
+        if ($Folder -cmatch '[A-Z]') { $UpperCaseFolders[$Folder] = $true }
+    }
+}
+foreach ($Folder in ($UpperCaseFolders.Keys | Sort-Object)) {
+    $Issues.Add("folder name not lower case: ``$Folder``")
 }
 
 #endregion

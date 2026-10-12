@@ -17,8 +17,8 @@ Attribute VB_Exposed = False
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>api/PdfCreator/LibPdfCreatorEnums.cls</file>
-'  <test>_test/api/PdfCreator/LibPdfCreatorEnumsTests.cls</test>
+'  <file>api/pdfcreator/LibPdfCreatorEnums.cls</file>
+'  <test>_test/api/pdfcreator/LibPdfCreatorEnumsTests.cls</test>
 '  <license>_codelib/license.bas</license>
 '</codelib>
 '---------------------------------------------------------------------------------------

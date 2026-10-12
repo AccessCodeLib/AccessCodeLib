@@ -14,7 +14,7 @@ Attribute VB_Name = "SqlTools_DotNetLib"
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>/data/SqlTools_DotNetLib.bas</file>
+'  <file>data/SqlTools_DotNetLib.bas</file>
 '  <license>_codelib/license.bas</license>
 '  <use>_dotnetlib/integration/DotNetLibRepair.frm</use>
 '  <test>_test/data/SqlTools_DotNetLibTests.cls</test>
