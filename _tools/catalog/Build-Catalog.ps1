@@ -431,13 +431,20 @@ function Test-Reference {
     param($Module, [string]$TagName, [string[]]$Paths)
     foreach ($Path in $Paths) {
         if (-not $Path -or $Path.StartsWith('%')) { continue }
-        if (-not $ExistingPaths.ContainsKey((ConvertTo-PathKey $Path))) {
+        $Key = ConvertTo-PathKey $Path
+        if (-not $ExistingPaths.ContainsKey($Key)) {
             $Issues.Add("``$($Module.path)``: <$TagName> target not found: ``$Path``")
+        }
+        elseif ($Path -cne $ExistingPaths[$Key].path) {
+            $Issues.Add("``$($Module.path)``: <$TagName> path differs from file system spelling: ``$Path`` (expected ``$($ExistingPaths[$Key].path)``)")
         }
     }
 }
 
-foreach ($Module in $CatalogModules) {
+# example modules are not in the catalog, but their headers are checked as well
+$ExampleModules = @($AllModules | Where-Object { $_.hasCodeLibBlock -and $_.path.StartsWith('_examples/') })
+
+foreach ($Module in ($CatalogModules + $ExampleModules)) {
     if ($Module.kind -ne 'package') {
         if (-not $Module.fileTag) {
             $Issues.Add("``$($Module.path)``: <file> tag missing")
@@ -445,6 +452,9 @@ foreach ($Module in $CatalogModules) {
         elseif (-not $Module.fileTag.StartsWith('%') -and
                 (ConvertTo-PathKey $Module.fileTag) -ne (ConvertTo-PathKey $Module.path)) {
             $Issues.Add("``$($Module.path)``: <file> tag differs from location: ``$($Module.fileTag)``")
+        }
+        elseif (-not $Module.fileTag.StartsWith('%') -and $Module.fileTag -cne $Module.path) {
+            $Issues.Add("``$($Module.path)``: <file> tag differs from file system spelling: ``$($Module.fileTag)``")
         }
     }
     foreach ($Line in $Module.malformedTags) {
@@ -460,6 +470,21 @@ $CodeModulesByName = $CatalogModules | Where-Object { $_.kind -ne 'package' } | 
 foreach ($Group in $CodeModulesByName) {
     $Paths = ($Group.Group | ForEach-Object { "``$($_.path)``" }) -join ', '
     $Issues.Add("object name ``$($Group.Group[0].name)`` used by several files (alternatives, cannot be imported together): $Paths")
+}
+
+$LinkedExamples = @{}
+foreach ($Module in $CatalogModules) {
+    foreach ($Example in $Module.examples) { $LinkedExamples[(ConvertTo-PathKey $Example)] = $true }
+}
+foreach ($Module in $ExampleModules) {
+    if (-not $LinkedExamples.ContainsKey((ConvertTo-PathKey $Module.path))) {
+        $Issues.Add("``$($Module.path)``: example not linked by an <example> tag of a library module")
+    }
+}
+foreach ($Module in $CatalogModules) {
+    if ($Module.name -match '_(Example|Examples|Beispiel|Beispiele)(_|$)' -or $Module.name -match 'Example$') {
+        $Issues.Add("``$($Module.path)``: example module outside _examples")
+    }
 }
 
 #endregion

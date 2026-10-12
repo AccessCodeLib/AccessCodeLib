@@ -179,7 +179,7 @@ Attribute VB_Exposed = False
 ' Form: InfoMessage_Examples
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>form/InfoMessageBox_Examples.frm</file>
+'  <file>_examples/form/InfoMessageBox_Examples.frm</file>
 '  <use>form/InfoMessageBox.cls</use>
 '  <use>form/InfoMessageBoxForm_mit_Buttons.frm</use>
 '  <license>_codelib/license.bas</license>

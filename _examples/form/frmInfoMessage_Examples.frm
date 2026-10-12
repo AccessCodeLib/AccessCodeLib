@@ -179,7 +179,7 @@ Attribute VB_Exposed = False
 ' Form: frmInfoMessage_Examples
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>form/frmInfoMessage_Examples.frm</file>
+'  <file>_examples/form/frmInfoMessage_Examples.frm</file>
 '  <use>form/frmInfoMessage.frm</use>
 '  <license>_codelib/license.bas</license>
 '</codelib>

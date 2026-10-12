@@ -21,6 +21,7 @@ Attribute VB_Exposed = False
 '  <use>text/StringTools.bas</use>
 '  <test>_test\text\String2Tests.cls</test>
 '  <license>_codelib/license.bas</license>
+'  <example>_examples/text/String2_Example.bas</example>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

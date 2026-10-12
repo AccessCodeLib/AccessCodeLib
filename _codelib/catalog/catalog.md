@@ -4,7 +4,7 @@
 > Details (dependencies, used-by, references, tests, public members): `catalog.json`.
 > Task-oriented guides: `../recipes/`. Import with the ACLib Import Wizard (path = repository path below).
 
-Modules: 139 | Packages: 1
+Modules: 122 | Packages: 1
 
 Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (usable without `New`).
 
@@ -30,7 +30,6 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 - `api/PdfCreator/LibPdfCreatorJob.cls` (class) | uses: LibPdfCreatorOptions, LibPdfCreatorInstance, FileTools
 - `api/PdfCreator/LibPdfCreatorOptions.cls` (class)
 - `api/PdfCreator/LibPdfCreatorTools.cls` (class) [P] | uses: LibPdfCreatorEnums, LibPdfCreatorOptions, LibPdfCreatorJob, FileTools, StringTools
-- `api/PdfCreator/PdfCreatorExample.frm` (form) [P] - Beispiel für die Verwendung von LibPdfCreator | uses: LibPdfCreatorComFactory, LibPdfCreatorConverter, LibPdfCreatorEnums, LibPdfCreatorError, LibPdfCreatorFactory, LibPdfCreatorInstance, LibPdfCreatorJob, LibPdfCreatorOptions, LibPdfCreatorTools, TestReport
 
 ## api/winapi
 
@@ -45,7 +44,6 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 - `api/winapi/WinApiImageTools.cls` (class) - WinAPI functions: Image & Co.
 - `api/winapi/WinApiLayoutTools.cls` (class) - WinAPI functions for layout design
 - `api/winapi/WinApiShellTools.cls` (class) - WinAPI functions: ShellExecuteA & Co.
-- `api/winapi/WinApiShellTools_Example.bas` (module) | uses: WinApiShellTools
 - `api/winapi/WinApiShortcutMenu.cls` (class) - ShortcutMenu via Win API | uses: WinApiLayoutTools, WinApiWindowTools
 - `api/winapi/WinApiTools.cls` (class) - Factory for WinAPI classes | uses: WinApiShellTools, WinApiImageTools
 - `api/winapi/WinApiToolsFactory.bas` (module) - Creates instance of WinApiTools | uses: WinApiTools
@@ -86,7 +84,6 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 
 - `com/modDirectCOM.bas` (module) - Instanz aus unregistrierter COM-dll erzeugen
 - `com/NetComDomain.cls` (class)
-- `com/NetComDomain_Example_ShowWinForm_Minimal.bas` (module) | uses: NetComDomain
 
 ## crypt/md5
 
@@ -100,24 +97,18 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 - `data/DbConnectionSettings.cls` (class) - Settings container for DbConnectionManager (SqlTools formats, ADODB defaults)
 - `data/defDbConnection.bas` (module) - Shared types and enums for the DbConnection classes
 - `data/FilterStringBuilder.cls` (class) - Builds SQL criteria from field/operator/value entries, incl. condition groups, sub-selects and EXISTS | uses: StringCollection, SqlTools
-- `data/FilterStringBuilder_Examples.bas` (module) - Usage examples for FilterStringBuilder | uses: FilterStringBuilder
-- `data/FilterStringBuilderNet_Examples.bas` (module) - Usage examples for the .NET FilterStringBuilder (ACLib DotNetLib)
 - `data/modDbConnection.bas` (module) - Global access to DbConnectionManager (DbCon) and helper procedures for the current backend connection | uses: DbConnectionManager
 - `data/SqlTools.bas` (module) - Obsolete placeholder (SqlTools_obsolete), replaced by data/SqlTools.cls | uses: SqlTools
 - `data/SqlTools.cls` (class) [P] - Converts values to SQL literals (text, number, date, boolean) for DAO or T-SQL and builds criteria safely
-- `data/SqlTools_BuildCriteria_Examples.bas` (module) - Usage examples for SqlTools.BuildCriteria | uses: SqlTools
 - `data/SqlTools_DotNetLib.bas` (module) - Factory for the .NET version of SqlTools (ACLib DotNetLib) | uses: DotNetLibRepair
-- `data/SqlTools_DotNetLib_Examples.bas` (module) - Usage examples for the .NET version of SqlTools (ACLib DotNetLib) | uses: SqlTools_DotNetLib
 
 ## data/ado
 
 - `data/ado/AdodbHandler.cls` (class) [P] - ADODB data access: execute SQL and commands, open recordsets, lookups and aggregates on a connection
-- `data/ado/AdodbHandler_Beispiel.bas` (module) - Usage examples for AdodbHandler | uses: AdodbHandler
 
 ## data/dao
 
 - `data/dao/DaoHandler.cls` (class) [P] - DAO data access: execute SQL and parameter queries, open recordsets, lookups and aggregates
-- `data/dao/DaoHandler_Beispiele.bas` (module) - Usage examples for DaoHandler, incl. setup of test tables and queries | uses: DaoHandler, DaoTools
 - `data/dao/DaoTools.bas` (module) - DAO helper functions: check whether a table or query exists
 - `data/dao/DaoTransactionHandler.cls` (class) - Wraps DAO transactions (BeginTrans, CommitTrans, Rollback) on a workspace
 - `data/dao/TempDbHandler.cls` (class) - Creates and manages a database file for temporary tables | uses: DaoHandler
@@ -129,7 +120,6 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 ## datetime
 
 - `datetime/DateTime2.cls` (class) [P]
-- `datetime/DateTime2_Example.bas` (module) | uses: DateTime2
 
 ## file
 
@@ -143,9 +133,7 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 - `form/FormHandler.cls` (class) - Formularsteuerungsklasse für Access-Formulare (Basisklasse) | uses: DbConnectionHandler
 - `form/FormTools.cls` (class) [P] - Procedure collection for forms
 - `form/frmInfoMessage.frm` (form) [P] - Text in Anwendung einblenden und optional automatisch ausblenden inkl. fadein/fadeout-Feature
-- `form/frmInfoMessage_Examples.frm` (form) [P] | uses: frmInfoMessage
 - `form/InfoMessageBox.cls` (class) - Text in Anwendung einblenden und optional automatisch ausblenden inkl. fadein/fadeout-Feature | uses: InfoMessageBoxForm
-- `form/InfoMessageBox_Examples.frm` (form) [P] | uses: InfoMessageBox, InfoMessageBoxForm_mit_Buttons
 - `form/InfoMessageBoxForm.frm` (form) [P] - Hilfs-Formular für InfoMessageBox-Klasse
 - `form/InfoMessageBoxForm_mit_Buttons.frm` (form) [P] - Beispiel-Ersatz-Formular für InfoMessageBoxForm
 - `form/ListFormHandler.cls` (class) - Formularsteuerungsklasse für Listen/Endlosformulare | uses: FormHandler
@@ -173,7 +161,6 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 - `form/sort/FormSortingControl.cls` (class) - Hilfsklasse für FormSortingExtension | uses: FormSortingControlEventBridge
 - `form/sort/FormSortingControlEventBridge.cls` (class) - Hilfsklasse für FormSortingExtension | uses: FormSortingControl
 - `form/sort/FormSortingExtension.cls` (class) - Erstellt einen OrderBy-String für ein Endlos-Formular | uses: FormSortingControl, FormSortingControlEventBridge, WinApiLayoutTools
-- `form/sort/frmColumnSort.frm` (form) [P] | uses: ColumnSort
 
 ## localization
 
@@ -206,9 +193,7 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 
 - `text/Base64.cls` (class) [P]
 - `text/String2.cls` (class) [P] | uses: StringTools
-- `text/String2_Example.bas` (module) | uses: String2
 - `text/StringCollection.cls` (class) - Collection for strings
-- `text/StringCollection_Examples.bas` (module) | uses: StringCollection
 - `text/StringTools.bas` (module) - Text functions
 - `text/StringTools.cls` (class) [P] - Text functions
 - `text/UnicodeTools.cls` (class) [P]
@@ -218,9 +203,7 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 - `usability/ApplicationHandler_DirTextbox.cls` (class) - Extension for ApplicationHandler class: Search directory using textbox | uses: ApplicationHandler, FileTools
 - `usability/CalculationTextBox.cls` (class) [P] - Allow calculation expression in a TextBox
 - `usability/ComboboxFilterControl.cls` (class) - Combobox-Steuerung zum Suchen/Auswählen von Einträgen innerhalb der Combobox-Liste Combobox control for searching/selecting entries within the combobox list
-- `usability/ComboboxFilterControl_Beispiele.frm` (form) [P] - Beispiel für die Nutzung der Combobox-Steuerung 'ComboboxFilterControl' | uses: ComboboxFilterControl
 - `usability/OptionManager.cls` (class) [P]
-- `usability/OptionManager_Beispiel.frm` (form) [P] - /** \author Andreas Vogt \brief Beispiel für die Verwendung der OptionManager-Klasse \ingroup usability **/ | uses: OptionManager
 - `usability/OptionManagerSetup.bas` (module) - Setup Modul für den OptionManager | uses: OptionManager
 
 ## user

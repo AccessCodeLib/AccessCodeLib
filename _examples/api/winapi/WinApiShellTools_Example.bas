@@ -9,7 +9,7 @@ Attribute VB_Name = "WinApiShellTools_Example"
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>api/winapi/WinApiShellTools_Example.bas</file>
+'  <file>_examples/api/winapi/WinApiShellTools_Example.bas</file>
 '  <use>api/winapi/WinApiShellTools.cls</use>
 '  <license>_codelib/license.bas</license>
 '</codelib>

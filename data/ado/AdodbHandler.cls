@@ -25,6 +25,7 @@ Attribute VB_Exposed = False
 '  <ref><name>ADODB</name><major>2</major><minor>1</minor><guid>{00000201-0000-0010-8000-00AA006D2EA4}</guid></ref>
 '  <test>_test/data/ado/AdodbHandlerTests.cls</test>
 '  <description>ADODB data access: execute SQL and commands, open recordsets, lookups and aggregates on a connection</description>
+'  <example>_examples/data/ado/AdodbHandler_Beispiel.bas</example>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

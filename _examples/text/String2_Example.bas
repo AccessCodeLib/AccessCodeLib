@@ -9,9 +9,9 @@ Attribute VB_Name = "String2_Example"
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>text\String2_Example.bas</file>
-'  <use>text\String2.cls</use>
-'  <test>_test\text\String2Tests.cls</test>
+'  <file>_examples/text/String2_Example.bas</file>
+'  <use>text/String2.cls</use>
+'  <test>_test/text/String2Tests.cls</test>
 '  <license>_codelib/license.bas</license>
 '</codelib>
 '---------------------------------------------------------------------------------------

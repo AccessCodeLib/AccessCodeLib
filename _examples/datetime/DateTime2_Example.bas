@@ -9,9 +9,9 @@ Attribute VB_Name = "DateTime2_Example"
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>datetime/DateTime2_Example.bas</file>
+'  <file>_examples/datetime/DateTime2_Example.bas</file>
 '  <use>datetime/DateTime2.cls</use>
-'  <test>_test\datetime\DateTime2Tests.cls</test>
+'  <test>_test/datetime/DateTime2Tests.cls</test>
 '  <license>_codelib/license.bas</license>
 '</codelib>
 '---------------------------------------------------------------------------------------

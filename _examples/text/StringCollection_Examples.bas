@@ -9,8 +9,8 @@ Attribute VB_Name = "StringCollection_Examples"
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>text\StringCollection_Examples.bas</file>
-'  <use>text\StringCollection.cls</use>
+'  <file>_examples/text/StringCollection_Examples.bas</file>
+'  <use>text/StringCollection.cls</use>
 '  <license>_codelib/license.bas</license>
 '</codelib>
 '---------------------------------------------------------------------------------------

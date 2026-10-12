@@ -21,6 +21,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <ref><name>mscoree</name><major>2</major><minor>0</minor><guid>{5477469E-83B1-11D2-8B49-00A0C9B7C9C4}</guid></ref>
 '  <ref><name>mscorlib</name><major>2</major><minor>0</minor><guid>{BED7F4EA-1A96-11D2-8F08-00A0C9A6186D}</guid></ref>
+'  <example>_examples/com/NetComDomain_Example_ShowWinForm_Minimal.bas</example>
 '</codelib>
 '---------------------------------------------------------------------------------------
 Option Compare Text

@@ -9,7 +9,7 @@ Attribute VB_Name = "FilterStringBuilder_Examples"
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>data/FilterStringBuilder_Examples.bas</file>
+'  <file>_examples/data/FilterStringBuilder_Examples.bas</file>
 '  <use>data/FilterStringBuilder.cls</use>
 '  <license>_codelib/license.bas</license>
 '  <description>Usage examples for FilterStringBuilder</description>

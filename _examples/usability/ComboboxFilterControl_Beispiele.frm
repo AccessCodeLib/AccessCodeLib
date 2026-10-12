@@ -1912,7 +1912,7 @@ Attribute VB_Exposed = False
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>usability/ComboboxFilterControl_Beispiele.frm</file>
+'  <file>_examples/usability/ComboboxFilterControl_Beispiele.frm</file>
 '  <use>usability/ComboboxFilterControl.cls</use>
 '  <ref><name>ADODB</name><major>2</major><minor>1</minor><guid>{00000201-0000-0010-8000-00AA006D2EA4}</guid></ref>
 '</codelib>

@@ -212,6 +212,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>form/frmInfoMessage.frm</file>
 '  <license>_codelib/license.bas</license>
+'  <example>_examples/form/frmInfoMessage_Examples.frm</example>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

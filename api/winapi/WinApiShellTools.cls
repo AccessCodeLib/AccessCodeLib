@@ -22,6 +22,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>api/winapi/WinApiShellTools.cls</file>
 '  <license>_codelib/license.bas</license>
+'  <example>_examples/api/winapi/WinApiShellTools_Example.bas</example>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

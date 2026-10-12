@@ -723,7 +723,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>form/sort/frmColumnSort.frm</file>
+'  <file>_examples/form/sort/frmColumnSort.frm</file>
 '  <license>_codelib/license.bas</license>
 '  <use>form/sort/ColumnSort.cls</use>
 '</codelib>

@@ -183,9 +183,7 @@
       "predeclaredId": true,
       "uses": [],
       "usesTransitive": [],
-      "usedBy": [
-        "api/PdfCreator/PdfCreatorExample.frm"
-      ],
+      "usedBy": [],
       "replaces": [],
       "references": [],
       "tests": [],
@@ -212,9 +210,7 @@
         "api/PdfCreator/LibPdfCreatorError.cls",
         "api/PdfCreator/LibPdfCreatorOptions.cls"
       ],
-      "usedBy": [
-        "api/PdfCreator/PdfCreatorExample.frm"
-      ],
+      "usedBy": [],
       "replaces": [],
       "references": [],
       "tests": [
@@ -239,8 +235,7 @@
       "uses": [],
       "usesTransitive": [],
       "usedBy": [
-        "api/PdfCreator/LibPdfCreatorTools.cls",
-        "api/PdfCreator/PdfCreatorExample.frm"
+        "api/PdfCreator/LibPdfCreatorTools.cls"
       ],
       "replaces": [],
       "references": [],
@@ -265,8 +260,7 @@
       "uses": [],
       "usesTransitive": [],
       "usedBy": [
-        "api/PdfCreator/LibPdfCreatorConverter.cls",
-        "api/PdfCreator/PdfCreatorExample.frm"
+        "api/PdfCreator/LibPdfCreatorConverter.cls"
       ],
       "replaces": [],
       "references": [],
@@ -294,9 +288,7 @@
         "api/PdfCreator/LibPdfCreatorInstance.cls",
         "api/PdfCreator/LibPdfCreatorOptions.cls"
       ],
-      "usedBy": [
-        "api/PdfCreator/PdfCreatorExample.frm"
-      ],
+      "usedBy": [],
       "replaces": [],
       "references": [],
       "tests": [
@@ -323,8 +315,7 @@
       ],
       "usedBy": [
         "api/PdfCreator/LibPdfCreatorFactory.cls",
-        "api/PdfCreator/LibPdfCreatorJob.cls",
-        "api/PdfCreator/PdfCreatorExample.frm"
+        "api/PdfCreator/LibPdfCreatorJob.cls"
       ],
       "replaces": [],
       "references": [],
@@ -436,8 +427,7 @@
         "file/FileTools.bas"
       ],
       "usedBy": [
-        "api/PdfCreator/LibPdfCreatorTools.cls",
-        "api/PdfCreator/PdfCreatorExample.frm"
+        "api/PdfCreator/LibPdfCreatorTools.cls"
       ],
       "replaces": [],
       "references": [],
@@ -467,8 +457,7 @@
         "api/PdfCreator/LibPdfCreatorConverter.cls",
         "api/PdfCreator/LibPdfCreatorInstance.cls",
         "api/PdfCreator/LibPdfCreatorJob.cls",
-        "api/PdfCreator/LibPdfCreatorTools.cls",
-        "api/PdfCreator/PdfCreatorExample.frm"
+        "api/PdfCreator/LibPdfCreatorTools.cls"
       ],
       "replaces": [],
       "references": [],
@@ -870,15 +859,15 @@
         "file/FileTools.bas",
         "text/StringTools.bas"
       ],
-      "usedBy": [
-        "api/PdfCreator/PdfCreatorExample.frm"
-      ],
+      "usedBy": [],
       "replaces": [],
       "references": [],
       "tests": [
         "_test/api/PdfCreator/LibPdfCreatorToolsTests.cls"
       ],
-      "examples": [],
+      "examples": [
+        "_examples/api/PdfCreator/PdfCreatorExample.frm"
+      ],
       "executes": [],
       "publicMembers": [
         "Function ConvertReportToPDF( ByVal RptName As String, ByVal OutputPath As String, Optional ByVal StartPDFViewer As Boolean = True, Optional ByVal ReportFilter As String = vbNullString, Optional ByVal SetMetaData As Boolean = False, Optional ByVal Author As String = vbNullString, Optional ByVal Title As String = vbNullString, Optional ByVal Subject As String = vbNullString, Optional ByVal SetSecurity As Boolean = False, Optional ByVal OwnerPasswordString As String = \")(/js)/&T&qR&T/a%F(D(U~Z)=I`*'Ä7z\", Optional ByVal DisallowCopy As Boolean = True, Optional ByVal DisallowModifyAnnotations As Boolean = True, Optional ByVal DisallowModifyContents As Boolean = True, Optional ByVal DisallowPrinting As Boolean = False, Optional ByVal AllowAssembly As Boolean = False, Optional ByVal AllowDegradedPrinting As Boolean = False, Optional ByVal PDFAllowFillIn As Boolean = True, Optional ByVal AllowScreenReaders As Boolean = True, Optional ByVal Aes128Encryption As Boolean = True ) As Boolean",
@@ -887,47 +876,6 @@
         "Property Get GetPdfCreatorFileFormatFromFileExtension(ByVal filePathFileExtension As String) As LibPdfCreatorFileFormat",
         "Function GetPDFCreatorOptionFlag(ByVal boolOption As Boolean) As LibPdfCreatorOptionFlag"
       ]
-    },
-    {
-      "path": "api/PdfCreator/PdfCreatorExample.frm",
-      "name": "PdfCreatorExample",
-      "kind": "form",
-      "description": "Beispiel für die Verwendung von LibPdfCreator",
-      "descriptionSource": "header",
-      "predeclaredId": true,
-      "uses": [
-        "api\\PdfCreator\\LibPdfCreatorComFactory.cls",
-        "api\\PdfCreator\\LibPdfCreatorConverter.cls",
-        "api\\PdfCreator\\LibPdfCreatorEnums.cls",
-        "api\\PdfCreator\\LibPdfCreatorError.cls",
-        "api\\PdfCreator\\LibPdfCreatorFactory.cls",
-        "api\\PdfCreator\\LibPdfCreatorInstance.cls",
-        "api\\PdfCreator\\LibPdfCreatorJob.cls",
-        "api\\PdfCreator\\LibPdfCreatorOptions.cls",
-        "api\\PdfCreator\\LibPdfCreatorTools.cls",
-        "_test/api/PdfCreator/TestReport.rpt"
-      ],
-      "usesTransitive": [
-        "_test/api/PdfCreator/TestReport.rpt",
-        "api/PdfCreator/LibPdfCreatorComFactory.cls",
-        "api/PdfCreator/LibPdfCreatorConverter.cls",
-        "api/PdfCreator/LibPdfCreatorEnums.cls",
-        "api/PdfCreator/LibPdfCreatorError.cls",
-        "api/PdfCreator/LibPdfCreatorFactory.cls",
-        "api/PdfCreator/LibPdfCreatorInstance.cls",
-        "api/PdfCreator/LibPdfCreatorJob.cls",
-        "api/PdfCreator/LibPdfCreatorOptions.cls",
-        "api/PdfCreator/LibPdfCreatorTools.cls",
-        "file/FileTools.bas",
-        "text/StringTools.bas"
-      ],
-      "usedBy": [],
-      "replaces": [],
-      "references": [],
-      "tests": [],
-      "examples": [],
-      "executes": [],
-      "publicMembers": []
     },
     {
       "path": "api/winapi/modWinAPI.bas",
@@ -1161,42 +1109,20 @@
       "uses": [],
       "usesTransitive": [],
       "usedBy": [
-        "api/winapi/WinApiShellTools_Example.bas",
         "api/winapi/WinApiTools.cls"
       ],
       "replaces": [],
       "references": [],
       "tests": [],
-      "examples": [],
+      "examples": [
+        "_examples/api/winapi/WinApiShellTools_Example.bas"
+      ],
       "executes": [],
       "publicMembers": [
         "Function Execute(ByVal FilePath As String, Optional ByVal ApiOperation As String = vbNullString, Optional ByVal ShowCmd As VbAppWinStyle = vbNormalFocus) As Boolean",
         "Function ExecuteAsAdmin(ByVal File As String) As Boolean",
         "Function ShellExecuteSendMail(ByVal SendTo As String, ByVal Subject As String, ByVal Body As String) As Boolean",
         "Function LaunchAppSynchronous(ByVal ExecutablePathAndName As String, Optional ByVal Param As String = vbNullString, Optional ByVal ShowCommand As Long = vbNormalFocus) As Boolean"
-      ]
-    },
-    {
-      "path": "api/winapi/WinApiShellTools_Example.bas",
-      "name": "WinApiShellTools_Example",
-      "kind": "module",
-      "description": "",
-      "descriptionSource": "none",
-      "predeclaredId": false,
-      "uses": [
-        "api/winapi/WinApiShellTools.cls"
-      ],
-      "usesTransitive": [
-        "api/winapi/WinApiShellTools.cls"
-      ],
-      "usedBy": [],
-      "replaces": [],
-      "references": [],
-      "tests": [],
-      "examples": [],
-      "executes": [],
-      "publicMembers": [
-        "Sub WinApiShellTools_Example()"
       ]
     },
     {
@@ -1878,9 +1804,7 @@
       "predeclaredId": false,
       "uses": [],
       "usesTransitive": [],
-      "usedBy": [
-        "com/NetComDomain_Example_ShowWinForm_Minimal.bas"
-      ],
+      "usedBy": [],
       "replaces": [],
       "references": [
         {
@@ -1897,7 +1821,9 @@
         }
       ],
       "tests": [],
-      "examples": [],
+      "examples": [
+        "_examples/com/NetComDomain_Example_ShowWinForm_Minimal.bas"
+      ],
       "executes": [],
       "publicMembers": [
         "Function CreateObject(ByVal ClassIdentifier As String, Optional ByVal DefaultNameSpace As String = vbNullString, Optional ByVal LibraryFile As String = vbNullString) As Object",
@@ -1905,29 +1831,6 @@
         "Property Let LibraryFile(ByVal FilePath As String)",
         "Property Get DefaultNameSpace() As String",
         "Property Let DefaultNameSpace(ByVal NameSpace As String)"
-      ]
-    },
-    {
-      "path": "com/NetComDomain_Example_ShowWinForm_Minimal.bas",
-      "name": "NetComDomain_Example_ShowWinForm_Minimal",
-      "kind": "module",
-      "description": "",
-      "descriptionSource": "none",
-      "predeclaredId": false,
-      "uses": [
-        "COM/NetComDomain.cls"
-      ],
-      "usesTransitive": [
-        "com/NetComDomain.cls"
-      ],
-      "usedBy": [],
-      "replaces": [],
-      "references": [],
-      "tests": [],
-      "examples": [],
-      "executes": [],
-      "publicMembers": [
-        "Sub NetComDomain_Example_ShowWinForm_Minimal()"
       ]
     },
     {
@@ -1961,7 +1864,6 @@
       "uses": [],
       "usesTransitive": [],
       "usedBy": [
-        "data/ado/AdodbHandler_Beispiel.bas",
         "data/DbConnectionHandler.cls"
       ],
       "replaces": [],
@@ -1976,7 +1878,9 @@
       "tests": [
         "_test/data/ado/AdodbHandlerTests.cls"
       ],
-      "examples": [],
+      "examples": [
+        "_examples/data/ado/AdodbHandler_Beispiel.bas"
+      ],
       "executes": [],
       "publicMembers": [
         "Event ErrorMissingCurrentConnection(ByVal Msg As String, ByRef NewCurrentConnection As ADODB.Connection)",
@@ -2009,27 +1913,6 @@
       ]
     },
     {
-      "path": "data/ado/AdodbHandler_Beispiel.bas",
-      "name": "AdodbHandlerBeispiel",
-      "kind": "module",
-      "description": "Usage examples for AdodbHandler",
-      "descriptionSource": "tag",
-      "predeclaredId": false,
-      "uses": [
-        "data/ado/AdodbHandler.cls"
-      ],
-      "usesTransitive": [
-        "data/ado/AdodbHandler.cls"
-      ],
-      "usedBy": [],
-      "replaces": [],
-      "references": [],
-      "tests": [],
-      "examples": [],
-      "executes": [],
-      "publicMembers": []
-    },
-    {
       "path": "data/dao/DaoHandler.cls",
       "name": "DaoHandler",
       "kind": "class",
@@ -2039,7 +1922,6 @@
       "uses": [],
       "usesTransitive": [],
       "usedBy": [
-        "data/dao/DaoHandler_Beispiele.bas",
         "data/dao/TempDbHandler.cls",
         "data/DbConnectionHandler.cls"
       ],
@@ -2055,7 +1937,9 @@
       "tests": [
         "_test/data/dao/DaoHandlerTests.cls"
       ],
-      "examples": [],
+      "examples": [
+        "_examples/data/dao/DaoHandler_Beispiele.bas"
+      ],
       "executes": [],
       "publicMembers": [
         "Event ErrorMissingCurrentDb(ByVal Msg As String, ByRef NewCurrentDbRef As DAO.Database)",
@@ -2093,33 +1977,6 @@
       ]
     },
     {
-      "path": "data/dao/DaoHandler_Beispiele.bas",
-      "name": "DaoHandler_Beispiele",
-      "kind": "module",
-      "description": "Usage examples for DaoHandler, incl. setup of test tables and queries",
-      "descriptionSource": "tag",
-      "predeclaredId": false,
-      "uses": [
-        "data/dao/DaoHandler.cls",
-        "data/dao/DaoTools.bas"
-      ],
-      "usesTransitive": [
-        "data/dao/DaoHandler.cls",
-        "data/dao/DaoTools.bas"
-      ],
-      "usedBy": [],
-      "replaces": [],
-      "references": [],
-      "tests": [],
-      "examples": [],
-      "executes": [
-        "DaoHandler_Beispiele_InitTestTablesAndQueries()"
-      ],
-      "publicMembers": [
-        "Function DaoHandler_Beispiele_InitTestTablesAndQueries()"
-      ]
-    },
-    {
       "path": "data/dao/DaoTools.bas",
       "name": "DaoTools",
       "kind": "module",
@@ -2128,9 +1985,7 @@
       "predeclaredId": false,
       "uses": [],
       "usesTransitive": [],
-      "usedBy": [
-        "data/dao/DaoHandler_Beispiele.bas"
-      ],
+      "usedBy": [],
       "replaces": [],
       "references": [
         {
@@ -2468,7 +2323,6 @@
         "text/StringCollection.cls"
       ],
       "usedBy": [
-        "data/FilterStringBuilder_Examples.bas",
         "form/filter/FilterControlCollection.cls",
         "form/filter/FilterControlManager.cls"
       ],
@@ -2478,7 +2332,7 @@
         "_test/data/FilterStringBuilderTests.cls"
       ],
       "examples": [
-        "data/FilterStringBuilder_Examples.bas"
+        "_examples/data/FilterStringBuilder_Examples.bas"
       ],
       "executes": [],
       "publicMembers": [
@@ -2493,46 +2347,6 @@
         "Property Get WhereReplacementTextPlaceholder() As String",
         "Function ToString(Optional ByVal ConcatOperator As SqlLogicalOperator = SqlLogicalOperator.[_SQL_Default], Optional ByVal IgnoreDuplicateFilters As Boolean = False) As String"
       ]
-    },
-    {
-      "path": "data/FilterStringBuilder_Examples.bas",
-      "name": "FilterStringBuilder_Examples",
-      "kind": "module",
-      "description": "Usage examples for FilterStringBuilder",
-      "descriptionSource": "tag",
-      "predeclaredId": false,
-      "uses": [
-        "data/FilterStringBuilder.cls"
-      ],
-      "usesTransitive": [
-        "data/FilterStringBuilder.cls",
-        "data/SqlTools.cls",
-        "text/StringCollection.cls"
-      ],
-      "usedBy": [],
-      "replaces": [],
-      "references": [],
-      "tests": [],
-      "examples": [],
-      "executes": [],
-      "publicMembers": []
-    },
-    {
-      "path": "data/FilterStringBuilderNet_Examples.bas",
-      "name": "FilterStringBuilderNet_Examples",
-      "kind": "module",
-      "description": "Usage examples for the .NET FilterStringBuilder (ACLib DotNetLib)",
-      "descriptionSource": "tag",
-      "predeclaredId": false,
-      "uses": [],
-      "usesTransitive": [],
-      "usedBy": [],
-      "replaces": [],
-      "references": [],
-      "tests": [],
-      "examples": [],
-      "executes": [],
-      "publicMembers": []
     },
     {
       "path": "data/modDbConnection.bas",
@@ -2667,7 +2481,6 @@
         "data/DbConnectionManager.cls",
         "data/FilterStringBuilder.cls",
         "data/SqlTools.bas",
-        "data/SqlTools_BuildCriteria_Examples.bas",
         "form/filter/FilterControl.cls",
         "form/filter/FilterControlCollection.cls",
         "form/filter/FilterControlTagConverter.cls",
@@ -2681,7 +2494,9 @@
         "_test/data/SqlToolsTests.cls",
         "_test/data/SqlToolsBuildCriteriaTests.cls"
       ],
-      "examples": [],
+      "examples": [
+        "_examples/data/SqlTools_BuildCriteria_Examples.bas"
+      ],
       "executes": [],
       "publicMembers": [
         "Enum SqlRelationalOperators",
@@ -2708,27 +2523,6 @@
       ]
     },
     {
-      "path": "data/SqlTools_BuildCriteria_Examples.bas",
-      "name": "SqlTools_BuildCriteria_Examples",
-      "kind": "module",
-      "description": "Usage examples for SqlTools.BuildCriteria",
-      "descriptionSource": "tag",
-      "predeclaredId": false,
-      "uses": [
-        "data/SqlTools.cls"
-      ],
-      "usesTransitive": [
-        "data/SqlTools.cls"
-      ],
-      "usedBy": [],
-      "replaces": [],
-      "references": [],
-      "tests": [],
-      "examples": [],
-      "executes": [],
-      "publicMembers": []
-    },
-    {
       "path": "data/SqlTools_DotNetLib.bas",
       "name": "SqlTools_DotNetLib",
       "kind": "module",
@@ -2746,49 +2540,18 @@
         "data/dao/DaoTools.bas",
         "file/LibFiles.cls"
       ],
-      "usedBy": [
-        "data/SqlTools_DotNetLib_Examples.bas"
-      ],
+      "usedBy": [],
       "replaces": [],
       "references": [],
       "tests": [
         "_test/data/SqlTools_DotNetLibTests.cls"
       ],
-      "examples": [],
+      "examples": [
+        "_examples/data/SqlTools_DotNetLib_Examples.bas"
+      ],
       "executes": [],
       "publicMembers": [
         "Property Get SqlTools() As ACLibSqlTools.SqlToolsFactory"
-      ]
-    },
-    {
-      "path": "data/SqlTools_DotNetLib_Examples.bas",
-      "name": "SqlTools_DotNetLib_Examples",
-      "kind": "module",
-      "description": "Usage examples for the .NET version of SqlTools (ACLib DotNetLib)",
-      "descriptionSource": "tag",
-      "predeclaredId": false,
-      "uses": [
-        "/data/SqlTools_DotNetLib.bas"
-      ],
-      "usesTransitive": [
-        "_dotnetlib/integration/DotNetLibRepair.frm",
-        "_dotnetlib/integration/DotNetLibs.cls",
-        "_dotnetlib/integration/DotNetLibsSetup.bas",
-        "com/NetComDomain.cls",
-        "data/dao/DaoTools.bas",
-        "data/SqlTools_DotNetLib.bas",
-        "file/LibFiles.cls"
-      ],
-      "usedBy": [],
-      "replaces": [],
-      "references": [],
-      "tests": [],
-      "examples": [],
-      "executes": [],
-      "publicMembers": [
-        "Sub Converter_Direct_Use()",
-        "Sub Converter_Set_Properties_Later()",
-        "Sub Converter_Separate_Usage()"
       ]
     },
     {
@@ -2800,15 +2563,15 @@
       "predeclaredId": true,
       "uses": [],
       "usesTransitive": [],
-      "usedBy": [
-        "datetime/DateTime2_Example.bas"
-      ],
+      "usedBy": [],
       "replaces": [],
       "references": [],
       "tests": [
         "_test\\datetime\\DateTime2Tests.cls"
       ],
-      "examples": [],
+      "examples": [
+        "_examples/datetime/DateTime2_Example.bas"
+      ],
       "executes": [],
       "publicMembers": [
         "Property Get NewValue(Optional ByVal Value As Variant) As DateTime2",
@@ -2853,31 +2616,6 @@
         "Property Get TrimDate() As DateTime2",
         "Property Get GetDate() As DateTime2",
         "Property Get Now() As DateTime2"
-      ]
-    },
-    {
-      "path": "datetime/DateTime2_Example.bas",
-      "name": "DateTime2_Example",
-      "kind": "module",
-      "description": "",
-      "descriptionSource": "none",
-      "predeclaredId": false,
-      "uses": [
-        "datetime/DateTime2.cls"
-      ],
-      "usesTransitive": [
-        "datetime/DateTime2.cls"
-      ],
-      "usedBy": [],
-      "replaces": [],
-      "references": [],
-      "tests": [
-        "_test\\datetime\\DateTime2Tests.cls"
-      ],
-      "examples": [],
-      "executes": [],
-      "publicMembers": [
-        "Sub DateTime2_Example()"
       ]
     },
     {
@@ -3558,13 +3296,13 @@
       "predeclaredId": true,
       "uses": [],
       "usesTransitive": [],
-      "usedBy": [
-        "form/frmInfoMessage_Examples.frm"
-      ],
+      "usedBy": [],
       "replaces": [],
       "references": [],
       "tests": [],
-      "examples": [],
+      "examples": [
+        "_examples/form/frmInfoMessage_Examples.frm"
+      ],
       "executes": [],
       "publicMembers": [
         "Sub Show(Optional ByVal NewInfoText As String = vbNullString, Optional ByVal CloseTimer As Long = 0, Optional ByVal TransparencyFactor As Long = -1, Optional ByVal FadeOutTime As Long = 0, Optional ByVal FadeInTime As Long = 0, Optional ByVal KeepFormReference As Boolean = True)",
@@ -3576,27 +3314,6 @@
         "Property Get ForeColor() As Long",
         "Property Let ForeColor(ByVal NewValue As Long)"
       ]
-    },
-    {
-      "path": "form/frmInfoMessage_Examples.frm",
-      "name": "frmInfoMessage_Examples",
-      "kind": "form",
-      "description": "",
-      "descriptionSource": "none",
-      "predeclaredId": true,
-      "uses": [
-        "form/frmInfoMessage.frm"
-      ],
-      "usesTransitive": [
-        "form/frmInfoMessage.frm"
-      ],
-      "usedBy": [],
-      "replaces": [],
-      "references": [],
-      "tests": [],
-      "examples": [],
-      "executes": [],
-      "publicMembers": []
     },
     {
       "path": "form/InfoMessageBox.cls",
@@ -3611,13 +3328,13 @@
       "usesTransitive": [
         "form/InfoMessageBoxForm.frm"
       ],
-      "usedBy": [
-        "form/InfoMessageBox_Examples.frm"
-      ],
+      "usedBy": [],
       "replaces": [],
       "references": [],
       "tests": [],
-      "examples": [],
+      "examples": [
+        "_examples/form/InfoMessageBox_Examples.frm"
+      ],
       "executes": [],
       "publicMembers": [
         "Event InfoMessageClosed()",
@@ -3634,30 +3351,6 @@
         "Property Let ForeColor(ByVal NewValue As Long)",
         "Sub CloseForm()"
       ]
-    },
-    {
-      "path": "form/InfoMessageBox_Examples.frm",
-      "name": "InfoMessageBox_Examples",
-      "kind": "form",
-      "description": "",
-      "descriptionSource": "none",
-      "predeclaredId": true,
-      "uses": [
-        "form/InfoMessageBox.cls",
-        "form/InfoMessageBoxForm_mit_Buttons.frm"
-      ],
-      "usesTransitive": [
-        "form/InfoMessageBox.cls",
-        "form/InfoMessageBoxForm.frm",
-        "form/InfoMessageBoxForm_mit_Buttons.frm"
-      ],
-      "usedBy": [],
-      "replaces": [],
-      "references": [],
-      "tests": [],
-      "examples": [],
-      "executes": [],
-      "publicMembers": []
     },
     {
       "path": "form/InfoMessageBoxForm.frm",
@@ -3696,9 +3389,7 @@
       "predeclaredId": true,
       "uses": [],
       "usesTransitive": [],
-      "usedBy": [
-        "form/InfoMessageBox_Examples.frm"
-      ],
+      "usedBy": [],
       "replaces": [],
       "references": [],
       "tests": [],
@@ -3789,9 +3480,7 @@
       "predeclaredId": false,
       "uses": [],
       "usesTransitive": [],
-      "usedBy": [
-        "form/sort/frmColumnSort.frm"
-      ],
+      "usedBy": [],
       "replaces": [],
       "references": [
         {
@@ -3802,7 +3491,9 @@
         }
       ],
       "tests": [],
-      "examples": [],
+      "examples": [
+        "_examples/form/sort/frmColumnSort.frm"
+      ],
       "executes": [],
       "publicMembers": [
         "Enum SortMode",
@@ -3906,27 +3597,6 @@
         "Sub InitSortSymbolLabel(ByVal SortSymbolRef As Label, SortAscChar As String, SortDescChar As String, Optional ByVal StartSortingcontrol As Control, Optional StartSortDesc As Boolean = False)",
         "Sub RepaintSortSymbol()"
       ]
-    },
-    {
-      "path": "form/sort/frmColumnSort.frm",
-      "name": "frmColumnSort",
-      "kind": "form",
-      "description": "",
-      "descriptionSource": "none",
-      "predeclaredId": true,
-      "uses": [
-        "form/sort/ColumnSort.cls"
-      ],
-      "usesTransitive": [
-        "form/sort/ColumnSort.cls"
-      ],
-      "usedBy": [],
-      "replaces": [],
-      "references": [],
-      "tests": [],
-      "examples": [],
-      "executes": [],
-      "publicMembers": []
     },
     {
       "path": "localization/L10nDict.cls",
@@ -4400,15 +4070,16 @@
         "text/StringTools.bas"
       ],
       "usedBy": [
-        "math/Decimal2.cls",
-        "text/String2_Example.bas"
+        "math/Decimal2.cls"
       ],
       "replaces": [],
       "references": [],
       "tests": [
         "_test\\text\\String2Tests.cls"
       ],
-      "examples": [],
+      "examples": [
+        "_examples/text/String2_Example.bas"
+      ],
       "executes": [],
       "publicMembers": [
         "Property Get NewValue(ByVal vValue As Variant) As String2",
@@ -4430,32 +4101,6 @@
       ]
     },
     {
-      "path": "text/String2_Example.bas",
-      "name": "String2_Example",
-      "kind": "module",
-      "description": "",
-      "descriptionSource": "none",
-      "predeclaredId": false,
-      "uses": [
-        "text\\String2.cls"
-      ],
-      "usesTransitive": [
-        "text/String2.cls",
-        "text/StringTools.bas"
-      ],
-      "usedBy": [],
-      "replaces": [],
-      "references": [],
-      "tests": [
-        "_test\\text\\String2Tests.cls"
-      ],
-      "examples": [],
-      "executes": [],
-      "publicMembers": [
-        "Sub String2_Example()"
-      ]
-    },
-    {
       "path": "text/StringCollection.cls",
       "name": "StringCollection",
       "kind": "class",
@@ -4465,15 +4110,16 @@
       "uses": [],
       "usesTransitive": [],
       "usedBy": [
-        "data/FilterStringBuilder.cls",
-        "text/StringCollection_Examples.bas"
+        "data/FilterStringBuilder.cls"
       ],
       "replaces": [],
       "references": [],
       "tests": [
         "_test/text/StringCollectionTests.cls"
       ],
-      "examples": [],
+      "examples": [
+        "_examples/text/StringCollection_Examples.bas"
+      ],
       "executes": [],
       "publicMembers": [
         "Property Get Self() As StringCollection",
@@ -4486,27 +4132,6 @@
         "Function ToString(Optional ByVal Delimiter As String = \", \", Optional ByVal ItemPrefix As String = vbNullString, Optional ByVal ItemSuffix As String = vbNullString, Optional ByVal IgnoreEmptyValue As Boolean = False, Optional ByVal IgnoreDuplicateValues As Boolean = False) As String",
         "Function ToStringArray(Optional ByVal IgnoreEmptyValue As Boolean = False, Optional ByVal IgnoreDuplicateValues As Boolean = False) As String()"
       ]
-    },
-    {
-      "path": "text/StringCollection_Examples.bas",
-      "name": "StringCollection_Examples",
-      "kind": "module",
-      "description": "",
-      "descriptionSource": "none",
-      "predeclaredId": false,
-      "uses": [
-        "text\\StringCollection.cls"
-      ],
-      "usesTransitive": [
-        "text/StringCollection.cls"
-      ],
-      "usedBy": [],
-      "replaces": [],
-      "references": [],
-      "tests": [],
-      "examples": [],
-      "executes": [],
-      "publicMembers": []
     },
     {
       "path": "text/StringTools.bas",
@@ -4667,9 +4292,7 @@
       "predeclaredId": false,
       "uses": [],
       "usesTransitive": [],
-      "usedBy": [
-        "usability/ComboboxFilterControl_Beispiele.frm"
-      ],
+      "usedBy": [],
       "replaces": [],
       "references": [
         {
@@ -4680,7 +4303,9 @@
         }
       ],
       "tests": [],
-      "examples": [],
+      "examples": [
+        "_examples/usability/ComboboxFilterControl_Beispiele.frm"
+      ],
       "executes": [],
       "publicMembers": [
         "Event Changed()",
@@ -4695,34 +4320,6 @@
       ]
     },
     {
-      "path": "usability/ComboboxFilterControl_Beispiele.frm",
-      "name": "ComboboxFilterControl_Beispiele",
-      "kind": "form",
-      "description": "Beispiel für die Nutzung der Combobox-Steuerung 'ComboboxFilterControl'",
-      "descriptionSource": "header",
-      "predeclaredId": true,
-      "uses": [
-        "usability/ComboboxFilterControl.cls"
-      ],
-      "usesTransitive": [
-        "usability/ComboboxFilterControl.cls"
-      ],
-      "usedBy": [],
-      "replaces": [],
-      "references": [
-        {
-          "name": "ADODB",
-          "major": 2,
-          "minor": 1,
-          "guid": "{00000201-0000-0010-8000-00AA006D2EA4}"
-        }
-      ],
-      "tests": [],
-      "examples": [],
-      "executes": [],
-      "publicMembers": []
-    },
-    {
       "path": "usability/OptionManager.cls",
       "name": "OptionManager",
       "kind": "class",
@@ -4732,7 +4329,6 @@
       "uses": [],
       "usesTransitive": [],
       "usedBy": [
-        "usability/OptionManager_Beispiel.frm",
         "usability/OptionManagerSetup.bas"
       ],
       "replaces": [],
@@ -4747,7 +4343,9 @@
       "tests": [
         "_test/usability/OptionManagerTests.cls"
       ],
-      "examples": [],
+      "examples": [
+        "_examples/usability/OptionManager_Beispiel.frm"
+      ],
       "executes": [],
       "publicMembers": [
         "Property Get Setting(ByVal SettingIndex As SettingKeys) As Variant",
@@ -4760,27 +4358,6 @@
         "Property Let DataSource(ByVal sDataSource As String)",
         "Sub UpdateEnum()"
       ]
-    },
-    {
-      "path": "usability/OptionManager_Beispiel.frm",
-      "name": "OptionManager_Beispiel",
-      "kind": "form",
-      "description": "/** \\author Andreas Vogt \\brief Beispiel für die Verwendung der OptionManager-Klasse \\ingroup usability **/",
-      "descriptionSource": "header",
-      "predeclaredId": true,
-      "uses": [
-        "usability/OptionManager.cls"
-      ],
-      "usesTransitive": [
-        "usability/OptionManager.cls"
-      ],
-      "usedBy": [],
-      "replaces": [],
-      "references": [],
-      "tests": [],
-      "examples": [],
-      "executes": [],
-      "publicMembers": []
     },
     {
       "path": "usability/OptionManagerSetup.bas",

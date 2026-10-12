@@ -23,6 +23,7 @@ Attribute VB_Exposed = False
 '  <file>text/StringCollection.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <test>_test/text/StringCollectionTests.cls</test>
+'  <example>_examples/text/StringCollection_Examples.bas</example>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

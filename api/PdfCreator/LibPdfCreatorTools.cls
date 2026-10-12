@@ -25,6 +25,7 @@ Attribute VB_Exposed = False
 '  <use>text/StringTools.bas</use>
 '  <test>_test/api/PdfCreator/LibPdfCreatorToolsTests.cls</test>
 '  <license>_codelib/license.bas</license>
+'  <example>_examples/api/PdfCreator/PdfCreatorExample.frm</example>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

@@ -4,14 +4,25 @@
 
 | | Count |
 |---|---|
-| Modules in catalog | 139 |
-| with `<description>` tag | 31 |
-| header summary only | 76 |
-| no description | 32 |
-| Header issues | 5 |
+| Modules in catalog | 122 |
+| with `<description>` tag | 25 |
+| header summary only | 73 |
+| no description | 24 |
+| Header issues | 16 |
 
 ## Header issues
 
+- `_examples/data/FilterStringBuilderNet_Examples.bas`: example not linked by an <example> tag of a library module
+- `com/NetComDomain.cls`: <file> tag differs from file system spelling: `COM/NetComDomain.cls`
+- `data/SqlTools_DotNetLib.bas`: <file> tag differs from file system spelling: `/data/SqlTools_DotNetLib.bas`
+- `datetime/DateTime2.cls`: <test> path differs from file system spelling: `_test\datetime\DateTime2Tests.cls` (expected `_test/datetime/DateTime2Tests.cls`)
+- `math/Decimal2.cls`: <test> path differs from file system spelling: `_test\math\Decimal2Tests.cls` (expected `_test/math/Decimal2Tests.cls`)
+- `text/Base64.cls`: <test> path differs from file system spelling: `_test\text\Base64Tests.cls` (expected `_test/text/Base64Tests.cls`)
+- `text/String2.cls`: <test> path differs from file system spelling: `_test\text\String2Tests.cls` (expected `_test/text/String2Tests.cls`)
+- `text/UnicodeTools.cls`: <test> path differs from file system spelling: `_test\text\UnicodeToolsTests.cls` (expected `_test/text/UnicodeToolsTests.cls`)
+- `utils/AccessStatusBar.cls`: <file> tag differs from file system spelling: `utils\AccessStatusBar.cls`
+- `utils/AccessStatusBar.cls`: <license> path differs from file system spelling: `_codelib\license.bas` (expected `_codelib/license.bas`)
+- `utils/AccessStatusBar.cls`: <test> path differs from file system spelling: `_test\utils\AccessStatusBarTests.cls` (expected `_test/utils/AccessStatusBarTests.cls`)
 - object name `FilterControl` used by several files (alternatives, cannot be imported together): `form/filter/FilterControl.cls`, `form/filter/FilterControl_DotNetLib.cls`
 - object name `FilterControlCollection` used by several files (alternatives, cannot be imported together): `form/filter/FilterControlCollection.cls`, `form/filter/FilterControlCollection_DotNetLib.cls`
 - object name `FilterControlEventBridge` used by several files (alternatives, cannot be imported together): `form/filter/FilterControlEventBridge.cls`, `form/filter/FilterControlEventBridge_DotNetLib.cls`
@@ -42,7 +53,6 @@
 - `api/PdfCreator/LibPdfCreatorJob.cls` - (no header summary)
 - `api/PdfCreator/LibPdfCreatorOptions.cls` - (no header summary)
 - `api/PdfCreator/LibPdfCreatorTools.cls` - (no header summary)
-- `api/PdfCreator/PdfCreatorExample.frm` - header: Beispiel für die Verwendung von LibPdfCreator
 
 ### api/winapi
 
@@ -57,7 +67,6 @@
 - `api/winapi/WinApiImageTools.cls` - header: WinAPI functions: Image & Co.
 - `api/winapi/WinApiLayoutTools.cls` - header: WinAPI functions for layout design
 - `api/winapi/WinApiShellTools.cls` - header: WinAPI functions: ShellExecuteA & Co.
-- `api/winapi/WinApiShellTools_Example.bas` - (no header summary)
 - `api/winapi/WinApiShortcutMenu.cls` - header: ShortcutMenu via Win API
 - `api/winapi/WinApiTools.cls` - header: Factory for WinAPI classes
 - `api/winapi/WinApiToolsFactory.bas` - header: Creates instance of WinApiTools
@@ -98,7 +107,6 @@
 
 - `com/modDirectCOM.bas` - header: Instanz aus unregistrierter COM-dll erzeugen
 - `com/NetComDomain.cls` - (no header summary)
-- `com/NetComDomain_Example_ShowWinForm_Minimal.bas` - (no header summary)
 
 ### crypt/md5
 
@@ -107,7 +115,6 @@
 ### datetime
 
 - `datetime/DateTime2.cls` - (no header summary)
-- `datetime/DateTime2_Example.bas` - (no header summary)
 
 ### file
 
@@ -121,9 +128,7 @@
 - `form/FormHandler.cls` - header: Formularsteuerungsklasse für Access-Formulare (Basisklasse)
 - `form/FormTools.cls` - header: Procedure collection for forms
 - `form/frmInfoMessage.frm` - header: Text in Anwendung einblenden und optional automatisch ausblenden inkl. fadein/fadeout-Feature
-- `form/frmInfoMessage_Examples.frm` - (no header summary)
 - `form/InfoMessageBox.cls` - header: Text in Anwendung einblenden und optional automatisch ausblenden inkl. fadein/fadeout-Feature
-- `form/InfoMessageBox_Examples.frm` - (no header summary)
 - `form/InfoMessageBoxForm.frm` - header: Hilfs-Formular für InfoMessageBox-Klasse
 - `form/InfoMessageBoxForm_mit_Buttons.frm` - header: Beispiel-Ersatz-Formular für InfoMessageBoxForm
 - `form/ListFormHandler.cls` - header: Formularsteuerungsklasse für Listen/Endlosformulare
@@ -139,7 +144,6 @@
 - `form/sort/FormSortingControl.cls` - header: Hilfsklasse für FormSortingExtension
 - `form/sort/FormSortingControlEventBridge.cls` - header: Hilfsklasse für FormSortingExtension
 - `form/sort/FormSortingExtension.cls` - header: Erstellt einen OrderBy-String für ein Endlos-Formular
-- `form/sort/frmColumnSort.frm` - (no header summary)
 
 ### localization
 
@@ -172,9 +176,7 @@
 
 - `text/Base64.cls` - (no header summary)
 - `text/String2.cls` - (no header summary)
-- `text/String2_Example.bas` - (no header summary)
 - `text/StringCollection.cls` - header: Collection for strings
-- `text/StringCollection_Examples.bas` - (no header summary)
 - `text/StringTools.bas` - header: Text functions
 - `text/StringTools.cls` - header: Text functions
 - `text/UnicodeTools.cls` - (no header summary)
@@ -184,9 +186,7 @@
 - `usability/ApplicationHandler_DirTextbox.cls` - header: Extension for ApplicationHandler class: Search directory using textbox
 - `usability/CalculationTextBox.cls` - header: Allow calculation expression in a TextBox
 - `usability/ComboboxFilterControl.cls` - header: Combobox-Steuerung zum Suchen/Auswählen von Einträgen innerhalb der Combobox-Liste Combobox control for searching/selecting entries within the combobox list
-- `usability/ComboboxFilterControl_Beispiele.frm` - header: Beispiel für die Nutzung der Combobox-Steuerung 'ComboboxFilterControl'
 - `usability/OptionManager.cls` - (no header summary)
-- `usability/OptionManager_Beispiel.frm` - header: /** \author Andreas Vogt \brief Beispiel für die Verwendung der OptionManager-Klasse \ingroup usability **/
 - `usability/OptionManagerSetup.bas` - header: Setup Modul für den OptionManager
 
 ### user

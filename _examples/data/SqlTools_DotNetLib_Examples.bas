@@ -3,8 +3,8 @@ Option Compare Text
 Option Explicit
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>/data/SqlTools_DotNetLib_Examples.bas</file>
-'  <use>/data/SqlTools_DotNetLib.bas</use>
+'  <file>_examples/data/SqlTools_DotNetLib_Examples.bas</file>
+'  <use>data/SqlTools_DotNetLib.bas</use>
 '  <description>Usage examples for the .NET version of SqlTools (ACLib DotNetLib)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------

@@ -529,16 +529,16 @@ Attribute VB_Exposed = False
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>api/PdfCreator/PdfCreatorExample.frm</file>
-'  <use>api\PdfCreator\LibPdfCreatorComFactory.cls</use>
-'  <use>api\PdfCreator\LibPdfCreatorConverter.cls</use>
-'  <use>api\PdfCreator\LibPdfCreatorEnums.cls</use>
-'  <use>api\PdfCreator\LibPdfCreatorError.cls</use>
-'  <use>api\PdfCreator\LibPdfCreatorFactory.cls</use>
-'  <use>api\PdfCreator\LibPdfCreatorInstance.cls</use>
-'  <use>api\PdfCreator\LibPdfCreatorJob.cls</use>
-'  <use>api\PdfCreator\LibPdfCreatorOptions.cls</use>
-'  <use>api\PdfCreator\LibPdfCreatorTools.cls</use>
+'  <file>_examples/api/PdfCreator/PdfCreatorExample.frm</file>
+'  <use>api/PdfCreator/LibPdfCreatorComFactory.cls</use>
+'  <use>api/PdfCreator/LibPdfCreatorConverter.cls</use>
+'  <use>api/PdfCreator/LibPdfCreatorEnums.cls</use>
+'  <use>api/PdfCreator/LibPdfCreatorError.cls</use>
+'  <use>api/PdfCreator/LibPdfCreatorFactory.cls</use>
+'  <use>api/PdfCreator/LibPdfCreatorInstance.cls</use>
+'  <use>api/PdfCreator/LibPdfCreatorJob.cls</use>
+'  <use>api/PdfCreator/LibPdfCreatorOptions.cls</use>
+'  <use>api/PdfCreator/LibPdfCreatorTools.cls</use>
 '  <use>_test/api/PdfCreator/TestReport.rpt</use>
 '</codelib>
 '---------------------------------------------------------------------------------------

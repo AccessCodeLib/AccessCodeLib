@@ -27,6 +27,7 @@ Attribute VB_Exposed = False
 '  <file>form/InfoMessageBox.cls</file>
 '  <use>form/InfoMessageBoxForm.frm</use>
 '  <license>_codelib/license.bas</license>
+'  <example>_examples/form/InfoMessageBox_Examples.frm</example>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

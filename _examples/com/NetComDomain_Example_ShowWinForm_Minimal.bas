@@ -10,8 +10,8 @@ Attribute VB_Name = "NetComDomain_Example_ShowWinForm_Minimal"
 '**/
 '---------------------------------------------------------------------------------------
 '<codelib>
-'  <file>COM/NetComDomain_Example_ShowWinForm_Minimal.bas</file>
-'  <use>COM/NetComDomain.cls</use>
+'  <file>_examples/com/NetComDomain_Example_ShowWinForm_Minimal.bas</file>
+'  <use>com/NetComDomain.cls</use>
 '  <license>_codelib/license.bas</license>
 '</codelib>
 '---------------------------------------------------------------------------------------
