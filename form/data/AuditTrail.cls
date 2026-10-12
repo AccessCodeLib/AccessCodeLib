@@ -128,58 +128,58 @@ Private Sub DataChanges()
 End Sub
 
 Private Sub WriteEditLog(ByRef CTL_ As Access.Control)
-    Dim strSQL As String
-    strSQL = "Insert into tblAuditTrailLog (AuditTime, UserName, FormName, FieldName, ActionType, RecordID, OldValue, NewValue) Values (" & _
-             "'" & dtmCurrentDateTime & "', " & _
-             "'" & strUserName & "', " & _
-             "'" & m_frm.Name & "', " & _
-             "'" & CTL_.ControlSource & "', " & _
-             "'" & UserAction & "', " & _
-             "'" & m_frm.Controls(m_IdFieldName).Value & "', " & _
-             "'" & CTL_.OldValue & "', " & _
-             "'" & CTL_.Value & "' " & _
-             ")"
-    CurrentProject.Connection.Execute strSQL
-    
+    ExecuteCommand "Insert into tblAuditTrailLog (AuditTime, UserName, FormName, FieldName, ActionType, RecordID, OldValue, NewValue) Values (?, ?, ?, ?, ?, ?, ?, ?)", _
+                   dtmCurrentDateTime, strUserName, m_frm.Name, CTL_.ControlSource, UserAction, _
+                   m_frm.Controls(m_IdFieldName).Value & vbNullString, CTL_.OldValue, CTL_.Value
 End Sub
 
 Private Function WriteNewDeleteLog() As Long
-    Dim strSQL As String
-    Dim RecordsAffected As Long
-    Dim cnn As New ADODB.Connection
     Dim rstTemp As ADODB.Recordset
 
-    strSQL = "Insert into tblAuditTrailLog (AuditTime, UserName, FormName, ActionType, RecordID) Values (" & _
-             "'" & dtmCurrentDateTime & "', " & _
-             "'" & strUserName & "', " & _
-             "'" & m_frm.Name & "', " & _
-             "'" & UserAction & "', " & _
-             "'" & m_frm.Recordset.Fields(m_IdFieldName).Value & "')"
-    Set cnn = CurrentProject.Connection
-    cnn.Execute strSQL, RecordsAffected
-    If RecordsAffected > 0 Then
-        Set rstTemp = cnn.Execute("SELECT @@IDENTITY")
+    If ExecuteCommand("Insert into tblAuditTrailLog (AuditTime, UserName, FormName, ActionType, RecordID) Values (?, ?, ?, ?, ?)", _
+                      dtmCurrentDateTime, strUserName, m_frm.Name, UserAction, _
+                      m_frm.Recordset.Fields(m_IdFieldName).Value & vbNullString) > 0 Then
+        Set rstTemp = CurrentProject.Connection.Execute("SELECT @@IDENTITY")
         WriteNewDeleteLog = rstTemp(0)
         rstTemp.Close
     End If
     Set rstTemp = Nothing
-    Set cnn = Nothing
 End Function
 
 Private Sub DataRedoDelete()
-    Dim rstTemp As ADODB.Recordset
-
-    Set rstTemp = New ADODB.Recordset
-    With rstTemp
-        .Open "SELECT * FROM tblAuditTrailLog", CurrentProject.Connection, adOpenDynamic, adLockOptimistic
-        .Find "ID = " & LastIdentifier
-        If Not .EOF Then
-            .Delete
-        End If
-        .Close
-    End With
-    Set rstTemp = Nothing
+    ExecuteCommand "Delete from tblAuditTrailLog where ID = ?", LastIdentifier
 End Sub
+
+' Executes a parameterized command (placeholder ?) on CurrentProject.Connection, returns the number of affected records
+Private Function ExecuteCommand(ByVal CommandText As String, ParamArray ParamValues() As Variant) As Long
+    Dim cmd As ADODB.Command
+    Dim RecordsAffected As Long
+    Dim i As Long
+
+    Set cmd = New ADODB.Command
+    Set cmd.ActiveConnection = CurrentProject.Connection
+    cmd.CommandType = adCmdText
+    cmd.CommandText = CommandText
+    For i = LBound(ParamValues) To UBound(ParamValues)
+        cmd.Parameters.Append CreateCommandParameter(cmd, ParamValues(i))
+    Next i
+    cmd.Execute RecordsAffected, , adExecuteNoRecords
+    ExecuteCommand = RecordsAffected
+    Set cmd = Nothing
+End Function
+
+Private Function CreateCommandParameter(ByVal cmd As ADODB.Command, ByVal Value As Variant) As ADODB.Parameter
+    Select Case VarType(Value)
+    Case vbDate
+        Set CreateCommandParameter = cmd.CreateParameter(, adDate, adParamInput, , Value)
+    Case vbLong, vbInteger
+        Set CreateCommandParameter = cmd.CreateParameter(, adInteger, adParamInput, , Value)
+    Case vbNull
+        Set CreateCommandParameter = cmd.CreateParameter(, adVarWChar, adParamInput, 255, Null)
+    Case Else
+        Set CreateCommandParameter = cmd.CreateParameter(, adVarWChar, adParamInput, 255, CStr(Value))
+    End Select
+End Function
 
 Private Function getIDField(FRM_ As Access.Form) As String
     Dim i As Long
