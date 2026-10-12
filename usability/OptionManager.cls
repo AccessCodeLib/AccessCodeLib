@@ -22,6 +22,7 @@ Attribute VB_Exposed = True
 '  <test>_test/usability/OptionManagerTests.cls</test>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
 '  <example>_examples/usability/OptionManager_Beispiel.frm</example>
+'  <description>Manages application options in the table tabOptions: read and write values by key or name, keys available as Enum</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

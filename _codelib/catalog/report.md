@@ -5,9 +5,9 @@
 | | Count |
 |---|---|
 | Modules in catalog | 122 |
-| with `<description>` tag | 95 |
-| header summary only | 19 |
-| no description | 8 |
+| with `<description>` tag | 120 |
+| header summary only | 2 |
+| no description | 0 |
 | Header issues | 2 |
 
 ## Header issues
@@ -27,65 +27,7 @@ Cannot be imported together; the description names the use case of each file.
 
 ## Modules without `<description>` tag
 
-### crypt/md5
-
-- `crypt/md5/modMD5.bas` - header: md5-String ermitteln
-
-### datetime
-
-- `datetime/DateTime2.cls` - (no header summary)
-
-### localization
-
-- `localization/L10nDict.cls` - header: Localization dictionary - Auxiliary class for language setting
-- `localization/L10nTools.bas` - header: Localization (L10n) Functions
-
-### math
-
-- `math/Decimal2.cls` - (no header summary)
-- `math/MathConstants.bas` - header: Mathematische Konstanten
-- `math/MathTools.bas` - header: Mathematische Funktionen
-
-### misc
-
-- `misc/QpcStoppuhr.cls` - header: QueryPerformanceCounter-Stoppuhr zur Zeitmessung
-- `misc/QpcStopwatch.cls` - header: QueryPerformanceCounter stopwatch for time measurement
-
-### ribbon
-
-- `ribbon/ribbon_RibbonWatcher.bas` - header: Globale Prozeduren für RibbonWatcher (inkl. CallBack-Prozeduren)
-- `ribbon/RibbonControlInfo.cls` - header: Klasse zum Speichern der RibbonControl-Daten
-- `ribbon/RibbonWatcher.cls` - header: Zeigt die zuletzt verwendeten Ribbon-Controls in einer Ribbon-Gruppe bzw. Tab an.
-
 ### test/simplyvbunit
 
 - `test/simplyvbunit/_VBATestSuite.bas` - header: Hilfsmodul für den Aufruf einer anwendungsweiten Instanz von VBATestSuite
 - `test/simplyvbunit/VBATestSuite.cls` - header: Anpassung (Kapselung) von SimplyVBUnit für VBA
-
-### usability
-
-- `usability/ApplicationHandler_DirTextbox.cls` - header: Extension for ApplicationHandler class: Search directory using textbox
-- `usability/CalculationTextBox.cls` - header: Allow calculation expression in a TextBox
-- `usability/ComboboxFilterControl.cls` - header: Combobox-Steuerung zum Suchen/Auswählen von Einträgen innerhalb der Combobox-Liste Combobox control for searching/selecting entries within the combobox list
-- `usability/OptionManager.cls` - (no header summary)
-- `usability/OptionManagerSetup.bas` - header: Setup Modul für den OptionManager
-
-### user
-
-- `user/UserHandler.cls` - (no header summary)
-- `user/UserRoles.cls` - (no header summary)
-
-### user/login
-
-- `user/login/LoginForm.frm` - header: /** User login form **/
-- `user/login/LoginFormBridge.cls` - (no header summary)
-- `user/login/WinLogin.cls` - (no header summary)
-
-### utils
-
-- `utils/AccessProgressBar.cls` - header: Helper class for using the integrated Access ProgressBar ("Meter")
-- `utils/AccessStatusBar.cls` - (no header summary)
-
-### vba
-
-- `vba/ErrorTrappingObserver.cls` - header: Auxiliary class for error trapping manipulation

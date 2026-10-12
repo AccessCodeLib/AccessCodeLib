@@ -23,6 +23,7 @@ Attribute VB_Exposed = False
 '  <use>text/String2.cls</use>
 '  <test>_test/math/Decimal2Tests.cls</test>
 '  <license>_codelib/license.bas</license>
+'  <description>Decimal number type as replacement for the missing VBA Decimal data type: value, rounding, formatted output</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

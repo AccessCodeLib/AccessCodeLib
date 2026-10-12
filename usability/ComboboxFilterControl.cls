@@ -25,6 +25,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
 '  <example>_examples/usability/ComboboxFilterControl_Beispiele.frm</example>
+'  <description>Search-as-you-type for a combobox: filters the combobox list while typing</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

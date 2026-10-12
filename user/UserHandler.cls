@@ -19,6 +19,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>user/UserRoles.cls</use>
 '  <test>_test/user/UserHandlerTests.cls</test>
+'  <description>Current application user: user name (default Windows user), roles, role membership check</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

@@ -16,6 +16,7 @@ Attribute VB_Name = "MathConstants"
 '  <file>math/MathConstants.bas</file>
 '  <use>math/Decimal2.cls</use>
 '  <license>_codelib/license.bas</license>
+'  <description>Math constants: pi, e, Euler constant, golden ratio, epsilon, min/max values</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

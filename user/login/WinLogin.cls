@@ -17,6 +17,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>user/login/WinLogin.cls</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Checks a login with Windows user name and password (optionally with domain)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

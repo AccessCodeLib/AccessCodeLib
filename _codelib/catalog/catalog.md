@@ -88,7 +88,7 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 
 ## crypt/md5
 
-- `crypt/md5/modMD5.bas` (module) - md5-String ermitteln
+- `crypt/md5/modMD5.bas` (module) - Calculates the MD5 hash of a string
 
 ## data
 
@@ -120,7 +120,7 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 
 ## datetime
 
-- `datetime/DateTime2.cls` (class) [P]
+- `datetime/DateTime2.cls` (class) [P] - Extended date/time type with chainable methods: add years, quarters, months, weeks, days, hours, minutes, seconds; get date parts
 
 ## file
 
@@ -165,25 +165,25 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 
 ## localization
 
-- `localization/L10nDict.cls` (class) [P] - Localization dictionary - Auxiliary class for language setting | uses: SqlTools
-- `localization/L10nTools.bas` (module) - Localization (L10n) Functions | uses: L10nDict
+- `localization/L10nDict.cls` (class) [P] - Localization dictionary: translates texts, form controls, MsgBox and InputBox by language code | uses: SqlTools
+- `localization/L10nTools.bas` (module) - Global access to the localization (L10n) and localized MsgBox/InputBox | uses: L10nDict
 
 ## math
 
-- `math/Decimal2.cls` (class) [P] | uses: MathTools, StringTools, String2
-- `math/MathConstants.bas` (module) - Mathematische Konstanten | uses: Decimal2
-- `math/MathTools.bas` (module) - Mathematische Funktionen | uses: Decimal2
+- `math/Decimal2.cls` (class) [P] - Decimal number type as replacement for the missing VBA Decimal data type: value, rounding, formatted output | uses: MathTools, StringTools, String2
+- `math/MathConstants.bas` (module) - Math constants: pi, e, Euler constant, golden ratio, epsilon, min/max values | uses: Decimal2
+- `math/MathTools.bas` (module) - Math functions: rounding with selectable midpoint rounding (to even or away from zero), factorial | uses: Decimal2
 
 ## misc
 
-- `misc/QpcStoppuhr.cls` (class) - QueryPerformanceCounter-Stoppuhr zur Zeitmessung
-- `misc/QpcStopwatch.cls` (class) - QueryPerformanceCounter stopwatch for time measurement
+- `misc/QpcStoppuhr.cls` (class) - German version of QpcStopwatch (QueryPerformanceCounter stopwatch); prefer QpcStopwatch.cls
+- `misc/QpcStopwatch.cls` (class) - High-resolution stopwatch (QueryPerformanceCounter) for time measurement: start, stop, restart, elapsed milliseconds; preferred over QpcStoppuhr.cls
 
 ## ribbon
 
-- `ribbon/ribbon_RibbonWatcher.bas` (module) - Globale Prozeduren für RibbonWatcher (inkl. CallBack-Prozeduren) | uses: RibbonWatcher
-- `ribbon/RibbonControlInfo.cls` (class) - Klasse zum Speichern der RibbonControl-Daten
-- `ribbon/RibbonWatcher.cls` (class) - Zeigt die zuletzt verwendeten Ribbon-Controls in einer Ribbon-Gruppe bzw. Tab an. | uses: RibbonControlInfo, ribbon_RibbonWatcher
+- `ribbon/ribbon_RibbonWatcher.bas` (module) - Global ribbon callback procedures for RibbonWatcher (onLoad, onAction, getLabel, ...) | uses: RibbonWatcher
+- `ribbon/RibbonControlInfo.cls` (class) - Data of a ribbon control used by RibbonWatcher
+- `ribbon/RibbonWatcher.cls` (class) - Shows the most recently used ribbon controls in a ribbon group or tab | uses: RibbonControlInfo, ribbon_RibbonWatcher
 
 ## test/simplyvbunit
 
@@ -201,31 +201,31 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 
 ## usability
 
-- `usability/ApplicationHandler_DirTextbox.cls` (class) - Extension for ApplicationHandler class: Search directory using textbox | uses: ApplicationHandler, FileTools
-- `usability/CalculationTextBox.cls` (class) [P] - Allow calculation expression in a TextBox
-- `usability/ComboboxFilterControl.cls` (class) - Combobox-Steuerung zum Suchen/Auswählen von Einträgen innerhalb der Combobox-Liste Combobox control for searching/selecting entries within the combobox list
-- `usability/OptionManager.cls` (class) [P]
-- `usability/OptionManagerSetup.bas` (module) - Setup Modul für den OptionManager | uses: OptionManager
+- `usability/ApplicationHandler_DirTextbox.cls` (class) - ApplicationHandler extension: directory path completion in a text box while typing (Tab/key navigation through matching folders) | uses: ApplicationHandler, FileTools
+- `usability/CalculationTextBox.cls` (class) [P] - Allows calculation expressions in a text box (e.g. 12*3+5) and writes the result into the control
+- `usability/ComboboxFilterControl.cls` (class) - Search-as-you-type for a combobox: filters the combobox list while typing
+- `usability/OptionManager.cls` (class) [P] - Manages application options in the table tabOptions: read and write values by key or name, keys available as Enum
+- `usability/OptionManagerSetup.bas` (module) - Setup for OptionManager: creates the table tabOptions and a helper module with the option Enum, then removes itself | uses: OptionManager
 
 ## user
 
-- `user/UserHandler.cls` (class) | uses: UserRoles
-- `user/UserRoles.cls` (class) | uses: UserHandler
+- `user/UserHandler.cls` (class) - Current application user: user name (default Windows user), roles, role membership check | uses: UserRoles
+- `user/UserRoles.cls` (class) - Roles of a user (used by UserHandler) | uses: UserHandler
 
 ## user/login
 
-- `user/login/LoginForm.frm` (form) [P] - /** User login form **/
-- `user/login/LoginFormBridge.cls` (class) | uses: LoginForm
-- `user/login/WinLogin.cls` (class)
+- `user/login/LoginForm.frm` (form) [P] - Login form (user name, password) used by LoginFormBridge
+- `user/login/LoginFormBridge.cls` (class) - Login with a form: shows LoginForm and checks the input with an exchangeable login checker (e.g. WinLogin) | uses: LoginForm
+- `user/login/WinLogin.cls` (class) - Checks a login with Windows user name and password (optionally with domain)
 
 ## utils
 
-- `utils/AccessProgressBar.cls` (class) [P] - Helper class for using the integrated Access ProgressBar ("Meter")
-- `utils/AccessStatusBar.cls` (class) [P]
+- `utils/AccessProgressBar.cls` (class) [P] - Uses the built-in Access progress bar in the status bar (SysCmd meter): init, steps, text, clear
+- `utils/AccessStatusBar.cls` (class) [P] - Sets and clears the text of the Access status bar
 
 ## vba
 
-- `vba/ErrorTrappingObserver.cls` (class) - Auxiliary class for error trapping manipulation
+- `vba/ErrorTrappingObserver.cls` (class) - Temporarily changes the VBA error trapping option and restores the previous value on terminate
 
 ## Packages
 

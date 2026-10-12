@@ -21,6 +21,7 @@ Attribute VB_Exposed = False
 '  <test>_test/datetime/DateTime2Tests.cls</test>
 '  <license>_codelib/license.bas</license>
 '  <example>_examples/datetime/DateTime2_Example.bas</example>
+'  <description>Extended date/time type with chainable methods: add years, quarters, months, weeks, days, hours, minutes, seconds; get date parts</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

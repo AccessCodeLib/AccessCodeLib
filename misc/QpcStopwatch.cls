@@ -25,6 +25,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>misc/QpcStopwatch.cls</file>
 '  <license>_codelib/license.bas</license>
+'  <description>High-resolution stopwatch (QueryPerformanceCounter) for time measurement: start, stop, restart, elapsed milliseconds; preferred over QpcStoppuhr.cls</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

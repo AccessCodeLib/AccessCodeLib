@@ -14,6 +14,7 @@ Attribute VB_Name = "modMD5"
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>crypt/md5/modMD5.bas</file>
+'  <description>Calculates the MD5 hash of a string</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

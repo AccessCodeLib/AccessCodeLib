@@ -24,6 +24,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>misc/QpcStoppuhr.cls</file>
 '  <license>_codelib/license.bas</license>
+'  <description>German version of QpcStopwatch (QueryPerformanceCounter stopwatch); prefer QpcStopwatch.cls</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

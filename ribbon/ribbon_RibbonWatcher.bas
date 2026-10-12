@@ -15,6 +15,7 @@ Attribute VB_Name = "ribbon_RibbonWatcher"
 '  <license>_codelib/license.bas</license>
 '  <use>ribbon/RibbonWatcher.cls</use>
 '  <ref><name>Office</name><major>2</major><minor>4</minor><guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</guid></ref>
+'  <description>Global ribbon callback procedures for RibbonWatcher (onLoad, onAction, getLabel, ...)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
