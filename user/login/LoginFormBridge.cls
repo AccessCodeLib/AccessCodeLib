@@ -20,6 +20,7 @@ Attribute VB_Exposed = False
 '  <file>user/login/LoginFormBridge.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>user/login/LoginForm.frm</use>
+'  <description>Login with a form: shows LoginForm and checks the input with an exchangeable login checker (e.g. WinLogin)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------'---------------------------------------------------------------------------------------
 '

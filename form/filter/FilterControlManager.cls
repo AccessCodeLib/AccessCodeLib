@@ -24,6 +24,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>form/filter/FilterControlCollection.cls</use>
 '  <use>data/FilterStringBuilder.cls</use>
+'  <description>Builds a form filter from filter controls (e.g. in the form header) and applies or removes it, optionally on every change</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

@@ -250,6 +250,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>form/InfoMessageBoxForm.frm</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Helper form for InfoMessageBox (displays the message text)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

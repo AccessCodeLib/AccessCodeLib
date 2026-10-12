@@ -27,6 +27,7 @@ Attribute VB_Exposed = False
 '  <use>base/ApplicationHandler.cls</use>
 '  <use>base/modErrorHandler.bas</use>
 '  <use>base/login/frmLogin.frm</use>
+'  <description>ApplicationHandler extension: application login with Windows user name and password (optionally with domain) via frmLogin</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -90,11 +91,11 @@ Private Enum LogonType
        LOGON32_PROVIDER_DEFAULT = 0
    End Enum
 
-   Private Declare Function LogonUser Lib "advapi32.dll" Alias "LogonUserA" ( _
+   Private Declare PtrSafe Function LogonUser Lib "advapi32.dll" Alias "LogonUserA" ( _
                ByVal lpszUsername As String, ByVal lpszDomain As String, ByVal lpszPassword As String, _
-               ByVal dwLogonType As Long, ByVal dwLogonProvider As Long, phToken As Long) As Long
+               ByVal dwLogonType As Long, ByVal dwLogonProvider As Long, phToken As LongPtr) As Long
                
-   Private Declare Function CloseHandle Lib "kernel32.dll" (ByVal hObject As Long) As Boolean
+   Private Declare PtrSafe Function CloseHandle Lib "kernel32.dll" (ByVal hObject As LongPtr) As Boolean
 
 'Private Declare Function RevertToSelf Lib "advapi32.dll" () As Long
 
@@ -245,7 +246,7 @@ End Function
 
 Private Function CheckUser(ByVal Domain As String, ByVal userName As String, ByVal userPassword As String) As Boolean
 
-   Dim tokenHandle As Long
+   Dim tokenHandle As LongPtr
    Dim logonAllowed As Boolean
 
    'mehrere LogonTypes ausprobieren

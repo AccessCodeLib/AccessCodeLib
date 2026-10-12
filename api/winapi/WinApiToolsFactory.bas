@@ -16,6 +16,7 @@ Attribute VB_Description = "Gebräuchliche WinAPI-Funktionen"
 '  <file>api/winapi/WinApiToolsFactory.bas</file>
 '  <license>_codelib/license.bas</license>
 '  <use>api/winapi/WinApiTools.cls</use>
+'  <description>Provides the global property WinAPI that returns a WinApiTools instance</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

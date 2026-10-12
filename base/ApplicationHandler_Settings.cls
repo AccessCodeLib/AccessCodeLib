@@ -27,6 +27,7 @@ Attribute VB_Exposed = False
 '  <file>base/ApplicationHandler_Settings.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>base/ApplicationHandler.cls</use>
+'  <description>ApplicationHandler extension: application settings (Settings, Add)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

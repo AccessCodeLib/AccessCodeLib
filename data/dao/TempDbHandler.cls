@@ -24,7 +24,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>data/dao/DaoHandler.cls</use>
 '  <test>_test/data/dao/TempDbHandlerTests.cls</test>
-'  <description>Creates and manages an database file for temporary tables</description>
+'  <description>Creates and manages a database file for temporary tables</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

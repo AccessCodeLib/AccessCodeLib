@@ -23,6 +23,7 @@ Attribute VB_Exposed = False
 '  <file>form/filter/FilterControl_DotNetLib.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>form/filter/FilterControlEventBridge_DotNetLib.cls</use>
+'  <description>FilterControl variant using the .NET SqlTools (ACLib DotNetLib); alternative to FilterControl.cls</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

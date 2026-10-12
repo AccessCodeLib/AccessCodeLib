@@ -23,6 +23,7 @@ Attribute VB_Exposed = False
 '  <file>form/filter/FilterControlEventBridge_DotNetLib.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>form/filter/FilterControl_DotNetLib.cls</use>
+'  <description>Internal event helper for the .NET (ACLib DotNetLib) filter controls</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

@@ -18,6 +18,7 @@ Attribute VB_Exposed = False
 '  <file>user/UserRoles.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>user/UserHandler.cls</use>
+'  <description>Roles of a user (used by UserHandler)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

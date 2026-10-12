@@ -30,6 +30,7 @@ Attribute VB_Exposed = False
 '  <use>data/DbConnectionSettings.cls</use>
 '  <use>data/SqlTools.cls</use>
 '  <ref><name>DAO</name><major>12</major><minor>0</minor><guid>{4AC9E1DA-5BAD-4AC7-86E3-24F4CDCECA28}</guid></ref>
+'  <description>Central entry point for backend data access: creates, configures and disposes the connection handler classes</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

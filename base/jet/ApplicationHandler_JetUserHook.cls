@@ -32,6 +32,7 @@ Attribute VB_Exposed = False
 '  <file>base/jet/ApplicationHandler_JetUserHook.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>base/ApplicationHandler.cls</use>
+'  <description>ApplicationHandler extension (Jet/DAO): after start opens a workspace on the backend with the logged-in user name, so the user is visible in the backend lock file; creates the user in the workgroup file if missing</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

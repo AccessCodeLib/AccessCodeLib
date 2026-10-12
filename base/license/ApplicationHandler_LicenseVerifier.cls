@@ -24,6 +24,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>base/ApplicationHandler.cls</use>
 '  <use>crypt/md5/modMD5.bas</use>
+'  <description>ApplicationHandler extension: checks a license key (MD5 based) for license name and application key</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

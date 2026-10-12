@@ -18,9 +18,11 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>text/String2.cls</file>
-'  <use>text/StringTools.bas</use>
-'  <test>_test\text\String2Tests.cls</test>
+'  <use>text/StringTools.cls</use>
+'  <test>_test/text/String2Tests.cls</test>
 '  <license>_codelib/license.bas</license>
+'  <example>_examples/text/String2_Example.bas</example>
+'  <description>Extended string type with chainable methods (PadLeft/PadRight, Trim, Substring, Append, InsertAt, Contains, StartsWith/EndsWith, Length, ToString with format); based on StringTools</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 
@@ -83,8 +85,13 @@ Public Property Get StartsWith(ByVal searchValue As String) As Boolean
     StartsWith = StringTools.StartsWith(m_Value, searchValue)
 End Property
 
+Public Property Get Length() As Long
+    Length = StringTools.Length(m_Value)
+End Property
+
+' Obsolete: misspelled, use Length (kept for compatibility)
 Public Property Get Lenght() As Long
-    Lenght = StringTools.Lenght(m_Value)
+    Lenght = Length
 End Property
 
 Public Property Get Append(ByVal Value As Variant) As String2

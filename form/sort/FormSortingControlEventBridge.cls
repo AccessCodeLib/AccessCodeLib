@@ -23,6 +23,7 @@ Attribute VB_Exposed = False
 '  <file>form/sort/FormSortingControlEventBridge.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>form/sort/FormSortingControl.cls</use>
+'  <description>Internal helper for FormSortingExtension that forwards the click events of the sorting controls</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

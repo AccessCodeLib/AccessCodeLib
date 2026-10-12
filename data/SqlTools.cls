@@ -32,6 +32,8 @@ Attribute VB_Exposed = False
 '  <replace>data/SqlTools.bas</replace>
 '  <test>_test/data/SqlToolsTests.cls</test>
 '  <test>_test/data/SqlToolsBuildCriteriaTests.cls</test>
+'  <description>Converts values to SQL literals (text, number, date, boolean) for DAO or T-SQL and builds criteria safely</description>
+'  <example>_examples/data/SqlTools_BuildCriteria_Examples.bas</example>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -496,6 +498,7 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
    End If
 
    If (RelationalOperator And SQL_Like) = SQL_Like Or (RelationalOperator And SQL_UseLikeBehavior) = SQL_UseLikeBehavior Then
+      
       If SqlWildCardString <> "*" Then
          If InStr(1, FilterValue, "*") > 0 Then
             FilterValue = Replace(FilterValue, "[*]", "@@@|||STAR|||@@@")
@@ -503,6 +506,22 @@ Public Function BuildCriteria(ByVal FieldName As String, ByVal FieldDataType As 
             FilterValue = Replace(FilterValue, "@@@|||STAR|||@@@", "*")
          End If
       End If
+      
+      If ((RelationalOperator And SQL_Add_WildCardPrefix) = 0) _
+             And ((RelationalOperator And SQL_Add_WildCardSuffix) = 0) Then
+
+         FilterValue = Replace(FilterValue, "[" & SqlWildCardString & "]", "@@@|||STAR|||@@@")
+         If InStr(1, FilterValue, SqlWildCardString) = 0 Then
+            RelationalOperator = RelationalOperator - SQL_Like
+            RelationalOperator = RelationalOperator Or SQL_Equal
+            FilterValue = Replace(FilterValue, "@@@|||STAR|||@@@", SqlWildCardString)
+         Else
+            FilterValue = Replace(FilterValue, "@@@|||STAR|||@@@", "[" & SqlWildCardString & "]")
+         End If
+         
+      End If
+      
+      
    End If
 
    If (RelationalOperator And SQL_Add_WildCardSuffix) = SQL_Add_WildCardSuffix Then

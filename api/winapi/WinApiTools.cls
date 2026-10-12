@@ -24,6 +24,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>api/winapi/WinApiShellTools.cls</use>
 '  <use>api/winapi/WinApiImageTools.cls</use>
+'  <description>Factory for the WinAPI helper classes (Shell, Image); entry point via WinApiToolsFactory.WinAPI</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

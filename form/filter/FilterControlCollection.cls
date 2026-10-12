@@ -27,6 +27,7 @@ Attribute VB_Exposed = False
 '  <use>data/FilterStringBuilder.cls</use>
 '  <use>data/SqlTools.cls</use>
 '  <test>_test/form/filter/FilterControlCollectionTests.cls</test>
+'  <description>Collection of FilterControls that combines their values into one criteria string (groups, multi-control, sub-selects)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

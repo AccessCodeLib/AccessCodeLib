@@ -15,6 +15,7 @@ Attribute VB_Description = "Prozeduren für die Fehlerbehandlung"
 '<codelib>
 '  <file>base/modErrorHandler.bas</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Error handling procedures (HandleError): raise to caller, show in MsgBox, ignore, optionally write to a log file</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

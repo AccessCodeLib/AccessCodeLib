@@ -24,6 +24,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>form/FormTools.cls</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Procedures for forms: open form or new record, go to bookmark, check if loaded, minimum size and resize, requery, scrollbars, clear multi-value selection</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

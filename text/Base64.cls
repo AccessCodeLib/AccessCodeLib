@@ -18,8 +18,9 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>text/Base64.cls</file>
-'  <test>_test\text\Base64Tests.cls</test>
+'  <test>_test/text/Base64Tests.cls</test>
 '  <license>_codelib/license.bas</license>
+'  <description>Encodes strings to Base64 and decodes Base64 to strings or byte arrays (via MSXML2.DOMDocument), optional Unicode conversion</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

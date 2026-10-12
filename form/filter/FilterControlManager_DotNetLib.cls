@@ -24,6 +24,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>_dotnetlib/integration/DotNetLibsSetup.bas</use>
 '  <use>form/filter/FilterControlCollection_DotNetLib.cls</use>
+'  <description>FilterControlManager variant using the .NET SqlTools (ACLib DotNetLib)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

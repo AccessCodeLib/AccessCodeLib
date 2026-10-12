@@ -20,6 +20,8 @@ Attribute VB_Exposed = False
 '  <file>form/sort/ColumnSort.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
+'  <example>_examples/form/sort/frmColumnSort.frm</example>
+'  <description>Sorts a continuous form by a field via command buttons (ascending/descending toggle)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

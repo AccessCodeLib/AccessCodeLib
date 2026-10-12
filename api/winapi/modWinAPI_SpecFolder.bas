@@ -13,6 +13,7 @@ Attribute VB_Name = "modWinAPI_SpecFolder"
 '<codelib>
 '  <file>api/winapi/modWinAPI_SpecFolder.bas</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Gets the path of Windows special folders (AppData, Documents, Program Files, ...) via SHGetFolderPath</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -75,9 +76,9 @@ Private Const CSIDL_FLAG_DONT_VERIFY As Long = &H4000&
 Private Const SHGFP_TYPE_CURRENT As Long = 0&
 Private Const MAX_PATH As Long = 260&
 
-Private Declare Function SHGetFolderPath Lib "shfolder" Alias "SHGetFolderPathA" ( _
-   ByVal hwndOwner As Long, ByVal nFolder As Long, _
-   ByVal hToken As Long, ByVal dwFlags As Long, _
+Private Declare PtrSafe Function SHGetFolderPath Lib "shfolder" Alias "SHGetFolderPathA" ( _
+   ByVal hwndOwner As LongPtr, ByVal nFolder As Long, _
+   ByVal hToken As LongPtr, ByVal dwFlags As Long, _
    ByVal pszPath As String) As Long
 
 Public Function GetSpecFolder(ByVal lCSIDL As CSIDL_FOLDER, _

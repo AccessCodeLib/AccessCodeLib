@@ -21,6 +21,7 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>api/graphviz/GraphvizDOTconnection.cls</file>
+'  <description>Connection (edge) between two nodes of a Graphviz DOT graph</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 Option Compare Text

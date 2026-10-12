@@ -18,6 +18,7 @@ Attribute VB_Description = "Mathe-Hilfsfunktionen"
 '  <use>math/Decimal2.cls</use>
 '  <license>_codelib/license.bas</license>
 '  <test>_test/math/MathToolsTests.cls</test>
+'  <description>Math functions: rounding with selectable midpoint rounding (to even or away from zero), factorial</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

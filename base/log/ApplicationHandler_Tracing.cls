@@ -26,6 +26,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>base/ApplicationHandler.cls</use>
 '  <test>_test/base/log/ApplicationHandler_TracingTest.cls</test>
+'  <description>ApplicationHandler extension: trace log with output to Debug window, memory, string or file</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

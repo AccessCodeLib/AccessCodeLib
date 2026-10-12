@@ -11,19 +11,19 @@ Option Compare Text
 Option Explicit
 
 '<codelib>
-'  <file>_test\datetime\DateTime2Tests.cls</file>
+'  <file>_test/datetime/DateTime2Tests.cls</file>
 '  <license>_codelib/license.bas</license>
 '</codelib>
 
 'AccUnit:TestClass
 
 ' AccUnit infrastructure for advanced AccUnit features. Do not remove these lines.
-Implements SimplyVBUnit.ITestFixture
-Implements AccUnit_Integration.ITestManagerBridge
-Private TestManager As AccUnit_Integration.TestManager
-Private Sub ITestManagerBridge_InitTestManager(ByVal NewTestManager As AccUnit_Integration.ITestManagerComInterface): Set TestManager = NewTestManager: End Sub
-Private Function ITestManagerBridge_GetTestManager() As AccUnit_Integration.ITestManagerComInterface: Set ITestManagerBridge_GetTestManager = TestManager: End Function
-Private Sub ITestFixture_AddTestCases(ByVal Tests As SimplyVBUnit.TestCaseCollector): TestManager.AddTestCases Tests: End Sub
+'Implements SimplyVBUnit.ITestFixture
+'Implements AccUnit_Integration.ITestManagerBridge
+'Private TestManager As AccUnit_Integration.TestManager
+'Private Sub ITestManagerBridge_InitTestManager(ByVal NewTestManager As AccUnit_Integration.ITestManagerComInterface): Set TestManager = NewTestManager: End Sub
+'Private Function ITestManagerBridge_GetTestManager() As AccUnit_Integration.ITestManagerComInterface: Set ITestManagerBridge_GetTestManager = TestManager: End Function
+'Private Sub ITestFixture_AddTestCases(ByVal Tests As SimplyVBUnit.TestCaseCollector): TestManager.AddTestCases Tests: End Sub
 
 '--------------------------------------------------------------------
 ' Tests

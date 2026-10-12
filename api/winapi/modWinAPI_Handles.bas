@@ -15,6 +15,7 @@ Attribute VB_Description = "Win-API-Funktionen: Handles"
 '<codelib>
 '  <file>api/winapi/modWinAPI_Handles.bas</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Standard module version: window handles of the MDI client, form sections and controls; prefer WinApiWindowTools.cls</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

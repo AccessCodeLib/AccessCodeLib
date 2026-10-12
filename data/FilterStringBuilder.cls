@@ -25,7 +25,8 @@ Attribute VB_Exposed = False
 '  <use>text/StringCollection.cls</use>
 '  <use>data/SqlTools.cls</use>
 '  <test>_test/data/FilterStringBuilderTests.cls</test>
-'  <example>data/FilterStringBuilder_Examples.bas</example>
+'  <example>_examples/data/FilterStringBuilder_Examples.bas</example>
+'  <description>Builds SQL criteria from field/operator/value entries, incl. condition groups, sub-selects and EXISTS</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
@@ -297,7 +298,7 @@ End Function
 ' Function: AddSubSelectCriteria
 '---------------------------------------------------------------------------------------
 '
-' New filter condition group for a sub select. 
+' New filter condition group for a sub select.
 '     e.g. ( a = 1 and x In (select n from tab123) )
 '
 ' Parameters:
@@ -357,7 +358,7 @@ End Function
 ' Function: AddExistsCriteria
 '---------------------------------------------------------------------------------------
 '
-' New filter condition group for a exits sub select 
+' New filter condition group for a exits sub select
 '     e.g. ( a = 1 and exists (select * from tab123 where t = a and y = 123) )
 '
 ' Parameters:

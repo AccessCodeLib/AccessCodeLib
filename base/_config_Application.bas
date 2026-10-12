@@ -23,6 +23,7 @@ Attribute VB_Name = "_config_Application"
 '  <license>_codelib/license.bas</license>
 '  <use>base/modApplication.bas</use>
 '  <use>base/ApplicationHandler.cls</use>
+'  <description>Application configuration template for the ApplicationHandler framework (InitConfig): application name, version, start form and activated extensions; adapt per application</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

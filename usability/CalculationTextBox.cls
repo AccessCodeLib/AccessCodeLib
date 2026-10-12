@@ -36,6 +36,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>usability/CalculationTextBox.cls</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Allows calculation expressions in a text box (e.g. 12*3+5) and writes the result into the control</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

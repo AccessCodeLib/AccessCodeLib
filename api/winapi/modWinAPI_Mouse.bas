@@ -11,6 +11,7 @@ Attribute VB_Name = "modWinApi_Mouse"
 '<codelib>
 '  <file>api/winapi/modWinAPI_Mouse.bas</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Sets the mouse cursor (e.g. hand, wait, arrow) via WinAPI</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
