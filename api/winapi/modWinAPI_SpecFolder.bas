@@ -13,6 +13,7 @@ Attribute VB_Name = "modWinAPI_SpecFolder"
 '<codelib>
 '  <file>api/winapi/modWinAPI_SpecFolder.bas</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Gets the path of Windows special folders (AppData, Documents, Program Files, ...) via SHGetFolderPath</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

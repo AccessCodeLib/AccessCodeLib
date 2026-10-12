@@ -22,6 +22,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>api/winapi/WinApiFileInfo.cls</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Reads the version number of a file (e.g. DLL); class version of modWinAPI_FileInfo.bas</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

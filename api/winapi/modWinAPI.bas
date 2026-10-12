@@ -16,6 +16,7 @@ Attribute VB_Description = "Gebräuchliche WinAPI-Funktionen"
 '<codelib>
 '  <file>api/winapi/modWinAPI.bas</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Standard module version: open files with the associated application (ShellExecute), open a new mail (mailto), start a program and wait, set a form icon; prefer WinApiShellTools.cls / WinApiImageTools.cls</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

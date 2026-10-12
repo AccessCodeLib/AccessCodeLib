@@ -22,6 +22,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>api/winapi/WinApiLayoutTools.cls</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Layout helpers: set window back color, convert twips/pixels, get scrollbar width; class version of modWinAPI_Layout.bas</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

@@ -28,6 +28,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>api/winapi/WinApiWindowTools.cls</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Gets window handles of the Access MDI client, form sections (header, detail, footer) and controls; class version of modWinAPI_Handles.bas</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

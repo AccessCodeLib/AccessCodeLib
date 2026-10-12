@@ -5,8 +5,8 @@
 | | Count |
 |---|---|
 | Modules in catalog | 122 |
-| with `<description>` tag | 34 |
-| header summary only | 68 |
+| with `<description>` tag | 49 |
+| header summary only | 53 |
 | no description | 20 |
 | Header issues | 2 |
 
@@ -49,24 +49,6 @@ Cannot be imported together; the description names the use case of each file.
 - `api/pdfcreator/LibPdfCreatorJob.cls` - (no header summary)
 - `api/pdfcreator/LibPdfCreatorOptions.cls` - (no header summary)
 - `api/pdfcreator/LibPdfCreatorTools.cls` - (no header summary)
-
-### api/winapi
-
-- `api/winapi/modWinAPI.bas` - header: Gebräuchliche WinAPI-Funktionen
-- `api/winapi/modWinAPI_FileInfo.bas` - header: Dateiinformationen mit Win-API auslesen
-- `api/winapi/modWinAPI_Handles.bas` - header: Win-API-Funktionen: Handles
-- `api/winapi/modWinAPI_Layout.bas` - header: WinAPI-Funktionen zur Layoutgestaltung
-- `api/winapi/modWinAPI_Mouse.bas` - header: Set mouse cursor
-- `api/winapi/modWinAPI_Registry.bas` - header: Access to Windows Registry
-- `api/winapi/modWinAPI_SpecFolder.bas` - header: Kapselung von SHGetFolderPath
-- `api/winapi/WinApiFileInfo.cls` - header: Read file information with Win-API
-- `api/winapi/WinApiImageTools.cls` - header: WinAPI functions: Image & Co.
-- `api/winapi/WinApiLayoutTools.cls` - header: WinAPI functions for layout design
-- `api/winapi/WinApiShellTools.cls` - header: WinAPI functions: ShellExecuteA & Co.
-- `api/winapi/WinApiShortcutMenu.cls` - header: ShortcutMenu via Win API
-- `api/winapi/WinApiTools.cls` - header: Factory for WinAPI classes
-- `api/winapi/WinApiToolsFactory.bas` - header: Creates instance of WinApiTools
-- `api/winapi/WinApiWindowTools.cls` - header: WinAPI functions: Window Handle & Co.
 
 ### base
 

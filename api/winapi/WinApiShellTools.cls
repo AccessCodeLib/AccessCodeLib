@@ -23,6 +23,7 @@ Attribute VB_Exposed = False
 '  <file>api/winapi/WinApiShellTools.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <example>_examples/api/winapi/WinApiShellTools_Example.bas</example>
+'  <description>Opens files and URLs with the associated application (ShellExecute), runs programs as administrator, opens a new mail (mailto), starts a program and waits until it ends; class version of modWinAPI.bas</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

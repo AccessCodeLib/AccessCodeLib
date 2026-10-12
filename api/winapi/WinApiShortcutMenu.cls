@@ -31,6 +31,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>api/winapi/WinApiLayoutTools.cls</use>
 '  <use>api/winapi/WinApiWindowTools.cls</use>
+'  <description>Shortcut (context) menu for Access forms and controls built with the WinAPI: add menu items, open the menu and return the selected item</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

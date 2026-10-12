@@ -15,6 +15,7 @@ Attribute VB_Description = "Dateiinformationen mit Win-API auslesen"
 '<codelib>
 '  <file>api/winapi/modWinAPI_FileInfo.bas</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Standard module version: read the version number of a file; prefer WinApiFileInfo.cls</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

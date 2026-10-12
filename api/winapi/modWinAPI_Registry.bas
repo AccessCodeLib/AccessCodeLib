@@ -14,6 +14,7 @@ Attribute VB_Name = "modWinAPI_Registry"
 '<codelib>
 '  <file>api/winapi/modWinAPI_Registry.bas</file>
 '  <license>_codelib/license.bas</license>
+'  <description>Reads the Windows registry: check whether a key exists, read a value, check whether a COM class is registered</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

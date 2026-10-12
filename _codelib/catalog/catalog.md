@@ -34,21 +34,21 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 
 ## api/winapi
 
-- `api/winapi/modWinAPI.bas` (module) - Gebräuchliche WinAPI-Funktionen
-- `api/winapi/modWinAPI_FileInfo.bas` (module) - Dateiinformationen mit Win-API auslesen
-- `api/winapi/modWinAPI_Handles.bas` (module) - Win-API-Funktionen: Handles
-- `api/winapi/modWinAPI_Layout.bas` (module) - WinAPI-Funktionen zur Layoutgestaltung
-- `api/winapi/modWinAPI_Mouse.bas` (module) - Set mouse cursor
-- `api/winapi/modWinAPI_Registry.bas` (module) - Access to Windows Registry
-- `api/winapi/modWinAPI_SpecFolder.bas` (module) - Kapselung von SHGetFolderPath
-- `api/winapi/WinApiFileInfo.cls` (class) - Read file information with Win-API
-- `api/winapi/WinApiImageTools.cls` (class) - WinAPI functions: Image & Co.
-- `api/winapi/WinApiLayoutTools.cls` (class) - WinAPI functions for layout design
-- `api/winapi/WinApiShellTools.cls` (class) - WinAPI functions: ShellExecuteA & Co.
-- `api/winapi/WinApiShortcutMenu.cls` (class) - ShortcutMenu via Win API | uses: WinApiLayoutTools, WinApiWindowTools
-- `api/winapi/WinApiTools.cls` (class) - Factory for WinAPI classes | uses: WinApiShellTools, WinApiImageTools
-- `api/winapi/WinApiToolsFactory.bas` (module) - Creates instance of WinApiTools | uses: WinApiTools
-- `api/winapi/WinApiWindowTools.cls` (class) - WinAPI functions: Window Handle & Co.
+- `api/winapi/modWinAPI.bas` (module) - Standard module version: open files with the associated application (ShellExecute), open a new mail (mailto), start a program and wait, set a form icon; prefer WinApiShellTools.cls / WinApiImageTools.cls
+- `api/winapi/modWinAPI_FileInfo.bas` (module) - Standard module version: read the version number of a file; prefer WinApiFileInfo.cls
+- `api/winapi/modWinAPI_Handles.bas` (module) - Standard module version: window handles of the MDI client, form sections and controls; prefer WinApiWindowTools.cls
+- `api/winapi/modWinAPI_Layout.bas` (module) - Standard module version: set window back color, convert twips/pixels, get scrollbar width; prefer WinApiLayoutTools.cls
+- `api/winapi/modWinAPI_Mouse.bas` (module) - Sets the mouse cursor (e.g. hand, wait, arrow) via WinAPI
+- `api/winapi/modWinAPI_Registry.bas` (module) - Reads the Windows registry: check whether a key exists, read a value, check whether a COM class is registered
+- `api/winapi/modWinAPI_SpecFolder.bas` (module) - Gets the path of Windows special folders (AppData, Documents, Program Files, ...) via SHGetFolderPath
+- `api/winapi/WinApiFileInfo.cls` (class) - Reads the version number of a file (e.g. DLL); class version of modWinAPI_FileInfo.bas
+- `api/winapi/WinApiImageTools.cls` (class) - Sets the window icon of an Access form from an icon file; class version of SetFormIconFromFile in modWinAPI.bas
+- `api/winapi/WinApiLayoutTools.cls` (class) - Layout helpers: set window back color, convert twips/pixels, get scrollbar width; class version of modWinAPI_Layout.bas
+- `api/winapi/WinApiShellTools.cls` (class) - Opens files and URLs with the associated application (ShellExecute), runs programs as administrator, opens a new mail (mailto), starts a program and waits until it ends; class version of modWinAPI.bas
+- `api/winapi/WinApiShortcutMenu.cls` (class) - Shortcut (context) menu for Access forms and controls built with the WinAPI: add menu items, open the menu and return the selected item | uses: WinApiLayoutTools, WinApiWindowTools
+- `api/winapi/WinApiTools.cls` (class) - Factory for the WinAPI helper classes (Shell, Image); entry point via WinApiToolsFactory.WinAPI | uses: WinApiShellTools, WinApiImageTools
+- `api/winapi/WinApiToolsFactory.bas` (module) - Provides the global property WinAPI that returns a WinApiTools instance | uses: WinApiTools
+- `api/winapi/WinApiWindowTools.cls` (class) - Gets window handles of the Access MDI client, form sections (header, detail, footer) and controls; class version of modWinAPI_Handles.bas
 
 ## base
 
