@@ -22,8 +22,9 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>api/graphviz/GraphvizDOT.cls</file>
 '  <use>api/graphviz/GraphvizDOTgraph.cls</use>
-'  <use>file/modFiles.bas</use>
+'  <use>file/FileTools.bas</use>
 '  <use>api/winapi/modWinAPI.bas</use>
+'  <use>api/winapi/modWinAPI_Registry.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

@@ -58,6 +58,9 @@ function Read-SourceFile {
     if ($Bytes.Length -ge 3 -and $Bytes[0] -eq 0xEF -and $Bytes[1] -eq 0xBB -and $Bytes[2] -eq 0xBF) {
         return [System.Text.Encoding]::UTF8.GetString($Bytes, 3, $Bytes.Length - 3)
     }
+    if ($Bytes.Length -ge 2 -and $Bytes[0] -eq 0xFF -and $Bytes[1] -eq 0xFE) {
+        return [System.Text.Encoding]::Unicode.GetString($Bytes, 2, $Bytes.Length - 2)
+    }
     try {
         $StrictUtf8 = New-Object System.Text.UTF8Encoding($false, $true)
         return $StrictUtf8.GetString($Bytes)

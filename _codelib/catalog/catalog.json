@@ -11,15 +11,17 @@
       "predeclaredId": false,
       "uses": [
         "api/graphviz/GraphvizDOTgraph.cls",
-        "file/modFiles.bas",
-        "api/winapi/modWinAPI.bas"
+        "file/FileTools.bas",
+        "api/winapi/modWinAPI.bas",
+        "api/winapi/modWinAPI_Registry.bas"
       ],
       "usesTransitive": [
         "api/graphviz/GraphvizDOTconnection.cls",
         "api/graphviz/GraphvizDOTgraph.cls",
         "api/graphviz/GraphvizDOTnode.cls",
         "api/winapi/modWinAPI.bas",
-        "file/modFiles.bas"
+        "api/winapi/modWinAPI_Registry.bas",
+        "file/FileTools.bas"
       ],
       "usedBy": [],
       "replaces": [],
@@ -203,12 +205,12 @@
       "descriptionSource": "none",
       "predeclaredId": true,
       "uses": [
-        "api/PdfCreator/LibPdfCreatorOptions",
-        "api/PdfCreator/LibPdfCreatorError"
+        "api/PdfCreator/LibPdfCreatorOptions.cls",
+        "api/PdfCreator/LibPdfCreatorError.cls"
       ],
       "usesTransitive": [
-        "api/PdfCreator/LibPdfCreatorError",
-        "api/PdfCreator/LibPdfCreatorOptions"
+        "api/PdfCreator/LibPdfCreatorError.cls",
+        "api/PdfCreator/LibPdfCreatorOptions.cls"
       ],
       "usedBy": [
         "api/PdfCreator/PdfCreatorExample.frm"
@@ -237,6 +239,7 @@
       "uses": [],
       "usesTransitive": [],
       "usedBy": [
+        "api/PdfCreator/LibPdfCreatorTools.cls",
         "api/PdfCreator/PdfCreatorExample.frm"
       ],
       "replaces": [],
@@ -262,6 +265,7 @@
       "uses": [],
       "usesTransitive": [],
       "usedBy": [
+        "api/PdfCreator/LibPdfCreatorConverter.cls",
         "api/PdfCreator/PdfCreatorExample.frm"
       ],
       "replaces": [],
@@ -288,7 +292,7 @@
       ],
       "usesTransitive": [
         "api/PdfCreator/LibPdfCreatorInstance.cls",
-        "api/PdfCreator/LibPdfCreatorOptions"
+        "api/PdfCreator/LibPdfCreatorOptions.cls"
       ],
       "usedBy": [
         "api/PdfCreator/PdfCreatorExample.frm"
@@ -312,13 +316,14 @@
       "descriptionSource": "none",
       "predeclaredId": false,
       "uses": [
-        "api/PdfCreator/LibPdfCreatorOptions"
+        "api/PdfCreator/LibPdfCreatorOptions.cls"
       ],
       "usesTransitive": [
-        "api/PdfCreator/LibPdfCreatorOptions"
+        "api/PdfCreator/LibPdfCreatorOptions.cls"
       ],
       "usedBy": [
         "api/PdfCreator/LibPdfCreatorFactory.cls",
+        "api/PdfCreator/LibPdfCreatorJob.cls",
         "api/PdfCreator/PdfCreatorExample.frm"
       ],
       "replaces": [],
@@ -421,13 +426,13 @@
       "descriptionSource": "none",
       "predeclaredId": false,
       "uses": [
-        "api/PdfCreator/LibPdfCreatorOptions",
-        "api/PdfCreator/LibPdfCreatorInstance",
+        "api/PdfCreator/LibPdfCreatorOptions.cls",
+        "api/PdfCreator/LibPdfCreatorInstance.cls",
         "file/FileTools.bas"
       ],
       "usesTransitive": [
-        "api/PdfCreator/LibPdfCreatorInstance",
-        "api/PdfCreator/LibPdfCreatorOptions",
+        "api/PdfCreator/LibPdfCreatorInstance.cls",
+        "api/PdfCreator/LibPdfCreatorOptions.cls",
         "file/FileTools.bas"
       ],
       "usedBy": [
@@ -459,6 +464,10 @@
       "uses": [],
       "usesTransitive": [],
       "usedBy": [
+        "api/PdfCreator/LibPdfCreatorConverter.cls",
+        "api/PdfCreator/LibPdfCreatorInstance.cls",
+        "api/PdfCreator/LibPdfCreatorJob.cls",
+        "api/PdfCreator/LibPdfCreatorTools.cls",
         "api/PdfCreator/PdfCreatorExample.frm"
       ],
       "replaces": [],
@@ -847,17 +856,17 @@
       "descriptionSource": "none",
       "predeclaredId": true,
       "uses": [
-        "api/PdfCreator/LibPdfCreatorEnums",
-        "api/PdfCreator/LibPdfCreatorOptions",
+        "api/PdfCreator/LibPdfCreatorEnums.cls",
+        "api/PdfCreator/LibPdfCreatorOptions.cls",
         "api/PdfCreator/LibPdfCreatorJob.cls",
         "file/FileTools.bas",
         "text/StringTools.bas"
       ],
       "usesTransitive": [
-        "api/PdfCreator/LibPdfCreatorEnums",
-        "api/PdfCreator/LibPdfCreatorInstance",
+        "api/PdfCreator/LibPdfCreatorEnums.cls",
+        "api/PdfCreator/LibPdfCreatorInstance.cls",
         "api/PdfCreator/LibPdfCreatorJob.cls",
-        "api/PdfCreator/LibPdfCreatorOptions",
+        "api/PdfCreator/LibPdfCreatorOptions.cls",
         "file/FileTools.bas",
         "text/StringTools.bas"
       ],
@@ -902,15 +911,11 @@
         "_test/api/PdfCreator/TestReport.rpt",
         "api/PdfCreator/LibPdfCreatorComFactory.cls",
         "api/PdfCreator/LibPdfCreatorConverter.cls",
-        "api/PdfCreator/LibPdfCreatorEnums",
         "api/PdfCreator/LibPdfCreatorEnums.cls",
-        "api/PdfCreator/LibPdfCreatorError",
         "api/PdfCreator/LibPdfCreatorError.cls",
         "api/PdfCreator/LibPdfCreatorFactory.cls",
-        "api/PdfCreator/LibPdfCreatorInstance",
         "api/PdfCreator/LibPdfCreatorInstance.cls",
         "api/PdfCreator/LibPdfCreatorJob.cls",
-        "api/PdfCreator/LibPdfCreatorOptions",
         "api/PdfCreator/LibPdfCreatorOptions.cls",
         "api/PdfCreator/LibPdfCreatorTools.cls",
         "file/FileTools.bas",
@@ -1043,7 +1048,9 @@
       "predeclaredId": false,
       "uses": [],
       "usesTransitive": [],
-      "usedBy": [],
+      "usedBy": [
+        "api/graphviz/GraphvizDOT.cls"
+      ],
       "replaces": [],
       "references": [],
       "tests": [],
@@ -1726,8 +1733,10 @@
         "base/login/frmLogin.frm"
       ],
       "usesTransitive": [
+        "base/_config_Application.bas",
         "base/ApplicationHandler.cls",
         "base/login/frmLogin.frm",
+        "base/modApplication.bas",
         "base/modErrorHandler.bas"
       ],
       "usedBy": [],
@@ -1749,6 +1758,34 @@
       ]
     },
     {
+      "path": "base/login/frmLogin.frm",
+      "name": "frmLogin",
+      "kind": "form",
+      "description": "Hilfsformular für Anwendungslogin",
+      "descriptionSource": "header",
+      "predeclaredId": true,
+      "uses": [
+        "base/modApplication.bas"
+      ],
+      "usesTransitive": [
+        "base/_config_Application.bas",
+        "base/ApplicationHandler.cls",
+        "base/modApplication.bas"
+      ],
+      "usedBy": [
+        "base/login/ApplicationHandler_AppLogin_Win.cls"
+      ],
+      "replaces": [],
+      "references": [],
+      "tests": [],
+      "examples": [],
+      "executes": [],
+      "publicMembers": [
+        "Event Logon(ByVal LoginName As String, ByVal Password As String, ByRef Cancel As Boolean)",
+        "Event Cancelled()"
+      ]
+    },
+    {
       "path": "base/modApplication.bas",
       "name": "modApplication",
       "kind": "module",
@@ -1766,7 +1803,8 @@
       "usedBy": [
         "base/_config_Application.bas",
         "base/_initApplication.bas",
-        "base/frmAppWatcher.frm"
+        "base/frmAppWatcher.frm",
+        "base/login/frmLogin.frm"
       ],
       "replaces": [],
       "references": [],
@@ -2852,6 +2890,7 @@
       "uses": [],
       "usesTransitive": [],
       "usedBy": [
+        "api/graphviz/GraphvizDOT.cls",
         "api/PdfCreator/LibPdfCreatorJob.cls",
         "api/PdfCreator/LibPdfCreatorTools.cls",
         "usability/ApplicationHandler_DirTextbox.cls"
@@ -3750,7 +3789,9 @@
       "predeclaredId": false,
       "uses": [],
       "usesTransitive": [],
-      "usedBy": [],
+      "usedBy": [
+        "form/sort/frmColumnSort.frm"
+      ],
       "replaces": [],
       "references": [
         {
@@ -3865,6 +3906,27 @@
         "Sub InitSortSymbolLabel(ByVal SortSymbolRef As Label, SortAscChar As String, SortDescChar As String, Optional ByVal StartSortingcontrol As Control, Optional StartSortDesc As Boolean = False)",
         "Sub RepaintSortSymbol()"
       ]
+    },
+    {
+      "path": "form/sort/frmColumnSort.frm",
+      "name": "frmColumnSort",
+      "kind": "form",
+      "description": "",
+      "descriptionSource": "none",
+      "predeclaredId": true,
+      "uses": [
+        "form/sort/ColumnSort.cls"
+      ],
+      "usesTransitive": [
+        "form/sort/ColumnSort.cls"
+      ],
+      "usedBy": [],
+      "replaces": [],
+      "references": [],
+      "tests": [],
+      "examples": [],
+      "executes": [],
+      "publicMembers": []
     },
     {
       "path": "localization/L10nDict.cls",
@@ -4670,6 +4732,7 @@
       "uses": [],
       "usesTransitive": [],
       "usedBy": [
+        "usability/OptionManager_Beispiel.frm",
         "usability/OptionManagerSetup.bas"
       ],
       "replaces": [],
@@ -4697,6 +4760,27 @@
         "Property Let DataSource(ByVal sDataSource As String)",
         "Sub UpdateEnum()"
       ]
+    },
+    {
+      "path": "usability/OptionManager_Beispiel.frm",
+      "name": "OptionManager_Beispiel",
+      "kind": "form",
+      "description": "/** \\author Andreas Vogt \\brief Beispiel für die Verwendung der OptionManager-Klasse \\ingroup usability **/",
+      "descriptionSource": "header",
+      "predeclaredId": true,
+      "uses": [
+        "usability/OptionManager.cls"
+      ],
+      "usesTransitive": [
+        "usability/OptionManager.cls"
+      ],
+      "usedBy": [],
+      "replaces": [],
+      "references": [],
+      "tests": [],
+      "examples": [],
+      "executes": [],
+      "publicMembers": []
     },
     {
       "path": "usability/OptionManagerSetup.bas",
@@ -4732,6 +4816,28 @@
         "Function OptionManagerSetup_SetupTable()",
         "Function OptionManagerSetup_CreateHelperModule()",
         "Function OptionManagerSetup_RemoveSelf()"
+      ]
+    },
+    {
+      "path": "user/login/LoginForm.frm",
+      "name": "LoginForm",
+      "kind": "form",
+      "description": "/** User login form **/",
+      "descriptionSource": "header",
+      "predeclaredId": true,
+      "uses": [],
+      "usesTransitive": [],
+      "usedBy": [
+        "user/login/LoginFormBridge.cls"
+      ],
+      "replaces": [],
+      "references": [],
+      "tests": [],
+      "examples": [],
+      "executes": [],
+      "publicMembers": [
+        "Event Logon(ByVal LoginName As String, ByVal Password As String, ByRef Cancel As Boolean)",
+        "Event Cancelled()"
       ]
     },
     {
@@ -4935,11 +5041,14 @@
         "_codelib/addins/shared/InstallAddInForm.frm"
       ],
       "usesTransitive": [
+        "_codelib/addins/shared/AddInConfiguration.cls",
+        "_codelib/addins/shared/AddInInstaller.cls",
         "_codelib/addins/shared/InstallAddInForm.frm",
         "base/_config_Application.bas",
         "base/_initApplication.bas",
         "base/ApplicationHandler.cls",
-        "base/modApplication.bas"
+        "base/modApplication.bas",
+        "base/modErrorHandler.bas"
       ],
       "references": [],
       "executes": [

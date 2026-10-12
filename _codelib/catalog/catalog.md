@@ -4,13 +4,13 @@
 > Details (dependencies, used-by, references, tests, public members): `catalog.json`.
 > Task-oriented guides: `../recipes/`. Import with the ACLib Import Wizard (path = repository path below).
 
-Modules: 135 | Packages: 1
+Modules: 139 | Packages: 1
 
 Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (usable without `New`).
 
 ## api/graphviz
 
-- `api/graphviz/GraphvizDOT.cls` (class) - GraphvizDOT | uses: GraphvizDOTgraph, modFiles, modWinAPI
+- `api/graphviz/GraphvizDOT.cls` (class) - GraphvizDOT | uses: GraphvizDOTgraph, FileTools, modWinAPI, modWinAPI_Registry
 - `api/graphviz/GraphvizDOTconnection.cls` (class) - Graphviz connection between two nodes
 - `api/graphviz/GraphvizDOTgraph.cls` (class) - Class for creating the graphviz graph definition | uses: GraphvizDOTnode, GraphvizDOTconnection
 - `api/graphviz/GraphvizDOTnode.cls` (class) - Graphviz node | uses: GraphvizDOTgraph
@@ -80,6 +80,7 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 ## base/login
 
 - `base/login/ApplicationHandler_AppLogin_Win.cls` (class) - Erweiterung für ApplicationHandler-Klasse | uses: ApplicationHandler, modErrorHandler, frmLogin
+- `base/login/frmLogin.frm` (form) [P] - Hilfsformular für Anwendungslogin | uses: modApplication
 
 ## com
 
@@ -172,6 +173,7 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 - `form/sort/FormSortingControl.cls` (class) - Hilfsklasse für FormSortingExtension | uses: FormSortingControlEventBridge
 - `form/sort/FormSortingControlEventBridge.cls` (class) - Hilfsklasse für FormSortingExtension | uses: FormSortingControl
 - `form/sort/FormSortingExtension.cls` (class) - Erstellt einen OrderBy-String für ein Endlos-Formular | uses: FormSortingControl, FormSortingControlEventBridge, WinApiLayoutTools
+- `form/sort/frmColumnSort.frm` (form) [P] | uses: ColumnSort
 
 ## localization
 
@@ -218,6 +220,7 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 - `usability/ComboboxFilterControl.cls` (class) - Combobox-Steuerung zum Suchen/Auswählen von Einträgen innerhalb der Combobox-Liste Combobox control for searching/selecting entries within the combobox list
 - `usability/ComboboxFilterControl_Beispiele.frm` (form) [P] - Beispiel für die Nutzung der Combobox-Steuerung 'ComboboxFilterControl' | uses: ComboboxFilterControl
 - `usability/OptionManager.cls` (class) [P]
+- `usability/OptionManager_Beispiel.frm` (form) [P] - /** \author Andreas Vogt \brief Beispiel für die Verwendung der OptionManager-Klasse \ingroup usability **/ | uses: OptionManager
 - `usability/OptionManagerSetup.bas` (module) - Setup Modul für den OptionManager | uses: OptionManager
 
 ## user
@@ -227,6 +230,7 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 
 ## user/login
 
+- `user/login/LoginForm.frm` (form) [P] - /** User login form **/
 - `user/login/LoginFormBridge.cls` (class) | uses: LoginForm
 - `user/login/WinLogin.cls` (class)
 

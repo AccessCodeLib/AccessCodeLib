@@ -18,7 +18,7 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>api/PdfCreator/LibPdfCreatorInstance.cls</file>
-'  <use>api/PdfCreator/LibPdfCreatorOptions</use>
+'  <use>api/PdfCreator/LibPdfCreatorOptions.cls</use>
 '  <test>_test/api/PdfCreator/LibPdfCreatorInstanceTests.cls</test>
 '  <license>_codelib/license.bas</license>
 '</codelib>

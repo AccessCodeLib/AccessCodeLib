@@ -4,23 +4,14 @@
 
 | | Count |
 |---|---|
-| Modules in catalog | 135 |
+| Modules in catalog | 139 |
 | with `<description>` tag | 31 |
-| header summary only | 73 |
-| no description | 31 |
-| Header issues | 14 |
+| header summary only | 76 |
+| no description | 32 |
+| Header issues | 5 |
 
 ## Header issues
 
-- `api/graphviz/GraphvizDOT.cls`: <use> target not found: `file/modFiles.bas`
-- `api/PdfCreator/LibPdfCreatorConverter.cls`: <use> target not found: `api/PdfCreator/LibPdfCreatorError`
-- `api/PdfCreator/LibPdfCreatorConverter.cls`: <use> target not found: `api/PdfCreator/LibPdfCreatorOptions`
-- `api/PdfCreator/LibPdfCreatorInstance.cls`: <use> target not found: `api/PdfCreator/LibPdfCreatorOptions`
-- `api/PdfCreator/LibPdfCreatorJob.cls`: <use> target not found: `api/PdfCreator/LibPdfCreatorInstance`
-- `api/PdfCreator/LibPdfCreatorJob.cls`: <use> target not found: `api/PdfCreator/LibPdfCreatorOptions`
-- `api/PdfCreator/LibPdfCreatorTools.cls`: <use> target not found: `api/PdfCreator/LibPdfCreatorEnums`
-- `api/PdfCreator/LibPdfCreatorTools.cls`: <use> target not found: `api/PdfCreator/LibPdfCreatorOptions`
-- `api/winapi/WinApiShellTools_Example.bas`: <file> tag differs from location: `api/winapi//WinApiShellTools_Example.bas`
 - object name `FilterControl` used by several files (alternatives, cannot be imported together): `form/filter/FilterControl.cls`, `form/filter/FilterControl_DotNetLib.cls`
 - object name `FilterControlCollection` used by several files (alternatives, cannot be imported together): `form/filter/FilterControlCollection.cls`, `form/filter/FilterControlCollection_DotNetLib.cls`
 - object name `FilterControlEventBridge` used by several files (alternatives, cannot be imported together): `form/filter/FilterControlEventBridge.cls`, `form/filter/FilterControlEventBridge_DotNetLib.cls`
@@ -101,6 +92,7 @@
 ### base/login
 
 - `base/login/ApplicationHandler_AppLogin_Win.cls` - header: Erweiterung für ApplicationHandler-Klasse
+- `base/login/frmLogin.frm` - header: Hilfsformular für Anwendungslogin
 
 ### com
 
@@ -147,6 +139,7 @@
 - `form/sort/FormSortingControl.cls` - header: Hilfsklasse für FormSortingExtension
 - `form/sort/FormSortingControlEventBridge.cls` - header: Hilfsklasse für FormSortingExtension
 - `form/sort/FormSortingExtension.cls` - header: Erstellt einen OrderBy-String für ein Endlos-Formular
+- `form/sort/frmColumnSort.frm` - (no header summary)
 
 ### localization
 
@@ -193,6 +186,7 @@
 - `usability/ComboboxFilterControl.cls` - header: Combobox-Steuerung zum Suchen/Auswählen von Einträgen innerhalb der Combobox-Liste Combobox control for searching/selecting entries within the combobox list
 - `usability/ComboboxFilterControl_Beispiele.frm` - header: Beispiel für die Nutzung der Combobox-Steuerung 'ComboboxFilterControl'
 - `usability/OptionManager.cls` - (no header summary)
+- `usability/OptionManager_Beispiel.frm` - header: /** \author Andreas Vogt \brief Beispiel für die Verwendung der OptionManager-Klasse \ingroup usability **/
 - `usability/OptionManagerSetup.bas` - header: Setup Modul für den OptionManager
 
 ### user
@@ -202,6 +196,7 @@
 
 ### user/login
 
+- `user/login/LoginForm.frm` - header: /** User login form **/
 - `user/login/LoginFormBridge.cls` - (no header summary)
 - `user/login/WinLogin.cls` - (no header summary)
 
