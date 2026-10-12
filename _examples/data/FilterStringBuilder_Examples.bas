@@ -171,7 +171,7 @@ Private Sub SubSelectCriteria()
 
    With New FilterStringBuilder
    
-      With .AddSubSelectCriteria("fiXyz", SQL_In + SQL_Not, "Select idXyz From Tabelle", True, SQL_Or)
+      With .AddSubSelectCriteria("fiXyz", SQL_In + SQL_Not, "Select idXyz From Tabelle", True, False, SQL_Or)
          .Add "x", SQL_Numeric, SQL_Equal, 4
          .Add "y", SQL_Numeric, SQL_Equal, 5
       End With
@@ -187,7 +187,7 @@ Private Sub SubSelectCriteriaMitConditionGroup()
    
       .Add "a", SQL_Numeric, SQL_Equal, 123
    
-      With .AddSubSelectCriteria("fiXyz", SQL_In + SQL_Not, "Select idXyz From Tabelle", False, SQL_And)
+      With .AddSubSelectCriteria("fiXyz", SQL_In + SQL_Not, "Select idXyz From Tabelle", False, False, SQL_And)
          .Add "b", SQL_Text, SQL_Equal, "xyz"
          With .NewConditionGroup(SQL_Or)
             .Add "x", SQL_Numeric, SQL_Equal, 4
