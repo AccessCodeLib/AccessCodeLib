@@ -36,7 +36,7 @@ Private m_options As LibPdfCreatorOptions
 Private m_options_backup As LibPdfCreatorOptions
 
 Private m_defaultPrinter As String
-Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
+Private Declare PtrSafe Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
 Private Sub Class_Initialize()
     Set m_creator = LibPdfCreatorFactory.PdfCreatorInstance()

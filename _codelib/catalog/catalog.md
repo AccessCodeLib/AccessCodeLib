@@ -83,7 +83,7 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 
 ## com
 
-- `com/modDirectCOM.bas` (module) - Creates an instance of a class from an unregistered (native) COM dll
+- `com/modDirectCOM.bas` (module) - Creates an instance of a class from an unregistered (native) COM dll; 32-bit Office only
 - `com/NetComDomain.cls` (class) - Creates objects from a .NET COM library without registration (loads the dll into an AppDomain via mscoree)
 
 ## crypt/md5

@@ -122,11 +122,11 @@ Private Type LOGFONT
 End Type
 
 #If VBA7 Then
-   Private Declare PtrSafe Function apiCreateFontIndirect Lib "gdi32" Alias "CreateFontIndirectA" (lpLogFont As LOGFONT) As Long
-   Private Declare PtrSafe Function apiSelectObject Lib "gdi32" Alias "SelectObject" (ByVal hDC As LongPtr, ByVal hObject As LongPtr) As Long
+   Private Declare PtrSafe Function apiCreateFontIndirect Lib "gdi32" Alias "CreateFontIndirectA" (lpLogFont As LOGFONT) As LongPtr
+   Private Declare PtrSafe Function apiSelectObject Lib "gdi32" Alias "SelectObject" (ByVal hDC As LongPtr, ByVal hObject As LongPtr) As LongPtr
    Private Declare PtrSafe Function apiDeleteObject Lib "gdi32" Alias "DeleteObject" (ByVal hObject As LongPtr) As Long
    Private Declare PtrSafe Function apiGetDeviceCaps Lib "gdi32" Alias "GetDeviceCaps" (ByVal hDC As LongPtr, ByVal nIndex As Long) As Long
-   Private Declare PtrSafe Function apiGetDC Lib "user32" Alias "GetDC" (ByVal Hwnd As LongPtr) As Long
+   Private Declare PtrSafe Function apiGetDC Lib "user32" Alias "GetDC" (ByVal Hwnd As LongPtr) As LongPtr
    Private Declare PtrSafe Function apiReleaseDC Lib "user32" Alias "ReleaseDC" (ByVal Hwnd As LongPtr, ByVal hDC As LongPtr) As Long
    Private Declare PtrSafe Function apiDrawText Lib "user32" Alias "DrawTextA" (ByVal hDC As LongPtr, ByVal lpStr As String, ByVal nCount As Long, lpRect As Rect, ByVal wFormat As Long) As Long
 #Else
@@ -562,16 +562,16 @@ Private Function GetTextHeight(ByVal ctl As Control) As Long
    Dim sRect As Rect
    
    ' Reports Device Context
-   Dim hDC As Long
+   Dim hDC As LongPtr
    
    ' Holds the current screen resolution
    Dim lngDPI As Long
    
-   Dim newfont As Long
+   Dim newfont As LongPtr
    ' Handle to our Font Object we created.
    ' We must destroy it before exiting main function
    
-   Dim oldfont As Long
+   Dim oldfont As LongPtr
    ' Device Context's Font we must Select back into the DC
    ' before we exit this function.
  
@@ -656,7 +656,7 @@ Private Function GetTextHeight(ByVal ctl As Control) As Long
       lngRet = apiDrawText(hDC, strText, -1, sRect, DT_CALCRECT Or DT_TOP Or DT_LEFT Or DT_WORDBREAK Or DT_NOCLIP)
 
       ' Cleanup
-      lngRet = apiSelectObject(hDC, oldfont)
+      apiSelectObject hDC, oldfont
       ' Delete the Font we created
       apiDeleteObject (newfont)
       

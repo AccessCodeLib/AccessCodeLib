@@ -40,8 +40,6 @@ End Sub
 - Supported sorting controls: labels and command buttons. The click event is connected automatically.
 - A second click on the same control toggles ascending/descending for all fields without fixed `ASC`/`DESC`.
 - `InitSortSymbolLabel` positions one separate label as sort symbol next to the active control.
-- `form/sort/FormSortingExtension.cls` declares its WinAPI functions without `PtrSafe`: it does not compile in 64-bit Office
-  without adjustment.
 - `form/sort/ColumnSort.cls` is a simpler alternative with command buttons
   (`_examples/form/sort/frmColumnSort.frm`).
 

@@ -174,7 +174,7 @@ End Enum
 ' </remarks>
 '**/
 '---------------------------------------------------------------------------------------
-Private Declare Function IsTextUnicode Lib "advapi32" (ByRef lpv As Any, ByVal iSize As Long, ByRef lpiResult As Long) As Boolean
+Private Declare PtrSafe Function IsTextUnicode Lib "advapi32" (ByRef lpv As Any, ByVal iSize As Long, ByRef lpiResult As Long) As Boolean
 
 '---------------------------------------------------------------------------------------
 ' Function: IsUnicode

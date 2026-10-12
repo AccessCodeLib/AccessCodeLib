@@ -1825,7 +1825,7 @@
       "path": "com/modDirectCOM.bas",
       "name": "modDirectCOM",
       "kind": "module",
-      "description": "Creates an instance of a class from an unregistered (native) COM dll",
+      "description": "Creates an instance of a class from an unregistered (native) COM dll; 32-bit Office only",
       "descriptionSource": "tag",
       "predeclaredId": false,
       "uses": [],

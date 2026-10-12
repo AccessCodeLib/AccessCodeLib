@@ -46,14 +46,14 @@ Private Const KEY_READ As Long = (READ_CONTROL Or KEY_QUERY_VALUE Or KEY_ENUMERA
                                  And (Not SYNCHRONIZE)
 Private Const ERROR_SUCCESS As Long = 0&
 
-Private Declare Function RegOpenKeyEx Lib "advapi32.dll" Alias "RegOpenKeyExA" ( _
-         ByVal hKey As Long, ByVal lpSubKey As String, ByVal ulOptions As Long, _
-         ByVal samDesired As Long, ByRef phkResult As Long) As Long
+Private Declare PtrSafe Function RegOpenKeyEx Lib "advapi32.dll" Alias "RegOpenKeyExA" ( _
+         ByVal hKey As LongPtr, ByVal lpSubKey As String, ByVal ulOptions As Long, _
+         ByVal samDesired As Long, ByRef phkResult As LongPtr) As Long
 
-Private Declare Function RegCloseKey Lib "advapi32.dll" (ByVal hKey As Long) As Long
+Private Declare PtrSafe Function RegCloseKey Lib "advapi32.dll" (ByVal hKey As LongPtr) As Long
 
-Private Declare Function RegQueryValueEx Lib "advapi32.dll" Alias "RegQueryValueExA" ( _
-         ByVal hKey As Long, ByVal lpValueName As String, ByVal lpReserved As Long, _
+Private Declare PtrSafe Function RegQueryValueEx Lib "advapi32.dll" Alias "RegQueryValueExA" ( _
+         ByVal hKey As LongPtr, ByVal lpValueName As String, ByVal lpReserved As LongPtr, _
          ByRef lpType As Long, ByRef lpData As Any, ByRef lpcbData As Any) As Long
 
 
@@ -72,7 +72,7 @@ Private Declare Function RegQueryValueEx Lib "advapi32.dll" Alias "RegQueryValue
 '---------------------------------------------------------------------------------------
 Public Function ComClassIsRegistered(ByVal ClassName As String) As Boolean
    
-   Dim lKey As Long
+   Dim lKey As LongPtr
    
 On Error Resume Next
 
@@ -102,7 +102,7 @@ End Function
 Public Function RegKeyExist(ByVal Root As Long, ByVal Key As String) As Long
 'Pr�fen ob ein Schl�ssel existiert
 
-   Dim Result As Long, hKey As Long
+   Dim Result As Long, hKey As LongPtr
 
    Result = RegOpenKeyEx(Root, Key, 0, KEY_READ, hKey)
    If Result = ERROR_SUCCESS Then Call RegCloseKey(hKey)
@@ -129,7 +129,7 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Function RegValueGet(ByVal Root As Long, ByVal Key As String, ByVal ValueName As String, ByRef Value As Variant) As Long
 
-   Dim Result As Long, hKey As Long
+   Dim Result As Long, hKey As LongPtr
    Dim dwType As Long, lpData As Long, Buffer As String, lpcdData As Long
    
    'Wert aus einem Feld der Registry auslesen
