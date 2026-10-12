@@ -9,7 +9,7 @@ Backend, Verbindung, Pass-Through-Abfrage, verknüpfte Tabellen neu verknüpfen,
   DbConnectionInfo, DbConnectionSettings, DaoHandler, AdodbHandler, OdbcHandler, SqlTools, ...)
 
 With the ApplicationHandler framework additionally `base/ApplicationHandler_DbConnection.cls`
-(see application-framework recipe).
+(see [application-framework.md](application-framework.md)).
 
 ## Prerequisite
 
