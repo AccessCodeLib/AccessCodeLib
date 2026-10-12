@@ -1269,8 +1269,8 @@
       "path": "base/_config_Application.bas",
       "name": "_config_Application",
       "kind": "module",
-      "description": "Beispiel für Anwendungskonfiguration",
-      "descriptionSource": "header",
+      "description": "Application configuration template for the ApplicationHandler framework (InitConfig): application name, version, start form and activated extensions; adapt per application",
+      "descriptionSource": "tag",
       "predeclaredId": false,
       "uses": [
         "base/modApplication.bas",
@@ -1297,8 +1297,8 @@
       "path": "base/_initApplication.bas",
       "name": "_initApplication",
       "kind": "module",
-      "description": "Initialising the application",
-      "descriptionSource": "header",
+      "description": "Start procedure of the ApplicationHandler framework (StartApplication, e.g. called from AutoExec) and restore of default settings",
+      "descriptionSource": "tag",
       "predeclaredId": false,
       "uses": [
         "base/modApplication.bas"
@@ -1326,8 +1326,8 @@
       "path": "base/ApplicationHandler.cls",
       "name": "ApplicationHandler",
       "kind": "class",
-      "description": "Main control of the application",
-      "descriptionSource": "header",
+      "description": "Core of the ApplicationHandler framework: application start and shutdown, application name/version, logging, extension mechanism via events (extensions: ApplicationHandler_*)",
+      "descriptionSource": "tag",
       "predeclaredId": false,
       "uses": [],
       "usesTransitive": [],
@@ -1408,8 +1408,8 @@
       "path": "base/ApplicationHandler_AppFile.cls",
       "name": "ApplicationHandler_AppFile",
       "kind": "class",
-      "description": "Extension for ApplicationHandler class: manage application-specific files",
-      "descriptionSource": "header",
+      "description": "ApplicationHandler extension: stores application files (e.g. icons, templates) in the table usys_AppFiles and extracts them to the file system",
+      "descriptionSource": "tag",
       "predeclaredId": false,
       "uses": [
         "base/ApplicationHandler.cls",
@@ -1445,8 +1445,8 @@
       "path": "base/ApplicationHandler_DbConnection.cls",
       "name": "ApplicationHandler_DbConnection",
       "kind": "class",
-      "description": "Erweiterung für ApplicationHandler-Klasse: Einbindung DbConnectionManager",
-      "descriptionSource": "header",
+      "description": "ApplicationHandler extension: provides the DbConnectionManager (backend connection, connection info and status)",
+      "descriptionSource": "tag",
       "predeclaredId": false,
       "uses": [
         "base/ApplicationHandler.cls",
@@ -1486,8 +1486,8 @@
       "path": "base/ApplicationHandler_ExtensionCollection.cls",
       "name": "ApplicationHandler_ExtensionCollection",
       "kind": "class",
-      "description": "Integration of the extensions for ApplicationHandler framework",
-      "descriptionSource": "header",
+      "description": "Collection that holds and initializes the ApplicationHandler extensions (Add, Dispose)",
+      "descriptionSource": "tag",
       "predeclaredId": false,
       "uses": [
         "base/ApplicationHandler.cls"
@@ -1514,8 +1514,8 @@
       "path": "base/ApplicationHandler_Settings.cls",
       "name": "ApplicationHandler_Settings",
       "kind": "class",
-      "description": "Erweiterung für ApplicationHandler-Klasse: Einstellungen",
-      "descriptionSource": "header",
+      "description": "ApplicationHandler extension: application settings (Settings, Add)",
+      "descriptionSource": "tag",
       "predeclaredId": false,
       "uses": [
         "base/ApplicationHandler.cls"
@@ -1542,8 +1542,8 @@
       "path": "base/ApplicationHandler_Version.cls",
       "name": "ApplicationHandler_Version",
       "kind": "class",
-      "description": "Extension for ApplicationHandler class: Check application version",
-      "descriptionSource": "header",
+      "description": "ApplicationHandler extension: checks for a new application version using an XML version file",
+      "descriptionSource": "tag",
       "predeclaredId": false,
       "uses": [
         "base/ApplicationHandler.cls"
@@ -1572,8 +1572,8 @@
       "path": "base/frmAppWatcher.frm",
       "name": "frmAppWatcher",
       "kind": "form",
-      "description": "Hilfsformular für Anwendungsstart (inkl. DisposeCurrentApplicationHandler beim Beenden)",
-      "descriptionSource": "header",
+      "description": "Hidden helper form for the ApplicationHandler framework: disposes the ApplicationHandler when the application is closed",
+      "descriptionSource": "tag",
       "predeclaredId": true,
       "uses": [
         "base/modApplication.bas"
@@ -1596,8 +1596,8 @@
       "path": "base/jet/ApplicationHandler_JetUserHook.cls",
       "name": "ApplicationHandler_JetUserHook",
       "kind": "class",
-      "description": "Erweiterung für ApplicationHandler-Klasse",
-      "descriptionSource": "header",
+      "description": "ApplicationHandler extension (Jet/DAO): after start opens a workspace on the backend with the logged-in user name, so the user is visible in the backend lock file; creates the user in the workgroup file if missing",
+      "descriptionSource": "tag",
       "predeclaredId": false,
       "uses": [
         "base/ApplicationHandler.cls"
@@ -1623,8 +1623,8 @@
       "path": "base/license/ApplicationHandler_LicenseVerifier.cls",
       "name": "ApplicationHandler_LicenseVerifier",
       "kind": "class",
-      "description": "Erweiterung für ApplicationHandler-Klasse",
-      "descriptionSource": "header",
+      "description": "ApplicationHandler extension: checks a license key (MD5 based) for license name and application key",
+      "descriptionSource": "tag",
       "predeclaredId": false,
       "uses": [
         "base/ApplicationHandler.cls",
@@ -1658,8 +1658,8 @@
       "path": "base/log/ApplicationHandler_Tracing.cls",
       "name": "ApplicationHandler_Tracing",
       "kind": "class",
-      "description": "Erweiterung für ApplicationHandler-Klasse: Ablaufverfolgung",
-      "descriptionSource": "header",
+      "description": "ApplicationHandler extension: trace log with output to Debug window, memory, string or file",
+      "descriptionSource": "tag",
       "predeclaredId": false,
       "uses": [
         "base/ApplicationHandler.cls"
@@ -1691,8 +1691,8 @@
       "path": "base/login/ApplicationHandler_AppLogin_Win.cls",
       "name": "ApplicationHandler_AppLogin_Win",
       "kind": "class",
-      "description": "Erweiterung für ApplicationHandler-Klasse",
-      "descriptionSource": "header",
+      "description": "ApplicationHandler extension: application login with Windows user name and password (optionally with domain) via frmLogin",
+      "descriptionSource": "tag",
       "predeclaredId": false,
       "uses": [
         "base/ApplicationHandler.cls",
@@ -1729,8 +1729,8 @@
       "path": "base/login/frmLogin.frm",
       "name": "frmLogin",
       "kind": "form",
-      "description": "Hilfsformular für Anwendungslogin",
-      "descriptionSource": "header",
+      "description": "Login form for ApplicationHandler_AppLogin_Win",
+      "descriptionSource": "tag",
       "predeclaredId": true,
       "uses": [
         "base/modApplication.bas"
@@ -1758,8 +1758,8 @@
       "path": "base/modApplication.bas",
       "name": "modApplication",
       "kind": "module",
-      "description": "Standard procedures for working with ApplicationHandler",
-      "descriptionSource": "header",
+      "description": "Standard procedures for the ApplicationHandler framework: CurrentApplication instance, application name, trace and log entries, dispose on shutdown",
+      "descriptionSource": "tag",
       "predeclaredId": false,
       "uses": [
         "base/ApplicationHandler.cls",
@@ -1794,8 +1794,8 @@
       "path": "base/modErrorHandler.bas",
       "name": "modErrorHandler",
       "kind": "module",
-      "description": "Error handling procedures",
-      "descriptionSource": "header",
+      "description": "Error handling procedures (HandleError): raise to caller, show in MsgBox, ignore, optionally write to a log file",
+      "descriptionSource": "tag",
       "predeclaredId": false,
       "uses": [],
       "usesTransitive": [],

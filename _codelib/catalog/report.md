@@ -5,8 +5,8 @@
 | | Count |
 |---|---|
 | Modules in catalog | 122 |
-| with `<description>` tag | 63 |
-| header summary only | 41 |
+| with `<description>` tag | 79 |
+| header summary only | 25 |
 | no description | 18 |
 | Header issues | 2 |
 
@@ -49,37 +49,6 @@ Cannot be imported together; the description names the use case of each file.
 - `api/pdfcreator/LibPdfCreatorJob.cls` - (no header summary)
 - `api/pdfcreator/LibPdfCreatorOptions.cls` - (no header summary)
 - `api/pdfcreator/LibPdfCreatorTools.cls` - (no header summary)
-
-### base
-
-- `base/_config_Application.bas` - header: Beispiel für Anwendungskonfiguration
-- `base/_initApplication.bas` - header: Initialising the application
-- `base/ApplicationHandler.cls` - header: Main control of the application
-- `base/ApplicationHandler_AppFile.cls` - header: Extension for ApplicationHandler class: manage application-specific files
-- `base/ApplicationHandler_DbConnection.cls` - header: Erweiterung für ApplicationHandler-Klasse: Einbindung DbConnectionManager
-- `base/ApplicationHandler_ExtensionCollection.cls` - header: Integration of the extensions for ApplicationHandler framework
-- `base/ApplicationHandler_Settings.cls` - header: Erweiterung für ApplicationHandler-Klasse: Einstellungen
-- `base/ApplicationHandler_Version.cls` - header: Extension for ApplicationHandler class: Check application version
-- `base/frmAppWatcher.frm` - header: Hilfsformular für Anwendungsstart (inkl. DisposeCurrentApplicationHandler beim Beenden)
-- `base/modApplication.bas` - header: Standard procedures for working with ApplicationHandler
-- `base/modErrorHandler.bas` - header: Error handling procedures
-
-### base/jet
-
-- `base/jet/ApplicationHandler_JetUserHook.cls` - header: Erweiterung für ApplicationHandler-Klasse
-
-### base/license
-
-- `base/license/ApplicationHandler_LicenseVerifier.cls` - header: Erweiterung für ApplicationHandler-Klasse
-
-### base/log
-
-- `base/log/ApplicationHandler_Tracing.cls` - header: Erweiterung für ApplicationHandler-Klasse: Ablaufverfolgung
-
-### base/login
-
-- `base/login/ApplicationHandler_AppLogin_Win.cls` - header: Erweiterung für ApplicationHandler-Klasse
-- `base/login/frmLogin.frm` - header: Hilfsformular für Anwendungslogin
 
 ### com
 

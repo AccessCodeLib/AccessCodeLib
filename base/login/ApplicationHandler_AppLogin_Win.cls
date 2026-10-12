@@ -27,6 +27,7 @@ Attribute VB_Exposed = False
 '  <use>base/ApplicationHandler.cls</use>
 '  <use>base/modErrorHandler.bas</use>
 '  <use>base/login/frmLogin.frm</use>
+'  <description>ApplicationHandler extension: application login with Windows user name and password (optionally with domain) via frmLogin</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

@@ -145,6 +145,7 @@ Attribute VB_Exposed = False
 '  <file>base/frmAppWatcher.frm</file>
 '  <license>_codelib/license.bas</license>
 '  <use>base/modApplication.bas</use>
+'  <description>Hidden helper form for the ApplicationHandler framework: disposes the ApplicationHandler when the application is closed</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

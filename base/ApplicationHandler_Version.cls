@@ -27,6 +27,7 @@ Attribute VB_Exposed = False
 '  <file>base/ApplicationHandler_Version.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>base/ApplicationHandler.cls</use>
+'  <description>ApplicationHandler extension: checks for a new application version using an XML version file</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

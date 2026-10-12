@@ -52,34 +52,34 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 
 ## base
 
-- `base/_config_Application.bas` (module) - Beispiel für Anwendungskonfiguration | uses: modApplication, ApplicationHandler
-- `base/_initApplication.bas` (module) - Initialising the application | uses: modApplication
-- `base/ApplicationHandler.cls` (class) - Main control of the application
-- `base/ApplicationHandler_AppFile.cls` (class) - Extension for ApplicationHandler class: manage application-specific files | uses: ApplicationHandler, WinApiFileInfo
-- `base/ApplicationHandler_DbConnection.cls` (class) - Erweiterung für ApplicationHandler-Klasse: Einbindung DbConnectionManager | uses: ApplicationHandler, DbConnectionManager
-- `base/ApplicationHandler_ExtensionCollection.cls` (class) - Integration of the extensions for ApplicationHandler framework | uses: ApplicationHandler
-- `base/ApplicationHandler_Settings.cls` (class) - Erweiterung für ApplicationHandler-Klasse: Einstellungen | uses: ApplicationHandler
-- `base/ApplicationHandler_Version.cls` (class) - Extension for ApplicationHandler class: Check application version | uses: ApplicationHandler
-- `base/frmAppWatcher.frm` (form) [P] - Hilfsformular für Anwendungsstart (inkl. DisposeCurrentApplicationHandler beim Beenden) | uses: modApplication
-- `base/modApplication.bas` (module) - Standard procedures for working with ApplicationHandler | uses: ApplicationHandler, _config_Application
-- `base/modErrorHandler.bas` (module) - Error handling procedures
+- `base/_config_Application.bas` (module) - Application configuration template for the ApplicationHandler framework (InitConfig): application name, version, start form and activated extensions; adapt per application | uses: modApplication, ApplicationHandler
+- `base/_initApplication.bas` (module) - Start procedure of the ApplicationHandler framework (StartApplication, e.g. called from AutoExec) and restore of default settings | uses: modApplication
+- `base/ApplicationHandler.cls` (class) - Core of the ApplicationHandler framework: application start and shutdown, application name/version, logging, extension mechanism via events (extensions: ApplicationHandler_*)
+- `base/ApplicationHandler_AppFile.cls` (class) - ApplicationHandler extension: stores application files (e.g. icons, templates) in the table usys_AppFiles and extracts them to the file system | uses: ApplicationHandler, WinApiFileInfo
+- `base/ApplicationHandler_DbConnection.cls` (class) - ApplicationHandler extension: provides the DbConnectionManager (backend connection, connection info and status) | uses: ApplicationHandler, DbConnectionManager
+- `base/ApplicationHandler_ExtensionCollection.cls` (class) - Collection that holds and initializes the ApplicationHandler extensions (Add, Dispose) | uses: ApplicationHandler
+- `base/ApplicationHandler_Settings.cls` (class) - ApplicationHandler extension: application settings (Settings, Add) | uses: ApplicationHandler
+- `base/ApplicationHandler_Version.cls` (class) - ApplicationHandler extension: checks for a new application version using an XML version file | uses: ApplicationHandler
+- `base/frmAppWatcher.frm` (form) [P] - Hidden helper form for the ApplicationHandler framework: disposes the ApplicationHandler when the application is closed | uses: modApplication
+- `base/modApplication.bas` (module) - Standard procedures for the ApplicationHandler framework: CurrentApplication instance, application name, trace and log entries, dispose on shutdown | uses: ApplicationHandler, _config_Application
+- `base/modErrorHandler.bas` (module) - Error handling procedures (HandleError): raise to caller, show in MsgBox, ignore, optionally write to a log file
 
 ## base/jet
 
-- `base/jet/ApplicationHandler_JetUserHook.cls` (class) - Erweiterung für ApplicationHandler-Klasse | uses: ApplicationHandler
+- `base/jet/ApplicationHandler_JetUserHook.cls` (class) - ApplicationHandler extension (Jet/DAO): after start opens a workspace on the backend with the logged-in user name, so the user is visible in the backend lock file; creates the user in the workgroup file if missing | uses: ApplicationHandler
 
 ## base/license
 
-- `base/license/ApplicationHandler_LicenseVerifier.cls` (class) - Erweiterung für ApplicationHandler-Klasse | uses: ApplicationHandler, modMD5
+- `base/license/ApplicationHandler_LicenseVerifier.cls` (class) - ApplicationHandler extension: checks a license key (MD5 based) for license name and application key | uses: ApplicationHandler, modMD5
 
 ## base/log
 
-- `base/log/ApplicationHandler_Tracing.cls` (class) - Erweiterung für ApplicationHandler-Klasse: Ablaufverfolgung | uses: ApplicationHandler
+- `base/log/ApplicationHandler_Tracing.cls` (class) - ApplicationHandler extension: trace log with output to Debug window, memory, string or file | uses: ApplicationHandler
 
 ## base/login
 
-- `base/login/ApplicationHandler_AppLogin_Win.cls` (class) - Erweiterung für ApplicationHandler-Klasse | uses: ApplicationHandler, modErrorHandler, frmLogin
-- `base/login/frmLogin.frm` (form) [P] - Hilfsformular für Anwendungslogin | uses: modApplication
+- `base/login/ApplicationHandler_AppLogin_Win.cls` (class) - ApplicationHandler extension: application login with Windows user name and password (optionally with domain) via frmLogin | uses: ApplicationHandler, modErrorHandler, frmLogin
+- `base/login/frmLogin.frm` (form) [P] - Login form for ApplicationHandler_AppLogin_Win | uses: modApplication
 
 ## com
 
