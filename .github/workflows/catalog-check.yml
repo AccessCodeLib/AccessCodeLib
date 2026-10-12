@@ -1,0 +1,43 @@
+name: Catalog check
+
+# Fails if _codelib/catalog is out of date (run _tools/catalog/Build-Catalog.ps1 and commit the result).
+# Windows runner: the generator reads Windows-1252 files and compares CRLF output.
+
+on:
+  push:
+    paths:
+      - '**/*.cls'
+      - '**/*.bas'
+      - '**/*.frm'
+      - '**/*.rpt'
+      - '**/*.package'
+      - '_codelib/catalog/**'
+      - '_codelib/recipes/**'
+      - '_tools/catalog/**'
+      - '.github/workflows/catalog-check.yml'
+  pull_request:
+    paths:
+      - '**/*.cls'
+      - '**/*.bas'
+      - '**/*.frm'
+      - '**/*.rpt'
+      - '**/*.package'
+      - '_codelib/catalog/**'
+      - '_codelib/recipes/**'
+      - '_tools/catalog/**'
+      - '.github/workflows/catalog-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check generated catalog
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Check catalog
+        shell: powershell
+        run: .\_tools\catalog\Build-Catalog.ps1 -Check

@@ -699,7 +699,7 @@ if ($Check) {
         $Path = Join-Path $OutputDirectory $FileName
         if (-not (Test-Path $Path)) { $OutOfDate.Add($FileName); continue }
         $Current = [System.IO.File]::ReadAllText($Path, $Utf8NoBom)
-        if ($Current -ne $Outputs[$FileName]) { $OutOfDate.Add($FileName) }
+        if ($Current -cne $Outputs[$FileName]) { $OutOfDate.Add($FileName) }
     }
     Write-Host "Modules: $($CodeModules.Count), with <description>: $WithTag, header only: $($HeaderOnly.Count), none: $($NoDescription.Count), issues: $($Issues.Count)"
     if ($OutOfDate.Count -gt 0) {
