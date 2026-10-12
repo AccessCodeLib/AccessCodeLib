@@ -28,6 +28,7 @@ Attribute VB_Exposed = False
 '  <use>form/InfoMessageBoxForm.frm</use>
 '  <license>_codelib/license.bas</license>
 '  <example>_examples/form/InfoMessageBox_Examples.frm</example>
+'  <description>Shows a non-modal info message in the application, optionally closes it automatically, with transparency and fade-in/fade-out; uses InfoMessageBoxForm</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

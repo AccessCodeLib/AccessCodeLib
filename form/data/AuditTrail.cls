@@ -12,6 +12,7 @@ Attribute VB_Exposed = False
 '  <file>form/data/AuditTrail.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <ref><name>ADODB</name><major>2</major><minor>1</minor><guid>{00000201-0000-0010-8000-00AA006D2EA4}</guid></ref>
+'  <description>Logs data changes of a bound form (edit, new, delete with old/new values, user, time) to the table tblAuditTrailLog (ADODB)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

@@ -130,19 +130,19 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 
 ## form
 
-- `form/FilterFormHandler.cls` (class) - Formularsteuerungsklasse für Formulare mit ungebundnen Filtersteuerelementen und einem Endlosformular für die Anzeige der gefilterten Daten | uses: FormHandler, ListFormHandler
-- `form/FormHandler.cls` (class) - Formularsteuerungsklasse für Access-Formulare (Basisklasse) | uses: DbConnectionHandler
-- `form/FormTools.cls` (class) [P] - Procedure collection for forms
-- `form/frmInfoMessage.frm` (form) [P] - Text in Anwendung einblenden und optional automatisch ausblenden inkl. fadein/fadeout-Feature
-- `form/InfoMessageBox.cls` (class) - Text in Anwendung einblenden und optional automatisch ausblenden inkl. fadein/fadeout-Feature | uses: InfoMessageBoxForm
-- `form/InfoMessageBoxForm.frm` (form) [P] - Hilfs-Formular für InfoMessageBox-Klasse
-- `form/InfoMessageBoxForm_mit_Buttons.frm` (form) [P] - Beispiel-Ersatz-Formular für InfoMessageBoxForm
-- `form/ListFormHandler.cls` (class) - Formularsteuerungsklasse für Listen/Endlosformulare | uses: FormHandler
+- `form/FilterFormHandler.cls` (class) - Form controller for a search form with unbound filter controls and a continuous (list) form that shows the filtered data; based on FormHandler/ListFormHandler | uses: FormHandler, ListFormHandler
+- `form/FormHandler.cls` (class) - Base class for controlling Access forms: data source (DAO/ADODB/DbConnection), edit mode, record handling, events for messages and errors | uses: DbConnectionHandler
+- `form/FormTools.cls` (class) [P] - Procedures for forms: open form or new record, go to bookmark, check if loaded, minimum size and resize, requery, scrollbars, clear multi-value selection
+- `form/frmInfoMessage.frm` (form) [P] - Standalone form version of the info message (auto close, transparency, fade-in/fade-out); prefer InfoMessageBox.cls
+- `form/InfoMessageBox.cls` (class) - Shows a non-modal info message in the application, optionally closes it automatically, with transparency and fade-in/fade-out; uses InfoMessageBoxForm | uses: InfoMessageBoxForm
+- `form/InfoMessageBoxForm.frm` (form) [P] - Helper form for InfoMessageBox (displays the message text)
+- `form/InfoMessageBoxForm_mit_Buttons.frm` (form) [P] - Alternative helper form for InfoMessageBox with buttons; replaces InfoMessageBoxForm
+- `form/ListFormHandler.cls` (class) - Form controller for list/continuous forms based on FormHandler: list mode, default sort order, selection event | uses: FormHandler
 
 ## form/data
 
-- `form/data/AuditTrail.cls` (class)
-- `form/data/FormDataUndoHandler.cls` (class) - Erweiterete Undo-Funktionalität für Formulare
+- `form/data/AuditTrail.cls` (class) - Logs data changes of a bound form (edit, new, delete with old/new values, user, time) to the table tblAuditTrailLog (ADODB)
+- `form/data/FormDataUndoHandler.cls` (class) - Extended undo for forms: restores a record even after it was saved (e.g. after switching to a subform)
 
 ## form/filter
 
@@ -158,10 +158,10 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 
 ## form/sort
 
-- `form/sort/ColumnSort.cls` (class)
-- `form/sort/FormSortingControl.cls` (class) - Hilfsklasse für FormSortingExtension | uses: FormSortingControlEventBridge
-- `form/sort/FormSortingControlEventBridge.cls` (class) - Hilfsklasse für FormSortingExtension | uses: FormSortingControl
-- `form/sort/FormSortingExtension.cls` (class) - Erstellt einen OrderBy-String für ein Endlos-Formular | uses: FormSortingControl, FormSortingControlEventBridge, WinApiLayoutTools
+- `form/sort/ColumnSort.cls` (class) - Sorts a continuous form by a field via command buttons (ascending/descending toggle)
+- `form/sort/FormSortingControl.cls` (class) - Helper class for FormSortingExtension: one sortable header control with its OrderBy statement and sort symbol | uses: FormSortingControlEventBridge
+- `form/sort/FormSortingControlEventBridge.cls` (class) - Internal helper for FormSortingExtension that forwards the click events of the sorting controls | uses: FormSortingControl
+- `form/sort/FormSortingExtension.cls` (class) - Sorts a continuous form by clicking on header controls: builds the OrderBy string and shows a sort symbol | uses: FormSortingControl, FormSortingControlEventBridge, WinApiLayoutTools
 
 ## localization
 

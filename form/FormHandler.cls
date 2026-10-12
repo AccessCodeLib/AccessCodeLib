@@ -26,6 +26,7 @@ Attribute VB_Exposed = False
 '  <file>form/FormHandler.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>data/DbConnectionHandler.cls</use>
+'  <description>Base class for controlling Access forms: data source (DAO/ADODB/DbConnection), edit mode, record handling, events for messages and errors</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

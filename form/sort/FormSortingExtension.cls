@@ -25,6 +25,7 @@ Attribute VB_Exposed = False
 '  <use>form/sort/FormSortingControl.cls</use>
 '  <use>form/sort/FormSortingControlEventBridge.cls</use>
 '  <use>api/winapi/WinApiLayoutTools.cls</use>
+'  <description>Sorts a continuous form by clicking on header controls: builds the OrderBy string and shows a sort symbol</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

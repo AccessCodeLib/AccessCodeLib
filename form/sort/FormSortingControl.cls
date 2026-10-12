@@ -23,6 +23,7 @@ Attribute VB_Exposed = False
 '  <file>form/sort/FormSortingControl.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>form/sort/FormSortingControlEventBridge.cls</use>
+'  <description>Helper class for FormSortingExtension: one sortable header control with its OrderBy statement and sort symbol</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

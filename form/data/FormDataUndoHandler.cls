@@ -35,6 +35,7 @@ Attribute VB_Exposed = False
 '  <file>form/data/FormDataUndoHandler.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
+'  <description>Extended undo for forms: restores a record even after it was saved (e.g. after switching to a subform)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

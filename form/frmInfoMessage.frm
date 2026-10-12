@@ -213,6 +213,7 @@ Attribute VB_Exposed = False
 '  <file>form/frmInfoMessage.frm</file>
 '  <license>_codelib/license.bas</license>
 '  <example>_examples/form/frmInfoMessage_Examples.frm</example>
+'  <description>Standalone form version of the info message (auto close, transparency, fade-in/fade-out); prefer InfoMessageBox.cls</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

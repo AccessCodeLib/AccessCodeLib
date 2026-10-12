@@ -5,9 +5,9 @@
 | | Count |
 |---|---|
 | Modules in catalog | 122 |
-| with `<description>` tag | 49 |
-| header summary only | 53 |
-| no description | 20 |
+| with `<description>` tag | 63 |
+| header summary only | 41 |
+| no description | 18 |
 | Header issues | 2 |
 
 ## Header issues
@@ -93,29 +93,6 @@ Cannot be imported together; the description names the use case of each file.
 ### datetime
 
 - `datetime/DateTime2.cls` - (no header summary)
-
-### form
-
-- `form/FilterFormHandler.cls` - header: Formularsteuerungsklasse für Formulare mit ungebundnen Filtersteuerelementen und einem Endlosformular für die Anzeige der gefilterten Daten
-- `form/FormHandler.cls` - header: Formularsteuerungsklasse für Access-Formulare (Basisklasse)
-- `form/FormTools.cls` - header: Procedure collection for forms
-- `form/frmInfoMessage.frm` - header: Text in Anwendung einblenden und optional automatisch ausblenden inkl. fadein/fadeout-Feature
-- `form/InfoMessageBox.cls` - header: Text in Anwendung einblenden und optional automatisch ausblenden inkl. fadein/fadeout-Feature
-- `form/InfoMessageBoxForm.frm` - header: Hilfs-Formular für InfoMessageBox-Klasse
-- `form/InfoMessageBoxForm_mit_Buttons.frm` - header: Beispiel-Ersatz-Formular für InfoMessageBoxForm
-- `form/ListFormHandler.cls` - header: Formularsteuerungsklasse für Listen/Endlosformulare
-
-### form/data
-
-- `form/data/AuditTrail.cls` - (no header summary)
-- `form/data/FormDataUndoHandler.cls` - header: Erweiterete Undo-Funktionalität für Formulare
-
-### form/sort
-
-- `form/sort/ColumnSort.cls` - (no header summary)
-- `form/sort/FormSortingControl.cls` - header: Hilfsklasse für FormSortingExtension
-- `form/sort/FormSortingControlEventBridge.cls` - header: Hilfsklasse für FormSortingExtension
-- `form/sort/FormSortingExtension.cls` - header: Erstellt einen OrderBy-String für ein Endlos-Formular
 
 ### localization
 
