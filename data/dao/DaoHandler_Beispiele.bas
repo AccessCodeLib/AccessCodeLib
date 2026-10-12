@@ -16,6 +16,7 @@ Attribute VB_Name = "DaoHandler_Beispiele"
 '  <use>data/dao/DaoHandler.cls</use>
 '  <use>data/dao/DaoTools.bas</use>
 '  <execute>DaoHandler_Beispiele_InitTestTablesAndQueries()</execute>
+'  <description>Usage examples for DaoHandler, incl. setup of test tables and queries</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

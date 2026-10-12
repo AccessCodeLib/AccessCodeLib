@@ -23,6 +23,7 @@ Attribute VB_Exposed = False
 '  <file>form/filter/FilterControlEventBridge.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>form/filter/FilterControl.cls</use>
+'  <description>Internal helper that forwards value-change events from the FilterControls to the collection</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

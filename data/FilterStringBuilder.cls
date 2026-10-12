@@ -26,6 +26,7 @@ Attribute VB_Exposed = False
 '  <use>data/SqlTools.cls</use>
 '  <test>_test/data/FilterStringBuilderTests.cls</test>
 '  <example>data/FilterStringBuilder_Examples.bas</example>
+'  <description>Builds SQL criteria from field/operator/value entries, incl. condition groups, sub-selects and EXISTS</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

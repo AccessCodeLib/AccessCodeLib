@@ -24,6 +24,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
 '  <test>_test/data/dao/DaoHandlerTests.cls</test>
+'  <description>DAO data access: execute SQL and parameter queries, open recordsets, lookups and aggregates</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

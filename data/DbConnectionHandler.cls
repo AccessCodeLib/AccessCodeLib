@@ -28,6 +28,7 @@ Attribute VB_Exposed = False
 '  <use>data/odbc/OdbcHandler.cls</use>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
 '  <ref><name>ADODB</name><major>2</major><minor>1</minor><guid>{00000201-0000-0010-8000-00AA006D2EA4}</guid></ref>
+'  <description>Holds the data access handlers (DAO, ADODB, ODBC) for one backend connection</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

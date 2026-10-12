@@ -5,9 +5,9 @@
 | | Count |
 |---|---|
 | Modules in catalog | 135 |
-| with `<description>` tag | 1 |
-| header summary only | 97 |
-| no description | 37 |
+| with `<description>` tag | 31 |
+| header summary only | 73 |
+| no description | 31 |
 | Header issues | 14 |
 
 ## Header issues
@@ -112,39 +112,6 @@
 
 - `crypt/md5/modMD5.bas` - header: md5-String ermitteln
 
-### data
-
-- `data/DbConnectionHandler.cls` - header: Database connection via ADODB or DAO (incl. ODBC)
-- `data/DbConnectionInfo.cls` - header: Auxiliary class for setting the connection parameters
-- `data/DbConnectionManager.cls` - header: Class for instantiation, termination and basic control of data access classes
-- `data/DbConnectionSettings.cls` - header: Auxiliary class for caching the connection parameters
-- `data/defDbConnection.bas` - header: Set of global types, enums etc. for the DbConnection classes
-- `data/FilterStringBuilder.cls` - header: Create SQL criteria (filter) expression
-- `data/FilterStringBuilder_Examples.bas` - (no header summary)
-- `data/FilterStringBuilderNet_Examples.bas` - (no header summary)
-- `data/modDbConnection.bas` - header: Collection of procedures for the DbConnectionManager class
-- `data/SqlTools.bas` - (no header summary)
-- `data/SqlTools.cls` - header: Functions to build sql strings
-- `data/SqlTools_BuildCriteria_Examples.bas` - (no header summary)
-- `data/SqlTools_DotNetLib.bas` - header: Factory-Modul für DotNetLib Version der SqlTools
-- `data/SqlTools_DotNetLib_Examples.bas` - (no header summary)
-
-### data/ado
-
-- `data/ado/AdodbHandler.cls` - header: ADODB data connection methods
-- `data/ado/AdodbHandler_Beispiel.bas` - (no header summary)
-
-### data/dao
-
-- `data/dao/DaoHandler.cls` - header: DAO data connection methods
-- `data/dao/DaoHandler_Beispiele.bas` - header: Beispiele zu DaoHandler (DAO-Zugriffsmethoden)
-- `data/dao/DaoTools.bas` - header: Auxiliary functions for the handling of DAO
-- `data/dao/DaoTransactionHandler.cls` - header: Behandlung von Dao Transaktionen
-
-### data/odbc
-
-- `data/odbc/OdbcHandler.cls` - header: ODBC data connection methods
-
 ### datetime
 
 - `datetime/DateTime2.cls` - (no header summary)
@@ -173,18 +140,6 @@
 
 - `form/data/AuditTrail.cls` - (no header summary)
 - `form/data/FormDataUndoHandler.cls` - header: Erweiterete Undo-Funktionalität für Formulare
-
-### form/filter
-
-- `form/filter/FilterControl.cls` - header: Formular-Steuerelement mit Filtereinstellungen
-- `form/filter/FilterControl_DotNetLib.cls` - header: Formular-Steuerelement mit Filtereinstellungen
-- `form/filter/FilterControlCollection.cls` - header: Sammlung von Formular-Steuerelementen zur Filtererstellung
-- `form/filter/FilterControlCollection_DotNetLib.cls` - header: Sammlung von Formular-Steuerelementen zur Filtererstellung
-- `form/filter/FilterControlEventBridge.cls` - header: Hilfsklasse zur Weitergabe von Ereignissen
-- `form/filter/FilterControlEventBridge_DotNetLib.cls` - header: Hilfsklasse zur Weitergabe von Ereignissen
-- `form/filter/FilterControlManager.cls` - header: Filterstring mit Formular-Steuerelementen erstellen
-- `form/filter/FilterControlManager_DotNetLib.cls` - header: Filterstring mit Formular-Steuerelementen erstellen
-- `form/filter/FilterControlTagConverter.cls` - header: Hilfsklasse zum Befüllen der FilterControls (für den FilterControlManager) über Control-Tag-Werte
 
 ### form/sort
 

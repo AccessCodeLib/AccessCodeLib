@@ -10,6 +10,7 @@ Option Explicit
 '<codelib>
 '  <file>/data/ado/AdodbHandler_Beispiel.bas</file>
 '  <use>data/ado/AdodbHandler.cls</use>
+'  <description>Usage examples for AdodbHandler</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 

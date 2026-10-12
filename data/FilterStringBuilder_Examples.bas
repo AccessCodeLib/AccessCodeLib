@@ -12,6 +12,7 @@ Attribute VB_Name = "FilterStringBuilder_Examples"
 '  <file>data/FilterStringBuilder_Examples.bas</file>
 '  <use>data/FilterStringBuilder.cls</use>
 '  <license>_codelib/license.bas</license>
+'  <description>Usage examples for FilterStringBuilder</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 Option Compare Text

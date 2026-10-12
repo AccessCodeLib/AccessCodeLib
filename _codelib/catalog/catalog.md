@@ -93,37 +93,37 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 
 ## data
 
-- `data/DbConnectionHandler.cls` (class) - Database connection via ADODB or DAO (incl. ODBC) | uses: DaoHandler, AdodbHandler, OdbcHandler
-- `data/DbConnectionInfo.cls` (class) - Auxiliary class for setting the connection parameters | uses: defDbConnection
-- `data/DbConnectionManager.cls` (class) - Class for instantiation, termination and basic control of data access classes | uses: DbConnectionInfo, DbConnectionHandler, DbConnectionSettings, SqlTools
-- `data/DbConnectionSettings.cls` (class) - Auxiliary class for caching the connection parameters
-- `data/defDbConnection.bas` (module) - Set of global types, enums etc. for the DbConnection classes
-- `data/FilterStringBuilder.cls` (class) - Create SQL criteria (filter) expression | uses: StringCollection, SqlTools
-- `data/FilterStringBuilder_Examples.bas` (module) | uses: FilterStringBuilder
-- `data/FilterStringBuilderNet_Examples.bas` (module)
-- `data/modDbConnection.bas` (module) - Collection of procedures for the DbConnectionManager class | uses: DbConnectionManager
-- `data/SqlTools.bas` (module) | uses: SqlTools
-- `data/SqlTools.cls` (class) [P] - Functions to build sql strings
-- `data/SqlTools_BuildCriteria_Examples.bas` (module) | uses: SqlTools
-- `data/SqlTools_DotNetLib.bas` (module) - Factory-Modul für DotNetLib Version der SqlTools | uses: DotNetLibRepair
-- `data/SqlTools_DotNetLib_Examples.bas` (module) | uses: SqlTools_DotNetLib
+- `data/DbConnectionHandler.cls` (class) - Holds the data access handlers (DAO, ADODB, ODBC) for one backend connection | uses: DaoHandler, AdodbHandler, OdbcHandler
+- `data/DbConnectionInfo.cls` (class) - Connection parameters for a backend (DBMS, server, database, login), incl. login handling and connection check | uses: defDbConnection
+- `data/DbConnectionManager.cls` (class) - Central entry point for backend data access: creates, configures and disposes the connection handler classes | uses: DbConnectionInfo, DbConnectionHandler, DbConnectionSettings, SqlTools
+- `data/DbConnectionSettings.cls` (class) - Settings container for DbConnectionManager (SqlTools formats, ADODB defaults)
+- `data/defDbConnection.bas` (module) - Shared types and enums for the DbConnection classes
+- `data/FilterStringBuilder.cls` (class) - Builds SQL criteria from field/operator/value entries, incl. condition groups, sub-selects and EXISTS | uses: StringCollection, SqlTools
+- `data/FilterStringBuilder_Examples.bas` (module) - Usage examples for FilterStringBuilder | uses: FilterStringBuilder
+- `data/FilterStringBuilderNet_Examples.bas` (module) - Usage examples for the .NET FilterStringBuilder (ACLib DotNetLib)
+- `data/modDbConnection.bas` (module) - Global access to DbConnectionManager (DbCon) and helper procedures for the current backend connection | uses: DbConnectionManager
+- `data/SqlTools.bas` (module) - Obsolete placeholder (SqlTools_obsolete), replaced by data/SqlTools.cls | uses: SqlTools
+- `data/SqlTools.cls` (class) [P] - Converts values to SQL literals (text, number, date, boolean) for DAO or T-SQL and builds criteria safely
+- `data/SqlTools_BuildCriteria_Examples.bas` (module) - Usage examples for SqlTools.BuildCriteria | uses: SqlTools
+- `data/SqlTools_DotNetLib.bas` (module) - Factory for the .NET version of SqlTools (ACLib DotNetLib) | uses: DotNetLibRepair
+- `data/SqlTools_DotNetLib_Examples.bas` (module) - Usage examples for the .NET version of SqlTools (ACLib DotNetLib) | uses: SqlTools_DotNetLib
 
 ## data/ado
 
-- `data/ado/AdodbHandler.cls` (class) [P] - ADODB data connection methods
-- `data/ado/AdodbHandler_Beispiel.bas` (module) | uses: AdodbHandler
+- `data/ado/AdodbHandler.cls` (class) [P] - ADODB data access: execute SQL and commands, open recordsets, lookups and aggregates on a connection
+- `data/ado/AdodbHandler_Beispiel.bas` (module) - Usage examples for AdodbHandler | uses: AdodbHandler
 
 ## data/dao
 
-- `data/dao/DaoHandler.cls` (class) [P] - DAO data connection methods
-- `data/dao/DaoHandler_Beispiele.bas` (module) - Beispiele zu DaoHandler (DAO-Zugriffsmethoden) | uses: DaoHandler, DaoTools
-- `data/dao/DaoTools.bas` (module) - Auxiliary functions for the handling of DAO
-- `data/dao/DaoTransactionHandler.cls` (class) - Behandlung von Dao Transaktionen
-- `data/dao/TempDbHandler.cls` (class) - Creates and manages an database file for temporary tables | uses: DaoHandler
+- `data/dao/DaoHandler.cls` (class) [P] - DAO data access: execute SQL and parameter queries, open recordsets, lookups and aggregates
+- `data/dao/DaoHandler_Beispiele.bas` (module) - Usage examples for DaoHandler, incl. setup of test tables and queries | uses: DaoHandler, DaoTools
+- `data/dao/DaoTools.bas` (module) - DAO helper functions: check whether a table or query exists
+- `data/dao/DaoTransactionHandler.cls` (class) - Wraps DAO transactions (BeginTrans, CommitTrans, Rollback) on a workspace
+- `data/dao/TempDbHandler.cls` (class) - Creates and manages a database file for temporary tables | uses: DaoHandler
 
 ## data/odbc
 
-- `data/odbc/OdbcHandler.cls` (class) [P] - ODBC data connection methods
+- `data/odbc/OdbcHandler.cls` (class) [P] - ODBC data access via DAO: pass-through queries, execute, lookups and aggregates, linking tables
 
 ## datetime
 
@@ -156,15 +156,15 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 
 ## form/filter
 
-- `form/filter/FilterControl.cls` (class) - Formular-Steuerelement mit Filtereinstellungen | uses: SqlTools, FilterControlEventBridge
-- `form/filter/FilterControl_DotNetLib.cls` (class) - Formular-Steuerelement mit Filtereinstellungen | uses: FilterControlEventBridge
-- `form/filter/FilterControlCollection.cls` (class) - Sammlung von Formular-Steuerelementen zur Filtererstellung | uses: FilterControl, FilterControlEventBridge, FilterStringBuilder, SqlTools
-- `form/filter/FilterControlCollection_DotNetLib.cls` (class) - Sammlung von Formular-Steuerelementen zur Filtererstellung | uses: FilterControl, FilterControlEventBridge
-- `form/filter/FilterControlEventBridge.cls` (class) - Hilfsklasse zur Weitergabe von Ereignissen | uses: FilterControl
-- `form/filter/FilterControlEventBridge_DotNetLib.cls` (class) - Hilfsklasse zur Weitergabe von Ereignissen | uses: FilterControl
-- `form/filter/FilterControlManager.cls` (class) - Filterstring mit Formular-Steuerelementen erstellen | uses: FilterControlCollection, FilterStringBuilder
-- `form/filter/FilterControlManager_DotNetLib.cls` (class) - Filterstring mit Formular-Steuerelementen erstellen | uses: DotNetLibsSetup, FilterControlCollection
-- `form/filter/FilterControlTagConverter.cls` (class) - Hilfsklasse zum Befüllen der FilterControls (für den FilterControlManager) über Control-Tag-Werte | uses: FilterControlCollection, SqlTools
+- `form/filter/FilterControl.cls` (class) - Helper class for FilterControlManager: binds a form control (optionally a second one for ranges) to a data field, type and operator | uses: SqlTools, FilterControlEventBridge
+- `form/filter/FilterControl_DotNetLib.cls` (class) - FilterControl variant using the .NET SqlTools (ACLib DotNetLib); alternative to FilterControl.cls | uses: FilterControlEventBridge
+- `form/filter/FilterControlCollection.cls` (class) - Collection of FilterControls that combines their values into one criteria string (groups, multi-control, sub-selects) | uses: FilterControl, FilterControlEventBridge, FilterStringBuilder, SqlTools
+- `form/filter/FilterControlCollection_DotNetLib.cls` (class) - FilterControlCollection variant using the .NET SqlTools (ACLib DotNetLib) | uses: FilterControl, FilterControlEventBridge
+- `form/filter/FilterControlEventBridge.cls` (class) - Internal helper that forwards value-change events from the FilterControls to the collection | uses: FilterControl
+- `form/filter/FilterControlEventBridge_DotNetLib.cls` (class) - Internal event helper for the .NET (ACLib DotNetLib) filter controls | uses: FilterControl
+- `form/filter/FilterControlManager.cls` (class) - Builds a form filter from filter controls (e.g. in the form header) and applies or removes it, optionally on every change | uses: FilterControlCollection, FilterStringBuilder
+- `form/filter/FilterControlManager_DotNetLib.cls` (class) - FilterControlManager variant using the .NET SqlTools (ACLib DotNetLib) | uses: DotNetLibsSetup, FilterControlCollection
+- `form/filter/FilterControlTagConverter.cls` (class) - Creates FilterControls for all form controls named fctl*, configured by their Tag (field|type|operator) or the data source | uses: FilterControlCollection, SqlTools
 
 ## form/sort
 

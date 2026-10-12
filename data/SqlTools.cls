@@ -32,6 +32,7 @@ Attribute VB_Exposed = False
 '  <replace>data/SqlTools.bas</replace>
 '  <test>_test/data/SqlToolsTests.cls</test>
 '  <test>_test/data/SqlToolsBuildCriteriaTests.cls</test>
+'  <description>Converts values to SQL literals (text, number, date, boolean) for DAO or T-SQL and builds criteria safely</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

@@ -18,6 +18,7 @@ Attribute VB_Name = "SqlTools_DotNetLib"
 '  <license>_codelib/license.bas</license>
 '  <use>_dotnetlib/integration/DotNetLibRepair.frm</use>
 '  <test>_test/data/SqlTools_DotNetLibTests.cls</test>
+'  <description>Factory for the .NET version of SqlTools (ACLib DotNetLib)</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

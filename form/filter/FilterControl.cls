@@ -24,6 +24,7 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>data/SqlTools.cls</use>
 '  <use>form/filter/FilterControlEventBridge.cls</use>
+'  <description>Helper class for FilterControlManager: binds a form control (optionally a second one for ranges) to a data field, type and operator</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
