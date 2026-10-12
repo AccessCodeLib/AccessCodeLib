@@ -22,6 +22,11 @@ Option Compare Text
 ' ================================================
 ' Code by Andreas Vogt Email: info@accessblog.de
 ' ================================================
+'
+' Changes to the original code (Josef Poetzl, 2026-10-12):
+'   - Insert and delete statements use ADODB command parameters with explicit data types
+'     instead of string concatenation (quotes in values, locale-independent date, Null values)
+'   - Delete of the log entry via parameterized DELETE instead of opening the table and Find
 
 Private WithEvents m_frm As Form
 
