@@ -78,10 +78,10 @@ End Sub
 Public Sub PadLeft_String_LeftPadString(ByVal Value As String, ByVal totalWidth As Integer, ByVal padChar As String, ByVal Expected As String)
 
    With New String2
-        Assert.AreEqual Expected, .NewValue(Value).PadLeft(totalWidth, padChar)
+        Assert.AreEqual Expected, .NewValue(Value).PadLeft(totalWidth, padChar).ToString
    End With
    
-   Assert.AreEqual Expected, String2.NewValue(Value).PadLeft(totalWidth, padChar)
+   Assert.AreEqual Expected, String2.NewValue(Value).PadLeft(totalWidth, padChar).ToString
     
 End Sub
 
@@ -90,10 +90,10 @@ End Sub
 Public Sub PadLeft_String_LeftPadStringDefaultParam(ByVal Value As String, ByVal totalWidth As Integer, ByVal Expected As String)
     
    With New String2
-        Assert.AreEqual Expected, .NewValue(Value).PadLeft(totalWidth)
+        Assert.AreEqual Expected, .NewValue(Value).PadLeft(totalWidth).ToString
    End With
    
-   Assert.AreEqual Expected, String2.NewValue(Value).PadLeft(totalWidth)
+   Assert.AreEqual Expected, String2.NewValue(Value).PadLeft(totalWidth).ToString
    
 End Sub
 
@@ -102,10 +102,10 @@ End Sub
 Public Sub PadRight_String_RightPadString(ByVal Value As String, ByVal totalWidth As Integer, ByVal padChar As String, ByVal Expected As String)
     
    With New String2
-        Assert.AreEqual Expected, .NewValue(Value).PadRight(totalWidth, padChar)
+        Assert.AreEqual Expected, .NewValue(Value).PadRight(totalWidth, padChar).ToString
    End With
    
-   Assert.AreEqual Expected, String2.NewValue(Value).PadRight(totalWidth, padChar)
+   Assert.AreEqual Expected, String2.NewValue(Value).PadRight(totalWidth, padChar).ToString
    
 End Sub
 
@@ -114,10 +114,10 @@ End Sub
 Public Sub PadRight_String_RightPadStringDefaultParam(ByVal Value As String, ByVal totalWidth As Integer, ByVal Expected As String)
     
    With New String2
-        Assert.AreEqual Expected, .NewValue(Value).PadRight(totalWidth)
+        Assert.AreEqual Expected, .NewValue(Value).PadRight(totalWidth).ToString
    End With
    
-   Assert.AreEqual Expected, String2.NewValue(Value).PadRight(totalWidth)
+   Assert.AreEqual Expected, String2.NewValue(Value).PadRight(totalWidth).ToString
     
 End Sub
 
@@ -195,10 +195,10 @@ End Sub
 Public Sub Concat_String_AppendString(ByVal ValueA As String, ValueB As String, Expected As String)
     
    With New String2
-        Assert.AreEqual Expected, .NewValue(ValueA).Append(ValueB)
+        Assert.AreEqual Expected, .NewValue(ValueA).Append(ValueB).ToString
    End With
    
-   Assert.AreEqual Expected, String2.NewValue(ValueA).Append(ValueB)
+   Assert.AreEqual Expected, String2.NewValue(ValueA).Append(ValueB).ToString
    
 End Sub
 
@@ -209,10 +209,10 @@ End Sub
 Public Sub Trim_String_TrimedString_Both(ByVal checkValue As String, Expected As String)
     
    With New String2
-        Assert.AreEqual Expected, .NewValue(checkValue).Trim(TrimBoth)
+        Assert.AreEqual Expected, .NewValue(checkValue).Trim(TrimBoth).ToString
    End With
    
-   Assert.AreEqual Expected, String2.NewValue(checkValue).Trim(TrimBoth)
+   Assert.AreEqual Expected, String2.NewValue(checkValue).Trim(TrimBoth).ToString
    
 End Sub
 
@@ -223,10 +223,10 @@ End Sub
 Public Sub Trim_String_TrimedString_Start(ByVal checkValue As String, Expected As String)
     
    With New String2
-        Assert.AreEqual Expected, .NewValue(checkValue).Trim(TrimStart)
+        Assert.AreEqual Expected, .NewValue(checkValue).Trim(TrimStart).ToString
    End With
    
-   Assert.AreEqual Expected, String2.NewValue(checkValue).Trim(TrimStart)
+   Assert.AreEqual Expected, String2.NewValue(checkValue).Trim(TrimStart).ToString
    
 End Sub
 
@@ -237,10 +237,10 @@ End Sub
 Public Sub Trim_String_TrimedString_End(ByVal checkValue As String, Expected As String)
     
    With New String2
-        Assert.AreEqual Expected, .NewValue(checkValue).Trim(TrimEnd)
+        Assert.AreEqual Expected, .NewValue(checkValue).Trim(TrimEnd).ToString
    End With
    
-   Assert.AreEqual Expected, String2.NewValue(checkValue).Trim(TrimEnd)
+   Assert.AreEqual Expected, String2.NewValue(checkValue).Trim(TrimEnd).ToString
    
 End Sub
 
@@ -252,10 +252,10 @@ End Sub
 Public Sub Substring_String_ExpectedSubstring(ByVal Value As String, ByVal startIndex As Long, ByVal length As Long, ByVal Expected As String)
     
    With New String2
-        Assert.AreEqual Expected, .NewValue(Value).Substring(startIndex, length)
+        Assert.AreEqual Expected, .NewValue(Value).Substring(startIndex, length).ToString
    End With
    
-   Assert.AreEqual Expected, String2.NewValue(Value).Substring(startIndex, length)
+   Assert.AreEqual Expected, String2.NewValue(Value).Substring(startIndex, length).ToString
    
 End Sub
 
@@ -271,9 +271,9 @@ End Sub
 Public Sub InsertAt_String_StringInsertedAtExpectedPos(ByVal Value As String, ByVal insertValue As String, ByVal pos As Long, ByVal Expected As String)
     
    With New String2
-        Assert.AreEqual Expected, .NewValue(Value).InsertAt(insertValue, pos)
+        Assert.AreEqual Expected, .NewValue(Value).InsertAt(insertValue, pos).ToString
    End With
    
-   Assert.AreEqual Expected, String2.NewValue(Value).InsertAt(insertValue, pos)
+   Assert.AreEqual Expected, String2.NewValue(Value).InsertAt(insertValue, pos).ToString
    
 End Sub

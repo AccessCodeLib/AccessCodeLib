@@ -61,32 +61,32 @@ End Sub
 
 Public Sub ADODB_Jet_CheckDataSource()
 
-   Dim expected As String
-   Dim actual As String
+   Dim Expected As String
+   Dim Actual As String
    
-   expected = m_TempDbHandler.CurrentDatabase.Name
-   actual = m_DbConnectionHandler.ADODB.CurrentConnection.Properties("Data Source")
+   Expected = m_TempDbHandler.CurrentDatabase.Name
+   Actual = m_DbConnectionHandler.ADODB.CurrentConnection.Properties("Data Source")
    
-   Assert.AreEqual expected, actual
+   Assert.AreEqual Expected, Actual
    
 End Sub
 
 Public Sub CurrentConnection_Jet_CheckDataSource()
 
-   Dim expected As String
-   Dim actual As String
+   Dim Expected As String
+   Dim Actual As String
    
-   expected = m_TempDbHandler.CurrentDatabase.Name
-   actual = m_DbConnectionHandler.CurrentConnection.Properties("Data Source")
+   Expected = m_TempDbHandler.CurrentDatabase.Name
+   Actual = m_DbConnectionHandler.CurrentConnection.Properties("Data Source")
    
-   Assert.AreEqual expected, actual
+   Assert.AreEqual Expected, Actual
    
 End Sub
 
 Public Sub OledbConnectionString_Jet_CheckDataSource()
 
-   Dim expected As String
-   Dim actual As String
+   Dim Expected As String
+   Dim Actual As String
    
    m_DbConnectionHandler.ADODB.CurrentConnection.Close
    Set m_DbConnectionHandler.ADODB.CurrentConnection = Nothing
@@ -95,46 +95,46 @@ Public Sub OledbConnectionString_Jet_CheckDataSource()
    
    m_DbConnectionHandler.OledbConnectionString = AdodbConnectionString
    
-   expected = m_TempDbHandler.CurrentDatabase.Name
-   actual = m_DbConnectionHandler.CurrentConnection.Properties("Data Source")
+   Expected = m_TempDbHandler.CurrentDatabase.Name
+   Actual = m_DbConnectionHandler.CurrentConnection.Properties("Data Source")
    
-   Assert.AreEqual expected, actual
+   Assert.AreEqual Expected, Actual
    
 End Sub
 
 Public Sub DAO_Jet_EqualToCurrentDb()
-   Dim actual As DAO.Database
-   Set actual = m_DbConnectionHandler.DAO.CurrentDb
-   Assert.That actual.Name, Iz.EqualTo(CurrentDb.Name)
+   Dim Actual As DAO.Database
+   Set Actual = m_DbConnectionHandler.DAO.CurrentDb
+   Assert.That Actual.Name, Iz.EqualTo(CurrentDb.Name)
 End Sub
 
 Public Sub CurrentDb_Jet_EqualToCurrentDb()
-   Dim actual As DAO.Database
-   Set actual = m_DbConnectionHandler.CurrentDb
-   Assert.That actual.Name, Iz.EqualTo(CurrentDb.Name)
+   Dim Actual As DAO.Database
+   Set Actual = m_DbConnectionHandler.CurrentDb
+   Assert.That Actual.Name, Iz.EqualTo(CurrentDb.Name)
 End Sub
 
 Public Sub ODBC_Jet_CheckDatabase()
-   Dim actual As DAO.Database
-   Set actual = m_DbConnectionHandler.ODBC.CurrentDbBE
-   Assert.That actual.Name, Iz.EqualTo(m_TempDbHandler.CurrentDatabase.Name)
+   Dim Actual As DAO.Database
+   Set Actual = m_DbConnectionHandler.ODBC.CurrentDbBE
+   Assert.That Actual.Name, Iz.EqualTo(m_TempDbHandler.CurrentDatabase.Name)
 End Sub
 
 Public Sub OdbcConnectionString_Jet_ReturnsNullString()
 
-   Const expected As String = vbNullString
-   Dim actual As String
+   Const Expected As String = ""
+   Dim Actual As String
    
-   actual = m_DbConnectionHandler.OdbcConnectionString
+   Actual = m_DbConnectionHandler.OdbcConnectionString
    
-   Assert.AreEqual expected, actual
+   Assert.AreEqual Expected, Actual
    
 End Sub
 
 Public Sub CurrentDbBE_Jet_EqualToTempDb()
-   Dim actual As DAO.Database
-   Set actual = m_DbConnectionHandler.CurrentDbBE
-   Assert.That actual.Name, Iz.EqualTo(m_TempDbHandler.CurrentDatabase.Name)
+   Dim Actual As DAO.Database
+   Set Actual = m_DbConnectionHandler.CurrentDbBE
+   Assert.That Actual.Name, Iz.EqualTo(m_TempDbHandler.CurrentDatabase.Name)
 End Sub
 
 
@@ -168,5 +168,5 @@ Private Function GetAdodbConnection() As ADODB.Connection
 End Function
 
 Private Property Get AdodbConnectionString() As String
-   AdodbConnectionString = "Provider=Microsoft.JET.OLEDB.4.0;User ID=Admin;Data Source=" & m_TempDbHandler.CurrentDatabase.Name & ";Mode=Share Deny None;"
+   AdodbConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;User ID=Admin;Data Source=" & m_TempDbHandler.CurrentDatabase.Name & ";Mode=Share Deny None;"
 End Property
