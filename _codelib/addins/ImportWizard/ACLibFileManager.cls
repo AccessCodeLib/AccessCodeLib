@@ -9,23 +9,24 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Attribute VB_Description = "Import/Export der Access-Objekte in/aus lokaler Code-Bibliothek"
 '---------------------------------------------------------------------------------------
-' Klassenmodul: ACLibFileManager (Josef Pötzl)
+' Class: _codelib.addins.ImportWizard.ACLibFileManager
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Import/Export der Access-Objekte in/aus lokaler Code-Bibliothek
-' </summary>
-' <remarks>
-' Das Modul "_config_Application" wird unabhängig vom Import-Modus nicht mehr überschrieben,
-' sobald es in der Anwendung vorhanden ist.
-' </remarks>
-'\ingroup ACLibAddInImportWizard
 '
-' @todo Abhängigkeit zu Verweisen berücksichtigen und fehlende Verweise einstellen
-' @todo getCodeLibInfoFromFile: Auslesen der CodeLib-Informationen aus Ac07-Formluaren/Berichten,
-'       die mit SaveAsText erstellt wurden (unicode-Text)
+' Import/export of Access objects from/to the local code library
 '
-'**/
+' Author:
+'     Josef Pötzl
+'
+' Remarks:
+'     The module "_config_Application" is no longer overwritten, regardless of the import mode,
+'     as soon as it exists in the application.
+'
+'     TODO: Take dependencies on references into account and set missing references
+'     TODO: getCodeLibInfoFromFile: read the CodeLib information from Ac07 forms/reports
+'           created with SaveAsText (unicode text)
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/ImportWizard/ACLibFileManager.cls</file>
@@ -1496,15 +1497,13 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Sub: RefreshAll
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Alle in der Anwendung vorhandenen Codelib-Elemente neu importieren
-' </summary>
-' <param name="ImportMode">Import-Modus (Standard: clim_ImportAllUsedItems)</param>
-' <param name="ShowMessageAfterRefresh">Messagebox nach Abschluss der Aktualiserung anzeigen</param>
-' <remarks>
-' </remarks>
-'**/
+'
+' Reimport all codelib elements that exist in the application
+'
+' Parameters:
+'     ImportMode              - Import mode (Default: clim_ImportAllUsedItems)
+'     ShowMessageAfterRefresh - Show a message box after the refresh has finished
+'
 '---------------------------------------------------------------------------------------
 Public Sub RefreshAll(Optional ByVal ImportMode As CodeLibImportMode = _
                                CodeLibImportMode.clim_ImportAllUsedItems, _
@@ -1518,16 +1517,14 @@ End Sub
 '---------------------------------------------------------------------------------------
 ' Sub: RefreshAllModules
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Alle in der Anwendung vorhandenen Code-Module mit Codelib-Blcok neu importieren
-' (nur Module und Klassen, keine Formulare oder Berichte)
-' </summary>
-' <param name="ImportMode">Import-Modus (Standard: clim_ImportAllUsedItems)</param>
-' <param name="ShowMessageAfterRefresh">Messagebox nach Abschluss der Aktualiserung anzeigen</param>
-' <remarks>
-' </remarks>
-'**/
+'
+' Reimport all code modules with a codelib block that exist in the application
+' (only modules and classes, no forms or reports)
+'
+' Parameters:
+'     ImportMode              - Import mode (Default: clim_ImportAllUsedItems)
+'     ShowMessageAfterRefresh - Show a message box after the refresh has finished
+'
 '---------------------------------------------------------------------------------------
 Public Sub RefreshAllModules(Optional ByVal ImportMode As CodeLibImportMode = _
                                       CodeLibImportMode.clim_ImportAllUsedItems, _

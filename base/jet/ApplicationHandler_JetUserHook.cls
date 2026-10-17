@@ -8,25 +8,29 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: ApplicationHandler_JetUserHook
+' Class: base.jet.ApplicationHandler_JetUserHook
 '---------------------------------------------------------------------------------------
-'/**
-' @autor    Josef Pötzl
-' <summary>
-' Erweiterung für ApplicationHandler-Klasse
-' </summary>
-' <remarks>
-' Aktivierung im _config_Application-Modul:
-' <code>
-'   Dim obJetUserHook As ApplicationHandler_JetUserHook
-'   Set obJetUserHook = New ApplicationHandler_JetUserHook
-'   AddApplicationHandlerExtension obJetUserHook
-'   obJetUserHook.IdentifyBackendTableDefName = "Name einer verknüpften Tabelle"
-'   Set obJetUserHook = Nothing
-' </code>
-' </remarks>
-'\ingroup base
-'**/
+'
+' Extension for ApplicationHandler class: Jet user hook
+'
+' Author:
+'     Josef Pötzl
+'
+' Remarks:
+'     Activation in the _config_Application module:
+'
+'     (start code)
+'
+'       Dim obJetUserHook As ApplicationHandler_JetUserHook
+'       Set obJetUserHook = New ApplicationHandler_JetUserHook
+'       AddApplicationHandlerExtension obJetUserHook
+'       obJetUserHook.IdentifyBackendTableDefName = "Name of a linked table"
+'       Set obJetUserHook = Nothing
+'
+'     (end)
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>base/jet/ApplicationHandler_JetUserHook.cls</file>

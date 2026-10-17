@@ -8,15 +8,14 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
+' Class: _test.data.SqlToolsBuildCriteriaTests
 ' AccUnit:TestClass
-' SqlToolsBuildCriteriaTests
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' AccUnit test class for SqlTools.BuildCriteria
-' </summary>
-' <remarks></remarks>
-'**/
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_test/data/SqlToolsBuildCriteriaTests.cls</file>
@@ -34,7 +33,7 @@ Public Sub Setup()
    Set m_SqlTools = New SqlTools
 End Sub
 
-Public Sub TearDown()
+Public Sub Teardown()
    Set m_SqlTools = Nothing
 End Sub
 

@@ -8,16 +8,13 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 '---------------------------------------------------------------------------------------
-' Klassenmodul: DebugPrintTestResultCollector
+' Class: _codelib.addins.AccUnitLoader.DebugPrintTestResultCollector
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Debug.Print-Ausgabe vom Test-Ergebnis
-' </summary>
-' <remarks>
-' </remarks>
-'\ingroup addins_shared
-'**/
+'
+' Debug.Print output of the test result
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/AccUnitLoader/DebugPrintTestResultCollector.cls</file>

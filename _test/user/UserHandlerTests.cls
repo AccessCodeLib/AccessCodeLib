@@ -7,12 +7,15 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'--------------------------------------------------------------------
+'---------------------------------------------------------------------------------------
+' Class: _test.user.UserHandlerTests
 ' AccUnit:TestClass
-'--------------------------------------------------------------------
-'/**
-' @brief Tests für Benutzerverwaltung/Benutzersteuerung
-'**/
+'---------------------------------------------------------------------------------------
+'
+' Tests for user management/user control
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_test/user/UserHandlerTests.cls</file>
@@ -59,7 +62,7 @@ Public Sub UserName_UseDefaultMember_ReturnsString()
    Dim Actual As String
 
    Actual = m_UserHandler
-   Assert.IsNotEmpty Actual
+   Assert.Greater "", Actual
 
 End Sub
 
@@ -111,7 +114,7 @@ Public Sub Roles_UseDummy_ReturnsSameObject()
    Set Expected = m_UserRolesDummy
    Set Actual = m_UserHandler.Roles
    
-   Assert.That Actual, Iz.SameAs(Expected)
+   Assert.That Actual, Iz.EqualTo(Expected) 'Iz.SameAs
 
 End Sub
 

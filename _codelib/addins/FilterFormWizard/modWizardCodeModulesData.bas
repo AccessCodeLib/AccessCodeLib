@@ -1,15 +1,12 @@
 Attribute VB_Name = "modWizardCodeModulesData"
 '---------------------------------------------------------------------------------------
-' Modul: defGlobal_FilterFormWizard
+' Package: _codelib.addins.FilterFormWizard.modWizardCodeModulesData
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Hilfsfunktionen für FilterFormWizard
-' </summary>
-' <remarks>
-' </remarks>
-' \ingroup ACLibAddInFilterFormWizard
-'**/
+'
+' Helper functions for FilterFormWizard
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/FilterFormWizard/modWizardCodeModulesData.bas</file>

@@ -1,12 +1,15 @@
 Attribute VB_Name = "DateTime2_Example"
 '---------------------------------------------------------------------------------------
-' Class Module: DateTime2_Example
+' Package: _examples.datetime.DateTime2_Example
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' \brief        Beispiel zur Verwendung der DateTime2 Klasse
-' \ingroup datetime
-'**/
+'
+' Example for using the DateTime2 class
+'
+' Author:
+'     Sten Schmidt
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_examples/datetime/DateTime2_Example.bas</file>

@@ -176,7 +176,7 @@ End Property
 ' Execute SQL statement
 '
 ' Parameters:
-'     CommandText - SQL statement (String)
+'     Query       - SQL statement (String)
 '     Options     - DAO.RecordsetOptionEnum
 '
 ' Returns:
@@ -371,7 +371,7 @@ End Function
 ' Function: ParamQueryDefSql
 '---------------------------------------------------------------------------------------
 '
-' Temporäres QueryDef-Objekt ink. übergebenen Parameterwerten öffnen
+' Open temporary QueryDef object incl. passed parameter values
 '
 ' Parameters:
 '     ParamSqlText   - SQL statement for the temporary QueryDef object
@@ -405,9 +405,9 @@ End Function
 '
 ' Parameters:
 '     Source            - SQL statement or table or query name
-'     RecordsetType     - DAO.RecordsetTypeEnum (Standard: dbOpenDynaset)
-'     RecordsetOptions  - DAO.RecordsetOptionEnum (Standard: dbSeeChanges)
-'     LockEdit          - DAO.LockTypeEnum (Standard: dbOptimistic)
+'     RecordsetType     - DAO.RecordsetTypeEnum (Default: dbOpenDynaset)
+'     RecordsetOptions  - DAO.RecordsetOptionEnum (Default: dbSeeChanges)
+'     LockEdit          - DAO.LockTypeEnum (Default: dbOptimistic)
 '
 ' Returns:
 '     DAO.Recordset
@@ -430,11 +430,11 @@ Public Function OpenRecordset(ByVal Source As String, _
 
 End Function
 
-Private Function Replace0WithIsMissing(ByVal CheckValue As Long) As Variant
-   If CheckValue = 0 Then
+Private Function Replace0WithIsMissing(ByVal checkValue As Long) As Variant
+   If checkValue = 0 Then
       Replace0WithIsMissing = GetIsMissing()
    Else
-      Replace0WithIsMissing = CheckValue
+      Replace0WithIsMissing = checkValue
    End If
 End Function
 
@@ -450,9 +450,9 @@ End Function
 '
 ' Parameters:
 '     ParamSqlText      - SQL statement with parameters (parameter declaration)
-'     RecordsetType     - DAO.RecordsetTypeEnum (Standard: dbOpenDynaset)
-'     RecordsetOptions  - DAO.RecordsetOptionEnum (Standard: dbSeeChanges)
-'     LockEdit          - DAO.LockTypeEnum (Standard: dbOptimistic)
+'     RecordsetType     - DAO.RecordsetTypeEnum (Default: dbOpenDynaset)
+'     Options           - DAO.RecordsetOptionEnum (Default: dbSeeChanges)
+'     LockEdit          - DAO.LockTypeEnum (Default: dbOptimistic)
 '     QueryParams       - Values in suitable order as ParamArray or as array
 '                         or 2-dimensional parameter array (Array(n,1) ... x(n,0) = parameter name, x(n,1) = parameter value) ... generateable with GetParamDefArray or GetNamedParamDefArray
 '
@@ -641,7 +641,7 @@ End Function
 ' Creates 2-dimensional parameter array (e.g. for OpenRecordsetQueryDef)
 '
 ' Parameters:
-'     ParamValues - Parameter pairs: alternating parameter index and parameter value
+'     ParamIndexAndValues - Parameter pairs: alternating parameter index and parameter value
 '
 ' Returns:
 '     Variant (Array)
@@ -686,10 +686,10 @@ End Function
 ' Parameters:
 '     QueryName         - Name of the saved query
 '     QueryParams       - Values in suitable order as ParamArray or as array
-'                         or 2-dimensional parameter array (Array(n,1) ... x(n,0) = parameter name, x(n,1) = parameter value) ... generateable with GetParamDefArray or GetNamedParamDefArray'
-'     RecordsetType     - DAO.RecordsetTypeEnum (Standard: dbOpenDynaset)
-'     RecordsetOptions  - DAO.RecordsetOptionEnum (Standard: dbSeeChanges)
-'     LockEdit          - DAO.LockTypeEnum (Standard: dbOptimistic)
+'                         or 2-dimensional parameter array (Array(n,1) ... x(n,0) = parameter name, x(n,1) = parameter value) ... generateable with GetParamDefArray or GetNamedParamDefArray
+'     RecordsetType     - DAO.RecordsetTypeEnum (Default: dbOpenDynaset)
+'     Options           - DAO.RecordsetOptionEnum (Default: dbSeeChanges)
+'     LockEdit          - DAO.LockTypeEnum (Default: dbOptimistic)
 '
 ' Returns:
 '     DAO.Recordset
@@ -729,15 +729,15 @@ End Function
 ' Function: OpenRecordsetQueryDef
 '---------------------------------------------------------------------------------------
 '
-' Recordset von gespeicherter Abfrage (optional mit Parametern) öffnen
+' Open recordset from saved query (optionally with parameters)
 '
 ' Parameters:
 '     QdfRef            - QueryDef reference
 '     QueryParams       - Values in suitable order as ParamArray or as array
-'                         or 2-dimensional parameter array (Array(n,1) ... x(n,0) = parameter name, x(n,1) = parameter value) ... generateable with GetParamDefArray or GetNamedParamDefArray'
-'     RecordsetType     - DAO.RecordsetTypeEnum (Standard: dbOpenDynaset)
-'     RecordsetOptions  - DAO.RecordsetOptionEnum (Standard: dbSeeChanges)
-'     LockEdit          - DAO.LockTypeEnum (Standard: dbOptimistic)
+'                         or 2-dimensional parameter array (Array(n,1) ... x(n,0) = parameter name, x(n,1) = parameter value) ... generateable with GetParamDefArray or GetNamedParamDefArray
+'     RecordsetType     - DAO.RecordsetTypeEnum (Default: dbOpenDynaset)
+'     RecordsetOptions  - DAO.RecordsetOptionEnum (Default: dbSeeChanges)
+'     LockEdit          - DAO.LockTypeEnum (Default: dbOptimistic)
 '
 ' Returns:
 '     DAO.Recordset
@@ -867,6 +867,7 @@ End Function
 '     Expr        - Field name or calculated expression (select part)
 '     Domain      - Table, query or SQL expression for sub-query (FROM part)
 '     Criteria    - (optional) Criteria string (WHERE part)
+'     Distinct    - (optional) True: count distinct values of Expr
 '
 ' Returns:
 '     Long
@@ -1052,11 +1053,11 @@ End Function
 ' Function: InsertValuesReturnFieldValue
 '---------------------------------------------------------------------------------------
 '
-' Ropen ecordset and append values, returns value of a defined data field
+' Open recordset and append values, returns value of a defined data field
 '
 ' Parameters:
 '     Source                  - Insert data source
-'     ReturnFieldNameOrIndex  - Datenfeld für Wertrückgabe</param>
+'     ReturnFieldNameOrIndex  - Data field (name or index) for the return value
 '     FieldsAndValues         - ParamArray: "Field1", Value1, "Field2", Value2, ....
 '
 ' Returns:
@@ -1359,7 +1360,7 @@ End Function
 ' Function: CopyRecords
 '---------------------------------------------------------------------------------------
 '
-' Recordset öffnen und Werte eines Datensatzes anfügen
+' Open recordset and append values of a record
 '
 ' Parameters:
 '     Source            - Data source (table name or SQL statement)
@@ -1396,9 +1397,8 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: CopyRecordsReturnFieldValue
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Datensätze kopieren und Werte ändern
+'
+' Copy records and change values
 '
 ' Parameters:
 '     Source            - Data source (table name or SQL statement)

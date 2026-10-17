@@ -47,7 +47,7 @@ Private Declare Function URLDownloadToFile Lib "urlmon" Alias "URLDownloadToFile
 #End If
 
 '---------------------------------------------------------------------------------------
-' Property: GitHubAuthorizationubAuthToken
+' Property: GitHubApiAuthorizationToken
 '---------------------------------------------------------------------------------------
 Public Property Get GitHubApiAuthorizationToken() As String
    GitHubApiAuthorizationToken = m_GitHubApiAuthorizationToken

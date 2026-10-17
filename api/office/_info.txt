@@ -1,6 +1,2 @@
 
  Steuerung der Formulardaten
-
-'/** 
-' @defgroup api_office Office-Automation u. ä.
-'**/

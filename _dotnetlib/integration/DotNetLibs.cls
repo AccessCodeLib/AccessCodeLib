@@ -8,13 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: DotNetLibs
+' Class: _dotnetlib.integration.DotNetLibs
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Poetzl
-' \brief        TODO
-' \ingroup DotNetLib
-'**/
+'
+' Access to the ACLib .NET libraries (e.g. SqlTools interop) via NetComDomain
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_dotnetlib/integration/DotNetLibs.cls</file>

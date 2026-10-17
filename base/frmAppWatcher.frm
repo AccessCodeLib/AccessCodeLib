@@ -130,16 +130,16 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Form: frmAppWatcher (Josef Pötzl, 2009-12-11)
+' Form: frmAppWatcher
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Hilfsformular für Anwendungsstart (inkl. DisposeCurrentApplicationHandler beim Beenden)
-' </summary>
-' <remarks>
-' </remarks>
-'\ingroup base
-'**/
+'
+' Helper form for application start (incl. DisposeCurrentApplicationHandler on close)
+'
+' Author:
+'     Josef Pötzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>base/frmAppWatcher.frm</file>

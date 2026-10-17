@@ -1,6 +1,2 @@
 
  Umgang mit Formularen
- 
-'/** 
-' @defgroup form Umgang mit Formularen (form)
-'**/

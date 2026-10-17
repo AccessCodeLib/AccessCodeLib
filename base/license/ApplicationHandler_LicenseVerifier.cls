@@ -8,16 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: ApplicationHandler_WinLogin (Josef Pötzl, 2009-12-11)
+' Class: base.license.ApplicationHandler_LicenseVerifier
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Erweiterung für ApplicationHandler-Klasse
-' </summary>
-' <remarks>
-' </remarks>
-'\ingroup base
-'**/
+'
+' Extension for ApplicationHandler class: license verification
+'
+' Author:
+'     Josef Pötzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>base/license/ApplicationHandler_LicenseVerifier.cls</file>

@@ -8,16 +8,19 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: RibbonControlInfo (Josef Pötzl, 2010-04-10)
+' Class: ribbon.RibbonControlInfo
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Klasse zum Speichern der RibbonControl-Daten
-' </summary>
-' <remarks>
-' Implements IRibbonControl
-' </remarks>
-'**/
+'
+' Class for storing the RibbonControl data
+'
+' Author:
+'     Josef Pötzl
+'
+' Remarks:
+'     Implements IRibbonControl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>ribbon/RibbonControlInfo.cls</file>

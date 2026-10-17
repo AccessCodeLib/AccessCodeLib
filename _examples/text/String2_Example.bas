@@ -1,12 +1,15 @@
 Attribute VB_Name = "String2_Example"
 '---------------------------------------------------------------------------------------
-' Class Module: DateTime2_Example
+' Package: _examples.text.String2_Example
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' \brief        Beispiel zur Verwendung der String2 Klasse
-' \ingroup datetime
-'**/
+'
+' Example for using the String2 class
+'
+' Author:
+'     Sten Schmidt
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_examples/text/String2_Example.bas</file>

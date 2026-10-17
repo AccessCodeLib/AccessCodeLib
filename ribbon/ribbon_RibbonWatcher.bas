@@ -1,14 +1,15 @@
 Attribute VB_Name = "ribbon_RibbonWatcher"
 '---------------------------------------------------------------------------------------
-' Module: mod_RibbonWatcher_CallBacks (Josef Pötzl, 2010-04-10)
+' Package: ribbon.ribbon_RibbonWatcher
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Globale Prozeduren für RibbonWatcher (inkl. CallBack-Prozeduren)
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Global procedures for RibbonWatcher (incl. callback procedures)
+'
+' Author:
+'     Josef Pötzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>ribbon/ribbon_RibbonWatcher.bas</file>

@@ -73,11 +73,11 @@ Private Declare PtrSafe Function API_ShellExecuteA Lib "shell32.dll" Alias "Shel
 ' Select file using dialogue
 '
 ' Parameters:
-'     InitDir        - Initial Folder
-'     DlgTitle       - Title of dialogue
-'     FilterString   - Filter settings - Example: "(*.*)" oder "All (*.*)|text files (*.txt)|Images (*.png;*.jpg;*.gif)
-'     MultiSelect    - Multi-selection
-'     ViewMode       - View mode (0: Detail view, 1: Preview, 2: Properties, 3: List, 4: Thumbnail, 5: Large symbols, 6: Small symbols)
+'     InitialDir         - Initial folder
+'     DlgTitle           - Title of dialogue
+'     FilterString       - Filter settings - Example: "(*.*)" or "All (*.*)|text files (*.txt)|Images (*.png;*.jpg;*.gif)
+'     MultiSelectEnabled - Multi-selection
+'     ViewMode           - View mode (0: Detail view, 1: Preview, 2: Properties, 3: List, 4: Thumbnail, 5: Large symbols, 6: Small symbols)
 '
 ' Returns:
 '     String   - in case of multiple selection, the files are separated by chr(9))
@@ -100,11 +100,11 @@ End Function
 ' Folder selection dialogue
 '
 ' Parameters:
-'     InitDir        - Initial Folder
-'     DlgTitle       - Title of dialogue
-'     FilterString   - Filter settings, Default:*
-'     MultiSelect    - Multi-selection
-'     ViewMode       - View mode (0: Detail view, 1: Preview, 2: Properties, 3: List, 4: Thumbnail, 5: Large symbols, 6: Small symbols)
+'     InitialDir         - Initial folder
+'     DlgTitle           - Title of dialogue
+'     FilterString       - Filter settings, Default: *
+'     MultiSelectEnabled - Multi-selection
+'     ViewMode           - View mode (0: Detail view, 1: Preview, 2: Properties, 3: List, 4: Thumbnail, 5: Large symbols, 6: Small symbols)
 '
 ' Returns:
 '     String   - in case of multiple selection, folders are separated by chr(9))
@@ -245,9 +245,9 @@ End Property
 ' Generate temporary file name
 '
 ' Parameters:
-'     PathToUse
-'     FilePrefix
-'     FileExtension
+'     PathToUse     - (optional) Folder for the file (Default: Temp folder)
+'     FilePrefix    - (optional) Prefix of the file name
+'     FileExtension - (optional) File extension
 '
 ' Returns:
 '     String
@@ -332,7 +332,7 @@ End Function
 ' Extract file name from complete path specification
 '
 ' Parameters:
-'     FullPath">File name incl. directory
+'     FullPath - File name incl. directory
 '
 ' Returns:
 '     String
@@ -341,12 +341,12 @@ End Function
 Public Function FileNameWithoutPath(ByVal FullPath As Variant) As String
 
    Dim Temp As String
-   Dim Pos As Long
+   Dim pos As Long
 
    Temp = Nz(FullPath, vbNullString)
-   Pos = InStrRev(Temp, "\")
-   If Pos > 0 Then
-      FileNameWithoutPath = Mid$(Temp, Pos + 1)
+   pos = InStrRev(Temp, "\")
+   If pos > 0 Then
+      FileNameWithoutPath = Mid$(Temp, pos + 1)
    Else
       FileNameWithoutPath = Temp
    End If
@@ -386,12 +386,12 @@ End Function
 Public Function PathFromFullFileName(ByVal FullFileName As Variant) As String
 
    Dim DirPath As String
-   Dim Pos As Long
+   Dim pos As Long
 
    DirPath = FullFileName
-   Pos = InStrRev(DirPath, "\")
-   If Pos > 0 Then
-      DirPath = Left$(DirPath, Pos)
+   pos = InStrRev(DirPath, "\")
+   If pos > 0 Then
+      DirPath = Left$(DirPath, pos)
    Else
       DirPath = vbNullString
    End If
@@ -565,8 +565,8 @@ End Function
 ' Creates a complete path specification from relative path specification and "base directory".
 '
 ' Parameters:
-'     RelativPath">relative path
-'     BaseDir">Base directory
+'     RelativPath - Relative path
+'     BaseDir     - Base directory
 '
 ' Returns:
 '     String
@@ -579,7 +579,7 @@ Public Function GetFullPathFromRelativPath(ByVal RelativPath As String, _
                                            ByVal BaseDir As String) As String
 
    Dim FullPath As String
-   Dim Pos As Long
+   Dim pos As Long
 
    If Right$(BaseDir, 1) = "\" Then
       BaseDir = Left$(BaseDir, Len(BaseDir) - 1)
@@ -590,9 +590,9 @@ Public Function GetFullPathFromRelativPath(ByVal RelativPath As String, _
       GetFullPathFromRelativPath = FullPath
       Exit Function
    ElseIf Left$(FullPath, 1) = "\" Then 'first dir
-      Pos = InStr(3, BaseDir, "\")
-      If Pos > 0 Then
-         BaseDir = Left$(BaseDir, Pos - 1)
+      pos = InStr(3, BaseDir, "\")
+      If pos > 0 Then
+         BaseDir = Left$(BaseDir, pos - 1)
       End If
       GetFullPathFromRelativPath = BaseDir & FullPath
       Exit Function
@@ -605,9 +605,9 @@ Public Function GetFullPathFromRelativPath(ByVal RelativPath As String, _
 
    Do While Left$(FullPath, 3) = "..\"
       FullPath = Mid$(FullPath, 4)
-      Pos = InStrRev(BaseDir, "\")
-      If Pos > 0 Then
-         BaseDir = Left$(BaseDir, Pos - 1)
+      pos = InStrRev(BaseDir, "\")
+      If pos > 0 Then
+         BaseDir = Left$(BaseDir, pos - 1)
       End If
    Loop
 
@@ -622,9 +622,10 @@ End Function
 ' Creates a relative path from the complete path specification and source directory
 '
 ' Parameters:
-'     FullPath       - Full path specification
-'     BaseDir        - Base directory
-'     RelativePrefix - Add ".\" as relative path identifier
+'     FullPath               - Full path specification
+'     BaseDir                - Base directory
+'     EnableRelativePrefix   - Add ".\" as relative path identifier
+'     DisableDecreaseBaseDir - True: do not go up the base directory (no "..\" in result)
 '
 ' Returns:
 '     String
@@ -675,14 +676,14 @@ Private Function TryGetRelativPathWithDecreaseBaseDir(ByVal FullPath As String, 
 
    Dim RelativPath As String
    Dim DecreaseCounter As Long
-   Dim Pos As Long
+   Dim pos As Long
    Dim i As Long
 
    RelativPath = BaseDir
 
    Do While InStr(1, FullPath, RelativPath) = 0
-      Pos = InStrRev(Left$(RelativPath, Len(RelativPath) - 1), "\")
-      RelativPath = Left$(RelativPath, Pos)
+      pos = InStrRev(Left$(RelativPath, Len(RelativPath) - 1), "\")
+      RelativPath = Left$(RelativPath, pos)
       DecreaseCounter = DecreaseCounter + 1
       If Len(RelativPath) = 0 Then
          DecreaseCounter = 0
@@ -818,7 +819,9 @@ End Function
 ' Open file with API ShellExecute
 '
 ' Parameters:
-'     FileName - File path or file name
+'     FilePath                        - File path or file name
+'     ReadOnlyMode                    - (optional) not used yet
+'     DefaultFileFolderIfFileNameOnly - (optional) Folder used if FilePath contains no folder
 '
 ' Returns:
 '     Boolean
@@ -885,7 +888,7 @@ End Function
 ' Open folder with API ShellExecute
 '
 ' Parameters:
-'     FilePath - folder path or file name
+'     FolderPath - Folder path or file name
 '
 ' Returns:
 '     Boolean

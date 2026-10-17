@@ -8,15 +8,13 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: CodeModuleStructReader
+' Class: _codelib.addins.shared.CodeModuleStructReader
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Struktur/Abhängigkeiten der Module bestimmen
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Determine the structure/dependencies of the modules
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/shared/CodeModuleStructReader.cls</file>
@@ -47,15 +45,15 @@ End Sub
 '---------------------------------------------------------------------------------------
 ' Property: CodeModuleReaderCollection
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Collection von CodeModuleReader
-' </summary>
-' <returns>Collection</returns>
-' <remarks>
-' je Code-Modul gibt es einen CodeModuleReader
-' </remarks>
-'**/
+'
+' Collection of CodeModuleReader
+'
+' Returns:
+'     Collection
+'
+' Remarks:
+'     there is one CodeModuleReader per code module
+'
 '---------------------------------------------------------------------------------------
 Public Property Get CodeModuleReaderCollection() As Collection
    Set CodeModuleReaderCollection = m_CodeModuleReaderCollection
@@ -64,15 +62,12 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: BaseCodeModuleName
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Ausgangsmodul für Struktur/Abhängigkeitsermittlung
-' </summary>
-' <param name="Param"></param>
-' <returns>String</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Base module for determining the structure/dependencies
+'
+' Returns:
+'     String
+'
 '---------------------------------------------------------------------------------------
 Public Property Get BaseCodeModuleName() As String
    BaseCodeModuleName = m_BaseCodeModuleName
@@ -81,15 +76,12 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: BaseCodeModuleName
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Ausgangsmodul für Struktur/Abhängigkeitsermittlung
-' </summary>
-' <param name="Param"></param>
-' <returns>String</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Base module for determining the structure/dependencies
+'
+' Parameters:
+'     CmName - Name of the base module
+'
 '---------------------------------------------------------------------------------------
 Public Property Let BaseCodeModuleName(ByVal CmName As String)
    If CmName <> m_BaseCodeModuleName Then
@@ -100,17 +92,14 @@ Public Property Let BaseCodeModuleName(ByVal CmName As String)
 End Property
 
 '---------------------------------------------------------------------------------------
-' Sub: ReadStruct (Josef Pötzl, 2010-03-23)
+' Sub: ReadStruct
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Struktur/Abhängigkeiten ermitteln
-' </summary>
-' <returns></returns>
-' <remarks>
-' Ergebnis ist über CodeModuleReaderCollection auswertbar
-' </remarks>
-'**/
+'
+' Determine the structure/dependencies
+'
+' Remarks:
+'     The result can be evaluated via CodeModuleReaderCollection
+'
 '---------------------------------------------------------------------------------------
 Public Sub ReadStruct()
 
@@ -227,15 +216,11 @@ End Function
 
 
 '---------------------------------------------------------------------------------------
-' Property: CurrentVbProject (Josef Pötzl, 2010-03-23)
+' Property: CurrentVbProject
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Zu verwendendes VB-Projekt
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' VB project to be used
+'
 '---------------------------------------------------------------------------------------
 #If EARLYBINDING Then
 Public Property Set CurrentVbProject(ref As VBIDE.VBProject)
@@ -248,16 +233,14 @@ Public Property Set CurrentVbProject(ref As Object)
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: CurrentVbProject (Josef Pötzl, 2010-03-23)
+' Property: CurrentVbProject
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Zu verwendendes VB-Projekt
-' </summary>
-' <returns>VBIDE.VBProject</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' VB project to be used
+'
+' Returns:
+'     VBIDE.VBProject
+'
 '---------------------------------------------------------------------------------------
 #If EARLYBINDING Then
 Public Property Get CurrentVbProject() As VBIDE.VBProject

@@ -8,14 +8,15 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: LoginFormBridge
+' Class: user.login.LoginFormBridge
 '---------------------------------------------------------------------------------------
-'/**
-' @brief Login-Prüfung mit Formular
 '
-' Loginvariante muss von außen eingestellt werden ... Übergabe von LoginChecker
+' Login check with form
 '
-'**/
+' The login variant must be set from outside ... pass a LoginChecker
+'
+'---------------------------------------------------------------------------------------
+
 '<codelib>
 '  <file>user/login/LoginFormBridge.cls</file>
 '  <license>_codelib/license.bas</license>

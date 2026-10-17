@@ -7,12 +7,15 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'--------------------------------------------------------------------
+'---------------------------------------------------------------------------------------
+' Class: _test.usability.OptionManagerTests
 ' AccUnit:TestClass
-'--------------------------------------------------------------------
-'/**
-' @brief Tests für OptionManager
-'**/
+'---------------------------------------------------------------------------------------
+'
+' Tests for OptionManager
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_test/usability/OptionManagerTests.cls</file>
@@ -63,23 +66,23 @@ Public Sub Setting_InsertedKeyValueBefore_EnumItemValueNotvbNullString()
     OptionManager.DeleteByName KeyName
     
     ' Assert
-   Assert.That Actual, Iz.not.EqualTo(vbNullString)
+   Assert.That Actual, Iz.Not.EqualTo(vbNullString)
 End Sub
 
 Public Sub Setting_ChangedEnumItemValue_EnumItemValueEqualNewValue()
     ' Arrange
-   Const newValue As String = "test_4711"
+   Const NewValue As String = "test_4711"
     Dim oldValue As String
     Dim expectedValue As String
     
     ' Act
    oldValue = OptionManager.Setting(1) 'ein Item mit Index >=1 ist nach dem Input oben vorhanden!
-   OptionManager.Setting(1) = newValue
+   OptionManager.Setting(1) = NewValue
     expectedValue = OptionManager.Setting(1)
     OptionManager.Setting(1) = oldValue
     
     ' Assert
-   Assert.That newValue, Iz.EqualTo(expectedValue)
+   Assert.That NewValue, Iz.EqualTo(expectedValue)
 End Sub
 
 Public Sub DeleteByName_InsertedKeyValueBefore_KeyDeleted()
@@ -136,7 +139,7 @@ Public Sub DataSource_Tabname_IsNotvbNullString()
    TabName = OptionManager.DataSource
     
     ' Assert
-   Assert.That TabName, Iz.not.EqualTo(vbNullString)
+   Assert.That TabName, Iz.Not.EqualTo(vbNullString)
 End Sub
 
 Public Sub UpdateEnum_InsertKey_CheckKeyInEnumCode()
@@ -258,5 +261,5 @@ Public Sub NochEinTest()
    TabName = "abc"
     
     ' Assert
-   Assert.That TabName, Iz.not.EqualTo(vbNullString)
+   Assert.That TabName, Iz.Not.EqualTo(vbNullString)
 End Sub

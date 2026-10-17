@@ -10,8 +10,12 @@ Attribute VB_Exposed = False
 Option Compare Text
 Option Explicit
 
-'AccUnit:TestClass
-
+'---------------------------------------------------------------------------------------
+' Class: _test.math.Decimal2Tests
+' AccUnit:TestClass
+'---------------------------------------------------------------------------------------
+'
+'---------------------------------------------------------------------------------------
 ' AccUnit infrastructure for advanced AccUnit features. Do not remove these lines.
 'Implements SimplyVBUnit.ITestFixture
 'Implements AccUnit_Integration.ITestManagerBridge
@@ -32,7 +36,7 @@ Public Sub value_Default_IsZero()
         
     Dim b As New Decimal2 '0 by Default
         
-    Assert.AreEqual a, b
+    Assert.AreEqual a.Value, b.Value
         
     Set a = Nothing
     Set b = Nothing
@@ -47,7 +51,7 @@ Public Sub value_Equal()
     a = 1
     b = 1
     
-    Assert.AreEqual a, b
+    Assert.AreEqual a.Value, b.Value
         
     Set a = Nothing
     Set b = Nothing
@@ -64,7 +68,7 @@ Public Sub value_Simple_Add()
     b = 1
     c = 2
     
-    Assert.AreEqual a + b, c
+    Assert.AreEqual a + b, c.Value
     
     Set a = Nothing
     Set b = Nothing
@@ -82,8 +86,8 @@ Public Sub Round_CallMethod_UsesMathToolsRoundFunction()
     b = 1.02
     c = 1.03
     
-    Assert.AreEqual a.Round(2, ToEven), b
-    Assert.AreEqual a.Round(2, AwayFromZero), c
+    Assert.AreEqual a.Round(2, ToEven).Value, b.Value
+    Assert.AreEqual a.Round(2, AwayFromZero).Value, c.Value
     
     Set a = Nothing
     Set b = Nothing
@@ -111,7 +115,7 @@ Public Sub ToString2_GetValue_AsString2()
     Dim s As New String2
         s = "1,01"
         
-    Assert.AreEqual a.ToString2(), s
+    Assert.AreEqual a.ToString2().ToString, s.ToString
     
     Set a = Nothing
     Set s = Nothing

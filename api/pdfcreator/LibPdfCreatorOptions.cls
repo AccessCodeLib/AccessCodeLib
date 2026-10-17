@@ -8,13 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: LibPdfCreatorOptions
+' Class: api.pdfcreator.LibPdfCreatorOptions
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' \brief        Repräsentiert die PDF-Creator Einstellungen (Druckoptionen)
-' \ingroup PdfCreator
-'**/
+'
+' Represents the PDFCreator settings (print options)
+'
+' Author:
+'     Sten Schmidt
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>api/pdfcreator/LibPdfCreatorOptions.cls</file>
@@ -217,808 +220,808 @@ Public Property Get AdditionalGhostscriptParameters() As String
        AdditionalGhostscriptParameters = m_AdditionalGhostscriptParameters
 End Property
 
-Public Property Let AdditionalGhostscriptParameters(ByVal value As String)
-        m_AdditionalGhostscriptParameters = value
+Public Property Let AdditionalGhostscriptParameters(ByVal Value As String)
+        m_AdditionalGhostscriptParameters = Value
 End Property
 
 Public Property Get AdditionalGhostscriptSearchpath() As String
        AdditionalGhostscriptSearchpath = m_AdditionalGhostscriptSearchpath
 End Property
 
-Public Property Let AdditionalGhostscriptSearchpath(ByVal value As String)
-        m_AdditionalGhostscriptSearchpath = value
+Public Property Let AdditionalGhostscriptSearchpath(ByVal Value As String)
+        m_AdditionalGhostscriptSearchpath = Value
 End Property
 
 Public Property Get AddWindowsFontpath() As Variant
        AddWindowsFontpath = m_AddWindowsFontpath
 End Property
 
-Public Property Let AddWindowsFontpath(ByVal value As Variant)
-        m_AddWindowsFontpath = value
+Public Property Let AddWindowsFontpath(ByVal Value As Variant)
+        m_AddWindowsFontpath = Value
 End Property
 
 Public Property Get AllowSpecialGSCharsInFilenames() As Variant
        AllowSpecialGSCharsInFilenames = m_AllowSpecialGSCharsInFilenames
 End Property
 
-Public Property Let AllowSpecialGSCharsInFilenames(ByVal value As Variant)
-        m_AllowSpecialGSCharsInFilenames = value
+Public Property Let AllowSpecialGSCharsInFilenames(ByVal Value As Variant)
+        m_AllowSpecialGSCharsInFilenames = Value
 End Property
 
 Public Property Get AutosaveDirectory() As String
        AutosaveDirectory = m_AutosaveDirectory
 End Property
 
-Public Property Let AutosaveDirectory(ByVal value As String)
-        m_AutosaveDirectory = value
+Public Property Let AutosaveDirectory(ByVal Value As String)
+        m_AutosaveDirectory = Value
 End Property
 
 Public Property Get AutosaveFilename() As String
        AutosaveFilename = m_AutosaveFilename
 End Property
 
-Public Property Let AutosaveFilename(ByVal value As String)
-        m_AutosaveFilename = value
+Public Property Let AutosaveFilename(ByVal Value As String)
+        m_AutosaveFilename = Value
 End Property
 
 Public Property Get AutosaveFormat() As Variant
        AutosaveFormat = m_AutosaveFormat
 End Property
 
-Public Property Let AutosaveFormat(ByVal value As Variant)
-        m_AutosaveFormat = value
+Public Property Let AutosaveFormat(ByVal Value As Variant)
+        m_AutosaveFormat = Value
 End Property
 
 Public Property Get AutosaveStartStandardProgram() As Variant
        AutosaveStartStandardProgram = m_AutosaveStartStandardProgram
 End Property
 
-Public Property Let AutosaveStartStandardProgram(ByVal value As Variant)
-        m_AutosaveStartStandardProgram = value
+Public Property Let AutosaveStartStandardProgram(ByVal Value As Variant)
+        m_AutosaveStartStandardProgram = Value
 End Property
 
 Public Property Get BMPColorscount() As Variant
        BMPColorscount = m_BMPColorscount
 End Property
 
-Public Property Let BMPColorscount(ByVal value As Variant)
-        m_BMPColorscount = value
+Public Property Let BMPColorscount(ByVal Value As Variant)
+        m_BMPColorscount = Value
 End Property
 
 Public Property Get BMPResolution() As Variant
        BMPResolution = m_BMPResolution
 End Property
 
-Public Property Let BMPResolution(ByVal value As Variant)
-        m_BMPResolution = value
+Public Property Let BMPResolution(ByVal Value As Variant)
+        m_BMPResolution = Value
 End Property
 
 Public Property Get ClientComputerResolveIPAddress() As Variant
        ClientComputerResolveIPAddress = m_ClientComputerResolveIPAddress
 End Property
 
-Public Property Let ClientComputerResolveIPAddress(ByVal value As Variant)
-        m_ClientComputerResolveIPAddress = value
+Public Property Let ClientComputerResolveIPAddress(ByVal Value As Variant)
+        m_ClientComputerResolveIPAddress = Value
 End Property
 
 Public Property Get Counter() As Variant
        Counter = m_Counter
 End Property
 
-Public Property Let Counter(ByVal value As Variant)
-        m_Counter = value
+Public Property Let Counter(ByVal Value As Variant)
+        m_Counter = Value
 End Property
 
 Public Property Get DeviceHeightPoints() As Variant
        DeviceHeightPoints = m_DeviceHeightPoints
 End Property
 
-Public Property Let DeviceHeightPoints(ByVal value As Variant)
-        m_DeviceHeightPoints = value
+Public Property Let DeviceHeightPoints(ByVal Value As Variant)
+        m_DeviceHeightPoints = Value
 End Property
 
 Public Property Get DeviceWidthPoints() As Variant
        DeviceWidthPoints = m_DeviceWidthPoints
 End Property
 
-Public Property Let DeviceWidthPoints(ByVal value As Variant)
-        m_DeviceWidthPoints = value
+Public Property Let DeviceWidthPoints(ByVal Value As Variant)
+        m_DeviceWidthPoints = Value
 End Property
 
 Public Property Get DirectoryGhostscriptBinaries() As Variant
        DirectoryGhostscriptBinaries = m_DirectoryGhostscriptBinaries
 End Property
 
-Public Property Let DirectoryGhostscriptBinaries(ByVal value As Variant)
-        m_DirectoryGhostscriptBinaries = value
+Public Property Let DirectoryGhostscriptBinaries(ByVal Value As Variant)
+        m_DirectoryGhostscriptBinaries = Value
 End Property
 
 Public Property Get DirectoryGhostscriptFonts() As Variant
        DirectoryGhostscriptFonts = m_DirectoryGhostscriptFonts
 End Property
 
-Public Property Let DirectoryGhostscriptFonts(ByVal value As Variant)
-        m_DirectoryGhostscriptFonts = value
+Public Property Let DirectoryGhostscriptFonts(ByVal Value As Variant)
+        m_DirectoryGhostscriptFonts = Value
 End Property
 
 Public Property Get DirectoryGhostscriptLibraries() As Variant
        DirectoryGhostscriptLibraries = m_DirectoryGhostscriptLibraries
 End Property
 
-Public Property Let DirectoryGhostscriptLibraries(ByVal value As Variant)
-        m_DirectoryGhostscriptLibraries = value
+Public Property Let DirectoryGhostscriptLibraries(ByVal Value As Variant)
+        m_DirectoryGhostscriptLibraries = Value
 End Property
 
 Public Property Get DirectoryGhostscriptResource() As Variant
        DirectoryGhostscriptResource = m_DirectoryGhostscriptResource
 End Property
 
-Public Property Let DirectoryGhostscriptResource(ByVal value As Variant)
-        m_DirectoryGhostscriptResource = value
+Public Property Let DirectoryGhostscriptResource(ByVal Value As Variant)
+        m_DirectoryGhostscriptResource = Value
 End Property
 
 Public Property Get DisableEmail() As Variant
        DisableEmail = m_DisableEmail
 End Property
 
-Public Property Let DisableEmail(ByVal value As Variant)
-        m_DisableEmail = value
+Public Property Let DisableEmail(ByVal Value As Variant)
+        m_DisableEmail = Value
 End Property
 
 Public Property Get DisableUpdateCheck() As Variant
        DisableUpdateCheck = m_DisableUpdateCheck
 End Property
 
-Public Property Let DisableUpdateCheck(ByVal value As Variant)
-        m_DisableUpdateCheck = value
+Public Property Let DisableUpdateCheck(ByVal Value As Variant)
+        m_DisableUpdateCheck = Value
 End Property
 
 Public Property Get DontUseDocumentSettings() As Variant
        DontUseDocumentSettings = m_DontUseDocumentSettings
 End Property
 
-Public Property Let DontUseDocumentSettings(ByVal value As Variant)
-        m_DontUseDocumentSettings = value
+Public Property Let DontUseDocumentSettings(ByVal Value As Variant)
+        m_DontUseDocumentSettings = Value
 End Property
 
 Public Property Get EditWithPDFArchitect() As Variant
        EditWithPDFArchitect = m_EditWithPDFArchitect
 End Property
 
-Public Property Let EditWithPDFArchitect(ByVal value As Variant)
-        m_EditWithPDFArchitect = value
+Public Property Let EditWithPDFArchitect(ByVal Value As Variant)
+        m_EditWithPDFArchitect = Value
 End Property
 
 Public Property Get EPSLanguageLevel() As Variant
        EPSLanguageLevel = m_EPSLanguageLevel
 End Property
 
-Public Property Let EPSLanguageLevel(ByVal value As Variant)
-        m_EPSLanguageLevel = value
+Public Property Let EPSLanguageLevel(ByVal Value As Variant)
+        m_EPSLanguageLevel = Value
 End Property
 
 Public Property Get FilenameSubstitutions() As Variant
        FilenameSubstitutions = m_FilenameSubstitutions
 End Property
 
-Public Property Let FilenameSubstitutions(ByVal value As Variant)
-        m_FilenameSubstitutions = value
+Public Property Let FilenameSubstitutions(ByVal Value As Variant)
+        m_FilenameSubstitutions = Value
 End Property
 
 Public Property Get FilenameSubstitutionsOnlyInTitle() As Variant
        FilenameSubstitutionsOnlyInTitle = m_FilenameSubstitutionsOnlyInTitle
 End Property
 
-Public Property Let FilenameSubstitutionsOnlyInTitle(ByVal value As Variant)
-        m_FilenameSubstitutionsOnlyInTitle = value
+Public Property Let FilenameSubstitutionsOnlyInTitle(ByVal Value As Variant)
+        m_FilenameSubstitutionsOnlyInTitle = Value
 End Property
 
 Public Property Get JPEGColorscount() As Variant
        JPEGColorscount = m_JPEGColorscount
 End Property
 
-Public Property Let JPEGColorscount(ByVal value As Variant)
-        m_JPEGColorscount = value
+Public Property Let JPEGColorscount(ByVal Value As Variant)
+        m_JPEGColorscount = Value
 End Property
 
 Public Property Get JPEGQuality() As Variant
        JPEGQuality = m_JPEGQuality
 End Property
 
-Public Property Let JPEGQuality(ByVal value As Variant)
-        m_JPEGQuality = value
+Public Property Let JPEGQuality(ByVal Value As Variant)
+        m_JPEGQuality = Value
 End Property
 
 Public Property Get JPEGResolution() As Variant
        JPEGResolution = m_JPEGResolution
 End Property
 
-Public Property Let JPEGResolution(ByVal value As Variant)
-        m_JPEGResolution = value
+Public Property Let JPEGResolution(ByVal Value As Variant)
+        m_JPEGResolution = Value
 End Property
 
 Public Property Get Language() As Variant
        Language = m_Language
 End Property
 
-Public Property Let Language(ByVal value As Variant)
-        m_Language = value
+Public Property Let Language(ByVal Value As Variant)
+        m_Language = Value
 End Property
 
 Public Property Get LastSaveDirectory() As Variant
        LastSaveDirectory = m_LastSaveDirectory
 End Property
 
-Public Property Let LastSaveDirectory(ByVal value As Variant)
-        m_LastSaveDirectory = value
+Public Property Let LastSaveDirectory(ByVal Value As Variant)
+        m_LastSaveDirectory = Value
 End Property
 
 Public Property Get LastUpdateCheck() As Variant
        LastUpdateCheck = m_LastUpdateCheck
 End Property
 
-Public Property Let LastUpdateCheck(ByVal value As Variant)
-        m_LastUpdateCheck = value
+Public Property Let LastUpdateCheck(ByVal Value As Variant)
+        m_LastUpdateCheck = Value
 End Property
 
 Public Property Get Logging() As Variant
        Logging = m_Logging
 End Property
 
-Public Property Let Logging(ByVal value As Variant)
-        m_Logging = value
+Public Property Let Logging(ByVal Value As Variant)
+        m_Logging = Value
 End Property
 
 Public Property Get LogLines() As Variant
        LogLines = m_LogLines
 End Property
 
-Public Property Let LogLines(ByVal value As Variant)
-        m_LogLines = value
+Public Property Let LogLines(ByVal Value As Variant)
+        m_LogLines = Value
 End Property
 
 Public Property Get MaximumCountOfPDFArchitectToolTip() As Variant
        MaximumCountOfPDFArchitectToolTip = m_MaximumCountOfPDFArchitectToolTip
 End Property
 
-Public Property Let MaximumCountOfPDFArchitectToolTip(ByVal value As Variant)
-        m_MaximumCountOfPDFArchitectToolTip = value
+Public Property Let MaximumCountOfPDFArchitectToolTip(ByVal Value As Variant)
+        m_MaximumCountOfPDFArchitectToolTip = Value
 End Property
 
 Public Property Get NoConfirmMessageSwitchingDefaultprinter() As Variant
        NoConfirmMessageSwitchingDefaultprinter = m_NoConfirmMessageSwitchingDefaultprinter
 End Property
 
-Public Property Let NoConfirmMessageSwitchingDefaultprinter(ByVal value As Variant)
-        m_NoConfirmMessageSwitchingDefaultprinter = value
+Public Property Let NoConfirmMessageSwitchingDefaultprinter(ByVal Value As Variant)
+        m_NoConfirmMessageSwitchingDefaultprinter = Value
 End Property
 
 Public Property Get NoProcessingAtStartup() As Variant
        NoProcessingAtStartup = m_NoProcessingAtStartup
 End Property
 
-Public Property Let NoProcessingAtStartup(ByVal value As Variant)
-        m_NoProcessingAtStartup = value
+Public Property Let NoProcessingAtStartup(ByVal Value As Variant)
+        m_NoProcessingAtStartup = Value
 End Property
 
 Public Property Get NoPSCheck() As Variant
        NoPSCheck = m_NoPSCheck
 End Property
 
-Public Property Let NoPSCheck(ByVal value As Variant)
-        m_NoPSCheck = value
+Public Property Let NoPSCheck(ByVal Value As Variant)
+        m_NoPSCheck = Value
 End Property
 
 Public Property Get OneFilePerPage() As Variant
        OneFilePerPage = m_OneFilePerPage
 End Property
 
-Public Property Let OneFilePerPage(ByVal value As Variant)
-        m_OneFilePerPage = value
+Public Property Let OneFilePerPage(ByVal Value As Variant)
+        m_OneFilePerPage = Value
 End Property
 
 Public Property Get OpenOutputFile() As Variant
        OpenOutputFile = m_OpenOutputFile
 End Property
 
-Public Property Let OpenOutputFile(ByVal value As Variant)
-        m_OpenOutputFile = value
+Public Property Let OpenOutputFile(ByVal Value As Variant)
+        m_OpenOutputFile = Value
 End Property
 
 Public Property Get OptionsDesign() As Variant
        OptionsDesign = m_OptionsDesign
 End Property
 
-Public Property Let OptionsDesign(ByVal value As Variant)
-        m_OptionsDesign = value
+Public Property Let OptionsDesign(ByVal Value As Variant)
+        m_OptionsDesign = Value
 End Property
 
 Public Property Get OptionsEnabled() As Variant
        OptionsEnabled = m_OptionsEnabled
 End Property
 
-Public Property Let OptionsEnabled(ByVal value As Variant)
-        m_OptionsEnabled = value
+Public Property Let OptionsEnabled(ByVal Value As Variant)
+        m_OptionsEnabled = Value
 End Property
 
 Public Property Get OptionsVisible() As Variant
        OptionsVisible = m_OptionsVisible
 End Property
 
-Public Property Let OptionsVisible(ByVal value As Variant)
-        m_OptionsVisible = value
+Public Property Let OptionsVisible(ByVal Value As Variant)
+        m_OptionsVisible = Value
 End Property
 
 Public Property Get Papersize() As Variant
        Papersize = m_Papersize
 End Property
 
-Public Property Let Papersize(ByVal value As Variant)
-        m_Papersize = value
+Public Property Let Papersize(ByVal Value As Variant)
+        m_Papersize = Value
 End Property
 
 Public Property Get PCLColorsCount() As Variant
        PCLColorsCount = m_PCLColorsCount
 End Property
 
-Public Property Let PCLColorsCount(ByVal value As Variant)
-        m_PCLColorsCount = value
+Public Property Let PCLColorsCount(ByVal Value As Variant)
+        m_PCLColorsCount = Value
 End Property
 
 Public Property Get PCLResolution() As Variant
        PCLResolution = m_PCLResolution
 End Property
 
-Public Property Let PCLResolution(ByVal value As Variant)
-        m_PCLResolution = value
+Public Property Let PCLResolution(ByVal Value As Variant)
+        m_PCLResolution = Value
 End Property
 
 Public Property Get PCXColorscount() As Variant
        PCXColorscount = m_PCXColorscount
 End Property
 
-Public Property Let PCXColorscount(ByVal value As Variant)
-        m_PCXColorscount = value
+Public Property Let PCXColorscount(ByVal Value As Variant)
+        m_PCXColorscount = Value
 End Property
 
 Public Property Get PCXResolution() As Variant
        PCXResolution = m_PCXResolution
 End Property
 
-Public Property Let PCXResolution(ByVal value As Variant)
-        m_PCXResolution = value
+Public Property Let PCXResolution(ByVal Value As Variant)
+        m_PCXResolution = Value
 End Property
 
 Public Property Get PDFAes128Encryption() As Variant
        PDFAes128Encryption = m_PDFAes128Encryption
 End Property
 
-Public Property Let PDFAes128Encryption(ByVal value As Variant)
-        m_PDFAes128Encryption = value
+Public Property Let PDFAes128Encryption(ByVal Value As Variant)
+        m_PDFAes128Encryption = Value
 End Property
 
 Public Property Get PDFAllowAssembly() As Variant
        PDFAllowAssembly = m_PDFAllowAssembly
 End Property
 
-Public Property Let PDFAllowAssembly(ByVal value As Variant)
-        m_PDFAllowAssembly = value
+Public Property Let PDFAllowAssembly(ByVal Value As Variant)
+        m_PDFAllowAssembly = Value
 End Property
 
 Public Property Get PDFAllowDegradedPrinting() As Variant
        PDFAllowDegradedPrinting = m_PDFAllowDegradedPrinting
 End Property
 
-Public Property Let PDFAllowDegradedPrinting(ByVal value As Variant)
-        m_PDFAllowDegradedPrinting = value
+Public Property Let PDFAllowDegradedPrinting(ByVal Value As Variant)
+        m_PDFAllowDegradedPrinting = Value
 End Property
 
 Public Property Get PDFAllowFillIn() As Variant
        PDFAllowFillIn = m_PDFAllowFillIn
 End Property
 
-Public Property Let PDFAllowFillIn(ByVal value As Variant)
-        m_PDFAllowFillIn = value
+Public Property Let PDFAllowFillIn(ByVal Value As Variant)
+        m_PDFAllowFillIn = Value
 End Property
 
 Public Property Get PDFAllowScreenReaders() As Variant
        PDFAllowScreenReaders = m_PDFAllowScreenReaders
 End Property
 
-Public Property Let PDFAllowScreenReaders(ByVal value As Variant)
-        m_PDFAllowScreenReaders = value
+Public Property Let PDFAllowScreenReaders(ByVal Value As Variant)
+        m_PDFAllowScreenReaders = Value
 End Property
 
 Public Property Get PDFColorsCMYKToRGB() As Variant
        PDFColorsCMYKToRGB = m_PDFColorsCMYKToRGB
 End Property
 
-Public Property Let PDFColorsCMYKToRGB(ByVal value As Variant)
-        m_PDFColorsCMYKToRGB = value
+Public Property Let PDFColorsCMYKToRGB(ByVal Value As Variant)
+        m_PDFColorsCMYKToRGB = Value
 End Property
 
 Public Property Get PDFColorsColorModel() As Variant
        PDFColorsColorModel = m_PDFColorsColorModel
 End Property
 
-Public Property Let PDFColorsColorModel(ByVal value As Variant)
-        m_PDFColorsColorModel = value
+Public Property Let PDFColorsColorModel(ByVal Value As Variant)
+        m_PDFColorsColorModel = Value
 End Property
 
 Public Property Get PDFColorsPreserveHalftone() As Variant
        PDFColorsPreserveHalftone = m_PDFColorsPreserveHalftone
 End Property
 
-Public Property Let PDFColorsPreserveHalftone(ByVal value As Variant)
-        m_PDFColorsPreserveHalftone = value
+Public Property Let PDFColorsPreserveHalftone(ByVal Value As Variant)
+        m_PDFColorsPreserveHalftone = Value
 End Property
 
 Public Property Get PDFColorsPreserveOverprint() As Variant
        PDFColorsPreserveOverprint = m_PDFColorsPreserveOverprint
 End Property
 
-Public Property Let PDFColorsPreserveOverprint(ByVal value As Variant)
-        m_PDFColorsPreserveOverprint = value
+Public Property Let PDFColorsPreserveOverprint(ByVal Value As Variant)
+        m_PDFColorsPreserveOverprint = Value
 End Property
 
 Public Property Get PDFColorsPreserveTransfer() As Variant
        PDFColorsPreserveTransfer = m_PDFColorsPreserveTransfer
 End Property
 
-Public Property Let PDFColorsPreserveTransfer(ByVal value As Variant)
-        m_PDFColorsPreserveTransfer = value
+Public Property Let PDFColorsPreserveTransfer(ByVal Value As Variant)
+        m_PDFColorsPreserveTransfer = Value
 End Property
 
 Public Property Get PDFCompressionColorCompression() As Variant
        PDFCompressionColorCompression = m_PDFCompressionColorCompression
 End Property
 
-Public Property Let PDFCompressionColorCompression(ByVal value As Variant)
-        m_PDFCompressionColorCompression = value
+Public Property Let PDFCompressionColorCompression(ByVal Value As Variant)
+        m_PDFCompressionColorCompression = Value
 End Property
 
 Public Property Get PDFCompressionColorCompressionChoice() As Variant
        PDFCompressionColorCompressionChoice = m_PDFCompressionColorCompressionChoice
 End Property
 
-Public Property Let PDFCompressionColorCompressionChoice(ByVal value As Variant)
-        m_PDFCompressionColorCompressionChoice = value
+Public Property Let PDFCompressionColorCompressionChoice(ByVal Value As Variant)
+        m_PDFCompressionColorCompressionChoice = Value
 End Property
 
 Public Property Get PDFCompressionColorCompressionJPEGHighFactor() As Variant
        PDFCompressionColorCompressionJPEGHighFactor = m_PDFCompressionColorCompressionJPEGHighFactor
 End Property
 
-Public Property Let PDFCompressionColorCompressionJPEGHighFactor(ByVal value As Variant)
-        m_PDFCompressionColorCompressionJPEGHighFactor = value
+Public Property Let PDFCompressionColorCompressionJPEGHighFactor(ByVal Value As Variant)
+        m_PDFCompressionColorCompressionJPEGHighFactor = Value
 End Property
 
 Public Property Get PDFCompressionColorCompressionJPEGLowFactor() As Variant
        PDFCompressionColorCompressionJPEGLowFactor = m_PDFCompressionColorCompressionJPEGLowFactor
 End Property
 
-Public Property Let PDFCompressionColorCompressionJPEGLowFactor(ByVal value As Variant)
-        m_PDFCompressionColorCompressionJPEGLowFactor = value
+Public Property Let PDFCompressionColorCompressionJPEGLowFactor(ByVal Value As Variant)
+        m_PDFCompressionColorCompressionJPEGLowFactor = Value
 End Property
 
 Public Property Get PDFCompressionColorCompressionJPEGManualFactor() As Variant
        PDFCompressionColorCompressionJPEGManualFactor = m_PDFCompressionColorCompressionJPEGManualFactor
 End Property
 
-Public Property Let PDFCompressionColorCompressionJPEGManualFactor(ByVal value As Variant)
-        m_PDFCompressionColorCompressionJPEGManualFactor = value
+Public Property Let PDFCompressionColorCompressionJPEGManualFactor(ByVal Value As Variant)
+        m_PDFCompressionColorCompressionJPEGManualFactor = Value
 End Property
 
 Public Property Get PDFCompressionColorCompressionJPEGMaximumFactor() As Variant
        PDFCompressionColorCompressionJPEGMaximumFactor = m_PDFCompressionColorCompressionJPEGMaximumFactor
 End Property
 
-Public Property Let PDFCompressionColorCompressionJPEGMaximumFactor(ByVal value As Variant)
-        m_PDFCompressionColorCompressionJPEGMaximumFactor = value
+Public Property Let PDFCompressionColorCompressionJPEGMaximumFactor(ByVal Value As Variant)
+        m_PDFCompressionColorCompressionJPEGMaximumFactor = Value
 End Property
 
 Public Property Get PDFCompressionColorCompressionJPEGMediumFactor() As Variant
        PDFCompressionColorCompressionJPEGMediumFactor = m_PDFCompressionColorCompressionJPEGMediumFactor
 End Property
 
-Public Property Let PDFCompressionColorCompressionJPEGMediumFactor(ByVal value As Variant)
-        m_PDFCompressionColorCompressionJPEGMediumFactor = value
+Public Property Let PDFCompressionColorCompressionJPEGMediumFactor(ByVal Value As Variant)
+        m_PDFCompressionColorCompressionJPEGMediumFactor = Value
 End Property
 
 Public Property Get PDFCompressionColorCompressionJPEGMinimumFactor() As Variant
        PDFCompressionColorCompressionJPEGMinimumFactor = m_PDFCompressionColorCompressionJPEGMinimumFactor
 End Property
 
-Public Property Let PDFCompressionColorCompressionJPEGMinimumFactor(ByVal value As Variant)
-        m_PDFCompressionColorCompressionJPEGMinimumFactor = value
+Public Property Let PDFCompressionColorCompressionJPEGMinimumFactor(ByVal Value As Variant)
+        m_PDFCompressionColorCompressionJPEGMinimumFactor = Value
 End Property
 
 Public Property Get PDFCompressionColorResample() As Variant
        PDFCompressionColorResample = m_PDFCompressionColorResample
 End Property
 
-Public Property Let PDFCompressionColorResample(ByVal value As Variant)
-        m_PDFCompressionColorResample = value
+Public Property Let PDFCompressionColorResample(ByVal Value As Variant)
+        m_PDFCompressionColorResample = Value
 End Property
 
 Public Property Get PDFCompressionColorResampleChoice() As Variant
        PDFCompressionColorResampleChoice = m_PDFCompressionColorResampleChoice
 End Property
 
-Public Property Let PDFCompressionColorResampleChoice(ByVal value As Variant)
-        m_PDFCompressionColorResampleChoice = value
+Public Property Let PDFCompressionColorResampleChoice(ByVal Value As Variant)
+        m_PDFCompressionColorResampleChoice = Value
 End Property
 
 Public Property Get PDFCompressionColorResolution() As Variant
        PDFCompressionColorResolution = m_PDFCompressionColorResolution
 End Property
 
-Public Property Let PDFCompressionColorResolution(ByVal value As Variant)
-        m_PDFCompressionColorResolution = value
+Public Property Let PDFCompressionColorResolution(ByVal Value As Variant)
+        m_PDFCompressionColorResolution = Value
 End Property
 
 Public Property Get PDFCompressionGreyCompression() As Variant
        PDFCompressionGreyCompression = m_PDFCompressionGreyCompression
 End Property
 
-Public Property Let PDFCompressionGreyCompression(ByVal value As Variant)
-        m_PDFCompressionGreyCompression = value
+Public Property Let PDFCompressionGreyCompression(ByVal Value As Variant)
+        m_PDFCompressionGreyCompression = Value
 End Property
 
 Public Property Get PDFCompressionGreyCompressionChoice() As Variant
        PDFCompressionGreyCompressionChoice = m_PDFCompressionGreyCompressionChoice
 End Property
 
-Public Property Let PDFCompressionGreyCompressionChoice(ByVal value As Variant)
-        m_PDFCompressionGreyCompressionChoice = value
+Public Property Let PDFCompressionGreyCompressionChoice(ByVal Value As Variant)
+        m_PDFCompressionGreyCompressionChoice = Value
 End Property
 
 Public Property Get PDFCompressionGreyCompressionJPEGHighFactor() As Variant
        PDFCompressionGreyCompressionJPEGHighFactor = m_PDFCompressionGreyCompressionJPEGHighFactor
 End Property
 
-Public Property Let PDFCompressionGreyCompressionJPEGHighFactor(ByVal value As Variant)
-        m_PDFCompressionGreyCompressionJPEGHighFactor = value
+Public Property Let PDFCompressionGreyCompressionJPEGHighFactor(ByVal Value As Variant)
+        m_PDFCompressionGreyCompressionJPEGHighFactor = Value
 End Property
 
 Public Property Get PDFCompressionGreyCompressionJPEGLowFactor() As Variant
        PDFCompressionGreyCompressionJPEGLowFactor = m_PDFCompressionGreyCompressionJPEGLowFactor
 End Property
 
-Public Property Let PDFCompressionGreyCompressionJPEGLowFactor(ByVal value As Variant)
-        m_PDFCompressionGreyCompressionJPEGLowFactor = value
+Public Property Let PDFCompressionGreyCompressionJPEGLowFactor(ByVal Value As Variant)
+        m_PDFCompressionGreyCompressionJPEGLowFactor = Value
 End Property
 
 Public Property Get PDFCompressionGreyCompressionJPEGManualFactor() As Variant
        PDFCompressionGreyCompressionJPEGManualFactor = m_PDFCompressionGreyCompressionJPEGManualFactor
 End Property
 
-Public Property Let PDFCompressionGreyCompressionJPEGManualFactor(ByVal value As Variant)
-        m_PDFCompressionGreyCompressionJPEGManualFactor = value
+Public Property Let PDFCompressionGreyCompressionJPEGManualFactor(ByVal Value As Variant)
+        m_PDFCompressionGreyCompressionJPEGManualFactor = Value
 End Property
 
 Public Property Get PDFCompressionGreyCompressionJPEGMaximumFactor() As Variant
        PDFCompressionGreyCompressionJPEGMaximumFactor = m_PDFCompressionGreyCompressionJPEGMaximumFactor
 End Property
 
-Public Property Let PDFCompressionGreyCompressionJPEGMaximumFactor(ByVal value As Variant)
-        m_PDFCompressionGreyCompressionJPEGMaximumFactor = value
+Public Property Let PDFCompressionGreyCompressionJPEGMaximumFactor(ByVal Value As Variant)
+        m_PDFCompressionGreyCompressionJPEGMaximumFactor = Value
 End Property
 
 Public Property Get PDFCompressionGreyCompressionJPEGMediumFactor() As Variant
        PDFCompressionGreyCompressionJPEGMediumFactor = m_PDFCompressionGreyCompressionJPEGMediumFactor
 End Property
 
-Public Property Let PDFCompressionGreyCompressionJPEGMediumFactor(ByVal value As Variant)
-        m_PDFCompressionGreyCompressionJPEGMediumFactor = value
+Public Property Let PDFCompressionGreyCompressionJPEGMediumFactor(ByVal Value As Variant)
+        m_PDFCompressionGreyCompressionJPEGMediumFactor = Value
 End Property
 
 Public Property Get PDFCompressionGreyCompressionJPEGMinimumFactor() As Variant
        PDFCompressionGreyCompressionJPEGMinimumFactor = m_PDFCompressionGreyCompressionJPEGMinimumFactor
 End Property
 
-Public Property Let PDFCompressionGreyCompressionJPEGMinimumFactor(ByVal value As Variant)
-        m_PDFCompressionGreyCompressionJPEGMinimumFactor = value
+Public Property Let PDFCompressionGreyCompressionJPEGMinimumFactor(ByVal Value As Variant)
+        m_PDFCompressionGreyCompressionJPEGMinimumFactor = Value
 End Property
 
 Public Property Get PDFCompressionGreyResample() As Variant
        PDFCompressionGreyResample = m_PDFCompressionGreyResample
 End Property
 
-Public Property Let PDFCompressionGreyResample(ByVal value As Variant)
-        m_PDFCompressionGreyResample = value
+Public Property Let PDFCompressionGreyResample(ByVal Value As Variant)
+        m_PDFCompressionGreyResample = Value
 End Property
 
 Public Property Get PDFCompressionGreyResampleChoice() As Variant
        PDFCompressionGreyResampleChoice = m_PDFCompressionGreyResampleChoice
 End Property
 
-Public Property Let PDFCompressionGreyResampleChoice(ByVal value As Variant)
-        m_PDFCompressionGreyResampleChoice = value
+Public Property Let PDFCompressionGreyResampleChoice(ByVal Value As Variant)
+        m_PDFCompressionGreyResampleChoice = Value
 End Property
 
 Public Property Get PDFCompressionGreyResolution() As Variant
        PDFCompressionGreyResolution = m_PDFCompressionGreyResolution
 End Property
 
-Public Property Let PDFCompressionGreyResolution(ByVal value As Variant)
-        m_PDFCompressionGreyResolution = value
+Public Property Let PDFCompressionGreyResolution(ByVal Value As Variant)
+        m_PDFCompressionGreyResolution = Value
 End Property
 
 Public Property Get PDFCompressionMonoCompression() As Variant
        PDFCompressionMonoCompression = m_PDFCompressionMonoCompression
 End Property
 
-Public Property Let PDFCompressionMonoCompression(ByVal value As Variant)
-        m_PDFCompressionMonoCompression = value
+Public Property Let PDFCompressionMonoCompression(ByVal Value As Variant)
+        m_PDFCompressionMonoCompression = Value
 End Property
 
 Public Property Get PDFCompressionMonoCompressionChoice() As Variant
        PDFCompressionMonoCompressionChoice = m_PDFCompressionMonoCompressionChoice
 End Property
 
-Public Property Let PDFCompressionMonoCompressionChoice(ByVal value As Variant)
-        m_PDFCompressionMonoCompressionChoice = value
+Public Property Let PDFCompressionMonoCompressionChoice(ByVal Value As Variant)
+        m_PDFCompressionMonoCompressionChoice = Value
 End Property
 
 Public Property Get PDFCompressionMonoResample() As Variant
        PDFCompressionMonoResample = m_PDFCompressionMonoResample
 End Property
 
-Public Property Let PDFCompressionMonoResample(ByVal value As Variant)
-        m_PDFCompressionMonoResample = value
+Public Property Let PDFCompressionMonoResample(ByVal Value As Variant)
+        m_PDFCompressionMonoResample = Value
 End Property
 
 Public Property Get PDFCompressionMonoResampleChoice() As Variant
        PDFCompressionMonoResampleChoice = m_PDFCompressionMonoResampleChoice
 End Property
 
-Public Property Let PDFCompressionMonoResampleChoice(ByVal value As Variant)
-        m_PDFCompressionMonoResampleChoice = value
+Public Property Let PDFCompressionMonoResampleChoice(ByVal Value As Variant)
+        m_PDFCompressionMonoResampleChoice = Value
 End Property
 
 Public Property Get PDFCompressionMonoResolution() As Variant
        PDFCompressionMonoResolution = m_PDFCompressionMonoResolution
 End Property
 
-Public Property Let PDFCompressionMonoResolution(ByVal value As Variant)
-        m_PDFCompressionMonoResolution = value
+Public Property Let PDFCompressionMonoResolution(ByVal Value As Variant)
+        m_PDFCompressionMonoResolution = Value
 End Property
 
 Public Property Get PDFCompressionTextCompression() As Variant
        PDFCompressionTextCompression = m_PDFCompressionTextCompression
 End Property
 
-Public Property Let PDFCompressionTextCompression(ByVal value As Variant)
-        m_PDFCompressionTextCompression = value
+Public Property Let PDFCompressionTextCompression(ByVal Value As Variant)
+        m_PDFCompressionTextCompression = Value
 End Property
 
 Public Property Get PDFDisallowCopy() As Variant
        PDFDisallowCopy = m_PDFDisallowCopy
 End Property
 
-Public Property Let PDFDisallowCopy(ByVal value As Variant)
-        m_PDFDisallowCopy = value
+Public Property Let PDFDisallowCopy(ByVal Value As Variant)
+        m_PDFDisallowCopy = Value
 End Property
 
 Public Property Get PDFDisallowModifyAnnotations() As Variant
        PDFDisallowModifyAnnotations = m_PDFDisallowModifyAnnotations
 End Property
 
-Public Property Let PDFDisallowModifyAnnotations(ByVal value As Variant)
-        m_PDFDisallowModifyAnnotations = value
+Public Property Let PDFDisallowModifyAnnotations(ByVal Value As Variant)
+        m_PDFDisallowModifyAnnotations = Value
 End Property
 
 Public Property Get PDFDisallowModifyContents() As Variant
        PDFDisallowModifyContents = m_PDFDisallowModifyContents
 End Property
 
-Public Property Let PDFDisallowModifyContents(ByVal value As Variant)
-        m_PDFDisallowModifyContents = value
+Public Property Let PDFDisallowModifyContents(ByVal Value As Variant)
+        m_PDFDisallowModifyContents = Value
 End Property
 
 Public Property Get PDFDisallowPrinting() As Variant
        PDFDisallowPrinting = m_PDFDisallowPrinting
 End Property
 
-Public Property Let PDFDisallowPrinting(ByVal value As Variant)
-        m_PDFDisallowPrinting = value
+Public Property Let PDFDisallowPrinting(ByVal Value As Variant)
+        m_PDFDisallowPrinting = Value
 End Property
 
 Public Property Get PDFEncryptor() As Variant
        PDFEncryptor = m_PDFEncryptor
 End Property
 
-Public Property Let PDFEncryptor(ByVal value As Variant)
-        m_PDFEncryptor = value
+Public Property Let PDFEncryptor(ByVal Value As Variant)
+        m_PDFEncryptor = Value
 End Property
 
 Public Property Get PDFFontsEmbedAll() As Variant
        PDFFontsEmbedAll = m_PDFFontsEmbedAll
 End Property
 
-Public Property Let PDFFontsEmbedAll(ByVal value As Variant)
-        m_PDFFontsEmbedAll = value
+Public Property Let PDFFontsEmbedAll(ByVal Value As Variant)
+        m_PDFFontsEmbedAll = Value
 End Property
 
 Public Property Get PDFFontsSubSetFonts() As Variant
        PDFFontsSubSetFonts = m_PDFFontsSubSetFonts
 End Property
 
-Public Property Let PDFFontsSubSetFonts(ByVal value As Variant)
-        m_PDFFontsSubSetFonts = value
+Public Property Let PDFFontsSubSetFonts(ByVal Value As Variant)
+        m_PDFFontsSubSetFonts = Value
 End Property
 
 Public Property Get PDFFontsSubSetFontsPercent() As Variant
        PDFFontsSubSetFontsPercent = m_PDFFontsSubSetFontsPercent
 End Property
 
-Public Property Let PDFFontsSubSetFontsPercent(ByVal value As Variant)
-        m_PDFFontsSubSetFontsPercent = value
+Public Property Let PDFFontsSubSetFontsPercent(ByVal Value As Variant)
+        m_PDFFontsSubSetFontsPercent = Value
 End Property
 
 Public Property Get PDFGeneralASCII85() As Variant
        PDFGeneralASCII85 = m_PDFGeneralASCII85
 End Property
 
-Public Property Let PDFGeneralASCII85(ByVal value As Variant)
-        m_PDFGeneralASCII85 = value
+Public Property Let PDFGeneralASCII85(ByVal Value As Variant)
+        m_PDFGeneralASCII85 = Value
 End Property
 
 Public Property Get PDFGeneralAutorotate() As Variant
        PDFGeneralAutorotate = m_PDFGeneralAutorotate
 End Property
 
-Public Property Let PDFGeneralAutorotate(ByVal value As Variant)
-        m_PDFGeneralAutorotate = value
+Public Property Let PDFGeneralAutorotate(ByVal Value As Variant)
+        m_PDFGeneralAutorotate = Value
 End Property
 
 Public Property Get PDFGeneralCompatibility() As Variant
        PDFGeneralCompatibility = m_PDFGeneralCompatibility
 End Property
 
-Public Property Let PDFGeneralCompatibility(ByVal value As Variant)
-        m_PDFGeneralCompatibility = value
+Public Property Let PDFGeneralCompatibility(ByVal Value As Variant)
+        m_PDFGeneralCompatibility = Value
 End Property
 
 Public Property Get PDFGeneralDefault() As Variant
        PDFGeneralDefault = m_PDFGeneralDefault
 End Property
 
-Public Property Let PDFGeneralDefault(ByVal value As Variant)
-        m_PDFGeneralDefault = value
+Public Property Let PDFGeneralDefault(ByVal Value As Variant)
+        m_PDFGeneralDefault = Value
 End Property
 
 Public Property Get PDFGeneralOverprint() As Variant
        PDFGeneralOverprint = m_PDFGeneralOverprint
 End Property
 
-Public Property Let PDFGeneralOverprint(ByVal value As Variant)
-        m_PDFGeneralOverprint = value
+Public Property Let PDFGeneralOverprint(ByVal Value As Variant)
+        m_PDFGeneralOverprint = Value
 End Property
 
 Public Property Get PDFHighEncryption() As Variant
        PDFHighEncryption = m_PDFHighEncryption
 End Property
 
-Public Property Let PDFHighEncryption(ByVal value As Variant)
-        m_PDFHighEncryption = value
+Public Property Let PDFHighEncryption(ByVal Value As Variant)
+        m_PDFHighEncryption = Value
 End Property
 
 Public Property Get PDFLowEncryption() As Variant
        PDFLowEncryption = m_PDFLowEncryption
 End Property
 
-Public Property Let PDFLowEncryption(ByVal value As Variant)
-        m_PDFLowEncryption = value
+Public Property Let PDFLowEncryption(ByVal Value As Variant)
+        m_PDFLowEncryption = Value
 End Property
 
 Public Property Get PDFOptimize() As Variant
        PDFOptimize = m_PDFOptimize
 End Property
 
-Public Property Let PDFOptimize(ByVal value As Variant)
-        m_PDFOptimize = value
+Public Property Let PDFOptimize(ByVal Value As Variant)
+        m_PDFOptimize = Value
 End Property
 
 'Public Property Get PDFOwnerPass() As Variant
@@ -1033,670 +1036,670 @@ Public Property Get PDFOwnerPasswordString() As Variant
        PDFOwnerPasswordString = m_PDFOwnerPasswordString
 End Property
 
-Public Property Let PDFOwnerPasswordString(ByVal value As Variant)
-        m_PDFOwnerPasswordString = value
+Public Property Let PDFOwnerPasswordString(ByVal Value As Variant)
+        m_PDFOwnerPasswordString = Value
 End Property
 
 Public Property Get PDFPageLayout() As Variant
        PDFPageLayout = m_PDFPageLayout
 End Property
 
-Public Property Let PDFPageLayout(ByVal value As Variant)
-        m_PDFPageLayout = value
+Public Property Let PDFPageLayout(ByVal Value As Variant)
+        m_PDFPageLayout = Value
 End Property
 
 Public Property Get PDFPageMode() As Variant
        PDFPageMode = m_PDFPageMode
 End Property
 
-Public Property Let PDFPageMode(ByVal value As Variant)
-        m_PDFPageMode = value
+Public Property Let PDFPageMode(ByVal Value As Variant)
+        m_PDFPageMode = Value
 End Property
 
 Public Property Get PDFSigningMultiSignature() As Variant
        PDFSigningMultiSignature = m_PDFSigningMultiSignature
 End Property
 
-Public Property Let PDFSigningMultiSignature(ByVal value As Variant)
-        m_PDFSigningMultiSignature = value
+Public Property Let PDFSigningMultiSignature(ByVal Value As Variant)
+        m_PDFSigningMultiSignature = Value
 End Property
 
 Public Property Get PDFSigningPFXFile() As Variant
        PDFSigningPFXFile = m_PDFSigningPFXFile
 End Property
 
-Public Property Let PDFSigningPFXFile(ByVal value As Variant)
-        m_PDFSigningPFXFile = value
+Public Property Let PDFSigningPFXFile(ByVal Value As Variant)
+        m_PDFSigningPFXFile = Value
 End Property
 
 Public Property Get PDFSigningPFXFilePassword() As Variant
        PDFSigningPFXFilePassword = m_PDFSigningPFXFilePassword
 End Property
 
-Public Property Let PDFSigningPFXFilePassword(ByVal value As Variant)
-        m_PDFSigningPFXFilePassword = value
+Public Property Let PDFSigningPFXFilePassword(ByVal Value As Variant)
+        m_PDFSigningPFXFilePassword = Value
 End Property
 
 Public Property Get PDFSigningSignatureContact() As Variant
        PDFSigningSignatureContact = m_PDFSigningSignatureContact
 End Property
 
-Public Property Let PDFSigningSignatureContact(ByVal value As Variant)
-        m_PDFSigningSignatureContact = value
+Public Property Let PDFSigningSignatureContact(ByVal Value As Variant)
+        m_PDFSigningSignatureContact = Value
 End Property
 
 Public Property Get PDFSigningSignatureLeftX() As Variant
        PDFSigningSignatureLeftX = m_PDFSigningSignatureLeftX
 End Property
 
-Public Property Let PDFSigningSignatureLeftX(ByVal value As Variant)
-        m_PDFSigningSignatureLeftX = value
+Public Property Let PDFSigningSignatureLeftX(ByVal Value As Variant)
+        m_PDFSigningSignatureLeftX = Value
 End Property
 
 Public Property Get PDFSigningSignatureLeftY() As Variant
        PDFSigningSignatureLeftY = m_PDFSigningSignatureLeftY
 End Property
 
-Public Property Let PDFSigningSignatureLeftY(ByVal value As Variant)
-        m_PDFSigningSignatureLeftY = value
+Public Property Let PDFSigningSignatureLeftY(ByVal Value As Variant)
+        m_PDFSigningSignatureLeftY = Value
 End Property
 
 Public Property Get PDFSigningSignatureLocation() As Variant
        PDFSigningSignatureLocation = m_PDFSigningSignatureLocation
 End Property
 
-Public Property Let PDFSigningSignatureLocation(ByVal value As Variant)
-        m_PDFSigningSignatureLocation = value
+Public Property Let PDFSigningSignatureLocation(ByVal Value As Variant)
+        m_PDFSigningSignatureLocation = Value
 End Property
 
 Public Property Get PDFSigningSignatureOnPage() As Variant
        PDFSigningSignatureOnPage = m_PDFSigningSignatureOnPage
 End Property
 
-Public Property Let PDFSigningSignatureOnPage(ByVal value As Variant)
-        m_PDFSigningSignatureOnPage = value
+Public Property Let PDFSigningSignatureOnPage(ByVal Value As Variant)
+        m_PDFSigningSignatureOnPage = Value
 End Property
 
 Public Property Get PDFSigningSignatureReason() As Variant
        PDFSigningSignatureReason = m_PDFSigningSignatureReason
 End Property
 
-Public Property Let PDFSigningSignatureReason(ByVal value As Variant)
-        m_PDFSigningSignatureReason = value
+Public Property Let PDFSigningSignatureReason(ByVal Value As Variant)
+        m_PDFSigningSignatureReason = Value
 End Property
 
 Public Property Get PDFSigningSignatureRightX() As Variant
        PDFSigningSignatureRightX = m_PDFSigningSignatureRightX
 End Property
 
-Public Property Let PDFSigningSignatureRightX(ByVal value As Variant)
-        m_PDFSigningSignatureRightX = value
+Public Property Let PDFSigningSignatureRightX(ByVal Value As Variant)
+        m_PDFSigningSignatureRightX = Value
 End Property
 
 Public Property Get PDFSigningSignatureRightY() As Variant
        PDFSigningSignatureRightY = m_PDFSigningSignatureRightY
 End Property
 
-Public Property Let PDFSigningSignatureRightY(ByVal value As Variant)
-        m_PDFSigningSignatureRightY = value
+Public Property Let PDFSigningSignatureRightY(ByVal Value As Variant)
+        m_PDFSigningSignatureRightY = Value
 End Property
 
 Public Property Get PDFSigningSignatureVisible() As Variant
        PDFSigningSignatureVisible = m_PDFSigningSignatureVisible
 End Property
 
-Public Property Let PDFSigningSignatureVisible(ByVal value As Variant)
-        m_PDFSigningSignatureVisible = value
+Public Property Let PDFSigningSignatureVisible(ByVal Value As Variant)
+        m_PDFSigningSignatureVisible = Value
 End Property
 
 Public Property Get PDFSigningSignPDF() As Variant
        PDFSigningSignPDF = m_PDFSigningSignPDF
 End Property
 
-Public Property Let PDFSigningSignPDF(ByVal value As Variant)
-        m_PDFSigningSignPDF = value
+Public Property Let PDFSigningSignPDF(ByVal Value As Variant)
+        m_PDFSigningSignPDF = Value
 End Property
 
 Public Property Get PDFSigningTimeServerUrl() As Variant
        PDFSigningTimeServerUrl = m_PDFSigningTimeServerUrl
 End Property
 
-Public Property Let PDFSigningTimeServerUrl(ByVal value As Variant)
-        m_PDFSigningTimeServerUrl = value
+Public Property Let PDFSigningTimeServerUrl(ByVal Value As Variant)
+        m_PDFSigningTimeServerUrl = Value
 End Property
 
 Public Property Get PDFStartPage() As Variant
        PDFStartPage = m_PDFStartPage
 End Property
 
-Public Property Let PDFStartPage(ByVal value As Variant)
-        m_PDFStartPage = value
+Public Property Let PDFStartPage(ByVal Value As Variant)
+        m_PDFStartPage = Value
 End Property
 
 Public Property Get PDFUpdateMetadata() As Variant
        PDFUpdateMetadata = m_PDFUpdateMetadata
 End Property
 
-Public Property Let PDFUpdateMetadata(ByVal value As Variant)
-        m_PDFUpdateMetadata = value
+Public Property Let PDFUpdateMetadata(ByVal Value As Variant)
+        m_PDFUpdateMetadata = Value
 End Property
 
 Public Property Get PDFUserPass() As Variant
        PDFUserPass = m_PDFUserPass
 End Property
 
-Public Property Let PDFUserPass(ByVal value As Variant)
-        m_PDFUserPass = value
+Public Property Let PDFUserPass(ByVal Value As Variant)
+        m_PDFUserPass = Value
 End Property
 
 Public Property Get PDFUserPasswordString() As Variant
        PDFUserPasswordString = m_PDFUserPasswordString
 End Property
 
-Public Property Let PDFUserPasswordString(ByVal value As Variant)
-        m_PDFUserPasswordString = value
+Public Property Let PDFUserPasswordString(ByVal Value As Variant)
+        m_PDFUserPasswordString = Value
 End Property
 
 Public Property Get PDFUseSecurity() As Variant
        PDFUseSecurity = m_PDFUseSecurity
 End Property
 
-Public Property Let PDFUseSecurity(ByVal value As Variant)
-        m_PDFUseSecurity = value
+Public Property Let PDFUseSecurity(ByVal Value As Variant)
+        m_PDFUseSecurity = Value
 End Property
 
 Public Property Get PNGColorscount() As Variant
        PNGColorscount = m_PNGColorscount
 End Property
 
-Public Property Let PNGColorscount(ByVal value As Variant)
-        m_PNGColorscount = value
+Public Property Let PNGColorscount(ByVal Value As Variant)
+        m_PNGColorscount = Value
 End Property
 
 Public Property Get PNGResolution() As Variant
        PNGResolution = m_PNGResolution
 End Property
 
-Public Property Let PNGResolution(ByVal value As Variant)
-        m_PNGResolution = value
+Public Property Let PNGResolution(ByVal Value As Variant)
+        m_PNGResolution = Value
 End Property
 
 Public Property Get PrintAfterSaving() As Variant
        PrintAfterSaving = m_PrintAfterSaving
 End Property
 
-Public Property Let PrintAfterSaving(ByVal value As Variant)
-        m_PrintAfterSaving = value
+Public Property Let PrintAfterSaving(ByVal Value As Variant)
+        m_PrintAfterSaving = Value
 End Property
 
 Public Property Get PrintAfterSavingBitsPerPixel() As Variant
        PrintAfterSavingBitsPerPixel = m_PrintAfterSavingBitsPerPixel
 End Property
 
-Public Property Let PrintAfterSavingBitsPerPixel(ByVal value As Variant)
-        m_PrintAfterSavingBitsPerPixel = value
+Public Property Let PrintAfterSavingBitsPerPixel(ByVal Value As Variant)
+        m_PrintAfterSavingBitsPerPixel = Value
 End Property
 
 Public Property Get PrintAfterSavingDuplex() As Variant
        PrintAfterSavingDuplex = m_PrintAfterSavingDuplex
 End Property
 
-Public Property Let PrintAfterSavingDuplex(ByVal value As Variant)
-        m_PrintAfterSavingDuplex = value
+Public Property Let PrintAfterSavingDuplex(ByVal Value As Variant)
+        m_PrintAfterSavingDuplex = Value
 End Property
 
 Public Property Get PrintAfterSavingMaxResolution() As Variant
        PrintAfterSavingMaxResolution = m_PrintAfterSavingMaxResolution
 End Property
 
-Public Property Let PrintAfterSavingMaxResolution(ByVal value As Variant)
-        m_PrintAfterSavingMaxResolution = value
+Public Property Let PrintAfterSavingMaxResolution(ByVal Value As Variant)
+        m_PrintAfterSavingMaxResolution = Value
 End Property
 
 Public Property Get PrintAfterSavingMaxResolutionEnabled() As Variant
        PrintAfterSavingMaxResolutionEnabled = m_PrintAfterSavingMaxResolutionEnabled
 End Property
 
-Public Property Let PrintAfterSavingMaxResolutionEnabled(ByVal value As Variant)
-        m_PrintAfterSavingMaxResolutionEnabled = value
+Public Property Let PrintAfterSavingMaxResolutionEnabled(ByVal Value As Variant)
+        m_PrintAfterSavingMaxResolutionEnabled = Value
 End Property
 
 Public Property Get PrintAfterSavingNoCancel() As Variant
        PrintAfterSavingNoCancel = m_PrintAfterSavingNoCancel
 End Property
 
-Public Property Let PrintAfterSavingNoCancel(ByVal value As Variant)
-        m_PrintAfterSavingNoCancel = value
+Public Property Let PrintAfterSavingNoCancel(ByVal Value As Variant)
+        m_PrintAfterSavingNoCancel = Value
 End Property
 
 Public Property Get PrintAfterSavingPrinter() As Variant
        PrintAfterSavingPrinter = m_PrintAfterSavingPrinter
 End Property
 
-Public Property Let PrintAfterSavingPrinter(ByVal value As Variant)
-        m_PrintAfterSavingPrinter = value
+Public Property Let PrintAfterSavingPrinter(ByVal Value As Variant)
+        m_PrintAfterSavingPrinter = Value
 End Property
 
 Public Property Get PrintAfterSavingQueryUser() As Variant
        PrintAfterSavingQueryUser = m_PrintAfterSavingQueryUser
 End Property
 
-Public Property Let PrintAfterSavingQueryUser(ByVal value As Variant)
-        m_PrintAfterSavingQueryUser = value
+Public Property Let PrintAfterSavingQueryUser(ByVal Value As Variant)
+        m_PrintAfterSavingQueryUser = Value
 End Property
 
 Public Property Get PrintAfterSavingTumble() As Variant
        PrintAfterSavingTumble = m_PrintAfterSavingTumble
 End Property
 
-Public Property Let PrintAfterSavingTumble(ByVal value As Variant)
-        m_PrintAfterSavingTumble = value
+Public Property Let PrintAfterSavingTumble(ByVal Value As Variant)
+        m_PrintAfterSavingTumble = Value
 End Property
 
 Public Property Get PrinterStop() As Variant
        PrinterStop = m_PrinterStop
 End Property
 
-Public Property Let PrinterStop(ByVal value As Variant)
-        m_PrinterStop = value
+Public Property Let PrinterStop(ByVal Value As Variant)
+        m_PrinterStop = Value
 End Property
 
 Public Property Get ProcessPriority() As Variant
        ProcessPriority = m_ProcessPriority
 End Property
 
-Public Property Let ProcessPriority(ByVal value As Variant)
-        m_ProcessPriority = value
+Public Property Let ProcessPriority(ByVal Value As Variant)
+        m_ProcessPriority = Value
 End Property
 
 Public Property Get ProgramFont() As Variant
        ProgramFont = m_ProgramFont
 End Property
 
-Public Property Let ProgramFont(ByVal value As Variant)
-        m_ProgramFont = value
+Public Property Let ProgramFont(ByVal Value As Variant)
+        m_ProgramFont = Value
 End Property
 
 Public Property Get ProgramFontCharset() As Variant
        ProgramFontCharset = m_ProgramFontCharset
 End Property
 
-Public Property Let ProgramFontCharset(ByVal value As Variant)
-        m_ProgramFontCharset = value
+Public Property Let ProgramFontCharset(ByVal Value As Variant)
+        m_ProgramFontCharset = Value
 End Property
 
 Public Property Get ProgramFontSize() As Variant
        ProgramFontSize = m_ProgramFontSize
 End Property
 
-Public Property Let ProgramFontSize(ByVal value As Variant)
-        m_ProgramFontSize = value
+Public Property Let ProgramFontSize(ByVal Value As Variant)
+        m_ProgramFontSize = Value
 End Property
 
 Public Property Get PSDColorsCount() As Variant
        PSDColorsCount = m_PSDColorsCount
 End Property
 
-Public Property Let PSDColorsCount(ByVal value As Variant)
-        m_PSDColorsCount = value
+Public Property Let PSDColorsCount(ByVal Value As Variant)
+        m_PSDColorsCount = Value
 End Property
 
 Public Property Get PSDResolution() As Variant
        PSDResolution = m_PSDResolution
 End Property
 
-Public Property Let PSDResolution(ByVal value As Variant)
-        m_PSDResolution = value
+Public Property Let PSDResolution(ByVal Value As Variant)
+        m_PSDResolution = Value
 End Property
 
 Public Property Get PSLanguageLevel() As Variant
        PSLanguageLevel = m_PSLanguageLevel
 End Property
 
-Public Property Let PSLanguageLevel(ByVal value As Variant)
-        m_PSLanguageLevel = value
+Public Property Let PSLanguageLevel(ByVal Value As Variant)
+        m_PSLanguageLevel = Value
 End Property
 
 Public Property Get RAWColorsCount() As Variant
        RAWColorsCount = m_RAWColorsCount
 End Property
 
-Public Property Let RAWColorsCount(ByVal value As Variant)
-        m_RAWColorsCount = value
+Public Property Let RAWColorsCount(ByVal Value As Variant)
+        m_RAWColorsCount = Value
 End Property
 
 Public Property Get RAWResolution() As Variant
        RAWResolution = m_RAWResolution
 End Property
 
-Public Property Let RAWResolution(ByVal value As Variant)
-        m_RAWResolution = value
+Public Property Let RAWResolution(ByVal Value As Variant)
+        m_RAWResolution = Value
 End Property
 
 Public Property Get RemoveAllKnownFileExtensions() As Variant
        RemoveAllKnownFileExtensions = m_RemoveAllKnownFileExtensions
 End Property
 
-Public Property Let RemoveAllKnownFileExtensions(ByVal value As Variant)
-        m_RemoveAllKnownFileExtensions = value
+Public Property Let RemoveAllKnownFileExtensions(ByVal Value As Variant)
+        m_RemoveAllKnownFileExtensions = Value
 End Property
 
 Public Property Get RemoveSpaces() As Variant
        RemoveSpaces = m_RemoveSpaces
 End Property
 
-Public Property Let RemoveSpaces(ByVal value As Variant)
-        m_RemoveSpaces = value
+Public Property Let RemoveSpaces(ByVal Value As Variant)
+        m_RemoveSpaces = Value
 End Property
 
 Public Property Get RunProgramAfterSaving() As Variant
        RunProgramAfterSaving = m_RunProgramAfterSaving
 End Property
 
-Public Property Let RunProgramAfterSaving(ByVal value As Variant)
-        m_RunProgramAfterSaving = value
+Public Property Let RunProgramAfterSaving(ByVal Value As Variant)
+        m_RunProgramAfterSaving = Value
 End Property
 
 Public Property Get RunProgramAfterSavingProgramname() As Variant
        RunProgramAfterSavingProgramname = m_RunProgramAfterSavingProgramname
 End Property
 
-Public Property Let RunProgramAfterSavingProgramname(ByVal value As Variant)
-        m_RunProgramAfterSavingProgramname = value
+Public Property Let RunProgramAfterSavingProgramname(ByVal Value As Variant)
+        m_RunProgramAfterSavingProgramname = Value
 End Property
 
 Public Property Get RunProgramAfterSavingProgramParameters() As Variant
        RunProgramAfterSavingProgramParameters = m_RunProgramAfterSavingProgramParameters
 End Property
 
-Public Property Let RunProgramAfterSavingProgramParameters(ByVal value As Variant)
-        m_RunProgramAfterSavingProgramParameters = value
+Public Property Let RunProgramAfterSavingProgramParameters(ByVal Value As Variant)
+        m_RunProgramAfterSavingProgramParameters = Value
 End Property
 
 Public Property Get RunProgramAfterSavingWaitUntilReady() As Variant
        RunProgramAfterSavingWaitUntilReady = m_RunProgramAfterSavingWaitUntilReady
 End Property
 
-Public Property Let RunProgramAfterSavingWaitUntilReady(ByVal value As Variant)
-        m_RunProgramAfterSavingWaitUntilReady = value
+Public Property Let RunProgramAfterSavingWaitUntilReady(ByVal Value As Variant)
+        m_RunProgramAfterSavingWaitUntilReady = Value
 End Property
 
 Public Property Get RunProgramAfterSavingWindowstyle() As Variant
        RunProgramAfterSavingWindowstyle = m_RunProgramAfterSavingWindowstyle
 End Property
 
-Public Property Let RunProgramAfterSavingWindowstyle(ByVal value As Variant)
-        m_RunProgramAfterSavingWindowstyle = value
+Public Property Let RunProgramAfterSavingWindowstyle(ByVal Value As Variant)
+        m_RunProgramAfterSavingWindowstyle = Value
 End Property
 
 Public Property Get RunProgramBeforeSaving() As Variant
        RunProgramBeforeSaving = m_RunProgramBeforeSaving
 End Property
 
-Public Property Let RunProgramBeforeSaving(ByVal value As Variant)
-        m_RunProgramBeforeSaving = value
+Public Property Let RunProgramBeforeSaving(ByVal Value As Variant)
+        m_RunProgramBeforeSaving = Value
 End Property
 
 Public Property Get RunProgramBeforeSavingProgramname() As Variant
        RunProgramBeforeSavingProgramname = m_RunProgramBeforeSavingProgramname
 End Property
 
-Public Property Let RunProgramBeforeSavingProgramname(ByVal value As Variant)
-        m_RunProgramBeforeSavingProgramname = value
+Public Property Let RunProgramBeforeSavingProgramname(ByVal Value As Variant)
+        m_RunProgramBeforeSavingProgramname = Value
 End Property
 
 Public Property Get RunProgramBeforeSavingProgramParameters() As Variant
        RunProgramBeforeSavingProgramParameters = m_RunProgramBeforeSavingProgramParameters
 End Property
 
-Public Property Let RunProgramBeforeSavingProgramParameters(ByVal value As Variant)
-        m_RunProgramBeforeSavingProgramParameters = value
+Public Property Let RunProgramBeforeSavingProgramParameters(ByVal Value As Variant)
+        m_RunProgramBeforeSavingProgramParameters = Value
 End Property
 
 Public Property Get RunProgramBeforeSavingWindowstyle() As Variant
        RunProgramBeforeSavingWindowstyle = m_RunProgramBeforeSavingWindowstyle
 End Property
 
-Public Property Let RunProgramBeforeSavingWindowstyle(ByVal value As Variant)
-        m_RunProgramBeforeSavingWindowstyle = value
+Public Property Let RunProgramBeforeSavingWindowstyle(ByVal Value As Variant)
+        m_RunProgramBeforeSavingWindowstyle = Value
 End Property
 
 Public Property Get SaveFilename() As Variant
        SaveFilename = m_SaveFilename
 End Property
 
-Public Property Let SaveFilename(ByVal value As Variant)
-        m_SaveFilename = value
+Public Property Let SaveFilename(ByVal Value As Variant)
+        m_SaveFilename = Value
 End Property
 
 Public Property Get SendEmailAfterAutoSaving() As Variant
        SendEmailAfterAutoSaving = m_SendEmailAfterAutoSaving
 End Property
 
-Public Property Let SendEmailAfterAutoSaving(ByVal value As Variant)
-        m_SendEmailAfterAutoSaving = value
+Public Property Let SendEmailAfterAutoSaving(ByVal Value As Variant)
+        m_SendEmailAfterAutoSaving = Value
 End Property
 
 Public Property Get SendMailMethod() As Variant
        SendMailMethod = m_SendMailMethod
 End Property
 
-Public Property Let SendMailMethod(ByVal value As Variant)
-        m_SendMailMethod = value
+Public Property Let SendMailMethod(ByVal Value As Variant)
+        m_SendMailMethod = Value
 End Property
 
 Public Property Get ShowAnimation() As Variant
        ShowAnimation = m_ShowAnimation
 End Property
 
-Public Property Let ShowAnimation(ByVal value As Variant)
-        m_ShowAnimation = value
+Public Property Let ShowAnimation(ByVal Value As Variant)
+        m_ShowAnimation = Value
 End Property
 
 Public Property Get StampFontColor() As Variant
        StampFontColor = m_StampFontColor
 End Property
 
-Public Property Let StampFontColor(ByVal value As Variant)
-        m_StampFontColor = value
+Public Property Let StampFontColor(ByVal Value As Variant)
+        m_StampFontColor = Value
 End Property
 
 Public Property Get StampFontname() As Variant
        StampFontname = m_StampFontname
 End Property
 
-Public Property Let StampFontname(ByVal value As Variant)
-        m_StampFontname = value
+Public Property Let StampFontname(ByVal Value As Variant)
+        m_StampFontname = Value
 End Property
 
 Public Property Get StampFontsize() As Variant
        StampFontsize = m_StampFontsize
 End Property
 
-Public Property Let StampFontsize(ByVal value As Variant)
-        m_StampFontsize = value
+Public Property Let StampFontsize(ByVal Value As Variant)
+        m_StampFontsize = Value
 End Property
 
 Public Property Get StampOutlineFontthickness() As Variant
        StampOutlineFontthickness = m_StampOutlineFontthickness
 End Property
 
-Public Property Let StampOutlineFontthickness(ByVal value As Variant)
-        m_StampOutlineFontthickness = value
+Public Property Let StampOutlineFontthickness(ByVal Value As Variant)
+        m_StampOutlineFontthickness = Value
 End Property
 
 Public Property Get StampString() As Variant
        StampString = m_StampString
 End Property
 
-Public Property Let StampString(ByVal value As Variant)
-        m_StampString = value
+Public Property Let StampString(ByVal Value As Variant)
+        m_StampString = Value
 End Property
 
 Public Property Get StampUseOutlineFont() As Variant
        StampUseOutlineFont = m_StampUseOutlineFont
 End Property
 
-Public Property Let StampUseOutlineFont(ByVal value As Variant)
-        m_StampUseOutlineFont = value
+Public Property Let StampUseOutlineFont(ByVal Value As Variant)
+        m_StampUseOutlineFont = Value
 End Property
 
 Public Property Get StandardAuthor() As Variant
        StandardAuthor = m_StandardAuthor
 End Property
 
-Public Property Let StandardAuthor(ByVal value As Variant)
-        m_StandardAuthor = value
+Public Property Let StandardAuthor(ByVal Value As Variant)
+        m_StandardAuthor = Value
 End Property
 
 Public Property Get StandardCreationdate() As Variant
        StandardCreationdate = m_StandardCreationdate
 End Property
 
-Public Property Let StandardCreationdate(ByVal value As Variant)
-        m_StandardCreationdate = value
+Public Property Let StandardCreationdate(ByVal Value As Variant)
+        m_StandardCreationdate = Value
 End Property
 
 Public Property Get StandardDateformat() As Variant
        StandardDateformat = m_StandardDateformat
 End Property
 
-Public Property Let StandardDateformat(ByVal value As Variant)
-        m_StandardDateformat = value
+Public Property Let StandardDateformat(ByVal Value As Variant)
+        m_StandardDateformat = Value
 End Property
 
 Public Property Get StandardKeywords() As Variant
        StandardKeywords = m_StandardKeywords
 End Property
 
-Public Property Let StandardKeywords(ByVal value As Variant)
-        m_StandardKeywords = value
+Public Property Let StandardKeywords(ByVal Value As Variant)
+        m_StandardKeywords = Value
 End Property
 
 Public Property Get StandardMailDomain() As Variant
        StandardMailDomain = m_StandardMailDomain
 End Property
 
-Public Property Let StandardMailDomain(ByVal value As Variant)
-        m_StandardMailDomain = value
+Public Property Let StandardMailDomain(ByVal Value As Variant)
+        m_StandardMailDomain = Value
 End Property
 
 Public Property Get StandardModifydate() As Variant
        StandardModifydate = m_StandardModifydate
 End Property
 
-Public Property Let StandardModifydate(ByVal value As Variant)
-        m_StandardModifydate = value
+Public Property Let StandardModifydate(ByVal Value As Variant)
+        m_StandardModifydate = Value
 End Property
 
 Public Property Get StandardSaveformat() As Variant
        StandardSaveformat = m_StandardSaveformat
 End Property
 
-Public Property Let StandardSaveformat(ByVal value As Variant)
-        m_StandardSaveformat = value
+Public Property Let StandardSaveformat(ByVal Value As Variant)
+        m_StandardSaveformat = Value
 End Property
 
 Public Property Get StandardSubject() As Variant
        StandardSubject = m_StandardSubject
 End Property
 
-Public Property Let StandardSubject(ByVal value As Variant)
-        m_StandardSubject = value
+Public Property Let StandardSubject(ByVal Value As Variant)
+        m_StandardSubject = Value
 End Property
 
 Public Property Get StandardTitle() As Variant
        StandardTitle = m_StandardTitle
 End Property
 
-Public Property Let StandardTitle(ByVal value As Variant)
-        m_StandardTitle = value
+Public Property Let StandardTitle(ByVal Value As Variant)
+        m_StandardTitle = Value
 End Property
 
 Public Property Get SVGResolution() As Variant
        SVGResolution = m_SVGResolution
 End Property
 
-Public Property Let SVGResolution(ByVal value As Variant)
-        m_SVGResolution = value
+Public Property Let SVGResolution(ByVal Value As Variant)
+        m_SVGResolution = Value
 End Property
 
 Public Property Get TIFFColorscount() As Variant
        TIFFColorscount = m_TIFFColorscount
 End Property
 
-Public Property Let TIFFColorscount(ByVal value As Variant)
-        m_TIFFColorscount = value
+Public Property Let TIFFColorscount(ByVal Value As Variant)
+        m_TIFFColorscount = Value
 End Property
 
 Public Property Get TIFFResolution() As Variant
        TIFFResolution = m_TIFFResolution
 End Property
 
-Public Property Let TIFFResolution(ByVal value As Variant)
-        m_TIFFResolution = value
+Public Property Let TIFFResolution(ByVal Value As Variant)
+        m_TIFFResolution = Value
 End Property
 
 Public Property Get Toolbars() As Variant
        Toolbars = m_Toolbars
 End Property
 
-Public Property Let Toolbars(ByVal value As Variant)
-        m_Toolbars = value
+Public Property Let Toolbars(ByVal Value As Variant)
+        m_Toolbars = Value
 End Property
 
 Public Property Get UpdateInterval() As Long
        UpdateInterval = m_UpdateInterval
 End Property
 
-Public Property Let UpdateInterval(ByVal value As Long)
-        m_UpdateInterval = value
+Public Property Let UpdateInterval(ByVal Value As Long)
+        m_UpdateInterval = Value
 End Property
 
 Public Property Get UseAutosave() As Long
        UseAutosave = m_UseAutosave
 End Property
 
-Public Property Let UseAutosave(ByVal value As Long)
-        m_UseAutosave = value
+Public Property Let UseAutosave(ByVal Value As Long)
+        m_UseAutosave = Value
 End Property
 
 Public Property Get UseAutosaveDirectory() As Long
        UseAutosaveDirectory = m_UseAutosaveDirectory
 End Property
 
-Public Property Let UseAutosaveDirectory(ByVal value As Long)
-        m_UseAutosaveDirectory = value
+Public Property Let UseAutosaveDirectory(ByVal Value As Long)
+        m_UseAutosaveDirectory = Value
 End Property
 
 Public Property Get UseCreationDateNow() As Long
        UseCreationDateNow = m_UseCreationDateNow
 End Property
 
-Public Property Let UseCreationDateNow(ByVal value As Long)
-        m_UseCreationDateNow = value
+Public Property Let UseCreationDateNow(ByVal Value As Long)
+        m_UseCreationDateNow = Value
 End Property
 
 Public Property Get UseCustomPaperSize() As Long
        UseCustomPaperSize = m_UseCustomPaperSize
 End Property
 
-Public Property Let UseCustomPaperSize(ByVal value As Long)
-        m_UseCustomPaperSize = value
+Public Property Let UseCustomPaperSize(ByVal Value As Long)
+        m_UseCustomPaperSize = Value
 End Property
 
 Public Property Get UseFixPapersize() As Long
        UseFixPapersize = m_UseFixPapersize
 End Property
 
-Public Property Let UseFixPapersize(ByVal value As Long)
-        m_UseFixPapersize = value
+Public Property Let UseFixPapersize(ByVal Value As Long)
+        m_UseFixPapersize = Value
 End Property
 
 Public Property Get UseStandardAuthor() As Long
        UseStandardAuthor = m_UseStandardAuthor
 End Property
 
-Public Property Let UseStandardAuthor(ByVal value As Long)
-        m_UseStandardAuthor = value
+Public Property Let UseStandardAuthor(ByVal Value As Long)
+        m_UseStandardAuthor = Value
 End Property

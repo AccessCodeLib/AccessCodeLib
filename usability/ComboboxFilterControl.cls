@@ -8,17 +8,20 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class: ComboboxFilterControl
+' Class: usability.ComboboxFilterControl
 '---------------------------------------------------------------------------------------
-'/**
-' \author   Josef Poetzl
-' <summary>
-' Combobox-Steuerung zum Suchen/Auswählen von Einträgen innerhalb der Combobox-Liste
+'
+' Combo box control for searching/selecting entries within the combo box list
 ' Combobox control for searching/selecting entries within the combobox list
-' </summary>
-' <remarks>example: ComboboxFilterControl_Beispiele.frm</remarks>
-'\ingroup usability
-'**/
+'
+' Author:
+'     Josef Poetzl
+'
+' Remarks:
+'     example: ComboboxFilterControl_Beispiele.frm
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>usability/ComboboxFilterControl.cls</file>

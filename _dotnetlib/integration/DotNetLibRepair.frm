@@ -128,16 +128,16 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Form: frmLibRepair
+' Form: DotNetLibRepair
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Poetzl
-' <summary>
-' Startformular zur initialisierung der ACLib .NET Integration
-' </summary>
-' <remarks></remarks>
-'\ingroup DotNetLib
-'**/
+'
+' Start form for initializing the ACLib .NET integration
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_dotnetlib/integration/DotNetLibRepair.frm</file>
@@ -145,7 +145,7 @@ Attribute VB_Exposed = False
 '  <use>_dotnetlib/integration/DotNetLibsSetup.bas</use>
 '  <use>file/LibFiles.cls</use>
 '  <license>_codelib/license.bas</license>
-'  <description>Startformular zur initialisierung der ACLib .NET Integration</description>
+'  <description>Start form that (re)initializes the ACLib .NET integration (LibFiles.ReInitialize) and closes itself</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

@@ -8,13 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: LibPdfCreatorConverter
+' Class: api.pdfcreator.LibPdfCreatorConverter
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' \brief        Umwandlung zwischen Lib- und COM-Objekten
-' \ingroup PdfCreator
-'**/
+'
+' Conversion between Lib and COM objects
+'
+' Author:
+'     Sten Schmidt
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>api/pdfcreator/LibPdfCreatorConverter.cls</file>

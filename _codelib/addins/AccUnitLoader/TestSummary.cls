@@ -8,16 +8,13 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 '---------------------------------------------------------------------------------------
-' Klassenmodul: TestSummary
+' Class: _codelib.addins.AccUnitLoader.TestSummary
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Test-Summary
-' </summary>P
-' <remarks>
-' </remarks>
-'\ingroup addins_shared
-'**/
+'
+' Test summary
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/AccUnitLoader/TestSummary.cls</file>

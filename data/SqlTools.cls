@@ -180,7 +180,7 @@ Public Function Clone(Optional ByVal NewSqlDateFormat As String = SQL_DEFAULT_DA
    If Len(NewSqlBooleanTrueString) = 0 Then NewSqlBooleanTrueString = Me.SqlBooleanTrueString
    If Len(NewSqlWildCardString) = 0 Then NewSqlWildCardString = Me.SqlWildCardString
 
-   Set Clone = NewInstance(NewSqlDateFormat, NewSqlBooleanTrueString, NewSqlWildCardString)
+   Set Clone = newInstance(NewSqlDateFormat, NewSqlBooleanTrueString, NewSqlWildCardString)
 
 End Function
 
@@ -190,8 +190,16 @@ End Function
 '
 ' Create a new instance
 '
+' Parameters:
+'     NewSqlDateFormat          - Output string format for date values
+'     NewSqlBooleanTrueString   - Output string for boolean value True
+'     NewSqlWildCardString      - Wildcard string (e.g. * .. DAO, % .. T-SQL)
+'
+' Returns:
+'     SqlTools
+'
 '---------------------------------------------------------------------------------------
-Public Function NewInstance(ByVal NewSqlDateFormat As String, _
+Public Function newInstance(ByVal NewSqlDateFormat As String, _
                             ByVal NewSqlBooleanTrueString As String, _
                             ByVal NewSqlWildCardString As String) As SqlTools
    
@@ -204,7 +212,7 @@ Public Function NewInstance(ByVal NewSqlDateFormat As String, _
       .SqlWildCardString = NewSqlWildCardString
    End With
 
-   Set NewInstance = NewInst
+   Set newInstance = NewInst
 
 End Function
 
@@ -215,10 +223,10 @@ End Function
 ' Config sql text output format for specific sql dialect
 '
 ' Parameters:
-'
-'     SqlDateFormat - output string format for date values
-'     SqlBooleanTrueString - output string format for boolean values
-'     SqlWildCardString - wildcard string (e.g. * .. dao, % .. T-SQL)
+'     UseDialect                - SQL dialect (SQL_DAO, SQL_TSQL, SQL_Custom)
+'     NewSqlDateFormat          - Output string format for date values
+'     NewSqlBooleanTrueString   - Output string for boolean value True
+'     NewSqlWildCardString      - Wildcard string (e.g. * .. DAO, % .. T-SQL)
 '
 '---------------------------------------------------------------------------------------
 Friend Sub InitSqlDialect(ByVal UseDialect As SqlDialect, _
@@ -281,7 +289,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 Public Property Get DAO() As SqlTools
    With DaoSqlFormat
-      Set DAO = Me.NewInstance(.SqlDateFormat, .SqlBooleanTrueString, .SqlWildCardString)
+      Set DAO = Me.newInstance(.SqlDateFormat, .SqlBooleanTrueString, .SqlWildCardString)
    End With
 End Property
 
@@ -306,7 +314,7 @@ End Property
 '---------------------------------------------------------------------------------------
 Public Property Get TSql() As SqlTools
    With TSqlSqlFormat
-      Set TSql = Me.NewInstance(.SqlDateFormat, .SqlBooleanTrueString, .SqlWildCardString)
+      Set TSql = Me.newInstance(.SqlDateFormat, .SqlBooleanTrueString, .SqlWildCardString)
    End With
 End Property
 
@@ -391,11 +399,13 @@ End Property
 ' Create SQL criteria string
 '
 ' Parameters:
-'     FieldName            - Field name in the data source to be filtered
-'     RelationalOperator   - Relational operator (=, <=, etc.)
-'     FilterValue          - Filter value (can be a single value or an array of values)
-'     FilterValue2         - Optional 2nd filter value (for Between)
-'     IgnoreValue          - The value for which no filter condition is to be created. (Array transfer of values possible)
+'     FieldName              - Field name in the data source to be filtered
+'     FieldDataType          - Data type of the field (SqlFieldDataType)
+'     RelationalOperator     - Relational operator (=, <=, etc.)
+'     FilterValue            - Filter value (can be a single value or an array of values)
+'     FilterValue2           - Optional 2nd filter value (for Between)
+'     IgnoreValue            - The value for which no filter condition is to be created. (Array transfer of values possible)
+'     DisableIgnoreNullValue - True: Null is not ignored as filter value (creates "Is Null" criteria)
 '
 ' Returns:
 '     SQL criteria string
@@ -611,8 +621,8 @@ End Function
 '     String
 '
 ' Example:
-'        strSQL = "select ... from tabelle where Feld = " & TextToSqlText("ab'cd")
-'     => strSQL = "select ... from tabelle where Feld = 'ab''cd'"
+'        strSQL = "select ... from TableName where FieldName = " & TextToSqlText("ab'cd")
+'     => strSQL = "select ... from TableName where FieldName = 'ab''cd'"
 '
 '---------------------------------------------------------------------------------------
 Public Function TextToSqlText(ByVal Value As Variant, _
@@ -680,7 +690,6 @@ End Function
 '
 ' Parameters:
 '     Value          - Value to convert
-'     FormatString   - Date format (depends on DBMS!)
 '
 ' Returns:
 '     String
@@ -1342,17 +1351,17 @@ Private Function ValuesAreEqual(ByVal FieldDataType As SqlFieldDataType, ByVal V
 
 End Function
 
-Private Function ArrayContains(ByVal FieldDataType As SqlFieldDataType, ByVal ArrayToCheck As Variant, ByVal SearchValue As Variant) As Boolean
+Private Function ArrayContains(ByVal FieldDataType As SqlFieldDataType, ByVal ArrayToCheck As Variant, ByVal searchValue As Variant) As Boolean
    
    Dim i As Long
 
-   If IsNull(SearchValue) Then
+   If IsNull(searchValue) Then
       ArrayContains = ArrayContainsNull(ArrayToCheck)
       Exit Function
    End If
 
    For i = LBound(ArrayToCheck) To UBound(ArrayToCheck)
-      If ValuesAreEqual(FieldDataType, ArrayToCheck(i), SearchValue) Then
+      If ValuesAreEqual(FieldDataType, ArrayToCheck(i), searchValue) Then
          ArrayContains = True
          Exit Function
       End If

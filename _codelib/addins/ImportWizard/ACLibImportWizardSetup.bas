@@ -1,18 +1,20 @@
 Attribute VB_Name = "ACLibImportWizardSetup"
 '---------------------------------------------------------------------------------------
-' Modul: ACLibImportWizardSetup
+' Package: _codelib.addins.ImportWizard.ACLibImportWizardSetup
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' <summary>
-' Setup Modul für den ImportWizard
-' </summary>
-' <remarks>
-' Erstellt die Tabelle USysRegInfo.
-' Fuehrt Projekteinstellungen durch.
-' Wird nach dem Import wieder entfernt.
-' </remarks>
-'**/
+'
+' Setup module for the ImportWizard
+'
+' Author:
+'     Sten Schmidt
+'
+' Remarks:
+'     Creates the table USysRegInfo.
+'     Applies the project settings.
+'     Is removed again after the import.
+'
+'---------------------------------------------------------------------------------------
+
 '<codelib>
 '  <file>_codelib/addins/ImportWizard/ACLibImportWizardSetup.bas</file>
 '  <use>_codelib/addins/ImportWizard/_config_Application.bas</use>

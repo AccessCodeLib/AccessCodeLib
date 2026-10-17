@@ -1,16 +1,15 @@
 Attribute VB_Name = "_initApplication"
 '---------------------------------------------------------------------------------------
-' Modul: _initApplication
+' Package: _codelib.addins.FilterFormWizard._initApplication
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Initialisierungsaufruf der Anwendung
-' </summary>
-' <remarks>
-' </remarks>
-' \ingroup base
-' @todo StartApplication-Prozedur für allgemeine Verwendung umschreiben => in Klasse verlagern
-'**/
+'
+' Initialization call of the application
+'
+' Remarks:
+'     TODO: Rewrite the StartApplication procedure for general use => move it into a class
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/FilterFormWizard/_initApplication.bas</file>
@@ -37,16 +36,17 @@ End Sub
 '-------------------------
 
 '---------------------------------------------------------------------------------------
-' Function: StartApplication (Josef Pötzl, 2009-12-14)
+' Function: StartApplication
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Prozedur für den Anwendungsstart
-' </summary>
-' <returns>Boolean</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Procedure for the application start
+'
+' Parameters:
+'     param - (optional) start parameter
+'
+' Returns:
+'     Boolean
+'
 '---------------------------------------------------------------------------------------
 Public Function StartApplication(Optional ByRef param As Variant) As Boolean
 

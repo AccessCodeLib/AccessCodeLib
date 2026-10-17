@@ -8,15 +8,14 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
+' Class: _test.data.FilterStringBuilderTests
 ' AccUnit:TestClass
-' FilterStringBuilderTests
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' AccUnit-Testklasse für FilterStringBuilder
-' </summary>
-' <remarks></remarks>
-'**/
+'
+' AccUnit test class for FilterStringBuilder
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_test/data/FilterStringBuilderTests.cls</file>
@@ -122,7 +121,7 @@ Public Sub ConditionGroups_AddOrGroups_CheckSqlText()
 
    With New FilterStringBuilder
 
-      Set .SqlTool = SqlTools.NewInstance("\#yyyy-mm-dd\#", "True", "*")
+      Set .SqlTool = SqlTools.newInstance("\#yyyy-mm-dd\#", "True", "*")
 
       .Add "F1", SQL_Numeric, SQL_Equal, 1
       
@@ -154,7 +153,7 @@ Public Sub AddSubSelectCriteria_WithSubSelectCond_CheckSqlText()
 
    With New FilterStringBuilder
 
-      Set .SqlTool = SqlTools.NewInstance("\#yyyy-mm-dd\#", "True", "*")
+      Set .SqlTool = SqlTools.newInstance("\#yyyy-mm-dd\#", "True", "*")
 
       .Add "F1", SQL_Numeric, SQL_Equal, 1
       
@@ -179,7 +178,7 @@ Public Sub AddSubSelectCriteria_UseWhereReplacementText_CheckSqlText()
 
    With New FilterStringBuilder
 
-      Set .SqlTool = SqlTools.NewInstance("\#yyyy-mm-dd\#", "True", "*")
+      Set .SqlTool = SqlTools.newInstance("\#yyyy-mm-dd\#", "True", "*")
 
       .Add "F1", SQL_Numeric, SQL_Equal, 1
       
@@ -203,7 +202,7 @@ Public Sub AddSubSelectCriteria_IgnoreEmptySubFilter_CheckSqlText()
 
    With New FilterStringBuilder
 
-      Set .SqlTool = SqlTools.NewInstance("\#yyyy-mm-dd\#", "True", "*")
+      Set .SqlTool = SqlTools.newInstance("\#yyyy-mm-dd\#", "True", "*")
 
       .Add "F1", SQL_Numeric, SQL_Equal, 1
       
@@ -228,7 +227,7 @@ Public Sub AddSubSelectCriteria_WithSubFilterAndUseWhereReplacementText_CheckSql
 
    With New FilterStringBuilder
 
-      Set .SqlTool = SqlTools.NewInstance("\#yyyy-mm-dd\#", "True", "*")
+      Set .SqlTool = SqlTools.newInstance("\#yyyy-mm-dd\#", "True", "*")
 
       .Add "F1", SQL_Numeric, SQL_Equal, 1
       
@@ -252,7 +251,7 @@ Public Sub AddSubSelectCriteria_IgnoreEmptySubFilterAndUseWhereReplacementText_C
 
    With New FilterStringBuilder
 
-      Set .SqlTool = SqlTools.NewInstance("\#yyyy-mm-dd\#", "True", "*")
+      Set .SqlTool = SqlTools.newInstance("\#yyyy-mm-dd\#", "True", "*")
 
       .Add "F1", SQL_Numeric, SQL_Equal, 1
       
@@ -276,7 +275,7 @@ Public Sub AddSubSelectCriteria_WithEmptySubFilterAndUseWhereReplacementText_Che
 
    With New FilterStringBuilder
 
-      Set .SqlTool = SqlTools.NewInstance("\#yyyy-mm-dd\#", "True", "*")
+      Set .SqlTool = SqlTools.newInstance("\#yyyy-mm-dd\#", "True", "*")
 
       .Add "F1", SQL_Numeric, SQL_Equal, 1
       
@@ -300,7 +299,7 @@ Public Sub AddExistsCriteria_WithSubSelectCond_CheckSqlText()
 
    With New FilterStringBuilder
 
-      Set .SqlTool = SqlTools.NewInstance("\#yyyy-mm-dd\#", "True", "*")
+      Set .SqlTool = SqlTools.newInstance("\#yyyy-mm-dd\#", "True", "*")
 
       .Add "F1", SQL_Numeric, SQL_Equal, 1
       
@@ -326,7 +325,7 @@ Public Sub AddCriteria_WithCommaSeparator_CheckSqlText()
 
    With New FilterStringBuilder
 
-      Set .SqlTool = SqlTools.NewInstance("\#yyyy-mm-dd\#", "True", "*")
+      Set .SqlTool = SqlTools.newInstance("\#yyyy-mm-dd\#", "True", "*")
 
       .Add "@F1", SQL_Numeric, SQL_Equal, 1
       .Add "@F2", SQL_Numeric, SQL_Equal, 2

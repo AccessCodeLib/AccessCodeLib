@@ -27,16 +27,16 @@ Option Explicit
 '---------------------------------------------------------------------------------------
 ' Function: TableDefExists
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Prüft ob eine Tabelle (TableDef) vorhanden ist
-' </summary>
-' <param name="TableDefName">Name der Tabelle</param>
-' <param name="dbs">DAO.Database-Referenz (falls keine angegeben wurde, wird CodeDb verwendet)</param>
-' <returns>Boolean</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Checks whether a table (TableDef) exists
+'
+' Parameters:
+'     TableDefName - Name of the table
+'     DbRef        - DAO.Database reference (if not specified, CodeDb is used)
+'
+' Returns:
+'     Boolean
+'
 '---------------------------------------------------------------------------------------
 Public Function TableDefExists(ByVal TableDefName As String, _
                       Optional ByVal DbRef As DAO.Database = Nothing) As Boolean
@@ -50,16 +50,16 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: QueryDefExists
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Prüft ob eine Abfrage (QueryDef) vorhanden ist
-' </summary>
-' <param name="QueryDefName">Name der Abfrage</param>
-' <param name="dbs">DAO.Database-Referenz (falls keine angegeben wurde, wird CodeDb verwendet)</param>
-' <returns>Boolean</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Checks whether a query (QueryDef) exists
+'
+' Parameters:
+'     QueryDefName - Name of the query
+'     DbRef        - DAO.Database reference (if not specified, CodeDb is used)
+'
+' Returns:
+'     Boolean
+'
 '---------------------------------------------------------------------------------------
 Public Function QueryDefExists(ByVal QueryDefName As String, _
                       Optional ByVal DbRef As DAO.Database = Nothing) As Boolean

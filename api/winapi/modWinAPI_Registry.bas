@@ -60,15 +60,15 @@ Private Declare PtrSafe Function RegQueryValueEx Lib "advapi32.dll" Alias "RegQu
 '---------------------------------------------------------------------------------------
 ' Function: ComClassIsRegistered
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Pr�ft, ob COM-Klasse registriert ist
-' </summary>
-' <param name="ClassName">Klassen-Kennung</param>
-' <returns>Boolean</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Checks whether a COM class is registered
+'
+' Parameters:
+'     ClassName - Class identifier
+'
+' Returns:
+'     Boolean
+'
 '---------------------------------------------------------------------------------------
 Public Function ComClassIsRegistered(ByVal ClassName As String) As Boolean
    
@@ -88,16 +88,16 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: RegKeyExist
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Pr�ft, ob Schl�ssel vorhanden ist
-' </summary>
-' <param name="Root">HKEY_CLASSES_ROOT, ...</param>
-' <param name="Key">Schl�ssel/Pfad</param>
-' <returns>Long</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Checks whether a key exists
+'
+' Parameters:
+'     Root - HKEY_CLASSES_ROOT, ...
+'     Key  - Key/path
+'
+' Returns:
+'     Long
+'
 '---------------------------------------------------------------------------------------
 Public Function RegKeyExist(ByVal Root As Long, ByVal Key As String) As Long
 'Pr�fen ob ein Schl�ssel existiert
@@ -113,19 +113,21 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: RegValueGet
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Wert aus Registry auslesen
-' </summary>
-' <param name="Root">HKEY_CLASSES_ROOT, ...</param>
-' <param name="Key">Schl�ssel/Pfad</param>
-' <param name="ValueName">Name des Eintrags</param>
-' <param name="Value">R�ckgabewert (ByFef)</param>
-' <returns>Long</returns>
-' <remarks>
-' API: RegOpenKeyEx, RegQueryValueEx, RegCloseKey
-' </remarks>
-'**/
+'
+' Read a value from the registry
+'
+' Parameters:
+'     Root      - HKEY_CLASSES_ROOT, ...
+'     Key       - Key/path
+'     ValueName - Name of the entry
+'     Value     - Return value (ByRef)
+'
+' Returns:
+'     Long
+'
+' Remarks:
+'     API: RegOpenKeyEx, RegQueryValueEx, RegCloseKey
+'
 '---------------------------------------------------------------------------------------
 Public Function RegValueGet(ByVal Root As Long, ByVal Key As String, ByVal ValueName As String, ByRef Value As Variant) As Long
 

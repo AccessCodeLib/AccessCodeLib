@@ -237,15 +237,15 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 ' Form: InfoMessageBoxForm
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Hilfs-Formular für InfoMessageBox-Klasse
-' </summary>
-' <remarks>
-' Die enthaltenen Public-Prozeduren müssen in den alternativ zu verwendenden Formularen enthalten sein.
-' (Auf Interface wurde verzichtet, da das in Access während der Entwicklung oftmals zu Problemen führt.)
-' </remarks>
-'**/
+'
+' Helper form for the InfoMessageBox class
+'
+' Remarks:
+'     The public procedures it contains must also exist in forms used as an alternative.
+'     (An interface was not used because it often causes problems in Access during development.)
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>form/InfoMessageBoxForm.frm</file>

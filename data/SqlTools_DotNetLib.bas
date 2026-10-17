@@ -1,17 +1,18 @@
 Attribute VB_Name = "SqlTools_DotNetLib"
 '---------------------------------------------------------------------------------------
-' Module: SqlToolsSetup_DotNetLib
+' Package: data.SqlTools_DotNetLib
 '---------------------------------------------------------------------------------------
-'/**
-'\author     Josef Poetzl
-' <summary>
-' Factory-Modul für DotNetLib Version der SqlTools
-' </summary>
-' <remarks>
-' AccessCodeLib.Data.SqlTools.interop
-' </remarks>
-'\ingroup data
-'**/
+'
+' Factory module for the DotNetLib version of SqlTools
+'
+' Author:
+'     Josef Poetzl
+'
+' Remarks:
+'     AccessCodeLib.Data.SqlTools.interop
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>data/SqlTools_DotNetLib.bas</file>

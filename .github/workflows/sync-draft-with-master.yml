@@ -1,0 +1,25 @@
+name: Sync draft with master
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [master]
+
+permissions:
+  contents: write
+
+jobs:
+  fast-forward-draft:
+    if: github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'draft'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: draft
+          fetch-depth: 0
+
+      - name: Fast-forward draft to master
+        run: |
+          git fetch origin master
+          git merge --ff-only origin/master
+          git push origin draft

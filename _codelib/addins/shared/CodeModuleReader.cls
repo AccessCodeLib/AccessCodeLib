@@ -153,14 +153,14 @@ End Property
 ' Function: CheckDependency
 '---------------------------------------------------------------------------------------
 '
-' Abhängigkeiten prüfen
+' Check dependencies
 '
 ' Parameters:
 '     VbpRef                  - VBProject, with Nothing active VBProject is used
 '     ModulReaderCollection   - Collection of possible dependencies, with Nothing all code modules from VBProject are used
 '
 ' Returns:
-'     Anzahl der Abhängigkeiten
+'     Number of dependencies
 '
 '---------------------------------------------------------------------------------------
 #If EARLYBINDING Then
@@ -370,7 +370,7 @@ End Function
 ' Function: HeaderItemUsed
 '---------------------------------------------------------------------------------------
 '
-' Prüft, ob CodeModuleHeaderItem (Variable, Konstante, ...) im Code-Modul verwendet/benötigt wird
+' Checks whether a CodeModuleHeaderItem (variable, constant, ...) is used/required in the code module
 '
 ' Parameters:
 '     HdrItm - CodeModuleHeaderItem reference
@@ -479,7 +479,7 @@ End Function
 '     Refresh              - True = rebuild collection; False = if a collection has already been determined, it will be used and not checked again
 '     IncludePrivateProc   - True = incl. procedures declared as private
 '
-' Returns
+' Returns:
 '     Collection - CodeModuleProcedure references
 '
 '---------------------------------------------------------------------------------------

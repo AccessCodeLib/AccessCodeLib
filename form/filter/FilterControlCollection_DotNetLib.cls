@@ -8,16 +8,19 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klasse: FilterControlCollection
+' Class: form.filter.FilterControlCollection
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Poetzl
-' <summary>
-' Sammlung von Formular-Steuerelementen zur Filtererstellung
-' </summary>
-' <remarks>Wird in FilterControlManager verwendet</remarks>
-' \ingroup data
-'**/
+'
+' Collection of form controls for building filters
+'
+' Author:
+'     Josef Poetzl
+'
+' Remarks:
+'     Used in FilterControlManager
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>form/filter/FilterControlCollection_DotNetLib.cls</file>

@@ -7,20 +7,19 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'-----------------------------------------------------------------------------
-' Klassenmodul: ListFormHandler
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Formularsteuerungsklasse für Listen/Endlosformulare
-' </summary>
-' <remarks>
-' Vereinfacht die Steuerung von Access-Formularen, die als Endlosformular Listen darstellen.
+' Class: form.ListFormHandler
+'---------------------------------------------------------------------------------------
 '
-' DRAFT! - Code muss noch mit ACLib-Modulen kombiniert werden
+' Form control class for lists/continuous forms
 '
-' </remarks>
-'**/
+' Remarks:
+'     Simplifies the control of Access forms that display lists as continuous forms.
+'
+'     DRAFT! - code still has to be combined with ACLib modules
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>form/ListFormHandler.cls</file>
@@ -33,20 +32,23 @@ Attribute VB_Exposed = False
 Option Compare Text
 Option Explicit
 
-'/**
-' <summary>
-' Spezielle Auswahl von möglichen Formularsteuerelmenten mit besonderer Behandlung
-' </summary>
-' <remarks>1-99 sind identisch mit <see cref="FormHandler::FH_HandledControls">FH_HandledControls</see> aus FormHandler</remarks>
-' <list type="table">
-'   <item><term>FC_CloseCommandButton (1)</term><description>Schließen-Schaltfläche</description></item>
-'   <item><term>FC_SelectionFirstControl (2)</term><description>Steuerelement, das beim deaktiviert/unsichtbar Setzen eines aktiven Steuerelements den Fokus erhalten soll</description></item>
-'   <item><term>FC_EditModeCommandButton (3)</term><description>Schaltfläche für Bearbeitungsmoduswechsel (Readonly, Edit)</description></item>
-'   <item><term>FC_EditModeInfoLabel (4)</term><description>Label für Anzeige des aktuellen Bearbeitungsmodues</description></item>
-'   <item><term>FC_RequeryCommandButton (5)</term><description>Requery-Schaltfläche</description></item>
-'   <item><term>FC_SelectCommandButton (101)</term><description>Auswahl-Schaltfläche</description></item>
-' </list>
-'**/
+'---------------------------------------------------------------------------------------
+' Enum: LF_HandledControls
+'---------------------------------------------------------------------------------------
+'
+' Form controls with special handling
+'
+' FC_CloseCommandButton (1) - Close button
+' FC_SelectionFirstControl (2) - Control that receives the focus when an active control is disabled/hidden
+' FC_EditModeCommandButton (3) - Button for switching the edit mode (read-only, edit)
+' FC_EditModeInfoLabel (4) - Label showing the current edit mode
+' FC_RequeryCommandButton (5) - Requery button
+' FC_SelectCommandButton (101) - Select button
+'
+' Remarks:
+'     1-99 are identical to <FormHandler.FH_HandledControls>
+'
+'---------------------------------------------------------------------------------------
 Public Enum LF_HandledControls
    LFC_CloseCommandButton = 1
    LFC_SelectionFirstControl = 2
@@ -58,15 +60,16 @@ Public Enum LF_HandledControls
    LFC_MultiSelectionMarkAllCheckBox = 112
 End Enum
 
-'/**
-' <summary>
-' Einstellmöglichkeiten für Auswahl (inkl. Darstellung
-' </summary>
-' <list type="table">
-'   <item><term>LM_Normal (0)</term><description>Normales Endlosformular / Wechsel zu Detailformular o.ä. bei Betätigung der Auswahlschaltfläche</description></item>
-'   <item><term>LM_Select (1)</term><description>Endlosformular für Auswahl eines Datensatzes bzw. mehrerer Datensätze</description></item>
-' </list>
-'**/
+'---------------------------------------------------------------------------------------
+' Enum: LF_ListMode
+'---------------------------------------------------------------------------------------
+'
+' Selection options (incl. display)
+'
+' LM_Normal (0) - Normal continuous form / switch to detail form or similar when the select button is clicked
+' LM_Select (1) - Continuous form for selecting one or more records
+'
+'---------------------------------------------------------------------------------------
 Public Enum LF_ListMode
    LM_Normal = 0
    LM_Select = 1
@@ -95,92 +98,121 @@ Private m_lngSelectShiftMode As Long
 
 'Form-Handler-Events
 
-'/**
-' <summary>
-' Ereignis für Meldungen, die im Frontend behandelt werden sollen.
-' </summary>
-' <param name="Msg">Nachrichtentext</param>
-' <param name="MsgNumber">Nachrichtennummer</param>
-' <remarks></remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: FormHandlerMessage
+'---------------------------------------------------------------------------------------
+'
+' Event for messages to be handled in the frontend.
+'
+' Parameters:
+'     Msg       - Message text
+'     MsgNumber - Message number
+'
+'---------------------------------------------------------------------------------------
 Public Event FormHandlerMessage(ByVal Msg As String, ByVal MsgNumber As Long)
 
-'/**
-' <summary>
-' Ereignis für Fehlermeldungen, die im Frontend behandelt werden sollen.
-' </summary>
-' <param name="ErrMsg">Fehlermeldung</param>
-' <param name="ErrNumber">Fehlernummer</param>
-' <remarks></remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: FormHandlerError
+'---------------------------------------------------------------------------------------
+'
+' Event for error messages to be handled in the frontend.
+'
+' Parameters:
+'     ErrMsg    - Error message
+'     ErrNumber - Error number
+'     Response  - AcUtilErrorResumeMode value
+'
+'---------------------------------------------------------------------------------------
 Public Event FormHandlerError(ByVal ErrMsg As String, ByVal ErrNumber As Long, ByRef Response As Integer)
 
-'/**
-' <summary>
-' Ereignis für Fehlermeldungen, wenn Referenz des Access-Forms auf Nothing steht und benötigt wird.
-' </summary>
-' <param name="ErrMsg">Fehlermeldung</param>
-' <param name="ErrNumber">Fehlernummer</param>
-' <param name="NewForm">Damit kann vom Access-FE erneut das Formobjekt übergeben werden.</param>
-' <remarks></remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: FormHandlerErrorMissingForm
+'---------------------------------------------------------------------------------------
+'
+' Event for error messages if the reference to the Access form is Nothing but required.
+'
+' Parameters:
+'     ErrMsg    - Error message
+'     ErrNumber - Error number
+'     NewForm   - Allows the Access frontend to pass the form object again.
+'
+'---------------------------------------------------------------------------------------
 Public Event FormHandlerErrorMissingForm(ByVal ErrMsg As String, ByVal ErrNumber As Long, ByRef NewForm As Object)
 
-'/**
-' <summary>
-' Ereignis für Fehlermeldungen, wenn Referenz zu <see cref="DbConnection">DbConnection</see> auf Nothing steht und benötigt wird.
-' </summary>
-' <param name="ErrMsg">Fehlermeldung</param>
-' <param name="ErrNumber">Fehlernummer</param>
-' <param name="NewCurrentDbConnection">Damit kann vom Access-Frontend erneut das <see cref="DbConnection">DbConnection-Objekt</see> übergeben werden.</param>
-' <remarks></remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: FormHandlerErrorMissingDbConnection
+'---------------------------------------------------------------------------------------
+'
+' Event for error messages if the reference to <DbConnection> is Nothing but required.
+'
+' Parameters:
+'     ErrMsg                 - Error message
+'     ErrNumber              - Error number
+'     NewCurrentDbConnection - Allows the Access frontend to pass the DbConnection object (<DbConnection>) again.
+'
+'---------------------------------------------------------------------------------------
 Public Event FormHandlerErrorMissingDbConnection(ByVal ErrMsg As String, ByVal ErrNumber As Long, ByRef NewCurrentDbConnection As Object)
 
-'/**
-' <summary>
-' Ereignis-Meldung für Schließen des Access-Forms
-' </summary>
-' <param name="Cancel">ermöglicht Abbruch der Schließen-Aktion</param>
-' <remarks></remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: CloseForm
+'---------------------------------------------------------------------------------------
+'
+' Event raised when the Access form is closed
+'
+' Parameters:
+'     Cancel - allows the close action to be cancelled
+'
+'---------------------------------------------------------------------------------------
 Public Event CloseForm(ByRef Cancel As Boolean)
 
-'/**
-' <summary>
-' Ereignis-Meldung wenn Access-Form-Unload-Ereignis eintritt
-' </summary>
-' <param name="Cancel">ermöglicht Abbruch der Unload-Aktion</param>
-' <remarks>Wird hauptsächlich für sauberes Entladen der Objekt-Referenzen benötigt</remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: AccessFormUnload
+'---------------------------------------------------------------------------------------
+'
+' Event raised when the Access form Unload event occurs
+'
+' Parameters:
+'     Cancel - allows the unload action to be cancelled
+'
+' Remarks:
+'     Mainly required for cleanly releasing the object references
+'
+'---------------------------------------------------------------------------------------
 Public Event AccessFormUnload(ByRef Cancel As Integer)
 
-'/**
-' <summary>
-' Ereignis-Meldung wenn EditMode geändert wurde
-' </summary>
-' <param name="NewMode">Neu gesetzter Modus</param>
-' <remarks></remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: EditModeChanged
+'---------------------------------------------------------------------------------------
+'
+' Event raised when the edit mode has changed
+'
+' Parameters:
+'     NewMode - Newly set mode
+'
+'---------------------------------------------------------------------------------------
 Public Event EditModeChanged(ByVal NewMode As Long)
 
-'/**
-' <summary>
-' Ereignis bei Auswahl einer Datensatzes
-' </summary>
-' <param name="ItemID">Ausgewählte Datensatz-Kennung</param>
-' <param name="ShiftMode">Kennung für Zusatztaste (Umschalt und/oder Strg)</param>
-' <param name="OpenArg">Optionale Paramter fürs Öffnen</param>
-' <remarks></remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: Selected
+'---------------------------------------------------------------------------------------
+'
+' Event raised when a record is selected
+'
+' Parameters:
+'     ItemID    - Identifier of the selected record
+'     ShiftMode - Modifier key identifier (Shift and/or Ctrl)
+'     OpenArg   - Optional parameters for opening
+'
+'---------------------------------------------------------------------------------------
 Public Event Selected(ByVal ItemID As Variant, ByVal ShiftMode As Long, ByVal OpenArg As Long)
 
-'/**
-' <summary>
-' Ereignis-Meldung wenn Objektreferenzen entfernt wurden
-' </summary>
-' <remarks></remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: Disposed
+'---------------------------------------------------------------------------------------
+'
+' Event raised when object references have been removed
+'
+'---------------------------------------------------------------------------------------
 Public Event Disposed()
 
 Private m_Disposing As Boolean
@@ -244,15 +276,17 @@ On Error Resume Next
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Property: FormHandler (15.09.2007)
+' Property: BaseFormHandler
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Gibt Referenz auf <see cref="FormHandler">FormHandler-Basisklasse</see> zurück.
-' </summary>
-' <returns><see cref="FormHandler">FormHandler-Basisklasse</see></returns>
-' <remarks>Ist nur für zusätzliche Code-Erweiterung implementiert.</remarks>
-'**/
+'
+' Returns the reference to the FormHandler base class (<FormHandler>).
+'
+' Returns:
+'     FormHandler base class (<FormHandler>)
+'
+' Remarks:
+'     Only implemented for additional code extensions.
+'
 '---------------------------------------------------------------------------------------
 Public Property Get BaseFormHandler() As FormHandler
 Attribute BaseFormHandler.VB_MemberFlags = "40"
@@ -275,150 +309,167 @@ End Property
 
 
 '---------------------------------------------------------------------------------------
-' Sub: CloseForm (15.09.2007)
+' Sub: CloseForm
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Access-Formular schließen
-' </summary>
-' <remarks>siehe <see cref="FormHandler::CloseForm">CloseForm</see> von FormHandler</remarks>
-'**/
+'
+' Close the Access form
+'
+' Remarks:
+'     see <FormHandler.CloseForm>
+'
 '---------------------------------------------------------------------------------------
 Public Sub CloseForm()
    BaseFormHandler.CloseForm
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Procedure : DefaultOrderParams
-' Date     : 15.09.2007
+' Property: DefaultOrderParams
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
 '
-' </summary>
-' <param name="sOrderParams">Parameter für Standard-Sortierung</param>
-' <remarks>siehe <see cref="FormHandler::DefaultOrderParams">DefaultOrderParams</see> von FormHandler</remarks>
-'**/
+' Default sort parameters
+'
+' Parameters:
+'     sOrderParams - Parameters for the default sort order
+'
+' Remarks:
+'     see <FormHandler.DefaultOrderParams>
+'
 '---------------------------------------------------------------------------------------
 Public Property Let DefaultOrderParams(sOrderParams As String)
    BaseFormHandler.DefaultOrderParams = sOrderParams
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: ActiveDbConnection (15.09.2007)
+' Property: ActiveDbConnection
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' ActiveDbConnection
-' </summary>
-' <returns>DbConnection</returns>
-' <remarks>siehe <see cref="FormHandler::ActiveDbConnection">ActiveDbConnection</see> von FormHandler</remarks>
-'**/
+'
+' Returns:
+'     DbConnection
+'
+' Remarks:
+'     see <FormHandler.ActiveDbConnection>
+'
 '---------------------------------------------------------------------------------------
 Public Property Get ActiveDbConnection() As DbConnectionHandler
    Set ActiveDbConnection = BaseFormHandler.ActiveDbConnection
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: ActiveDbConnection (15.09.2007)
+' Property: ActiveDbConnection
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Zuweisung einer neuen <see cref="DbConnection">DbConnection</see>
-' </summary>
-' <param name="NewDbConnection">NewDbConnection</param>
-' <remarks>siehe <see cref="FormHandler::ActiveDbConnection">ActiveDbConnection</see> von FormHandler</remarks>
-'**/
+'
+' Assign a new <DbConnection>
+'
+' Parameters:
+'     NewDbConnection - New DbConnection object
+'
+' Remarks:
+'     see <FormHandler.ActiveDbConnection>
+'
 '---------------------------------------------------------------------------------------
 Public Property Set ActiveDbConnection(ByRef NewDbConnection As DbConnectionHandler)
    Set BaseFormHandler.ActiveDbConnection = NewDbConnection
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: DataSourceType (15.09.2007)
+' Property: DataSourceType
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' DataSourceType
-' </summary>
-' <param name="NewDataSourceType">FH_DataSourceType zur Einstellung der Datenquelle</param>
-' <remarks>siehe <see cref="FormHandler::DataSourceType">DataSourceType</see> von FormHandler</remarks>
-'**/
+'
+' Parameters:
+'     NewDataSourceType - FH_DataSourceType for setting the data source
+'
+' Remarks:
+'     see <FormHandler.DataSourceType>
+'
 '---------------------------------------------------------------------------------------
 Public Property Let DataSourceType(NewDataSourceType As FH_DataSourceType)
    BaseFormHandler.DataSourceType = NewDataSourceType
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: DataSourceType (15.09.2007)
+' Property: DataSourceType
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' DataSourceType
-' </summary>
-' <returns>FH_DataSourceType</returns>
-' <remarks>siehe <see cref="FormHandler::DataSourceType">DataSourceType</see> von FormHandler</remarks>
-'**/
+'
+' Returns:
+'     FH_DataSourceType
+'
+' Remarks:
+'     see <FormHandler.DataSourceType>
+'
 '---------------------------------------------------------------------------------------
 Public Property Get DataSourceType() As FH_DataSourceType
    DataSourceType = BaseFormHandler.DataSourceType
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: DataSourceUniqueFieldName (15.09.2007)
+' Property: DataSourceUniqueFieldName
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Feldbezeichnung der Datenherkunft, die eindeutige Datensatzkennung zurückgibt
-' </summary>
-' <param name="FieldName">Feldbezeichnung der Datenherkunft</param>
-' <remarks>siehe <see cref="FormHandler::DataSourceUniqueFieldName">DataSourceUniqueFieldName</see> von FormHandler</remarks>
-'**/
+'
+' Field name of the record source that returns the unique record identifier
+'
+' Parameters:
+'     FieldName - Field name of the record source
+'
+' Remarks:
+'     see <FormHandler.DataSourceUniqueFieldName>
+'
 '---------------------------------------------------------------------------------------
 Public Property Let DataSourceUniqueFieldName(ByVal FieldName As String)
    BaseFormHandler.DataSourceUniqueFieldName = FieldName
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: DataSourceUniqueFieldName (15.09.2007)
+' Property: DataSourceUniqueFieldName
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Feldbezeichnung der Datenherkunft, die eindeutige Datensatzkennung zurückgibt
-' </summary>
-' <returns>String</returns>
-' <remarks>siehe <see cref="FormHandler::DataSourceUniqueFieldName">DataSourceUniqueFieldName</see> von FormHandler</remarks>
-'**/
+'
+' Field name of the record source that returns the unique record identifier
+'
+' Returns:
+'     String
+'
+' Remarks:
+'     see <FormHandler.DataSourceUniqueFieldName>
+'
 '---------------------------------------------------------------------------------------
 Public Property Get DataSourceUniqueFieldName() As String
    DataSourceUniqueFieldName = BaseFormHandler.DataSourceUniqueFieldName
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: DataSourceUniqueFieldName (15.09.2007)
+' Property: SelectionReturnDataSourceFieldName
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Feldbezeichnung der Datenherkunft, die eindeutige Datensatzkennung zurückgibt
-' </summary>
-' <param name="FieldName">Feldbezeichnung der Datenherkunft</param>
-' <remarks>siehe <see cref="FormHandler::DataSourceUniqueFieldName">DataSourceUniqueFieldName</see> von FormHandler</remarks>
-'**/
+'
+' Field name of the record source whose value is returned when a record is selected
+'
+' Parameters:
+'     FieldName - Field name of the record source
+'
+' Remarks:
+'     Default: <DataSourceUniqueFieldName>
+'
 '---------------------------------------------------------------------------------------
 Public Property Let SelectionReturnDataSourceFieldName(ByVal FieldName As String)
    m_SelectionReturnDataSourceFieldName = FieldName
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: DataSourceUniqueFieldName (15.09.2007)
+' Property: SelectionReturnDataSourceFieldName
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Feldbezeichnung der Datenherkunft, die eindeutige Datensatzkennung zurückgibt
-' </summary>
-' <returns>String</returns>
-' <remarks>siehe <see cref="FormHandler::DataSourceUniqueFieldName">DataSourceUniqueFieldName</see> von FormHandler</remarks>
-'**/
+'
+' Field name of the record source whose value is returned when a record is selected
+'
+' Returns:
+'     String
+'
+' Remarks:
+'     Default: <DataSourceUniqueFieldName>
+'
 '---------------------------------------------------------------------------------------
 Public Property Get SelectionReturnDataSourceFieldName() As String
 
@@ -430,15 +481,17 @@ Public Property Get SelectionReturnDataSourceFieldName() As String
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: ActiveForm (15.09.2007)
+' Property: ActiveForm
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' verwendetes Access-Form-Objekt
-' </summary>
-' <returns>Access.Form</returns>
-' <remarks>siehe <see cref="FormHandler::ActiveForm">ActiveForm</see> von FormHandler</remarks>
-'**/
+'
+' Access form object in use
+'
+' Returns:
+'     Access.Form
+'
+' Remarks:
+'     see <FormHandler.ActiveForm>
+'
 '---------------------------------------------------------------------------------------
 Public Property Get ActiveForm() As Access.Form
 
@@ -447,15 +500,17 @@ Public Property Get ActiveForm() As Access.Form
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: ActiveForm (15.09.2007)
+' Property: ActiveForm
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Access-Form-Objekt welches ListFormHandler steuern soll
-' </summary>
-' <param name="FormRef">zu übergebendes Access-Form</param>
-' <remarks>siehe <see cref="FormHandler::ActiveForm">ActiveForm</see> von FormHandler</remarks>
-'**/
+'
+' Access form object to be controlled by the handler
+'
+' Parameters:
+'     FormRef - Access form to be passed
+'
+' Remarks:
+'     see <FormHandler.ActiveForm>
+'
 '---------------------------------------------------------------------------------------
 Public Property Set ActiveForm(ByRef FormRef As Access.Form)
 
@@ -482,16 +537,20 @@ Private Sub InitListForm(ByRef NewForm As Access.Form)
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Property: HandledControls (15.09.2007)
+' Property: HandledControls
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Steuerelement(e) mit besonderer Behandlung
-' </summary>
-' <param name="Index">LF_HandledControls-Kennung für auszuwählendes Steuerelement</param>
-' <returns>Access.Control</returns>
-' <remarks>siehe <see cref="FormHandler::HandledControls">HandledControls</see> von FormHandler</remarks>
-'**/
+'
+' Control(s) with special handling
+'
+' Parameters:
+'     Index - LF_HandledControls identifier of the control to select
+'
+' Returns:
+'     Access.Control
+'
+' Remarks:
+'     see <FormHandler.HandledControls>
+'
 '---------------------------------------------------------------------------------------
 Public Property Get HandledControls(ByVal Index As LF_HandledControls) As Access.Control
 
@@ -505,16 +564,18 @@ Public Property Get HandledControls(ByVal Index As LF_HandledControls) As Access
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: HandledControls (15.09.2007)
+' Property: HandledControls
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Steuerelement(e) mit besonderer Behandlung
-' </summary>
-' <param name="Index">LF_HandledControls-Kennung für auszuwählendes Steuerelement</param>
-' <param name="FormControl">Steuerelement das der LF_HandledControls-Kennung zugeordnet werden soll</param>
-' <remarks>siehe <see cref="FormHandler::HandledControls">HandledControls</see> von FormHandler</remarks>
-'**/
+'
+' Control(s) with special handling
+'
+' Parameters:
+'     Index       - LF_HandledControls identifier of the control to select
+'     FormControl - Control to be assigned to the LF_HandledControls identifier
+'
+' Remarks:
+'     see <FormHandler.HandledControls>
+'
 '---------------------------------------------------------------------------------------
 Public Property Set HandledControls(ByVal Index As LF_HandledControls, ByRef FormControl As Access.Control)
 
@@ -528,18 +589,21 @@ Public Property Set HandledControls(ByVal Index As LF_HandledControls, ByRef For
 End Property
 
 '---------------------------------------------------------------------------------------
-' Sub: InitDataSource (15.09.2007)
+' Sub: InitDataSource
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Datenquelle einstellen
-' </summary>
-' <param name="lDataSourceType">Art der Datenquelle</param>
-' <param name="sDataSource">Definition der Datenquelle (z.B.: SQL-Anweisung)</param>
-' <param name="sDataSourceNoData">Definition der Datenquelle für leere Liste</param>
-' <param name="sOptionalArg">Optionaler Parameterwert</param>
-' <remarks>siehe <see cref="FormHandler::InitDataSource">InitDataSource</see> von FormHandler</remarks>
-'**/
+'
+' Set the data source
+'
+' Parameters:
+'     lDataSourceType   - Type of data source
+'     sDataSource       - Definition of the data source (e.g. SQL statement)
+'     sDataSourceNoData - Definition of the data source for an empty list
+'     sOptionalArg      - Optional parameter value
+'     sOptionalBindingDataSourceName - (optional) Name of the data source used for binding
+'
+' Remarks:
+'     see <FormHandler.InitDataSource>
+'
 '---------------------------------------------------------------------------------------
 Public Sub InitDataSource(ByVal lDataSourceType As FH_DataSourceType, _
              Optional ByVal sDataSource As String = vbNullString, _
@@ -552,30 +616,32 @@ Public Sub InitDataSource(ByVal lDataSourceType As FH_DataSourceType, _
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Sub: RequeryData (15.09.2007)
+' Sub: RequeryData
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Formular-Datensätze aktualisieren
-' </summary>
-' <remarks>siehe <see cref="FormHandler::RequeryData">RequeryData</see> von FormHandler</remarks>
-'**/
+'
+' Requery the form records
+'
+' Remarks:
+'     see <FormHandler.RequeryData>
+'
 '---------------------------------------------------------------------------------------
 Public Sub RequeryData()
    BaseFormHandler.RequeryData
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Sub: SetData (15.09.2007)
+' Sub: SetData
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Formular-Datenquelle filtern und sortieren
-' </summary>
-' <param name="sFilterParams">Filterparameter</param>
-' <param name="sOrderByParams">Sortierparamter</param>
-' <remarks>siehe <see cref="FormHandler::SetData">SetData</see> von FormHandler</remarks>
-'**/
+'
+' Filter and sort the form record source
+'
+' Parameters:
+'     sFilterParams  - Filter parameters
+'     sOrderByParams - Sort parameters
+'
+' Remarks:
+'     see <FormHandler.SetData>
+'
 '---------------------------------------------------------------------------------------
 Public Sub SetData(Optional ByVal sFilterParams As String = vbNullString, Optional ByVal sOrderByParams As String = vbNullString)
    BaseFormHandler.SetData sFilterParams, sOrderByParams
@@ -599,14 +665,14 @@ End Sub
 'End Sub
 
 '---------------------------------------------------------------------------------------
-' Sub: SetNoData (15.09.2007)
+' Sub: SetNoData
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Formulardatenbasis entfernen und "NULL-Datensatz" anzeigen
-' </summary>
-' <remarks>siehe <see cref="FormHandler::SetNoData">SetNoData</see> von FormHandler</remarks>
-'**/
+'
+' Remove the form record source and show a "NULL record"
+'
+' Remarks:
+'     see <FormHandler.SetNoData>
+'
 '---------------------------------------------------------------------------------------
 Public Sub SetNoData()
    BaseFormHandler.SetNoData
@@ -673,30 +739,28 @@ End Sub
 
 
 '---------------------------------------------------------------------------------------
-' Property: ListMode (15.09.2007)
+' Property: ListMode
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Art der Listensteuerung (Anzeige- oder Auswahl-Formular)
-' </summary>
-' <returns>LF_ListMode</returns>
-' <remarks></remarks>
-'**/
+'
+' Type of list control (display or selection form)
+'
+' Returns:
+'     LF_ListMode
+'
 '---------------------------------------------------------------------------------------
 Public Property Get ListMode() As LF_ListMode
    ListMode = m_ListMode
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: ListMode (15.09.2007)
+' Property: ListMode
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Art der Listensteuerung (Anzeige- oder Auswahl-Formular)
-' </summary>
-' <param name="NewMode">LF_ListMode-Wert</param>
-' <remarks></remarks>
-'**/
+'
+' Type of list control (display or selection form)
+'
+' Parameters:
+'     NewMode - LF_ListMode value
+'
 '---------------------------------------------------------------------------------------
 Public Property Let ListMode(NewMode As LF_ListMode)
 '0...normale Liste (qCompanyList)

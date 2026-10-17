@@ -1,14 +1,12 @@
 Attribute VB_Name = "modWinAPI_SpecFolder"
 '---------------------------------------------------------------------------------------
-' Module: modWinAPI_SpecFolder
+' Package: api.winapi.modWinAPI_SpecFolder
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Kapselung von SHGetFolderPath
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Wrapper for SHGetFolderPath
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>api/winapi/modWinAPI_SpecFolder.bas</file>

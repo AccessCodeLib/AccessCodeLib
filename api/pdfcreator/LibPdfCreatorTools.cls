@@ -8,13 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: LibPdfCreatorTools
+' Class: api.pdfcreator.LibPdfCreatorTools
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' \brief        Diverse Hilfsmittel
-' \ingroup PdfCreator
-'**/
+'
+' Miscellaneous helpers
+'
+' Author:
+'     Sten Schmidt
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>api/pdfcreator/LibPdfCreatorTools.cls</file>
@@ -183,10 +186,10 @@ Public Property Get pdfCreatorPrinter(ByRef creator As LibPdfCreatorInstance, _
 End Property
 
 'Ermittelt das PDFCreatorFileFormat anhand eines Dateinamens bzw. Dateipfads
-Public Property Get GetPdfCreatorFileFormatFromFile(ByVal filePath As String) As LibPdfCreatorFileFormat
+Public Property Get GetPdfCreatorFileFormatFromFile(ByVal FilePath As String) As LibPdfCreatorFileFormat
 
     GetPdfCreatorFileFormatFromFile = LibPdfCreatorTools.GetPdfCreatorFileFormatFromFileExtension( _
-                                      FileTools.GetFileExtension(filePath))
+                                      FileTools.GetFileExtension(FilePath))
 
 End Property
 

@@ -27,8 +27,6 @@ Attribute VB_Exposed = False
 '  <file>_test/data/ado/AdodbHandlerTests.cls</file>
 '  <license>_codelib/license.bas</license>
 '  <use>data/ado/AdodbHandler.cls</use>
-'  <ref><name>SimplyVBUnit</name><major>7</major><minor>0</minor><guid>{AD061B4A-38BF-4847-BA00-0B2F9D60C3FB}</guid></ref>
-'  <ref><name>AccUnit_Integration</name><major>0</major><minor>9</minor><guid>{4D92B0E4-E59B-4DD5-8B52-B1AEF82B8941}</guid></ref>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

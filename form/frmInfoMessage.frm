@@ -196,18 +196,20 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 ' Form: frmInfoMessage
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Text in Anwendung einblenden und optional automatisch ausblenden inkl. fadein/fadeout-Feature
-' </summary>
-' <remarks>
-' <code>
-' With New Form_frmInfoMessage
-'   .Show "Hallo Du!", 3000, 0, 3000, 6000
-' End With
-' </code>
-' </remarks>
-'**/
+'
+' Show text in the application and optionally hide it automatically, incl. fade-in/fade-out feature
+'
+' Remarks:
+'     (start code)
+'
+'     With New Form_frmInfoMessage
+'       .Show "Hello!", 3000, 0, 3000, 6000
+'     End With
+'
+'     (end)
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>form/frmInfoMessage.frm</file>

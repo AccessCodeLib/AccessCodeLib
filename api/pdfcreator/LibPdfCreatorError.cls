@@ -8,13 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: LibPdfCreatorError
+' Class: api.pdfcreator.LibPdfCreatorError
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' \brief        Fehler-Objekt für PDF Creator
-' \ingroup PdfCreator
-'**/
+'
+' Error object for PDFCreator
+'
+' Author:
+'     Sten Schmidt
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>api/pdfcreator/LibPdfCreatorError.cls</file>
@@ -38,14 +41,14 @@ Public Property Get Number() As Long
     Number = m_Number
 End Property
 
-Public Property Let Number(ByVal value As Long)
-    m_Number = value
+Public Property Let Number(ByVal Value As Long)
+    m_Number = Value
 End Property
 
 Public Property Get Description() As String
     Description = m_Description
 End Property
 
-Public Property Let Description(ByVal value As String)
-    m_Description = value
+Public Property Let Description(ByVal Value As String)
+    m_Description = Value
 End Property

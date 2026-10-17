@@ -8,11 +8,13 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: UserRoles
+' Class: user.UserRoles
 '---------------------------------------------------------------------------------------
-'/**
-' @brief Diese Klasse ist für die Rechteverwaltung/Rollenzuordung zuständig
-'**/
+'
+' This class is responsible for permission management/role assignment
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>user/UserRoles.cls</file>

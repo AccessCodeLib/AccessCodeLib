@@ -8,15 +8,14 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
+' Class: _test.data.SqlToolsTests
 ' AccUnit:TestClass
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' AccUnit test class for SqlTools
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_test/data/SqlToolsTests.cls</file>
@@ -32,7 +31,7 @@ Public Sub Setup()
    SqlTools.SqlDateFormat = vbNullString
 End Sub
 
-Public Sub TearDown()
+Public Sub Teardown()
    SqlTools.SqlDateFormat = vbNullString
 End Sub
 

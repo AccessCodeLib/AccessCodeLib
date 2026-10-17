@@ -9,7 +9,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Attribute VB_Description = "Erweiterung für ApplicationHandler-Klasse: Anwendungsspezifische Dateien verwalten"
 '---------------------------------------------------------------------------------------
-' Class: base.ApplicationHandler_File
+' Class: base.ApplicationHandler_AppFile
 '---------------------------------------------------------------------------------------
 '
 ' Extension for ApplicationHandler class: manage application-specific files
@@ -19,7 +19,10 @@ Attribute VB_Description = "Erweiterung für ApplicationHandler-Klasse: Anwendung
 '
 ' Remarks:
 '     Activation in the _config_Application module:
-'     <code>ExtensionsCollectionReferenz.Add New ApplicationHandler_AppFile</code>
+'
+'     (start code)
+'     ExtensionsCollectionReferenz.Add New ApplicationHandler_AppFile
+'     (end)
 '
 '---------------------------------------------------------------------------------------
 
@@ -128,8 +131,10 @@ End Property
 ' Extract file from usys_AppFiles
 '
 ' Parameters:
-'     FileID   - Record identifier
-'     FileName - File name to be created
+'     FileID             - Record identifier
+'     FileName           - File name to be created
+'     ExtFilterFieldName - (optional) additional filter: field name
+'     ExtFilterValue     - (optional) additional filter: value
 '
 ' Returns:
 '     Boolean
@@ -184,14 +189,16 @@ End Sub
 ' Function: SaveAppFile
 '---------------------------------------------------------------------------------------
 '
-' Datei in usys_AppFiles speichern
+' Save file in usys_AppFiles
 '
 ' Parameters:
-'     FileID         - Identifier in table
-'     FileName       - File name to be created
-'     SaveVersion    - (optional) Read version from file (e. g. from dll file)
-'     ExtFieldName   - (optional) append additional data to data field: Field name
-'     ExtFieldValue  - (optional) append additional data to data field: Value
+'     FileID             - Identifier in table
+'     FileName           - File name to be created
+'     SaveVersion        - (optional) Read version from file (e. g. from dll file)
+'     ExtFieldName       - (optional) append additional data to data field: Field name
+'     ExtFieldValue      - (optional) append additional data to data field: Value
+'     ExtFilterFieldName - (optional) additional filter: field name (also stored in the record)
+'     ExtFilterValue     - (optional) additional filter: value
 '
 ' Returns:
 '     Boolean  - True: File was saved in table

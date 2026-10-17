@@ -73,7 +73,7 @@ Private Declare Function LoadImage Lib "user32" Alias "LoadImageA" ( _
 ' Sub: SetFormIconFromFile
 '---------------------------------------------------------------------------------------
 '
-' Spezielles Icon für ein Formular einstellen
+' Set a special icon for a form
 '
 ' Parameters:
 '     FormRef        - Reference to the Access.Form

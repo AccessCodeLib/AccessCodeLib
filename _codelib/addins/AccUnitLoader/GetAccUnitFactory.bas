@@ -1,6 +1,12 @@
 Attribute VB_Name = "AccUnitLoaderFactoryCall"
 '---------------------------------------------------------------------------------------
-' Modul: AccUnitLoaderFactoryCall
+' Package: _codelib.addins.AccUnitLoader.AccUnitLoaderFactoryCall
+'---------------------------------------------------------------------------------------
+'
+' Provides the AccUnitLoader factory (GetAccUnitFactory)
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/AccUnitLoader/GetAccUnitFactory.bas</file>

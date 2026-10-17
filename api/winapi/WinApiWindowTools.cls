@@ -141,7 +141,7 @@ End Function
 '     FormRef     - Form reference
 '     Hwnd        - Handle of the area on which the control is located (Header, Detail, Footer)
 '     ClassName   - Name of the window class of the control
-'     ControlName - Name des Controls
+'     ControlName - Name of the control
 '
 ' Returns:
 '     LongPtr

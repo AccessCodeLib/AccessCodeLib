@@ -8,13 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: AccessStatusBar
+' Class: utils.AccessStatusBar
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' \brief        Hilfsklasse zur Verwendung der Access Status-Zeile
-' \ingroup utils
-'**/
+'
+' Helper class for using the Access status bar
+'
+' Author:
+'     Sten Schmidt
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>utils/AccessStatusBar.cls</file>
@@ -33,13 +36,15 @@ Private m_Result As Variant
 '---------------------------------------------------------------------------------------
 ' Property: Text
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Beschreibungstext
-' </summary>
-' <returns>String</returns>
-' <remarks>Wird auf der Statuszeile angezeigt</remarks>
-'**/
+'
+' Description text
+'
+' Returns:
+'     String
+'
+' Remarks:
+'     Is displayed in the status bar
+'
 '---------------------------------------------------------------------------------------
 Public Property Get Text() As String
     Text = m_Text
@@ -48,13 +53,15 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: Text
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Beschreibungstext
-' </summary>
-' <param name="Value">Beschreibungstext der angezeigt werden soll</param>
-' <remarks>Wird auf der Statuszeile angezeigt</remarks>
-'**/
+'
+' Description text
+'
+' Parameters:
+'     Value - Description text to be displayed
+'
+' Remarks:
+'     Is displayed in the status bar
+'
 '---------------------------------------------------------------------------------------
 Public Property Let Text(ByVal Value As String)
     m_Text = Value
@@ -64,14 +71,12 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Function: Clear
 '---------------------------------------------------------------------------------------
-'/**                                            '<-- Start Doxygen-Block
-' <summary>
-' Zurücksetzen der Statuszeile
-' </summary>
-' <returns>Boolean</returns>
-' <remarks>
-' </remarks>
-'**/                                            '<-- Ende Doxygen-Block
+'
+' Reset the status bar
+'
+' Returns:
+'     Boolean
+'
 '---------------------------------------------------------------------------------------
 Public Function Clear() As Boolean
     m_Result = Access.Application.SysCmd(acSysCmdClearStatus)

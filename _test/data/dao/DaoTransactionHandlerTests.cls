@@ -10,8 +10,12 @@ Attribute VB_Exposed = False
 Option Compare Text
 Option Explicit
 
-'AccUnit:TestClass
-
+'---------------------------------------------------------------------------------------
+' Class: _test.data.dao.DaoTransactionHandlerTests
+' AccUnit:TestClass
+'---------------------------------------------------------------------------------------
+'
+'---------------------------------------------------------------------------------------
 ' AccUnit infrastructure for advanced AccUnit features. Do not remove these lines.
 'Implements SimplyVBUnit.ITestFixture
 'Implements AccUnit_Integration.ITestManagerBridge

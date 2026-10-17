@@ -8,13 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: Decimal2
+' Class: math.Decimal2
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' \brief        Eine Ersatz-Klasse für den fehlenden Decimal-Datentyp
-' \ingroup math
-'**/
+'
+' A replacement class for the missing Decimal data type
+'
+' Author:
+'     Sten Schmidt
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>math/Decimal2.cls</file>
@@ -56,16 +59,16 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: Round
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Gibt den aktuellen Wert gerundet zurück.
-' </summary>
-' <param name="numDigitsAfterDecimal">Zahl, die angibt, wie viele Stellen rechts vom Dezimalpunkt beim Runden berücksichtigt werden</param>
-' <param name="midpointRoundingType">Rundungsverfahren</param>
-' <returns>Decimal2</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Returns the current value rounded.
+'
+' Parameters:
+'     numDigitsAfterDecimal - Number of digits to the right of the decimal point to round to
+'     midpointRoundingType  - Rounding method
+'
+' Returns:
+'     Decimal2
+'
 '---------------------------------------------------------------------------------------
 Public Property Get Round(Optional ByVal numDigitsAfterDecimal As Long = 0, _
                       Optional ByVal midpointRoundingType As MidpointRounding = MidpointRounding.ToEven) As Decimal2
@@ -76,18 +79,20 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: ToString
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Gibt den aktuellen Wert als String zurück.
-' </summary>
-' <param name="FormatString">Ein gültiger benannter oder benutzerdefinierter Formatausdruck inkl. Erweiterung für Stundenanzeige über 24 (Standard-Formatanweisungen siehe VBA.Format)</param>
-' <param name="FirstDayOfWeek">Wird an VBA.Format weitergereicht</param>
-' <param name="FirstWeekOfYear">Wird an VBA.Format weitergereicht</param>
-' <returns>String</returns>
-' <remarks>
-' Optional können die verfügaren Parameter der Format-Funktion übergeben werden.
-' </remarks>
-'**/
+'
+' Returns the current value as String.
+'
+' Parameters:
+'     FormatString    - A valid named or user-defined format expression incl. extension for hours above 24 (for standard format expressions see VBA.Format)
+'     FirstDayOfWeek  - Wird an VBA.Format weitergereicht
+'     FirstWeekOfYear - Wird an VBA.Format weitergereicht
+'
+' Returns:
+'     String
+'
+' Remarks:
+'     Optionally, the available parameters of the Format function can be passed.
+'
 '---------------------------------------------------------------------------------------
 Public Property Get ToString(Optional ByVal FormatString As Variant = vbNullString, _
                          Optional ByVal FirstDayOfWeek As VbDayOfWeek = vbSunday, _
@@ -98,14 +103,12 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: ToString2
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Gibt den aktuellen Wert als String2 zurück.
-' </summary>
-' <returns>String2</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Returns the current value as String2.
+'
+' Returns:
+'     String2
+'
 '---------------------------------------------------------------------------------------
 Public Property Get ToString2() As String2
     Set ToString2 = String2.NewValue(m_vvalue)

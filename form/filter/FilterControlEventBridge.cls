@@ -8,16 +8,19 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klasse: FilterControlEventBridge
+' Class: form.filter.FilterControlEventBridge
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Poetzl
-' <summary>
-' Hilfsklasse zur Weitergabe von Ereignissen
-' </summary>
-' <remarks>Wird für FilterControlCollection benötigt</remarks>
-' \ingroup data
-'**/
+'
+' Helper class for passing on events
+'
+' Author:
+'     Josef Poetzl
+'
+' Remarks:
+'     Required for FilterControlCollection
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>form/filter/FilterControlEventBridge.cls</file>

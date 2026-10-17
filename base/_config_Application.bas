@@ -1,23 +1,15 @@
 Attribute VB_Name = "_config_Application"
+'---------------------------------------------------------------------------------------
+' Package: base._config_Application
+'---------------------------------------------------------------------------------------
 '
-'############################################################################
-'##                                                                        ##
-'##  Individuell gestaltete Config-Module nicht in das Repositiory laden!  ##
-'##                                                                        ##
-'############################################################################
+' Example of an application configuration
+'
+' Remarks:
+'     Do not commit individually designed config modules to the repository!
 '
 '---------------------------------------------------------------------------------------
-' Modul: _config_Application (Beispiel)
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Beispiel für Anwendungskonfiguration
-' </summary>
-' <remarks>
-' Indiviuell gestaltete Config-Module nicht in das Repositiory laden.
-' </remarks>
-'\ingroup base
-'**/
+
 '<codelib>
 '  <file>%AppFolder%/Source/_config_Application.bas</file> <-- in Anwendungsordner speicher, damit Repo-File nicht überschrieben wird
 '  <license>_codelib/license.bas</license>
@@ -35,8 +27,6 @@ Attribute VB_Name = "_config_Application"
 Option Compare Text
 Option Explicit
 
-'/** \addtogroup base
-'@{ **/
 
 Private Const m_ApplicationVersion As String = "0.0.0"
 
@@ -59,15 +49,12 @@ Private m_Extensions As ApplicationHandler_ExtensionCollection
 '---------------------------------------------------------------------------------------
 ' Sub: InitConfig
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Konfigurationseinstellungen initialisieren
-' </summary>
-' <param name="oCurrentAppHandler">Möglichkeit einer Referenzübergabe, damit nicht CurrentApplication genutzt werden muss</param>
-' <returns></returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Initialize configuration settings
+'
+' Parameters:
+'     oCurrentAppHandler - Option to pass a reference so that CurrentApplication does not have to be used
+'
 '---------------------------------------------------------------------------------------
 Public Sub InitConfig(Optional oCurrentAppHandler As ApplicationHandler = Nothing)
 
@@ -148,4 +135,3 @@ Private Sub SetAppFiles()
 End Sub
 
 
-'/** @} **/ '<-- Ende der Doxygen-Gruppen-Zuordnung

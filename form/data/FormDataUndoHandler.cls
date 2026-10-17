@@ -8,28 +8,34 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: FormDataUndoHandler (Josef Pötzl, 2010-04-15)
+' Class: form.data.FormDataUndoHandler
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Erweiterete Undo-Funktionalität für Formulare
-' </summary>
-' <remarks>
-' Mit dieser Klasse kann Undo auch nach dem Speichern des Datensatzes
-' (z. B. nach dem Wechsel vom HF in ein UF)durchgeführt werden. \n\n
 '
-' Anwendung: \n
-' Nach der Initialisierung ist der FormDataUndoHandler-Instanz die Referenz des zu überwachenden
-' Formulars über die Eigenschaft FormDataUndoHandler.Form zu übergeben. \n
+' Extended undo functionality for forms
 '
-' Beispiel: \n
-' <code>Set m_MainFormUndoHandler = New FormDataUndoHandler
-' Set m_MainFormUndoHandler.Form = Me</code>
+' Author:
+'     Josef Pötzl
 '
-' Wichtig: Bei Zirkelverweis (.Form = Me) die FormDataUndoHandler-Referenz als Reaktion
-'          auf Form.Unload auf Nothing setzen.
-' </remarks>
-'**/
+' Remarks:
+'     With this class, undo is possible even after the record has been saved
+'     (e.g. after switching from the main form to a subform).
+'
+'     Usage:
+'     After initialization, pass the reference of the form to be monitored to the
+'     FormDataUndoHandler instance via the property FormDataUndoHandler.Form.
+'
+'     Example:
+'
+'     (start code)
+'     Set m_MainFormUndoHandler = New FormDataUndoHandler
+'     Set m_MainFormUndoHandler.Form = Me
+'     (end)
+'
+'     Important: with a circular reference (.Form = Me), set the FormDataUndoHandler reference
+'     to Nothing in response to Form.Unload.
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>form/data/FormDataUndoHandler.cls</file>
@@ -41,32 +47,30 @@ Attribute VB_Exposed = False
 '
 Option Compare Database
 Option Explicit
-'/**
-' * @todo Nutzung mit Adodb-Rs ermöglichen
-'**/
+' TODO: support ADODB recordsets
 
 '---------------------------------------------------------------------------------------
 ' Event: Dirty
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Weitergabe des Dirty-Ereignisses aus dem Formular
-' </summary>
-' <param name="Cancel">Dirty abbrechen (entspricht Cancel aus Form.Dirty)</param>
-' <remarks></remarks>
-'**/
+'
+' Passes on the Dirty event of the form
+'
+' Parameters:
+'     Cancel - Cancel Dirty (corresponds to Cancel of Form.Dirty)
+'
+'---------------------------------------------------------------------------------------
 Public Event Dirty(Cancel As Integer)
 
 '---------------------------------------------------------------------------------------
 ' Event: DataSavedOrRestored
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Meldet, dass der Datensatz gespeichert wurde bzw. die Originaldaten erhalten hat.
-' </summary>
-' <param name="UndoDataExists">True ... Undo-Daten sind verfügbar</param>
-' <remarks></remarks>
-'**/
+'
+' Reports that the record has been saved or has received the original data.
+'
+' Parameters:
+'     UndoDataExists - True ... undo data is available
+'
+'---------------------------------------------------------------------------------------
 Public Event DataSavedOrRestored(ByVal UndoDataExists As Boolean)
    'UndoDataExists ... gibt an, ob Undo-Daten verfügbar sind
 
@@ -91,13 +95,9 @@ End Sub
 '---------------------------------------------------------------------------------------
 ' Property: Form
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Form-Referenz des überwachten Access-Formulars
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Form reference of the monitored Access form
+'
 '---------------------------------------------------------------------------------------
 Public Property Get Form() As Form
    Set Form = m_Form
@@ -106,13 +106,12 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: Form
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Form-Referenz des zu überwachtenden Access-Formulars
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Form reference of the Access form to be monitored
+'
+' Parameters:
+'     newRef - Access form to be monitored
+'
 '---------------------------------------------------------------------------------------
 Public Property Set Form(newRef As Form)
    Set m_Form = newRef
@@ -184,14 +183,12 @@ End Sub
 '---------------------------------------------------------------------------------------
 ' Property: UndoDataExists
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Gibt an, ob Undo-Daten verfügbar sind.
-' </summary>
-' <returns>Boolean</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Indicates whether undo data is available.
+'
+' Returns:
+'     Boolean
+'
 '---------------------------------------------------------------------------------------
 Public Property Get UndoDataExists() As Boolean
    UndoDataExists = (m_UndoDataCollection.Count > 0) Or m_FormDataNewRecordset
@@ -201,14 +198,12 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Sub: Undo
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Undo-Aktion durchführen
-' </summary>
-' <remarks>
-' Löst am Ende FormDataUndoHandler.DataSavedOrRestored(UndoDataExists) aus.
-' </remarks>
-'**/
+'
+' Perform undo action
+'
+' Remarks:
+'     Raises FormDataUndoHandler.DataSavedOrRestored(UndoDataExists) at the end.
+'
 '---------------------------------------------------------------------------------------
 Public Sub Undo()
 '/**

@@ -1,12 +1,16 @@
 Attribute VB_Name = "FilterStringBuilderNet_Examples"
 '---------------------------------------------------------------------------------------
-' Beispiel-Modul: FilterStringBuilder_Examples
+' Package: _examples.data.FilterStringBuilderNet_Examples
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Poetzl
-' \brief        Beispiel zur Verwendung der FilterStringBuilder-Klasse
-' \ingroup data
-'**/
+'
+' Example module for FilterStringBuilder (DotNetLib version)
+' Example for using the FilterStringBuilder class
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_examples/data/FilterStringBuilderNet_Examples.bas</file>

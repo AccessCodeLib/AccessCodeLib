@@ -29,26 +29,26 @@ Option Explicit
 ' Tests
 '--------------------------------------------------------------------
 
-'AccUnit:Row("01.01.2013", 0, "01.01.2013")
-'AccUnit:Row("01.01.2013", 1, "01.01.2014")
-'AccUnit:Row("29.02.2012", 1, "28.02.2013")
-'AccUnit:Row("29.02.2012", -1, "28.02.2011")
+'AccUnit:Row("01.01.2013", 0, "01/01/2013")
+'AccUnit:Row("01.01.2013", 1, "01/01/2014")
+'AccUnit:Row("29.02.2012", 1, "2/28/2013")
+'AccUnit:Row("29.02.2012", -1, "2/28/2011")
 Public Sub NewValue_AddYear(ByVal vValue As Variant, ByVal Number As Integer, ByVal Expected As String)
-    Assert.That DateTime2.NewValue(vValue).AddYear(Number), Iz.EqualTo(Expected)
+    Assert.That DateTime2.NewValue(vValue).AddYear(Number).ToDate, Iz.EqualTo(CDate(Expected))
 End Sub
 
-'AccUnit:Row("01.01.2013", 0, "01.01.2013")
-'AccUnit:Row("01.01.2013", 1, "01.04.2013")
-'AccUnit:Row("01.01.2013", 4, "01.01.2014")
+'AccUnit:Row("01.01.2013", 0, "01/01/2013")
+'AccUnit:Row("01.01.2013", 1, "01/04/2013")
+'AccUnit:Row("01.01.2013", 4, "01/01/2014")
 Public Sub NewValue_AddQuarter(ByVal vValue As Variant, ByVal Number As Integer, ByVal Expected As String)
-    Assert.That DateTime2.NewValue(vValue).AddQuarter(Number), Iz.EqualTo(Expected)
+    Assert.That DateTime2.NewValue(vValue).AddQuarter(Number).ToDate, Iz.EqualTo(CDate(Expected))
 End Sub
 
 'AccUnit:Row("01.01.2013", 1, "01.02.2013")
 'AccUnit:Row("01.01.2013", 12, "01.01.2014")
 'AccUnit:Row("01.01.2013", -12, "01.01.2012")
 Public Sub NewValue_AddMonth(ByVal vValue As Variant, ByVal Number As Integer, ByVal Expected As String)
-    Assert.That DateTime2.NewValue(vValue).AddMonth(Number), Iz.EqualTo(Expected)
+    Assert.That DateTime2.NewValue(vValue).AddMonth(Number).ToDate, Iz.EqualTo(CDate(Expected))
 End Sub
 
 'AccUnit:Row("07.07.2012", 1, "08.07.2012")
@@ -56,13 +56,13 @@ End Sub
 'AccUnit:Row("01.01.2012", 60, "01.03.2012")
 'AccUnit:Row("01.01.2013", 59, "01.03.2013")
 Public Sub NewValue_AddDayOfYear(ByVal vValue As Variant, ByVal Number As Integer, ByVal Expected As String)
-    Assert.That DateTime2.NewValue(vValue).AddDayOfYear(Number), Iz.EqualTo(Expected)
+    Assert.That DateTime2.NewValue(vValue).AddDayOfYear(Number).ToDate, Iz.EqualTo(CDate(Expected))
 End Sub
 
 'AccUnit:Row("07.07.2012", 1, "14.07.2012")
 'AccUnit:Row("07.07.2012 20:15:00", 1, "14.07.2012 20:15:00")
 Public Sub NewValue_AddWeek(ByVal vValue As Variant, ByVal Number As Integer, ByVal Expected As String)
-    Assert.That DateTime2.NewValue(vValue).AddWeek(Number), Iz.EqualTo(Expected)
+    Assert.That DateTime2.NewValue(vValue).AddWeek(Number).ToDate, Iz.EqualTo(CDate(Expected))
 End Sub
 
 'AccUnit:Row("00:00:59", 1, "01:00:59")
@@ -71,7 +71,7 @@ End Sub
 'AccUnit:Row("31.12.1999 23:59:59", 1, "01.01.2000 00:59:59")
 'AccUnit:Row("01.01.2000", -1, "31.12.1999 23:00:00")
 Public Sub NewValue_AddHour(ByVal vValue As Variant, ByVal Number As Integer, ByVal Expected As String)
-    Assert.That DateTime2.NewValue(vValue).AddHour(Number), Iz.EqualTo(Expected)
+    Assert.That DateTime2.NewValue(vValue).AddHour(Number).ToDate, Iz.EqualTo(CDate(Expected))
 End Sub
 
 'AccUnit:Row("00:00:59", 1, "00:01:59")
@@ -80,7 +80,7 @@ End Sub
 'AccUnit:Row("31.12.1999 23:59:59", 1, "01.01.2000 00:00:59")
 'AccUnit:Row("01.01.2000", -1, "31.12.1999 23:59:00")
 Public Sub NewValue_AddMinute(ByVal vValue As Variant, ByVal Number As Integer, ByVal Expected As String)
-    Assert.That DateTime2.NewValue(vValue).AddMinute(Number), Iz.EqualTo(Expected)
+    Assert.That DateTime2.NewValue(vValue).AddMinute(Number).ToDate, Iz.EqualTo(CDate(Expected))
 End Sub
 
 
@@ -89,7 +89,7 @@ End Sub
 'AccUnit:Row("01.01.2000", -1, "31.12.1999")
 'AccUnit:Row("01.01.2000 00:00:00", -1, "31.12.1999")
 Public Sub NewValue_AddDay(ByVal vValue As Variant, ByVal Number As Integer, ByVal Expected As String)
-    Assert.That DateTime2.NewValue(vValue).AddDay(Number), Iz.EqualTo(Expected)
+    Assert.That DateTime2.NewValue(vValue).AddDay(Number).ToDate, Iz.EqualTo(CDate(Expected))
 End Sub
 
 'AccUnit:Row("00:00:59", 1, "00:01:00")
@@ -99,7 +99,7 @@ End Sub
 'AccUnit:Row("01.01.2000", -1, "31.12.1999 23:59:59")
 'AccUnit:Row("01.01.2000 00:00:00", -61, "31.12.1999 23:58:59")
 Public Sub NewValue_AddSecond(ByVal vValue As Variant, ByVal Number As Integer, ByVal Expected As String)
-    Assert.That DateTime2.NewValue(vValue).AddSecond(Number), Iz.EqualTo(Expected)
+    Assert.That DateTime2.NewValue(vValue).AddSecond(Number).ToDate, Iz.EqualTo(CDate(Expected))
 End Sub
 
 'AccUnit:Row("31.12.2013 00:00:00", "31.12.2013 00:00:00")
@@ -139,7 +139,7 @@ End Sub
 'AccUnit:Row("15.02.2011", "28.02.2011")
 'AccUnit:Row("31.12.2011", "31.12.2011")
 Public Sub NewValue_LastDayOfMonth(ByVal vValue As Variant, ByVal Expected As Variant)
-    Assert.That DateTime2.NewValue(vValue).LastDayOfMonth(), Iz.EqualTo(Expected)
+    Assert.That DateTime2.NewValue(vValue).LastDayOfMonth().ToDate, Iz.EqualTo(CDate(Expected))
 End Sub
 
 'AccUnit:Row("15.03.2013", "31.03.2013")
@@ -147,7 +147,7 @@ End Sub
 'AccUnit:Row("15.07.2013", "30.09.2013")
 'AccUnit:Row("15.11.2013", "31.12.2013")
 Public Sub NewValue_LastDayOfQuarter(ByVal vValue As Variant, ByVal Expected As Variant)
-    Assert.That DateTime2.NewValue(vValue).LastDayOfQuarter(), Iz.EqualTo(Expected)
+    Assert.That DateTime2.NewValue(vValue).LastDayOfQuarter().ToDate, Iz.EqualTo(CDate(Expected))
 End Sub
 
 'AccUnit:Row("01.01.2011", "01.01.2011")
@@ -155,7 +155,7 @@ End Sub
 'AccUnit:Row("15.02.2011", "01.02.2011")
 'AccUnit:Row("31.12.2011", "01.12.2011")
 Public Sub NewValue_FirstDayOfMonth(ByVal vValue As Variant, ByVal Expected As Variant)
-    Assert.That DateTime2.NewValue(vValue).FirstDayOfMonth(), Iz.EqualTo(Expected)
+    Assert.That DateTime2.NewValue(vValue).FirstDayOfMonth().ToDate, Iz.EqualTo(CDate(Expected))
 End Sub
 
 'AccUnit:Row("01.01.2010", "01.01.2010")
@@ -163,7 +163,7 @@ End Sub
 'AccUnit:Row("15.02.2011", "01.01.2011")
 'AccUnit:Row("31.12.2013", "01.01.2013")
 Public Sub NewValue_FirstDayOfYear(ByVal vValue As Variant, ByVal Expected As Variant)
-    Assert.That DateTime2.NewValue(vValue).FirstDayOfYear(), Iz.EqualTo(Expected)
+    Assert.That DateTime2.NewValue(vValue).FirstDayOfYear().ToDate, Iz.EqualTo(CDate(Expected))
 End Sub
 
 'AccUnit:Row("15.03.2013", "01.01.2013")
@@ -171,7 +171,7 @@ End Sub
 'AccUnit:Row("15.07.2013", "01.07.2013")
 'AccUnit:Row("15.11.2013", "01.10.2013")
 Public Sub NewValue_FirstDayOfQuarter(ByVal vValue As Variant, ByVal Expected As Variant)
-    Assert.That DateTime2.NewValue(vValue).FirstDayOfQuarter(), Iz.EqualTo(Expected)
+    Assert.That DateTime2.NewValue(vValue).FirstDayOfQuarter().ToDate, Iz.EqualTo(CDate(Expected))
 End Sub
 
 'AccUnit:Row("20.02.2008", "18.02.2008")
@@ -188,7 +188,7 @@ End Sub
 'AccUnit:Row("20.02.2016", "15.02.2016")
 'AccUnit:Row("29.02.2016", "29.02.2016")
 Public Sub NewValue_FirstDayOfWeek(ByVal vValue As Variant, ByVal Expected As Variant)
-    Assert.That DateTime2.NewValue(vValue).FirstDayOfWeek(), Iz.EqualTo(Expected)
+    Assert.That DateTime2.NewValue(vValue).FirstDayOfWeek().ToDate, Iz.EqualTo(CDate(Expected))
 End Sub
 
 'AccUnit:Row("08.07.2012", "08.07.2012")
@@ -206,7 +206,7 @@ End Sub
 'AccUnit:Row("20.02.2016", "21.02.2016")
 'AccUnit:Row("29.02.2016", "06.03.2016")
 Public Sub NewValue_LastDayOfWeek(ByVal vValue As Variant, ByVal Expected As Variant)
-    Assert.That DateTime2.NewValue(vValue).LastDayOfWeek(), Iz.EqualTo(Expected)
+    Assert.That DateTime2.NewValue(vValue).LastDayOfWeek().ToDate, Iz.EqualTo(CDate(Expected))
 End Sub
 
 'AccUnit:Row("01.01.2010", "31.12.2010")
@@ -214,7 +214,7 @@ End Sub
 'AccUnit:Row("15.02.2011", "31.12.2011")
 'AccUnit:Row("31.12.2013", "31.12.2013")
 Public Sub NewValue_LastDayOfYear(ByVal vValue As Variant, ByVal Expected As Variant)
-    Assert.That DateTime2.NewValue(vValue).LastDayOfYear(), Iz.EqualTo(Expected)
+    Assert.That DateTime2.NewValue(vValue).LastDayOfYear().ToDate, Iz.EqualTo(CDate(Expected))
 End Sub
 
 'AccUnit:Row("31.12.2013", "31.12.2013")
@@ -223,7 +223,7 @@ End Sub
 'AccUnit:Row("28.02.2011 00:59:00", "28.02.2011")
 'AccUnit:Row("31.12.2013 00:00:59", "31.12.2013")
 Public Sub NewValue_TrimTime(ByVal vValue As Variant, ByVal Expected As Variant)
-    Assert.That DateTime2.NewValue(vValue).TrimTime(), Iz.EqualTo(Expected)
+    Assert.That DateTime2.NewValue(vValue).TrimTime().ToDate, Iz.EqualTo(CDate(Expected))
 End Sub
 
 'AccUnit:Row("31.12.2013 00:00:00", "00:00:00")
@@ -232,7 +232,7 @@ End Sub
 'AccUnit:Row("28.02.2011 00:59:00", "00:59:00")
 'AccUnit:Row("31.12.2013 00:00:59", "00:00:59")
 Public Sub NewValue_GetTime(ByVal vValue As Variant, ByVal Expected As Variant)
-    Assert.That DateTime2.NewValue(vValue).GetTime(), Iz.EqualTo(Expected)
+    Assert.That DateTime2.NewValue(vValue).GetTime().ToDate, Iz.EqualTo(CDate(Expected))
 End Sub
 
 'AccUnit:Row("31.12.2013 00:00:00", "00:00:00")
@@ -241,7 +241,7 @@ End Sub
 'AccUnit:Row("28.02.2011 00:59:00", "00:59:00")
 'AccUnit:Row("31.12.2013 00:00:59", "00:00:59")
 Public Sub NewValue_TrimDate(ByVal vValue As Variant, ByVal Expected As Variant)
-    Assert.That DateTime2.NewValue(vValue).TrimDate(), Iz.EqualTo(Expected)
+    Assert.That DateTime2.NewValue(vValue).TrimDate().ToDate, Iz.EqualTo(CDate(Expected))
 End Sub
 
 'AccUnit:Row("29.02.2012", "29.02.2012")
@@ -249,7 +249,7 @@ End Sub
 'AccUnit:Row("29.02.2012 23:00:00", "29.02.2012")
 'AccUnit:Row("28.02.2011 00:59:00", "28.02.2011")
 Public Sub NewValue_GetDate(ByVal vValue As Variant, ByVal Expected As Variant)
-    Assert.That DateTime2.NewValue(vValue).GetDate(), Iz.EqualTo(Expected)
+    Assert.That DateTime2.NewValue(vValue).GetDate().ToDate, Iz.EqualTo(CDate(Expected))
 End Sub
 
 Public Sub NewValue_Now()

@@ -8,16 +8,13 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 '---------------------------------------------------------------------------------------
-' Klassenmodul: AccUnitLoaderFactory
+' Class: _codelib.addins.AccUnitLoader.AccUnitLoaderFactory
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Factory-Klasse für AccUnit
-' </summary>
-' <remarks>
-' </remarks>
-'\ingroup addins_shared
-'**/
+'
+' Factory class for AccUnit
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/AccUnitLoader/AccUnitLoaderFactory.cls</file>

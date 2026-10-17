@@ -103,9 +103,9 @@ End Property
 ' Function: CheckConnectionStatus
 '---------------------------------------------------------------------------------------
 '
-' Verbindung prüfen (call <data.DbConnectionManager.CheckConnectionStatus>)
+' Check connection (call <data.DbConnectionManager.CheckConnectionStatus>)
 '
-' Return:
+' Returns:
 '     Boolean - True if success
 '
 '---------------------------------------------------------------------------------------

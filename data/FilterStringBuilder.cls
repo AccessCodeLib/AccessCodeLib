@@ -146,7 +146,7 @@ Friend Sub ConfigSqlFormat(ByVal SqlDateFormat As String, _
                            ByVal SqlWildCardString As String)
    
    If m_SqlTool Is Nothing Then
-      Set m_SqlTool = SqlTools.NewInstance(SqlDateFormat, SqlBooleanTrueString, SqlWildCardString)
+      Set m_SqlTool = SqlTools.newInstance(SqlDateFormat, SqlBooleanTrueString, SqlWildCardString)
       Exit Sub
    End If
 
@@ -194,8 +194,8 @@ End Sub
 ' (uses: data.SqlTools.BuildCriteria)
 '
 ' Parameters:
-'
 '     FieldName            - Field name in the data source to be filtered
+'     FieldDataType        - Data type of the field (SqlFieldDataType)
 '     RelationalOperator   - Relational operator (=, <=, etc.)
 '     Value                - Filter value (can be a single value or an array of values)
 '     Value2               - Optional 2nd filter value (for Between)

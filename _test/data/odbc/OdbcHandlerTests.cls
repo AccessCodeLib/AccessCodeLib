@@ -8,15 +8,14 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
+' Class: _test.data.odbc.OdbcHandlerTests
 ' AccUnit:TestClass
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Test-Klasse für OdbcHandler
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Test class for OdbcHandler
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_test/data/odbc/OdbcHandlerTests.cls</file>
@@ -62,30 +61,30 @@ End Sub
 '--------------------------------------------------------------------
 
 Public Sub CurrentDbBE_Jet_EqualToTempDb()
-   Dim actual As DAO.Database
-   Set actual = m_OdbcHandler.CurrentDbBE
-   Assert.That actual.Name, Iz.EqualTo(m_TempDbHandler.CurrentDatabase.Name)
+   Dim Actual As DAO.Database
+   Set Actual = m_OdbcHandler.CurrentDbBE
+   Assert.That Actual.Name, Iz.EqualTo(m_TempDbHandler.CurrentDatabase.Name)
 End Sub
 
 Public Sub ConnectionString_Jet_ReturnsNullString()
    
-   Dim expected As String
-   Dim actual As String
+   Dim Expected As String
+   Dim Actual As String
    
-   expected = OdbcConnectionString
-   actual = m_OdbcHandler.ConnectionString
-   Assert.AreEqual expected, actual
+   Expected = OdbcConnectionString
+   Actual = m_OdbcHandler.ConnectionString
+   Assert.AreEqual Expected, Actual
    
 End Sub
 
 Public Sub RelinkTable_Jet_ReturnsTrue()
 
-   Const expected As Boolean = True
-   Dim actual As Boolean
+   Const Expected As Boolean = True
+   Dim Actual As Boolean
 
-   actual = m_OdbcHandler.RelinkTable(TestTableName)
+   Actual = m_OdbcHandler.RelinkTable(TestTableName)
    
-   Assert.AreEqual expected, actual
+   Assert.AreEqual Expected, Actual
    
 End Sub
 

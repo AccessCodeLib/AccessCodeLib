@@ -8,16 +8,13 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: ACLibWebImporter
+' Class: _codelib.addins.shared.ACLibWebImporter
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Hilfsklasse zum Importieren von Codemodulen aus der Code-Bibliothek in die usys_Appfiles-Tabelle
-' </summary>
-' <remarks>
-' </remarks>
-'\ingroup addins_shared
-'**/
+'
+' Helper class for importing code modules from the code library into the usys_Appfiles table
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/shared/ACLibWebImporter.cls</file>

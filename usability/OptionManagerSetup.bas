@@ -1,18 +1,20 @@
 Attribute VB_Name = "OptionManagerSetup"
 '---------------------------------------------------------------------------------------
-' Modul: OptionManagerSetup
+' Package: usability.OptionManagerSetup
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Andreas Vogt
-' <summary>
-' Setup Modul für den OptionManager
-' </summary>
-' <remarks>
-' Erstellt die Tabelle tabOptions.
-' Erstellt ein Hilfsmodul mit Enum und Const-Var
-' Wird nach dem Import wieder entfernt.
-' </remarks>
-'**/
+'
+' Setup module for the OptionManager
+'
+' Author:
+'     Andreas Vogt
+'
+' Remarks:
+'     Creates the table tabOptions.
+'     Creates a helper module with Enum and constants
+'     Is removed again after the import.
+'
+'---------------------------------------------------------------------------------------
+
 '<codelib>
 '  <file>usability/OptionManagerSetup.bas</file>
 '  <use>usability/OptionManager.cls</use>

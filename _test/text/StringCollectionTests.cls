@@ -8,15 +8,14 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
+' Class: _test.text.StringCollectionTests
 ' AccUnit:TestClass
-' StringCollectionTests
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' AccUnit-Testklasse für StringCollection
-' </summary>
-' <remarks></remarks>
-'**/
+'
+' AccUnit test class for StringCollection
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_test/text/StringCollectionTests.cls</file>

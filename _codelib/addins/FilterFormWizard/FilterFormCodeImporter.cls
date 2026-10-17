@@ -8,15 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klasse: FilterFormCodeImporter
+' Class: _codelib.addins.FilterFormWizard.FilterFormCodeImporter
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Poetzl
-' <summary>
-' Code für Import von FilterStringBuilder
-' </summary>
-' <remarks></remarks>
-'**/
+'
+' Code for importing FilterStringBuilder
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/FilterFormWizard/FilterFormCodeImporter.cls</file>

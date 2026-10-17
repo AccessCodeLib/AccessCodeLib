@@ -8,16 +8,20 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = True
 '---------------------------------------------------------------------------------------
-' Class Module: OptionManager
+' Class: usability.OptionManager
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Andreas Vogt; Josef Pötzel
-' \brief        Klasse zur Verwendung als OptionManager
-' \ingroup usability
-'**/
+'
+' Class for use as OptionManager
+'
+' Author:
+'     Andreas Vogt; Josef Pötzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>usability/OptionManager.cls</file>
+'  <use>usability/OptionManagerSetup.bas</use>
 '  <license>_codelib/license.bas</license>
 '  <test>_test/usability/OptionManagerTests.cls</test>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>

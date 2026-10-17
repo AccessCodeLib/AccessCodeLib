@@ -8,13 +8,14 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
+' Class: _test.api.pdfcreator.LibPdfCreatorToolsTests
 ' AccUnit:TestClass
 '---------------------------------------------------------------------------------------
-'/**
-'\short     AccUnit-Testklasse für LibPdfCreatorToolsTests
-' <remarks>
-' </remarks>
-'**/
+'
+' AccUnit test class for LibPdfCreatorTools
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_test/api/pdfcreator/LibPdfCreatorToolsTests.cls</file>

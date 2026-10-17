@@ -7,13 +7,14 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'--------------------------------------------------------------------
+'---------------------------------------------------------------------------------------
+' Class: _test.text.StringToolsTests
 ' AccUnit:TestClass
-'--------------------------------------------------------------------
+'---------------------------------------------------------------------------------------
 '
 ' Call: TestSuite.AddByClassName("StringToolsTests").Run
 '
-'--------------------------------------------------------------------
+'---------------------------------------------------------------------------------------
 
 '--------------------------------------------------------------------
 '<codelib>
@@ -106,26 +107,26 @@ End Sub
 
 'AccUnit:Row("Test", 4, "_", "Test")
 'AccUnit:Row("Test", 6, "_", "__Test")
-Public Sub PadLeft_String_LeftPadString(ByVal Value As String, ByVal TotalWidth As Integer, ByVal PadChar As String, ByVal Expected As String)
-    Assert.That StringTools.PadLeft(Value, TotalWidth, PadChar), Iz.EqualTo(Expected)
+Public Sub PadLeft_String_LeftPadString(ByVal Value As String, ByVal totalWidth As Integer, ByVal padChar As String, ByVal Expected As String)
+    Assert.That StringTools.PadLeft(Value, totalWidth, padChar), Iz.EqualTo(Expected)
 End Sub
 
 'AccUnit:Row("Test", 4, "Test")
 'AccUnit:Row("Test", 6, "  Test")
-Public Sub PadLeft_String_LeftPadStringDefaultParam(ByVal Value As String, ByVal TotalWidth As Integer, ByVal Expected As String)
-    Assert.That StringTools.PadLeft(Value, TotalWidth), Iz.EqualTo(Expected)
+Public Sub PadLeft_String_LeftPadStringDefaultParam(ByVal Value As String, ByVal totalWidth As Integer, ByVal Expected As String)
+    Assert.That StringTools.PadLeft(Value, totalWidth), Iz.EqualTo(Expected)
 End Sub
 
 'AccUnit:Row("Test", 4, "_", "Test")
 'AccUnit:Row("Test", 6, "_", "Test__")
-Public Sub PadRight_String_RightPadString(ByVal Value As String, ByVal TotalWidth As Integer, ByVal PadChar As String, ByVal Expected As String)
-    Assert.That StringTools.PadRight(Value, TotalWidth, PadChar), Iz.EqualTo(Expected)
+Public Sub PadRight_String_RightPadString(ByVal Value As String, ByVal totalWidth As Integer, ByVal padChar As String, ByVal Expected As String)
+    Assert.That StringTools.PadRight(Value, totalWidth, padChar), Iz.EqualTo(Expected)
 End Sub
 
 'AccUnit:Row("Test", 4, "Test")
 'AccUnit:Row("Test", 6, "Test  ")
-Public Sub PadRight_String_RightPadStringDefaultParam(ByVal Value As String, ByVal TotalWidth As Integer, ByVal Expected As String)
-    Assert.That StringTools.PadRight(Value, TotalWidth), Iz.EqualTo(Expected)
+Public Sub PadRight_String_RightPadStringDefaultParam(ByVal Value As String, ByVal totalWidth As Integer, ByVal Expected As String)
+    Assert.That StringTools.PadRight(Value, totalWidth), Iz.EqualTo(Expected)
 End Sub
 
 'AccUnit:Row("abc", "b", True)
@@ -135,8 +136,8 @@ End Sub
 'AccUnit:Row("abc", "abc", True)
 'AccUnit:Row("", "", False)
 'AccUnit:Row("", "A", False)
-Public Sub Contains_String_ContainsSearchString(ByVal CheckValue As String, ByVal SearchValue As String, Expected As Boolean)
-    Assert.That StringTools.Contains(CheckValue, SearchValue), Iz.EqualTo(Expected)
+Public Sub Contains_String_ContainsSearchString(ByVal checkValue As String, ByVal searchValue As String, Expected As Boolean)
+    Assert.That StringTools.Contains(checkValue, searchValue), Iz.EqualTo(Expected)
 End Sub
 
 'AccUnit:Row("abcd", "cd", True)
@@ -145,8 +146,8 @@ End Sub
 'AccUnit:Row("abc", "abc", True)
 'AccUnit:Row("", "", True)
 'AccUnit:Row("", "A", False)
-Public Sub EndsWith_String_EndsWithSearchString(ByVal CheckValue As String, ByVal SearchValue As String, Expected As Boolean)
-    Assert.That StringTools.EndsWith(CheckValue, SearchValue), Iz.EqualTo(Expected)
+Public Sub EndsWith_String_EndsWithSearchString(ByVal checkValue As String, ByVal searchValue As String, Expected As Boolean)
+    Assert.That StringTools.EndsWith(checkValue, searchValue), Iz.EqualTo(Expected)
 End Sub
 
 'AccUnit:Row("abcd", "ab", True)
@@ -155,14 +156,14 @@ End Sub
 'AccUnit:Row("abc", "abc", True)
 'AccUnit:Row("", "", True)
 'AccUnit:Row("", "A", False)
-Public Sub EndsWith_String_StartsWithSearchString(ByVal CheckValue As String, ByVal SearchValue As String, Expected As Boolean)
-    Assert.That StringTools.StartsWith(CheckValue, SearchValue), Iz.EqualTo(Expected)
+Public Sub EndsWith_String_StartsWithSearchString(ByVal checkValue As String, ByVal searchValue As String, Expected As Boolean)
+    Assert.That StringTools.StartsWith(checkValue, searchValue), Iz.EqualTo(Expected)
 End Sub
 
 'AccUnit:Row("", 0)
 'AccUnit:Row("1234567890", 10)
-Public Sub Length_String_HasLength(ByVal CheckValue As String, Expected As Integer)
-    Assert.That StringTools.Length(CheckValue), Iz.EqualTo(Expected)
+Public Sub Length_String_HasLength(ByVal checkValue As String, Expected As Integer)
+    Assert.That StringTools.length(checkValue), Iz.EqualTo(Expected)
 End Sub
 
 'AccUnit:Row("", "", "")
@@ -177,24 +178,24 @@ End Sub
 'AccUnit:Row(" ", "")
 'AccUnit:Row("  ", "")
 'AccUnit:Row(" A ", "A")
-Public Sub Trim_String_TrimedString_Both(ByVal CheckValue As String, Expected As String)
-    Assert.That StringTools.Trim(CheckValue, TrimBoth), Iz.EqualTo(Expected)
+Public Sub Trim_String_TrimedString_Both(ByVal checkValue As String, Expected As String)
+    Assert.That StringTools.Trim(checkValue, TrimBoth), Iz.EqualTo(Expected)
 End Sub
 
 'AccUnit:Row("", "")
 'AccUnit:Row(" ", "")
 'AccUnit:Row("  ", "")
 'AccUnit:Row(" A ", "A ")
-Public Sub Trim_String_TrimedString_Start(ByVal CheckValue As String, Expected As String)
-    Assert.That StringTools.Trim(CheckValue, TrimStart), Iz.EqualTo(Expected)
+Public Sub Trim_String_TrimedString_Start(ByVal checkValue As String, Expected As String)
+    Assert.That StringTools.Trim(checkValue, TrimStart), Iz.EqualTo(Expected)
 End Sub
 
 'AccUnit:Row("", "")
 'AccUnit:Row(" ", "")
 'AccUnit:Row("  ", "")
 'AccUnit:Row(" A ", " A")
-Public Sub Trim_String_TrimedString_End(ByVal CheckValue As String, Expected As String)
-    Assert.That StringTools.Trim(CheckValue, TrimEnd), Iz.EqualTo(Expected)
+Public Sub Trim_String_TrimedString_End(ByVal checkValue As String, Expected As String)
+    Assert.That StringTools.Trim(checkValue, TrimEnd), Iz.EqualTo(Expected)
 End Sub
 
 'AccUnit:Row("", 0,0, "")
@@ -202,8 +203,8 @@ End Sub
 'AccUnit:Row("abc", 2,1, "c")
 'AccUnit:Row("abc", 3,0, "")
 'AccUnit:Row("abc", 0,3, "abc")
-Public Sub Substring_String_ExpectedSubstring(ByVal Value As String, ByVal StartIndex As Long, ByVal Length As Long, ByVal Expected As String)
-    Assert.That StringTools.SubString(Value, StartIndex, Length), Iz.EqualTo(Expected)
+Public Sub Substring_String_ExpectedSubstring(ByVal Value As String, ByVal startIndex As Long, ByVal length As Long, ByVal Expected As String)
+    Assert.That StringTools.Substring(Value, startIndex, length), Iz.EqualTo(Expected)
 End Sub
 
 'AccUnit:Row("", "", 0, "")
@@ -215,6 +216,6 @@ End Sub
 'AccUnit:Row("AAAAA", "B", 0, "BAAAAA")
 'AccUnit:Row("AAAAA", "BB", 1, "ABBAAAA")
 'AccUnit:Row("AAAAA", "BB", 5, "AAAAABB")
-Public Sub InsertAt_String_StringInsertedAtExpectedPos(ByVal Value As String, ByVal InsertValue As String, ByVal Pos As Long, ByVal Expected As String)
-    Assert.AreEqual StringTools.InsertAt(Value, InsertValue, Pos), Expected
+Public Sub InsertAt_String_StringInsertedAtExpectedPos(ByVal Value As String, ByVal insertValue As String, ByVal pos As Long, ByVal Expected As String)
+    Assert.AreEqual StringTools.InsertAt(Value, insertValue, pos), Expected
 End Sub

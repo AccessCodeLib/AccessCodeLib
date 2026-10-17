@@ -1,16 +1,13 @@
 Attribute VB_Name = "modWinAPI_Layout"
 Attribute VB_Description = "WinAPI-Funktionen zur Layoutgestaltung"
 '---------------------------------------------------------------------------------------
-' Module: modWinAPI_Layout
+' Package: api.winapi.modWinAPI_Layout
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' WinAPI-Funktionen zur Layoutgestaltung
-' </summary>
-' <remarks>
-' </remarks>
-'\ingroup WinAPI
-'**/
+'
+' WinAPI functions for layout
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>api/winapi/modWinAPI_Layout.bas</file>
@@ -61,16 +58,13 @@ Private Const SM_CXVSCROLL As Long = 2
 '---------------------------------------------------------------------------------------
 ' Sub: SetBackColor
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Hintergrundfarbe eines Fensters einstellen
-' </summary>
-' <param name="Hwnd">Fenster-Handle</param>
-' <param name="Color">Farbnummer</param>
-' <returns></returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Set the background color of a window
+'
+' Parameters:
+'     Hwnd  - Window handle
+'     Color - Color number
+'
 '---------------------------------------------------------------------------------------
 Public Sub SetBackColor(ByVal Hwnd As LongPtr, ByVal Color As Long)
   
@@ -88,16 +82,15 @@ End Sub
 '---------------------------------------------------------------------------------------
 ' Function: TwipsPerPixelX
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Breite eines Pixels in twips
-' </summary>
-' <param name="Param"></param>
-' <returns>Single</returns>
-' <remarks>
-' http://support.microsoft.com/kb/94927/de
-' </remarks>
-'**/
+'
+' Width of a pixel in twips
+'
+' Returns:
+'     Single
+'
+' Remarks:
+'     http://support.microsoft.com/kb/94927/de
+'
 '---------------------------------------------------------------------------------------
 Public Function TwipsPerPixelX() As Single
    Dim lngDC As LongPtr
@@ -109,15 +102,15 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: TwipsPerPixelY
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Höhe eines Pixels in twips
-' </summary>
-' <returns>Single</returns>
-' <remarks>
-' http://support.microsoft.com/kb/94927/de
-' </remarks>
-'**/
+'
+' Height of a pixel in twips
+'
+' Returns:
+'     Single
+'
+' Remarks:
+'     http://support.microsoft.com/kb/94927/de
+'
 '---------------------------------------------------------------------------------------
 Public Function TwipsPerPixelY() As Single
    Dim lngDC As LongPtr
@@ -129,15 +122,12 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: GetScrollbarWidth
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Breite der Bildlaufleiste
-' </summary>
-' <param name="Param"></param>
-' <returns>Single</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Width of the scroll bar
+'
+' Returns:
+'     Single
+'
 '---------------------------------------------------------------------------------------
 Public Function GetScrollbarWidth() As Single
    GetScrollbarWidth = GetSystemMetrics(SM_CXVSCROLL) * TwipsPerPixelX
@@ -146,16 +136,18 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: GetTwipsFromPixel
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Rechnet Pixel in Twips um
-' </summary>
-' <param name="pixel">Anzahl der Pixel</param>
-' <returns>Long</returns>
-' <remarks>
-' GetTwipsFromPixel = TwipsPerPixelX * pixel
-' </remarks>
-'**/
+'
+' Parameters:
+'     pixel - Number of pixels
+'
+' Returns:
+'     Long
+'
+' Remarks:
+'     GetTwipsFromPixel = TwipsPerPixelX * pixel
+'
 '---------------------------------------------------------------------------------------
 Public Function GetTwipsFromPixel(ByVal Pixel As Long) As Long
    GetTwipsFromPixel = TwipsPerPixelX * Pixel
@@ -164,16 +156,18 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: GetPixelFromTwips
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Rechnet twips in Pixel um
-' </summary>
-' <param name="twips">Anzahl twips</param>
-' <returns>Long</returns>
-' <remarks>
-'  GetPixelFromTwips = twips / TwipsPerPixelX
-' </remarks>
-'**/
+'
+' Parameters:
+'     twips - Number of twips
+'
+' Returns:
+'     Long
+'
+' Remarks:
+'     GetPixelFromTwips = twips / TwipsPerPixelX
+'
 '---------------------------------------------------------------------------------------
 Public Function GetPixelFromTwips(ByVal Twips As Long) As Long
         GetPixelFromTwips = Twips / TwipsPerPixelX

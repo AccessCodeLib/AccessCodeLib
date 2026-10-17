@@ -8,19 +8,18 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class: QpcStoppuhr
+' Class: misc.QpcStoppuhr
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' QueryPerformanceCounter-Stoppuhr
-' zur Zeitmessung
-' </summary>
-' <remarks>
-' Nutzt die API-Funktionen QueryPerformanceCounter und QueryPerformanceFrequency
-' aus Kernel32 zum Messen der Zeit.
-' </remarks>
-' \ingroup misc
-'**/
+'
+' QueryPerformanceCounter stopwatch
+' for time measurement
+'
+' Remarks:
+'     Uses the API functions QueryPerformanceCounter and QueryPerformanceFrequency
+'     from Kernel32 to measure time.
+'
+'---------------------------------------------------------------------------------------
+
 '<codelib>
 '  <file>misc/QpcStoppuhr.cls</file>
 '  <license>_codelib/license.bas</license>
@@ -59,13 +58,9 @@ End Sub
 '---------------------------------------------------------------------------------------
 ' Sub: StartT
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Stoppuhr starten/neustarten, beginnen mit 0
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Start/restart stopwatch, beginning with 0
+'
 '---------------------------------------------------------------------------------------
 Public Sub StartT()
     p_Timer = 0
@@ -75,13 +70,9 @@ End Sub
 '---------------------------------------------------------------------------------------
 ' Sub: StopT
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Stoppuhr anhalten
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Stop stopwatch
+'
 '---------------------------------------------------------------------------------------
 Public Sub StopT()
     QueryPerformanceCounter p_TempTime
@@ -95,13 +86,9 @@ End Sub
 '---------------------------------------------------------------------------------------
 ' Sub: RestartT
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Stoppuhr weiterlaufen lassen
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Keep stopwatch running
+'
 '---------------------------------------------------------------------------------------
 Public Sub RestartT()
     'Uhr muss stehen!
@@ -114,13 +101,9 @@ End Sub
 '---------------------------------------------------------------------------------------
 ' Sub: ResetT
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Alles auf null
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Reset everything to zero
+'
 '---------------------------------------------------------------------------------------
 Public Sub ResetT()
     p_Timer_Start = 0
@@ -130,13 +113,9 @@ End Sub
 '---------------------------------------------------------------------------------------
 ' Property: IsRunning
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Gibt an, ob die Stoppuhr noch läuft
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Indicates whether the stopwatch is still running
+'
 '---------------------------------------------------------------------------------------
 Public Property Get IsRunning() As Boolean
     IsRunning = (p_Timer_Start > 0)
@@ -145,14 +124,12 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: Time
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Zeit in Millisekunden
-' </summary>
-' <returns>Currency</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Time in milliseconds
+'
+' Returns:
+'     Currency
+'
 '---------------------------------------------------------------------------------------
 Public Property Get Time() As Currency
     QueryPerformanceCounter p_TempTime
@@ -164,19 +141,21 @@ Public Property Get Time() As Currency
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: TimeString (2009-12-09)
+' Property: TimeString
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Zeit als String mit Formatierung
-' </summary>
-' <param name="sSecFormatString">Formatierung der Zeit inkl. Sekunden aber ohne Sekundenbruchteile</param>
-' <param name="iMSecDigits">Anzahl der Stellen für die Millisekunden (nach dem Komma)</param>
-' <returns>String</returns>
-' <remarks>
-' Beispiel: TimeString("hh:nn:ss", 5) ergibt "00:05:34,24532"
-' </remarks>
-'**/
+'
+' Time as formatted string
+'
+' Parameters:
+'     sSecFormatString - Time format incl. seconds but without fractions of a second
+'     iMSecDigits      - Number of digits for the milliseconds (after the decimal separator)
+'
+' Returns:
+'     String
+'
+' Remarks:
+'     Example: TimeString("hh:nn:ss", 5) returns "00:05:34,24532"
+'
 '---------------------------------------------------------------------------------------
 Public Property Get TimeString(Optional sSecFormatString As String = "hh:nn:ss", _
                                 Optional iMSecDigits As Long = 3) As String

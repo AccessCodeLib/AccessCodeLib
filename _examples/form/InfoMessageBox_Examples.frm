@@ -176,7 +176,13 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Form: InfoMessage_Examples
+' Form: InfoMessageBox_Examples
+'---------------------------------------------------------------------------------------
+'
+' Examples for InfoMessageBox
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_examples/form/InfoMessageBox_Examples.frm</file>

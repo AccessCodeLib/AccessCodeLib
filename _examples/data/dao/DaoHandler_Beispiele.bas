@@ -1,15 +1,15 @@
 Attribute VB_Name = "DaoHandler_Beispiele"
 '---------------------------------------------------------------------------------------
-' Beispiele: DaoHandler
+' Package: _examples.data.dao.DaoHandler_Beispiele
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Poetzl
-' <summary>
-' Beispiele zu DaoHandler (DAO-Zugriffsmethoden)
-' </summary>
-' <remarks></remarks>
-'\ingroup data_dao_examples
-'**/
+'
+' Examples for DaoHandler (DAO access methods)
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_examples/data/dao/DaoHandler_Beispiele.bas</file>

@@ -1,17 +1,16 @@
 Attribute VB_Name = "MathTools"
 Attribute VB_Description = "Mathe-Hilfsfunktionen"
 '---------------------------------------------------------------------------------------
-' Modul: MathTools
+' Package: math.MathTools
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' <summary>
-' Mathematische Funktionen
-' </summary>
-' <remarks></remarks>
 '
-' \ingroup math
-'**/
+' Mathematical functions
+'
+' Author:
+'     Sten Schmidt
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>math/MathTools.bas</file>
@@ -29,15 +28,12 @@ Option Private Module
 '---------------------------------------------------------------------------------------
 ' Enum: MidpointRounding
 '---------------------------------------------------------------------------------------
-'/**                                            '<-- Start Doxygen-Block
-' <summary>
-' Verfügbare Rundungsverfahren für die Round-Funktion
-' </summary>
-' <list type="table">
-'   <item><term>ToEven (1)</term><description>Mathematisches Runden nach dem IEEE-754-Standard</description></item>
-'   <item><term>AwayFromZero (2)</term><description>Kaufmännisches Runden</description></item>
-' </list>
-'**/                                            '<-- Ende Doxygen-Block
+'
+' Available rounding methods for the Round function
+'
+' ToEven (1) - Mathematical rounding according to IEEE 754
+' AwayFromZero (2) - Commercial rounding (away from zero)
+'
 '---------------------------------------------------------------------------------------
 Public Enum MidpointRounding
     ToEven
@@ -47,17 +43,17 @@ End Enum
 '---------------------------------------------------------------------------------------
 ' Function: Round
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Ersetzt die VBA Round-Funktion und erweitert diese um den Rundungstyp AwayFromZero
-' </summary>
-' <param name="number">Nummerischer Ausdruck der gerundet wird</param>
-' <param name="numDigitsAfterDecimal">Zahl, die angibt, wie viele Stellen rechts vom Dezimalpunkt beim Runden berücksichtigt werden</param>
-' <param name="midpointRoundingType">Rundungsverfahren</param>
-' <returns>Variant (Nummeric)</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Replaces the VBA Round function and extends it by the rounding type AwayFromZero
+'
+' Parameters:
+'     number                - Numeric expression to be rounded
+'     numDigitsAfterDecimal - Number of digits to the right of the decimal point to round to
+'     midpointRoundingType  - Rounding method
+'
+' Returns:
+'     Variant (Nummeric)
+'
 '---------------------------------------------------------------------------------------
 Public Function Round(ByVal Number As Variant, _
                       Optional ByVal numDigitsAfterDecimal As Long = 0, _
@@ -79,18 +75,20 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: Fact
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Berechnet die Fakultät einer natürlichen Zahl
-' </summary>
-' <param name="number">Nummerischer Ausdruck vom dem die Fakultät berechnet wird.</param>
-' <returns>Variant (Nummeric)</returns>
-' <remarks>
-' Im Wertebereich zwischen 0 und 27 wird das exakte Ergebnis als Decimal zurück
-' gegeben. Zwischen 28 und 170 wird die Faktutät mit verringerter Genauigkeit
-' als Double ermittelt. Bei allen übrigen Parametern wird Null zurückgegeben.
-' </remarks>
-'**/
+'
+' Calculates the factorial of a natural number
+'
+' Parameters:
+'     number - Numeric expression whose factorial is calculated.
+'
+' Returns:
+'     Variant (Nummeric)
+'
+' Remarks:
+'     For values between 0 and 27, the exact result is returned as Decimal.
+'     Between 28 and 170, the factorial is calculated with reduced precision
+'     as Double. For all other values, Null is returned.
+'
 '---------------------------------------------------------------------------------------
 Public Function Fact(ByVal Number As Integer) As Variant
     

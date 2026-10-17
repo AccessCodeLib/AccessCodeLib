@@ -1,15 +1,15 @@
 Attribute VB_Name = "modExcel_Tools"
 '---------------------------------------------------------------------------------------
-' Module: modExcel_Tools (Josef Pötzl)
+' Package: api.office.excel.modExcel_Tools
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Hilfsfunktionen für Excel
-' </summary>
-' <remarks>
-' </remarks>
-'\ingroup api_office
-'**/
+'
+' Helper functions for Excel
+'
+' Author:
+'     Josef Pötzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>api/office/excel/modExcel_Tools.bas</file>

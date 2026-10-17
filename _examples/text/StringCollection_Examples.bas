@@ -1,12 +1,16 @@
 Attribute VB_Name = "StringCollection_Examples"
 '---------------------------------------------------------------------------------------
-' Beispiel-Modul: StringCollection_Examples
+' Package: _examples.text.StringCollection_Examples
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Poetzl
-' \brief        Beispiel zur Verwendung der StringCollection-Klasse
-' \ingroup text
-'**/
+'
+' Example module for StringCollection
+' Example for using the StringCollection class
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_examples/text/StringCollection_Examples.bas</file>

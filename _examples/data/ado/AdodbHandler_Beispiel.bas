@@ -3,9 +3,13 @@ Option Compare Database
 Option Explicit
 
 
+'---------------------------------------------------------------------------------------
+' Package: _examples.data.ado.AdodbHandlerBeispiel
+'---------------------------------------------------------------------------------------
 '
-' Beispiel-Code für den Einsatz von AdodbHandler
+' Example code for using AdodbHandler
 '
+'---------------------------------------------------------------------------------------
 
 '<codelib>
 '  <file>_examples/data/ado/AdodbHandler_Beispiel.bas</file>

@@ -18,7 +18,10 @@ Attribute VB_Exposed = False
 '
 ' Remarks:
 '     Activation in the _config_Application module:
-' <code>ExtensionsCollectionReferenz.Add New ApplicationHandler_AppFile</code>
+'
+'     (start code)
+'     ExtensionsCollectionReferenz.Add New ApplicationHandler_Version
+'     (end)
 '
 '---------------------------------------------------------------------------------------
 

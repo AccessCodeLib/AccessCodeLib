@@ -8,13 +8,14 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
+' Class: _test.file.FileToolsTests
 ' AccUnit:TestClass
 '---------------------------------------------------------------------------------------
-'/**
-'\short     AccUnit-Testklasse für FileTools
-' <remarks>
-' </remarks>
-'**/
+'
+' AccUnit test class for FileTools
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_test/file/FileToolsTests.cls</file>
@@ -95,7 +96,7 @@ End Sub
 'AccUnit:Row("c:\test.accdb", ".accdb").Name = "LocalPath"
 'AccUnit:Row("\\myserver\myshare\test.ACCDB", ".ACCDB").Name = "UNC"
 Public Sub GetFileExtension_FilePath_ReturnsFileExtension(ByVal FilePath As String, ByVal Expected As String)
-    Assert.That FileTools.GetFileExtension(FilePath), Iz.EqualTo(Expected)
+    Assert.That FileTools.GetFileExtension(FilePath, True), Iz.EqualTo(Expected)
 End Sub
 
 Public Sub FileExists_EmptyPath_ReturnsFalse()

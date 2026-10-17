@@ -8,16 +8,19 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klasse: FilterControlCollection
+' Class: form.filter.FilterControlCollection
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Poetzl
-' <summary>
-' Sammlung von Formular-Steuerelementen zur Filtererstellung
-' </summary>
-' <remarks>Wird in FilterControlManager verwendet</remarks>
-' \ingroup data
-'**/
+'
+' Collection of form controls for building filters
+'
+' Author:
+'     Josef Poetzl
+'
+' Remarks:
+'     Used in FilterControlManager
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>form/filter/FilterControlCollection.cls</file>
@@ -219,17 +222,17 @@ Private Function InsertEventValues(ByVal StringToCheck As String) As String
    
    Dim FilterValueCode As String
    Dim FilterValue As String
-   Dim Pos As String
+   Dim pos As String
    Dim TempString As String
    
    For i = 1 To ArraySize
    
-      Pos = InStr(1, CheckStringArray(i), ")")
-      FilterValueCode = Left(CheckStringArray(i), Pos - 1)
+      pos = InStr(1, CheckStringArray(i), ")")
+      FilterValueCode = Left(CheckStringArray(i), pos - 1)
       
-      Pos = InStr(Pos, CheckStringArray(i), "]")
+      pos = InStr(pos, CheckStringArray(i), "]")
       
-      TempString = Mid(CheckStringArray(i), Pos + 1)
+      TempString = Mid(CheckStringArray(i), pos + 1)
       
       FilterValue = "Null"
       RaiseEvent FilterValueRequest(FilterValueCode, FilterValue)

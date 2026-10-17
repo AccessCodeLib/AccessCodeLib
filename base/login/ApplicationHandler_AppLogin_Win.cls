@@ -8,18 +8,20 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: ApplicationHandler_WinLogin
+' Class: base.login.ApplicationHandler_AppLogin_Win
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Erweiterung für ApplicationHandler-Klasse
-' </summary>
-' <remarks>
-' Aktivierung im _config_Application-Modul:
-' <code>AddApplicationHandlerExtension New ApplicationHandler_AppLogin_Win</code>
-' </remarks>
-'\ingroup base
-'**/
+'
+' Extension for ApplicationHandler class: application login with Windows user
+'
+' Remarks:
+'     Activation in the _config_Application module:
+'
+'     (start code)
+'     AddApplicationHandlerExtension New ApplicationHandler_AppLogin_Win
+'     (end)
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>base/login/ApplicationHandler_AppLogin_Win.cls</file>
@@ -209,16 +211,14 @@ Private Sub m_ApplicationHandler_BeforeStartApplication(ResumeMode As Applicatio
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Function: Login (Josef Pötzl, 2009-12-15)
+' Function: Login
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Aufruf des Login-Vorgangs
-' </summary>
-' <returns>True = Login war erfolgreich</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Start the login process
+'
+' Returns:
+'     True = login was successful
+'
 '---------------------------------------------------------------------------------------
 Public Function Login() As Boolean
    
@@ -308,75 +308,55 @@ Private Sub m_LoginForm_Logon(ByVal LoginName As String, ByVal Password As Strin
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Property: Domain (Josef Pötzl, 2009-12-15)
+' Property: Domain
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Domain
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
 '---------------------------------------------------------------------------------------
 Public Property Let Domain(ByVal DomainName As String)
    m_UserDomain = DomainName
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: Domain (Josef Pötzl, 2009-12-15)
+' Property: Domain
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Domain
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
 '---------------------------------------------------------------------------------------
 Public Property Get Domain() As String
    Domain = m_UserDomain
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: LoginNameWithDomain (Josef Pötzl, 2009-12-15)
+' Property: LoginNameWithDomain
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Loginkennung enthält Domain
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Login name contains domain
+'
 '---------------------------------------------------------------------------------------
 Public Property Let LoginNameWithDomain(ByVal WithDomain As Boolean)
    m_LoginNameWithDomain = WithDomain
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: LoginNameWithDomain (Josef Pötzl, 2009-12-15)
+' Property: LoginNameWithDomain
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Loginkennung enthält Domain
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Login name contains domain
+'
 '---------------------------------------------------------------------------------------
 Public Property Get LoginNameWithDomain() As Boolean
    LoginNameWithDomain = m_LoginNameWithDomain
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: CurrentUser (Josef Pötzl, 2009-12-15)
+' Property: CurrentUser
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Aktuell angemeldeter User
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Currently logged in user
+'
 '---------------------------------------------------------------------------------------
 Public Property Get CurrentUser()
    CurrentUser = m_UserName
