@@ -8,15 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: ApplicationHandler_TracingTest (Josef Pötzl, 2010-07-03)
+' Class: _test.base.log.ApplicationHandler_TracingTest
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' ApplicationHandler_Tracing-Test
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Test for ApplicationHandler_Tracing
+'
+' Author:
+'     Josef Pötzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_test/base/log/ApplicationHandler_TracingTest.cls</file>

@@ -1,12 +1,15 @@
 Attribute VB_Name = "FilterStringBuilder_Examples"
 '---------------------------------------------------------------------------------------
-' Example Module: FilterStringBuilder_Examples
+' Package: _examples.data.FilterStringBuilder_Examples
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Poetzl
-' \brief        Example for using the FilterStringBuilder class
-' \ingroup data
-'**/
+'
+' Example for using the FilterStringBuilder class
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_examples/data/FilterStringBuilder_Examples.bas</file>

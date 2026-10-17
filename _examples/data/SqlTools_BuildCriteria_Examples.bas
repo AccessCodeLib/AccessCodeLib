@@ -1,12 +1,16 @@
 Attribute VB_Name = "SqlTools_BuildCriteria_Examples"
 '---------------------------------------------------------------------------------------
-' Beispiel-Modul: SqlTools_BuildCriteria_Examples
+' Package: _examples.data.SqlTools_BuildCriteria_Examples
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Poetzl
-' \brief        Beispiel zur Verwendung der BuildCriteria-Methode der SqlTools-Klasse
-' \ingroup data
-'**/
+'
+' Example module for SqlTools.BuildCriteria
+' Example for using the BuildCriteria method of the SqlTools class
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_examples/data/SqlTools_BuildCriteria_Examples.bas</file>

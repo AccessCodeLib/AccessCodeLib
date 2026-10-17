@@ -8,15 +8,14 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
+' Class: _test.data.odbc.OdbcHandlerTests
 ' AccUnit:TestClass
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Test-Klasse für OdbcHandler
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Test class for OdbcHandler
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_test/data/odbc/OdbcHandlerTests.cls</file>

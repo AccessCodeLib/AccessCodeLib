@@ -7,12 +7,15 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'--------------------------------------------------------------------
+'---------------------------------------------------------------------------------------
+' Class: _test.user.UserHandlerTests
 ' AccUnit:TestClass
-'--------------------------------------------------------------------
-'/**
-' @brief Tests für Benutzerverwaltung/Benutzersteuerung
-'**/
+'---------------------------------------------------------------------------------------
+'
+' Tests for user management/user control
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_test/user/UserHandlerTests.cls</file>

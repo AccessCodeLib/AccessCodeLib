@@ -8,6 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
+' Class: _test.data.odbc.OdbcHandlerHookTests
 ' AccUnit:TestClass
 '---------------------------------------------------------------------------------------
 '
@@ -21,7 +22,6 @@ Attribute VB_Exposed = False
 '
 '---------------------------------------------------------------------------------------
 
-'---------------------------------------------------------------------------------------'---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_test/data/odbc/OdbcHandlerHookTests.cls</file>
 '  <license>_codelib/license.bas</license>

@@ -1,13 +1,16 @@
 Attribute VB_Name = "NetComDomain_Example_ShowWinForm_Minimal"
 '---------------------------------------------------------------------------------------
-' Class Module: NetComDomain_Example_ShowWinForm_Minimal
+' Package: _examples.com.NetComDomain_Example_ShowWinForm_Minimal
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' \brief        Beispiel zur Verwendung der NetComDomain Klasse.
-'               Es wird ein einfaches .NET Winform erzeugt und angezeigt.
-' \ingroup COM
-'**/
+'
+' Example for using the NetComDomain class.
+' A simple .NET WinForm is created and shown.
+'
+' Author:
+'     Sten Schmidt
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_examples/com/NetComDomain_Example_ShowWinForm_Minimal.bas</file>

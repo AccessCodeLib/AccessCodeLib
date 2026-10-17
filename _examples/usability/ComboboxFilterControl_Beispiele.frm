@@ -1900,16 +1900,16 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Form: ComboboxFilterControl-Beispiel
+' Form: ComboboxFilterControl_Beispiele
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Poetzl
-' <summary>
-' Beispiel für die Nutzung der Combobox-Steuerung 'ComboboxFilterControl'
-' </summary>
-' <remarks></remarks>
-'\ingroup usability
-'**/
+'
+' Example for using the combo box control 'ComboboxFilterControl'
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_examples/usability/ComboboxFilterControl_Beispiele.frm</file>

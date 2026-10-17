@@ -8,15 +8,14 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
+' Class: _test.data.DbConnectionHandlerTests
 ' AccUnit:TestClass
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' AccUnit-Testklasse für DbConnectionHandler
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' AccUnit test class for DbConnectionHandler
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_test/data/DbConnectionHandlerTests.cls</file>

@@ -8,15 +8,14 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
+' Class: _test.data.FilterStringBuilderTests
 ' AccUnit:TestClass
-' FilterStringBuilderTests
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' AccUnit-Testklasse für FilterStringBuilder
-' </summary>
-' <remarks></remarks>
-'**/
+'
+' AccUnit test class for FilterStringBuilder
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_test/data/FilterStringBuilderTests.cls</file>

@@ -517,16 +517,16 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class: PdfCreatorExample
+' Form: PdfCreatorExample
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' <summary>
-' Beispiel für die Verwendung von LibPdfCreator
-' </summary>
-' <remarks></remarks>
-'\ingroup usability
-'**/
+'
+' Example for using LibPdfCreator
+'
+' Author:
+'     Sten Schmidt
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_examples/api/pdfcreator/PdfCreatorExample.frm</file>

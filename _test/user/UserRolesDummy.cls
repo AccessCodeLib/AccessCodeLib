@@ -8,8 +8,14 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
+' Class: _test.user.UserRolesDummy
 ' AccUnit:TestRelated
+'---------------------------------------------------------------------------------------
+'
 ' UserRoles dummy (stub/mock)
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_test/user/UserRolesDummy.cls</file>

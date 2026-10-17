@@ -1,12 +1,15 @@
 Attribute VB_Name = "WinApiShellTools_Example"
 '---------------------------------------------------------------------------------------
-' Class Module: WinApiShellTools_Example
+' Package: _examples.api.winapi.WinApiShellTools_Example
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' \brief        Beispiel zur Verwendung der WinApiShellTools Klasse.
-' \ingroup WinAPI
-'**/
+'
+' Example for using the WinApiShellTools class.
+'
+' Author:
+'     Sten Schmidt
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_examples/api/winapi/WinApiShellTools_Example.bas</file>

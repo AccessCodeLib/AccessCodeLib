@@ -8,13 +8,14 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
+' Class: _test.file.FileToolsTests
 ' AccUnit:TestClass
 '---------------------------------------------------------------------------------------
-'/**
-'\short     AccUnit-Testklasse für FileTools
-' <remarks>
-' </remarks>
-'**/
+'
+' AccUnit test class for FileTools
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_test/file/FileToolsTests.cls</file>

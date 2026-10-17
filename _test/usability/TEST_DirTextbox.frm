@@ -221,15 +221,16 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' VBA Document: Form_TEST_DirTextbox (Josef Pötzl, 2009-12-18)
+' Form: TEST_DirTextbox
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Test-Formular für DirTextbox
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Test form for DirTextbox
+'
+' Author:
+'     Josef Pötzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_test/usability/TEST_DirTextbox.frm</file>

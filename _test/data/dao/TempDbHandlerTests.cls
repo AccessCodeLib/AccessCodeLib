@@ -8,6 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
+' Class: _test.data.dao.TempDbHandlerTests
 ' AccUnit:TestClass
 '---------------------------------------------------------------------------------------
 '

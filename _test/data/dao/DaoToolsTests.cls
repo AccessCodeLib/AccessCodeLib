@@ -8,15 +8,14 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
+' Class: _test.data.dao.DaoToolsTests
 ' AccUnit:TestClass
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' AccUnit-Testklasse für DaoTools
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' AccUnit test class for DaoTools
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_test/data/dao/DaoToolsTests.cls</file>
