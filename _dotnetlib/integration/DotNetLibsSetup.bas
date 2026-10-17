@@ -1,18 +1,20 @@
 Attribute VB_Name = "DotNetLibsSetup"
 '---------------------------------------------------------------------------------------
-' Modul: DotNetLibsSetup
+' Package: _dotnetlib.integration.DotNetLibsSetup
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' <summary>
-'  SetupModul, erstellt beim Importieren automatisch die Tabelle usys_AppFiles,
-'  importiert die DotNetLib DLLs und ruft die Initiierung der
-'  DotNetLib Integration auf.
-' </summary>
-' <remarks>
-'  Wird nach dem Importvorgang nicht mehr benötigt.
-' </remarks>
-'**/
+'
+' Setup module: when imported, it automatically creates the table usys_AppFiles,
+' imports the DotNetLib DLLs and calls the initialization of the
+' DotNetLib integration.
+'
+' Author:
+'     Sten Schmidt
+'
+' Remarks:
+'     No longer required after the import.
+'
+'---------------------------------------------------------------------------------------
+
 '<codelib>
 '  <file>_dotnetlib/integration/DotNetLibsSetup.bas</file>
 '  <use>_dotnetlib/integration/DotNetLibs.cls</use>
