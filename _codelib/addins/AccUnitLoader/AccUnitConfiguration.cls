@@ -9,16 +9,13 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Attribute VB_Description = "Konfigurationseinstellungen der CodeLib verwalten"
 '---------------------------------------------------------------------------------------
-' Klassenmodul: AccUnitConfiguration
+' Class: _codelib.addins.AccUnitLoader.AccUnitConfiguration
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Konfigurationseinstellungen verwalten
-' </summary>
-' <remarks>
-' </remarks>
-'\ingroup addins_shared
-'**/
+'
+' Manage configuration settings
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/AccUnitLoader/AccUnitConfiguration.cls</file>

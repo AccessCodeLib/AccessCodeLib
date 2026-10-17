@@ -1,15 +1,12 @@
 Attribute VB_Name = "modTypeLibCheck"
 '---------------------------------------------------------------------------------------
-' Module: modTypeLibCheck
+' Package: _codelib.addins.AccUnitLoader.modTypeLibCheck
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' TypeLib-Referenz setzen
-' </summary>
-' <remarks>
-' </remarks>
-' \ingroup base
-'**/
+'
+' Set the TypeLib reference
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/AccUnitLoader/modTypeLibCheck.bas</file>

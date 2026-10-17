@@ -1,15 +1,14 @@
 Attribute VB_Name = "_AccessCodeLib_license"
 '---------------------------------------------------------------------------------------
+' Package: _codelib._AccessCodeLib_license
+'---------------------------------------------------------------------------------------
+'
+' access-codelib.net license
+'
+' License:
+'---------------------------------------------------------------------------------------
 ' access-codelib.net Lizenz
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' access-codelib.net Lizenz
-' </summary>
-' <remarks>
-'---------------------------------------------------------------------------------------\n
-' access-codelib.net Lizenz                                                             \n
-'---------------------------------------------------------------------------------------\n
 '
 ' Copyright (c) access-codelib.net
 ' All rights reserved.
@@ -34,15 +33,16 @@ Attribute VB_Name = "_AccessCodeLib_license"
 ' CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ' SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 '
-'---------------------------------------------------------------------------------------\n
-' BSD-Lizenz im Originial: http://opensource.org/licenses/bsd-license.php               \n
-'---------------------------------------------------------------------------------------\n
+'---------------------------------------------------------------------------------------
+' BSD-Lizenz im Originial: http://opensource.org/licenses/bsd-license.php
+'---------------------------------------------------------------------------------------
 '
 ' Beachten Sie auch die Nutzungsbedingungen von access-codelib.net:
 ' http://access-codelib.net/nutzungsbedingungen.html
 '
-' </remarks>
-'**/
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/license.bas</file>

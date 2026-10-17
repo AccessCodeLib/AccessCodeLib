@@ -1191,13 +1191,11 @@ Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 ' Form: ACLibImportWizardForm
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Wizard-Formular für Import der CodeLib-Elemente
-' </summary>
-' <remarks></remarks>
-'\ingroup ACLibAddInImportWizard
-'**/
+'
+' Wizard form for importing the CodeLib elements
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/ImportWizard/ACLibImportWizardForm.frm</file>

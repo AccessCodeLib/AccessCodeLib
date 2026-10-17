@@ -1,15 +1,12 @@
 Attribute VB_Name = "modVbProject"
 '---------------------------------------------------------------------------------------
-' Module: modVbProject
+' Package: _codelib.addins.AccUnitLoader.modVbProject
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' VBProject ermitteln
-' </summary>
-' <remarks>
-' </remarks>
-' \ingroup base
-'**/
+'
+' Determine the VBProject
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/AccUnitLoader/modVbProject.bas</file>

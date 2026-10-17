@@ -7,26 +7,30 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+'---------------------------------------------------------------------------------------
+' Class: _codelib.templates.ApplicationHandler_NEWCLASS
+'---------------------------------------------------------------------------------------
 '
-'###############################################################
-'##                                                           ##
-'##  %EXTENSION_KEY% durch Kennung der Erweiterung ersetzen!  ##
-'##                                                           ##
-'###############################################################
+' ###############################################################
+' ##                                                           ##
+' ##  Replace %EXTENSION_KEY% with the extension identifier!   ##
+' ##                                                           ##
+' ###############################################################
+'
+' Extension for the ApplicationHandler class
+'
+' Author:
+'     Josef Pötzl
+'
+' Remarks:
+'     Activation in the _config_Application module:
+'
+'     (start code)
+'     AddApplicationHandlerExtension New ApplicationHandler_%EXTENSION_KEY%
+'     (end)
 '
 '---------------------------------------------------------------------------------------
-' Klassenmodul: ApplicationHandler_%EXTENSION_KEY% (Josef Pötzl, 2009-12-11)
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Erweiterung für ApplicationHandler-Klasse
-' </summary>
-' <remarks>
-' Aktivierung im _config_Application-Modul:\n
-' <code>AddApplicationHandlerExtension New ApplicationHandler_%EXTENSION_KEY%</code>
-' </remarks>
-'\ingroup templates
-'**/
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/templates/ApplicationHandler_%EXTENSION_KEY%.cls</file>

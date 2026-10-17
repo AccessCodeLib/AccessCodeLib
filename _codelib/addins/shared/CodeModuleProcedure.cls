@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class: CodeModuleProcedure
+' Class: _codelib.addins.shared.CodeModuleProcedure
 '---------------------------------------------------------------------------------------
 '
 ' Auxiliary class for processing a CodeModule procedure

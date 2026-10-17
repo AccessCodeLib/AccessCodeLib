@@ -8,16 +8,13 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 '---------------------------------------------------------------------------------------
-' Klassenmodul: DebugPrintMatchResultCollector
+' Class: _codelib.addins.AccUnitLoader.DebugPrintMatchResultCollector
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Debug.Print-Ausgabe von Assert.That
-' </summary>
-' <remarks>
-' </remarks>
-'\ingroup addins_shared
-'**/
+'
+' Debug.Print output of Assert.That
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/AccUnitLoader/DebugPrintMatchResultCollector.cls</file>

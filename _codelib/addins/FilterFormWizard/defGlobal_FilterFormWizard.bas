@@ -1,13 +1,12 @@
 Attribute VB_Name = "defGlobal_FilterFormWizard"
 '---------------------------------------------------------------------------------------
-' Modul: defGlobal_FilterFormWizard
+' Package: _codelib.addins.FilterFormWizard.defGlobal_FilterFormWizard
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Anwendungskonfiguration für FilterFormWizard
-' </summary>
-' \ingroup ACLibAddInFilterFormWizard
-'**/
+'
+' Application configuration for FilterFormWizard
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/FilterFormWizard/defGlobal_FilterFormWizard.bas</file>

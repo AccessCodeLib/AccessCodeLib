@@ -1,16 +1,15 @@
 Attribute VB_Name = "defGlobal_AccUnitLoader"
 '---------------------------------------------------------------------------------------
-' Modul: defGlobal_AccUnitLoader
+' Package: _codelib.addins.AccUnitLoader.defGlobal_AccUnitLoader
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' AccUnitLoader
-' </summary>
-' <remarks>
-' Indiviuell gestaltete Config-Module nicht in das Repositiory laden.
-' </remarks>
-' \ingroup ACLibAddInImportWizard
-'**/
+'
+' AccUnitLoader configuration
+'
+' Remarks:
+'     Do not commit individually designed config modules to the repository.
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/AccUnitLoader/defGlobal_AccUnitLoader.bas</file>

@@ -1,7 +1,10 @@
 Attribute VB_Name = "_config_Application"
 '---------------------------------------------------------------------------------------
-' Modul: _config_Application
+' Package: _codelib.addins.AccUnitLoader._config_Application
 '---------------------------------------------------------------------------------------
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/AccUnitLoader/_config_Application.bas</file>
@@ -36,15 +39,12 @@ Private m_Extensions As ApplicationHandler_ExtensionCollection
 '---------------------------------------------------------------------------------------
 ' Sub: InitConfig
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Konfigurationseinstellungen initialisieren
-' </summary>
-' <param name="oCurrentAppHandler">Möglichkeit einer Referenzübergabe, damit nicht CurrentApplication genutzt werden muss</param>
-' <returns></returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Initialize configuration settings
+'
+' Parameters:
+'     CurrentAppHandlerRef - Option to pass a reference so that CurrentApplication does not have to be used
+'
 '---------------------------------------------------------------------------------------
 Public Sub InitConfig(Optional ByRef CurrentAppHandlerRef As ApplicationHandler = Nothing)
    

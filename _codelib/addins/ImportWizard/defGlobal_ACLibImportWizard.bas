@@ -1,16 +1,18 @@
 Attribute VB_Name = "defGlobal_ACLibImportWizard"
 '---------------------------------------------------------------------------------------
-' Modul: AcLib_defGlobal (Josef Pötzl, 2009-12-11)
+' Package: _codelib.addins.ImportWizard.defGlobal_ACLibImportWizard
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Beispiel für Anwendungskonfiguration
-' </summary>
-' <remarks>
-' Indiviuell gestaltete Config-Module nicht in das Repositiory laden.
-' </remarks>
-' \ingroup ACLibAddInImportWizard
-'**/
+'
+' Example of an application configuration
+'
+' Author:
+'     Josef Pötzl
+'
+' Remarks:
+'     Do not commit individually designed config modules to the repository.
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>_codelib/addins/ImportWizard/defGlobal_ACLibImportWizard.bas</file>
@@ -113,16 +115,16 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Function: GetACLibFileManager
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Gibt die Filemanager-Referenz nach außen weiter
-' </summary>
-' <returns>ACLibFileManager</returns>
-' <remarks>
-' Über diese Function können andere Add-Ins oder die Anwendung
-' auf den Filemanager des Import-Wizard zugreifen.
-' </remarks>
-'**/
+'
+' Passes on the file manager reference
+'
+' Returns:
+'     ACLibFileManager
+'
+' Remarks:
+'     Other add-ins or the application can use this function
+'     to access the file manager of the import wizard.
+'
 '---------------------------------------------------------------------------------------
 Public Function GetACLibFileManager() As ACLibFileManager
 

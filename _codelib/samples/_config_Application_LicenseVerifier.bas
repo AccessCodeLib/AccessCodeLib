@@ -1,25 +1,19 @@
 Attribute VB_Name = "_config_Application"
+'---------------------------------------------------------------------------------------
+' Package: _codelib.samples._config_Application
+'---------------------------------------------------------------------------------------
 '
-'############################################################################
-'##                                                                        ##
-'##  Individuell gestaltete Config-Module nicht in das Repositiory laden!  ##
-'##                                                                        ##
-'############################################################################
+' Example of an application configuration with license verification
+'
+' Remarks:
+'     Do not commit individually designed config modules to the repository!
+'
+'     Sample data:
+'       Name: Access Code Library
+'       Key:  118F6-F9A9E-0EE83-5A792
 '
 '---------------------------------------------------------------------------------------
-' Modul: _config_Application (Beispiel)
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Beispiel für Anwendungskonfiguration mit Lizenzprüfung
-' </summary>
-' <remarks>
-' Beispieldaten:
-'   Name: Access Code Library
-'   Key:  118F6-F9A9E-0EE83-5A792
-' </remarks>
-'\ingroup base
-'**/
+
 '<codelib>
 '  <file>_codelib/samples/_config_Application_LicenseVerifier.bas</file>
 '  <use>base/modApplication.bas</use>
@@ -36,8 +30,6 @@ Attribute VB_Name = "_config_Application"
 Option Compare Database
 Option Explicit
 
-'/** \addtogroup base
-'@{ **/
 
 Private Const m_ApplicationName As String = "Access Code Library: Lizenzprüfung"
 Private Const m_ApplicationFullName As String = m_ApplicationName
@@ -65,15 +57,12 @@ End Enum
 '---------------------------------------------------------------------------------------
 ' Sub: InitConfig
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Konfigurationseinstellungen initialisieren
-' </summary>
-' <param name="oCurrentAppHandler">Möglichkeit einer Referenzübergabe, damit nicht CurrentApplication genutzt werden muss</param>
-' <returns></returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Initialize configuration settings
+'
+' Parameters:
+'     oCurrentAppHandler - Option to pass a reference so that CurrentApplication does not have to be used
+'
 '---------------------------------------------------------------------------------------
 Public Sub InitConfig(Optional oCurrentAppHandler As ApplicationHandler = Nothing)
 
@@ -140,4 +129,3 @@ End Sub
 '----------------------------------------------------------------------------
 
 
-'/** @} **/ '<-- Ende der Doxygen-Gruppen-Zuordnung
