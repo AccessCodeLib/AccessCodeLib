@@ -371,7 +371,7 @@ End Function
 ' Function: ParamQueryDefSql
 '---------------------------------------------------------------------------------------
 '
-' Temporäres QueryDef-Objekt ink. übergebenen Parameterwerten öffnen
+' Open temporary QueryDef object incl. passed parameter values
 '
 ' Parameters:
 '     ParamSqlText   - SQL statement for the temporary QueryDef object
@@ -1053,11 +1053,11 @@ End Function
 ' Function: InsertValuesReturnFieldValue
 '---------------------------------------------------------------------------------------
 '
-' Ropen ecordset and append values, returns value of a defined data field
+' Open recordset and append values, returns value of a defined data field
 '
 ' Parameters:
 '     Source                  - Insert data source
-'     ReturnFieldNameOrIndex  - Datenfeld für Wertrückgabe</param>
+'     ReturnFieldNameOrIndex  - Data field (name or index) for the return value
 '     FieldsAndValues         - ParamArray: "Field1", Value1, "Field2", Value2, ....
 '
 ' Returns:

@@ -933,7 +933,7 @@ End Function
 ' Function: RelinkPassThroughQueries
 '---------------------------------------------------------------------------------------
 '
-' Alle Pass-Through-Abfragen neu verknüpfen
+' Relink all pass-through queries
 '
 ' Parameters:
 '     SavePWD     - Save ODBC password in linked table
