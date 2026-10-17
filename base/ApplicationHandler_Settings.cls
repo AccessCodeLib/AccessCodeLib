@@ -8,20 +8,26 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: ApplicationHandler_Settings
+' Class: base.ApplicationHandler_Settings
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Erweiterung für ApplicationHandler-Klasse: Einstellungen
-' </summary>
-' <remarks>
-' Aktivierung im _config_Application-Modul:\n
-' <code>modApplication.AddApplicationHandlerExtension New ApplicationHandler_DbConnection</code>
-' oder mittels ExtensionCollection:\n
-' <code>ExtensionsCollectionReferenz.Add New ApplicationHandler_DbConnection</code>
-' </remarks>
-'\ingroup base
-'**/
+'
+' Extension for ApplicationHandler class: settings
+'
+' Remarks:
+'     Activation in the _config_Application module:
+'
+'     (start code)
+'     modApplication.AddApplicationHandlerExtension New ApplicationHandler_Settings
+'     (end)
+'
+'     or via ExtensionCollection:
+'
+'     (start code)
+'     ExtensionsCollectionReferenz.Add New ApplicationHandler_Settings
+'     (end)
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>base/ApplicationHandler_Settings.cls</file>
@@ -119,13 +125,12 @@ End Sub
 '---------------------------------------------------------------------------------------
 ' Property: Settings
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Referenz auf Scripting.Dictionary für die Einstellungen
-' </summary>
-' <returns>Scripting.Dictionary</returns>
-' <remarks></remarks>
-'**/
+'
+' Reference to the Scripting.Dictionary holding the settings
+'
+' Returns:
+'     Scripting.Dictionary
+'
 '---------------------------------------------------------------------------------------
 Public Property Get Settings() As Scripting.Dictionary
    If m_Settings Is Nothing Then
@@ -136,14 +141,15 @@ Public Property Get Settings() As Scripting.Dictionary
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: Settings
+' Sub: Add
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Einstellung anfügen
-' </summary>
-' <remarks></remarks>
-'**/
+'
+' Add a setting
+'
+' Parameters:
+'     Key   - Key of the setting
+'     Value - Value of the setting
+'
 '---------------------------------------------------------------------------------------
 Public Sub Add(ByVal Key As String, ByVal Value As Variant)
    Settings.Add Key, Value

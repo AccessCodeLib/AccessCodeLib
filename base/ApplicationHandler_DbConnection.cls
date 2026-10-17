@@ -8,20 +8,26 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: ApplicationHandler_DbConnection
+' Class: base.ApplicationHandler_DbConnection
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Erweiterung für ApplicationHandler-Klasse: Einbindung DbConnectionManager
-' </summary>
-' <remarks>
-' Aktivierung im _config_Application-Modul:\n
-' <code>modApplication.AddApplicationHandlerExtension New ApplicationHandler_DbConnection</code>
-' oder mittels ExtensionCollection:\n
-' <code>ExtensionsCollectionReferenz.Add New ApplicationHandler_DbConnection</code>
-' </remarks>
-'\ingroup base
-'**/
+'
+' Extension for ApplicationHandler class: integration of DbConnectionManager
+'
+' Remarks:
+'     Activation in the _config_Application module:
+'
+'     (start code)
+'     modApplication.AddApplicationHandlerExtension New ApplicationHandler_DbConnection
+'     (end)
+'
+'     or via ExtensionCollection:
+'
+'     (start code)
+'     ExtensionsCollectionReferenz.Add New ApplicationHandler_DbConnection
+'     (end)
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>base/ApplicationHandler_DbConnection.cls</file>
@@ -114,15 +120,15 @@ End Sub
 '---------------------------------------------------------------------------------------
 ' Property: ConnectionManager
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Zugriff auf DbConnectionManager-Instanz
-' </summary>
-' <returns>DbConnectionManager</returns>
-' <remarks>
-' Beim ersten Zugriff wird die Instanz der DbConnectionManager-Klasse erstellt, falls diese noch nicht vorhanden ist.
-' </remarks>
-'**/
+'
+' Access to the DbConnectionManager instance
+'
+' Returns:
+'     DbConnectionManager
+'
+' Remarks:
+'     The instance of the DbConnectionManager class is created on first access if it does not exist yet.
+'
 '---------------------------------------------------------------------------------------
 Public Property Get ConnectionManager() As DbConnectionManager
 
@@ -136,14 +142,12 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Function: CheckConnectionStatus
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Testen, ob Verbindungsaufbau möglich ist
-' </summary>
-' <returns>Boolean: True = Verbindungsaufbau war erfolgreich</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Test whether a connection can be established
+'
+' Returns:
+'     Boolean: True = connection was established successfully
+'
 '---------------------------------------------------------------------------------------
 Public Function CheckConnectionStatus() As Boolean
    CheckConnectionStatus = ConnectionManager.CheckConnectionStatus
@@ -152,15 +156,15 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Property: ConnectionInfo
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' DbConnectionInfo-Instanz der Anwendung.
-' </summary>
-' <returns>DbConnectionInfo</returns>
-' <remarks>
-' Dient zum Ausgeben von Informationen zur Datenbankverbindung
-' </remarks>
-'**/
+'
+' DbConnectionInfo instance of the application
+'
+' Returns:
+'     DbConnectionInfo
+'
+' Remarks:
+'     Used to output information about the database connection
+'
 '---------------------------------------------------------------------------------------
 Public Property Get ConnectionInfo() As DbConnectionInfo
    Set ConnectionInfo = ConnectionManager.ConnectionInfo
@@ -169,15 +173,15 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: DbConnection
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' DbConnectionHandler-Instanz = oberste Ebene der Zugriffsstruktur
-' </summary>
-' <returns>DbConnectionHandler</returns>
-' <remarks>
-' Kapselt ADODB- und DAO-Methoden sowie ODBC-Zugriffe
-' </remarks>
-'**/
+'
+' DbConnectionHandler instance = top level of the data access structure
+'
+' Returns:
+'     DbConnectionHandler
+'
+' Remarks:
+'     Encapsulates ADODB and DAO methods as well as ODBC access
+'
 '---------------------------------------------------------------------------------------
 Public Property Get DbConnection() As DbConnectionHandler
    Set DbConnection = ConnectionManager.DbConnection

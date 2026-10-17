@@ -215,6 +215,9 @@ End Sub
 '
 ' Application start
 '
+' Parameters:
+'     ResumeMessage - (ByRef) message returned by the extensions handling the start
+'
 ' Returns:
 '     Boolean     - true = success
 '
@@ -344,7 +347,7 @@ Public Property Let ApplicationFullName(ByVal AppName As String)
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: ApplicationVersion
+' Property: Version
 '---------------------------------------------------------------------------------------
 '
 ' Application version
@@ -368,7 +371,7 @@ Public Property Let Version(ByVal AppVersion As String)
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: ApplicationStartForm
+' Property: ApplicationStartFormName
 '---------------------------------------------------------------------------------------
 '
 ' Form opened in the method <Start>

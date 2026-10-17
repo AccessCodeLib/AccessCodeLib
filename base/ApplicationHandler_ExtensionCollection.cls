@@ -18,16 +18,17 @@ Attribute VB_Exposed = False
 '
 ' Remarks:
 '     Use in the _config_Application module:
-' <code>
-'   Set m_Extensions = New ApplicationHandler_ExtensionCollection
-'   With m_Extensions
-'      Set .ApplicationHandler = oCurrentAppHandler
 '
-'      ' Load extensions (e.g. ApplicationHandler_DbConnection):
-'      .Add New ApplicationHandler_DbConnection
+'     (start code)
+'     Set m_Extensions = New ApplicationHandler_ExtensionCollection
+'     With m_Extensions
+'        Set .ApplicationHandler = oCurrentAppHandler
 '
-'   End With
-' </code>
+'        ' Load extensions (e.g. ApplicationHandler_DbConnection):
+'        .Add New ApplicationHandler_DbConnection
+'
+'     End With
+'     (end)
 '
 '---------------------------------------------------------------------------------------
 

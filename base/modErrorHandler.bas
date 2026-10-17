@@ -126,39 +126,38 @@ End Property
 ' Standard procedure for error handling
 '
 ' Parameters:
-'     ErrNumber"></param>
-'     ErrSource"></param>
-'     ErrDescription"></param>
-'     ErrHandlerMode"></param>
+'     ErrNumber      - Error number
+'     ErrSource      - Error source (e.g. procedure name)
+'     ErrDescription - (optional) Error description
+'     ErrHandlerMode - (optional) Error handler mode (ACLibErrorHandlerMode)
 '
 ' Returns:
 '     ACLibErrorResumeMode
 '
-' Remarks:
-'Example:
-'<code>
-'Private Sub ExampleProc()
+' Example:
+'     (start code)
+'     Private Sub ExampleProc()
 '
-'On Error GoTo HandleErr
+'     On Error GoTo HandleErr
 '
-'[...]
+'     [...]
 '
-'ExitHere:
-'On Error Resume Next
-'   Exit Sub
+'     ExitHere:
+'     On Error Resume Next
+'        Exit Sub
 '
-'HandleErr:
-'   Select Case HandleError(Err.Number, "ExampleProc", Err.Description)
-'   Case ACLibErrorResumeMode.aclibErrResume
-'      Resume
-'   Case ACLibErrorResumeMode.aclibErrResumeNext
-'      Resume Next
-'   Case Else
-'      Resume ExitHere
-'   End Select
+'     HandleErr:
+'        Select Case HandleError(Err.Number, "ExampleProc", Err.Description)
+'        Case ACLibErrorResumeMode.aclibErrResume
+'           Resume
+'        Case ACLibErrorResumeMode.aclibErrResumeNext
+'           Resume Next
+'        Case Else
+'           Resume ExitHere
+'        End Select
 '
-'End Sub
-'<code>
+'     End Sub
+'     (end)
 '
 '---------------------------------------------------------------------------------------
 Public Function HandleError(ByVal ErrNumber As Long, ByVal ErrSource As String, _

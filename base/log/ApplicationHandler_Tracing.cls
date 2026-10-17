@@ -8,18 +8,23 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: ApplicationHandler_Tracing (Josef Pötzl, 2010-07-02)
+' Class: base.log.ApplicationHandler_Tracing
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Erweiterung für ApplicationHandler-Klasse: Ablaufverfolgung
-' </summary>
-' <remarks>
-' Aktivierung im _config_Application-Modul:\n
-' <code>modApplication.AddApplicationHandlerExtension New ApplicationHandler_Tracing</code>
-' </remarks>
-'\ingroup base.log
-'**/
+'
+' Extension for ApplicationHandler class: tracing
+'
+' Author:
+'     Josef Pötzl
+'
+' Remarks:
+'     Activation in the _config_Application module:
+'
+'     (start code)
+'     modApplication.AddApplicationHandlerExtension New ApplicationHandler_Tracing
+'     (end)
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>base/log/ApplicationHandler_Tracing.cls</file>
