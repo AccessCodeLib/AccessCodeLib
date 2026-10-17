@@ -145,7 +145,7 @@ Attribute VB_Exposed = False
 '  <use>_dotnetlib/integration/DotNetLibsSetup.bas</use>
 '  <use>file/LibFiles.cls</use>
 '  <license>_codelib/license.bas</license>
-'  <description>Startformular zur initialisierung der ACLib .NET Integration</description>
+'  <description>Start form that (re)initializes the ACLib .NET integration (LibFiles.ReInitialize) and closes itself</description>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
