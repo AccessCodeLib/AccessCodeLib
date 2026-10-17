@@ -81,3 +81,14 @@
 #    A list of keywords that only apply to the comment type when using a
 #    specific programming language.  Each line after the heading is the
 #    keyword and optionally its plural form for list comments.
+
+Comment Type: Form
+
+   Display Name: Form
+   Plural Display Name: Forms
+
+   Scope: Start
+   Flags: Code, Variable Type, Class Hierarchy
+
+   Keywords:
+      form, forms
