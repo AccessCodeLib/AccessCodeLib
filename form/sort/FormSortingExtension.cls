@@ -8,16 +8,13 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class: FormSortingControl
+' Class: form.sort.FormSortingExtension
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Erstellt einen OrderBy-String für ein Endlos-Formular
-' </summary>
-' <remarks>
-' </remarks>
-' \ingroup form
-'**/
+'
+' Creates an OrderBy string for a continuous form
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>form/sort/FormSortingExtension.cls</file>

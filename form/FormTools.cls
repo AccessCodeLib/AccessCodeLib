@@ -8,8 +8,9 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class: FormTools
+' Class: form.FormTools
 '---------------------------------------------------------------------------------------
+'
 ' Procedure collection for forms
 '
 ' Author:

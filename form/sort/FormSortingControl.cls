@@ -8,16 +8,13 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class: FormSortingControl
+' Class: form.sort.FormSortingControl
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Hilfsklasse für FormSortingExtension
-' </summary>
-' <remarks>
-' </remarks>
-' \ingroup form
-'**/
+'
+' Helper class for FormSortingExtension
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>form/sort/FormSortingControl.cls</file>

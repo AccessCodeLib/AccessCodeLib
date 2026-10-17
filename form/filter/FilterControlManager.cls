@@ -8,16 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klasse: FilterControlManager
+' Class: form.filter.FilterControlManager
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Poetzl
-' <summary>
-' Filterstring mit Formular-Steuerelementen erstellen
-' </summary>
-' <remarks></remarks>
-' \ingroup data
-'**/
+'
+' Build filter string with form controls
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>form/filter/FilterControlManager.cls</file>

@@ -8,16 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klasse: FilterControlTagConverter
+' Class: form.filter.FilterControlTagConverter
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Poetzl
-' <summary>
-' Hilfsklasse zum Befüllen der FilterControls (für den FilterControlManager) über Control-Tag-Werte
-' </summary>
-' <remarks></remarks>
-' \ingroup data
-'**/
+'
+' Helper class for filling the FilterControls (for FilterControlManager) via control tag values
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>form/filter/FilterControlTagConverter.cls</file>

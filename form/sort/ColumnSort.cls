@@ -8,13 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: ColumnSort
+' Class: form.sort.ColumnSort
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Andreas Vogt - nach einer Vorlage von Armin Hess (http://www.gaeuwetter.de/access/home/)
-' \brief        Klasse zur Sortierung von Endlosformularen mittels CommandButtons
-' \ingroup usability
-'**/
+'
+' Class for sorting continuous forms by command buttons
+'
+' Author:
+'     Andreas Vogt - based on a template by Armin Hess (http://www.gaeuwetter.de/access/home/)
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>form/sort/ColumnSort.cls</file>

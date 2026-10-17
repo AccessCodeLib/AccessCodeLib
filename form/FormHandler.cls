@@ -8,19 +8,18 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: FormHandler
+' Class: form.FormHandler
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Formularsteuerungsklasse für Access-Formulare (Basisklasse)
-' </summary>
-' <remarks>
-' Vereinfacht die Steuerung von Access-Formularen.
 '
-' DRAFT! - Code muss noch mit ACLib-Modulen kombiniert werden
+' Form control class for Access forms (base class)
 '
-' </remarks>
-'**/
+' Remarks:
+'     Simplifies the control of Access forms.
+'
+'     DRAFT! - code still has to be combined with ACLib modules
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>form/FormHandler.cls</file>
@@ -49,23 +48,24 @@ Private Const SB_LINEDOWN = 1
                               ByVal Hwnd As Long, ByVal wMsg As Long, _
                               ByVal wParam As Long, lParam As Any) As Long
 #End If
-'/**
-' <summary>
-' Einstellmöglichkeit für Datenherkunft des Formulars
-' </summary>
-' <list type="table">
-'   <item><term>DST_Undefined (0)</term><description>nur für Prozedurparameter, damit wird der in FormHanlder gespeicherte DataSourceType verwendet</description></item>
-'   <item><term>DST_FormSource (1)</term><description>SQL-Quelle direkt an Form.RecordSource übergeben, Filter und Sortierung wird per Form.Filter und Form.OrderBy durchgeführt</description></item>
-'   <item><term>DST_SQL (2)</term><description>SQL-Quelle inkl. Filter und Sortierung an Form.RecordSource übergeben</description></item>
-'   <item><term>DST_DAO (3)</term><description>DAO-Recordsetobjekt an Form.Recordset übergeben</description></item>
-'   <item><term>DST_ADO (4)</term><description>ADODB-Recordsetobjekt an Form.Recordset übergeben</description></item>
-'   <item><term>DST_Procedure (5)</term><description>DBMS-Prozedur (T-SQL-Syntax) in ADODB-Recordset ausführen und ADODB-Recordset an Form.Recordset übergeben</description></item>
-'   <item><term>DST_ProcedurePT (6)</term><description>DBMS-Prozedur (T-SQL-Syntax) in gespeicherter Pass-Through-Abfrage eintragen und PT-Abfragenamen an Form.RecordSource übergeben</description></item>
-'   <item><term>DST_SQLPTdao (7)</term><description>SQL-Anweisung (DAO-Syntax) in Pass-Through-Abfrage eintragen und PT-Abfragenamen an Form.RecordSource übergeben</description></item>
-'   <item><term>DST_SQLPTado (8)</term><description>SQL-Anweisung (ADO-Syntax) in Pass-Through-Abfrage eintragen und PT-Abfragenamen an Form.RecordSource übergeben</description></item>
-'   <item><term>DST_DaoParamQueryDef (9)</term><description>An gespeicherte Abfrage Parameter-Werte übergeben und DAO-Recordset (aus Querydef.OpenRecordset) an Form.Recordset übergeben</description></item>
-' </list>
-'**/
+'---------------------------------------------------------------------------------------
+' Enum: FH_DataSourceType
+'---------------------------------------------------------------------------------------
+'
+' Options for the record source of the form
+'
+' DST_Undefined (0) - only for procedure parameters: the DataSourceType stored in FormHandler is used
+' DST_FormSource (1) - pass SQL source directly to Form.RecordSource, filtering and sorting via Form.Filter and Form.OrderBy
+' DST_SQL (2) - pass SQL source incl. filter and sorting to Form.RecordSource
+' DST_DAO (3) - pass DAO recordset object to Form.Recordset
+' DST_ADO (4) - pass ADODB recordset object to Form.Recordset
+' DST_Procedure (5) - execute DBMS procedure (T-SQL syntax) in an ADODB recordset and pass it to Form.Recordset
+' DST_ProcedurePT (6) - write DBMS procedure (T-SQL syntax) into a saved pass-through query and pass the PT query name to Form.RecordSource
+' DST_SQLPTdao (7) - write SQL statement (DAO syntax) into a pass-through query and pass the PT query name to Form.RecordSource
+' DST_SQLPTado (8) - write SQL statement (ADO syntax) into a pass-through query and pass the PT query name to Form.RecordSource
+' DST_DaoParamQueryDef (9) - pass parameter values to a saved query and pass the DAO recordset (from QueryDef.OpenRecordset) to Form.Recordset
+'
+'---------------------------------------------------------------------------------------
 Public Enum FH_DataSourceType
    [_DST_Undefined] = 0 'nur für Prozedurparameter, damit wird der in FormHanlder gespeicherte DataSourceType verwendet
    DST_FormSource = 1
@@ -81,17 +81,18 @@ Public Enum FH_DataSourceType
 End Enum
 
 
-'/**
-' <summary>
-' Spezielle Auswahl von möglichen Datenzugriffseinstellungen (Editmodus)
-' </summary>
-' <list type="table">
-'   <item><term>EM_ReadOnly (0)</term><description>Schreibgeschützt</description></item>
-'   <item><term>EM_Edit (1)</term><description>Änderung möglich</description></item>
-'   <item><term>EM_New (2)</term><description>Neuer DS (Änderung möglich)</description></item>
-'   <item><term>EM_Locked (3)</term><description>Gesperrt (Umschalten auf Edit nicht möglich)</description></item>
-' </list>
-'**/
+'---------------------------------------------------------------------------------------
+' Enum: FH_EditMode
+'---------------------------------------------------------------------------------------
+'
+' Selection of possible data access settings (edit mode)
+'
+' EM_ReadOnly (0) - Read-only
+' EM_Edit (1) - Editing allowed
+' EM_New (2) - New record (editing allowed)
+' EM_Locked (3) - Locked (switching to edit not possible)
+'
+'---------------------------------------------------------------------------------------
 Public Enum FH_EditMode
    EM_ReadOnly = 0
    EM_Edit = 1
@@ -101,18 +102,19 @@ Public Enum FH_EditMode
 End Enum
 
 
-'/**
-' <summary>
-' Spezielle Auswahl von möglichen Formularsteuerelmenten mit besonderer Behandlung
-' </summary>
-' <list type="table">
-'   <item><term>FHC_CloseCommandButton (1)</term><description>Schließen-Schaltfläche</description></item>
-'   <item><term>FHC_SelectionFirstControl (2)</term><description>Steuerelement, das beim deaktiviert/unsichtbar Setzen eines aktiven Steuerelements den Fokus erhalten soll</description></item>
-'   <item><term>FHC_EditModeCommandButton (3)</term><description>Schaltfläche für Bearbeitungsmoduswechsel (Readonly, Edit)</description></item>
-'   <item><term>FHC_EditModeInfoLabel (4)</term><description>Label für Anzeige des aktuellen Bearbeitungsmodues</description></item>
-'   <item><term>FHC_RequeryCommandButton (5)</term><description>Requery-Schaltfläche</description></item>
-' </list>
-'**/
+'---------------------------------------------------------------------------------------
+' Enum: FH_HandledControls
+'---------------------------------------------------------------------------------------
+'
+' Form controls with special handling
+'
+' FHC_CloseCommandButton (1) - Close button
+' FHC_SelectionFirstControl (2) - Control that receives the focus when an active control is disabled/hidden
+' FHC_EditModeCommandButton (3) - Button for switching the edit mode (read-only, edit)
+' FHC_EditModeInfoLabel (4) - Label showing the current edit mode
+' FHC_RequeryCommandButton (5) - Requery button
+'
+'---------------------------------------------------------------------------------------
 Public Enum FH_HandledControls
    FHC_CloseCommandButton = 1
    FHC_SelectionFirstControl = 2
@@ -173,91 +175,123 @@ Private m_SelectFirstFormControl As Access.Control       'SetFocus
 
 ' Events
 
-'/**
-' <summary>
-' Ereignis für Meldungen, die im Frontend behandelt werden sollen.
-' </summary>
-' <param name="Msg">Nachrichtentext</param>
-' <param name="MsgNumber">Nachrichtennummer</param>
-' <remarks></remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: FormHandlerMessage
+'---------------------------------------------------------------------------------------
+'
+' Event for messages to be handled in the frontend.
+'
+' Parameters:
+'     Msg       - Message text
+'     MsgNumber - Message number
+'
+'---------------------------------------------------------------------------------------
 Public Event FormHandlerMessage(ByVal Msg As String, ByVal MsgNumber As Long)
 
-'/**
-' <summary>
-' Ereignis für Fehlermeldungen
-' </summary>
-' <param name="ErrMsg">Fehlermeldung</param>
-' <param name="ErrNumber">Fehlernummer</param>
-' <param name="Response">AcUtilErrorResumeMode-Wert</param>
-' <remarks>Ermöglich die Behebung des Fehlers bzw. die Behandlung des Fehlers im Frontend</remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: FormHandlerError
+'---------------------------------------------------------------------------------------
+'
+' Event for error messages
+'
+' Parameters:
+'     ErrMsg    - Error message
+'     ErrNumber - Error number
+'     Response  - AcUtilErrorResumeMode value
+'
+' Remarks:
+'     Allows the error to be fixed or handled in the frontend
+'
+'---------------------------------------------------------------------------------------
 Public Event FormHandlerError(ByVal ErrMsg As String, ByVal ErrNumber As Long, ByRef Response As Integer)
 
-'/**
-' <summary>
-' Ereignis für Fehlermeldungen, wenn Referenz des Access-Forms auf Nothing steht und benötigt wird.
-' </summary>
-' <param name="ErrMsg">Fehlermeldung</param>
-' <param name="ErrNumber">Fehlernummer</param>
-' <param name="NewForm">Damit kann vom Access-FE erneut das Formobjekt übergeben werden.</param>
-' <remarks></remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: FormHandlerErrorMissingForm
+'---------------------------------------------------------------------------------------
+'
+' Event for error messages if the reference to the Access form is Nothing but required.
+'
+' Parameters:
+'     ErrMsg    - Error message
+'     ErrNumber - Error number
+'     NewForm   - Allows the Access frontend to pass the form object again.
+'
+'---------------------------------------------------------------------------------------
 Public Event FormHandlerErrorMissingForm(ByVal ErrMsg As String, ByVal ErrNumber As Long, ByRef NewForm As Object)
 
-'/**
-' <summary>
-' Ereignis für Fehlermeldungen, wenn Referenz zu <see cref="DbConnection">DbConnection</see> auf Nothing steht und benötigt wird.
-' </summary>
-' <param name="ErrMsg">Fehlermeldung</param>
-' <param name="ErrNumber">Fehlernummer</param>
-' <param name="NewCurrentDbConnection">Damit kann vom Access-Frontend erneut das <see cref="DbConnection">DbConnection-Objekt</see> übergeben werden.</param>
-' <remarks></remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: FormHandlerErrorMissingDbConnection
+'---------------------------------------------------------------------------------------
+'
+' Event for error messages if the reference to <DbConnection> is Nothing but required.
+'
+' Parameters:
+'     ErrMsg                 - Error message
+'     ErrNumber              - Error number
+'     NewCurrentDbConnection - Allows the Access frontend to pass the DbConnection object (<DbConnection>) again.
+'
+'---------------------------------------------------------------------------------------
 Public Event FormHandlerErrorMissingDbConnection(ByVal ErrMsg As String, ByVal ErrNumber As Long, ByRef NewCurrentDbConnection As Object)
 
-'/**
-' <summary>
-' Ereignis-Meldung für Schließen des Access-Forms
-' </summary>
-' <param name="Cancel">ermöglicht Abbruch der Schließen-Aktion</param>
-' <remarks></remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: CloseForm
+'---------------------------------------------------------------------------------------
+'
+' Event raised when the Access form is closed
+'
+' Parameters:
+'     Cancel - allows the close action to be cancelled
+'
+'---------------------------------------------------------------------------------------
 Public Event CloseForm(ByRef Cancel As Boolean)
 
-'/**
-' <summary>
-' Ereignis-Meldung wenn Access-Form-Unload-Ereignis eintritt
-' </summary>
-' <param name="Cancel">ermöglicht Abbruch der Unload-Aktion</param>
-' <remarks>Wird hauptsächlich für sauberes Entladen der Objekt-Referenzen benötigt</remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: AccessFormUnload
+'---------------------------------------------------------------------------------------
+'
+' Event raised when the Access form Unload event occurs
+'
+' Parameters:
+'     Cancel - allows the unload action to be cancelled
+'
+' Remarks:
+'     Mainly required for cleanly releasing the object references
+'
+'---------------------------------------------------------------------------------------
 Public Event AccessFormUnload(ByRef Cancel As Integer)
 
-'/**
-' <summary>
-' Ereignis-Meldung wenn EditMode geändert wurde
-' </summary>
-' <param name="NewMode">Neu gesetzter Modus</param>
-' <remarks></remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: EditModeChanged
+'---------------------------------------------------------------------------------------
+'
+' Event raised when the edit mode has changed
+'
+' Parameters:
+'     NewMode - Newly set mode
+'
+'---------------------------------------------------------------------------------------
 Public Event EditModeChanged(ByVal NewMode As Long)
 
 
-'/**
-' <summary>
-' Ereignis-Meldung wenn Objektreferenzen entfernt wurden
-' </summary>
-' <remarks></remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: Disposed
+'---------------------------------------------------------------------------------------
+'
+' Event raised when object references have been removed
+'
+'---------------------------------------------------------------------------------------
 Public Event Disposed()
 
-'/**
-' <summary>
-' Ereignis-Meldung bevor Änderung der Datensatz-Postion berechnet wird
-' </summary>
-' <remarks>... z.B.: Fokus auf Detailbereich setzen</remarks>
-'**/
+'---------------------------------------------------------------------------------------
+' Event: BeforeCalculateRecordsetPosition
+'---------------------------------------------------------------------------------------
+'
+' Event raised before a change of the record position is calculated
+'
+' Remarks:
+'     ... e.g. set the focus to the detail section
+'
+'---------------------------------------------------------------------------------------
 Public Event BeforeCalculateRecordsetPosition()
 
 
@@ -316,15 +350,14 @@ On Error Resume Next
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Property: ActiveDbConnection (15.09.2007)
+' Property: ActiveDbConnection
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' DbConnection-Objekt das für die Bereitstellung der Daten benutzt wird
-' </summary>
-' <returns>DbConnection</returns>
-' <remarks></remarks>
-'**/
+'
+' DbConnection object used to provide the data
+'
+' Returns:
+'     DbConnection
+'
 '---------------------------------------------------------------------------------------
 Public Property Get ActiveDbConnection() As DbConnectionHandler
 
@@ -342,15 +375,14 @@ Public Property Get ActiveDbConnection() As DbConnectionHandler
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: ActiveDbConnection (15.09.2007)
+' Property: ActiveDbConnection
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Zuweisung einer neuen <see cref="DbConnection">DbConnection</see>
-' </summary>
-' <param name="NewDbConnection">NewDbConnection</param>
-' <remarks></remarks>
-'**/
+'
+' Assign a new <DbConnection>
+'
+' Parameters:
+'     NewDbConnection - New DbConnection object
+'
 '---------------------------------------------------------------------------------------
 Public Property Set ActiveDbConnection(ByRef NewDbConnection As DbConnectionHandler)
 
@@ -360,14 +392,11 @@ Public Property Set ActiveDbConnection(ByRef NewDbConnection As DbConnectionHand
 End Property
 
 '---------------------------------------------------------------------------------------
-' Sub: CloseForm (15.09.2007)
+' Sub: CloseForm
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Access-Formular schließen
-' </summary>
-' <remarks></remarks>
-'**/
+'
+' Close the Access form
+'
 '---------------------------------------------------------------------------------------
 Public Sub CloseForm()
 
@@ -392,18 +421,18 @@ End Sub
 
 
 '---------------------------------------------------------------------------------------
-' Sub: InitDataSource (15.09.2007)
+' Sub: InitDataSource
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Datenquelle einstellen
-' </summary>
-' <param name="lDataSourceType">Art der Datenquelle</param>
-' <param name="sDataSource">Definition der Datenquelle (z.B.: SQL-Anweisung)</param>
-' <param name="sDataSourceNoData">Definition der Datenquelle für leere Liste</param>
-' <param name="sOptionalArg">Optionaler Parameterwert</param>
-' <remarks></remarks>
-'**/
+'
+' Set the data source
+'
+' Parameters:
+'     lDataSourceType   - Type of data source
+'     sDataSource       - Definition of the data source (e.g. SQL statement)
+'     sDataSourceNoData - Definition of the data source for an empty list
+'     sOptionalArg      - Optional parameter value
+'     sOptionalBindingDataSourceName - (optional) Name of the data source used for binding
+'
 '---------------------------------------------------------------------------------------
 Public Sub InitDataSource(ByVal lDataSourceType As FH_DataSourceType, _
                     Optional ByVal sDataSource As String = vbNullString, _
@@ -426,44 +455,39 @@ Public Sub InitDataSource(ByVal lDataSourceType As FH_DataSourceType, _
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Property: DataSourceType (15.09.2007)
+' Property: DataSourceType
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' DataSourceType
-' </summary>
-' <returns>FH_DataSourceType</returns>
-' <remarks></remarks>
-'**/
+'
+' Returns:
+'     FH_DataSourceType
+'
 '---------------------------------------------------------------------------------------
 Public Property Get DataSourceType() As FH_DataSourceType
    DataSourceType = m_DataSourceType
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: DataSourceType (15.09.2007)
+' Property: DataSourceType
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' DataSourceType
-' </summary>
-' <param name="NewDataSourceType">FH_DataSourceType zur Einstellung der Datenquelle</param>
-' <remarks></remarks>
-'**/
+'
+' Parameters:
+'     newType - FH_DataSourceType for setting the data source
+'
 '---------------------------------------------------------------------------------------
 Public Property Let DataSourceType(newType As FH_DataSourceType)
    m_DataSourceType = newType
 End Property
 
 '---------------------------------------------------------------------------------------
-' Sub: RequeryData (15.09.2007)
+' Sub: RequeryData
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Formular-Datensätze aktualisieren
-' </summary>
-' <remarks></remarks>
-'**/
+'
+' Requery the form records
+'
 '---------------------------------------------------------------------------------------
 Public Sub RequeryData()
 
@@ -534,16 +558,15 @@ On Error GoTo 0
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Sub: SetData (15.09.2007)
+' Sub: SetData
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Formular-Datenquelle filtern und sortieren
-' </summary>
-' <param name="sFilterParams">Filterparameter</param>
-' <param name="sOrderByParams">Sortierparamter</param>
-' <remarks></remarks>
-'**/
+'
+' Filter and sort the form record source
+'
+' Parameters:
+'     sFilterParams  - Filter parameters
+'     sOrderByParams - Sort parameters
+'
 '---------------------------------------------------------------------------------------
 Public Sub SetData(Optional ByVal sFilterParams As String = vbNullString, _
                Optional ByVal sOrderByParams As String = vbNullString)
@@ -929,14 +952,11 @@ Private Sub SetData_ProcedurePT(ByVal sFilterParams As String, _
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Sub: SetNoData (15.09.2007)
+' Sub: SetNoData
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Formulardatenbasis entfernen und "NULL-Datensatz" anzeigen
-' </summary>
-' <remarks></remarks>
-'**/
+'
+' Remove the form record source and show a "NULL record"
+'
 '---------------------------------------------------------------------------------------
 Public Sub SetNoData()
 
@@ -961,7 +981,7 @@ Public Sub SetNoData()
 
 End Sub
 
-' Sub: SetNoData (2009-08-10)
+' Sub: SetNoData_ChangeDataSource
 Private Sub SetNoData_ChangeDataSource()
 
    If ActiveForm Is Nothing Then
@@ -992,16 +1012,14 @@ Private Sub SetNoData_ChangeDataSource()
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Procedure : DefaultOrderParams
-' Date     : 15.09.2007
+' Property: DefaultOrderParams
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
 '
-' </summary>
-' <param name="sOrderParams">Parameter für Standard-Sortierung</param>
-' <remarks></remarks>
-'**/
+' Default sort parameters
+'
+' Parameters:
+'     sOrderParams - Parameters for the default sort order
+'
 '---------------------------------------------------------------------------------------
 Public Property Let DefaultOrderParams(sOrderParams As String)
    m_DefaultOrderParams = sOrderParams
@@ -1009,15 +1027,14 @@ End Property
 
 
 '---------------------------------------------------------------------------------------
-' Property: ActiveForm (15.09.2007)
+' Property: ActiveForm
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' verwendetes Access-Form-Objekt
-' </summary>
-' <returns>Access.Form</returns>
-' <remarks></remarks>
-'**/
+'
+' Access form object in use
+'
+' Returns:
+'     Access.Form
+'
 '---------------------------------------------------------------------------------------
 Public Property Get ActiveForm() As Access.Form
 
@@ -1033,15 +1050,14 @@ On Error Resume Next
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: ActiveForm (15.09.2007)
+' Property: ActiveForm
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Access-Form-Objekt welches ListFormHandler steuern soll
-' </summary>
-' <param name="FormRef">zu übergebendes Access-Form</param>
-' <remarks></remarks>
-'**/
+'
+' Access form object to be controlled by the handler
+'
+' Parameters:
+'     FormRef - Access form to be passed
+'
 '---------------------------------------------------------------------------------------
 Public Property Set ActiveForm(ByRef FormRef As Access.Form)
 
@@ -1078,30 +1094,28 @@ End Property
 'End Sub
 
 '---------------------------------------------------------------------------------------
-' Property: DataSourceUniqueFieldName (15.09.2007)
+' Property: DataSourceUniqueFieldName
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Feldbezeichnung der Datenherkunft, die eindeutige Datensatzkennung zurückgibt
-' </summary>
-' <returns>String</returns>
-' <remarks></remarks>
-'**/
+'
+' Field name of the record source that returns the unique record identifier
+'
+' Returns:
+'     String
+'
 '---------------------------------------------------------------------------------------
 Public Property Get DataSourceUniqueFieldName() As String
    DataSourceUniqueFieldName = m_strDataSourceUniqueFieldName
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: DataSourceUniqueFieldName (15.09.2007)
+' Property: DataSourceUniqueFieldName
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Feldbezeichnung der Datenherkunft, die eindeutige Datensatzkennung zurückgibt
-' </summary>
-' <param name="FieldName">Feldbezeichnung der Datenherkunft</param>
-' <remarks></remarks>
-'**/
+'
+' Field name of the record source that returns the unique record identifier
+'
+' Parameters:
+'     FieldName - Field name of the record source
+'
 '---------------------------------------------------------------------------------------
 Public Property Let DataSourceUniqueFieldName(ByVal FieldName As String)
    m_strDataSourceUniqueFieldName = FieldName
@@ -1109,16 +1123,17 @@ End Property
 
 
 '---------------------------------------------------------------------------------------
-' Property: HandledControls (15.09.2007)
+' Property: HandledControls
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Steuerelement(e) mit besonderer Behandlung
-' </summary>
-' <param name="Index">LF_HandledControls-Kennung für auszuwählendes Steuerelement</param>
-' <param name="FormControl">Steuerelement das der LF_HandledControls-Kennung zugeordnet werden soll</param>
-' <remarks></remarks>
-'**/
+'
+' Control(s) with special handling
+'
+' Parameters:
+'     Index - FH_HandledControls identifier of the control to select
+'
+' Returns:
+'     Access.Control
+'
 '---------------------------------------------------------------------------------------
 Public Property Get HandledControls(ByVal Index As FH_HandledControls) As Access.Control
 
@@ -1139,16 +1154,15 @@ Public Property Get HandledControls(ByVal Index As FH_HandledControls) As Access
 End Property
 
 '---------------------------------------------------------------------------------------
-' Property: HandledControls (15.09.2007)
+' Property: HandledControls
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Steuerelement(e) mit besonderer Behandlung
-' </summary>
-' <param name="Index">LF_HandledControls-Kennung für auszuwählendes Steuerelement</param>
-' <returns>Access.Control</returns>
-' <remarks></remarks>
-'**/
+'
+' Control(s) with special handling
+'
+' Parameters:
+'     Index       - FH_HandledControls identifier of the control to select
+'     FormControl - Control to be assigned to the FH_HandledControls identifier
+'
 '---------------------------------------------------------------------------------------
 Public Property Set HandledControls(ByVal Index As FH_HandledControls, ByRef FormControl As Access.Control)
 

@@ -264,15 +264,13 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Form: InfoMessageForm mit Buttons
+' Form: InfoMessageBoxForm_mit_Buttons
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Beispiel-Ersatz-Formular für InfoMessageBoxForm
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Example replacement form for InfoMessageBoxForm (with buttons)
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>form/InfoMessageBoxForm_mit_Buttons.frm</file>
