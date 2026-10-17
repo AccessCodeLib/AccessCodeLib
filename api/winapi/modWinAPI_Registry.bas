@@ -120,7 +120,7 @@ End Function
 '     Root      - HKEY_CLASSES_ROOT, ...
 '     Key       - Key/path
 '     ValueName - Name of the entry
-'     Value     - R�ckgabewert (ByFef)
+'     Value     - Return value (ByRef)
 '
 ' Returns:
 '     Long
