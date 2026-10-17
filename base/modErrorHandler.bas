@@ -89,7 +89,7 @@ Private m_ErrorHandlerLogFile As String
 ' Property: DefaultErrorHandlerMode
 '---------------------------------------------------------------------------------------
 '
-' Default behaviour of error handling
+' Default behavior of error handling
 '
 '---------------------------------------------------------------------------------------
 Public Property Get DefaultErrorHandlerMode() As ACLibErrorHandlerMode

@@ -42,7 +42,7 @@ Private Const DisableStartUpFilterDefaultValue = True
 ' Enum: FF_ViewModeNoFilter
 '---------------------------------------------------------------------------------------
 '
-' Behaviour if no filter is set in the form
+' Behavior if no filter is set in the form
 '
 ' VM_ShowNothing (1) - Show no records
 ' VM_ShowAll (2) - Show all records

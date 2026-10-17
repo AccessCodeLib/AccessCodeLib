@@ -21,7 +21,7 @@ Attribute VB_Exposed = False
 '     (e.g. after switching from the main form to a subform).
 '
 '     Usage:
-'     After initialisation, pass the reference of the form to be monitored to the
+'     After initialization, pass the reference of the form to be monitored to the
 '     FormDataUndoHandler instance via the property FormDataUndoHandler.Form.
 '
 '     Example:

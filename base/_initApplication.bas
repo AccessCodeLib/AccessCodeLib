@@ -3,7 +3,7 @@ Attribute VB_Name = "_initApplication"
 ' Package: base._initApplication
 '---------------------------------------------------------------------------------------
 '
-' Initialising the application
+' Initializing the application
 '
 ' Author:
 '     Josef Poetzl

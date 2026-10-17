@@ -198,7 +198,7 @@ End Sub
 ' Sub: ReInitialize
 '---------------------------------------------------------------------------------------
 '
-' (Re)Initialises the DotNetLib integration
+' (Re)Initializes the DotNetLib integration
 '
 ' Remarks:
 '     Must be executed at every application start

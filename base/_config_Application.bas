@@ -50,7 +50,7 @@ Private m_Extensions As ApplicationHandler_ExtensionCollection
 ' Sub: InitConfig
 '---------------------------------------------------------------------------------------
 '
-' Initialise configuration settings
+' Initialize configuration settings
 '
 ' Parameters:
 '     oCurrentAppHandler - Option to pass a reference so that CurrentApplication does not have to be used
