@@ -8,13 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: LibPdfCreatorOptions
+' Class: api.pdfcreator.LibPdfCreatorOptions
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' \brief        Repräsentiert die PDF-Creator Einstellungen (Druckoptionen)
-' \ingroup PdfCreator
-'**/
+'
+' Represents the PDFCreator settings (print options)
+'
+' Author:
+'     Sten Schmidt
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>api/pdfcreator/LibPdfCreatorOptions.cls</file>

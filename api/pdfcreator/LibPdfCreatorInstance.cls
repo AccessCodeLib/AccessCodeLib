@@ -8,13 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: LibPdfCreatorInstance
+' Class: api.pdfcreator.LibPdfCreatorInstance
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' \brief        Repräsentiert die Instanz eines PDF-Creator Prozesses
-' \ingroup PdfCreator
-'**/
+'
+' Represents the instance of a PDFCreator process
+'
+' Author:
+'     Sten Schmidt
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>api/pdfcreator/LibPdfCreatorInstance.cls</file>

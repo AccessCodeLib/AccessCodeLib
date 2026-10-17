@@ -1,17 +1,16 @@
 Attribute VB_Name = "modWinAPI"
 Attribute VB_Description = "Gebräuchliche WinAPI-Funktionen"
 '---------------------------------------------------------------------------------------
-' Module: modWinAPI
+' Package: api.winapi.modWinAPI
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Gebräuchliche WinAPI-Funktionen
-' </summary>
-' <remarks>
-' Sammlung von API-Deklarationen, die oft benötigt werden
-' </remarks>
-'\ingroup WinAPI
-'**/
+'
+' Common WinAPI functions
+'
+' Remarks:
+'     Collection of frequently needed API declarations
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>api/winapi/modWinAPI.bas</file>
@@ -166,18 +165,18 @@ Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 '---------------------------------------------------------------------------------------
 
 '---------------------------------------------------------------------------------------
-' Function: ShellExecuteOpenFile (Josef Pötzl, 2010-04-19)
+' Function: ShellExecuteOpenFile
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Datei mit ShellExecute öffnen
-' </summary>
-' <param name="sFile">vollständiger Dateiname inkl. Verzeichnis</param>
-' <param name="sAPIOperation">"open", "print", ...</param>
-' <returns>Boolean</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Open file with ShellExecute
+'
+' Parameters:
+'     sFile         - Full file name incl. directory
+'     sAPIOperation - "open", "print", ...
+'
+' Returns:
+'     Boolean
+'
 '---------------------------------------------------------------------------------------
 Public Function ShellExecuteOpenFile(ByVal sFile As String, _
                             Optional ByVal sAPIOperation As String = vbNullString) As Boolean
@@ -217,17 +216,17 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: ShellExecuteSendMail
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Email mit Standard-Programm versenden
-' </summary>
-' <param name="sTo">Empfänger-Adresse</param>
-' <param name="sSubject">Betreff-Zeile</param>
-' <param name="sBody">Email-Text</param>
-' <returns>Boolean</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Send email with the default program
+'
+' Parameters:
+'     sTo      - Recipient address
+'     sSubject - Subject line
+'     sBody    - Email text
+'
+' Returns:
+'     Boolean
+'
 '---------------------------------------------------------------------------------------
 Public Function ShellExecuteSendMail(ByVal sTo As String, _
                                      ByVal sSubject As String, _
@@ -265,20 +264,22 @@ Public Function ShellExecuteSendMail(ByVal sTo As String, _
 End Function
 
 '---------------------------------------------------------------------------------------
-' Function: LaunchAppSynchronous (Josef Pötzl, 2010-04-19)
+' Function: LaunchAppSynchronous
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Anwnedung Synchron ausführen
-' </summary>
-' <param name="strExecutablePathAndName">Ausführbare Datei</param>
-' <param name="sParam">Startparameter der Anwendung</param>
-' <param name="lShowCommand">Fenstermodus</param>
-' <returns>Boolean</returns>
-' <remarks>
-' Code hält so lange an, bis die gestartete Anwendung beendet wurde.
-' </remarks>
-'**/
+'
+' Run application synchronously
+'
+' Parameters:
+'     strExecutablePathAndName - Executable file
+'     sParam                   - Start parameters of the application
+'     lShowCommand             - Window mode
+'
+' Returns:
+'     Boolean
+'
+' Remarks:
+'     Code execution waits until the started application has been closed.
+'
 '---------------------------------------------------------------------------------------
 Public Function LaunchAppSynchronous(ByVal strExecutablePathAndName As String, _
                      Optional ByVal sParam As String = vbNullString, _
@@ -347,18 +348,15 @@ Private Sub WaitForTermination(ByRef typProcessInfo As PROCESS_INFORMATION)
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Sub: SetFormIconFromFile (Josef Pötzl, 2009-12-19)
+' Sub: SetFormIconFromFile
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Spezielles Icon für ein Formular einstellen
-' </summary>
-' <param name="FormRef">Referenz zum Access.Form</param>
-' <param name="IconFilePath">Icon-Datei (vollständige Pfadangabe)</param>
-' <remarks>
 '
-' </remarks>
-'**/
+' Set a special icon for a form
+'
+' Parameters:
+'     FormRef      - Reference to the Access.Form
+'     IconFilePath - Icon file (full path)
+'
 '---------------------------------------------------------------------------------------
 Public Sub SetFormIconFromFile(ByRef FormRef As Access.Form, ByVal IconFilePath As String)
    

@@ -8,13 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: LibPdfCreatorJob
+' Class: api.pdfcreator.LibPdfCreatorJob
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' \brief        Repräsentiert den PDF-Creator Druckauftrag
-' \ingroup PdfCreator
-'**/
+'
+' Represents the PDFCreator print job
+'
+' Author:
+'     Sten Schmidt
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>api/pdfcreator/LibPdfCreatorJob.cls</file>
@@ -75,7 +78,7 @@ End Property
 '    m_isReady = FileTools.FileExists(m_creator.cOutputFilename)
 'End Sub
 
-'Event: Wenn während der Verarbeitung ein Fehler auftritt (ungetestet)
+' Event (disabled): raised if an error occurs during processing (untested)
 'Public Sub m_creator_eError()
 '    Set m_creator_error = m_creator.cError
 '    Err.Raise LibPdfCreatorErrorNumer.UnexpectedPdfCreatorError, "LibPdfCreatorJob", m_creator_error.Description & " - " & m_creator_error.Number

@@ -131,7 +131,7 @@ Private Declare Sub Sleep Lib "kernel32" (ByVal DwMilliseconds As Long)
 '---------------------------------------------------------------------------------------
 
 '---------------------------------------------------------------------------------------
-' Function: ShellExecuteOpenFile
+' Function: Execute
 '---------------------------------------------------------------------------------------
 '
 ' Open file with ShellExecute
@@ -248,7 +248,7 @@ End Function
 ' Function: LaunchAppSynchronous
 '---------------------------------------------------------------------------------------
 '
-' Anwnedung Synchron ausführen
+' Run application synchronously
 '
 ' Parameters:
 '     ExecutablePathAndName   - Executable file
@@ -259,7 +259,7 @@ End Function
 '     Boolean
 '
 ' Remarks:
-'     Code hält so lange an, bis die gestartete Anwendung beendet wurde.
+'     Code execution waits until the started application has been closed.
 '
 '---------------------------------------------------------------------------------------
 Public Function LaunchAppSynchronous(ByVal ExecutablePathAndName As String, _

@@ -13,15 +13,16 @@ Attribute VB_Exposed = False
 '
 ' ShortcutMenu via Win API
 '
+' Remarks:
+' +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'| Adapted variant from API example by Jörg Ostendorp of AEK10
+' +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'
 ' Author:
 '     Josef Poetzl
 '
-' @todo Clean up code and create doc
-'
 ' Remarks:
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-' | Adapted variant from API example by Jörg Ostendorp of AEK10
-'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'     TODO: Clean up code and create doc
 '
 '---------------------------------------------------------------------------------------
 
@@ -385,6 +386,7 @@ End Property
 '     ItemText       - Menu item text
 '     ItemType       - Menu item type
 '     SubMenu        - Number of the assigned submenu
+'     DefaultItem    - (optional) True: menu item is the default item
 '
 '---------------------------------------------------------------------------------------
 Public Sub AddMenuItem(ByVal MenuItemNumber As Long, ByVal ItemText As String, _
@@ -409,11 +411,11 @@ End Sub
 ' Function: OpenMenu
 '---------------------------------------------------------------------------------------
 '
-' Öffnet das Popup-Menü
+' Opens the popup menu
 '
 ' Parameters:
 '     X - desired X position ... can be omitted if Control was specified
-'     X - desired Y-position ... can be omitted if Control was specified
+'     Y - desired Y position ... can be omitted if Control was specified
 '
 ' Returns:
 '     Long - Number of the selected menu item

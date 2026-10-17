@@ -1,16 +1,13 @@
 Attribute VB_Name = "modWinAPI_FileInfo"
 Attribute VB_Description = "Dateiinformationen mit Win-API auslesen"
 '---------------------------------------------------------------------------------------
-' Module: modWinAPI_FileInfo
+' Package: api.winapi.modWinAPI_FileInfo
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Dateiinformationen mit Win-API auslesen
-' </summary>
-' <remarks>
-' </remarks>
-'\ingroup WinAPI
-'**/
+'
+' Read file information with the Win API
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>api/winapi/modWinAPI_FileInfo.bas</file>
@@ -118,23 +115,21 @@ Private Function GetVersion(ByVal sPath As String, _
 
 End Function
 
-'#####################################################
-'
-' Ergänzung:
-'
 '---------------------------------------------------------------------------------------
 ' Function: GetFileVersion
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Ermittelt die Version aus einer Datei
-' </summary>
-' <param name="sFile">vollständiger Pfad zur Datei</param>
-' <returns>Versionskennung</returns>
-' <remarks>
-' Nützlich zum Auslesen von Versionen aus dll-Dateien
-' </remarks>
-'**/
+'
+' Determines the version of a file
+'
+' Parameters:
+'     sFile - Full path of the file
+'
+' Returns:
+'     Version identifier
+'
+' Remarks:
+'     Useful for reading versions of dll files
+'
 '---------------------------------------------------------------------------------------
 Public Function GetFileVersion(ByVal sFile As String) As String
    Dim VerInfo As FILEINFOOUT
