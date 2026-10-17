@@ -38,11 +38,13 @@ this block to import a module with its dependencies, so it must stay valid:
 |---|---|
 | `<file>` | Repository path of the module itself |
 | `<license>` | License module, usually `_codelib/license.bas` |
+| `<replace>` | Repository path of a module that this module replaces (e.g. an older variant or `base/_config_Application.bas`) |
 | `<use>` | Repository path of a required module (one tag per dependency) |
 | `<ref>` | Required library reference |
 | `<test>` | AccUnit test class in `_test/` |
 | `<example>` | Usage example in `_examples/` |
 | `<description>` | One-line description, shown in the catalog |
+| `<execute>` | Procedure call run after the import, e.g. a setup routine (`OptionManagerSetup_SetupTable()`) |
 
 See `data/SqlTools.cls` for an example.
 
