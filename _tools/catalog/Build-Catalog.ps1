@@ -97,10 +97,12 @@ function Get-MalformedTagLines {
 
     $Result = New-Object System.Collections.Generic.List[string]
     foreach ($Line in $BlockLines) {
-        foreach ($Match in [regex]::Matches($Line, '<([a-z]+)>')) {
+        # ignore a trailing comment after a closed tag (e.g. <replace>...</replace> 'note with <file>)
+        $TagText = $Line -replace "(</[a-z]+>)\s*'.*$", '$1'
+        foreach ($Match in [regex]::Matches($TagText, '<([a-z]+)>')) {
             $Tag = $Match.Groups[1].Value
             if ($Tag -eq 'codelib') { continue }
-            if ($Line -notmatch "</$Tag>") {
+            if ($TagText -notmatch "</$Tag>") {
                 $Result.Add($Line.Trim())
                 break
             }

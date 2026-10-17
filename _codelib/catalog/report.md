@@ -8,11 +8,10 @@
 | with `<description>` tag | 120 |
 | header summary only | 0 |
 | no description | 0 |
-| Header issues | 2 |
+| Header issues | 1 |
 
 ## Header issues
 
-- `_dotnetlib/samples/_config_Application.bas`: malformed tag line: `'  <replace>base/_config_Application.bas</replace> 'dieses Modul mit <file> ersetzen ... es darf nur ein Konfig-Datei geben`
 - `_examples/data/FilterStringBuilderNet_Examples.bas`: example not linked by an <example> tag of a library module
 
 ## Variants (same object name)
