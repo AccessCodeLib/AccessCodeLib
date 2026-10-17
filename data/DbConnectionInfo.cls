@@ -163,10 +163,14 @@ Public Event DbmsConnectionInfoCleared()
 Public Event DbmsInfoMessage(ByVal Source As String, ByVal Msg As String, ByVal MsgStyle As VbMsgBoxStyle)
 
 '---------------------------------------------------------------------------------------
-'Event: LoginDataRequired
+' Event: LoginDataRequired
 '---------------------------------------------------------------------------------------
 '
 ' Event raised when username and password required
+'
+' Parameters:
+'     UserName - (ByRef) user name to be set
+'     Password - (ByRef) password to be set
 '
 ' Remarks:
 '     The event is useful to set a password by code
@@ -269,7 +273,7 @@ End Property
 
 
 '---------------------------------------------------------------------------------------
-'Property: DbmsName
+' Property: DbmsName
 '---------------------------------------------------------------------------------------
 '
 ' Name of DBMS (MSJET, MSSQL, MySQL, ORACLE, ODBC)
@@ -439,7 +443,7 @@ End Sub
 ' Property: DbUser
 '---------------------------------------------------------------------------------------
 '
-' Name des Datenbankbenutzers
+' Name of the database user
 '
 ' Parameters:
 '     WithoutServerCheck   -  True = Do not check whether connection data has already been read in.
@@ -742,11 +746,11 @@ End Sub
 ' Function: ChangeDbUserPassword
 '---------------------------------------------------------------------------------------
 '
-' Datenbankpasswort des Benutzers ändern
+' Change the user's database password
 '
 ' Parameters:
-'     NewPassword - New passwort
-'     OldPassword - old passwort
+'     NewPassword - New password
+'     OldPassword - Old password
 '     LoginName   - Login name (If no login name is passed, the current login name is used).
 '     Msg         - ByRef parameter to return an error message if the password could not be changed
 '

@@ -110,14 +110,14 @@ Public Event DbObjectDeleted(ByVal LastDbObjectName As String, ByVal Counter As 
 ' Event: HookInsertIdentityReturn
 '---------------------------------------------------------------------------------------
 '
-' Event for missing OLEDB connection string
+' Hook event for determining the identity value after an insert statement
 '
 ' Parameters:
 '     InsertSql            - SQL text of insert statement
 '     ActiveDb             - ADODB Connection to use
 '     IdentitySelectString - Input string to use
-'     HookResponseMode     - resume action after event call: 0 ... code resume after event, 1 exit function after event
-'     HookResponseMessage  - return value of function (e.g. InsertIdentityReturn) when HookResponseMode <> 0
+'     ResponseMode         - resume action after event call: 0 ... code resume after event, 1 exit function after event
+'     HookResponseMessage  - return value of function (e.g. InsertIdentityReturn) when ResponseMode <> 0
 '
 ' Remarks:
 '     New values can be passed on via the ByRef parameters.
@@ -182,7 +182,7 @@ End Property
 ' Property: CurrentDb
 '---------------------------------------------------------------------------------------
 '
-' DAO.Database-Instanz des Frontends bzw. jener Jet-DB in der die Pass-Through-Abfragen erstellt werden sollen
+' DAO.Database instance of the frontend or of the Jet database in which the pass-through queries are to be created
 '
 '---------------------------------------------------------------------------------------
 Public Property Get CurrentDb() As DAO.Database
@@ -201,10 +201,10 @@ End Property
 ' Property: CurrentDbBE
 '---------------------------------------------------------------------------------------
 '
-' Database-Referenz zum Backend
+' Database reference to the backend
 '
-' Remarks
-'     DAO.Database wird über DBEngine.OpenDatabase("", dbDriverComplete, False, <ConnectionString>) geöffnet.
+' Remarks:
+'     DAO.Database is opened via DBEngine.OpenDatabase("", dbDriverComplete, False, <ConnectionString>).
 '
 '---------------------------------------------------------------------------------------
 Public Property Get CurrentDbBE() As DAO.Database
@@ -267,9 +267,9 @@ End Property
 '
 ' Parameters:
 '     Source            - SQL statement or table or query name
-'     RecordsetType     - DAO.RecordsetTypeEnum (Standard: dbOpenDynaset)
-'     RecordsetOptions  - DAO.RecordsetOptionEnum (Standard: dbSeeChanges)
-'     LockEdit          - DAO.LockTypeEnum (Standard: dbOptimistic)
+'     RecordsetType     - DAO.RecordsetTypeEnum (Default: dbOpenDynaset)
+'     RecordsetOptions  - DAO.RecordsetOptionEnum (Default: dbSeeChanges)
+'     LockEdit          - DAO.LockTypeEnum (Default: dbOptimistic)
 '
 ' Returns:
 '     DAO.Recordset
@@ -297,9 +297,9 @@ End Function
 '
 ' Parameters:
 '     Source            - SQL statement or table or query name
-'     RecordsetType     - DAO.RecordsetTypeEnum (Standard: dbOpenDynaset)
-'     RecordsetOptions  - DAO.RecordsetOptionEnum (Standard: dbSeeChanges+dbSQLPassThrough)
-'     LockEdit          - DAO.LockTypeEnum (Standard: dbOptimistic)
+'     RecordsetType     - DAO.RecordsetTypeEnum (Default: dbOpenDynaset)
+'     RecordsetOptions  - DAO.RecordsetOptionEnum (Default: dbSeeChanges+dbSQLPassThrough)
+'     LockEdit          - DAO.LockTypeEnum (Default: dbOptimistic)
 '
 ' Returns:
 '     DAO.Recordset
@@ -564,6 +564,7 @@ End Function
 '     Expr        - Field name or calculated expression (select part)
 '     Domain      - Table, query or SQL expression for sub-query (FROM part)
 '     Criteria    - (optional) Criteria string (WHERE part)
+'     Distinct    - (optional) True: count distinct values of Expr
 '
 ' Returns:
 '     Long

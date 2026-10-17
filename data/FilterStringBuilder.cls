@@ -194,8 +194,8 @@ End Sub
 ' (uses: data.SqlTools.BuildCriteria)
 '
 ' Parameters:
-'
 '     FieldName            - Field name in the data source to be filtered
+'     FieldDataType        - Data type of the field (SqlFieldDataType)
 '     RelationalOperator   - Relational operator (=, <=, etc.)
 '     Value                - Filter value (can be a single value or an array of values)
 '     Value2               - Optional 2nd filter value (for Between)

@@ -190,6 +190,14 @@ End Function
 '
 ' Create a new instance
 '
+' Parameters:
+'     NewSqlDateFormat          - Output string format for date values
+'     NewSqlBooleanTrueString   - Output string for boolean value True
+'     NewSqlWildCardString      - Wildcard string (e.g. * .. DAO, % .. T-SQL)
+'
+' Returns:
+'     SqlTools
+'
 '---------------------------------------------------------------------------------------
 Public Function NewInstance(ByVal NewSqlDateFormat As String, _
                             ByVal NewSqlBooleanTrueString As String, _
@@ -215,10 +223,10 @@ End Function
 ' Config sql text output format for specific sql dialect
 '
 ' Parameters:
-'
-'     SqlDateFormat - output string format for date values
-'     SqlBooleanTrueString - output string format for boolean values
-'     SqlWildCardString - wildcard string (e.g. * .. dao, % .. T-SQL)
+'     UseDialect                - SQL dialect (SQL_DAO, SQL_TSQL, SQL_Custom)
+'     NewSqlDateFormat          - Output string format for date values
+'     NewSqlBooleanTrueString   - Output string for boolean value True
+'     NewSqlWildCardString      - Wildcard string (e.g. * .. DAO, % .. T-SQL)
 '
 '---------------------------------------------------------------------------------------
 Friend Sub InitSqlDialect(ByVal UseDialect As SqlDialect, _
@@ -391,11 +399,13 @@ End Property
 ' Create SQL criteria string
 '
 ' Parameters:
-'     FieldName            - Field name in the data source to be filtered
-'     RelationalOperator   - Relational operator (=, <=, etc.)
-'     FilterValue          - Filter value (can be a single value or an array of values)
-'     FilterValue2         - Optional 2nd filter value (for Between)
-'     IgnoreValue          - The value for which no filter condition is to be created. (Array transfer of values possible)
+'     FieldName              - Field name in the data source to be filtered
+'     FieldDataType          - Data type of the field (SqlFieldDataType)
+'     RelationalOperator     - Relational operator (=, <=, etc.)
+'     FilterValue            - Filter value (can be a single value or an array of values)
+'     FilterValue2           - Optional 2nd filter value (for Between)
+'     IgnoreValue            - The value for which no filter condition is to be created. (Array transfer of values possible)
+'     DisableIgnoreNullValue - True: Null is not ignored as filter value (creates "Is Null" criteria)
 '
 ' Returns:
 '     SQL criteria string
@@ -611,8 +621,8 @@ End Function
 '     String
 '
 ' Example:
-'        strSQL = "select ... from tabelle where Feld = " & TextToSqlText("ab'cd")
-'     => strSQL = "select ... from tabelle where Feld = 'ab''cd'"
+'        strSQL = "select ... from TableName where FieldName = " & TextToSqlText("ab'cd")
+'     => strSQL = "select ... from TableName where FieldName = 'ab''cd'"
 '
 '---------------------------------------------------------------------------------------
 Public Function TextToSqlText(ByVal Value As Variant, _
@@ -680,7 +690,6 @@ End Function
 '
 ' Parameters:
 '     Value          - Value to convert
-'     FormatString   - Date format (depends on DBMS!)
 '
 ' Returns:
 '     String

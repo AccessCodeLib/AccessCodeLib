@@ -80,14 +80,20 @@ Private Declare Function API_GetTempFilename Lib "kernel32" Alias "GetTempFileNa
 ' Group: Events
 
 '---------------------------------------------------------------------------------------
-' Event: ErrorMissingDbConnection
+' Event: ErrorMissingClientDatabase
 '---------------------------------------------------------------------------------------
 '
-' Event message when DbConnection is missing
+' Event message when the client database is missing
+'
+' Parameters:
+'     ErrMsg                 - Error message
+'     ErrNumber              - Error number
+'     NewClientDatabaseRef   - (ByRef) DAO.Database reference to be set by the frontend
 '
 ' Remarks:
 '     Enables error handling from the frontend
 '
+'---------------------------------------------------------------------------------------
 Public Event ErrorMissingClientDatabase(ByVal ErrMsg As String, ByVal ErrNumber As Long, ByRef NewClientDatabaseRef As DAO.Database)
 
 '---------------------------------------------------------------------------------------
@@ -253,7 +259,7 @@ End Sub
 ' Function: CreateDatabase
 '---------------------------------------------------------------------------------------
 '
-' Erzeugt neue mdb im %Temp%-Verzeichnis
+' Creates a new mdb in the %Temp% folder
 '
 ' Parameters:
 '     OpenSharedMode          - True: opens the database in split mode, False: opens the database in exclusive mode. Default: False
@@ -350,14 +356,14 @@ On Error Resume Next ' Since an error message is useless here.
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Function: CheckTempTable
+' Function: CheckTable
 '---------------------------------------------------------------------------------------
 '
-' CheckTempTable
+' Check table in TempDB (backend), create and link it if required
 '
 ' Parameters:
 '     SourceTableDefName   - Table name in TempDB (backend)
-'     CreateTableDDL       - (optional) DDL statement to create the table if table does not exist.
+'     CreateTableSql       - (optional) DDL statement to create the table if table does not exist.
 '     LinkedTableDefName   - (optional) Table name in frontend (no linked table if empty)
 '
 ' Returns:
@@ -393,11 +399,11 @@ End Function
 ' Function: CreateTable
 '---------------------------------------------------------------------------------------
 '
-' Erstellt Tabelle per DDL-Anweisung
+' Creates a table by DDL statement
 '
 ' Parameters:
 '     SourceTableDefName   - Table name in TempDB (backend)
-'     CreateTableDDL       - DDL statement to create the table if table does not exist.
+'     CreateTableSql       - DDL statement to create the table if table does not exist.
 '     LinkedTableDefName   - (optional) Table name in frontend (no linked table if empty)
 '
 ' Returns:
@@ -652,9 +658,9 @@ End Function
 '
 ' Parameters:
 '     Source            - SQL statement or table or query name
-'     RecordsetType     - DAO.RecordsetTypeEnum (Standard: dbOpenDynaset)
-'     RecordsetOptions  - DAO.RecordsetOptionEnum (Standard: dbSeeChanges)
-'     LockEdit          - DAO.LockTypeEnum (Standard: dbOptimistic)
+'     RecordsetType     - DAO.RecordsetTypeEnum (Default: dbOpenDynaset)
+'     RecordsetOptions  - DAO.RecordsetOptionEnum (Default: dbSeeChanges)
+'     LockEdit          - DAO.LockTypeEnum (Default: dbOptimistic)
 '
 ' Returns:
 '     DAO.Recordset
@@ -674,7 +680,7 @@ End Function
 ' Execute SQL statement
 '
 ' Parameters:
-'     CommandText - SQL statement (String)
+'     Query       - SQL statement (String)
 '     Options     - DAO.RecordsetOptionEnum
 '
 ' Returns:

@@ -8,16 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class: DaoTransactionHandler
+' Class: data.dao.DaoTransactionHandler
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' <summary>
-' Behandlung von Dao Transaktionen
-' </summary>
-' <remarks></remarks>
-'\ingroup data_dao
-'**/
+'
+' Handling of DAO transactions
+'
+' Author:
+'     Sten Schmidt
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>data/dao/DaoTransactionHandler.cls</file>

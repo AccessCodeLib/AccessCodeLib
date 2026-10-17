@@ -61,7 +61,7 @@ Private m_AdoConnectionString As String
 Public Event ErrorMissingCurrentConnection(ByVal Msg As String, ByRef NewCurrentConnection As ADODB.Connection)
 
 '---------------------------------------------------------------------------------------
-' Event: ErrorEmptyOledbConnectionString
+' Event: ErrorEmptyConnectionString
 '---------------------------------------------------------------------------------------
 '
 ' Event for missing OLEDB connection string
@@ -512,6 +512,7 @@ End Function
 '     Expr        - Field name or calculated expression (select part)
 '     Domain      - Table, query or SQL expression for sub-query (FROM part)
 '     Criteria    - (Optional) Criteria string (WHERE part)
+'     Distinct    - (Optional) True: count distinct values of Expr
 '
 ' Returns:
 '     Long
@@ -622,7 +623,8 @@ End Function
 ' Execute insert SQL statement and return last identity value (auto value)
 '
 ' Parameters:
-'     InsertSQL   - Insert SQL statement
+'     InsertSQL       - Insert SQL statement
+'     IdentityTable   - (Optional) Table name for IDENT_CURRENT (MSSQL only)
 '
 ' Returns:
 '     Identity value or NULL if no record was appended
