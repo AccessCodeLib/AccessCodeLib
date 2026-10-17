@@ -10,6 +10,9 @@ Title: Access Code Library
 Subtitle: Reusable VBA code
 
 Timestamp: Last updated yyyy-mm-dd
+Encoding: windows-1252 *.cls
+Encoding: windows-1252 *.bas
+Encoding: windows-1252 *.frm
 
 # This is where you put general information about your project.  None of these
 # settings are required, though Title is recommended.
