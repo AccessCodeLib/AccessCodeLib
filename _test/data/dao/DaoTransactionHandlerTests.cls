@@ -14,6 +14,13 @@ Option Explicit
 ' Class: _test.data.dao.DaoTransactionHandlerTests
 ' AccUnit:TestClass
 '---------------------------------------------------------------------------------------
+
+'<codelib>
+'  <file>_test/data/dao/DaoTransactionHandlerTests.cls</file>
+'  <license>_codelib/license.bas</license>
+'  <use>data/dao/DaoTransactionHandler.cls</use>
+'</codelib>
+'---------------------------------------------------------------------------------------
 '
 '---------------------------------------------------------------------------------------
 ' AccUnit infrastructure for advanced AccUnit features. Do not remove these lines.

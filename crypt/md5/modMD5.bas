@@ -37,7 +37,7 @@ Option Explicit
 ' * *
 ' ******************************************************************************
 '
-' CLASS: MD5
+' CLASS MD5
 '
 ' DESCRIPTION:
 ' This is a class which encapsulates a set of MD5 Message Digest functions.

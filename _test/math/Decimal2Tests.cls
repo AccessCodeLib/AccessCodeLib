@@ -14,6 +14,13 @@ Option Explicit
 ' Class: _test.math.Decimal2Tests
 ' AccUnit:TestClass
 '---------------------------------------------------------------------------------------
+
+'<codelib>
+'  <file>_test/math/Decimal2Tests.cls</file>
+'  <license>_codelib/license.bas</license>
+'  <use>math/Decimal2.cls</use>
+'</codelib>
+'---------------------------------------------------------------------------------------
 '
 '---------------------------------------------------------------------------------------
 ' AccUnit infrastructure for advanced AccUnit features. Do not remove these lines.
