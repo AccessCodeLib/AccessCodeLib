@@ -8,6 +8,18 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
+' Class: form.data.AuditTrail
+'---------------------------------------------------------------------------------------
+'
+' Logs data changes of a bound form (edit, new, delete with old/new values, user, time)
+' to the table tblAuditTrailLog (ADODB)
+'
+' Author:
+'     Andreas Vogt, adapted by Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
+'---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>form/data/AuditTrail.cls</file>
 '  <license>_codelib/license.bas</license>

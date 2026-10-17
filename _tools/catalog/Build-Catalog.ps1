@@ -129,13 +129,6 @@ function Get-References {
 function Get-HeaderSummary {
     param([string[]]$HeaderLines)
 
-    # Doxygen style: <summary> ... </summary>
-    $HeaderText = ($HeaderLines | ForEach-Object { Get-CommentText $_ }) -join ' '
-    if ($HeaderText -match '<summary>\s*(.*?)\s*</summary>') {
-        $Summary = ($Matches[1] -replace '\s+', ' ').Trim()
-        if ($Summary) { return $Summary }
-    }
-
     # NaturalDocs style: "' Class: name", separator, blank, description lines
     $TitlePattern = "^\s*'\s*(Class|Package|Module|Form|Report|Interface|Klasse|Modul|Formular)\s*:"
     for ($i = 0; $i -lt $HeaderLines.Count; $i++) {
