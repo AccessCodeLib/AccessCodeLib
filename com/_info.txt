@@ -1,9 +1,3 @@
 
  COM-Schnittstellen-Elemente
  ---------------------------
-
-Doxygen-Gruppe: COM
-				COM - Component Object Model 
-'/** 
-' @defgroup COM Component Object Model (com)
-'**/

@@ -1,9 +1,3 @@
  
   Allgemeine Module und Klassen, die in den meisten Fällen benötigt werden
  -------------------------------------------------------------------------
-
-Doxygen-Gruppe: BASE
-				Basis-Elemente
-'/** 
-' @defgroup base ACLib-Basis-Elemente (base)
-'**/
