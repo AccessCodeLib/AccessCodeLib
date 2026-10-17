@@ -14,6 +14,13 @@ Option Explicit
 ' Class: _test.utils.AccessProgressBarTests
 ' AccUnit:TestClass
 '---------------------------------------------------------------------------------------
+
+'<codelib>
+'  <file>_test/utils/AccessProgressBarTests.cls</file>
+'  <license>_codelib/license.bas</license>
+'  <use>utils/AccessProgressBar.cls</use>
+'</codelib>
+'---------------------------------------------------------------------------------------
 '
 '---------------------------------------------------------------------------------------
 ' AccUnit infrastructure for advanced AccUnit features. Do not remove these lines.

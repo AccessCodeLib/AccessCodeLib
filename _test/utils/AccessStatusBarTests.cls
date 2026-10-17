@@ -14,6 +14,13 @@ Option Explicit
 ' Class: _test.utils.AccessStatusBarTests
 ' AccUnit:TestClass
 '---------------------------------------------------------------------------------------
+
+'<codelib>
+'  <file>_test/utils/AccessStatusBarTests.cls</file>
+'  <license>_codelib/license.bas</license>
+'  <use>utils/AccessStatusBar.cls</use>
+'</codelib>
+'---------------------------------------------------------------------------------------
 '
 '---------------------------------------------------------------------------------------
 ' AccUnit infrastructure for advanced AccUnit features. Do not remove these lines.

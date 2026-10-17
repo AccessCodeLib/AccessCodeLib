@@ -14,6 +14,13 @@ Option Explicit
 ' Class: _test.text.Base64Tests
 ' AccUnit:TestClass
 '---------------------------------------------------------------------------------------
+
+'<codelib>
+'  <file>_test/text/Base64Tests.cls</file>
+'  <license>_codelib/license.bas</license>
+'  <use>text/Base64.cls</use>
+'</codelib>
+'---------------------------------------------------------------------------------------
 '
 '---------------------------------------------------------------------------------------
 ' AccUnit infrastructure for advanced AccUnit features. Do not remove these lines.
