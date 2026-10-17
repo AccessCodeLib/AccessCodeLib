@@ -88,8 +88,8 @@ Public Property Get IsReady() As Boolean
     IsReady = FileTools.FileExists(m_creator.cOutputFilename)
 End Property
 
-Public Sub SetOptions(ByRef options As LibPdfCreatorOptions)
-    Set m_creator.cOptions = options
+Public Sub SetOptions(ByRef Options As LibPdfCreatorOptions)
+    Set m_creator.cOptions = Options
 End Sub
 
 Public Function StartPrintJob(ByVal RptName As String, ByVal ReportFilter As String) As Boolean

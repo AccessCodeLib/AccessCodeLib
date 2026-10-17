@@ -91,8 +91,8 @@ Public Function cIsAdministrator() As Boolean
     cIsAdministrator = m_clsPdfCreator.cIsAdministrator
 End Function
 
-Public Function cIsPrintable(ByVal filename As String) As Boolean
-    cIsPrintable = m_clsPdfCreator.cIsPrintable(filename)
+Public Function cIsPrintable(ByVal FileName As String) As Boolean
+    cIsPrintable = m_clsPdfCreator.cIsPrintable(FileName)
 End Function
 
 Public Function cPrinterIsInstalled(ByVal PrinterName As String) As Boolean
@@ -121,8 +121,8 @@ End Function
 
 'Subroutines
 
-Public Sub cAddPrintjob(ByVal filename As String) ' Supported file types: Postscript, JPEG, BMP
-    m_clsPdfCreator.cAddPrintjob filename
+Public Sub cAddPrintjob(ByVal FileName As String) ' Supported file types: Postscript, JPEG, BMP
+    m_clsPdfCreator.cAddPrintjob FileName
 End Sub
 
 Public Sub cClearCache()
@@ -174,8 +174,8 @@ Public Sub cMovePrintjobUp(ByVal JobNumber As Long)
     m_clsPdfCreator.cMovePrintjobUp JobNumber
 End Sub
 
-Public Sub cPrintFile(ByVal filename As String)
-    m_clsPdfCreator.cPrintFile filename
+Public Sub cPrintFile(ByVal FileName As String)
+    m_clsPdfCreator.cPrintFile FileName
 End Sub
 
 Public Sub cPrintPDFCreatorTestpage()
@@ -204,12 +204,12 @@ Public Sub cSendMail(ByVal OutputFilename As String, ByVal Recipients As String)
     m_clsPdfCreator.cSendMail OutputFilename, Recipients
 End Sub
 
-Public Sub cShowLogfileDialog(ByVal value As Boolean)
-    m_clsPdfCreator.cShowLogfileDialog value
+Public Sub cShowLogfileDialog(ByVal Value As Boolean)
+    m_clsPdfCreator.cShowLogfileDialog Value
 End Sub
 
-Public Sub cShowOptionsDialog(ByVal value As Boolean)
-    m_clsPdfCreator.cShowOptionsDialog value
+Public Sub cShowOptionsDialog(ByVal Value As Boolean)
+    m_clsPdfCreator.cShowOptionsDialog Value
 End Sub
 
 Public Sub cTestEvent(ByVal EventName As String)
@@ -262,8 +262,8 @@ Public Property Get cIsConverted() As Boolean
     cIsConverted = m_clsPdfCreator.cIsConverted
 End Property
 
-Public Property Let cIsConverted(ByVal value As Boolean)
-    m_clsPdfCreator.cIsConverted = value
+Public Property Let cIsConverted(ByVal Value As Boolean)
+    m_clsPdfCreator.cIsConverted = Value
 End Property
 
 Public Property Get cIsLogfileDialogDisplayed() As Boolean
@@ -278,24 +278,24 @@ Public Property Get cOption(ByVal PropertyName As String) As Variant
     cOption = m_clsPdfCreator.cOption(PropertyName)
 End Property
 
-Public Property Let cOption(ByVal PropertyName As String, ByVal value As Variant)
-    m_clsPdfCreator.cOption(PropertyName) = value
+Public Property Let cOption(ByVal PropertyName As String, ByVal Value As Variant)
+    m_clsPdfCreator.cOption(PropertyName) = Value
 End Property
 
 Public Property Get cOptionProfile(ByVal ProfileName As String, ByVal PropertyName As String) As Variant
     cOptionProfile = m_clsPdfCreator.cOptionProfile(ProfileName, PropertyName)
 End Property
 
-Public Property Let cOptionProfile(ByVal ProfileName As String, ByVal PropertyName As String, ByVal value As Variant)
-    m_clsPdfCreator.cOptionProfile(ProfileName, PropertyName) = value
+Public Property Let cOptionProfile(ByVal ProfileName As String, ByVal PropertyName As String, ByVal Value As Variant)
+    m_clsPdfCreator.cOptionProfile(ProfileName, PropertyName) = Value
 End Property
 
 Public Property Get cOptions() As LibPdfCreatorOptions
     Set cOptions = LibPdfCreatorConverter.ConvertPdfCreatorOption_ToLib(m_clsPdfCreator.cOptions)
 End Property
 
-Public Property Set cOptions(ByVal value As LibPdfCreatorOptions)
-    Set m_clsPdfCreator.cOptions = LibPdfCreatorConverter.ConvertPdfCreatorOption_ToCOM(value)
+Public Property Set cOptions(ByVal Value As LibPdfCreatorOptions)
+    Set m_clsPdfCreator.cOptions = LibPdfCreatorConverter.ConvertPdfCreatorOption_ToCOM(Value)
 End Property
 
 Public Property Get cOptionsNames() As Collection
@@ -334,8 +334,8 @@ Public Property Get cPrinterStop() As Boolean
     cPrinterStop = m_clsPdfCreator.cPrinterStop
 End Property
 
-Public Property Let cPrinterStop(ByVal value As Boolean)
-    m_clsPdfCreator.cPrinterStop = value
+Public Property Let cPrinterStop(ByVal Value As Boolean)
+    m_clsPdfCreator.cPrinterStop = Value
 End Property
 
 Public Property Get cPrintjobFilename(ByVal JobNumber As Long) As String
@@ -362,16 +362,16 @@ Public Property Get cStopURLPrinting() As Boolean
     cStopURLPrinting = m_clsPdfCreator.cStopURLPrinting
 End Property
 
-Public Property Let cStopURLPrinting(ByVal value As Boolean)
-    m_clsPdfCreator.cStopURLPrinting = value
+Public Property Let cStopURLPrinting(ByVal Value As Boolean)
+    m_clsPdfCreator.cStopURLPrinting = Value
 End Property
 
 Public Property Get cVisible() As Boolean
     cVisible = m_clsPdfCreator.cVisible
 End Property
 
-Public Property Let cVisible(ByVal value As Boolean)
-    m_clsPdfCreator.cVisible = value
+Public Property Let cVisible(ByVal Value As Boolean)
+    m_clsPdfCreator.cVisible = Value
 End Property
 
 Public Property Get cWindowState() As Long
@@ -379,8 +379,8 @@ Public Property Get cWindowState() As Long
 End Property
 
 ' Value must be '0 = normal' or '1 = minimized' or '2 = maximized'
-Public Property Let cWindowState(ByVal value As Long)
-    m_clsPdfCreator.cWindowState = value
+Public Property Let cWindowState(ByVal Value As Long)
+    m_clsPdfCreator.cWindowState = Value
 End Property
     
 Public Property Get cWindowsVersion() As String

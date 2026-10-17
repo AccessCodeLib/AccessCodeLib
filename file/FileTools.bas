@@ -341,12 +341,12 @@ End Function
 Public Function FileNameWithoutPath(ByVal FullPath As Variant) As String
 
    Dim Temp As String
-   Dim Pos As Long
+   Dim pos As Long
 
    Temp = Nz(FullPath, vbNullString)
-   Pos = InStrRev(Temp, "\")
-   If Pos > 0 Then
-      FileNameWithoutPath = Mid$(Temp, Pos + 1)
+   pos = InStrRev(Temp, "\")
+   If pos > 0 Then
+      FileNameWithoutPath = Mid$(Temp, pos + 1)
    Else
       FileNameWithoutPath = Temp
    End If
@@ -386,12 +386,12 @@ End Function
 Public Function PathFromFullFileName(ByVal FullFileName As Variant) As String
 
    Dim DirPath As String
-   Dim Pos As Long
+   Dim pos As Long
 
    DirPath = FullFileName
-   Pos = InStrRev(DirPath, "\")
-   If Pos > 0 Then
-      DirPath = Left$(DirPath, Pos)
+   pos = InStrRev(DirPath, "\")
+   If pos > 0 Then
+      DirPath = Left$(DirPath, pos)
    Else
       DirPath = vbNullString
    End If
@@ -579,7 +579,7 @@ Public Function GetFullPathFromRelativPath(ByVal RelativPath As String, _
                                            ByVal BaseDir As String) As String
 
    Dim FullPath As String
-   Dim Pos As Long
+   Dim pos As Long
 
    If Right$(BaseDir, 1) = "\" Then
       BaseDir = Left$(BaseDir, Len(BaseDir) - 1)
@@ -590,9 +590,9 @@ Public Function GetFullPathFromRelativPath(ByVal RelativPath As String, _
       GetFullPathFromRelativPath = FullPath
       Exit Function
    ElseIf Left$(FullPath, 1) = "\" Then 'first dir
-      Pos = InStr(3, BaseDir, "\")
-      If Pos > 0 Then
-         BaseDir = Left$(BaseDir, Pos - 1)
+      pos = InStr(3, BaseDir, "\")
+      If pos > 0 Then
+         BaseDir = Left$(BaseDir, pos - 1)
       End If
       GetFullPathFromRelativPath = BaseDir & FullPath
       Exit Function
@@ -605,9 +605,9 @@ Public Function GetFullPathFromRelativPath(ByVal RelativPath As String, _
 
    Do While Left$(FullPath, 3) = "..\"
       FullPath = Mid$(FullPath, 4)
-      Pos = InStrRev(BaseDir, "\")
-      If Pos > 0 Then
-         BaseDir = Left$(BaseDir, Pos - 1)
+      pos = InStrRev(BaseDir, "\")
+      If pos > 0 Then
+         BaseDir = Left$(BaseDir, pos - 1)
       End If
    Loop
 
@@ -676,14 +676,14 @@ Private Function TryGetRelativPathWithDecreaseBaseDir(ByVal FullPath As String, 
 
    Dim RelativPath As String
    Dim DecreaseCounter As Long
-   Dim Pos As Long
+   Dim pos As Long
    Dim i As Long
 
    RelativPath = BaseDir
 
    Do While InStr(1, FullPath, RelativPath) = 0
-      Pos = InStrRev(Left$(RelativPath, Len(RelativPath) - 1), "\")
-      RelativPath = Left$(RelativPath, Pos)
+      pos = InStrRev(Left$(RelativPath, Len(RelativPath) - 1), "\")
+      RelativPath = Left$(RelativPath, pos)
       DecreaseCounter = DecreaseCounter + 1
       If Len(RelativPath) = 0 Then
          DecreaseCounter = 0

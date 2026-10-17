@@ -61,8 +61,8 @@ Private m_OutputString As String
 Private WithEvents m_ApplicationHandler As ApplicationHandler
 Attribute m_ApplicationHandler.VB_VarHelpID = -1
 
-Public Property Set ApplicationHandlerRef(ByRef objRef As ApplicationHandler)
-   Set m_ApplicationHandler = objRef
+Public Property Set ApplicationHandlerRef(ByRef ObjRef As ApplicationHandler)
+   Set m_ApplicationHandler = ObjRef
 End Property
 
 Public Property Get ExtensionKey() As String
@@ -74,8 +74,8 @@ End Property
 '---------------------------------------------------------------------------------------
 
 ' CheckExtension
-Private Sub m_ApplicationHandler_CheckExtension(ByVal sExtensionKey As String, ByRef exists As Boolean)
-   If sExtensionKey = m_EXTENSION_KEY Then exists = True
+Private Sub m_ApplicationHandler_CheckExtension(ByVal sExtensionKey As String, ByRef Exists As Boolean)
+   If sExtensionKey = m_EXTENSION_KEY Then Exists = True
 End Sub
 
 ' ExtensionLookup
@@ -108,8 +108,8 @@ Public Property Get OutputMode() As TracingOutputMode
    OutputMode = m_OutputMode
 End Property
 
-Public Property Let OutputMode(ByVal newValue As TracingOutputMode)
-   m_OutputMode = newValue
+Public Property Let OutputMode(ByVal NewValue As TracingOutputMode)
+   m_OutputMode = NewValue
 End Property
 
 Public Sub Log(ByVal Msg As String, ParamArray Args() As Variant)
@@ -139,9 +139,9 @@ Private Sub writeTraceLog(ByRef Msg As String, ByVal Args As Variant)
 End Sub
 
 Private Sub traceLog2DebugWindow(ByRef Msg As String, ByRef Args As Variant)
-   Dim tempString As String
-   traceLog2String Msg, Args, tempString
-   Debug.Print tempString
+   Dim TempString As String
+   traceLog2String Msg, Args, TempString
+   Debug.Print TempString
 End Sub
 
 Private Sub traceLog2Memory(ByRef Msg As String, ByRef Args As Variant)
@@ -150,29 +150,29 @@ End Sub
 
 Private Sub traceLog2String(ByRef Msg As String, ByRef Args As Variant, ByRef StringRef As String)
 
-   Dim tempString As String
+   Dim TempString As String
    
    If Not IsMissing(Args) Then
       If IsArray(Args) Then
-         Dim arg As Variant
-         For Each arg In Args
-            tempString = tempString & "," & arg
+         Dim Arg As Variant
+         For Each Arg In Args
+            TempString = TempString & "," & Arg
          Next
-         If Len(tempString) > 1 Then
-            tempString = "(" & Mid(tempString, 2) & ")"
+         If Len(TempString) > 1 Then
+            TempString = "(" & Mid(TempString, 2) & ")"
          End If
       Else
-         tempString = tempString & " (" & Args & ")"
+         TempString = TempString & " (" & Args & ")"
       End If
    End If
    
    
-   tempString = Now() & ": " & Msg & tempString
+   TempString = Now() & ": " & Msg & TempString
  
    If Len(StringRef) > 0 Then
-      tempString = vbNewLine & tempString
+      TempString = vbNewLine & TempString
    End If
-   StringRef = StringRef & tempString
+   StringRef = StringRef & TempString
    
 End Sub
 

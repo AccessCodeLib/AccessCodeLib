@@ -26,7 +26,7 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 - `api/pdfcreator/LibPdfCreatorConverter.cls` (class) [P] - Converts PDFCreator 1.x COM option and error objects to the library classes and back | uses: LibPdfCreatorOptions, LibPdfCreatorError
 - `api/pdfcreator/LibPdfCreatorEnums.cls` (class) [P] - Enums of the PdfCreator package: file formats, option flags, error numbers
 - `api/pdfcreator/LibPdfCreatorError.cls` (class) - Error object of the PdfCreator package (number, description)
-- `api/pdfcreator/LibPdfCreatorFactory.cls` (class) [P] - Factory for the PDFCreator 1.x process instance (LibPdfCreatorInstance) | uses: LibPdfCreatorInstance
+- `api/pdfcreator/LibPdfCreatorFactory.cls` (class) [P] - Factory for the PDFCreator 1.x process instance (LibPdfCreatorInstance) | uses: LibPdfCreatorInstance, LibPdfCreatorComFactory
 - `api/pdfcreator/LibPdfCreatorInstance.cls` (class) - Wrapper for the PDFCreator 1.x process (clsPDFCreator): printers, profiles, options, print state | uses: LibPdfCreatorOptions
 - `api/pdfcreator/LibPdfCreatorJob.cls` (class) - PDFCreator 1.x print job: sets the options and runs the print job of a report | uses: LibPdfCreatorOptions, LibPdfCreatorInstance, FileTools
 - `api/pdfcreator/LibPdfCreatorOptions.cls` (class) - Options of a PDFCreator 1.x job (autosave directory, file format, Ghostscript parameters, ...)
@@ -54,7 +54,7 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 
 - `base/_config_Application.bas` (module) - Application configuration template for the ApplicationHandler framework (InitConfig): application name, version, start form and activated extensions; adapt per application | uses: modApplication, ApplicationHandler
 - `base/_initApplication.bas` (module) - Start procedure of the ApplicationHandler framework (StartApplication, e.g. called from AutoExec) and restore of default settings | uses: modApplication
-- `base/ApplicationHandler.cls` (class) - Core of the ApplicationHandler framework: application start and shutdown, application name/version, logging, extension mechanism via events (extensions: ApplicationHandler_*)
+- `base/ApplicationHandler.cls` (class) - Core of the ApplicationHandler framework: application start and shutdown, application name/version, logging, extension mechanism via events (extensions: ApplicationHandler_*) | uses: modApplication
 - `base/ApplicationHandler_AppFile.cls` (class) - ApplicationHandler extension: stores application files (e.g. icons, templates) in the table usys_AppFiles and extracts them to the file system | uses: ApplicationHandler, WinApiFileInfo
 - `base/ApplicationHandler_DbConnection.cls` (class) - ApplicationHandler extension: provides the DbConnectionManager (backend connection, connection info and status) | uses: ApplicationHandler, DbConnectionManager
 - `base/ApplicationHandler_ExtensionCollection.cls` (class) - Collection that holds and initializes the ApplicationHandler extensions (Add, Dispose) | uses: ApplicationHandler
@@ -199,7 +199,7 @@ Legend: `uses` = direct dependencies (object names), `[P]` = predeclared class (
 - `usability/ApplicationHandler_DirTextbox.cls` (class) - ApplicationHandler extension: directory path completion in a text box while typing (Tab/key navigation through matching folders) | uses: ApplicationHandler, FileTools
 - `usability/CalculationTextBox.cls` (class) [P] - Allows calculation expressions in a text box (e.g. 12*3+5) and writes the result into the control
 - `usability/ComboboxFilterControl.cls` (class) - Search-as-you-type for a combobox: filters the combobox list while typing
-- `usability/OptionManager.cls` (class) [P] - Manages application options in the table tabOptions: read and write values by key or name, keys available as Enum
+- `usability/OptionManager.cls` (class) [P] - Manages application options in the table tabOptions: read and write values by key or name, keys available as Enum | uses: OptionManagerSetup
 - `usability/OptionManagerSetup.bas` (module) - Setup for OptionManager: creates the table tabOptions and a helper module with the option Enum, then removes itself | uses: OptionManager
 
 ## user

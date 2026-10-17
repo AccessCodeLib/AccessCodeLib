@@ -741,7 +741,7 @@ Public Sub LinkTable(ByVal SourceTableName As String, _
 
    Dim dbs As DAO.Database
    Dim tdf As DAO.TableDef
-   Dim Pos As Long
+   Dim pos As Long
    Dim NewConnectionString As String
    
    NewConnectionString = Me.ConnectionString
@@ -753,9 +753,9 @@ Public Sub LinkTable(ByVal SourceTableName As String, _
    If Len(LinkedTableName) = 0 Then
       LinkedTableName = SourceTableName
       If RemoveSchemaName Then
-         Pos = InStr(1, LinkedTableName, ".")
-         If Pos > 0 Then
-            LinkedTableName = Mid$(LinkedTableName, Pos + 1) ' use only text after point
+         pos = InStr(1, LinkedTableName, ".")
+         If pos > 0 Then
+            LinkedTableName = Mid$(LinkedTableName, pos + 1) ' use only text after point
          End If
       End If
       LinkedTableName = Replace(LinkedTableName, ".", "_")

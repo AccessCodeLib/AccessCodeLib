@@ -42,7 +42,7 @@ Public Sub Setup()
    Set TestSqlTools = SqlTools.FromDialect(SqlDialect.SQL_DAO, "\#yyyy-mm-dd\#")
 End Sub
 
-Public Sub TearDown()
+Public Sub Teardown()
    Set FilterCtrCol = Nothing
    Set TestForm = Nothing
    Set TestSqlTools = Nothing

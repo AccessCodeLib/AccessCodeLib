@@ -33,7 +33,7 @@ Public Sub Setup()
    Set m_SqlTools = New SqlTools
 End Sub
 
-Public Sub TearDown()
+Public Sub Teardown()
    Set m_SqlTools = Nothing
 End Sub
 

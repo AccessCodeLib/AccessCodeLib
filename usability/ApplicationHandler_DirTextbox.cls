@@ -116,7 +116,7 @@ Private m_InstanceCollection As Collection
 Private m_InstanceKey As String
 
 Private Const EventProcedurePropertyTag As String = "[Event Procedure]"
-Private WithEvents m_Textbox As Access.Textbox
+Private WithEvents m_Textbox As Access.TextBox
 Attribute m_Textbox.VB_VarHelpID = -1
 Private WithEvents m_AccessForm As Access.Form 'für Überwachung, ob m_Textbox entfert wurde
 Attribute m_AccessForm.VB_VarHelpID = -1
@@ -186,7 +186,7 @@ Private Sub GetInstance(ByVal Key As String, ByRef ExtensionReference As Object)
    'Search for existing InstanceKey and clean up at the same time
    For i = col.Count To 1 Step -1
       Set TempRef = col(i)
-      If TempRef.Textbox Is Nothing And Len(TempRef.InstanceKey) = 0 Then ' Col-Eintrag kann entfernt werden
+      If TempRef.TextBox Is Nothing And Len(TempRef.InstanceKey) = 0 Then ' Col-Eintrag kann entfernt werden
          col.Remove i
       ElseIf TempRef.InstanceKey = Key Then
          Set InstanceRef = TempRef
@@ -298,11 +298,11 @@ End Sub
 ' The text box in which the path is entered
 '
 '---------------------------------------------------------------------------------------
-Public Property Get Textbox() As Access.Textbox
-   Set Textbox = m_Textbox
+Public Property Get TextBox() As Access.TextBox
+   Set TextBox = m_Textbox
 End Property
 
-Public Property Set Textbox(ByVal NewRef As Access.Textbox)
+Public Property Set TextBox(ByVal NewRef As Access.TextBox)
    
    Dim parentObject As Object
 
@@ -346,7 +346,7 @@ Private Sub m_Textbox_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
    Dim MatchString As String
    Dim BaseFolder As String
    Dim TextBoxString As String
-   Dim Pos As Long
+   Dim pos As Long
 
    BaseFolder = BaseFolderPath
    TextBoxString = m_Textbox.Text
@@ -431,9 +431,9 @@ Private Sub m_Textbox_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
             Else
             
                m_FolderPath = SearchString
-               Pos = InStr(1, m_FolderPath, "*")
-               If Pos > 0 Then
-                  m_FolderPath = Left$(m_FolderPath, Pos - 1)
+               pos = InStr(1, m_FolderPath, "*")
+               If pos > 0 Then
+                  m_FolderPath = Left$(m_FolderPath, pos - 1)
                End If
                '
                If Len(BaseFolder) > 0 Then

@@ -22,6 +22,7 @@ Attribute VB_Description = "Hauptsteuerung der Anwendung"
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>base/ApplicationHandler.cls</file>
+'  <use>base/modApplication.bas</use>
 '  <license>_codelib/license.bas</license>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
 '  <description>Core of the ApplicationHandler framework: application start and shutdown, application name/version, logging, extension mechanism via events (extensions: ApplicationHandler_*)</description>

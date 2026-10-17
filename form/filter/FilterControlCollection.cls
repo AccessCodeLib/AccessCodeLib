@@ -222,17 +222,17 @@ Private Function InsertEventValues(ByVal StringToCheck As String) As String
    
    Dim FilterValueCode As String
    Dim FilterValue As String
-   Dim Pos As String
+   Dim pos As String
    Dim TempString As String
    
    For i = 1 To ArraySize
    
-      Pos = InStr(1, CheckStringArray(i), ")")
-      FilterValueCode = Left(CheckStringArray(i), Pos - 1)
+      pos = InStr(1, CheckStringArray(i), ")")
+      FilterValueCode = Left(CheckStringArray(i), pos - 1)
       
-      Pos = InStr(Pos, CheckStringArray(i), "]")
+      pos = InStr(pos, CheckStringArray(i), "]")
       
-      TempString = Mid(CheckStringArray(i), Pos + 1)
+      TempString = Mid(CheckStringArray(i), pos + 1)
       
       FilterValue = "Null"
       RaiseEvent FilterValueRequest(FilterValueCode, FilterValue)

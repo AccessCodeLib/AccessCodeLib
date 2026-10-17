@@ -146,7 +146,7 @@ Friend Sub ConfigSqlFormat(ByVal SqlDateFormat As String, _
                            ByVal SqlWildCardString As String)
    
    If m_SqlTool Is Nothing Then
-      Set m_SqlTool = SqlTools.NewInstance(SqlDateFormat, SqlBooleanTrueString, SqlWildCardString)
+      Set m_SqlTool = SqlTools.newInstance(SqlDateFormat, SqlBooleanTrueString, SqlWildCardString)
       Exit Sub
    End If
 

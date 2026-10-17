@@ -62,7 +62,7 @@ Public Sub UserName_UseDefaultMember_ReturnsString()
    Dim Actual As String
 
    Actual = m_UserHandler
-   Assert.IsNotEmpty Actual
+   Assert.Greater "", Actual
 
 End Sub
 
@@ -114,7 +114,7 @@ Public Sub Roles_UseDummy_ReturnsSameObject()
    Set Expected = m_UserRolesDummy
    Set Actual = m_UserHandler.Roles
    
-   Assert.That Actual, Iz.SameAs(Expected)
+   Assert.That Actual, Iz.EqualTo(Expected) 'Iz.SameAs
 
 End Sub
 

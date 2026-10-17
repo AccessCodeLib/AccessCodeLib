@@ -31,7 +31,7 @@ Public Sub Setup()
    SqlTools.SqlDateFormat = vbNullString
 End Sub
 
-Public Sub TearDown()
+Public Sub Teardown()
    SqlTools.SqlDateFormat = vbNullString
 End Sub
 

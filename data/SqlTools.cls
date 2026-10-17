@@ -180,7 +180,7 @@ Public Function Clone(Optional ByVal NewSqlDateFormat As String = SQL_DEFAULT_DA
    If Len(NewSqlBooleanTrueString) = 0 Then NewSqlBooleanTrueString = Me.SqlBooleanTrueString
    If Len(NewSqlWildCardString) = 0 Then NewSqlWildCardString = Me.SqlWildCardString
 
-   Set Clone = NewInstance(NewSqlDateFormat, NewSqlBooleanTrueString, NewSqlWildCardString)
+   Set Clone = newInstance(NewSqlDateFormat, NewSqlBooleanTrueString, NewSqlWildCardString)
 
 End Function
 
@@ -199,7 +199,7 @@ End Function
 '     SqlTools
 '
 '---------------------------------------------------------------------------------------
-Public Function NewInstance(ByVal NewSqlDateFormat As String, _
+Public Function newInstance(ByVal NewSqlDateFormat As String, _
                             ByVal NewSqlBooleanTrueString As String, _
                             ByVal NewSqlWildCardString As String) As SqlTools
    
@@ -212,7 +212,7 @@ Public Function NewInstance(ByVal NewSqlDateFormat As String, _
       .SqlWildCardString = NewSqlWildCardString
    End With
 
-   Set NewInstance = NewInst
+   Set newInstance = NewInst
 
 End Function
 
@@ -289,7 +289,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 Public Property Get DAO() As SqlTools
    With DaoSqlFormat
-      Set DAO = Me.NewInstance(.SqlDateFormat, .SqlBooleanTrueString, .SqlWildCardString)
+      Set DAO = Me.newInstance(.SqlDateFormat, .SqlBooleanTrueString, .SqlWildCardString)
    End With
 End Property
 
@@ -314,7 +314,7 @@ End Property
 '---------------------------------------------------------------------------------------
 Public Property Get TSql() As SqlTools
    With TSqlSqlFormat
-      Set TSql = Me.NewInstance(.SqlDateFormat, .SqlBooleanTrueString, .SqlWildCardString)
+      Set TSql = Me.newInstance(.SqlDateFormat, .SqlBooleanTrueString, .SqlWildCardString)
    End With
 End Property
 
@@ -1351,17 +1351,17 @@ Private Function ValuesAreEqual(ByVal FieldDataType As SqlFieldDataType, ByVal V
 
 End Function
 
-Private Function ArrayContains(ByVal FieldDataType As SqlFieldDataType, ByVal ArrayToCheck As Variant, ByVal SearchValue As Variant) As Boolean
+Private Function ArrayContains(ByVal FieldDataType As SqlFieldDataType, ByVal ArrayToCheck As Variant, ByVal searchValue As Variant) As Boolean
    
    Dim i As Long
 
-   If IsNull(SearchValue) Then
+   If IsNull(searchValue) Then
       ArrayContains = ArrayContainsNull(ArrayToCheck)
       Exit Function
    End If
 
    For i = LBound(ArrayToCheck) To UBound(ArrayToCheck)
-      If ValuesAreEqual(FieldDataType, ArrayToCheck(i), SearchValue) Then
+      If ValuesAreEqual(FieldDataType, ArrayToCheck(i), searchValue) Then
          ArrayContains = True
          Exit Function
       End If

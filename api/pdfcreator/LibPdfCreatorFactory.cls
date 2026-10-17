@@ -22,6 +22,7 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>api/pdfcreator/LibPdfCreatorFactory.cls</file>
 '  <use>api/pdfcreator/LibPdfCreatorInstance.cls</use>
+'  <use>api/pdfcreator/LibPdfCreatorComFactory.cls</use>
 '  <test>_test/api/pdfcreator/LibPdfCreatorFactoryTests.cls</test>
 '  <license>_codelib/license.bas</license>
 '  <description>Factory for the PDFCreator 1.x process instance (LibPdfCreatorInstance)</description>

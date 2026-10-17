@@ -430,11 +430,11 @@ Public Function OpenRecordset(ByVal Source As String, _
 
 End Function
 
-Private Function Replace0WithIsMissing(ByVal CheckValue As Long) As Variant
-   If CheckValue = 0 Then
+Private Function Replace0WithIsMissing(ByVal checkValue As Long) As Variant
+   If checkValue = 0 Then
       Replace0WithIsMissing = GetIsMissing()
    Else
-      Replace0WithIsMissing = CheckValue
+      Replace0WithIsMissing = checkValue
    End If
 End Function
 
