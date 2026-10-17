@@ -279,7 +279,7 @@ End Function
 '     Value - String to be checked
 '
 ' Returns:
-'     Long - Anzahl Zeichen von Value
+'     Long - Number of characters of Value
 '
 '---------------------------------------------------------------------------------------
 Public Function Length(ByVal Value As String) As Long
@@ -366,7 +366,7 @@ End Function
 ' Function: InsertAt
 '---------------------------------------------------------------------------------------
 '
-' Setzt die Zeichenfolge InsertValue an der Position Pos ein
+' Inserts the string InsertValue at position Pos
 '
 ' Parameters:
 '     Value       - String

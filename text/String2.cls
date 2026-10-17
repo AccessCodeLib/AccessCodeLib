@@ -8,13 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: String2
+' Class: text.String2
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' \brief        Ein erweiterter String-Datentyp
-' \ingroup text
-'**/
+'
+' Ein erweiterter String-Datentyp
+'
+' Author:
+'     Sten Schmidt
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>text/String2.cls</file>

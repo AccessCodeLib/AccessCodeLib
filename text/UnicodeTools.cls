@@ -8,13 +8,17 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: UnicodeTools (EXPERIMENTAL)
+' Class: text.UnicodeTools
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' \brief        Tools zur Erkennung und Verarbeitung von Unicode-Zeichenketten
-' \ingroup text
-'**/
+'
+' (EXPERIMENTAL)
+' Tools for detecting and processing Unicode strings
+'
+' Author:
+'     Sten Schmidt
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>text/UnicodeTools.cls</file>
@@ -30,114 +34,26 @@ Option Explicit
 '---------------------------------------------------------------------------------------
 ' Enum: IS_TEXT_UNICODE
 '---------------------------------------------------------------------------------------
-'/**                                            '<-- Start Doxygen-Block
-' <summary>
-' Unicode Testverfahren zur Übergabe an den WinAPI Call IsTextUnicode()
-' </summary>
-' <list type="table">
-'   <item>
-'       <term>ASCII16 (1)</term>
-'       <description>
-'           The text is Unicode, and contains only zero-extended ASCII values/characters.
-'       </description>
-'   </item>
-'   <item>
-'       <term>STATISTICS (2)</term>
-'       <description>
-'           The text is probably Unicode, with the determination made by applying statistical
-'           analysis. Absolute certainty is not guaranteed. See the Remarks section.
-'       </description>
-'   </item>
-'   <item>
-'       <term>CONTROLS (4)</term>
-'       <description>
-'           The text contains Unicode representations of one or more of these nonprinting
-'           characters: RETURN, LINEFEED, SPACE, CJK_SPACE, TAB.
-'       </description>
-'   </item>
-'   <item>
-'       <term>SIGNATURE (8)</term>
-'       <description>
-'           The text contains the Unicode byte-order mark (BOM) 0xFEFF as its first character.
-'       </description>
-'   </item>
-'   <item>
-'       <term>UNICODE_MASK (15)</term>
-'       <description>
-'           The value is a combination of ASCII16, STATISTICS, CONTROLS, SIGNATURE.
-'       </description>
-'   </item>
-'   <item>
-'       <term>REVERSE_ASCII16 (16)</term>
-'       <description>
-'           Same as ASCII16, except that the Unicode text is byte-reversed.
-'       </description>
-'   </item>
-'   <item>
-'       <term>REVERSE_STATISTICS (32)</term>
-'       <description>
-'           Same as STATISTICS, except that the text that is probably Unicode is byte-reversed.
-'       </description>
-'   </item>
-'   <item>
-'       <term>REVERSE_CONTROLS (64)</term>
-'       <description>
-'           Same as CONTROLS, except that the Unicode characters are byte-reversed.
-'       </description>
-'   </item>
-'   <item>
-'       <term>REVERSE_SIGNATURE (128)</term>
-'       <description>
-'           The text contains the Unicode byte-reversed byte-order mark (Reverse BOM)
-'           0xFFFE as its first character.
-'       </description>
-'   </item>
-'   <item>
-'       <term>REVERSE_MASK (240)</term>
-'       <description>
-'           The value is a combination of REVERSE_ASCII16, REVERSE_STATISTICS,
-'           REVERSE_CONTROLS, REVERSE_SIGNATURE.
-'       </description>
-'   </item>
-'   <item>
-'       <term>ILLEGAL_CHARS (256)</term>
-'       <description>
-'           The text contains one of these Unicode-illegal characters: embedded Reverse BOM, UNICODE_NUL,
-'           CRLF (packed into one word), or 0xFFFF.
-'       </description>
-'   </item>
-'   <item>
-'       <term>ODD_LENGTH (512)</term>
-'       <description>
-'           The number of characters in the string is odd. A string of odd length
-'           cannot (by definition) be Unicode text.
-'       </description>
-'   </item>
-'   <item>
-'       <term>DBCS_LEADBYTE (1024)</term>
-'       <description>??? TODO ???</description>
-'   </item>
-'   <item>
-'       <term>NOT_UNICODE_MASK (3840)</term>
-'       <description>
-'           The value is a combination of ILLEGAL_CHARS, ODD_LENGTH,
-'           and two currently unused bit flags.
-'       </description>
-'   </item>
-'   <item>
-'       <term>NULL_BYTES (4096)</term>
-'       <description>
-'           The text contains null bytes, which indicate non-ASCII text.
-'       </description>
-'   </item>
-'   <item>
-'       <term>NOT_ASCII_MASK (61440)</term>
-'       <description>
-'           The value is a combination of NULL_BYTES and three currently unused bit flags.
-'       </description>
-'   </item>
-' </list>
-'**/                                            '<-- Ende Doxygen-Block
+'
+' Unicode test options to pass to the WinAPI call IsTextUnicode()
+'
+' ASCII16 (1) -  The text is Unicode, and contains only zero-extended ASCII values/characters.
+' STATISTICS (2) -  The text is probably Unicode, with the determination made by applying statistical analysis. Absolute certainty is not guaranteed. See the Remarks section.
+' CONTROLS (4) -  The text contains Unicode representations of one or more of these nonprinting characters: RETURN, LINEFEED, SPACE, CJK_SPACE, TAB.
+' SIGNATURE (8) -  The text contains the Unicode byte-order mark (BOM) 0xFEFF as its first character.
+' UNICODE_MASK (15) -  The value is a combination of ASCII16, STATISTICS, CONTROLS, SIGNATURE.
+' REVERSE_ASCII16 (16) -  Same as ASCII16, except that the Unicode text is byte-reversed.
+' REVERSE_STATISTICS (32) -  Same as STATISTICS, except that the text that is probably Unicode is byte-reversed.
+' REVERSE_CONTROLS (64) -  Same as CONTROLS, except that the Unicode characters are byte-reversed.
+' REVERSE_SIGNATURE (128) -  The text contains the Unicode byte-reversed byte-order mark (Reverse BOM) 0xFFFE as its first character.
+' REVERSE_MASK (240) -  The value is a combination of REVERSE_ASCII16, REVERSE_STATISTICS, REVERSE_CONTROLS, REVERSE_SIGNATURE.
+' ILLEGAL_CHARS (256) -  The text contains one of these Unicode-illegal characters: embedded Reverse BOM, UNICODE_NUL, CRLF (packed into one word), or 0xFFFF.
+' ODD_LENGTH (512) -  The number of characters in the string is odd. A string of odd length cannot (by definition) be Unicode text.
+' DBCS_LEADBYTE (1024) - (not documented yet)
+' NOT_UNICODE_MASK (3840) -  The value is a combination of ILLEGAL_CHARS, ODD_LENGTH, and two currently unused bit flags.
+' NULL_BYTES (4096) -  The text contains null bytes, which indicate non-ASCII text.
+' NOT_ASCII_MASK (61440) -  The value is a combination of NULL_BYTES and three currently unused bit flags.
+'
 '---------------------------------------------------------------------------------------
 Public Enum IS_TEXT_UNICODE
     ASCII16 = 1 '&H1
@@ -161,39 +77,42 @@ End Enum
 '---------------------------------------------------------------------------------------
 ' Function: IsTextUnicode
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' Determines if a buffer is likely to contain a form of Unicode text.
-' </summary>
-' <param name="lpv">[in] Pointer to the input buffer to examine.</param>
-' <param name="iSize">[in] Size, in bytes, of the input buffer indicated by lpv.</param>
-' <param name="lpiResult">[in, out, optional] On input, pointer to the tests to apply to the input buffer text.</param>
-' <returns>Boolean</returns>
-' <remarks>
-' http://msdn.microsoft.com/en-us/library/windows/desktop/dd318672%28v=vs.85%29.aspx
-' </remarks>
-'**/
+'
+' Parameters:
+'     lpv       - [in] Pointer to the input buffer to examine.
+'     iSize     - [in] Size, in bytes, of the input buffer indicated by lpv.
+'     lpiResult - [in, out, optional] On input, pointer to the tests to apply to the input buffer text.
+'
+' Returns:
+'     Boolean
+'
+' Remarks:
+'     http://msdn.microsoft.com/en-us/library/windows/desktop/dd318672%28v=vs.85%29.aspx
+'
 '---------------------------------------------------------------------------------------
 Private Declare PtrSafe Function IsTextUnicode Lib "advapi32" (ByRef lpv As Any, ByVal iSize As Long, ByRef lpiResult As Long) As Boolean
 
 '---------------------------------------------------------------------------------------
 ' Function: IsUnicode
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Ermittelt anhand verschiedener Testoptionen, ob ein String im Unicode-Zeichensatz vorliegt.
-' </summary>
-' <param name="Value">Prüfstring</param>
-' <param name="TestOption">Prüf- bzw. Testverfahren</param>
-' <param name="RaiseErrorOnFailedTest">
-'   Legt fest ob ein Fehler generiert werden soll, wenn ein Test fehlschlägt und der
-'   Return-Wert dadurch nicht eindeutig ist.</param>
-' <returns>Boolean</returns>
-' <remarks>
-' Basiert auf dem WinAPI-Call 'IsTextUnicode()', siehe
-' http://msdn.microsoft.com/en-us/library/windows/desktop/dd318672%28v=vs.85%29.aspx
-' </remarks>
-'**/
+'
+' Determines by means of various test options whether a string is in the Unicode character set.
+'
+' Parameters:
+'     Value                  - String to test
+'     TestOption             - Test option
+'     RaiseErrorOnFailedTest - Determines whether an error is raised if a test fails and
+'                              the return value is therefore ambiguous.
+'
+' Returns:
+'     Boolean
+'
+' Remarks:
+'     Based on the WinAPI call 'IsTextUnicode()', see
+'     http://msdn.microsoft.com/en-us/library/windows/desktop/dd318672%28v=vs.85%29.aspx
+'
 '---------------------------------------------------------------------------------------
 Public Property Get IsUnicode(ByRef Value As String, _
                               Optional ByVal TestOption As IS_TEXT_UNICODE = IS_TEXT_UNICODE.UNICODE_MASK, _

@@ -8,13 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: Base64
+' Class: text.Base64
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' \brief        Base64 Kodierung und Dekodierung
-' \ingroup text
-'**/
+'
+' Base64 encoding and decoding
+'
+' Author:
+'     Sten Schmidt
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>text/Base64.cls</file>
@@ -30,16 +33,13 @@ Private m_xmlNode As Object
 '---------------------------------------------------------------------------------------
 ' Enum: Base64ConvertOption
 '---------------------------------------------------------------------------------------
-'/**                                            '<-- Start Doxygen-Block
-' <summary>
-' Verfügbare Konvertierungsoptionen
-' </summary>
-' <list type="table">
-'   <item><term>None (1)</term><description>Keine Konvertierung</description></item>
-'   <item><term>FromUnicode (2)</term><description>Von Unicode zum Systemzeichensatz</description></item>
-'   <item><term>ToUnicode (3)</term><description>Vom Systemzeichensatz nach Unicode</description></item>
-' </list>
-'**/                                            '<-- Ende Doxygen-Block
+'
+' Available conversion options
+'
+' None (1) - No conversion
+' FromUnicode (2) - From Unicode to the system character set
+' ToUnicode (3) - From the system character set to Unicode
+'
 '---------------------------------------------------------------------------------------
 Public Enum Base64ConvertOption
     None
@@ -61,16 +61,16 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Function: Encode
 '---------------------------------------------------------------------------------------
-'/**                                            '<-- Start Doxygen-Block
-' <summary>
-' Kodiert den Eingabestring mittels Base64
-' </summary>
-' <param name="Value">String der kodiert werden soll</param>
-' <param name="ConvertOption">Konvertierungsoptionen</param>
-' <returns>kodierter Base64 String</returns>
-' <remarks>
-' </remarks>
-'**/                                            '<-- Ende Doxygen-Block
+'
+' Encodes the input string with Base64
+'
+' Parameters:
+'     Value         - String to be encoded
+'     ConvertOption - Conversion option
+'
+' Returns:
+'     Base64 encoded string
+'
 '---------------------------------------------------------------------------------------
 Public Function Encode(ByVal Value As String, Optional ByVal ConvertOption As Base64ConvertOption = Base64ConvertOption.None) As String
     
@@ -93,15 +93,15 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: DecodeToByteArray
 '---------------------------------------------------------------------------------------
-'/**                                            '<-- Start Doxygen-Block
-' <summary>
-' Dekodiert einen Base64 kodierten String
-' </summary>
-' <param name="Value">String der dekodiert werden soll</param>
-' <returns>dekodierter String als Byte()</returns>
-' <remarks>
-' </remarks>
-'**/                                            '<-- Ende Doxygen-Block
+'
+' Decodes a Base64 encoded string
+'
+' Parameters:
+'     Value - String to be decoded
+'
+' Returns:
+'     Decoded string as Byte()
+'
 '---------------------------------------------------------------------------------------
 Public Function DecodeToByteArray(ByVal Value As String) As Byte()
 
@@ -113,16 +113,16 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: Decode
 '---------------------------------------------------------------------------------------
-'/**                                            '<-- Start Doxygen-Block
-' <summary>
-' Dekodiert einen Base64 kodierten String
-' </summary>
-' <param name="Value">String der dekodiert werden soll</param>
-' <param name="ConvertOption">Konvertierungsoptionen</param>
-' <returns>dekodierter String</returns>
-' <remarks>
-' </remarks>
-'**/                                            '<-- Ende Doxygen-Block
+'
+' Decodes a Base64 encoded string
+'
+' Parameters:
+'     Value         - String to be decoded
+'     ConvertOption - Conversion option
+'
+' Returns:
+'     Decoded string
+'
 '---------------------------------------------------------------------------------------
 Public Function Decode(ByVal Value As String, Optional ByVal ConvertOption As Base64ConvertOption = Base64ConvertOption.None) As String
     

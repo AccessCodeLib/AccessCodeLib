@@ -8,13 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: LibFiles
+' Class: file.LibFiles
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Poetzl
-' \brief        Dateien in Tabelle abspeichern und in Verzeichnis exportieren
-' \ingroup file
-'**/
+'
+' Save files in a table and export them to a folder
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>file/LibFiles.cls</file>
@@ -194,14 +197,12 @@ End Sub
 '---------------------------------------------------------------------------------------
 ' Sub: ReInitialize
 '---------------------------------------------------------------------------------------
-'/**                                            '<-- Start Doxygen-Block
-' <summary>
-' (Re)Initialisiert die DotNetLib Integration
-' </summary>
-' <remarks>
-' Muss bei jedem Anwendungsstart ausgeführt werden
-' </remarks>
-'**/                                            '<-- Ende Doxygen-Block
+'
+' (Re)Initialises the DotNetLib integration
+'
+' Remarks:
+'     Must be executed at every application start
+'
 '---------------------------------------------------------------------------------------
 Public Sub ReInitialize()
    LibFiles.CheckFiles
@@ -258,15 +259,12 @@ End Property
 '---------------------------------------------------------------------------------------
 ' Property: LibPath
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' LibPath
-' </summary>
-' <param name="Vollständige Pfadangabe"></param>
-' <returns>String</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Folder of the library files
+'
+' Returns:
+'     String - Full path
+'
 '---------------------------------------------------------------------------------------
 Friend Property Get LibPath() As String
    If Len(m_LibPath) = 0 Then

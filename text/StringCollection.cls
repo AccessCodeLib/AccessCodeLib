@@ -102,7 +102,7 @@ End Property
 ' Add string to collection
 '
 ' Parameters:
-'     Item to add - (String)
+'     Item - String to add
 '
 '---------------------------------------------------------------------------------------
 Public Sub Add(ByVal Item As String)

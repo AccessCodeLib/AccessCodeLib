@@ -8,31 +8,32 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Klassenmodul: RecursiveFileSearcher
+' Class: file.RecursiveFileSearcher
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Verzeichnisstruktur nach einer oder mehreren Dateien durchsuchen
-' </summary>
-' <remarks>
-' <code>
-' Dim Itm As Variant
-' With New RecursiveFileSearcher
-'    .AddSearchItem "msaccess.*"
-'    .AddSearchItem "winword.exe"
 '
-'    If Not .Search("C:\Program Files (x86)\Microsoft Office", FSMode_SearchAllFolders) Then
-'       Debug.Print "Kein Treffer"
-'    Else
-'       For Each Itm In .Matches
-'          Debug.Print Itm
-'       Next
-'    End If
-' End With
-' </code>
-' </remarks>
-' \ingroup file
-'**/
+' Search a folder structure for one or more files
+'
+' Remarks:
+'     (start code)
+'
+'     Dim Itm As Variant
+'     With New RecursiveFileSearcher
+'        .AddSearchItem "msaccess.*"
+'        .AddSearchItem "winword.exe"
+'
+'        If Not .Search("C:\Program Files (x86)\Microsoft Office", FSMode_SearchAllFolders) Then
+'           Debug.Print "No match"
+'        Else
+'           For Each Itm In .Matches
+'              Debug.Print Itm
+'           Next
+'        End If
+'     End With
+'
+'     (end)
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>file/RecursiveFileSearcher.cls</file>
@@ -47,16 +48,14 @@ Option Explicit
 '---------------------------------------------------------------------------------------
 ' Enum: FileSearchMode
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Suchvarianten
-' </summary>
-' <list type="table">
-'   <item><term>FSMode_SearchOneOfEveryItem (0)</term><description>Sobald Suchbegriff einmal gefunden wurde, diesen Begriff nicht weiter suchen. Die Suche läuft, bis das Verzeichnis durchsucht wurde oder jeder Suchbegriff 1x gefunden wurde.</description></item>
-'   <item><term>FSMode_SearchOneFile (1)</term><description>Suche beenden, sobald einer der Suchbegriffe einen Treffer ergab</description></item>
-'   <item><term>FSMode_SearchAllFolders (2)</term><description>Die komplette Verzeichnisstruktur durchsuchen -> je Suchbegriff kann es mehrere Treffer geben</description></item>
-' </list>
-'**/
+'
+' Search modes
+'
+' FSMode_SearchOneOfEveryItem (0) - As soon as a search item has been found, this item is not searched any further. The search runs until the folder has been searched or each search item has been found once.
+' FSMode_SearchOneFile (1) - Stop the search as soon as one of the search items returned a match
+' FSMode_SearchAllFolders (2) - Search the complete folder structure -> several matches per search item possible
+'
+'---------------------------------------------------------------------------------------
 Public Enum FileSearchMode
    FSMode_SearchOneOfEveryItem = 0  ' Sobald Suchbegriff einmal gefunden wurde, diesen Begriff nicht weiter suchen.
                                     '   Die Suche läuft, bis das Verzeichnis durchsucht wurde oder jeder Suchbegriff 1x gefunden wurde.
@@ -80,13 +79,15 @@ Private m_FSO As Scripting.FileSystemObject
 '---------------------------------------------------------------------------------------
 ' Sub: AddSearchItem
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Suchbegriff anfügen
-' </summary>
-' <param name="FileName">Suchbegriff für den zu suchenen Dateinamen</param>
-' <remarks>Wildcards sind möglich, da Textvergleich mit Like durchgeführt wird.</remarks>
-'**/
+'
+' Add search item
+'
+' Parameters:
+'     FileName - Search item for the file name to be searched
+'
+' Remarks:
+'     Wildcards are possible, as the text comparison is done with Like.
+'
 '---------------------------------------------------------------------------------------
 Public Sub AddSearchItem(ByVal FileName As String)
 
@@ -106,14 +107,16 @@ End Sub
 '---------------------------------------------------------------------------------------
 ' Function: Search
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Dateisuche starten
-' </summary>
-' <param name="StartPath">Start-Verzeichnis (String)/param>
-' <param name="SearchMode">(Optional) Suchmodus ... Standard = FSMode_SearchOneOfEveryItem (sobald Suchbegriff einmal gefunden wurde, diesen Begriff nicht weiter suchen</param>
-' <returns>True wenn mind. 1 Datei gefunden wurde</returns>
-'**/
+'
+' Start file search
+'
+' Parameters:
+'     StartPath  - Start folder (String)
+'     SearchMode - (Optional) Search mode ... Default = FSMode_SearchOneOfEveryItem
+'
+' Returns:
+'     True if at least 1 file was found
+'
 '---------------------------------------------------------------------------------------
 Public Function Search(ByVal StartPath As String, Optional ByVal SearchMode As FileSearchMode = FSMode_SearchOneOfEveryItem) As Boolean
    
@@ -145,13 +148,15 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Property: Matches
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Matches-Collection
-' </summary>
-' <returns>Collection (String-Item) der gefundenen Dateien</returns>
-' <remarks>Mit Matches.Count kann die Anzahl der gefundenen Dateien abgefragt werden.</remarks>
-'**/
+'
+' Matches collection
+'
+' Returns:
+'     Collection (String items) of the files found
+'
+' Remarks:
+'     Matches.Count returns the number of files found.
+'
 '---------------------------------------------------------------------------------------
 Public Property Get Matches() As Collection
 
