@@ -1,16 +1,15 @@
 Attribute VB_Name = "MathConstants"
 '---------------------------------------------------------------------------------------
-' Modul: MathConstants
+' Package: math.MathConstants
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Sten Schmidt
-' <summary>
-' Mathematische Konstanten
-' </summary>
-' <remarks></remarks>
 '
-' \ingroup math
-'**/
+' Mathematical constants
+'
+' Author:
+'     Sten Schmidt
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>math/MathConstants.bas</file>

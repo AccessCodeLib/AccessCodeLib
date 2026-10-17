@@ -1,17 +1,16 @@
 Attribute VB_Name = "modDirectCOM"
 '---------------------------------------------------------------------------------------
-' Module: modDirectCOM
+' Package: com.modDirectCOM
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Instanz aus unregistrierter COM-dll erzeugen
-' </summary>
-' <remarks>
-' Die Funktion GetInstance ist hilfreich, wenn auf eine COM-dll nur mittel Late Binding
-' zugegriffen wird. Die dll muss nicht mittels regsvr32 registriert worden sein.
-' </remarks>
-' \ingroup COM
-'**/
+'
+' Create an instance from an unregistered COM dll
+'
+' Remarks:
+'     The function GetInstance is useful if a COM dll is only accessed via late binding.
+'     The dll does not have to be registered with regsvr32.
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>com/modDirectCOM.bas</file>
@@ -25,9 +24,6 @@ Attribute VB_Name = "modDirectCOM"
 Option Compare Text
 Option Explicit
 
-'Zuordnung der Prozeduren zur Doxygen-Gruppe:
-'/** \addtogroup COM
-'@{ **/
 
 Private Declare PtrSafe Function CallWindowProc Lib "user32" Alias "CallWindowProcA" (ByVal adr As Long, ByVal p1 As Long, ByVal p2 As Long, ByVal p3 As Long, ByVal p4 As Long) As Long
 Private Declare PtrSafe Function LoadLibrary Lib "kernel32" Alias "LoadLibraryA" (ByVal szLib As String) As Long
@@ -139,25 +135,28 @@ Private Type GUID
 End Type
 
 '---------------------------------------------------------------------------------------
-' Function: GetInstance (2009-12-01)
+' Function: getInstance
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Erzeugt eine Instanz aus der Klasse in einer COM-dll. Die dll muss nicht registriert sein.
-' </summary>
-' <param name="LibraryString">Vollstaendiger Pfad zur COM-dll</param>
-' <param name="ProgIdString">Name der Klasse in der COM-dll</param>
-' <returns>Instanz der Klasse</returns>
-' <remarks>
-' Beispiel: \n
-' set obj = GetInstance(CurrentProject.Path & "\EineCombibliothek.dll", "XYZ") \n
-' Damit wird eine Instanz der Klasse "XYZ" aus der dll (die sich im mdb/accdb-Verzeichnis) befindet erzeugt.
-' \n\n
-' Prozedur im Internet gefunden: http://www.ppreview.net/Forum/post.asp?method=ReplyQuote&REPLY_ID=846&TOPIC_ID=570&FORUM_ID=2 \n
-' Code angepasst
-' </remarks>
-'  <ref><name>stdole</name><major>2</major><minor>0</minor><guid>{00020430-0000-0000-C000-000000000046}</guid></ref>
-'**/
+'
+' Creates an instance of a class in a COM dll. The dll does not have to be registered.
+'
+' Requires a reference to stdole (OLE Automation, {00020430-0000-0000-C000-000000000046}).
+'
+' Parameters:
+'     LibraryString - Full path of the COM dll
+'     ProgIdString  - Name of the class in the COM dll
+'
+' Returns:
+'     Instance of the class
+'
+' Remarks:
+'     Example:
+'     set obj = GetInstance(CurrentProject.Path & "\EineCombibliothek.dll", "XYZ")
+'     This creates an instance of the class "XYZ" from the dll located in the mdb/accdb folder.
+'
+'     Procedure found on the internet: http://www.ppreview.net/Forum/post.asp?method=ReplyQuote&REPLY_ID=846&TOPIC_ID=570&FORUM_ID=2
+'     Code adapted
+'
 '---------------------------------------------------------------------------------------
 Public Function getInstance(ByVal LibraryString As String, ByVal ProgIdString As String) As stdole.IUnknown
 
@@ -428,4 +427,3 @@ Private Function clsidToProgID(ByVal CLSID As String) As String
 
 End Function
 
-'/** @} **/ '<-- Ende der Doxygen-Gruppen-Zuordnung

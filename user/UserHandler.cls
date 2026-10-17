@@ -8,11 +8,13 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: UserHandler
+' Class: user.UserHandler
 '---------------------------------------------------------------------------------------
-'/**
-' @brief Benutzerverwaltung/Benutzersteuerung
-'**/
+'
+' User management/user control
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>user/UserHandler.cls</file>

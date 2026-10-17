@@ -8,15 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: RibbonWatcher (Josef Pötzl)
+' Class: ribbon.RibbonWatcher
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Zeigt die zuletzt verwendeten Ribbon-Controls in einer Ribbon-Gruppe bzw. Tab an.
-' </summary>
-' <remarks>
-' </remarks>
-'**/
+'
+' Shows the most recently used ribbon controls in a ribbon group or tab.
+'
+' Author:
+'     Josef Pötzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>ribbon/RibbonWatcher.cls</file>

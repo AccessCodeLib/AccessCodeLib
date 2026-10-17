@@ -21,23 +21,25 @@ Attribute VB_Description = "Erweiterung für ApplicationHandler-Klasse: Verzeichn
 '     Class can create instances of itself and keep them "alive".
 '
 ' Remarks:
-' Activation in the _config_Application module:
-' <code>
-'   Set m_Extensions = New ApplicationHandler_ExtensionCollection
-'   ...
-'   m_Extensions.Add New ApplicationHandler_DirTextbox
-'   ...
-' </code>
+'     Activation in the _config_Application module:
 '
-' Activation for a text box in a form:
-' <code>
-' With CurrentApplication!DirTextbox
-'   .Textbox = Me.%TextboxSteuerelement%
-'   .BaseFolderPath = %Voreingestellter Pfad%
-' End With
-' </code>
+'     (start code)
+'     Set m_Extensions = New ApplicationHandler_ExtensionCollection
+'     ...
+'     m_Extensions.Add New ApplicationHandler_DirTextbox
+'     ...
+'     (end)
 '
-' @todo Add filter option so that only directories can be selected.
+'     Activation for a text box in a form:
+'
+'     (start code)
+'     With CurrentApplication!DirTextbox
+'       .Textbox = Me.%TextboxControl%
+'       .BaseFolderPath = %DefaultPath%
+'     End With
+'     (end)
+'
+'     TODO: Add filter option so that only directories can be selected.
 '
 '---------------------------------------------------------------------------------------
 
@@ -52,56 +54,57 @@ Attribute VB_Description = "Erweiterung für ApplicationHandler-Klasse: Verzeichn
 '---------------------------------------------------------------------------------------
 '
 '---------------------------------------------------------------------------------------
-' Example
+' Topic: ApplicationHandler_DirTextbox usage
 '---------------------------------------------------------------------------------------
-'/**
-'\class ApplicationHandler_DirTextbox
-'<h2>Verwendung</h2>
-'\par Deklaration der Erweiterung im codelib-Block von _config_Application
-'\verbatim
-'  <use>usability/ApplicationHandler_DirTextbox.cls<use>
-'\endverbatim
-'\par Initialisierungsaufruf
-'\code
-'Public Sub InitConfig(Optional oCurrentAppHandler As ApplicationHandler = Nothing)
-'   ...
-'   AddApplicationHandlerExtension New ApplicationHandler_DirTextbox
-'   ...
-'End Sub
-'\endcode
-'\par Verwendung in Formular bzw. mit Textbox
-'\par
-'  Hilfsfunktion (Code könnte auch direkt in Ereignisbehandlung eingefügt werden)
-'\verbatim
-'Private Sub bindTextbox(ByRef tb As Textbox, Optional ByVal BaseFolderPath As String = vbNullString)
 '
-'   'Latebindung, damit ApplicationHandler_DirTextbox-Klasse nicht vorhanden sein muss
-'   Dim ojbDirTextbox As Object ' ... ApplicationHandler_DirTextbox
+' Declaration of the extension in the codelib block of _config_Application:
 '
-'   'Standard-Instanz verwenden:
-'   Set ojbDirTextbox = CurrentApplication.GetExtension("DirTextbox")
+' (start code)
+'   <use>usability/ApplicationHandler_DirTextbox.cls<use>
+' (end)
 '
-'   'extra Instanz für Textbox-Steuerung initialisieren ... ist nützlich,
-'   'wenn die Initialisierung bei Form.Load und nicht bei Texbox.GotFocus durchgeführt werden soll
-'   'Set ojbDirTextbox = CurrentApplication.GetExtensionInstance("DirTextbox")
+' Initialization call:
 '
-'   'Textbox binden
-'   If Not (ojbDirTextbox Is Nothing) Then
-'      Set ojbDirTextbox.Textbox = tb
-'      ojbDirTextbox.BaseFolderPath = BaseFolderPath
-'   End If
+' (start code)
+' Public Sub InitConfig(Optional oCurrentAppHandler As ApplicationHandler = Nothing)
+'    ...
+'    AddApplicationHandlerExtension New ApplicationHandler_DirTextbox
+'    ...
+' End Sub
+' (end)
 '
-'End Sub
-'\endverbatim
-'\par
-'Aufruf in Ereignisbehandlung
-'\verbatim
-'Private Sub FileSearchTextbox1_GotFocus()
-'   bindTextbox Me.FileSearchTextbox1
-'End Sub
-'\endverbatim
+' Use in a form with a text box - helper function (the code could also be inserted directly into the event handler):
 '
-'**/
+' (start code)
+' Private Sub bindTextbox(ByRef tb As Textbox, Optional ByVal BaseFolderPath As String = vbNullString)
+'
+'    'late binding, so that the ApplicationHandler_DirTextbox class does not have to exist
+'    Dim ojbDirTextbox As Object ' ... ApplicationHandler_DirTextbox
+'
+'    'use the default instance:
+'    Set ojbDirTextbox = CurrentApplication.GetExtension("DirTextbox")
+'
+'    'initialize an extra instance for the text box ... useful
+'    'if the initialization is done in Form.Load and not in Textbox.GotFocus
+'    'Set ojbDirTextbox = CurrentApplication.GetExtensionInstance("DirTextbox")
+'
+'    'bind the text box
+'    If Not (ojbDirTextbox Is Nothing) Then
+'       Set ojbDirTextbox.Textbox = tb
+'       ojbDirTextbox.BaseFolderPath = BaseFolderPath
+'    End If
+'
+' End Sub
+' (end)
+'
+' Call in the event handler:
+'
+' (start code)
+' Private Sub FileSearchTextbox1_GotFocus()
+'    bindTextbox Me.FileSearchTextbox1
+' End Sub
+' (end)
+'
 '---------------------------------------------------------------------------------------
 '
 Option Compare Database
@@ -253,7 +256,7 @@ End Sub
 ' Property: BaseFolderPath
 '---------------------------------------------------------------------------------------
 '
-' Ausgangsverzeichnis (wird vor den Text in der TextBox angehängt)
+' Base folder (prepended to the text in the text box)
 '
 ' Remarks:
 '     String always ends with a "\", even if no final "\" was entered in the setting.
@@ -267,7 +270,10 @@ End Property
 ' Property: BaseFolderPath
 '---------------------------------------------------------------------------------------
 '
-' Output directory (will be appended in front of the text in the TextBox)
+' Base folder (prepended to the text in the text box)
+'
+' Parameters:
+'     NewPath - Base folder
 '
 '---------------------------------------------------------------------------------------
 Public Property Let BaseFolderPath(ByVal NewPath As String)

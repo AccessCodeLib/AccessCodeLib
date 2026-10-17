@@ -1,16 +1,15 @@
 Attribute VB_Name = "modMD5"
 '---------------------------------------------------------------------------------------
-' Module: modMD5
+' Package: crypt.md5.modMD5
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' md5-String ermitteln
-' </summary>
-' <remarks>
-' Code basiert auf der Klasse von Robert Hubley (siehe Kommentar im Modul)
-' </remarks>
-'\ingroup crypt
-'**/
+'
+' Determine the MD5 string
+'
+' Remarks:
+'     Code is based on the class by Robert Hubley (see comment in the module)
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>crypt/md5/modMD5.bas</file>
@@ -595,16 +594,16 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Function: md5
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
+'
 ' md5
-' </summary>
-' <param name="Source">String, für den der md5-String erstellt werden soll</param>
-' <param name="FileMD5">True, falls es sich bei der Übergabe um einen Dateinamen (inkl. Pfad) handelt</param>
-' <returns>String (32 Zeichen)</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Parameters:
+'     Source  - String for which the MD5 string is to be created
+'     FileMD5 - True if the passed value is a file name (incl. path)
+'
+' Returns:
+'     String (32 characters)
+'
 '---------------------------------------------------------------------------------------
 Public Function md5(Optional Source As String, Optional FileMD5 As Boolean = False) As String
    If FileMD5 Then

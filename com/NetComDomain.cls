@@ -8,13 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: NetComDomain
+' Class: com.NetComDomain
 '---------------------------------------------------------------------------------------
-'/**
-' \author       Josef Poetzl
-' \brief        .NET-COM-dll ohne Registrierung starten
-' \ingroup COM
-'**/
+'
+' Use a .NET COM dll without registration
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>com/NetComDomain.cls</file>
@@ -34,17 +37,17 @@ Private m_DefaultNameSpace As String
 '---------------------------------------------------------------------------------------
 ' Function: CreateObject
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Erstellt eine neue Instanz einer Klasse aus einer .Net Com Dll
-' </summary>
-' <param name="ClassIdentifier">Name der Klasse ohne Namespace</param>
-' <param name="DefaultNameSpace">Namespace in dem sich die Klasse befindet</param>
-' <param name="LibraryFile">absoluter Pfad zur .Net Com Dll</param>
-' <returns>Object</returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Creates a new instance of a class from a .NET COM dll
+'
+' Parameters:
+'     ClassIdentifier  - Name of the class without namespace
+'     DefaultNameSpace - Namespace containing the class
+'     LibraryFile      - Absolute path of the .NET COM dll
+'
+' Returns:
+'     Object
+'
 '---------------------------------------------------------------------------------------
 Public Function CreateObject(ByVal ClassIdentifier As String, _
                     Optional ByVal DefaultNameSpace As String = vbNullString, _

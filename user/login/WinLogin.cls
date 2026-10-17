@@ -8,11 +8,13 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
-' Class Module: WinLogin
+' Class: user.login.WinLogin
 '---------------------------------------------------------------------------------------
-'/**
-' @brief Login-Prüfung über Windows-Accounts
-'**/
+'
+' Login check via Windows accounts
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>user/login/WinLogin.cls</file>
